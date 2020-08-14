@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>秦时明月</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/style_qinshimingyue.css" rel="stylesheet" type="text/css">
+
+    <meta name="author" content="吴祖涛">
+    <meta name="keywords" content="秦时明月,天行九歌,历史">
+    <meta name="description" content="以动漫为主线、历史为辅线">
+    <meta name="robots" content="index,follow">
+    <!--切换广告js-->
+    <script>
+        window.onload = function () {
+            var dots = document.getElementById("dots").getElementsByTagName("li"); //获取"dot"数组
+            var imgList = document.getElementById("imgList").getElementsByTagName("img"); //获取图像数组
+            var back = document.getElementById("back"); //返回按钮
+            var go = document.getElementById("go"); //前进按钮
+
+            var dotslen = dots.length;
+            var opacity = new Array(dotslen); //透明度,每个"图片"的透明度
+            for (var i = 0; i < opacity.length; i++) //将透明度初始化为0
+                opacity[i] = 0;
+
+            var nowIndex = 0; //当前要轮播的图片下标
+            var loop = null; //轮播计时器
+            var loop0 = new Array(opacity.length); //over计时器
+            var loop1 = new Array(opacity.length); //leave计时器
+
+            changeImgeOver(dots[nowIndex], "初始"); //初始轮播nowIndex图片
+            setDotOver(dots[nowIndex++]);
+            GO(); //开始轮播
+
+            /* 轮播方法 */
+            function GO() {
+                if (loop != null) {
+                    clearInterval(loop); //清理之前残留的loop,以免出现bug
+                }
+                loop = setInterval(function () {
+                    setDotLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen -
+                        1]);
+                    changeImgeLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1],
+                        "轮播减少"); //nowIndex之前的图片透明度减少
+                    for (var i = 0; i < dotslen; i++) {
+                        console.log(i + "透明度" + opacity[i]);
+                    } //暗中观察
+                    console.log("-------");
+                    setDotOver(dots[nowIndex]);
+                    changeImgeOver(dots[nowIndex], "轮播增加"); //轮播nowIndex图片
+
+                    nowIndex = nowIndex >= dotslen - 1 ? 0 : nowIndex + 1; //轮播下一个图片
+                }, 1000);
+            }
+            /* 设置每个"dot"的触摸事件 */
+            for (var i = 0; i < 5; i++) {
+                //  console.log(dots.indexOf(dots[i]));
+                ! function (arg) {
+                    dots[arg].addEventListener("mouseover", function () {
+                        setDotLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen -
+                            1]);
+                        changeImgeLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1], "鼠标点击后退");
+                        //设置nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1图片透明度为0
+                        clearInterval(loop); //暂停轮播loop以免出现bug
+                        nowIndex = arg; //将当前轮播下标变成选择的"dot"下标
+                        changeImgeOver(this, "鼠标放上增加"); //显示选择的轮播
+                        setDotOver(this);
+                        nowIndex = nowIndex == dotslen - 1 ? 0 : nowIndex + 1;
+                    }); //放上去的事件
+                    dots[arg].addEventListener("mouseout", function () {
+                        setDotLeave(this);
+                        GO(); //启动轮播loop
+                    }); //移出来的事件
+                }(i);
+            }
+            /* 设置后退按钮 */
+            back.addEventListener("click", function () { //回退到nowindex下标之前二个
+
+                setDotLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen -
+                    1]); //设置nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1轮播原始化
+                changeImgeLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1], "鼠标点击前进");
+                clearInterval(loop); //暂停轮播loop
+                nowIndex = nowIndex - 2 >= 0 ? (nowIndex - 2) : (dotslen - (2 - nowIndex));
+                // console.log("--------");
+                console.log("回退到" + nowIndex);
+                console.log("-------");
+                setDotOver(dots[nowIndex]); //显示后退到的轮播图
+                changeImgeOver(dots[nowIndex], "back按键");
+                nowIndex = nowIndex >= dotslen - 1 ? 0 : nowIndex + 1; //设置轮播的下标
+                setTimeout(() => { //隔500毫秒后启动轮播
+                    GO();
+                }, 500);
+            });
+            back.addEventListener("mouseover", function () { //放上去时的特效
+                this.style.opacity = 0.5;
+            });
+            back.addEventListener("mouseleave", function () {
+                this.style.opacity = 0.1;
+            })
+
+            /* 设置前进按钮 */
+            go.addEventListener("click", function () { //其实就是无延时的GO了一下
+
+                setDotLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen -
+                    1]); //设置nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1轮播原始化
+                changeImgeLeave(dots[nowIndex - 1 >= 0 ? nowIndex - 1 : dotslen - 1], "鼠标放上减少");
+                clearInterval(loop); //暂停轮播loop
+                console.log("前进到" + nowIndex);
+                console.log("-------");
+                setDotOver(dots[nowIndex]); //显示后退到的轮播图
+                changeImgeOver(dots[nowIndex], "back按键");
+                nowIndex = nowIndex >= dotslen - 1 ? 0 : nowIndex + 1; //设置轮播的下标
+                setTimeout(() => { //隔500毫秒后启动轮播
+                    GO();
+                }, 500);;
+            });
+            go.addEventListener("mouseover", function () {
+                this.style.opacity = 0.5;
+            });
+            go.addEventListener("mouseleave", function () {
+                this.style.opacity = 0.1;
+            })
+
+            /* 给图片增加透明度的方法 */
+            function changeImgeOver(Q, K) {
+                var index = getIndex(dots, Q); //获取下标
+                clearInterval(loop1[index]);
+                loop0[index] = setInterval(changeOpacity0, 10); //开始增加透明度
+
+                function changeOpacity0() {
+                    if (opacity[index] >= 1) {
+                        opacity[index] = 1; //
+                        clearInterval(this); //如果透明度大于等于1停止增加透明度
+                    } else {
+                        opacity[index] += 0.02; //改变透明度
+                        // console.log("这是" + K + "计时器" + index + "透明度" + opacity[index]); //暗中观察
+                        imgList[index].style.opacity = opacity[index]; //设置图片透明度属性
+                    }
+                }
+            }
+            /* 给图片减少透明度的方法 */
+            function changeImgeLeave(Q, K) {
+                var index = getIndex(dots, Q); //获取下标
+                clearInterval(loop0[index]); //停止增加透明度
+                loop1[index] = setInterval(changeOpacity1, 10); //设置计时器开始减少透明度
+                function changeOpacity1() {
+                    if (opacity[index] <= 0) {
+                        opacity[index] = 0;
+                        clearInterval(this); //如果透明度少于等于0停止减少透明度
+                    } else {
+                        opacity[index] -= 0.02; //减少透明度
+                        // console.log("这是" + K + "号计时器" + index + "透明度" + opacity[index]); //暗中观察
+                        imgList[index].style.opacity = opacity[index]; //设置图片的透明度属性
+                    }
+                }
+            }
+
+            function getIndex(objArr, obj) { //获取obj在objarr的下标
+                for (var i = 0; i < objArr.length; i++)
+                    if (objArr[i] == obj)
+                        return i;
+            }
+            //转到该条的颜色
+            function setDotOver(Q) { //设置"dot"的颜色
+                Q.style.background = "cyan";
+                Q.style.fontcolor = "#eee8aa";
+            }
+            //默认的条颜色
+            function setDotLeave(Q) { //设置"dot"的颜色
+                Q.style.background = "#F5D56C";
+                Q.style.fontcolor = "#fff";
+            }
+        }
+    </script>
+    <!--背景音乐-->
+    <script>
+        var bgmusic = document.getElementById('bgmusic');
+        bgmusic.addEventListener('canplay', function(){
+            this.play();
+        }, false);
+        window.addEventListener('load', function(){
+            window.addEventListener('touchstart', once, false);
+        }, false);
+        function once(){
+            bgmusic.play();
+            window.removeEventListener('touchstart', once, false);
+        }
+    </script>
+    <style type="text/css">
+        body {
+            background-image:url('images/bg5.png'),url('images/bg_xx.gif');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }    </style>
+</head>
+<body>
+<audio src="music/月光.mp3" preload="meta" loop autoplay id="bgmusic"></audio>
+<!--页眉:logo-->
+<div id="header-wrapper">
+    <!--网站logo-->
+    <header class="container" id="advaddr">
+        <div id="logo">
+            <a href="index.html"><h1>以史为镜、可以知兴替</h1></a>
+        </div>
+    </header>
+</div>
+
+<!--菜单导航-->
+<div class="rz_bw_nav002_m">
+    <div id="nav2">
+        <ul>
+            <li><a href="index.html" target="_blank">首页</a>
+            <li><a href="tianxingjiuge.html" target="_blank">天行九歌</a>
+            <li><a href="qinshimingyue.html" target="_blank">秦时明月</a>
+            <li><a href="zhanguoqixiong.html" target="_blank">战国七雄</a>
+            <li><a href="zhuzibaijia.html" target="_blank">诸子百家</a>
+            <li><a href="end.html" target="_blank">成王败寇</a>
+        </ul>
+    </div>
+</div>
+<!--制作空白-->
+<div id="caidan_tupianqiehuan_liubai"></div>
+
+
+<!--内容-->
+<div id="content-wrapper" class="container">
+    <!--天行九歌、秦时明月切换广告-->
+    <div class="container" >
+        <div id="banner">
+            <ul id="imgList">
+                <li><div class="dd"><img src="images/秦时明月/g_1.jpg" ></div></li>
+                <li><div class="dd"><img src="images/秦时明月/g_2.jpg" ></div></li>
+                <li><div class="dd"><img src="images/秦时明月/g_3.jpg" ></div></li>
+                <li><div class="dd"><img src="images/秦时明月/g_4.jpg" ></div></li>
+                <li><div class="dd"><img src="images/秦时明月/g_5.jpg" ></div></li>
+                <li><div class="dd"><img src="images/秦时明月/g_6.jpg" ></div></li>
+            </ul>
+            <ul id="dots">
+                <li><span>夜尽天明</span></li>
+                <li><span>百步飞剑</span></li>
+                <li><span>诸子百家</span></li>
+                <li><span>万里长城</span></li>
+                <li><span>君临天下</span></li>
+                <li><span>沧海横流</span></li>
+            </ul>
+            <div id="back">
+                <span>←</span>
+            </div>
+            <div id="go">
+                <span>→</span>
+            </div>
+
+        </div>
+    </div>
+    <aside>
+    <!--图书分类-->
+    <section class="aside-section">
+        <h2 id="title4">影视剧集</h2>
+        <div id="qinshimingyue_zuoce">
+            <ul>
+                <li>
+                    <a href='#'><strong>秦时明月系列动漫</strong></a>
+                </li>
+                <li>荆轲外传
+                    <div >
+                        <img src="images/秦时明月/q_jingke.jpg" width="100px" height="100px" />
+                        《秦时明月之荆轲外传》是台湾作家温世仁先生遗著《秦时明月》系列的第一部，2003年开始创作，2005年在
+                        台湾出版。此书取用历史人物，但故事为原创。以真实为本、架构一部秦代的武林风云，精彩的故事中交织着爱恨情
+                        仇、刀光剑影，小说情节跌宕，处处机锋。
+
+                    </div>
+                </li>
+                <li>夜尽天明
+                    <div>
+                        <img src="images/秦时明月/g_1.jpg" width="100" height="100"/>
+                        秦时明月之夜尽天明是秦时明月系列的第二部3D武侠动画，于
+                        2008年7月17日播出。少年天明如杂草般顽强生存于时代变革的乱世之
+                        中，经历了亲情、友情、爱情的沧桑变幻、悲喜轮回，最终成为了终结这个
+                        时代，开创新纪元的决定性力量，成就一段浪漫辉煌的传奇。
+                    </div>
+                </li>
+                <li>百步飞剑
+                    <div>
+                        <img src="images/秦时明月/g_2.jpg" width="100" height="100"/>
+                        《秦时明月之百步飞剑》
+                        以秦始皇灭六国为时代背景，讲述了剑圣盖聂携荆轲之子荆天
+                        明为躲避秦王追杀，踏上了风起云涌的荆棘之途。逃亡路上，盖聂、天明结识
+                        了墨家众高手、楚国大将之后项少羽和谜样少女高月，一行人在命运的引领下进
+                        入被誉为世间最后一片净土的墨家机关城。</div>
+                </li>
+                <li>诸子百家
+                    <div>
+                        <img src="images/秦时明月/g_3.jpg" width="100" height="100"/>
+                        秦时明月叁诸子百家是秦时明月系列的第三部3D武侠动画，于2010年6月1
+                        0日首播。剧情：原来刺中盖聂的是逆流沙易容高手黑麒麟。盖聂带伤和卫庄比武赢了
+                        ，但渊虹断了。盖聂用断剑指着卫庄的脖子，但卫庄暗箭伤人，在说话的时候给了
+                        盖聂一剑，盖聂倒下了。</div>
+                </li>
+                <li>万里长城
+                    <div>
+                        <img src="images/秦时明月/g_4.jpg" width="100" height="100"/>
+                        秦时明月肆万里长城是秦时明月系列的第四部3D武侠动画，于2012年9月30日播出。
+                        剧情：自从机关城崩毁，墨家抵抗势力几乎被全部清除。秦帝国又回到了太平盛世的迷梦中。
+                        始皇一边动用无数劳工修造万里长城，一边...</div>
+                </li>
+                <li>君临天下
+                    <div>
+                        <img src="images/秦时明月/g_5.jpg" width="100" height="100"/>
+                        秦时明月之君临天下是秦时明月系列的第五部3D武侠动画，于2014年12月25日播出，
+                        共75集。动画讲述了天明、少羽、石兰三人误打误撞登上了停泊在海边的蜃楼后开始了
+                        奇幻莫测的探险逃亡之旅的故事。</div>
+                </li>
+                <li>沧海横流
+                    <div>
+                        <img src="images/秦时明月/g_6.jpg" width="100" height="100"/>
+                        秦时明月之沧海横流是秦时明月系列的第六部3D武侠动画；剧情：又一场狂风骤雨随着
+                        日出东方悄然逝去，粉碎了反秦联盟的刺杀行动，大秦帝国的统治表面上再次复归于平静
+                        ，就仿佛昨夜什么也不曾发生。</div>
+                </li>
+                <li>亡秦必楚
+                    <div>
+                        <img src="images/秦时明月/g_7.jpg" width="100" height="100"/>
+                    </div>
+                </li>
+                <li>番外篇
+                    <div>
+                        <img src="images/秦时明月/g_8.jpg" width="100" height="100"/>
+                        #空山鸟语#
+                        <img src="images/秦时明月/g_9.jpg" width="100" height="100"/>
+                        #罗生堂下#
+                        <img src="images/秦时明月/g_10.jpg" width="100" height="100"/>
+                        #帝子降兮#
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</aside><article>
+
+        <section id="video">
+            <h2 id="title9">秦时明月</h2>
+            <img src="images/秦时明月/figure%20(26).jpg" width="660" height="290"/>
+            <p><strong>十年秦怀，再铸辉煌。有一把剑，它刺穿了曾经，现指着远方的荧惑之石，一起，就现在，一剑钟秦。</strong></p>
+            <p>
+                那是个花开的季节，偶然的，我认识了（秦时明月），起初，我只是好奇，因为我刚开始看
+                到它时，很惊奇，一个小小的动漫，怎么会有几亿的点击率，这恐怕是有些电影都做不到的点击率。
+                于是，慢慢地，我接触了它，从此，我沉醉了，直到今天，我才有些明白了，这部动漫从内而外，真的包含了很多：
+            </p>
+            <img src="images/秦时明月/figure.jpg" width="660" height="290"/>
+            <p>
+                从一个小孩变成一个侠客的过程里，透露出了称霸一时的大秦帝国的覆灭过程；在少年项羽成为西楚霸王的过程中，参入
+                了他和虞姬（石兰）少年的青涩情愫；从聚散流沙里，隐藏着一个少女对“他”的执着；在城府幽深的阴阳家，有着玄幻的咒
+                印和博大精深的阴阳术，也有高高在上的神秘主宰东皇；在小圣贤庄，保留着郎朗书声，存载着儒家的【四书】、【五经】；
+                东海，留下了徐福东渡日本的足迹，剩下了人们对长生不老的无限美好遐想；在战火连绵的六国，保存着令人心痛的废墟和无
+                家可归的流浪者；天上划过的荧惑之石，仿佛是对秦皇的某种提醒，又像是某个天象，暗指着哪位英雄侠客的命运。
+            </p>
+            <p>
+                一个好的动漫，不需要别人对它过度的称赞，它自身就有独特的光环，它不会因人们的谩骂而停下它前进的脚步。艺术是
+                奇特的，总有人会明白它的价值。秦时明月就是在漫漫长河中宝贵的一件艺术品。我为此感到很幸运，我遇见了它，因此，
+                我的人生才有了一道耀眼的光芒。
+            </p>
+            <img src="images/秦时明月/figure%20(18).jpg" width="660" height="290"/>
+            <p>
+                古代中国的传统文化是中国特有的一件艺术品，秦时明月之所以会有这么火爆的人气，是因为它巧妙的将古代中国的传统文化
+                融入在了其中，所以，它变成了中国动漫的一个“瑰宝”。孔孟庄周、儒墨之学、青龙白虎、朱雀玄武、海上蜃楼、这些，是古
+                代中国传统文化的象征，也是秦时明月的走遍全球的犀利武器。因为秦时明月制作的用心，所以，秦时明月登上了环球日报，
+                被全球的人们所知晓，正是因为它的特有魅力，才会有如此的伟大荣誉，也正是因此，我才会如此的痴迷于这个动漫。
+            </p>
+            <p>
+                至于那些所谓的‘抗击秦时明月’的人，我想，你们可能还不了解秦时明月，因为只有那些真正热爱秦时明月的，从一出版就
+                支持的人，才能明白秦时明月经历了多少挫折，但它们没有放弃，相对于那些支持了十年的人，我自愧不如。人生中有多少十
+                年可以让你任意挥洒，岁月无情，它不会因你一人而停下来等你，可他们，无谓。对此，我很惭愧，也同样很欣慰。
+            </p>
+            <img src="images/秦时明月/figure%20(1).jpeg" width="660" height="290"/>
+
+            <p>
+                真正的爱，是没有任何报酬的追求，就如同秦时明月中的赤练一样，她默默的爱着卫庄，为了他，她从尊贵的韩国公主‘红莲’
+                变成了流沙组织中的赤练。虽然她知道爱上这个男人的后果，可她义无反顾的为他付出，为他受伤，尽管他不知道她做的一切，
+                而她，无怨。因为只有当你真正的爱上某样事物时，你才会明白这种感觉，就像我爱秦时明月一样，那是无谓报酬的痴爱。那
+                些分散在全球各地的秦迷的支持，正是秦时明月制作的动力，他们给了秦时明月精神上和物质上的支持，使秦时的队伍如当时
+                的秦朝帝国一样繁荣，这是只有秦时明月能做到的奇迹，我相信。
+            </p>
+            <p>
+                可能有些人会认为这是徒劳无功，可我就是愿意这样徒劳的永远支持下去，不顾他人怎样嘲讽，依旧支持，在茫茫的人生道路
+                上，刻一道无悔的关于青春的秦时痕迹、留一段只属于秦时明月的美好时光，这是我的愿望，也是天下秦迷的追求。
+            </p>
+            <img src="images/秦时明月/q_2.jpg" width="660" height="290"/>
+            <p>
+                在追求秦时明月的道路上，彻醉又何妨，经岁月洗礼后，回首处，你会发现，最终留下的，是青春的任性，是少年的无知，也是不变的支持。
+            </p>
+            <p>
+                愿，秦时明月，永远活在我心中；愿，秦时文化牢牢的长在我脑海里。
+            </p>
+        </section>
+    </article>
+</div>
+
+
+<!--页脚-->
+<div class="rz_bw_nav002_m" id="footer-wrapper">
+    <!--页脚导航-->
+    <footer class="container">
+        <section>
+            <a href="index.html">首页</a>
+            <a href="tianxingjiuge.html">天行九歌</a>
+            <a href="qinshimingyue.html">秦时明月</a>
+            <a href="end.html">成王败寇</a>
+            <a href="about.html">关于</a>
+
+        </section>
+    </footer>
+</div>
+<!--版权标志-->
+<section id="copyright" class="container">
+    Copyright (C) <a href="index.html">动漫世界</a> 2016-2018, All Rights Reserved | 京ICP证000001号音像制品经营许可证
+    <address>通讯地址：清华大学学研大厦A座 读者服务部&nbsp;&nbsp;电话：（010）62781733&nbsp;&nbsp;网管信箱：
+        netadmin@tup.tsinghua.edu.cn</address>
+</section>
+</body>
+</html>
