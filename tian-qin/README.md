@@ -4,7 +4,8 @@
 
 ## 展示地址
 
-https://wztlink1013.com/tian-qin/
+https://wztlink1013.com/tian-qin/index.html
+
 
 
 
