@@ -27,8 +27,8 @@ jobs:
       env:
         Github_Token: ${{ secrets.TOKEN_GITHUBAPI }}
       run: | 
-        git clone https://github.com/wztlink1013/visualization visualization
-        git clone https://github.com/wztlink1013/wztlink1013.github.io .github_pages
+        git clone https://${Github_Token}@github.com/wztlink1013/visualization visualization
+        git clone https://${Github_Token}@github.com/wztlink1013/wztlink1013.github.io .github_pages
         cd visualization
         rm -r .git
         rm -r .github
