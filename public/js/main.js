@@ -1,4 +1,4 @@
-var weiboName = "@Barret李靖";
+var weiboName = "@尼采般地抒情";
 var disqusName = "";
 var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
 
@@ -813,7 +813,7 @@ var decoration = {
       window.consoled = true;
       // var url = "//" + window.location.host;
       // console.log("\n\n\n\n\n\n\n\n\n\n%c", "background:url('" + url + "/blogimgs/avatar150.png'); background-repeat:no-repeat; font-size:0; line-height:30px; padding-top:150px;padding-left:150px;");
-      console.log("\n欢迎踩点小胡子哥的博客，在这里与你一起分享生活，分享技术。%c\n\n联系方式: http://barretlee.com/about/", "color:red");
+      console.log("\n欢迎来到尼采般地抒情博客，热爱生活，热爱技术。%c\n\n联系方式: https://wztlink1013.com/about/", "color:red");
     }
   },
   // 鼠标移动添加效果
