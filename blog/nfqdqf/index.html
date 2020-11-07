@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>pandas-索引 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="pandas索引">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="pandas-索引 | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/nfqdqf/">
+  <meta property="og:site_name" content="pandas-索引">
+  <meta property="og:description" content="pandas索引">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/oq4xcx/" title="Pandas-分组聚合" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/li8bkt/" title="pandas-基本知识" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">pandas-索引<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/nfqdqf/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 16:26:13</time>
+          <span class="aria-readonly">本文发布时间为2020年02月10日16时26分13秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: 
+<a class="article-tag-link" href="/blog/tags/pandas/">pandas</a>
+</span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/nfqdqf"
+                      data-disqus-identifier="blog/nfqdqf"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/nfqdqf/">https://yun.wztlink1013.com/blog/nfqdqf/</a>，<a href="https://yun.wztlink1013.com/blog/nfqdqf/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="一、基本索引"><a href="#一、基本索引" class="headerlink" title="一、基本索引"></a>一、基本索引</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="Series-索引"><a href="#Series-索引" class="headerlink" title="Series 索引"></a>Series 索引</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj1 = pd.Series(range(<span class="number">5</span>), index = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1.head())</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">a</span>    <span class="number">0</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="string">e</span>    <span class="number">4</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''1. 行索引'''</span></span><br><span class="line">print(<span class="string">'行索引===================================================================='</span>)</span><br><span class="line"><span class="keyword">print</span> (ser_obj1[<span class="string">'b'</span>])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1[<span class="number">0</span>])</span><br><span class="line">print(<span class="string">'切片索引===================================================================='</span>)</span><br><span class="line"><span class="string">'''2. 切片索引'''</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj1[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1[<span class="string">'b'</span>:<span class="string">'d'</span>])</span><br><span class="line">print(<span class="string">'不连续索引索引===================================================================='</span>)</span><br><span class="line"><span class="comment">#注意会不会包含尾巴。。</span></span><br><span class="line"><span class="string">'''3. 不连续索引'''</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj1[[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>]])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1[[<span class="string">'a'</span>, <span class="string">'e'</span>]])</span><br><span class="line">print(<span class="string">'布尔索引===================================================================='</span>)</span><br><span class="line"><span class="string">'''4. 布尔索引'''</span></span><br><span class="line"><span class="comment">#是对里面的值进行判断，不是对索引</span></span><br><span class="line">ser_bool = ser_obj1 &gt; <span class="number">2</span></span><br><span class="line"><span class="keyword">print</span> (ser_bool)</span><br><span class="line"><span class="keyword">print</span> (ser_obj1[ser_bool])<span class="comment">#运用的方式</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj1[ser_obj1 &gt; <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">行索引====================================================================</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="string">切片索引====================================================================</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">不连续索引索引====================================================================</span></span><br><span class="line"><span class="string">a</span>    <span class="number">0</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="string">e</span>    <span class="number">4</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">a</span>    <span class="number">0</span></span><br><span class="line"><span class="string">e</span>    <span class="number">4</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">布尔索引====================================================================</span></span><br><span class="line"><span class="string">a</span>    <span class="literal">False</span></span><br><span class="line"><span class="string">b</span>    <span class="literal">False</span></span><br><span class="line"><span class="string">c</span>    <span class="literal">False</span></span><br><span class="line"><span class="string">d</span>     <span class="literal">True</span></span><br><span class="line"><span class="string">e</span>     <span class="literal">True</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">bool</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="string">e</span>    <span class="number">4</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="string">e</span>    <span class="number">4</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<h3 id="Dataframe-索引"><a href="#Dataframe-索引" class="headerlink" title="Dataframe 索引"></a>Dataframe 索引</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj1 = pd.DataFrame(np.random.randn(<span class="number">5</span>,<span class="number">4</span>), columns = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>])</span><br><span class="line"><span class="keyword">print</span> (df_obj1.head())</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">          a         b         c         d</span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.002543</span> <span class="number">-0.084255</span> <span class="number">-0.583719</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span>  <span class="number">0.288090</span> <span class="number">-0.254462</span> <span class="number">-1.669668</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span> <span class="number">-0.466842</span> <span class="number">-0.481040</span> <span class="number">-1.735558</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.147668</span>  <span class="number">1.205686</span>  <span class="number">0.625582</span> <span class="number">-2.111863</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.177882</span>  <span class="number">0.049581</span> <span class="number">-0.404098</span> <span class="number">-0.497125</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''0. 转换成行索引的话===方式一：transpose或者T'''</span></span><br><span class="line">bb=df_obj1.transpose()</span><br><span class="line">print(df_obj1.T)</span><br><span class="line">print(bb)</span><br><span class="line"><span class="string">'''0. 转换成行索引的话===方式二：重构'''</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">          <span class="number">0</span>         <span class="number">1</span>         <span class="number">2</span>         <span class="number">3</span>         <span class="number">4</span></span><br><span class="line">a <span class="number">-0.720611</span>  <span class="number">0.174715</span> <span class="number">-1.872654</span>  <span class="number">1.147668</span>  <span class="number">1.177882</span></span><br><span class="line">b <span class="number">-0.002543</span>  <span class="number">0.288090</span> <span class="number">-0.466842</span>  <span class="number">1.205686</span>  <span class="number">0.049581</span></span><br><span class="line">c <span class="number">-0.084255</span> <span class="number">-0.254462</span> <span class="number">-0.481040</span>  <span class="number">0.625582</span> <span class="number">-0.404098</span></span><br><span class="line">d <span class="number">-0.583719</span> <span class="number">-1.669668</span> <span class="number">-1.735558</span> <span class="number">-2.111863</span> <span class="number">-0.497125</span></span><br><span class="line">          <span class="number">0</span>         <span class="number">1</span>         <span class="number">2</span>         <span class="number">3</span>         <span class="number">4</span></span><br><span class="line">a <span class="number">-0.720611</span>  <span class="number">0.174715</span> <span class="number">-1.872654</span>  <span class="number">1.147668</span>  <span class="number">1.177882</span></span><br><span class="line">b <span class="number">-0.002543</span>  <span class="number">0.288090</span> <span class="number">-0.466842</span>  <span class="number">1.205686</span>  <span class="number">0.049581</span></span><br><span class="line">c <span class="number">-0.084255</span> <span class="number">-0.254462</span> <span class="number">-0.481040</span>  <span class="number">0.625582</span> <span class="number">-0.404098</span></span><br><span class="line">d <span class="number">-0.583719</span> <span class="number">-1.669668</span> <span class="number">-1.735558</span> <span class="number">-2.111863</span> <span class="number">-0.497125</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">'<span class="number">0.</span> 转换成行索引的话===方式二：重构/重塑===还没有完全明白'</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''1. 列索引=====默认为列索引来操作'''</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">'列索引'</span>)</span><br><span class="line">print(df_obj1.b)<span class="comment">#当成属性来获取值</span></span><br><span class="line">print(<span class="string">'==================='</span>)</span><br><span class="line"><span class="keyword">print</span> (df_obj1[<span class="string">'a'</span>]) <span class="comment"># 返回Series类型</span></span><br><span class="line"><span class="keyword">print</span> (type(df_obj1[<span class="string">'a'</span>]))</span><br><span class="line"><span class="keyword">print</span> (df_obj1[[<span class="string">'a'</span>]]) <span class="comment"># 返回DataFrame类型</span></span><br><span class="line"><span class="keyword">print</span> (type(df_obj1[[<span class="string">'a'</span>]]))</span><br><span class="line"><span class="string">'''2. 不连续索引'''</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">'不连续索引'</span>)</span><br><span class="line"><span class="keyword">print</span> (df_obj1[[<span class="string">'a'</span>,<span class="string">'c'</span>]])</span><br><span class="line"><span class="keyword">print</span> (df_obj1[[<span class="string">'a'</span>,<span class="string">'c'</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">列索引</span></span><br><span class="line"><span class="number">0</span>   <span class="number">-0.002543</span></span><br><span class="line"><span class="number">1</span>    <span class="number">0.288090</span></span><br><span class="line"><span class="number">2</span>   <span class="number">-0.466842</span></span><br><span class="line"><span class="number">3</span>    <span class="number">1.205686</span></span><br><span class="line"><span class="number">4</span>    <span class="number">0.049581</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">b,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br><span class="line"><span class="string">===================</span></span><br><span class="line"><span class="number">0</span>   <span class="number">-0.720611</span></span><br><span class="line"><span class="number">1</span>    <span class="number">0.174715</span></span><br><span class="line"><span class="number">2</span>   <span class="number">-1.872654</span></span><br><span class="line"><span class="number">3</span>    <span class="number">1.147668</span></span><br><span class="line"><span class="number">4</span>    <span class="number">1.177882</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">a,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br><span class="line"><span class="string">&lt;class</span> <span class="string">'pandas.core.series.Series'</span><span class="string">&gt;</span></span><br><span class="line">          <span class="string">a</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.147668</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.177882</span></span><br><span class="line"><span class="string">&lt;class</span> <span class="string">'pandas.core.frame.DataFrame'</span><span class="string">&gt;</span></span><br><span class="line"><span class="string">不连续索引</span></span><br><span class="line">          <span class="string">a</span>         <span class="string">c</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.084255</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span> <span class="number">-0.254462</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span> <span class="number">-0.481040</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.147668</span>  <span class="number">0.625582</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.177882</span> <span class="number">-0.404098</span></span><br><span class="line">          <span class="string">a</span>         <span class="string">c</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.084255</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span> <span class="number">-0.254462</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span> <span class="number">-0.481040</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.147668</span>  <span class="number">0.625582</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.177882</span> <span class="number">-0.404098</span></span><br></pre></td></tr></table></figure>
+<h3 id="三种索引方式"><a href="#三种索引方式" class="headerlink" title="三种索引方式"></a>三种索引方式</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(ser_obj1)</span><br><span class="line">print(<span class="string">'============================'</span>)</span><br><span class="line">print(df_obj1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">a</span>    <span class="number">0</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="string">e</span>    <span class="number">4</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">============================</span></span><br><span class="line">          <span class="string">a</span>         <span class="string">b</span>         <span class="string">c</span>         <span class="string">d</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.002543</span> <span class="number">-0.084255</span> <span class="number">-0.583719</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span>  <span class="number">0.288090</span> <span class="number">-0.254462</span> <span class="number">-1.669668</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span> <span class="number">-0.466842</span> <span class="number">-0.481040</span> <span class="number">-1.735558</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.147668</span>  <span class="number">1.205686</span>  <span class="number">0.625582</span> <span class="number">-2.111863</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.177882</span>  <span class="number">0.049581</span> <span class="number">-0.404098</span> <span class="number">-0.497125</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''1. 标签索引 loc===用的是index和column的值索引【标签索引】'''</span></span><br><span class="line"><span class="comment"># Series</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj1[<span class="string">'b'</span>:<span class="string">'d'</span>])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1.loc[<span class="string">'b'</span>:<span class="string">'d'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># DataFrame</span></span><br><span class="line"><span class="keyword">print</span> (df_obj1[[<span class="string">'a'</span>]])</span><br><span class="line"><span class="keyword">print</span> (df_obj1.loc[<span class="number">0</span>:<span class="number">2</span>,<span class="string">'a'</span>:<span class="string">'c'</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="string">d</span>    <span class="number">3</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line">          <span class="string">a</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.147668</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1.177882</span></span><br><span class="line">          <span class="string">a</span>         <span class="string">b</span>         <span class="string">c</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.002543</span> <span class="number">-0.084255</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span>  <span class="number">0.288090</span> <span class="number">-0.254462</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span> <span class="number">-0.466842</span> <span class="number">-0.481040</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''2. 位置索引 iloc====用的是index和column的默认0，1，2，3···的值索引【位置索引】'''</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj1[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1.iloc[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># DataFrame</span></span><br><span class="line"><span class="keyword">print</span> (df_obj1.iloc[<span class="number">0</span>:<span class="number">2</span>, <span class="number">0</span>:<span class="number">2</span>])</span><br><span class="line"><span class="comment"># 注意和df_obj.loc[0:2, 'a']的区别 = = = 行和列：都不包括尾巴</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line">          <span class="string">a</span>         <span class="string">b</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.002543</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span>  <span class="number">0.288090</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''3. 混合索引 ix===先按标签索引loc尝试操作，然后再按位置索引iloc尝试操作'''</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj1.ix[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line"><span class="keyword">print</span> (ser_obj1.ix[<span class="string">'b'</span>:<span class="string">'c'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># DataFrame</span></span><br><span class="line"><span class="keyword">print</span> (df_obj1.ix[<span class="number">0</span>:<span class="number">2</span>, <span class="number">0</span>:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">b</span>    <span class="number">1</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line">          <span class="string">a</span>         <span class="string">b</span>         <span class="string">c</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.720611</span> <span class="number">-0.002543</span> <span class="number">-0.084255</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.174715</span>  <span class="number">0.288090</span> <span class="number">-0.254462</span></span><br><span class="line"><span class="number">2</span> <span class="number">-1.872654</span> <span class="number">-0.466842</span> <span class="number">-0.481040</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、Pandas-层级索引"><a href="#二、Pandas-层级索引" class="headerlink" title="二、Pandas 层级索引"></a>二、Pandas 层级索引</h2><h3 id="构造层级索引"><a href="#构造层级索引" class="headerlink" title="构造层级索引"></a>构造层级索引</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj = pd.Series(np.random.randn(<span class="number">12</span>),</span><br><span class="line">                    index=[[<span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'b'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'c'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'d'</span>, <span class="string">'d'</span>],</span><br><span class="line">                           [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]])</span><br><span class="line"><span class="comment">#列表里面的列表</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">a</span>  <span class="number">0</span>   <span class="number">-0.373441</span></span><br><span class="line">   <span class="number">1</span>    <span class="number">0.615976</span></span><br><span class="line">   <span class="number">2</span>    <span class="number">0.959092</span></span><br><span class="line"><span class="string">b</span>  <span class="number">0</span>    <span class="number">1.743670</span></span><br><span class="line">   <span class="number">1</span>   <span class="number">-0.791517</span></span><br><span class="line">   <span class="number">2</span>   <span class="number">-0.774013</span></span><br><span class="line"><span class="string">c</span>  <span class="number">0</span>    <span class="number">1.271094</span></span><br><span class="line">   <span class="number">1</span>   <span class="number">-0.723264</span></span><br><span class="line">   <span class="number">2</span>    <span class="number">0.253038</span></span><br><span class="line"><span class="string">d</span>  <span class="number">0</span>   <span class="number">-0.767791</span></span><br><span class="line">   <span class="number">1</span>    <span class="number">0.419253</span></span><br><span class="line">   <span class="number">2</span>   <span class="number">-0.691644</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>MultiIndex 索引对象</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (type(ser_obj.index))</span><br><span class="line"><span class="keyword">print</span> (ser_obj.index)</span><br></pre></td></tr></table></figure>
+<figure class="highlight vbnet"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="comment">'pandas.core.indexes.multi.MultiIndex'&gt;</span></span><br><span class="line">MultiIndex([(<span class="comment">'a', 0),</span></span><br><span class="line">            (<span class="comment">'a', 1),</span></span><br><span class="line">            (<span class="comment">'a', 2),</span></span><br><span class="line">            (<span class="comment">'b', 0),</span></span><br><span class="line">            (<span class="comment">'b', 1),</span></span><br><span class="line">            (<span class="comment">'b', 2),</span></span><br><span class="line">            (<span class="comment">'c', 0),</span></span><br><span class="line">            (<span class="comment">'c', 1),</span></span><br><span class="line">            (<span class="comment">'c', 2),</span></span><br><span class="line">            (<span class="comment">'d', 0),</span></span><br><span class="line">            (<span class="comment">'d', 1),</span></span><br><span class="line">            (<span class="comment">'d', 2)],</span></span><br><span class="line">           )</span><br></pre></td></tr></table></figure>
+<h3 id="选取子集"><a href="#选取子集" class="headerlink" title="选取子集"></a>选取子集</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 外层选取</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj[<span class="string">'c'</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">1.271094</span></span><br><span class="line"><span class="number">1</span>   <span class="number">-0.723264</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0.253038</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 内层选取</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj[:, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">a</span>    <span class="number">0.959092</span></span><br><span class="line"><span class="string">b</span>   <span class="number">-0.774013</span></span><br><span class="line"><span class="string">c</span>    <span class="number">0.253038</span></span><br><span class="line"><span class="string">d</span>   <span class="number">-0.691644</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<h3 id="交换分层顺序"><a href="#交换分层顺序" class="headerlink" title="交换分层顺序"></a>交换分层顺序</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj2 = pd.DataFrame(np.random.randn(<span class="number">6</span>,<span class="number">4</span>), columns = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>],index=[[<span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'b'</span>,<span class="string">'b'</span>],[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>,<span class="number">3</span>]])</span><br><span class="line"><span class="comment">#print (df_obj1.swaplevel())</span></span><br><span class="line"><span class="keyword">print</span> (df_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">            a         b         c         d</span><br><span class="line">a <span class="number">1</span>  <span class="number">0.273776</span> <span class="number">-0.018659</span>  <span class="number">1.512727</span> <span class="number">-0.088091</span></span><br><span class="line">  <span class="number">2</span> <span class="number">-0.410883</span> <span class="number">-1.488943</span>  <span class="number">0.917268</span>  <span class="number">1.179941</span></span><br><span class="line">  <span class="number">3</span> <span class="number">-0.237532</span> <span class="number">-0.823717</span>  <span class="number">0.189495</span>  <span class="number">1.060476</span></span><br><span class="line">b <span class="number">1</span>  <span class="number">0.727872</span>  <span class="number">0.323352</span>  <span class="number">0.443786</span>  <span class="number">0.780510</span></span><br><span class="line">  <span class="number">2</span> <span class="number">-1.407645</span> <span class="number">-0.059689</span>  <span class="number">1.439843</span> <span class="number">-1.700740</span></span><br><span class="line">  <span class="number">3</span> <span class="number">-0.377628</span> <span class="number">-0.137348</span> <span class="number">-0.739980</span>  <span class="number">0.122528</span></span><br></pre></td></tr></table></figure>
+<h3 id="交换并排序分层"><a href="#交换并排序分层" class="headerlink" title="交换并排序分层"></a>交换并排序分层</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (df_obj2.swaplevel().sortvalues(by=<span class="string">'a'</span>))</span><br><span class="line"><span class="comment">#Series没有这个内置函数sortlevel===dataframe有</span></span><br></pre></td></tr></table></figure>
+<h2 id="三、透视表和交叉表"><a href="#三、透视表和交叉表" class="headerlink" title="三、透视表和交叉表"></a>三、透视表和交叉表</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dataset_path = <span class="string">'./data/starcraft.csv'</span></span><br><span class="line">df_data = pd.read_csv(dataset_path, usecols=[<span class="string">'LeagueIndex'</span>, <span class="string">'Age'</span>, <span class="string">'HoursPerWeek'</span>,</span><br><span class="line">                                             <span class="string">'TotalHours'</span>, <span class="string">'APM'</span>])</span><br><span class="line">print(df_data.head())</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">   LeagueIndex   Age  HoursPerWeek  TotalHours       APM</span><br><span class="line"><span class="number">0</span>            <span class="number">5</span>  <span class="number">27.0</span>          <span class="number">10.0</span>      <span class="number">3000.0</span>  <span class="number">143.7180</span></span><br><span class="line"><span class="number">1</span>            <span class="number">5</span>  <span class="number">23.0</span>          <span class="number">10.0</span>      <span class="number">5000.0</span>  <span class="number">129.2322</span></span><br><span class="line"><span class="number">2</span>            <span class="number">4</span>  <span class="number">30.0</span>          <span class="number">10.0</span>       <span class="number">200.0</span>   <span class="number">69.9612</span></span><br><span class="line"><span class="number">3</span>            <span class="number">3</span>  <span class="number">19.0</span>          <span class="number">20.0</span>       <span class="number">400.0</span>  <span class="number">107.6016</span></span><br><span class="line"><span class="number">4</span>            <span class="number">3</span>  <span class="number">32.0</span>          <span class="number">10.0</span>       <span class="number">500.0</span>  <span class="number">122.8908</span></span><br></pre></td></tr></table></figure>
+<h3 id="透视表"><a href="#透视表" class="headerlink" title="透视表"></a>透视表</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.pivot_table(df_data,</span><br><span class="line">               index=[<span class="string">'Age'</span>],</span><br><span class="line">               columns=[<span class="string">'LeagueIndex'</span>],</span><br><span class="line">               aggfunc=np.sum)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>APM</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>…</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Age</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>16.0</td>
+<td>1062.44754</td>
+<td>2919.70434</td>
+<td>4851.9222</td>
+<td>5149.7310</td>
+<td>7787.37780</td>
+<td>9042.1722</td>
+<td>386.7774</td>
+<td>324.0</td>
+<td>720.0</td>
+<td>778.0</td>
+<td>…</td>
+<td>1220.0</td>
+<td>1280.0</td>
+<td>56.0</td>
+<td>4307.0</td>
+<td>13143.0</td>
+<td>29211.0</td>
+<td>23581.0</td>
+<td>49233.0</td>
+<td>51320.0</td>
+<td>3000.0</td>
+</tr>
+<tr>
+<td>17.0</td>
+<td>655.67280</td>
+<td>1661.01540</td>
+<td>4181.8920</td>
+<td>5525.3586</td>
+<td>10052.72100</td>
+<td>8310.0858</td>
+<td>573.8286</td>
+<td>184.0</td>
+<td>378.0</td>
+<td>664.0</td>
+<td>…</td>
+<td>1460.0</td>
+<td>1116.0</td>
+<td>104.0</td>
+<td>2044.0</td>
+<td>7423.0</td>
+<td>16602.0</td>
+<td>24005.0</td>
+<td>53375.0</td>
+<td>45421.0</td>
+<td>12700.0</td>
+</tr>
+<tr>
+<td>18.0</td>
+<td>704.47680</td>
+<td>3300.41040</td>
+<td>4847.2152</td>
+<td>8763.0783</td>
+<td>10988.66100</td>
+<td>9134.7240</td>
+<td>618.5790</td>
+<td>204.0</td>
+<td>548.0</td>
+<td>886.0</td>
+<td>…</td>
+<td>1644.0</td>
+<td>1194.0</td>
+<td>164.0</td>
+<td>3570.0</td>
+<td>11471.0</td>
+<td>21037.0</td>
+<td>46034.0</td>
+<td>1056486.0</td>
+<td>50378.0</td>
+<td>3200.0</td>
+</tr>
+<tr>
+<td>19.0</td>
+<td>734.55600</td>
+<td>2216.81880</td>
+<td>5183.7888</td>
+<td>8030.1960</td>
+<td>9271.09260</td>
+<td>11955.6030</td>
+<td>696.7770</td>
+<td>126.0</td>
+<td>458.0</td>
+<td>950.0</td>
+<td>…</td>
+<td>962.0</td>
+<td>1642.0</td>
+<td>168.0</td>
+<td>2355.0</td>
+<td>8467.0</td>
+<td>31861.0</td>
+<td>39705.0</td>
+<td>44697.0</td>
+<td>70331.0</td>
+<td>4166.0</td>
+</tr>
+<tr>
+<td>20.0</td>
+<td>1624.89660</td>
+<td>2147.23200</td>
+<td>4211.5686</td>
+<td>10596.2070</td>
+<td>10871.65440</td>
+<td>14291.8692</td>
+<td>NaN</td>
+<td>328.0</td>
+<td>288.0</td>
+<td>654.0</td>
+<td>…</td>
+<td>1290.0</td>
+<td>1816.0</td>
+<td>NaN</td>
+<td>7212.0</td>
+<td>6325.0</td>
+<td>20174.0</td>
+<td>55083.0</td>
+<td>64170.0</td>
+<td>105131.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>21.0</td>
+<td>780.67950</td>
+<td>1578.02880</td>
+<td>3949.3062</td>
+<td>8689.8804</td>
+<td>11954.91660</td>
+<td>13165.7649</td>
+<td>867.3474</td>
+<td>162.0</td>
+<td>270.0</td>
+<td>580.0</td>
+<td>…</td>
+<td>1446.0</td>
+<td>1858.0</td>
+<td>62.0</td>
+<td>3377.0</td>
+<td>7673.0</td>
+<td>19095.0</td>
+<td>42296.0</td>
+<td>68739.0</td>
+<td>82061.0</td>
+<td>3180.0</td>
+</tr>
+<tr>
+<td>22.0</td>
+<td>674.59860</td>
+<td>2147.50980</td>
+<td>4379.3424</td>
+<td>7818.7302</td>
+<td>10473.28380</td>
+<td>10165.8672</td>
+<td>493.1586</td>
+<td>146.0</td>
+<td>372.0</td>
+<td>680.0</td>
+<td>…</td>
+<td>1304.0</td>
+<td>1448.0</td>
+<td>112.0</td>
+<td>4225.0</td>
+<td>10861.0</td>
+<td>23030.0</td>
+<td>57996.0</td>
+<td>84330.0</td>
+<td>67069.0</td>
+<td>6950.0</td>
+</tr>
+<tr>
+<td>23.0</td>
+<td>359.65980</td>
+<td>1575.06120</td>
+<td>4602.7416</td>
+<td>7616.9298</td>
+<td>8292.86160</td>
+<td>6131.1936</td>
+<td>1799.6520</td>
+<td>46.0</td>
+<td>320.0</td>
+<td>598.0</td>
+<td>…</td>
+<td>998.0</td>
+<td>726.0</td>
+<td>296.0</td>
+<td>896.0</td>
+<td>12350.0</td>
+<td>23081.0</td>
+<td>40025.0</td>
+<td>56097.0</td>
+<td>43176.0</td>
+<td>14290.0</td>
+</tr>
+<tr>
+<td>24.0</td>
+<td>439.43040</td>
+<td>1717.55340</td>
+<td>2876.8572</td>
+<td>5503.7736</td>
+<td>7292.32740</td>
+<td>7240.4076</td>
+<td>428.6538</td>
+<td>116.0</td>
+<td>344.0</td>
+<td>406.0</td>
+<td>…</td>
+<td>668.0</td>
+<td>1048.0</td>
+<td>36.0</td>
+<td>2070.0</td>
+<td>9543.0</td>
+<td>25421.0</td>
+<td>35384.0</td>
+<td>36147.0</td>
+<td>43114.0</td>
+<td>2250.0</td>
+</tr>
+<tr>
+<td>25.0</td>
+<td>572.61420</td>
+<td>1178.02440</td>
+<td>2201.6388</td>
+<td>4710.9924</td>
+<td>6168.19260</td>
+<td>2200.6362</td>
+<td>361.4550</td>
+<td>124.0</td>
+<td>166.0</td>
+<td>268.0</td>
+<td>…</td>
+<td>682.0</td>
+<td>256.0</td>
+<td>52.0</td>
+<td>2440.0</td>
+<td>5846.0</td>
+<td>11270.0</td>
+<td>26610.0</td>
+<td>40681.0</td>
+<td>14890.0</td>
+<td>3300.0</td>
+</tr>
+<tr>
+<td>26.0</td>
+<td>418.70874</td>
+<td>1165.96680</td>
+<td>1794.1890</td>
+<td>3139.2852</td>
+<td>4016.67060</td>
+<td>3301.8498</td>
+<td>408.2202</td>
+<td>96.0</td>
+<td>148.0</td>
+<td>272.0</td>
+<td>…</td>
+<td>418.0</td>
+<td>354.0</td>
+<td>60.0</td>
+<td>1608.0</td>
+<td>3417.0</td>
+<td>10548.0</td>
+<td>16839.0</td>
+<td>20100.0</td>
+<td>17663.0</td>
+<td>2300.0</td>
+</tr>
+<tr>
+<td>27.0</td>
+<td>359.17320</td>
+<td>1164.15960</td>
+<td>1426.4550</td>
+<td>2850.1320</td>
+<td>3498.30300</td>
+<td>2040.8454</td>
+<td>NaN</td>
+<td>40.0</td>
+<td>152.0</td>
+<td>226.0</td>
+<td>…</td>
+<td>340.0</td>
+<td>164.0</td>
+<td>NaN</td>
+<td>1100.0</td>
+<td>3615.0</td>
+<td>7525.0</td>
+<td>15935.0</td>
+<td>19770.0</td>
+<td>11796.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>28.0</td>
+<td>333.84240</td>
+<td>479.34000</td>
+<td>1152.5958</td>
+<td>2205.8778</td>
+<td>1992.60540</td>
+<td>521.7666</td>
+<td>NaN</td>
+<td>28.0</td>
+<td>90.0</td>
+<td>220.0</td>
+<td>…</td>
+<td>186.0</td>
+<td>44.0</td>
+<td>NaN</td>
+<td>466.0</td>
+<td>1860.0</td>
+<td>7901.0</td>
+<td>15370.0</td>
+<td>10872.0</td>
+<td>2500.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>29.0</td>
+<td>236.74020</td>
+<td>695.88480</td>
+<td>568.2594</td>
+<td>1447.5906</td>
+<td>1398.78540</td>
+<td>715.9404</td>
+<td>NaN</td>
+<td>54.0</td>
+<td>56.0</td>
+<td>80.0</td>
+<td>…</td>
+<td>180.0</td>
+<td>106.0</td>
+<td>NaN</td>
+<td>2490.0</td>
+<td>2000.0</td>
+<td>3816.0</td>
+<td>8220.0</td>
+<td>10292.0</td>
+<td>5950.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>30.0</td>
+<td>125.53740</td>
+<td>441.14160</td>
+<td>733.6416</td>
+<td>743.4468</td>
+<td>578.32020</td>
+<td>123.3774</td>
+<td>NaN</td>
+<td>14.0</td>
+<td>54.0</td>
+<td>76.0</td>
+<td>…</td>
+<td>90.0</td>
+<td>28.0</td>
+<td>NaN</td>
+<td>210.0</td>
+<td>2440.0</td>
+<td>4370.0</td>
+<td>6310.0</td>
+<td>3440.0</td>
+<td>1500.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>31.0</td>
+<td>41.58600</td>
+<td>314.92980</td>
+<td>659.2626</td>
+<td>1166.7606</td>
+<td>315.53460</td>
+<td>200.1708</td>
+<td>NaN</td>
+<td>12.0</td>
+<td>36.0</td>
+<td>68.0</td>
+<td>…</td>
+<td>12.0</td>
+<td>16.0</td>
+<td>NaN</td>
+<td>200.0</td>
+<td>1300.0</td>
+<td>3500.0</td>
+<td>8710.0</td>
+<td>1050.0</td>
+<td>1500.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>32.0</td>
+<td>179.14380</td>
+<td>315.54180</td>
+<td>457.5174</td>
+<td>541.8996</td>
+<td>66.19740</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>40.0</td>
+<td>56.0</td>
+<td>68.0</td>
+<td>…</td>
+<td>10.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1600.0</td>
+<td>860.0</td>
+<td>2300.0</td>
+<td>6040.0</td>
+<td>800.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>33.0</td>
+<td>198.77880</td>
+<td>153.34680</td>
+<td>284.8218</td>
+<td>116.7516</td>
+<td>245.45166</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>32.0</td>
+<td>12.0</td>
+<td>42.0</td>
+<td>…</td>
+<td>60.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1200.0</td>
+<td>220.0</td>
+<td>2065.0</td>
+<td>1130.0</td>
+<td>2050.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>34.0</td>
+<td>49.11360</td>
+<td>276.88260</td>
+<td>268.4100</td>
+<td>340.7124</td>
+<td>174.54540</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>12.0</td>
+<td>56.0</td>
+<td>28.0</td>
+<td>…</td>
+<td>14.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>150.0</td>
+<td>3380.0</td>
+<td>1150.0</td>
+<td>2400.0</td>
+<td>2764.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>35.0</td>
+<td>229.31280</td>
+<td>54.04680</td>
+<td>170.4930</td>
+<td>634.7688</td>
+<td>115.06440</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>54.0</td>
+<td>8.0</td>
+<td>26.0</td>
+<td>…</td>
+<td>12.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1350.0</td>
+<td>500.0</td>
+<td>1950.0</td>
+<td>3800.0</td>
+<td>800.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>36.0</td>
+<td>NaN</td>
+<td>150.13140</td>
+<td>333.6474</td>
+<td>73.6980</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>16.0</td>
+<td>40.0</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>500.0</td>
+<td>1950.0</td>
+<td>400.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>37.0</td>
+<td>22.05960</td>
+<td>49.89600</td>
+<td>44.9682</td>
+<td>NaN</td>
+<td>451.13160</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>12.0</td>
+<td>30.0</td>
+<td>6.0</td>
+<td>…</td>
+<td>32.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>300.0</td>
+<td>125.0</td>
+<td>600.0</td>
+<td>NaN</td>
+<td>1800.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>38.0</td>
+<td>71.59500</td>
+<td>NaN</td>
+<td>334.6878</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>16.0</td>
+<td>NaN</td>
+<td>46.0</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>300.0</td>
+<td>NaN</td>
+<td>2280.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>39.0</td>
+<td>29.87640</td>
+<td>NaN</td>
+<td>53.7690</td>
+<td>86.7246</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>10.0</td>
+<td>NaN</td>
+<td>12.0</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>500.0</td>
+<td>NaN</td>
+<td>450.0</td>
+<td>500.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>40.0</td>
+<td>38.55900</td>
+<td>51.83580</td>
+<td>107.4684</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>12.0</td>
+<td>14.0</td>
+<td>26.0</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>150.0</td>
+<td>500.0</td>
+<td>1080.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>41.0</td>
+<td>NaN</td>
+<td>108.45720</td>
+<td>77.6472</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>12.0</td>
+<td>14.0</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>450.0</td>
+<td>800.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>43.0</td>
+<td>NaN</td>
+<td>86.05860</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>10.0</td>
+<td>NaN</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>730.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>44.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>89.5266</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>…</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>500.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+<p>28 rows × 21 columns</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.pivot_table(df_data,</span><br><span class="line">               index=[<span class="string">'Age'</span>],</span><br><span class="line">               columns=[<span class="string">'LeagueIndex'</span>],</span><br><span class="line">               aggfunc=np.sum,</span><br><span class="line">               fill_value=<span class="number">-100.</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>APM</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>…</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Age</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>16.0</td>
+<td>1062.44754</td>
+<td>2919.70434</td>
+<td>4851.9222</td>
+<td>5149.7310</td>
+<td>7787.37780</td>
+<td>9042.1722</td>
+<td>386.7774</td>
+<td>324</td>
+<td>720</td>
+<td>778</td>
+<td>…</td>
+<td>1220</td>
+<td>1280</td>
+<td>56</td>
+<td>4307</td>
+<td>13143</td>
+<td>29211</td>
+<td>23581</td>
+<td>49233</td>
+<td>51320</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>17.0</td>
+<td>655.67280</td>
+<td>1661.01540</td>
+<td>4181.8920</td>
+<td>5525.3586</td>
+<td>10052.72100</td>
+<td>8310.0858</td>
+<td>573.8286</td>
+<td>184</td>
+<td>378</td>
+<td>664</td>
+<td>…</td>
+<td>1460</td>
+<td>1116</td>
+<td>104</td>
+<td>2044</td>
+<td>7423</td>
+<td>16602</td>
+<td>24005</td>
+<td>53375</td>
+<td>45421</td>
+<td>12700</td>
+</tr>
+<tr>
+<td>18.0</td>
+<td>704.47680</td>
+<td>3300.41040</td>
+<td>4847.2152</td>
+<td>8763.0783</td>
+<td>10988.66100</td>
+<td>9134.7240</td>
+<td>618.5790</td>
+<td>204</td>
+<td>548</td>
+<td>886</td>
+<td>…</td>
+<td>1644</td>
+<td>1194</td>
+<td>164</td>
+<td>3570</td>
+<td>11471</td>
+<td>21037</td>
+<td>46034</td>
+<td>1056486</td>
+<td>50378</td>
+<td>3200</td>
+</tr>
+<tr>
+<td>19.0</td>
+<td>734.55600</td>
+<td>2216.81880</td>
+<td>5183.7888</td>
+<td>8030.1960</td>
+<td>9271.09260</td>
+<td>11955.6030</td>
+<td>696.7770</td>
+<td>126</td>
+<td>458</td>
+<td>950</td>
+<td>…</td>
+<td>962</td>
+<td>1642</td>
+<td>168</td>
+<td>2355</td>
+<td>8467</td>
+<td>31861</td>
+<td>39705</td>
+<td>44697</td>
+<td>70331</td>
+<td>4166</td>
+</tr>
+<tr>
+<td>20.0</td>
+<td>1624.89660</td>
+<td>2147.23200</td>
+<td>4211.5686</td>
+<td>10596.2070</td>
+<td>10871.65440</td>
+<td>14291.8692</td>
+<td>-100.0000</td>
+<td>328</td>
+<td>288</td>
+<td>654</td>
+<td>…</td>
+<td>1290</td>
+<td>1816</td>
+<td>-100</td>
+<td>7212</td>
+<td>6325</td>
+<td>20174</td>
+<td>55083</td>
+<td>64170</td>
+<td>105131</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>21.0</td>
+<td>780.67950</td>
+<td>1578.02880</td>
+<td>3949.3062</td>
+<td>8689.8804</td>
+<td>11954.91660</td>
+<td>13165.7649</td>
+<td>867.3474</td>
+<td>162</td>
+<td>270</td>
+<td>580</td>
+<td>…</td>
+<td>1446</td>
+<td>1858</td>
+<td>62</td>
+<td>3377</td>
+<td>7673</td>
+<td>19095</td>
+<td>42296</td>
+<td>68739</td>
+<td>82061</td>
+<td>3180</td>
+</tr>
+<tr>
+<td>22.0</td>
+<td>674.59860</td>
+<td>2147.50980</td>
+<td>4379.3424</td>
+<td>7818.7302</td>
+<td>10473.28380</td>
+<td>10165.8672</td>
+<td>493.1586</td>
+<td>146</td>
+<td>372</td>
+<td>680</td>
+<td>…</td>
+<td>1304</td>
+<td>1448</td>
+<td>112</td>
+<td>4225</td>
+<td>10861</td>
+<td>23030</td>
+<td>57996</td>
+<td>84330</td>
+<td>67069</td>
+<td>6950</td>
+</tr>
+<tr>
+<td>23.0</td>
+<td>359.65980</td>
+<td>1575.06120</td>
+<td>4602.7416</td>
+<td>7616.9298</td>
+<td>8292.86160</td>
+<td>6131.1936</td>
+<td>1799.6520</td>
+<td>46</td>
+<td>320</td>
+<td>598</td>
+<td>…</td>
+<td>998</td>
+<td>726</td>
+<td>296</td>
+<td>896</td>
+<td>12350</td>
+<td>23081</td>
+<td>40025</td>
+<td>56097</td>
+<td>43176</td>
+<td>14290</td>
+</tr>
+<tr>
+<td>24.0</td>
+<td>439.43040</td>
+<td>1717.55340</td>
+<td>2876.8572</td>
+<td>5503.7736</td>
+<td>7292.32740</td>
+<td>7240.4076</td>
+<td>428.6538</td>
+<td>116</td>
+<td>344</td>
+<td>406</td>
+<td>…</td>
+<td>668</td>
+<td>1048</td>
+<td>36</td>
+<td>2070</td>
+<td>9543</td>
+<td>25421</td>
+<td>35384</td>
+<td>36147</td>
+<td>43114</td>
+<td>2250</td>
+</tr>
+<tr>
+<td>25.0</td>
+<td>572.61420</td>
+<td>1178.02440</td>
+<td>2201.6388</td>
+<td>4710.9924</td>
+<td>6168.19260</td>
+<td>2200.6362</td>
+<td>361.4550</td>
+<td>124</td>
+<td>166</td>
+<td>268</td>
+<td>…</td>
+<td>682</td>
+<td>256</td>
+<td>52</td>
+<td>2440</td>
+<td>5846</td>
+<td>11270</td>
+<td>26610</td>
+<td>40681</td>
+<td>14890</td>
+<td>3300</td>
+</tr>
+<tr>
+<td>26.0</td>
+<td>418.70874</td>
+<td>1165.96680</td>
+<td>1794.1890</td>
+<td>3139.2852</td>
+<td>4016.67060</td>
+<td>3301.8498</td>
+<td>408.2202</td>
+<td>96</td>
+<td>148</td>
+<td>272</td>
+<td>…</td>
+<td>418</td>
+<td>354</td>
+<td>60</td>
+<td>1608</td>
+<td>3417</td>
+<td>10548</td>
+<td>16839</td>
+<td>20100</td>
+<td>17663</td>
+<td>2300</td>
+</tr>
+<tr>
+<td>27.0</td>
+<td>359.17320</td>
+<td>1164.15960</td>
+<td>1426.4550</td>
+<td>2850.1320</td>
+<td>3498.30300</td>
+<td>2040.8454</td>
+<td>-100.0000</td>
+<td>40</td>
+<td>152</td>
+<td>226</td>
+<td>…</td>
+<td>340</td>
+<td>164</td>
+<td>-100</td>
+<td>1100</td>
+<td>3615</td>
+<td>7525</td>
+<td>15935</td>
+<td>19770</td>
+<td>11796</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>28.0</td>
+<td>333.84240</td>
+<td>479.34000</td>
+<td>1152.5958</td>
+<td>2205.8778</td>
+<td>1992.60540</td>
+<td>521.7666</td>
+<td>-100.0000</td>
+<td>28</td>
+<td>90</td>
+<td>220</td>
+<td>…</td>
+<td>186</td>
+<td>44</td>
+<td>-100</td>
+<td>466</td>
+<td>1860</td>
+<td>7901</td>
+<td>15370</td>
+<td>10872</td>
+<td>2500</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>29.0</td>
+<td>236.74020</td>
+<td>695.88480</td>
+<td>568.2594</td>
+<td>1447.5906</td>
+<td>1398.78540</td>
+<td>715.9404</td>
+<td>-100.0000</td>
+<td>54</td>
+<td>56</td>
+<td>80</td>
+<td>…</td>
+<td>180</td>
+<td>106</td>
+<td>-100</td>
+<td>2490</td>
+<td>2000</td>
+<td>3816</td>
+<td>8220</td>
+<td>10292</td>
+<td>5950</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>30.0</td>
+<td>125.53740</td>
+<td>441.14160</td>
+<td>733.6416</td>
+<td>743.4468</td>
+<td>578.32020</td>
+<td>123.3774</td>
+<td>-100.0000</td>
+<td>14</td>
+<td>54</td>
+<td>76</td>
+<td>…</td>
+<td>90</td>
+<td>28</td>
+<td>-100</td>
+<td>210</td>
+<td>2440</td>
+<td>4370</td>
+<td>6310</td>
+<td>3440</td>
+<td>1500</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>31.0</td>
+<td>41.58600</td>
+<td>314.92980</td>
+<td>659.2626</td>
+<td>1166.7606</td>
+<td>315.53460</td>
+<td>200.1708</td>
+<td>-100.0000</td>
+<td>12</td>
+<td>36</td>
+<td>68</td>
+<td>…</td>
+<td>12</td>
+<td>16</td>
+<td>-100</td>
+<td>200</td>
+<td>1300</td>
+<td>3500</td>
+<td>8710</td>
+<td>1050</td>
+<td>1500</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>32.0</td>
+<td>179.14380</td>
+<td>315.54180</td>
+<td>457.5174</td>
+<td>541.8996</td>
+<td>66.19740</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>40</td>
+<td>56</td>
+<td>68</td>
+<td>…</td>
+<td>10</td>
+<td>-100</td>
+<td>-100</td>
+<td>1600</td>
+<td>860</td>
+<td>2300</td>
+<td>6040</td>
+<td>800</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>33.0</td>
+<td>198.77880</td>
+<td>153.34680</td>
+<td>284.8218</td>
+<td>116.7516</td>
+<td>245.45166</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>32</td>
+<td>12</td>
+<td>42</td>
+<td>…</td>
+<td>60</td>
+<td>-100</td>
+<td>-100</td>
+<td>1200</td>
+<td>220</td>
+<td>2065</td>
+<td>1130</td>
+<td>2050</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>34.0</td>
+<td>49.11360</td>
+<td>276.88260</td>
+<td>268.4100</td>
+<td>340.7124</td>
+<td>174.54540</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>12</td>
+<td>56</td>
+<td>28</td>
+<td>…</td>
+<td>14</td>
+<td>-100</td>
+<td>-100</td>
+<td>150</td>
+<td>3380</td>
+<td>1150</td>
+<td>2400</td>
+<td>2764</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>35.0</td>
+<td>229.31280</td>
+<td>54.04680</td>
+<td>170.4930</td>
+<td>634.7688</td>
+<td>115.06440</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>54</td>
+<td>8</td>
+<td>26</td>
+<td>…</td>
+<td>12</td>
+<td>-100</td>
+<td>-100</td>
+<td>1350</td>
+<td>500</td>
+<td>1950</td>
+<td>3800</td>
+<td>800</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>36.0</td>
+<td>-100.00000</td>
+<td>150.13140</td>
+<td>333.6474</td>
+<td>73.6980</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>-100</td>
+<td>16</td>
+<td>40</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>500</td>
+<td>1950</td>
+<td>400</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>37.0</td>
+<td>22.05960</td>
+<td>49.89600</td>
+<td>44.9682</td>
+<td>-100.0000</td>
+<td>451.13160</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>12</td>
+<td>30</td>
+<td>6</td>
+<td>…</td>
+<td>32</td>
+<td>-100</td>
+<td>-100</td>
+<td>300</td>
+<td>125</td>
+<td>600</td>
+<td>-100</td>
+<td>1800</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>38.0</td>
+<td>71.59500</td>
+<td>-100.00000</td>
+<td>334.6878</td>
+<td>-100.0000</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>16</td>
+<td>-100</td>
+<td>46</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>300</td>
+<td>-100</td>
+<td>2280</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>39.0</td>
+<td>29.87640</td>
+<td>-100.00000</td>
+<td>53.7690</td>
+<td>86.7246</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>10</td>
+<td>-100</td>
+<td>12</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>500</td>
+<td>-100</td>
+<td>450</td>
+<td>500</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>40.0</td>
+<td>38.55900</td>
+<td>51.83580</td>
+<td>107.4684</td>
+<td>-100.0000</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>12</td>
+<td>14</td>
+<td>26</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>150</td>
+<td>500</td>
+<td>1080</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>41.0</td>
+<td>-100.00000</td>
+<td>108.45720</td>
+<td>77.6472</td>
+<td>-100.0000</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>-100</td>
+<td>12</td>
+<td>14</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>450</td>
+<td>800</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>43.0</td>
+<td>-100.00000</td>
+<td>86.05860</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>-100</td>
+<td>10</td>
+<td>-100</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>730</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+<tr>
+<td>44.0</td>
+<td>-100.00000</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>89.5266</td>
+<td>-100.00000</td>
+<td>-100.0000</td>
+<td>-100.0000</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>…</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+<td>500</td>
+<td>-100</td>
+<td>-100</td>
+<td>-100</td>
+</tr>
+</tbody>
+</table>
+<p>28 rows × 21 columns</p>
+<h3 id="交叉表"><a href="#交叉表" class="headerlink" title="交叉表"></a>交叉表</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.crosstab(df_data[<span class="string">'LeagueIndex'</span>],</span><br><span class="line">            df_data[<span class="string">'Age'</span>])</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Age</th>
+<th>16.0</th>
+<th>17.0</th>
+<th>18.0</th>
+<th>19.0</th>
+<th>20.0</th>
+<th>21.0</th>
+<th>22.0</th>
+<th>23.0</th>
+<th>24.0</th>
+<th>25.0</th>
+<th>…</th>
+<th>34.0</th>
+<th>35.0</th>
+<th>36.0</th>
+<th>37.0</th>
+<th>38.0</th>
+<th>39.0</th>
+<th>40.0</th>
+<th>41.0</th>
+<th>43.0</th>
+<th>44.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>18</td>
+<td>9</td>
+<td>13</td>
+<td>12</td>
+<td>22</td>
+<td>12</td>
+<td>12</td>
+<td>6</td>
+<td>9</td>
+<td>11</td>
+<td>…</td>
+<td>1</td>
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>38</td>
+<td>22</td>
+<td>38</td>
+<td>32</td>
+<td>25</td>
+<td>23</td>
+<td>28</td>
+<td>24</td>
+<td>24</td>
+<td>18</td>
+<td>…</td>
+<td>5</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>48</td>
+<td>43</td>
+<td>56</td>
+<td>53</td>
+<td>47</td>
+<td>44</td>
+<td>47</td>
+<td>47</td>
+<td>32</td>
+<td>26</td>
+<td>…</td>
+<td>3</td>
+<td>3</td>
+<td>5</td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>45</td>
+<td>49</td>
+<td>78</td>
+<td>71</td>
+<td>97</td>
+<td>81</td>
+<td>75</td>
+<td>72</td>
+<td>52</td>
+<td>45</td>
+<td>…</td>
+<td>4</td>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>55</td>
+<td>71</td>
+<td>81</td>
+<td>68</td>
+<td>80</td>
+<td>96</td>
+<td>81</td>
+<td>59</td>
+<td>58</td>
+<td>51</td>
+<td>…</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>50</td>
+<td>51</td>
+<td>56</td>
+<td>73</td>
+<td>86</td>
+<td>83</td>
+<td>68</td>
+<td>42</td>
+<td>48</td>
+<td>15</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>0</td>
+<td>5</td>
+<td>3</td>
+<td>9</td>
+<td>2</td>
+<td>2</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>7 rows × 28 columns</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.crosstab(df_data[<span class="string">'LeagueIndex'</span>],</span><br><span class="line">            [df_data[<span class="string">'Age'</span>], df_data[<span class="string">'HoursPerWeek'</span>]])</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Age</th>
+<th>16.0</th>
+<th>…</th>
+<th>39.0</th>
+<th>40.0</th>
+<th>41.0</th>
+<th>43.0</th>
+<th>44.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HoursPerWeek</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>4.0</td>
+<td>6.0</td>
+<td>8.0</td>
+<td>10.0</td>
+<td>12.0</td>
+<td>14.0</td>
+<td>16.0</td>
+<td>20.0</td>
+<td>…</td>
+<td>12.0</td>
+<td>10.0</td>
+<td>12.0</td>
+<td>14.0</td>
+<td>16.0</td>
+<td>4.0</td>
+<td>8.0</td>
+<td>14.0</td>
+<td>10.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>9</td>
+<td>4</td>
+<td>4</td>
+<td>3</td>
+<td>3</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>6</td>
+<td>7</td>
+<td>6</td>
+<td>6</td>
+<td>7</td>
+<td>2</td>
+<td>1</td>
+<td>…</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+<td>5</td>
+<td>1</td>
+<td>6</td>
+<td>4</td>
+<td>3</td>
+<td>6</td>
+<td>3</td>
+<td>1</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>8</td>
+<td>3</td>
+<td>6</td>
+<td>3</td>
+<td>6</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+<td>7</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>7 rows × 325 columns</p>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-10 16:26:13</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/pandas/">pandas</a>
+</li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/nfqdqf.md" download target="_blank">pandas-索引.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:43</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-02-10-blog/nfqdqf.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/oq4xcx/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>Pandas-分组聚合</b>
+      
+    </a>
+  
+  
+    <a href="/blog/li8bkt/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>pandas-基本知识</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/oq4xcx/" class="prev" title="Pandas-分组聚合">
+    <i class="icon">&#xe600;</i>
+    
+    <b>Pandas-分组聚合</b>
+    
+  </a>
+  
+  
+  <a href="/blog/li8bkt/" class="next" title="pandas-基本知识">
+    <i class="icon">&#x261e;</i>
+    <b>pandas-基本知识</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/nfqdqf"
+	   data-disqus-identifier="blog/nfqdqf" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/nfqdqf"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/nfqdqf",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、查看可视化设置风格matplotlib 预处理和折线图matplotlib 条形图matplot...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/oq4xcx/">Pandas-分组聚合</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/li8bkt/">pandas-基本知识</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、Pandas 数据结构import pandas as pdSeries通过 list 构建 S...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bokas004up8ujnxed4a0d" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>

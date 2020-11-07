@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>pandas-基本知识 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="Pandas数据结构、一些常用函数使用总结">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="pandas-基本知识 | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/li8bkt/">
+  <meta property="og:site_name" content="pandas-基本知识">
+  <meta property="og:description" content="Pandas数据结构、一些常用函数使用总结">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/nfqdqf/" title="pandas-索引" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/mk2z96/" title="numpy-使用总结" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">pandas-基本知识<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/li8bkt/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 16:18:03</time>
+          <span class="aria-readonly">本文发布时间为2020年02月10日16时18分03秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: </span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/li8bkt"
+                      data-disqus-identifier="blog/li8bkt"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/li8bkt/">https://yun.wztlink1013.com/blog/li8bkt/</a>，<a href="https://yun.wztlink1013.com/blog/li8bkt/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="一、Pandas-数据结构"><a href="#一、Pandas-数据结构" class="headerlink" title="一、Pandas 数据结构"></a>一、Pandas 数据结构</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+<h3 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h3><blockquote>
+<ol>
+<li>通过 list 构建 Series</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj = pd.Series(range(<span class="number">10</span>, <span class="number">20</span>,<span class="number">2</span>))</span><br><span class="line"><span class="keyword">print</span> (type(ser_obj))</span><br><span class="line">print(ser_obj)</span><br></pre></td></tr></table></figure>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="symbol">'pandas</span>.core.series.<span class="type">Series'</span>&gt;</span><br><span class="line"><span class="number">0</span>    <span class="number">10</span></span><br><span class="line"><span class="number">1</span>    <span class="number">12</span></span><br><span class="line"><span class="number">2</span>    <span class="number">14</span></span><br><span class="line"><span class="number">3</span>    <span class="number">16</span></span><br><span class="line"><span class="number">4</span>    <span class="number">18</span></span><br><span class="line">dtype: <span class="built_in">int64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取数据</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj.values)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取索引</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj.index)</span><br><span class="line"><span class="comment">#范围索引数据类型</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预览数据</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj.head(<span class="number">3</span>))</span><br><span class="line"><span class="comment">#默认输出五行</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span><span class="string">]</span></span><br><span class="line"><span class="string">RangeIndex(start=0,</span> <span class="string">stop=5,</span> <span class="string">step=1)</span></span><br><span class="line"><span class="number">0</span>    <span class="number">10</span></span><br><span class="line"><span class="number">1</span>    <span class="number">12</span></span><br><span class="line"><span class="number">2</span>    <span class="number">14</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol start="2">
+<li>通过 dict 构建 Series</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">year_data = &#123;<span class="number">2001</span>: <span class="number">17.8</span>, <span class="number">2002</span>: <span class="number">20.1</span>, <span class="number">2003</span>: <span class="number">16.5</span>,<span class="number">2004</span>:<span class="number">324</span>,<span class="number">2423</span>:<span class="number">243</span>&#125;</span><br><span class="line">ser_obj2 = pd.Series(year_data)</span><br><span class="line"><span class="keyword">print</span> (ser_obj2.head(<span class="number">2</span>))</span><br><span class="line"><span class="keyword">print</span> (ser_obj2.index)</span><br><span class="line">print(ser_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">2001</span>    <span class="number">17.8</span></span><br><span class="line"><span class="number">2002</span>    <span class="number">20.1</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br><span class="line"><span class="string">Int64Index([2001,</span> <span class="number">2002</span><span class="string">,</span> <span class="number">2003</span><span class="string">,</span> <span class="number">2004</span><span class="string">,</span> <span class="number">2423</span><span class="string">],</span> <span class="string">dtype='int64')</span></span><br><span class="line"><span class="number">2001</span>     <span class="number">17.8</span></span><br><span class="line"><span class="number">2002</span>     <span class="number">20.1</span></span><br><span class="line"><span class="number">2003</span>     <span class="number">16.5</span></span><br><span class="line"><span class="number">2004</span>    <span class="number">324.0</span></span><br><span class="line"><span class="number">2423</span>    <span class="number">243.0</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># name属性【【【【【出问题了！！！】】】】】</span></span><br><span class="line">ser_obj2.name = <span class="string">'钱'</span></span><br><span class="line">ser_obj2.index.name = <span class="string">'year'</span></span><br><span class="line"><span class="keyword">print</span> (ser_obj2.head())</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">year</span></span><br><span class="line"><span class="number">2001</span>     <span class="number">17.8</span></span><br><span class="line"><span class="number">2002</span>     <span class="number">20.1</span></span><br><span class="line"><span class="number">2003</span>     <span class="number">16.5</span></span><br><span class="line"><span class="number">2004</span>    <span class="number">324.0</span></span><br><span class="line"><span class="number">2423</span>    <span class="number">243.0</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">钱,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><blockquote>
+<ol>
+<li>通过 ndarray 构建 DataFrame</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array = np.random.rand(<span class="number">5</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">print</span> (array)</span><br><span class="line"></span><br><span class="line">df_obj = pd.DataFrame(array,columns=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>])</span><br><span class="line"><span class="keyword">print</span> (df_obj.head())</span><br><span class="line">print(df_obj.sort_values(by=<span class="string">'a'</span>, ascending=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.23496522</span> <span class="number">0.92258429</span> <span class="number">0.36447462</span> <span class="number">0.52634697</span>]</span><br><span class="line"> [<span class="number">0.73743514</span> <span class="number">0.88175941</span> <span class="number">0.48944212</span> <span class="number">0.4173522</span> ]</span><br><span class="line"> [<span class="number">0.21214568</span> <span class="number">0.57148666</span> <span class="number">0.59496072</span> <span class="number">0.49490723</span>]</span><br><span class="line"> [<span class="number">0.7458542</span>  <span class="number">0.74743907</span> <span class="number">0.70475157</span> <span class="number">0.28130394</span>]</span><br><span class="line"> [<span class="number">0.43805937</span> <span class="number">0.90300134</span> <span class="number">0.00730653</span> <span class="number">0.68203725</span>]]</span><br><span class="line">          a         b         c         d</span><br><span class="line"><span class="number">0</span>  <span class="number">0.234965</span>  <span class="number">0.922584</span>  <span class="number">0.364475</span>  <span class="number">0.526347</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.737435</span>  <span class="number">0.881759</span>  <span class="number">0.489442</span>  <span class="number">0.417352</span></span><br><span class="line"><span class="number">2</span>  <span class="number">0.212146</span>  <span class="number">0.571487</span>  <span class="number">0.594961</span>  <span class="number">0.494907</span></span><br><span class="line"><span class="number">3</span>  <span class="number">0.745854</span>  <span class="number">0.747439</span>  <span class="number">0.704752</span>  <span class="number">0.281304</span></span><br><span class="line"><span class="number">4</span>  <span class="number">0.438059</span>  <span class="number">0.903001</span>  <span class="number">0.007307</span>  <span class="number">0.682037</span></span><br><span class="line">          a         b         c         d</span><br><span class="line"><span class="number">3</span>  <span class="number">0.745854</span>  <span class="number">0.747439</span>  <span class="number">0.704752</span>  <span class="number">0.281304</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.737435</span>  <span class="number">0.881759</span>  <span class="number">0.489442</span>  <span class="number">0.417352</span></span><br><span class="line"><span class="number">4</span>  <span class="number">0.438059</span>  <span class="number">0.903001</span>  <span class="number">0.007307</span>  <span class="number">0.682037</span></span><br><span class="line"><span class="number">0</span>  <span class="number">0.234965</span>  <span class="number">0.922584</span>  <span class="number">0.364475</span>  <span class="number">0.526347</span></span><br><span class="line"><span class="number">2</span>  <span class="number">0.212146</span>  <span class="number">0.571487</span>  <span class="number">0.594961</span>  <span class="number">0.494907</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol start="2">
+<li>通过 dict 构建 DataFrame</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#一个键值对就相当于一列！！但是具体到字典里面的值所用到的一些函数还是不能很清楚</span></span><br><span class="line">dict_data = &#123;<span class="string">'A'</span>: <span class="number">1.</span>,</span><br><span class="line">             <span class="string">'B'</span>: pd.Timestamp(<span class="string">'20161217'</span>),</span><br><span class="line">             <span class="string">'C'</span>: pd.Series(<span class="number">1</span>, index=list(range(<span class="number">4</span>)),dtype=<span class="string">'float32'</span>),</span><br><span class="line">             <span class="string">'D'</span>: np.array([<span class="number">3</span>] * <span class="number">4</span>,dtype=<span class="string">'int32'</span>),</span><br><span class="line">             <span class="string">'E'</span> : pd.Categorical([<span class="string">"Python"</span>,<span class="string">"Java"</span>,<span class="string">"C++"</span>,<span class="string">"C#"</span>]),</span><br><span class="line">             <span class="string">'F'</span> : <span class="string">'ChinaHadoop'</span> &#125;</span><br><span class="line">df_obj2 = pd.DataFrame(dict_data)</span><br><span class="line"><span class="keyword">print</span> (df_obj2.head())</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">     A          B    C  D       E            F</span><br><span class="line"><span class="number">0</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>  Python  ChinaHadoop</span><br><span class="line"><span class="number">1</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>    Java  ChinaHadoop</span><br><span class="line"><span class="number">2</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>     C++  ChinaHadoop</span><br><span class="line"><span class="number">3</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>      C#  ChinaHadoop</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加列</span></span><br><span class="line">df_obj2[<span class="string">'G'</span>] = df_obj2[<span class="string">'D'</span>] + <span class="number">4</span></span><br><span class="line"><span class="keyword">print</span> (df_obj2.head())</span><br><span class="line">xxx = pd.DataFrame(df_obj2,columns=[<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>,<span class="string">'D'</span>,<span class="string">'E'</span>,<span class="string">'F'</span>,<span class="string">'G'</span>,<span class="string">'H'</span>],index=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">print(xxx)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">     A          B    C  D       E            F  G</span><br><span class="line"><span class="number">0</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>  Python  ChinaHadoop  <span class="number">7</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>    Java  ChinaHadoop  <span class="number">7</span></span><br><span class="line"><span class="number">2</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>     C++  ChinaHadoop  <span class="number">7</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>      C#  ChinaHadoop  <span class="number">7</span></span><br><span class="line">     A          B    C    D       E            F    G   H</span><br><span class="line"><span class="number">0</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3.0</span>  Python  ChinaHadoop  <span class="number">7.0</span> NaN</span><br><span class="line"><span class="number">1</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3.0</span>    Java  ChinaHadoop  <span class="number">7.0</span> NaN</span><br><span class="line"><span class="number">2</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3.0</span>     C++  ChinaHadoop  <span class="number">7.0</span> NaN</span><br><span class="line"><span class="number">3</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3.0</span>      C#  ChinaHadoop  <span class="number">7.0</span> NaN</span><br><span class="line"><span class="number">4</span>  NaN        NaT  NaN  NaN     NaN          NaN  NaN NaN</span><br></pre></td></tr></table></figure>
+<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (type(ser_obj.index))</span><br><span class="line"><span class="keyword">print</span> (type(df_obj2.index))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (df_obj2.index)</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">&lt;class <span class="string">'pandas.core.indexes.range.RangeIndex'</span>&gt;</span><br><span class="line">&lt;class <span class="string">'pandas.core.indexes.numeric.Int64Index'</span>&gt;</span><br><span class="line"><span class="function"><span class="title">Int64Index</span><span class="params">([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=<span class="string">'int64'</span>)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 索引对象不可变</span></span><br><span class="line">df_obj2.index[<span class="number">0</span>] = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">TypeError                                 Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>)</span><br><span class="line"></span><br><span class="line">&lt;ipython-<span class="keyword">input</span><span class="number">-10</span><span class="number">-6367894e76</span>d8&gt; <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;</span><br><span class="line">      <span class="number">1</span> <span class="comment"># 索引对象不可变</span></span><br><span class="line"><span class="comment">----&gt; 2 df_obj2.index[0] = 2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~\Anaconda3\lib\site-packages\pandas\core\<span class="keyword">indexes</span>\base.py <span class="keyword">in</span> __setitem__(<span class="keyword">self</span>, <span class="keyword">key</span>, <span class="keyword">value</span>)</span><br><span class="line">   <span class="number">4258</span></span><br><span class="line">   <span class="number">4259</span>     <span class="keyword">def</span> __setitem__(<span class="keyword">self</span>, <span class="keyword">key</span>, <span class="keyword">value</span>):</span><br><span class="line">-&gt; <span class="number">4260</span>         <span class="keyword">raise</span> TypeError(<span class="string">"Index does not support mutable operations"</span>)</span><br><span class="line">   <span class="number">4261</span></span><br><span class="line">   <span class="number">4262</span>     <span class="keyword">def</span> __getitem__(<span class="keyword">self</span>, <span class="keyword">key</span>):</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">TypeError: <span class="keyword">Index</span> does <span class="keyword">not</span> support mutable <span class="keyword">operations</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、Pandas-数据操作"><a href="#二、Pandas-数据操作" class="headerlink" title="二、Pandas 数据操作"></a>二、Pandas 数据操作</h2><h3 id="常用函数总结"><a href="#常用函数总结" class="headerlink" title="常用函数总结"></a>常用函数总结</h3><blockquote>
+<p>·shape   获取数据的尺寸</p>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">获得<span class="selector-tag">df</span>的<span class="selector-tag">size</span>：<span class="selector-tag">df</span><span class="selector-class">.shape</span></span><br><span class="line">获得<span class="selector-tag">df</span>中的行数：<span class="selector-tag">df</span><span class="selector-class">.shape</span><span class="selector-attr">[0]</span></span><br><span class="line">获得<span class="selector-tag">df</span>中的列数： <span class="selector-tag">df</span><span class="selector-class">.shape</span><span class="selector-attr">[1]</span></span><br><span class="line">获得行索引信息：<span class="selector-tag">df</span><span class="selector-class">.index</span></span><br><span class="line">获得列索引信息：<span class="selector-tag">df</span><span class="selector-class">.colomns</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>·values   获得 df 中的值===中文没用</p>
+</blockquote>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">df.values</span> === 以列表的形式展现出来，去除了索引===dataframe类型数据转换成array类型</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>·setindex 和 resetindex</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">reset_index可以还原索引，从新变为默认的整型索引</span><br><span class="line">    DataFrame.reset_index(<span class="attribute">level</span>=None, <span class="attribute">drop</span>=<span class="literal">False</span>, <span class="attribute">inplace</span>=<span class="literal">False</span>, <span class="attribute">col_level</span>=0, <span class="attribute">col_fill</span>=”)</span><br><span class="line">    level控制了具体要还原的那个等级的索引</span><br><span class="line">    drop为<span class="literal">False</span>则索引列会被还原为普通列，否则会丢失</span><br><span class="line">set_index方法，设置单索引和复合索引抑或是添加索引。</span><br><span class="line">    DataFrame.set_index(keys, <span class="attribute">drop</span>=<span class="literal">True</span>, <span class="attribute">append</span>=<span class="literal">False</span>, <span class="attribute">inplace</span>=<span class="literal">False</span>, <span class="attribute">verify_integrity</span>=<span class="literal">False</span>)</span><br><span class="line">    append添加新索引，drop为<span class="literal">False</span>，inplace为<span class="literal">True</span>时，索引将会还原为列</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>·iterrows（）遍历 DataFrame 中的数据</p>
+</blockquote>
+<figure class="highlight excel"><table><tr><td class="code"><pre><span class="line">for <span class="built_in">index</span>,<span class="built_in">row</span> in df.iterrows()<span class="symbol">:</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>·split(sep,n,expand=false)</p>
+</blockquote>
+<figure class="highlight mathematica"><table><tr><td class="code"><pre><span class="line">sep表示用于分割的字符；n表格分割成多少列；expand表示是否展开为数据款，<span class="keyword">True</span>输出<span class="keyword">Series</span>，<span class="keyword">False</span>输出Dataframe。</span><br><span class="line">字段拆分：是指按照固定的字符，拆分已有字符串</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="匿名函数应用"><a href="#匿名函数应用" class="headerlink" title="匿名函数应用"></a>匿名函数应用</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Numpy ufunc 函数</span></span><br><span class="line">df = pd.DataFrame(np.random.randn(<span class="number">5</span>,<span class="number">4</span>) - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">print</span> (df)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (np.abs(df))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">          <span class="number">0</span>         <span class="number">1</span>         <span class="number">2</span>         <span class="number">3</span></span><br><span class="line"><span class="number">0</span>  <span class="number">0.624016</span> <span class="number">-2.695175</span> <span class="number">-1.211426</span> <span class="number">-0.386151</span></span><br><span class="line"><span class="number">1</span> <span class="number">-1.335385</span> <span class="number">-1.315232</span> <span class="number">-0.305902</span> <span class="number">-0.361348</span></span><br><span class="line"><span class="number">2</span> <span class="number">-0.349443</span> <span class="number">-2.032110</span>  <span class="number">0.075995</span> <span class="number">-0.966725</span></span><br><span class="line"><span class="number">3</span> <span class="number">-1.631192</span> <span class="number">-1.051390</span> <span class="number">-1.767981</span> <span class="number">-0.366663</span></span><br><span class="line"><span class="number">4</span> <span class="number">-0.786178</span> <span class="number">-0.335846</span> <span class="number">-0.797992</span> <span class="number">-0.931216</span></span><br><span class="line">          <span class="number">0</span>         <span class="number">1</span>         <span class="number">2</span>         <span class="number">3</span></span><br><span class="line"><span class="number">0</span>  <span class="number">0.624016</span>  <span class="number">2.695175</span>  <span class="number">1.211426</span>  <span class="number">0.386151</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1.335385</span>  <span class="number">1.315232</span>  <span class="number">0.305902</span>  <span class="number">0.361348</span></span><br><span class="line"><span class="number">2</span>  <span class="number">0.349443</span>  <span class="number">2.032110</span>  <span class="number">0.075995</span>  <span class="number">0.966725</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1.631192</span>  <span class="number">1.051390</span>  <span class="number">1.767981</span>  <span class="number">0.366663</span></span><br><span class="line"><span class="number">4</span>  <span class="number">0.786178</span>  <span class="number">0.335846</span>  <span class="number">0.797992</span>  <span class="number">0.931216</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用apply应用行或列数据</span></span><br><span class="line">f = <span class="keyword">lambda</span> x : x.max()</span><br><span class="line"><span class="keyword">print</span> (df.apply(f))</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">0.624016</span></span><br><span class="line"><span class="number">1</span>   <span class="number">-0.335846</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0.075995</span></span><br><span class="line"><span class="number">3</span>   <span class="number">-0.361348</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 指定轴方向</span></span><br><span class="line"><span class="keyword">print</span> (df.apply(f, axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">0.624016</span></span><br><span class="line"><span class="number">1</span>   <span class="number">-0.305902</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0.075995</span></span><br><span class="line"><span class="number">3</span>   <span class="number">-0.366663</span></span><br><span class="line"><span class="number">4</span>   <span class="number">-0.335846</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用applymap应用到每个数据</span></span><br><span class="line">f2 = <span class="keyword">lambda</span> x : <span class="string">'%.2f'</span> % x</span><br><span class="line"><span class="keyword">print</span> (df.applymap(f2))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">       <span class="number">0</span>      <span class="number">1</span>      <span class="number">2</span>      <span class="number">3</span></span><br><span class="line"><span class="number">0</span>   <span class="number">0.62</span>  <span class="number">-2.70</span>  <span class="number">-1.21</span>  <span class="number">-0.39</span></span><br><span class="line"><span class="number">1</span>  <span class="number">-1.34</span>  <span class="number">-1.32</span>  <span class="number">-0.31</span>  <span class="number">-0.36</span></span><br><span class="line"><span class="number">2</span>  <span class="number">-0.35</span>  <span class="number">-2.03</span>   <span class="number">0.08</span>  <span class="number">-0.97</span></span><br><span class="line"><span class="number">3</span>  <span class="number">-1.63</span>  <span class="number">-1.05</span>  <span class="number">-1.77</span>  <span class="number">-0.37</span></span><br><span class="line"><span class="number">4</span>  <span class="number">-0.79</span>  <span class="number">-0.34</span>  <span class="number">-0.80</span>  <span class="number">-0.93</span></span><br></pre></td></tr></table></figure>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s4 = pd.Series(range(<span class="number">10</span>, <span class="number">15</span>), index = np.random.randint(<span class="number">5</span>, size=<span class="number">5</span>))</span><br><span class="line"><span class="keyword">print</span> (s4)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">4</span>    <span class="number">10</span></span><br><span class="line"><span class="number">1</span>    <span class="number">11</span></span><br><span class="line"><span class="number">4</span>    <span class="number">12</span></span><br><span class="line"><span class="number">1</span>    <span class="number">13</span></span><br><span class="line"><span class="number">1</span>    <span class="number">14</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>索引排序</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">s4.sort_index()</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>    <span class="number">11</span></span><br><span class="line"><span class="number">1</span>    <span class="number">13</span></span><br><span class="line"><span class="number">1</span>    <span class="number">14</span></span><br><span class="line"><span class="number">4</span>    <span class="number">10</span></span><br><span class="line"><span class="number">4</span>    <span class="number">12</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df4 = pd.DataFrame(np.random.randn(<span class="number">3</span>, <span class="number">4</span>),</span><br><span class="line">                   index=np.random.randint(<span class="number">3</span>, size=<span class="number">3</span>),</span><br><span class="line">                   columns=np.random.randint(<span class="number">4</span>, size=<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df4</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2</th>
+<th>1</th>
+<th>3</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.007031</td>
+<td>1.261990</td>
+<td>-1.647929</td>
+<td>0.176549</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-2.510698</td>
+<td>-0.207659</td>
+<td>0.628221</td>
+<td>0.441352</td>
+</tr>
+<tr>
+<td>0</td>
+<td>-0.367051</td>
+<td>1.536606</td>
+<td>0.167158</td>
+<td>-0.236129</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#df4.sort_index(ascending=False)</span></span><br><span class="line">df4.sort_index(axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1.261990</td>
+<td>0.176549</td>
+<td>0.007031</td>
+<td>-1.647929</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-0.207659</td>
+<td>0.441352</td>
+<td>-2.510698</td>
+<td>0.628221</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1.536606</td>
+<td>-0.236129</td>
+<td>-0.367051</td>
+<td>0.167158</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ol start="2">
+<li>按值排序</li>
+</ol>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#df.sortvalues(by='a', ascending=False) === 通过a的值</span></span><br><span class="line"><span class="comment">#    作用是对选定的一列数值（'a'）数据从上往下从小到大进行排序（如果传值没成功===设置本体覆盖，传值覆盖）</span></span><br><span class="line">df4.sort_values(by=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line">---------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">ValueError                                Traceback (most recent call last)</span><br><span class="line"></span><br><span class="line">&lt;ipython-input-<span class="number">22</span>-<span class="number">36</span>ffa8ddd07d&gt; in &lt;<span class="class"><span class="keyword">module</span>&gt;</span></span><br><span class="line">      <span class="number">2</span> <span class="comment">#df.sortvalues(by='a', ascending=False) === 通过a的值</span></span><br><span class="line">      <span class="number">3</span> <span class="comment">#    作用是对选定的一列数值（'a'）数据从上往下从小到大进行排序（如果传值没成功===设置本体覆盖，传值覆盖）</span></span><br><span class="line">----&gt; <span class="number">4</span> df4.sort_values(by=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~\Anaconda3\<span class="class"><span class="keyword">lib</span>\<span class="title">site</span>-<span class="title">packages</span>\<span class="title">pandas</span>\<span class="title">core</span>\<span class="title">frame</span>.<span class="title">py</span> <span class="title">in</span> <span class="title">sort_values</span>(<span class="title">self</span>, <span class="title">by</span>, <span class="title">axis</span>, <span class="title">ascending</span>, <span class="title">inplace</span>, <span class="title">kind</span>, <span class="title">na_position</span>)</span></span><br><span class="line">   <span class="number">4991</span></span><br><span class="line">   <span class="number">4992</span>             by = by[<span class="number">0</span>]</span><br><span class="line">-&gt; <span class="number">4993</span>             k = <span class="keyword">self</span>._get_label_or_level_values(by, axis=axis)</span><br><span class="line">   <span class="number">4994</span></span><br><span class="line">   <span class="number">4995</span>             <span class="keyword">if</span> isinstance(ascending, (tuple, list)):</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~\Anaconda3\<span class="class"><span class="keyword">lib</span>\<span class="title">site</span>-<span class="title">packages</span>\<span class="title">pandas</span>\<span class="title">core</span>\<span class="title">generic</span>.<span class="title">py</span> <span class="title">in</span> <span class="title">_get_label_or_level_values</span>(<span class="title">self</span>, <span class="title">key</span>, <span class="title">axis</span>)</span></span><br><span class="line">   <span class="number">1795</span>                     key=key,</span><br><span class="line">   <span class="number">1796</span>                     label_axis_name=label_axis_name,</span><br><span class="line">-&gt; <span class="number">1797</span>                     multi_message=multi_message,</span><br><span class="line">   <span class="number">1798</span>                 )</span><br><span class="line">   <span class="number">1799</span>             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="symbol">ValueError:</span> The column label <span class="string">'1'</span> is not unique.</span><br></pre></td></tr></table></figure>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-10 16:18:03</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</li>
+		<li>文章标签: </li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/li8bkt.md" download target="_blank">pandas-基本知识.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:43</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-02-10-blog/li8bkt.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/nfqdqf/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>pandas-索引</b>
+      
+    </a>
+  
+  
+    <a href="/blog/mk2z96/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>numpy-使用总结</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/nfqdqf/" class="prev" title="pandas-索引">
+    <i class="icon">&#xe600;</i>
+    
+    <b>pandas-索引</b>
+    
+  </a>
+  
+  
+  <a href="/blog/mk2z96/" class="next" title="numpy-使用总结">
+    <i class="icon">&#x261e;</i>
+    <b>numpy-使用总结</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/li8bkt"
+	   data-disqus-identifier="blog/li8bkt" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/li8bkt"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/li8bkt",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、查看可视化设置风格matplotlib 预处理和折线图matplotlib 条形图matplot...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/oq4xcx/">Pandas-分组聚合</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/nfqdqf/">pandas-索引</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bokad003zp8ujka1v756j" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>

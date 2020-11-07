@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>动态数组 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="动态数组">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="动态数组 | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/bx5ouf/">
+  <meta property="og:site_name" content="动态数组">
+  <meta property="og:description" content="动态数组">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/qp5kuu/" title="GitHub-CICD不同文件夹迁移" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/hmc9fy/" title="测试阿里云函数" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataStructure/">DataStructure</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">动态数组<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/bx5ouf/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-08-12 15:23:23</time>
+          <span class="aria-readonly">本文发布时间为2020年08月12日15时23分23秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataStructure/">DataStructure</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: </span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/bx5ouf"
+                      data-disqus-identifier="blog/bx5ouf"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/bx5ouf/">https://yun.wztlink1013.com/blog/bx5ouf/</a>，<a href="https://yun.wztlink1013.com/blog/bx5ouf/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="动态数组设计"><a href="#动态数组设计" class="headerlink" title="动态数组设计"></a>动态数组设计</h2><h3 id="private-设计"><a href="#private-设计" class="headerlink" title="private 设计"></a>private 设计</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 元素的数量</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line"><span class="comment">// 所有的元素</span></span><br><span class="line"><span class="keyword">private</span> E[] elements;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ELEMENT_NOT_FOUND = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 保证要有capacity的容量</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> capacity</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elements.length;</span><br><span class="line">    <span class="keyword">if</span> (oldCapacity &gt;= capacity) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 新容量为旧容量的1.5倍</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    E[] newElements = (E[]) <span class="keyword">new</span> Object[newCapacity];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        newElements[i] = elements[i];</span><br><span class="line">    &#125;</span><br><span class="line">    elements = newElements;</span><br><span class="line"></span><br><span class="line">    System.out.println(oldCapacity + <span class="string">"扩容为"</span> + newCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">outOfBounds</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Index:"</span> + index + <span class="string">", Size:"</span> + size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">rangeCheck</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= size) &#123;</span><br><span class="line">        outOfBounds(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">rangeCheckForAdd</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; size) &#123;</span><br><span class="line">        outOfBounds(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="构造函数设计"><a href="#构造函数设计" class="headerlink" title="构造函数设计"></a>构造函数设计</h3><p>在 new 一个对象之后，给定空间大小，抑或是扩容</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(<span class="keyword">int</span> capaticy)</span> </span>&#123;</span><br><span class="line">    capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;</span><br><span class="line">    elements = (E[]) <span class="keyword">new</span> Object[capaticy];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(DEFAULT_CAPACITY);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="对外接口"><a href="#对外接口" class="headerlink" title="对外接口"></a>对外接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>; <span class="comment">// 返回动态数组元素个数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>; <span class="comment">// 是否为空</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(E element)</span></span>; <span class="comment">// 是否包含某个元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E element)</span></span>; <span class="comment">// 在数组尾部添加元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span></span>; <span class="comment">// 返回index位置对应的元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">set</span><span class="params">(<span class="keyword">int</span> index, E element)</span></span>; <span class="comment">// 设置/更换index位置上的值</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span> <span class="params">(<span class="keyword">int</span> index, E element)</span></span>; <span class="comment">// 在index位置上添加元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>; <span class="comment">// 移除index位置上的值</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(E element)</span></span>; <span class="comment">// 查看元素的位置</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>; <span class="comment">// 清空动态数组所有元素</span></span><br></pre></td></tr></table></figure>
+<h3 id="重写输出"><a href="#重写输出" class="headerlink" title="重写输出"></a>重写输出</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// size=3, [99, 88, 77]</span></span><br><span class="line">    StringBuilder string = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    string.append(<span class="string">"size="</span>).append(size).append(<span class="string">", ["</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i != <span class="number">0</span>) &#123;</span><br><span class="line">            string.append(<span class="string">", "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        string.append(elements[i]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//			if (i != size - 1) &#123;</span></span><br><span class="line">        <span class="comment">//				string.append(", ");</span></span><br><span class="line">        <span class="comment">//			&#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">    string.append(<span class="string">"]"</span>);</span><br><span class="line">    <span class="keyword">return</span> string.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-08-12 15:23:23</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataStructure/">DataStructure</a>
+
+</li>
+		<li>文章标签: </li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/bx5ouf.md" download target="_blank">动态数组.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:42</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-08-12-blog/bx5ouf.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/qp5kuu/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>GitHub-CICD不同文件夹迁移</b>
+      
+    </a>
+  
+  
+    <a href="/blog/hmc9fy/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>测试阿里云函数</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/qp5kuu/" class="prev" title="GitHub-CICD不同文件夹迁移">
+    <i class="icon">&#xe600;</i>
+    
+    <b>GitHub-CICD不同文件夹迁移</b>
+    
+  </a>
+  
+  
+  <a href="/blog/hmc9fy/" class="next" title="测试阿里云函数">
+    <i class="icon">&#x261e;</i>
+    <b>测试阿里云函数</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/bx5ouf"
+	   data-disqus-identifier="blog/bx5ouf" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/bx5ouf"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/bx5ouf",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-09-06 »</font> </span>
+				<a href="/blog/ipiwza/">📅链表基础题目</a>
+				<span class="aria-readonly">发表时间为2020年09月06日</span>
+				<div class="relative-box">
+          <a href="/blog/ipiwza/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603193824228-3a24481d-e89e-4896-a20d-9c7c77d7511d.png#align=left&amp;display=inline&amp;height=261&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=521&amp;originWidth=727&amp;size=54507&amp;status=done&amp;style=shadow&amp;width=363.5" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603193824228-3a24481d-e89e-4896-a20d-9c7c77d7511d.png#align=left&amp;display=inline&amp;height=261&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=521&amp;originWidth=727&amp;size=54507&amp;status=done&amp;style=shadow&amp;width=363.5"/></a>
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-09-06 »</font> </span>
+				<a href="/blog/aritwv/">20. 有效的括号</a>
+				<span class="aria-readonly">发表时间为2020年09月06日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>问题思路将所有的左半边括号 push 到栈内，然后遇到右半边括号，就将其与栈顶元素匹配测试，若能匹配...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-09-06 »</font> </span>
+				<a href="/blog/yxy6mv/">栈</a>
+				<span class="aria-readonly">发表时间为2020年09月06日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>栈的设计栈的特点栈的最重要特点就是其元素的后进先出，先进后出。栈的接口设计栈可以直接继承之前所学的 ...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-09-05 »</font> </span>
+				<a href="/blog/zqmygi/">队列</a>
+				<span class="aria-readonly">发表时间为2020年09月05日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>Queue 队列设计在头尾两端进行操作，先进先出 FIFOpackage com.wztlink10...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bok8o0015p8uj7rvm47tw" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>

@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>Pandas-分组聚合 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="Pandas分组聚合">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Pandas-分组聚合 | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/oq4xcx/">
+  <meta property="og:site_name" content="Pandas-分组聚合">
+  <meta property="og:description" content="Pandas分组聚合">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/kt0kvc/" title="Data-数据可视化综述" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/nfqdqf/" title="pandas-索引" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">Pandas-分组聚合<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/oq4xcx/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 16:28:49</time>
+          <span class="aria-readonly">本文发布时间为2020年02月10日16时28分49秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: 
+<a class="article-tag-link" href="/blog/tags/pandas/">pandas</a>
+</span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/oq4xcx"
+                      data-disqus-identifier="blog/oq4xcx"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/oq4xcx/">https://yun.wztlink1013.com/blog/oq4xcx/</a>，<a href="https://yun.wztlink1013.com/blog/oq4xcx/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="一、分组"><a href="#一、分组" class="headerlink" title="一、分组"></a>一、分组</h2><h3 id="GroupBy-对象"><a href="#GroupBy-对象" class="headerlink" title="GroupBy 对象"></a>GroupBy 对象</h3><blockquote>
+<p>· groupedby 函数中的参数：</p>
+</blockquote>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">as_index的作用：控制聚合输出是否以组标签为索引值，默认为<span class="literal">True</span>，就是分层次的索引，若为<span class="literal">False</span>多加一列默认索引索引，相当于非其他数据排序好了。</span><br><span class="line">但是这两组标签索引值不同有什么作用呢？=== 作用就是，根据的一列是否为索引列。</span><br><span class="line">sort_values的作用：对选定的一列数值数据从上往下从小到大进行排序（如果传值没成功===设置本体覆盖，传值覆盖）</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot</span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict_obj = &#123;<span class="string">'key1'</span> : [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>,</span><br><span class="line">                      <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>],</span><br><span class="line">            <span class="string">'key2'</span> : [<span class="string">'one'</span>, <span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>,</span><br><span class="line">                      <span class="string">'two'</span>, <span class="string">'two'</span>, <span class="string">'one'</span>, <span class="string">'three'</span>],</span><br><span class="line">            <span class="string">'data1'</span>: np.random.randn(<span class="number">8</span>),</span><br><span class="line">            <span class="string">'data2'</span>: np.random.randn(<span class="number">8</span>)&#125;</span><br><span class="line">df_obj = pd.DataFrame(dict_obj)</span><br><span class="line"><span class="keyword">print</span> (df_obj)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  key1   key2     data1     data2</span><br><span class="line"><span class="number">0</span>    a    one <span class="number">-0.147612</span> <span class="number">-0.348087</span></span><br><span class="line"><span class="number">1</span>    b    one <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line"><span class="number">2</span>    a    two  <span class="number">0.547541</span> <span class="number">-0.310040</span></span><br><span class="line"><span class="number">3</span>    b  three  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line"><span class="number">4</span>    a    two  <span class="number">1.224041</span>  <span class="number">0.220150</span></span><br><span class="line"><span class="number">5</span>    b    two <span class="number">-0.200124</span> <span class="number">-1.562237</span></span><br><span class="line"><span class="number">6</span>    a    one  <span class="number">1.539144</span> <span class="number">-0.758716</span></span><br><span class="line"><span class="number">7</span>    a  three  <span class="number">0.385845</span>  <span class="number">0.074309</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''1. dataframe根据key2进行分组'''</span></span><br><span class="line">print(df_obj.groupby(<span class="string">'key2'</span>)[<span class="string">'key1'</span>].count())</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (type(df_obj.groupby(<span class="string">'key1'</span>)))</span><br><span class="line"><span class="comment">#没有可视化的输出</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">key2</span></span><br><span class="line"><span class="string">one</span>      <span class="number">3</span></span><br><span class="line"><span class="string">three</span>    <span class="number">2</span></span><br><span class="line"><span class="string">two</span>      <span class="number">3</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">key1,</span> <span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">&lt;class</span> <span class="string">'pandas.core.groupby.generic.DataFrameGroupBy'</span><span class="string">&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''2. 指定列根据key1进行分组'''</span></span><br><span class="line"><span class="keyword">print</span> (type(df_obj[<span class="string">'data1'</span>].groupby(df_obj[<span class="string">'key1'</span>])))</span><br></pre></td></tr></table></figure>
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'pandas.core.groupby.generic.SeriesGroupBy'</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分组运算</span></span><br><span class="line">grouped1 = df_obj.groupby(<span class="string">'key1'</span>,as_index=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">print</span> (grouped1.mean())</span><br><span class="line"></span><br><span class="line">grouped2 = df_obj[<span class="string">'data1'</span>].groupby(df_obj[<span class="string">'key1'</span>])<span class="comment">#指定某一列的数据在该索引下进行分组并且加以聚合</span></span><br><span class="line"><span class="keyword">print</span> (grouped2.mean())</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line">  <span class="string">key1</span>     <span class="string">data1</span>     <span class="string">data2</span></span><br><span class="line"><span class="number">0</span>    <span class="string">a</span>  <span class="number">0.709792</span> <span class="number">-0.224477</span></span><br><span class="line"><span class="number">1</span>    <span class="string">b</span> <span class="number">-0.244746</span> <span class="number">-0.851723</span></span><br><span class="line"><span class="string">key1</span></span><br><span class="line"><span class="string">a</span>    <span class="number">0.709792</span></span><br><span class="line"><span class="string">b</span>   <span class="number">-0.244746</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">data1,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''3. 按自定义key分组，列表'''</span></span><br><span class="line">self_def_key = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line">df_obj.groupby(self_def_key).mean()</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.116853</td>
+<td>-0.338455</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.743484</td>
+<td>-0.661761</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>-0.147612</td>
+<td>-0.348087</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>-0.992986</td>
+<td>0.902458</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>0.547541</td>
+<td>-0.310040</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>0.458871</td>
+<td>-1.895392</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>1.224041</td>
+<td>0.220150</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>-0.200124</td>
+<td>-1.562237</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>1.539144</td>
+<td>-0.758716</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>0.385845</td>
+<td>0.074309</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''4. 按多个列多层分组 = = = 通过列表'''</span></span><br><span class="line">grouped2 = df_obj.groupby([<span class="string">'key1'</span>, <span class="string">'key2'</span>],as_index=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">print</span> (grouped2.mean())</span><br><span class="line">print(<span class="string">'--------比较asindex的差异-------'</span>)</span><br><span class="line">grouped2 = df_obj.groupby([<span class="string">'key1'</span>, <span class="string">'key2'</span>],as_index=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">print</span> (grouped2.mean())</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  key1   key2     data1     data2</span><br><span class="line"><span class="number">0</span>    a    one  <span class="number">0.695766</span> <span class="number">-0.553401</span></span><br><span class="line"><span class="number">1</span>    a  three  <span class="number">0.385845</span>  <span class="number">0.074309</span></span><br><span class="line"><span class="number">2</span>    a    two  <span class="number">0.885791</span> <span class="number">-0.044945</span></span><br><span class="line"><span class="number">3</span>    b    one <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line"><span class="number">4</span>    b  three  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line"><span class="number">5</span>    b    two <span class="number">-0.200124</span> <span class="number">-1.562237</span></span><br><span class="line">--------比较asindex的差异-------</span><br><span class="line">               data1     data2</span><br><span class="line">key1 key2</span><br><span class="line">a    one    <span class="number">0.695766</span> <span class="number">-0.553401</span></span><br><span class="line">     three  <span class="number">0.385845</span>  <span class="number">0.074309</span></span><br><span class="line">     two    <span class="number">0.885791</span> <span class="number">-0.044945</span></span><br><span class="line">b    one   <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line">     three  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line">     two   <span class="number">-0.200124</span> <span class="number">-1.562237</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多层分组按key的顺序进行===和上面的asindex作用一样，把所选取的列数据当成索引，这才是区别之处</span></span><br><span class="line">grouped3 = df_obj.groupby([<span class="string">'key2'</span>, <span class="string">'key1'</span>])</span><br><span class="line"><span class="keyword">print</span> (grouped3.mean())</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'============================================='</span>)</span><br><span class="line"><span class="string">'''PS：如果想按照列进行分组聚合运算 === unstack===也可以通过转置'''</span></span><br><span class="line"><span class="keyword">print</span> (grouped3.mean().unstack())</span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">               data1     data2</span><br><span class="line">key2  key1</span><br><span class="line">one   a     <span class="number">0.695766</span> -<span class="number">0.553401</span></span><br><span class="line">      b    -<span class="number">0.992986</span>  <span class="number">0.902458</span></span><br><span class="line">three a     <span class="number">0.385845</span>  <span class="number">0.074309</span></span><br><span class="line">      b     <span class="number">0.458871</span> -<span class="number">1.895392</span></span><br><span class="line">two   a     <span class="number">0.885791</span> -<span class="number">0.044945</span></span><br><span class="line">      b    -<span class="number">0.200124</span> -<span class="number">1.562237</span></span><br><span class="line">=============================================</span><br><span class="line">          data1               data2</span><br><span class="line">key1          a         b         a         b</span><br><span class="line">key2</span><br><span class="line">one    <span class="number">0.695766</span> -<span class="number">0.992986</span> -<span class="number">0.553401</span>  <span class="number">0.902458</span></span><br><span class="line">three  <span class="number">0.385845</span>  <span class="number">0.458871</span>  <span class="number">0.074309</span> -<span class="number">1.895392</span></span><br><span class="line">two    <span class="number">0.885791</span> -<span class="number">0.200124</span> -<span class="number">0.044945</span> -<span class="number">1.562237</span></span><br></pre></td></tr></table></figure>
+<h3 id="GroupBy-对象遍历迭代"><a href="#GroupBy-对象遍历迭代" class="headerlink" title="GroupBy 对象遍历迭代"></a>GroupBy 对象遍历迭代</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">grouped1</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">&lt;pandas<span class="selector-class">.core</span><span class="selector-class">.groupby</span><span class="selector-class">.generic</span><span class="selector-class">.DataFrameGroupBy</span> <span class="selector-tag">object</span> at <span class="number">0</span>x000001AF5B5F9088&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单层分组</span></span><br><span class="line">print(grouped1.head(<span class="number">5</span>))</span><br><span class="line">print(<span class="string">"------------------------------------分割线------------------------------------------"</span>)</span><br><span class="line"><span class="keyword">for</span> group_name, group_data <span class="keyword">in</span> grouped1:</span><br><span class="line">    <span class="keyword">print</span> (group_name)</span><br><span class="line">    <span class="keyword">print</span> (group_data[<span class="string">'data1'</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line">  <span class="string">key1</span>   <span class="string">key2</span>     <span class="string">data1</span>     <span class="string">data2</span></span><br><span class="line"><span class="number">0</span>    <span class="string">a</span>    <span class="string">one</span> <span class="number">-0.147612</span> <span class="number">-0.348087</span></span><br><span class="line"><span class="number">1</span>    <span class="string">b</span>    <span class="string">one</span> <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line"><span class="number">2</span>    <span class="string">a</span>    <span class="string">two</span>  <span class="number">0.547541</span> <span class="number">-0.310040</span></span><br><span class="line"><span class="number">3</span>    <span class="string">b</span>  <span class="string">three</span>  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line"><span class="number">4</span>    <span class="string">a</span>    <span class="string">two</span>  <span class="number">1.224041</span>  <span class="number">0.220150</span></span><br><span class="line"><span class="number">5</span>    <span class="string">b</span>    <span class="string">two</span> <span class="number">-0.200124</span> <span class="number">-1.562237</span></span><br><span class="line"><span class="number">6</span>    <span class="string">a</span>    <span class="string">one</span>  <span class="number">1.539144</span> <span class="number">-0.758716</span></span><br><span class="line"><span class="number">7</span>    <span class="string">a</span>  <span class="string">three</span>  <span class="number">0.385845</span>  <span class="number">0.074309</span></span><br><span class="line"><span class="string">------------------------------------分割线------------------------------------------</span></span><br><span class="line"><span class="string">a</span></span><br><span class="line"><span class="number">0</span>   <span class="number">-0.147612</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0.547541</span></span><br><span class="line"><span class="number">4</span>    <span class="number">1.224041</span></span><br><span class="line"><span class="number">6</span>    <span class="number">1.539144</span></span><br><span class="line"><span class="number">7</span>    <span class="number">0.385845</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">data1,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br><span class="line"><span class="string">b</span></span><br><span class="line"><span class="number">1</span>   <span class="number">-0.992986</span></span><br><span class="line"><span class="number">3</span>    <span class="number">0.458871</span></span><br><span class="line"><span class="number">5</span>   <span class="number">-0.200124</span></span><br><span class="line"><span class="attr">Name:</span> <span class="string">data1,</span> <span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多层分组</span></span><br><span class="line"><span class="keyword">for</span> group_name, group_data <span class="keyword">in</span> grouped2:</span><br><span class="line">    <span class="keyword">print</span> (group_name)</span><br><span class="line">    <span class="keyword">print</span> (group_data)</span><br></pre></td></tr></table></figure>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">(<span class="string">'a'</span>, <span class="string">'one'</span>)</span><br><span class="line">  key1 key2     data1     data2</span><br><span class="line"><span class="number">0</span>    <span class="keyword">a</span>  <span class="literal">one</span> <span class="number">-0.147612</span> <span class="number">-0.348087</span></span><br><span class="line"><span class="number">6</span>    <span class="keyword">a</span>  <span class="literal">one</span>  <span class="number">1.539144</span> <span class="number">-0.758716</span></span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'three'</span>)</span><br><span class="line">  key1   key2     data1     data2</span><br><span class="line"><span class="number">7</span>    <span class="keyword">a</span>  <span class="literal">three</span>  <span class="number">0.385845</span>  <span class="number">0.074309</span></span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'two'</span>)</span><br><span class="line">  key1 key2     data1    data2</span><br><span class="line"><span class="number">2</span>    <span class="keyword">a</span>  <span class="literal">two</span>  <span class="number">0.547541</span> <span class="number">-0.31004</span></span><br><span class="line"><span class="number">4</span>    <span class="keyword">a</span>  <span class="literal">two</span>  <span class="number">1.224041</span>  <span class="number">0.22015</span></span><br><span class="line">(<span class="string">'b'</span>, <span class="string">'one'</span>)</span><br><span class="line">  key1 key2     data1     data2</span><br><span class="line"><span class="number">1</span>    b  <span class="literal">one</span> <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line">(<span class="string">'b'</span>, <span class="string">'three'</span>)</span><br><span class="line">  key1   key2     data1     data2</span><br><span class="line"><span class="number">3</span>    b  <span class="literal">three</span>  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line">(<span class="string">'b'</span>, <span class="string">'two'</span>)</span><br><span class="line">  key1 key2     data1     data2</span><br><span class="line"><span class="number">5</span>    b  <span class="literal">two</span> <span class="number">-0.200124</span> <span class="number">-1.562237</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># GroupBy对象转换list</span></span><br><span class="line">print(grouped1.mean())</span><br><span class="line">list(grouped1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  key1     data1     data2</span><br><span class="line"><span class="number">0</span>    a  <span class="number">0.709792</span> <span class="number">-0.224477</span></span><br><span class="line"><span class="number">1</span>    b <span class="number">-0.244746</span> <span class="number">-0.851723</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[('a',   key1   key2     data1     data2</span><br><span class="line">  <span class="number">0</span>    a    one <span class="number">-0.147612</span> <span class="number">-0.348087</span></span><br><span class="line">  <span class="number">2</span>    a    two  <span class="number">0.547541</span> <span class="number">-0.310040</span></span><br><span class="line">  <span class="number">4</span>    a    two  <span class="number">1.224041</span>  <span class="number">0.220150</span></span><br><span class="line">  <span class="number">6</span>    a    one  <span class="number">1.539144</span> <span class="number">-0.758716</span></span><br><span class="line">  <span class="number">7</span>    a  three  <span class="number">0.385845</span>  <span class="number">0.074309</span>), ('b',   key1   key2     data1     data2</span><br><span class="line">  <span class="number">1</span>    b    one <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line">  <span class="number">3</span>    b  three  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line">  <span class="number">5</span>    b    two <span class="number">-0.200124</span> <span class="number">-1.562237</span>)]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># GroupBy对象转换dict</span></span><br><span class="line">dict(list(grouped1))</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">&#123;'a':</span>   <span class="string">key1</span>   <span class="string">key2</span>     <span class="string">data1</span>     <span class="string">data2</span></span><br><span class="line"> <span class="number">0</span>    <span class="string">a</span>    <span class="string">one</span> <span class="number">-0.147612</span> <span class="number">-0.348087</span></span><br><span class="line"> <span class="number">2</span>    <span class="string">a</span>    <span class="string">two</span>  <span class="number">0.547541</span> <span class="number">-0.310040</span></span><br><span class="line"> <span class="number">4</span>    <span class="string">a</span>    <span class="string">two</span>  <span class="number">1.224041</span>  <span class="number">0.220150</span></span><br><span class="line"> <span class="number">6</span>    <span class="string">a</span>    <span class="string">one</span>  <span class="number">1.539144</span> <span class="number">-0.758716</span></span><br><span class="line"> <span class="number">7</span>    <span class="string">a</span>  <span class="string">three</span>  <span class="number">0.385845</span>  <span class="number">0.074309</span><span class="string">,</span> <span class="attr">'b':</span>   <span class="string">key1</span>   <span class="string">key2</span>     <span class="string">data1</span>     <span class="string">data2</span></span><br><span class="line"> <span class="number">1</span>    <span class="string">b</span>    <span class="string">one</span> <span class="number">-0.992986</span>  <span class="number">0.902458</span></span><br><span class="line"> <span class="number">3</span>    <span class="string">b</span>  <span class="string">three</span>  <span class="number">0.458871</span> <span class="number">-1.895392</span></span><br><span class="line"> <span class="number">5</span>    <span class="string">b</span>    <span class="string">two</span> <span class="number">-0.200124</span> <span class="number">-1.562237</span><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按列分组</span></span><br><span class="line"><span class="keyword">print</span> (df_obj.dtypes)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按数据类型分组</span></span><br><span class="line">df_obj.groupby(df_obj.dtypes, axis=<span class="number">1</span>).size()</span><br><span class="line">df_obj.groupby(df_obj.dtypes, axis=<span class="number">1</span>).sum()</span><br></pre></td></tr></table></figure>
+<figure class="highlight nimrod"><table><tr><td class="code"><pre><span class="line">key1      <span class="keyword">object</span></span><br><span class="line">key2      <span class="keyword">object</span></span><br><span class="line">data1    <span class="built_in">float64</span></span><br><span class="line">data2    <span class="built_in">float64</span></span><br><span class="line">dtype: <span class="keyword">object</span></span><br></pre></td></tr></table></figure>
+<h3 id="其他分组方法"><a href="#其他分组方法" class="headerlink" title="其他分组方法"></a>其他分组方法</h3><ol>
+<li>其实列表也是分组的一种方式<br>===用到列表时候，一般都是多层索引了</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj2 = pd.DataFrame(np.random.randint(<span class="number">1</span>, <span class="number">10</span>, (<span class="number">5</span>,<span class="number">5</span>)),</span><br><span class="line">                       columns=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>],</span><br><span class="line">                       index=[<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>])</span><br><span class="line">df_obj2.ix[<span class="number">1</span>, <span class="number">1</span>:<span class="number">4</span>] = np.NaN</span><br><span class="line">df_obj2</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="symbol">C:</span>\Users\wztli\Anaconda3\<span class="class"><span class="keyword">lib</span>\<span class="title">site</span>-<span class="title">packages</span>\<span class="title">ipykernel_launcher</span>.<span class="title">py</span>:4: <span class="title">FutureWarning</span>:</span></span><br><span class="line">.ix is deprecated. Please use</span><br><span class="line">.loc <span class="keyword">for</span> label based indexing or</span><br><span class="line">.iloc <span class="keyword">for</span> positional indexing</span><br><span class="line"></span><br><span class="line">See the documentation <span class="symbol">here:</span></span><br><span class="line"><span class="symbol">http:</span>/<span class="regexp">/pandas.pydata.org/pandas</span>-docs/stable/user_guide/indexing.html<span class="comment">#ix-indexer-is-deprecated</span></span><br><span class="line">  after removing the cwd from sys.path.</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>e</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>4</td>
+<td>2.0</td>
+<td>6.0</td>
+<td>5.0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>B</td>
+<td>5</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6</td>
+</tr>
+<tr>
+<td>C</td>
+<td>2</td>
+<td>3.0</td>
+<td>8.0</td>
+<td>6.0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>D</td>
+<td>9</td>
+<td>5.0</td>
+<td>6.0</td>
+<td>5.0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>E</td>
+<td>4</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>2.0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>通过字典分组</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过字典分组</span></span><br><span class="line">mapping_dict = &#123;<span class="string">'A'</span>:<span class="string">'python'</span>, <span class="string">'B'</span>:<span class="string">'python'</span>, <span class="string">'C'</span>:<span class="string">'java'</span>, <span class="string">'D'</span>:<span class="string">'C'</span>, <span class="string">'E'</span>:<span class="string">'java'</span>&#125;</span><br><span class="line"><span class="comment">#df_obj2.groupby(mapping_dict, axis=1).size()</span></span><br><span class="line"><span class="comment">#df_obj2.groupby(mapping_dict, axis=1).count() # 非NaN的个数</span></span><br><span class="line">print(df_obj2.groupby(mapping_dict, axis=<span class="number">0</span>).sum())</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">        a    b     c    d   e</span><br><span class="line">C       <span class="number">9</span>  <span class="number">5.0</span>   <span class="number">6.0</span>  <span class="number">5.0</span>   <span class="number">9</span></span><br><span class="line">java    <span class="number">6</span>  <span class="number">4.0</span>  <span class="number">14.0</span>  <span class="number">8.0</span>   <span class="number">4</span></span><br><span class="line">python  <span class="number">9</span>  <span class="number">2.0</span>   <span class="number">6.0</span>  <span class="number">5.0</span>  <span class="number">15</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>通过函数分组</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过函数分组</span></span><br><span class="line">df_obj3 = pd.DataFrame(np.random.randint(<span class="number">1</span>, <span class="number">10</span>, (<span class="number">5</span>,<span class="number">5</span>)),</span><br><span class="line">                       columns=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>],</span><br><span class="line">                       index=[<span class="string">'AA'</span>, <span class="string">'BBB'</span>, <span class="string">'CC'</span>, <span class="string">'D'</span>, <span class="string">'EE'</span>])</span><br><span class="line"><span class="comment">#df_obj3</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">group_key</span><span class="params">(idx)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        idx 为列索引或行索引</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment">#return idx</span></span><br><span class="line">    <span class="keyword">return</span> len(idx)</span><br><span class="line"></span><br><span class="line">df_obj3.groupby(group_key).size()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以上自定义函数等价于</span></span><br><span class="line"><span class="comment">#df_obj3.groupby(len).size()</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>    <span class="number">1</span></span><br><span class="line"><span class="number">2</span>    <span class="number">3</span></span><br><span class="line"><span class="number">3</span>    <span class="number">1</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>通过层级索引级别分组</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过索引级别分组</span></span><br><span class="line">columns = pd.MultiIndex.from_arrays([[<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'Python'</span>],</span><br><span class="line">                                     [<span class="string">'A'</span>, <span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'B'</span>]], names=[<span class="string">'language'</span>, <span class="string">'index'</span>])</span><br><span class="line">df_obj4 = pd.DataFrame(np.random.randint(<span class="number">1</span>, <span class="number">10</span>, (<span class="number">5</span>, <span class="number">5</span>)), columns=columns)</span><br><span class="line">df_obj4</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>language</th>
+<th>Python</th>
+<th>Java</th>
+<th>Python</th>
+<th>Java</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>B</td>
+</tr>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2</td>
+<td>9</td>
+<td>3</td>
+<td>1</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根据language进行分组</span></span><br><span class="line">df_obj4.groupby(level=<span class="string">'language'</span>, axis=<span class="number">1</span>).sum()</span><br><span class="line">df_obj4.groupby(level=<span class="string">'index'</span>, axis=<span class="number">1</span>).sum()</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>10</td>
+<td>12</td>
+<td>8</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>7</td>
+<td>5</td>
+</tr>
+<tr>
+<td>3</td>
+<td>11</td>
+<td>12</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5</td>
+<td>11</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二、聚合"><a href="#二、聚合" class="headerlink" title="二、聚合"></a>二、聚合</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict_obj = &#123;<span class="string">'key1'</span> : [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>,</span><br><span class="line">                      <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>],</span><br><span class="line">            <span class="string">'key2'</span> : [<span class="string">'one'</span>, <span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>,</span><br><span class="line">                      <span class="string">'two'</span>, <span class="string">'two'</span>, <span class="string">'one'</span>, <span class="string">'three'</span>],</span><br><span class="line">            <span class="string">'data1'</span>: np.random.randint(<span class="number">1</span>,<span class="number">10</span>, <span class="number">8</span>),</span><br><span class="line">            <span class="string">'data2'</span>: np.random.randint(<span class="number">1</span>,<span class="number">10</span>, <span class="number">8</span>)&#125;</span><br><span class="line">df_obj5 = pd.DataFrame(dict_obj)</span><br><span class="line"><span class="keyword">print</span> (df_obj5)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  key1   key2  data1  data2</span><br><span class="line"><span class="number">0</span>    a    one      <span class="number">9</span>      <span class="number">4</span></span><br><span class="line"><span class="number">1</span>    b    one      <span class="number">6</span>      <span class="number">7</span></span><br><span class="line"><span class="number">2</span>    a    two      <span class="number">9</span>      <span class="number">4</span></span><br><span class="line"><span class="number">3</span>    b  three      <span class="number">9</span>      <span class="number">6</span></span><br><span class="line"><span class="number">4</span>    a    two      <span class="number">6</span>      <span class="number">2</span></span><br><span class="line"><span class="number">5</span>    b    two      <span class="number">3</span>      <span class="number">3</span></span><br><span class="line"><span class="number">6</span>    a    one      <span class="number">1</span>      <span class="number">1</span></span><br><span class="line"><span class="number">7</span>    a  three      <span class="number">2</span>      <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<h3 id="内置的聚合函数"><a href="#内置的聚合函数" class="headerlink" title="内置的聚合函数"></a>内置的聚合函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj5</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>9</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>9</td>
+<td>6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 内置的聚合函数</span></span><br><span class="line"><span class="comment">#print (df_obj5.groupby('key1').sum())</span></span><br><span class="line"><span class="comment">#print (df_obj5.groupby('key1').max())</span></span><br><span class="line"><span class="comment">#print (df_obj5.groupby('key1').min())</span></span><br><span class="line"><span class="keyword">print</span> (df_obj5.groupby(<span class="string">'key1'</span>).mean())</span><br><span class="line"><span class="comment">#print (df_obj5.groupby('key1').size())</span></span><br><span class="line"><span class="comment">#print (df_obj5.groupby('key1').count())</span></span><br><span class="line"><span class="comment">#print (df_obj5.groupby('key1').describe())</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">count：分组中非NA的值</span></span><br><span class="line"><span class="string">std：标准差</span></span><br><span class="line"><span class="string">var：方差</span></span><br><span class="line"><span class="string">median：非NA中的中位数</span></span><br><span class="line"><span class="string">mean：非NA的平均值</span></span><br><span class="line"><span class="string">25%||50%||75%是什么意思==不造？</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">      data1     data2</span><br><span class="line">key1</span><br><span class="line">a       5.4  3.400000</span><br><span class="line">b       6.0  5.333333</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">'<span class="symbol">\n</span>count：分组中非NA的值<span class="symbol">\n</span>std：标准差<span class="symbol">\n</span>var：方差<span class="symbol">\n</span>median：非NA中的中位数<span class="symbol">\n</span>mean：非NA的平均值<span class="symbol">\n</span>25<span class="variable">%||50%</span>||75<span class="variable">%是什么意思==不造？\n'</span></span><br></pre></td></tr></table></figure>
+<h3 id="自定义聚合函数"><a href="#自定义聚合函数" class="headerlink" title="自定义聚合函数"></a>自定义聚合函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 自定义聚合函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">peak_range</span><span class="params">(df)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        返回数值范围</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment">#print type(df) #参数为索引所对应的记录</span></span><br><span class="line">    <span class="keyword">return</span> df.max() - df.min()</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (df_obj5.groupby(<span class="string">'key1'</span>).agg(peak_range))</span><br><span class="line"><span class="comment">#print df_obj.groupby('key1').agg(lambda df : df.max() - df.min())</span></span><br><span class="line"><span class="comment">#默认列名就是函数名。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">      data1  data2</span><br><span class="line">key1</span><br><span class="line">a         <span class="number">8</span>      <span class="number">5</span></span><br><span class="line">b         <span class="number">6</span>      <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>同时应用多个聚合函数：agg</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 同时应用多个聚合函数：agg</span></span><br><span class="line"><span class="keyword">print</span> (df_obj.groupby(<span class="string">'key1'</span>).agg([<span class="string">'mean'</span>, <span class="string">'std'</span>, <span class="string">'count'</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">         data1                     data2</span><br><span class="line">          mean       std count      mean       std count</span><br><span class="line">key1</span><br><span class="line">a     <span class="number">0.709792</span>  <span class="number">0.674293</span>     <span class="number">5</span> <span class="number">-0.224477</span>  <span class="number">0.385674</span>     <span class="number">5</span></span><br><span class="line">b    <span class="number">-0.244746</span>  <span class="number">0.726957</span>     <span class="number">3</span> <span class="number">-0.851723</span>  <span class="number">1.528271</span>     <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (df_obj.groupby(<span class="string">'key1'</span>).agg([<span class="string">'mean'</span>, <span class="string">'std'</span>, <span class="string">'count'</span>, (<span class="string">'range'</span>, peak_range)])) <span class="comment"># 通过元组提供新的列名</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">         data1                               data2</span><br><span class="line">          mean       std count     range      mean       std count     range</span><br><span class="line">key1</span><br><span class="line">a     <span class="number">0.709792</span>  <span class="number">0.674293</span>     <span class="number">5</span>  <span class="number">1.686756</span> <span class="number">-0.224477</span>  <span class="number">0.385674</span>     <span class="number">5</span>  <span class="number">0.978865</span></span><br><span class="line">b    <span class="number">-0.244746</span>  <span class="number">0.726957</span>     <span class="number">3</span>  <span class="number">1.451857</span> <span class="number">-0.851723</span>  <span class="number">1.528271</span>     <span class="number">3</span>  <span class="number">2.797850</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 每列作用不同的聚合函数</span></span><br><span class="line">dict_mapping = &#123;<span class="string">'data1'</span>:<span class="string">'mean'</span>,</span><br><span class="line">                <span class="string">'data2'</span>:<span class="string">'sum'</span>&#125;</span><br><span class="line"><span class="keyword">print</span> (df_obj.groupby(<span class="string">'key1'</span>).agg(dict_mapping))</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">         <span class="selector-tag">data1</span>     <span class="selector-tag">data2</span></span><br><span class="line"><span class="selector-tag">key1</span></span><br><span class="line"><span class="selector-tag">a</span>     0<span class="selector-class">.709792</span> <span class="selector-tag">-1</span><span class="selector-class">.122384</span></span><br><span class="line"><span class="selector-tag">b</span>    <span class="selector-tag">-0</span><span class="selector-class">.244746</span> <span class="selector-tag">-2</span><span class="selector-class">.555170</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict_mapping = &#123;<span class="string">'data1'</span>:[<span class="string">'mean'</span>,<span class="string">'max'</span>],</span><br><span class="line">                <span class="string">'data2'</span>:<span class="string">'sum'</span>&#125;</span><br><span class="line"><span class="keyword">print</span> (df_obj.groupby(<span class="string">'key1'</span>).agg(dict_mapping))</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">         <span class="selector-tag">data1</span>               <span class="selector-tag">data2</span></span><br><span class="line">          <span class="selector-tag">mean</span>       <span class="selector-tag">max</span>       <span class="selector-tag">sum</span></span><br><span class="line"><span class="selector-tag">key1</span></span><br><span class="line"><span class="selector-tag">a</span>     0<span class="selector-class">.709792</span>  1<span class="selector-class">.539144</span> <span class="selector-tag">-1</span><span class="selector-class">.122384</span></span><br><span class="line"><span class="selector-tag">b</span>    <span class="selector-tag">-0</span><span class="selector-class">.244746</span>  0<span class="selector-class">.458871</span> <span class="selector-tag">-2</span><span class="selector-class">.555170</span></span><br></pre></td></tr></table></figure>
+<h2 id="三、分组运算"><a href="#三、分组运算" class="headerlink" title="三、分组运算"></a>三、分组运算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="分组和对齐"><a href="#分组和对齐" class="headerlink" title="分组和对齐"></a>分组和对齐</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s1 = pd.Series(range(<span class="number">10</span>, <span class="number">20</span>), index = range(<span class="number">10</span>))</span><br><span class="line">s2 = pd.Series(range(<span class="number">20</span>, <span class="number">25</span>), index = range(<span class="number">5</span>))</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'s1: '</span> )</span><br><span class="line"><span class="keyword">print</span> (s1)</span><br><span class="line">print(<span class="string">'==========================='</span>)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'s2: '</span>)</span><br><span class="line"><span class="keyword">print</span> (s2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">s1:</span></span><br><span class="line"><span class="number">0</span>    <span class="number">10</span></span><br><span class="line"><span class="number">1</span>    <span class="number">11</span></span><br><span class="line"><span class="number">2</span>    <span class="number">12</span></span><br><span class="line"><span class="number">3</span>    <span class="number">13</span></span><br><span class="line"><span class="number">4</span>    <span class="number">14</span></span><br><span class="line"><span class="number">5</span>    <span class="number">15</span></span><br><span class="line"><span class="number">6</span>    <span class="number">16</span></span><br><span class="line"><span class="number">7</span>    <span class="number">17</span></span><br><span class="line"><span class="number">8</span>    <span class="number">18</span></span><br><span class="line"><span class="number">9</span>    <span class="number">19</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br><span class="line"><span class="string">===========================</span></span><br><span class="line"><span class="attr">s2:</span></span><br><span class="line"><span class="number">0</span>    <span class="number">20</span></span><br><span class="line"><span class="number">1</span>    <span class="number">21</span></span><br><span class="line"><span class="number">2</span>    <span class="number">22</span></span><br><span class="line"><span class="number">3</span>    <span class="number">23</span></span><br><span class="line"><span class="number">4</span>    <span class="number">24</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Series 对齐运算</span></span><br><span class="line">s1 + s2</span><br><span class="line">print(s1+s2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">30.0</span></span><br><span class="line"><span class="number">1</span>    <span class="number">32.0</span></span><br><span class="line"><span class="number">2</span>    <span class="number">34.0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">36.0</span></span><br><span class="line"><span class="number">4</span>    <span class="number">38.0</span></span><br><span class="line"><span class="number">5</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">6</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">7</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">8</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">9</span>     <span class="string">NaN</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1 = pd.DataFrame(np.ones((<span class="number">2</span>,<span class="number">2</span>)), columns = [<span class="string">'a'</span>, <span class="string">'b'</span>])</span><br><span class="line">df2 = pd.DataFrame(np.ones((<span class="number">3</span>,<span class="number">3</span>)), columns = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (<span class="string">'df1: '</span>)</span><br><span class="line"><span class="keyword">print</span> (df1)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'================='</span>)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'df2: '</span>)</span><br><span class="line"><span class="keyword">print</span> (df2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">df1:</span></span><br><span class="line">     <span class="string">a</span>    <span class="string">b</span></span><br><span class="line"><span class="number">0</span>  <span class="number">1.0</span>  <span class="number">1.0</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1.0</span>  <span class="number">1.0</span></span><br><span class="line"><span class="string">=================</span></span><br><span class="line"><span class="attr">df2:</span></span><br><span class="line">     <span class="string">a</span>    <span class="string">b</span>    <span class="string">c</span></span><br><span class="line"><span class="number">0</span>  <span class="number">1.0</span>  <span class="number">1.0</span>  <span class="number">1.0</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1.0</span>  <span class="number">1.0</span>  <span class="number">1.0</span></span><br><span class="line"><span class="number">2</span>  <span class="number">1.0</span>  <span class="number">1.0</span>  <span class="number">1.0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DataFrame对齐操作</span></span><br><span class="line">print(df1 + df2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">     a    b   c</span><br><span class="line"><span class="number">0</span>  <span class="number">2.0</span>  <span class="number">2.0</span> NaN</span><br><span class="line"><span class="number">1</span>  <span class="number">2.0</span>  <span class="number">2.0</span> NaN</span><br><span class="line"><span class="number">2</span>  NaN  NaN NaN</span><br></pre></td></tr></table></figure>
+<p>① 常用运算函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 填充未对齐的数据进行运算</span></span><br><span class="line">print(s1.add(s2, fill_value = <span class="number">-1</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">30.0</span></span><br><span class="line"><span class="number">1</span>    <span class="number">32.0</span></span><br><span class="line"><span class="number">2</span>    <span class="number">34.0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">36.0</span></span><br><span class="line"><span class="number">4</span>    <span class="number">38.0</span></span><br><span class="line"><span class="number">5</span>    <span class="number">14.0</span></span><br><span class="line"><span class="number">6</span>    <span class="number">15.0</span></span><br><span class="line"><span class="number">7</span>    <span class="number">16.0</span></span><br><span class="line"><span class="number">8</span>    <span class="number">17.0</span></span><br><span class="line"><span class="number">9</span>    <span class="number">18.0</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1.sub(df2, fill_value = <span class="number">2.</span>)</span><br><span class="line"><span class="comment">#sub函数</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 填充NaN</span></span><br><span class="line">s3 = s1 + s2</span><br><span class="line"><span class="keyword">print</span> (s3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">30.0</span></span><br><span class="line"><span class="number">1</span>    <span class="number">32.0</span></span><br><span class="line"><span class="number">2</span>    <span class="number">34.0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">36.0</span></span><br><span class="line"><span class="number">4</span>    <span class="number">38.0</span></span><br><span class="line"><span class="number">5</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">6</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">7</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">8</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">9</span>     <span class="string">NaN</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s3_filled = s3.fillna(<span class="number">-1</span>)</span><br><span class="line"><span class="keyword">print</span> (s3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">30.0</span></span><br><span class="line"><span class="number">1</span>    <span class="number">32.0</span></span><br><span class="line"><span class="number">2</span>    <span class="number">34.0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">36.0</span></span><br><span class="line"><span class="number">4</span>    <span class="number">38.0</span></span><br><span class="line"><span class="number">5</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">6</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">7</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">8</span>     <span class="string">NaN</span></span><br><span class="line"><span class="number">9</span>     <span class="string">NaN</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df3 = df1 + df2</span><br><span class="line"><span class="keyword">print</span> (df3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">     a    b   c</span><br><span class="line"><span class="number">0</span>  <span class="number">2.0</span>  <span class="number">2.0</span> NaN</span><br><span class="line"><span class="number">1</span>  <span class="number">2.0</span>  <span class="number">2.0</span> NaN</span><br><span class="line"><span class="number">2</span>  NaN  NaN NaN</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df3.fillna(<span class="number">100</span>, inplace = <span class="literal">True</span>)</span><br><span class="line"><span class="keyword">print</span> (df3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">       a      b      c</span><br><span class="line"><span class="number">0</span>    <span class="number">2.0</span>    <span class="number">2.0</span>  <span class="number">100.0</span></span><br><span class="line"><span class="number">1</span>    <span class="number">2.0</span>    <span class="number">2.0</span>  <span class="number">100.0</span></span><br><span class="line"><span class="number">2</span>  <span class="number">100.0</span>  <span class="number">100.0</span>  <span class="number">100.0</span></span><br></pre></td></tr></table></figure>
+<h3 id="统计计算-VS-聚合运算"><a href="#统计计算-VS-聚合运算" class="headerlink" title="统计计算 VS 聚合运算"></a>统计计算 VS 聚合运算</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj1 = pd.DataFrame(np.random.randn(<span class="number">5</span>,<span class="number">4</span>), columns = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>])</span><br><span class="line">print(df_obj1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">          a         b         c         d</span><br><span class="line"><span class="number">0</span> <span class="number">-0.542708</span>  <span class="number">0.201376</span>  <span class="number">1.111431</span>  <span class="number">1.784324</span></span><br><span class="line"><span class="number">1</span>  <span class="number">0.583422</span>  <span class="number">0.231096</span> <span class="number">-2.801967</span>  <span class="number">0.568497</span></span><br><span class="line"><span class="number">2</span> <span class="number">-0.577329</span> <span class="number">-1.668581</span> <span class="number">-0.842126</span>  <span class="number">1.803080</span></span><br><span class="line"><span class="number">3</span> <span class="number">-0.128431</span> <span class="number">-1.769619</span>  <span class="number">2.089983</span>  <span class="number">0.209761</span></span><br><span class="line"><span class="number">4</span>  <span class="number">0.493981</span> <span class="number">-1.571405</span>  <span class="number">0.690019</span> <span class="number">-0.215292</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(df_obj1.sum(axis=<span class="number">1</span>))</span><br><span class="line">print(<span class="string">'====================================='</span>)</span><br><span class="line">print(df_obj1.max())</span><br><span class="line">print(<span class="string">'====================================='</span>)</span><br><span class="line">print(df_obj1.min(axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">2.554423</span></span><br><span class="line"><span class="number">1</span>   <span class="number">-1.418952</span></span><br><span class="line"><span class="number">2</span>   <span class="number">-1.284956</span></span><br><span class="line"><span class="number">3</span>    <span class="number">0.401694</span></span><br><span class="line"><span class="number">4</span>   <span class="number">-0.602698</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br><span class="line"><span class="string">=====================================</span></span><br><span class="line"><span class="string">a</span>    <span class="number">0.583422</span></span><br><span class="line"><span class="string">b</span>    <span class="number">0.231096</span></span><br><span class="line"><span class="string">c</span>    <span class="number">2.089983</span></span><br><span class="line"><span class="string">d</span>    <span class="number">1.803080</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br><span class="line"><span class="string">=====================================</span></span><br><span class="line"><span class="number">0</span>   <span class="number">-0.542708</span></span><br><span class="line"><span class="number">1</span>   <span class="number">-2.801967</span></span><br><span class="line"><span class="number">2</span>   <span class="number">-1.668581</span></span><br><span class="line"><span class="number">3</span>   <span class="number">-1.769619</span></span><br><span class="line"><span class="number">4</span>   <span class="number">-1.571405</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">float64</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据分组运算"><a href="#数据分组运算" class="headerlink" title="数据分组运算"></a>数据分组运算</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分组运算后保持shape</span></span><br><span class="line">dict_obj = &#123;<span class="string">'key1'</span> : [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>,</span><br><span class="line">                      <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>],</span><br><span class="line">            <span class="string">'key2'</span> : [<span class="string">'one'</span>, <span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>,</span><br><span class="line">                      <span class="string">'two'</span>, <span class="string">'two'</span>, <span class="string">'one'</span>, <span class="string">'three'</span>],</span><br><span class="line">            <span class="string">'data1'</span>: np.random.randint(<span class="number">1</span>, <span class="number">10</span>, <span class="number">8</span>),</span><br><span class="line">            <span class="string">'data2'</span>: np.random.randint(<span class="number">1</span>, <span class="number">10</span>, <span class="number">8</span>)&#125;</span><br><span class="line">df_obj = pd.DataFrame(dict_obj)</span><br><span class="line">df_obj</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按key1分组后，计算data1，data2的统计信息======并附加到原始表格中</span></span><br><span class="line">k1_sum = df_obj.groupby(<span class="string">'key1'</span>).sum().add_prefix(<span class="string">'sum_'</span>)</span><br><span class="line">print(k1_sum)</span><br><span class="line">print(<span class="string">'================================'</span>)</span><br><span class="line">print(df_obj)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">      sum_data1  sum_data2</span><br><span class="line">key1</span><br><span class="line">a            <span class="number">22</span>         <span class="number">15</span></span><br><span class="line">b            <span class="number">18</span>          <span class="number">8</span></span><br><span class="line">================================</span><br><span class="line">  key1   key2  data1  data2</span><br><span class="line"><span class="number">0</span>    a    one      <span class="number">4</span>      <span class="number">3</span></span><br><span class="line"><span class="number">1</span>    b    one      <span class="number">4</span>      <span class="number">4</span></span><br><span class="line"><span class="number">2</span>    a    two      <span class="number">9</span>      <span class="number">6</span></span><br><span class="line"><span class="number">3</span>    b  three      <span class="number">8</span>      <span class="number">2</span></span><br><span class="line"><span class="number">4</span>    a    two      <span class="number">3</span>      <span class="number">3</span></span><br><span class="line"><span class="number">5</span>    b    two      <span class="number">6</span>      <span class="number">2</span></span><br><span class="line"><span class="number">6</span>    a    one      <span class="number">4</span>      <span class="number">1</span></span><br><span class="line"><span class="number">7</span>    a  three      <span class="number">2</span>      <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>merge 方法</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法1，使用merge</span></span><br><span class="line">pd.merge(df_obj, k1_sum, left_on=<span class="string">'key1'</span>, right_index=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+<th>sum_data1</th>
+<th>sum_data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>3</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>6</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>1</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>2</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>4</td>
+<td>4</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>8</td>
+<td>2</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+<td>18</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>transform 方法</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法2，使用transform</span></span><br><span class="line">k1_sum_tf = df_obj.groupby(<span class="string">'key1'</span>).transform(np.sum).add_prefix(<span class="string">'sum_'</span>)</span><br><span class="line">df_obj[k1_sum_tf.columns] = k1_sum_tf</span><br><span class="line">df_obj</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+<th>sum_key2</th>
+<th>sum_data1</th>
+<th>sum_data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>3</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>4</td>
+<td>4</td>
+<td>onethreetwo</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>6</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>8</td>
+<td>2</td>
+<td>onethreetwo</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+<td>onethreetwo</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>1</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>2</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>自定义函数</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 自定义函数传入transform</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">diff_mean</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        返回数据与均值的差值</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> s - s.mean()</span><br><span class="line"></span><br><span class="line">df_obj.groupby(<span class="string">'key1'</span>).transform(diff_mean)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+<th>sum_data1</th>
+<th>sum_data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-0.4</td>
+<td>0.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-2.0</td>
+<td>1.333333</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4.6</td>
+<td>3.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2.0</td>
+<td>-0.666667</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-1.4</td>
+<td>0.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.0</td>
+<td>-0.666667</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>-0.4</td>
+<td>-2.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>-2.4</td>
+<td>-1.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dataset_path = <span class="string">'./data/starcraft.csv'</span></span><br><span class="line">df_data = pd.read_csv(dataset_path, usecols=[<span class="string">'LeagueIndex'</span>, <span class="string">'Age'</span>, <span class="string">'HoursPerWeek'</span>,</span><br><span class="line">                                             <span class="string">'TotalHours'</span>, <span class="string">'APM'</span>])</span><br></pre></td></tr></table></figure>
+<ul>
+<li>apply</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">top_n</span><span class="params">(df, n=<span class="number">3</span>, column=<span class="string">'APM'</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        返回每个分组按 column 的 top n 数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> df.sort_values(by=column, ascending=<span class="literal">False</span>)[:n]</span><br><span class="line"></span><br><span class="line">df_data.groupby(<span class="string">'LeagueIndex'</span>).apply(top_n)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>LeagueIndex</th>
+<th>Age</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+<th>APM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>2214</td>
+<td>1</td>
+<td>20.0</td>
+<td>12.0</td>
+<td>730.0</td>
+<td>172.9530</td>
+</tr>
+<tr>
+<td></td>
+<td>2246</td>
+<td>1</td>
+<td>27.0</td>
+<td>8.0</td>
+<td>250.0</td>
+<td>141.6282</td>
+</tr>
+<tr>
+<td></td>
+<td>1753</td>
+<td>1</td>
+<td>20.0</td>
+<td>28.0</td>
+<td>100.0</td>
+<td>139.6362</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3062</td>
+<td>2</td>
+<td>20.0</td>
+<td>6.0</td>
+<td>100.0</td>
+<td>179.6250</td>
+</tr>
+<tr>
+<td></td>
+<td>3229</td>
+<td>2</td>
+<td>16.0</td>
+<td>24.0</td>
+<td>110.0</td>
+<td>156.7380</td>
+</tr>
+<tr>
+<td></td>
+<td>1520</td>
+<td>2</td>
+<td>29.0</td>
+<td>6.0</td>
+<td>250.0</td>
+<td>151.6470</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1557</td>
+<td>3</td>
+<td>22.0</td>
+<td>6.0</td>
+<td>200.0</td>
+<td>226.6554</td>
+</tr>
+<tr>
+<td></td>
+<td>484</td>
+<td>3</td>
+<td>19.0</td>
+<td>42.0</td>
+<td>450.0</td>
+<td>220.0692</td>
+</tr>
+<tr>
+<td></td>
+<td>2883</td>
+<td>3</td>
+<td>16.0</td>
+<td>8.0</td>
+<td>800.0</td>
+<td>208.9500</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2688</td>
+<td>4</td>
+<td>26.0</td>
+<td>24.0</td>
+<td>990.0</td>
+<td>249.0210</td>
+</tr>
+<tr>
+<td></td>
+<td>1759</td>
+<td>4</td>
+<td>16.0</td>
+<td>6.0</td>
+<td>75.0</td>
+<td>229.9122</td>
+</tr>
+<tr>
+<td></td>
+<td>2637</td>
+<td>4</td>
+<td>23.0</td>
+<td>24.0</td>
+<td>650.0</td>
+<td>227.2272</td>
+</tr>
+<tr>
+<td>5</td>
+<td>3277</td>
+<td>5</td>
+<td>18.0</td>
+<td>16.0</td>
+<td>950.0</td>
+<td>372.6426</td>
+</tr>
+<tr>
+<td></td>
+<td>93</td>
+<td>5</td>
+<td>17.0</td>
+<td>36.0</td>
+<td>720.0</td>
+<td>335.4990</td>
+</tr>
+<tr>
+<td></td>
+<td>202</td>
+<td>5</td>
+<td>37.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>327.7218</td>
+</tr>
+<tr>
+<td>6</td>
+<td>734</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>730.0</td>
+<td>389.8314</td>
+</tr>
+<tr>
+<td></td>
+<td>2746</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>4000.0</td>
+<td>350.4114</td>
+</tr>
+<tr>
+<td></td>
+<td>1810</td>
+<td>6</td>
+<td>21.0</td>
+<td>14.0</td>
+<td>730.0</td>
+<td>323.2506</td>
+</tr>
+<tr>
+<td>7</td>
+<td>3127</td>
+<td>7</td>
+<td>23.0</td>
+<td>42.0</td>
+<td>2000.0</td>
+<td>298.7952</td>
+</tr>
+<tr>
+<td></td>
+<td>104</td>
+<td>7</td>
+<td>21.0</td>
+<td>24.0</td>
+<td>1000.0</td>
+<td>286.4538</td>
+</tr>
+<tr>
+<td></td>
+<td>1654</td>
+<td>7</td>
+<td>18.0</td>
+<td>98.0</td>
+<td>700.0</td>
+<td>236.0316</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3393</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>375.8664</td>
+</tr>
+<tr>
+<td></td>
+<td>3373</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>364.8504</td>
+</tr>
+<tr>
+<td></td>
+<td>3372</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>355.3518</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># apply函数接收的参数会传入自定义的函数中</span></span><br><span class="line">df_data.groupby(<span class="string">'LeagueIndex'</span>).apply(top_n, n=<span class="number">2</span>, column=<span class="string">'Age'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>LeagueIndex</th>
+<th>Age</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+<th>APM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>3146</td>
+<td>1</td>
+<td>40.0</td>
+<td>12.0</td>
+<td>150.0</td>
+<td>38.5590</td>
+</tr>
+<tr>
+<td></td>
+<td>3040</td>
+<td>1</td>
+<td>39.0</td>
+<td>10.0</td>
+<td>500.0</td>
+<td>29.8764</td>
+</tr>
+<tr>
+<td>2</td>
+<td>920</td>
+<td>2</td>
+<td>43.0</td>
+<td>10.0</td>
+<td>730.0</td>
+<td>86.0586</td>
+</tr>
+<tr>
+<td></td>
+<td>2437</td>
+<td>2</td>
+<td>41.0</td>
+<td>4.0</td>
+<td>200.0</td>
+<td>54.2166</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1258</td>
+<td>3</td>
+<td>41.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>77.6472</td>
+</tr>
+<tr>
+<td></td>
+<td>2972</td>
+<td>3</td>
+<td>40.0</td>
+<td>10.0</td>
+<td>500.0</td>
+<td>60.5970</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1696</td>
+<td>4</td>
+<td>44.0</td>
+<td>6.0</td>
+<td>500.0</td>
+<td>89.5266</td>
+</tr>
+<tr>
+<td></td>
+<td>1729</td>
+<td>4</td>
+<td>39.0</td>
+<td>8.0</td>
+<td>500.0</td>
+<td>86.7246</td>
+</tr>
+<tr>
+<td>5</td>
+<td>202</td>
+<td>5</td>
+<td>37.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>327.7218</td>
+</tr>
+<tr>
+<td></td>
+<td>2745</td>
+<td>5</td>
+<td>37.0</td>
+<td>18.0</td>
+<td>1000.0</td>
+<td>123.4098</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3069</td>
+<td>6</td>
+<td>31.0</td>
+<td>8.0</td>
+<td>800.0</td>
+<td>133.1790</td>
+</tr>
+<tr>
+<td></td>
+<td>2706</td>
+<td>6</td>
+<td>31.0</td>
+<td>8.0</td>
+<td>700.0</td>
+<td>66.9918</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2813</td>
+<td>7</td>
+<td>26.0</td>
+<td>36.0</td>
+<td>1300.0</td>
+<td>188.5512</td>
+</tr>
+<tr>
+<td></td>
+<td>1992</td>
+<td>7</td>
+<td>26.0</td>
+<td>24.0</td>
+<td>1000.0</td>
+<td>219.6690</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3340</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>189.7404</td>
+</tr>
+<tr>
+<td></td>
+<td>3341</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>287.8128</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>禁止分组 group_keys=False</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_data.groupby(<span class="string">'LeagueIndex'</span>, group_keys=<span class="literal">False</span>).apply(top_n)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>LeagueIndex</th>
+<th>Age</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+<th>APM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2214</td>
+<td>1</td>
+<td>20.0</td>
+<td>12.0</td>
+<td>730.0</td>
+<td>172.9530</td>
+</tr>
+<tr>
+<td>2246</td>
+<td>1</td>
+<td>27.0</td>
+<td>8.0</td>
+<td>250.0</td>
+<td>141.6282</td>
+</tr>
+<tr>
+<td>1753</td>
+<td>1</td>
+<td>20.0</td>
+<td>28.0</td>
+<td>100.0</td>
+<td>139.6362</td>
+</tr>
+<tr>
+<td>3062</td>
+<td>2</td>
+<td>20.0</td>
+<td>6.0</td>
+<td>100.0</td>
+<td>179.6250</td>
+</tr>
+<tr>
+<td>3229</td>
+<td>2</td>
+<td>16.0</td>
+<td>24.0</td>
+<td>110.0</td>
+<td>156.7380</td>
+</tr>
+<tr>
+<td>1520</td>
+<td>2</td>
+<td>29.0</td>
+<td>6.0</td>
+<td>250.0</td>
+<td>151.6470</td>
+</tr>
+<tr>
+<td>1557</td>
+<td>3</td>
+<td>22.0</td>
+<td>6.0</td>
+<td>200.0</td>
+<td>226.6554</td>
+</tr>
+<tr>
+<td>484</td>
+<td>3</td>
+<td>19.0</td>
+<td>42.0</td>
+<td>450.0</td>
+<td>220.0692</td>
+</tr>
+<tr>
+<td>2883</td>
+<td>3</td>
+<td>16.0</td>
+<td>8.0</td>
+<td>800.0</td>
+<td>208.9500</td>
+</tr>
+<tr>
+<td>2688</td>
+<td>4</td>
+<td>26.0</td>
+<td>24.0</td>
+<td>990.0</td>
+<td>249.0210</td>
+</tr>
+<tr>
+<td>1759</td>
+<td>4</td>
+<td>16.0</td>
+<td>6.0</td>
+<td>75.0</td>
+<td>229.9122</td>
+</tr>
+<tr>
+<td>2637</td>
+<td>4</td>
+<td>23.0</td>
+<td>24.0</td>
+<td>650.0</td>
+<td>227.2272</td>
+</tr>
+<tr>
+<td>3277</td>
+<td>5</td>
+<td>18.0</td>
+<td>16.0</td>
+<td>950.0</td>
+<td>372.6426</td>
+</tr>
+<tr>
+<td>93</td>
+<td>5</td>
+<td>17.0</td>
+<td>36.0</td>
+<td>720.0</td>
+<td>335.4990</td>
+</tr>
+<tr>
+<td>202</td>
+<td>5</td>
+<td>37.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>327.7218</td>
+</tr>
+<tr>
+<td>734</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>730.0</td>
+<td>389.8314</td>
+</tr>
+<tr>
+<td>2746</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>4000.0</td>
+<td>350.4114</td>
+</tr>
+<tr>
+<td>1810</td>
+<td>6</td>
+<td>21.0</td>
+<td>14.0</td>
+<td>730.0</td>
+<td>323.2506</td>
+</tr>
+<tr>
+<td>3127</td>
+<td>7</td>
+<td>23.0</td>
+<td>42.0</td>
+<td>2000.0</td>
+<td>298.7952</td>
+</tr>
+<tr>
+<td>104</td>
+<td>7</td>
+<td>21.0</td>
+<td>24.0</td>
+<td>1000.0</td>
+<td>286.4538</td>
+</tr>
+<tr>
+<td>1654</td>
+<td>7</td>
+<td>18.0</td>
+<td>98.0</td>
+<td>700.0</td>
+<td>236.0316</td>
+</tr>
+<tr>
+<td>3393</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>375.8664</td>
+</tr>
+<tr>
+<td>3373</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>364.8504</td>
+</tr>
+<tr>
+<td>3372</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>355.3518</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-10 16:28:49</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/pandas/">pandas</a>
+</li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/oq4xcx.md" download target="_blank">Pandas-分组聚合.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:43</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-02-10-blog/oq4xcx.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/kt0kvc/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>Data-数据可视化综述</b>
+      
+    </a>
+  
+  
+    <a href="/blog/nfqdqf/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>pandas-索引</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/kt0kvc/" class="prev" title="Data-数据可视化综述">
+    <i class="icon">&#xe600;</i>
+    
+    <b>Data-数据可视化综述</b>
+    
+  </a>
+  
+  
+  <a href="/blog/nfqdqf/" class="next" title="pandas-索引">
+    <i class="icon">&#x261e;</i>
+    <b>pandas-索引</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/oq4xcx"
+	   data-disqus-identifier="blog/oq4xcx" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/oq4xcx"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/oq4xcx",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、查看可视化设置风格matplotlib 预处理和折线图matplotlib 条形图matplot...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/nfqdqf/">pandas-索引</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/li8bkt/">pandas-基本知识</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、Pandas 数据结构import pandas as pdSeries通过 list 构建 S...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bokaz0057p8uj6zlmxz1f" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>

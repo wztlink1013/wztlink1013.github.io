@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>numpy-使用总结 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="numpy的使用，以及常用函数的总结">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="numpy-使用总结 | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/mk2z96/">
+  <meta property="og:site_name" content="numpy-使用总结">
+  <meta property="og:description" content="numpy的使用，以及常用函数的总结">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/li8bkt/" title="pandas-基本知识" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/gvi1hn/" title="Data-清洗和规整" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">numpy-使用总结<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/mk2z96/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 16:10:05</time>
+          <span class="aria-readonly">本文发布时间为2020年02月10日16时10分05秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: 
+<a class="article-tag-link" href="/blog/tags/numpy/">numpy</a>
+</span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/mk2z96"
+                      data-disqus-identifier="blog/mk2z96"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/mk2z96/">https://yun.wztlink1013.com/blog/mk2z96/</a>，<a href="https://yun.wztlink1013.com/blog/mk2z96/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="一、NumPy"><a href="#一、NumPy" class="headerlink" title="一、NumPy"></a>一、NumPy</h2><h3 id="ndarray-理解多维数组"><a href="#ndarray-理解多维数组" class="headerlink" title="ndarray 理解多维数组"></a>ndarray 理解多维数组</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成指定维度的随机多维数据</span></span><br><span class="line"><span class="comment">#数学建模应该用不到</span></span><br><span class="line">data = np.random.rand(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">print</span> (data)</span><br><span class="line"><span class="keyword">print</span> (type(data))</span><br><span class="line"><span class="comment">#type是显示数据类型；shape显示维度；ndim维度个数;type另外的作用</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.46686682</span> <span class="number">0.68844304</span> <span class="number">0.76663872</span>]</span><br><span class="line"> [<span class="number">0.70747721</span> <span class="number">0.47887587</span> <span class="number">0.25943412</span>]]</span><br><span class="line">&lt;class 'numpy.ndarray'&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ndim, shape 和 dtype 属性</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (<span class="string">'维度个数'</span>, data.ndim)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'各维度大小: '</span>, data.shape)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'数据类型: '</span>, data.dtype)</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">维度个数 2</span><br><span class="line"><span class="section">各维度大小:  (2, 3)</span></span><br><span class="line"><span class="section">数据类型:  float64</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建-ndarray"><a href="#创建-ndarray" class="headerlink" title="创建 ndarray"></a>创建 ndarray</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''1. array创建'''</span></span><br><span class="line"><span class="comment"># list转换为 ndarray</span></span><br><span class="line">l = range(<span class="number">10</span>)</span><br><span class="line">data = np.array(l)</span><br><span class="line"><span class="keyword">print</span> (data)</span><br><span class="line"><span class="keyword">print</span> (data.shape)</span><br><span class="line"><span class="keyword">print</span> (data.ndim)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br><span class="line">(<span class="number">10</span>,)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 嵌套序列转换为ndarray</span></span><br><span class="line">l2 = [range(<span class="number">10</span>), range(<span class="number">10</span>)]</span><br><span class="line"><span class="comment">#就这样形成了一个数组</span></span><br><span class="line">data = np.array(l2)</span><br><span class="line"><span class="keyword">print</span> (data)</span><br><span class="line"><span class="keyword">print</span> (data.shape)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]]</span><br><span class="line">(<span class="number">2</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''2. zeros;ones;empty创建'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># np.zeros</span></span><br><span class="line">zeros_arr = np.zeros((<span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line"><span class="comment">#注意元组，这里经常报错</span></span><br><span class="line"><span class="comment"># np.ones</span></span><br><span class="line">ones_arr = np.ones((<span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># np.empty[不全为零，而且是随机的一些数字]</span></span><br><span class="line">empty_arr = np.empty((<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># np.empty 指定数据类型</span></span><br><span class="line">empty_int_arr = np.empty((<span class="number">3</span>, <span class="number">3</span>), int)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (zeros_arr)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'-------------'</span>)</span><br><span class="line"><span class="keyword">print</span> (ones_arr)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'-------------'</span>)</span><br><span class="line"><span class="keyword">print</span> (empty_arr)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'-------------'</span>)</span><br><span class="line"><span class="keyword">print</span> (empty_int_arr)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]]</span><br><span class="line">-------------</span><br><span class="line">[[<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]]</span><br><span class="line">-------------</span><br><span class="line">[[<span class="number">0.000e+000</span> <span class="number">0.000e+000</span> <span class="number">0.000e+000</span>]</span><br><span class="line"> [<span class="number">0.000e+000</span> <span class="number">0.000e+000</span> <span class="number">2.174e-321</span>]</span><br><span class="line"> [<span class="number">0.000e+000</span> <span class="number">0.000e+000</span> <span class="number">0.000e+000</span>]]</span><br><span class="line">-------------</span><br><span class="line">[[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># np.arange()</span></span><br><span class="line"><span class="comment">#创建一系列连续的数算是numpy里面类似python里面range的功能</span></span><br><span class="line"><span class="keyword">print</span> (np.arange(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="二、操作-nddarray"><a href="#二、操作-nddarray" class="headerlink" title="二、操作 nddarray"></a>二、操作 nddarray</h2><h3 id="矢量化-vectorization"><a href="#矢量化-vectorization" class="headerlink" title="矢量化 (vectorization)"></a>矢量化 (vectorization)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 矢量与矢量运算</span></span><br><span class="line">arr = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">                [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"元素之间相乘："</span>)</span><br><span class="line"><span class="comment">#注意区分矩阵之间的运算。这里的矢量原酸相当于是广播式的运算</span></span><br><span class="line"><span class="keyword">print</span> (arr * arr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"矩阵相加："</span>)</span><br><span class="line"><span class="keyword">print</span> (arr + arr)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">元素之间相乘：</span><br><span class="line">[[ <span class="number">1</span>  <span class="number">4</span>  <span class="number">9</span>]</span><br><span class="line"> [<span class="number">16</span> <span class="number">25</span> <span class="number">36</span>]]</span><br><span class="line">矩阵相加：</span><br><span class="line">[[ <span class="number">2</span>  <span class="number">4</span>  <span class="number">6</span>]</span><br><span class="line"> [ <span class="number">8</span> <span class="number">10</span> <span class="number">12</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 矢量与标量运算</span></span><br><span class="line"><span class="keyword">print</span> (<span class="number">1.</span> / arr)</span><br><span class="line"><span class="keyword">print</span> (<span class="number">2.</span> * arr)</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[<span class="number">1.</span>         <span class="number">0.5</span>        <span class="number">0.33333333</span>]</span><br><span class="line"> [<span class="number">0.25</span>       <span class="number">0.2</span>        <span class="number">0.16666667</span>]]</span><br><span class="line">[[ <span class="number">2.</span>  <span class="number">4.</span>  <span class="number">6.</span>]</span><br><span class="line"> [ <span class="number">8.</span> <span class="number">10.</span> <span class="number">12.</span>]]</span><br></pre></td></tr></table></figure>
+<h3 id="索引与切片"><a href="#索引与切片" class="headerlink" title="索引与切片"></a>索引与切片</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一维数组</span></span><br><span class="line">arr1 = np.arange(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">print</span> (arr1)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (arr1[<span class="number">2</span>:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br><span class="line">[<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多维数组</span></span><br><span class="line">arr2 = np.arange(<span class="number">12</span>).reshape(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="comment">#要学会定义多维数组，arange是形成12个随机数，之后的reshape是形成维数</span></span><br><span class="line"><span class="comment">#多维数组的空间含义就是比如：3.4.5=长4宽5高3</span></span><br><span class="line"><span class="comment">#还有点数就是应用函数</span></span><br><span class="line"><span class="keyword">print</span> (arr2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">3</span>]</span><br><span class="line"> [ <span class="number">4</span>  <span class="number">5</span>  <span class="number">6</span>  <span class="number">7</span>]</span><br><span class="line"> [ <span class="number">8</span>  <span class="number">9</span> <span class="number">10</span> <span class="number">11</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (arr2[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (arr2[<span class="number">0</span>:<span class="number">2</span>, <span class="number">2</span>:])</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (arr2[:, <span class="number">1</span>:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[<span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>]</span><br><span class="line">[[<span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">6</span> <span class="number">7</span>]]</span><br><span class="line">[[ <span class="number">1</span>  <span class="number">2</span>]</span><br><span class="line"> [ <span class="number">5</span>  <span class="number">6</span>]</span><br><span class="line"> [ <span class="number">9</span> <span class="number">10</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 条件索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出 data_arr 中 2015年后的数据</span></span><br><span class="line">data_arr = np.random.rand(<span class="number">3</span>,<span class="number">3</span>)</span><br><span class="line"><span class="keyword">print</span> (data_arr)</span><br><span class="line"></span><br><span class="line">year_arr = np.array([[<span class="number">2000</span>, <span class="number">2001</span>, <span class="number">2000</span>],</span><br><span class="line">                     [<span class="number">2005</span>, <span class="number">2002</span>, <span class="number">2009</span>],</span><br><span class="line">                     [<span class="number">2001</span>, <span class="number">2003</span>, <span class="number">2010</span>]])</span><br><span class="line"></span><br><span class="line">is_year_after_2005 = year_arr &gt;= <span class="number">2005</span></span><br><span class="line"><span class="comment">#:他会扩展成同类型的数组</span></span><br><span class="line"><span class="keyword">print</span> (is_year_after_2005, is_year_after_2005.dtype)</span><br><span class="line"></span><br><span class="line">filtered_arr = data_arr[is_year_after_2005]</span><br><span class="line"></span><br><span class="line">filtered_arr = data_arr[year_arr &gt;= <span class="number">2005</span>]</span><br><span class="line"><span class="keyword">print</span> (filtered_arr)</span><br><span class="line"><span class="comment">#中间的一些语句可以删除</span></span><br><span class="line"><span class="comment">#最后生成得是一维数组，进行数据过滤的时候很有用</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[[0.61482194</span> <span class="number">0.0249229</span>  <span class="number">0.28525661</span><span class="string">]</span></span><br><span class="line"> <span class="string">[0.05121173</span> <span class="number">0.37672803</span> <span class="number">0.86259463</span><span class="string">]</span></span><br><span class="line"> <span class="string">[0.22648329</span> <span class="number">0.4581513</span>  <span class="number">0.18620441</span><span class="string">]]</span></span><br><span class="line"><span class="string">[[False</span> <span class="literal">False</span> <span class="literal">False</span><span class="string">]</span></span><br><span class="line"> <span class="string">[</span> <span class="literal">True</span> <span class="literal">False</span>  <span class="literal">True</span><span class="string">]</span></span><br><span class="line"> <span class="string">[False</span> <span class="literal">False</span>  <span class="literal">True</span><span class="string">]]</span> <span class="string">bool</span></span><br><span class="line"><span class="string">[0.05121173</span> <span class="number">0.86259463</span> <span class="number">0.18620441</span><span class="string">]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多个条件&amp; |</span></span><br><span class="line">filtered_arr = data_arr[(year_arr &lt;= <span class="number">2005</span>) &amp; (year_arr % <span class="number">2</span> == <span class="number">0</span>)]</span><br><span class="line"><span class="keyword">print</span> (filtered_arr)</span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">[<span class="number">0.61482194</span> <span class="number">0.28525661</span> <span class="number">0.37672803</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="转置-transpose"><a href="#转置-transpose" class="headerlink" title="转置 === transpose"></a>转置 === transpose</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.random.rand(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"><span class="keyword">print</span> (arr.transpose())</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.01538974</span> <span class="number">0.47573964</span> <span class="number">0.90684253</span>]</span><br><span class="line"> [<span class="number">0.93683601</span> <span class="number">0.64306611</span> <span class="number">0.63846634</span>]]</span><br><span class="line">[[<span class="number">0.01538974</span> <span class="number">0.93683601</span>]</span><br><span class="line"> [<span class="number">0.47573964</span> <span class="number">0.64306611</span>]</span><br><span class="line"> [<span class="number">0.90684253</span> <span class="number">0.63846634</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#高维数组的转换(图像里面会用得到转换维度)</span></span><br><span class="line"></span><br><span class="line">arr3d = np.random.rand(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">print</span> (arr3d)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'----------------------'</span>)</span><br><span class="line"><span class="keyword">print</span> (arr3d.transpose((<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>))) <span class="comment"># 多维数组的转置和定义不会</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">[[[<span class="number">0.18074837</span> <span class="number">0.64652003</span> <span class="number">0.80527972</span> <span class="number">0.67800268</span>]</span><br><span class="line">  [<span class="number">0.95766577</span> <span class="number">0.2498768</span>  <span class="number">0.00304503</span> <span class="number">0.7058178</span> ]</span><br><span class="line">  [<span class="number">0.12523549</span> <span class="number">0.18796252</span> <span class="number">0.72463798</span> <span class="number">0.15352211</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">0.38808013</span> <span class="number">0.31075033</span> <span class="number">0.53082474</span> <span class="number">0.32254431</span>]</span><br><span class="line">  [<span class="number">0.6861262</span>  <span class="number">0.02999367</span> <span class="number">0.70980993</span> <span class="number">0.09099878</span>]</span><br><span class="line">  [<span class="number">0.14987301</span> <span class="number">0.78237398</span> <span class="number">0.90159408</span> <span class="number">0.82897071</span>]]]</span><br><span class="line">----------------------</span><br><span class="line">[[[<span class="number">0.18074837</span> <span class="number">0.64652003</span> <span class="number">0.80527972</span> <span class="number">0.67800268</span>]</span><br><span class="line">  [<span class="number">0.38808013</span> <span class="number">0.31075033</span> <span class="number">0.53082474</span> <span class="number">0.32254431</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">0.95766577</span> <span class="number">0.2498768</span>  <span class="number">0.00304503</span> <span class="number">0.7058178</span> ]</span><br><span class="line">  [<span class="number">0.6861262</span>  <span class="number">0.02999367</span> <span class="number">0.70980993</span> <span class="number">0.09099878</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">0.12523549</span> <span class="number">0.18796252</span> <span class="number">0.72463798</span> <span class="number">0.15352211</span>]</span><br><span class="line">  [<span class="number">0.14987301</span> <span class="number">0.78237398</span> <span class="number">0.90159408</span> <span class="number">0.82897071</span>]]]</span><br></pre></td></tr></table></figure>
+<h3 id="ndarray-数据类型转化-astype"><a href="#ndarray-数据类型转化-astype" class="headerlink" title="ndarray 数据类型转化 === astype"></a>ndarray 数据类型转化 === astype</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">zeros_float_arr = np.zeros((<span class="number">3</span>, <span class="number">4</span>), dtype=np.float64)</span><br><span class="line"><span class="keyword">print</span> (zeros_float_arr)</span><br><span class="line"><span class="keyword">print</span> (zeros_float_arr.dtype)</span><br><span class="line"></span><br><span class="line"><span class="comment"># astype转换数据类型</span></span><br><span class="line">zeros_int_arr = zeros_float_arr.astype(np.int32)</span><br><span class="line"><span class="keyword">print</span> (zeros_int_arr)</span><br><span class="line"><span class="keyword">print</span> (zeros_int_arr.dtype)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]]</span><br><span class="line">float64</span><br><span class="line">[[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]]</span><br><span class="line">int32</span><br></pre></td></tr></table></figure>
+<h3 id="文本文件的读取"><a href="#文本文件的读取" class="headerlink" title="文本文件的读取"></a>文本文件的读取</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># loadtxt</span></span><br><span class="line">filename = <span class="string">'./presidential_polls.csv'</span></span><br><span class="line">data_array = np.loadtxt(filename,      <span class="comment"># 文件名</span></span><br><span class="line">                        delimiter=<span class="string">','</span>, <span class="comment"># 指定里面的元素分隔符</span></span><br><span class="line">                        dtype=str,     <span class="comment"># 指定数据类型</span></span><br><span class="line">                        usecols=(<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>)) <span class="comment"># 指定读取的列索引号</span></span><br><span class="line"><span class="keyword">print</span> (data_array, data_array.shape)</span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[[<span class="symbol">'cycle</span>' <span class="symbol">'type</span>' <span class="symbol">'matchup</span>']</span><br><span class="line"> [<span class="symbol">'2016</span>' '<span class="string">"polls-plus"</span>' '<span class="string">"Clinton vs. Trump vs. Johnson"</span>']</span><br><span class="line"> [<span class="symbol">'2016</span>' '<span class="string">"polls-plus"</span>' '<span class="string">"Clinton vs. Trump vs. Johnson"</span>']</span><br><span class="line"> ...</span><br><span class="line"> [<span class="symbol">'2016</span>' '<span class="string">"polls-only"</span>' '<span class="string">"Clinton vs. Trump vs. Johnson"</span>']</span><br><span class="line"> [<span class="symbol">'2016</span>' '<span class="string">"polls-only"</span>' '<span class="string">"Clinton vs. Trump vs. Johnson"</span>']</span><br><span class="line"> [<span class="symbol">'2016</span>' '<span class="string">"polls-only"</span>' '<span class="string">"Clinton vs. Trump vs. Johnson"</span>']] (<span class="name">10237</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># loadtxt, 明确指定每列数据的类型</span></span><br><span class="line">filename = <span class="string">'./presidential_polls.csv'</span></span><br><span class="line">data_array = np.loadtxt(filename,      <span class="comment"># 文件名</span></span><br><span class="line">                        delimiter=<span class="string">','</span>, <span class="comment"># 分隔符</span></span><br><span class="line">                        skiprows=<span class="number">1</span>,</span><br><span class="line">                        dtype=&#123;<span class="string">'names'</span>:(<span class="string">'cycle'</span>, <span class="string">'type'</span>, <span class="string">'matchup'</span>),</span><br><span class="line">                               <span class="string">'formats'</span>:(<span class="string">'i4'</span>, <span class="string">'S15'</span>, <span class="string">'S50'</span>)&#125;,     <span class="comment"># 数据类型</span></span><br><span class="line">                        usecols=(<span class="number">0</span>,<span class="number">2</span>,<span class="number">3</span>)) <span class="comment"># 指定读取的列索引号</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (data_array, data_array.shape) <span class="comment"># 读取的结果是一维的数组，每个元素是一个元组</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">[(<span class="name">2016</span>, b'<span class="string">"polls-plus"</span>', b'<span class="string">"Clinton vs. Trump vs. Johnson"</span>')</span><br><span class="line"> (<span class="name">2016</span>, b'<span class="string">"polls-plus"</span>', b'<span class="string">"Clinton vs. Trump vs. Johnson"</span>')</span><br><span class="line"> (<span class="name">2016</span>, b'<span class="string">"polls-plus"</span>', b'<span class="string">"Clinton vs. Trump vs. Johnson"</span>') ...</span><br><span class="line"> (<span class="name">2016</span>, b'<span class="string">"polls-only"</span>', b'<span class="string">"Clinton vs. Trump vs. Johnson"</span>')</span><br><span class="line"> (<span class="name">2016</span>, b'<span class="string">"polls-only"</span>', b'<span class="string">"Clinton vs. Trump vs. Johnson"</span>')</span><br><span class="line"> (<span class="name">2016</span>, b'<span class="string">"polls-only"</span>', b'<span class="string">"Clinton vs. Trump vs. Johnson"</span>')] (<span class="name">10236</span>,)</span><br></pre></td></tr></table></figure>
+<h2 id="三、np-的常用函数"><a href="#三、np-的常用函数" class="headerlink" title="三、np 的常用函数"></a>三、np 的常用函数</h2><h3 id="转置-transpose-1"><a href="#转置-transpose-1" class="headerlink" title="转置 transpose"></a>转置 transpose</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.random.rand(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"><span class="keyword">print</span> (arr.transpose())</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.78485041</span> <span class="number">0.88817969</span> <span class="number">0.34809014</span>]</span><br><span class="line"> [<span class="number">0.32744286</span> <span class="number">0.97539301</span> <span class="number">0.94401872</span>]]</span><br><span class="line">[[<span class="number">0.78485041</span> <span class="number">0.32744286</span>]</span><br><span class="line"> [<span class="number">0.88817969</span> <span class="number">0.97539301</span>]</span><br><span class="line"> [<span class="number">0.34809014</span> <span class="number">0.94401872</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#高维数组的转换(图像里面会用得到转换维度)</span></span><br><span class="line"><span class="comment">#不懂这里！！！</span></span><br><span class="line">arr3d = np.random.rand(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">print</span> (arr3d)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">'----------------------'</span>)</span><br><span class="line"><span class="keyword">print</span> (arr3d.transpose((<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>))) <span class="comment"># 多维数组的转置和定义不会</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">[[[<span class="number">0.28492549</span> <span class="number">0.60197236</span> <span class="number">0.45582367</span> <span class="number">0.21992479</span>]</span><br><span class="line">  [<span class="number">0.1747163</span>  <span class="number">0.69201365</span> <span class="number">0.85460359</span> <span class="number">0.65311699</span>]</span><br><span class="line">  [<span class="number">0.62189644</span> <span class="number">0.25217555</span> <span class="number">0.16347156</span> <span class="number">0.29831219</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">0.42826733</span> <span class="number">0.81396165</span> <span class="number">0.187138</span>   <span class="number">0.560564</span>  ]</span><br><span class="line">  [<span class="number">0.10162186</span> <span class="number">0.66419751</span> <span class="number">0.03261665</span> <span class="number">0.06969256</span>]</span><br><span class="line">  [<span class="number">0.55461652</span> <span class="number">0.55020586</span> <span class="number">0.50693591</span> <span class="number">0.31741807</span>]]]</span><br><span class="line">----------------------</span><br><span class="line">[[[<span class="number">0.28492549</span> <span class="number">0.60197236</span> <span class="number">0.45582367</span> <span class="number">0.21992479</span>]</span><br><span class="line">  [<span class="number">0.42826733</span> <span class="number">0.81396165</span> <span class="number">0.187138</span>   <span class="number">0.560564</span>  ]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">0.1747163</span>  <span class="number">0.69201365</span> <span class="number">0.85460359</span> <span class="number">0.65311699</span>]</span><br><span class="line">  [<span class="number">0.10162186</span> <span class="number">0.66419751</span> <span class="number">0.03261665</span> <span class="number">0.06969256</span>]]</span><br><span class="line"></span><br><span class="line"> [[<span class="number">0.62189644</span> <span class="number">0.25217555</span> <span class="number">0.16347156</span> <span class="number">0.29831219</span>]</span><br><span class="line">  [<span class="number">0.55461652</span> <span class="number">0.55020586</span> <span class="number">0.50693591</span> <span class="number">0.31741807</span>]]]</span><br></pre></td></tr></table></figure>
+<h3 id="ceil-和-floor-和-rint-和-isnan"><a href="#ceil-和-floor-和-rint-和-isnan" class="headerlink" title="ceil 和 floor 和 rint 和 isnan"></a>ceil 和 floor 和 rint 和 isnan</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.random.randn(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"><span class="keyword">print</span> (np.ceil(arr))</span><br><span class="line"><span class="comment">#向上最接近的整数</span></span><br><span class="line"><span class="keyword">print</span> (np.floor(arr))</span><br><span class="line"><span class="comment">#向下最接近的整数</span></span><br><span class="line"><span class="keyword">print</span> (np.rint(arr))</span><br><span class="line"><span class="comment">#四舍五入</span></span><br><span class="line"><span class="keyword">print</span> (np.isnan(arr))</span><br><span class="line"><span class="comment">#判断元素是否为NaN</span></span><br><span class="line"><span class="comment">#笔记上还有其他的函数</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[[</span> <span class="number">0.262106</span>   <span class="number">-1.33680008</span> <span class="number">-1.08562543</span><span class="string">]</span></span><br><span class="line"> <span class="string">[</span> <span class="number">0.3990978</span>   <span class="number">0.1410074</span>   <span class="number">0.64278274</span><span class="string">]]</span></span><br><span class="line"><span class="string">[[</span> <span class="number">1</span><span class="string">.</span> <span class="number">-1</span><span class="string">.</span> <span class="number">-1</span><span class="string">.]</span></span><br><span class="line"> <span class="string">[</span> <span class="number">1</span><span class="string">.</span>  <span class="number">1</span><span class="string">.</span>  <span class="number">1</span><span class="string">.]]</span></span><br><span class="line"><span class="string">[[</span> <span class="number">0</span><span class="string">.</span> <span class="number">-2</span><span class="string">.</span> <span class="number">-2</span><span class="string">.]</span></span><br><span class="line"> <span class="string">[</span> <span class="number">0</span><span class="string">.</span>  <span class="number">0</span><span class="string">.</span>  <span class="number">0</span><span class="string">.]]</span></span><br><span class="line"><span class="string">[[</span> <span class="number">0</span><span class="string">.</span> <span class="number">-1</span><span class="string">.</span> <span class="number">-1</span><span class="string">.]</span></span><br><span class="line"> <span class="string">[</span> <span class="number">0</span><span class="string">.</span>  <span class="number">0</span><span class="string">.</span>  <span class="number">1</span><span class="string">.]]</span></span><br><span class="line"><span class="string">[[False</span> <span class="literal">False</span> <span class="literal">False</span><span class="string">]</span></span><br><span class="line"> <span class="string">[False</span> <span class="literal">False</span> <span class="literal">False</span><span class="string">]]</span></span><br></pre></td></tr></table></figure>
+<h3 id="where"><a href="#where" class="headerlink" title="where"></a>where</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.random.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"></span><br><span class="line">np.where(arr &gt; <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line"><span class="comment">#（条件，满足输出，不满足输出）</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">2.04688394</span>  <span class="number">0.48063737</span>  <span class="number">1.20876913</span> <span class="number">-0.93412937</span>]</span><br><span class="line"> [<span class="number">-0.43427472</span> <span class="number">-1.47755481</span>  <span class="number">0.36882256</span> <span class="number">-0.08943138</span>]</span><br><span class="line"> [<span class="number">-0.2847686</span>   <span class="number">0.96915893</span>  <span class="number">0.32641235</span>  <span class="number">0.28346922</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">array([[ <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>, <span class="number">-1</span>],</span><br><span class="line">       [<span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>, <span class="number">-1</span>],</span><br><span class="line">       [<span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="sum"><a href="#sum" class="headerlink" title="sum"></a>sum</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.arange(<span class="number">10</span>).reshape(<span class="number">5</span>,<span class="number">2</span>)</span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (np.sum(arr))</span><br><span class="line"><span class="keyword">print</span> (np.sum(arr, axis=<span class="number">0</span>))</span><br><span class="line"><span class="keyword">print</span> (np.sum(arr, axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0</span> <span class="number">1</span>]</span><br><span class="line"> [<span class="number">2</span> <span class="number">3</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">5</span>]</span><br><span class="line"> [<span class="number">6</span> <span class="number">7</span>]</span><br><span class="line"> [<span class="number">8</span> <span class="number">9</span>]]</span><br><span class="line"><span class="number">45</span></span><br><span class="line">[<span class="number">20</span> <span class="number">25</span>]</span><br><span class="line">[ <span class="number">1</span>  <span class="number">5</span>  <span class="number">9</span> <span class="number">13</span> <span class="number">17</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="all-和-any"><a href="#all-和-any" class="headerlink" title="all 和 any"></a>all 和 any</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">arr = np.random.randn(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (np.any(arr &gt; <span class="number">0</span>))</span><br><span class="line"><span class="comment">#有一个就对</span></span><br><span class="line"><span class="keyword">print</span> (np.all(arr &gt; <span class="number">0</span>))</span><br><span class="line"><span class="comment">#全部对才对</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">·用处就是判断一组数据当中，是否===有点类似布尔类型的</span></span><br><span class="line"><span class="string">·这个也可以应用在pandas中的DataFrame中</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[[-1.020184</span>   <span class="number">-0.48466272</span> <span class="number">-0.8496271</span> <span class="string">]</span></span><br><span class="line"> <span class="string">[</span> <span class="number">0.88815825</span> <span class="number">-0.81911857</span>  <span class="number">0.64570539</span><span class="string">]]</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'\n·用处就是判断一组数据当中，是否===有点类似布尔类型的\n·这个也可以应用在pandas中的DataFrame中\n'</span></span><br></pre></td></tr></table></figure>
+<h3 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line"><span class="keyword">print</span> (arr)</span><br><span class="line"><span class="keyword">print</span> (np.unique(arr))</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">1</span> <span class="number">2</span> <span class="number">1</span>]</span><br><span class="line"> [<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]]</span><br><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-10 16:10:05</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/numpy/">numpy</a>
+</li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/mk2z96.md" download target="_blank">numpy-使用总结.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:43</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-02-10-blog/mk2z96.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/li8bkt/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>pandas-基本知识</b>
+      
+    </a>
+  
+  
+    <a href="/blog/gvi1hn/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>Data-清洗和规整</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/li8bkt/" class="prev" title="pandas-基本知识">
+    <i class="icon">&#xe600;</i>
+    
+    <b>pandas-基本知识</b>
+    
+  </a>
+  
+  
+  <a href="/blog/gvi1hn/" class="next" title="Data-清洗和规整">
+    <i class="icon">&#x261e;</i>
+    <b>Data-清洗和规整</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/mk2z96"
+	   data-disqus-identifier="blog/mk2z96" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/mk2z96"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/mk2z96",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、查看可视化设置风格matplotlib 预处理和折线图matplotlib 条形图matplot...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/oq4xcx/">Pandas-分组聚合</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/nfqdqf/">pandas-索引</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bokah0048p8ujfrvprmcb" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>

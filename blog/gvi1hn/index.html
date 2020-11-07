@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>Data-清洗和规整 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="清洗数据：删除指定数据、处理缺失数据etc；规整数据：连接、合并、重构、转换etc">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Data-清洗和规整 | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/gvi1hn/">
+  <meta property="og:site_name" content="Data-清洗和规整">
+  <meta property="og:description" content="清洗数据：删除指定数据、处理缺失数据etc；规整数据：连接、合并、重构、转换etc">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/mk2z96/" title="numpy-使用总结" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/dggm37/" title="Data-描述数据" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">Data-清洗和规整<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/gvi1hn/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 15:02:40</time>
+          <span class="aria-readonly">本文发布时间为2020年02月10日15时02分40秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: 
+<a class="article-tag-link" href="/blog/tags/DataAnalysis/">DataAnalysis</a>
+</span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/gvi1hn"
+                      data-disqus-identifier="blog/gvi1hn"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/gvi1hn/">https://yun.wztlink1013.com/blog/gvi1hn/</a>，<a href="https://yun.wztlink1013.com/blog/gvi1hn/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="一、删除指定行列数据"><a href="#一、删除指定行列数据" class="headerlink" title="一、删除指定行列数据"></a>一、删除指定行列数据</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict_data = &#123;<span class="string">'A'</span>: <span class="number">1.</span>,</span><br><span class="line">             <span class="string">'B'</span>: pd.Timestamp(<span class="string">'20161217'</span>),</span><br><span class="line">             <span class="string">'C'</span>: pd.Series(<span class="number">1</span>, index=list(range(<span class="number">4</span>)),dtype=<span class="string">'float32'</span>),</span><br><span class="line">             <span class="string">'D'</span>: np.array([<span class="number">3</span>] * <span class="number">4</span>,dtype=<span class="string">'int32'</span>),</span><br><span class="line">             <span class="string">'E'</span> : pd.Categorical([<span class="string">"Python"</span>,<span class="string">"Java"</span>,<span class="string">"C++"</span>,<span class="string">"C#"</span>]),</span><br><span class="line">             <span class="string">'F'</span> : <span class="string">'ChinaHadoop'</span> &#125;</span><br><span class="line">df_obj2 = pd.DataFrame(dict_data)</span><br><span class="line">print(df_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">     A          B    C  D       E            F</span><br><span class="line"><span class="number">0</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>  Python  ChinaHadoop</span><br><span class="line"><span class="number">1</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>    Java  ChinaHadoop</span><br><span class="line"><span class="number">2</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>     C++  ChinaHadoop</span><br><span class="line"><span class="number">3</span>  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>      C#  ChinaHadoop</span><br></pre></td></tr></table></figure>
+<h3 id="del"><a href="#del" class="headerlink" title="del"></a>del</h3><blockquote>
+<p>删除列</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">del</span> df_obj2[<span class="string">'A'</span>]</span><br><span class="line"><span class="keyword">print</span> (df_obj2.head())</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">           B    C  D       E            F</span><br><span class="line"><span class="number">0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>  Python  ChinaHadoop</span><br><span class="line"><span class="number">1</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>    Java  ChinaHadoop</span><br><span class="line"><span class="number">2</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>     C++  ChinaHadoop</span><br><span class="line"><span class="number">3</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span>  <span class="number">1.0</span>  <span class="number">3</span>      C#  ChinaHadoop</span><br></pre></td></tr></table></figure>
+<h3 id="drop"><a href="#drop" class="headerlink" title="drop"></a>drop</h3><blockquote>
+<p>删除行/列数据</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict_data = &#123;<span class="string">'A'</span>: <span class="number">1.</span>,</span><br><span class="line">             <span class="string">'B'</span>: pd.Timestamp(<span class="string">'20161217'</span>),</span><br><span class="line">             <span class="string">'C'</span>: pd.Series(<span class="number">1</span>, index=list(range(<span class="number">4</span>)),dtype=<span class="string">'float32'</span>),</span><br><span class="line">             <span class="string">'D'</span>: np.array([<span class="number">3</span>] * <span class="number">4</span>,dtype=<span class="string">'int32'</span>),</span><br><span class="line">             <span class="string">'E'</span> : pd.Categorical([<span class="string">"Python"</span>,<span class="string">"Java"</span>,<span class="string">"C++"</span>,<span class="string">"C#"</span>]),</span><br><span class="line">             <span class="string">'F'</span> : <span class="string">'ChinaHadoop'</span> &#125;</span><br><span class="line">df_obj3 = pd.DataFrame(dict_data,index = [<span class="string">'sfd'</span>,<span class="string">'sdfd'</span>,<span class="string">'wer'</span>,<span class="string">'rwer'</span>])</span><br><span class="line"><span class="keyword">print</span> (df_obj3.head(<span class="number">7</span>))</span><br><span class="line">print(df_obj3.drop(<span class="string">'wer'</span>))<span class="comment">#删除行</span></span><br><span class="line">print(df_obj3.drop(<span class="string">'F'</span>,axis=<span class="number">1</span>))<span class="comment">#删除列</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">        A          B   C  D       E            F</span><br><span class="line">sfd   <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>  Python  ChinaHadoop</span><br><span class="line">sdfd  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>    Java  ChinaHadoop</span><br><span class="line">wer   <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>     C++  ChinaHadoop</span><br><span class="line">rwer  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>      C#  ChinaHadoop</span><br><span class="line">        A          B   C  D       E            F</span><br><span class="line">sfd   <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>  Python  ChinaHadoop</span><br><span class="line">sdfd  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>    Java  ChinaHadoop</span><br><span class="line">rwer  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>      C#  ChinaHadoop</span><br><span class="line">        A          B   C  D       E</span><br><span class="line">sfd   <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>  Python</span><br><span class="line">sdfd  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>    Java</span><br><span class="line">wer   <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>     C++</span><br><span class="line">rwer  <span class="number">1.0</span> <span class="number">2016</span><span class="number">-12</span><span class="number">-17</span> NaN  <span class="number">3</span>      C#</span><br></pre></td></tr></table></figure>
+<h2 id="二、处理缺失数据"><a href="#二、处理缺失数据" class="headerlink" title="二、处理缺失数据"></a>二、处理缺失数据</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_data = pd.DataFrame([np.random.randn(<span class="number">3</span>), [<span class="number">1.</span>, np.nan, np.nan],</span><br><span class="line">                       [<span class="number">4.</span>, np.nan, np.nan], [<span class="number">1.</span>, np.nan, <span class="number">2.</span>]])</span><br><span class="line">df_data.head()</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-0.702713</td>
+<td>-0.991383</td>
+<td>-1.058464</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1.000000</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4.000000</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.000000</td>
+<td>NaN</td>
+<td>2.000000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="判断是否存在缺失值"><a href="#判断是否存在缺失值" class="headerlink" title="判断是否存在缺失值"></a>判断是否存在缺失值</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_data.isnull()</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr>
+<td>1</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>2</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>3</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<h3 id="丢弃缺失数据"><a href="#丢弃缺失数据" class="headerlink" title="丢弃缺失数据"></a>丢弃缺失数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(df_data.dropna(axis=<span class="number">0</span>))</span><br><span class="line"><span class="comment">#0是行；1是列</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">          <span class="number">0</span>         <span class="number">1</span>         <span class="number">2</span></span><br><span class="line"><span class="number">0</span> <span class="number">-0.702713</span> <span class="number">-0.991383</span> <span class="number">-1.058464</span></span><br></pre></td></tr></table></figure>
+<h3 id="填充缺失数据"><a href="#填充缺失数据" class="headerlink" title="填充缺失数据"></a>填充缺失数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_data.fillna(<span class="number">-100.</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-0.702713</td>
+<td>-0.991383</td>
+<td>-1.058464</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1.000000</td>
+<td>-100.000000</td>
+<td>-100.000000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4.000000</td>
+<td>-100.000000</td>
+<td>-100.000000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.000000</td>
+<td>-100.000000</td>
+<td>2.000000</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三、数据规整-连接-含索引"><a href="#三、数据规整-连接-含索引" class="headerlink" title="三、数据规整-连接-含索引"></a>三、数据规整-连接-含索引</h2><ul>
+<li>数据连接 merge</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj1 = pd.DataFrame(&#123;<span class="string">'key'</span>: [<span class="string">'b'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>],</span><br><span class="line">                        <span class="string">'data1'</span> : [<span class="string">'sfd'</span>,<span class="string">'fdsf'</span>,<span class="string">'we'</span>,<span class="number">24</span>,<span class="number">3253</span>,<span class="number">234</span>,<span class="number">23</span>]&#125;)</span><br><span class="line">df_obj2 = pd.DataFrame(&#123;<span class="string">'key'</span>: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'d'</span>],</span><br><span class="line">                        <span class="string">'data2'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">3</span>)&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (df_obj1)</span><br><span class="line"><span class="keyword">print</span> (df_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  <span class="type">key</span> data1</span><br><span class="line"><span class="number">0</span>   b   sfd</span><br><span class="line"><span class="number">1</span>   b  fdsf</span><br><span class="line"><span class="number">2</span>   a    we</span><br><span class="line"><span class="number">3</span>   c    <span class="number">24</span></span><br><span class="line"><span class="number">4</span>   a  <span class="number">3253</span></span><br><span class="line"><span class="number">5</span>   a   <span class="number">234</span></span><br><span class="line"><span class="number">6</span>   b    <span class="number">23</span></span><br><span class="line">  <span class="type">key</span>  data2</span><br><span class="line"><span class="number">0</span>   a      <span class="number">0</span></span><br><span class="line"><span class="number">1</span>   b      <span class="number">6</span></span><br><span class="line"><span class="number">2</span>   d      <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<h3 id="merge-和-on"><a href="#merge-和-on" class="headerlink" title="merge 和 on"></a>merge 和 on</h3><blockquote>
+<p>默认将重叠列的列名作为“外键”进行连接</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.merge(df_obj1, df_obj2)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># on显示指定“外键”</span></span><br><span class="line">pd.merge(df_obj1, df_obj2, on=<span class="string">'key'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="left-on-和-right-on"><a href="#left-on-和-right-on" class="headerlink" title="left-on 和 right-on"></a>left-on 和 right-on</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># left_on，right_on分别指定左侧数据和右侧数据的“外键”</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 更改列名</span></span><br><span class="line">df_obj1 = df_obj1.rename(columns=&#123;<span class="string">'key'</span>:<span class="string">'key1'</span>&#125;)</span><br><span class="line">df_obj2 = df_obj2.rename(columns=&#123;<span class="string">'key'</span>:<span class="string">'key2'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(df_obj1)</span><br><span class="line">print(df_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  key1 data1</span><br><span class="line"><span class="number">0</span>    b   sfd</span><br><span class="line"><span class="number">1</span>    b  fdsf</span><br><span class="line"><span class="number">2</span>    a    we</span><br><span class="line"><span class="number">3</span>    c    <span class="number">24</span></span><br><span class="line"><span class="number">4</span>    a  <span class="number">3253</span></span><br><span class="line"><span class="number">5</span>    a   <span class="number">234</span></span><br><span class="line"><span class="number">6</span>    b    <span class="number">23</span></span><br><span class="line">  key2  data2</span><br><span class="line"><span class="number">0</span>    a      <span class="number">0</span></span><br><span class="line"><span class="number">1</span>    b      <span class="number">6</span></span><br><span class="line"><span class="number">2</span>    d      <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.merge(df_obj1, df_obj2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how"><a href="#how" class="headerlink" title="how"></a>how</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># “外连接”</span></span><br><span class="line">pd.merge(df_obj1, df_obj2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>, how=<span class="string">'outer'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>c</td>
+<td>24</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>d</td>
+<td>6.0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 左连接</span></span><br><span class="line">pd.merge(df_obj1, df_obj2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>, how=<span class="string">'left'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>c</td>
+<td>24</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 右连接</span></span><br><span class="line">pd.merge(df_obj1, df_obj2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>, how=<span class="string">'right'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>d</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="处理重复列名-suffixes"><a href="#处理重复列名-suffixes" class="headerlink" title="处理重复列名 suffixes"></a>处理重复列名 suffixes</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 处理重复列名</span></span><br><span class="line">df_obj1 = pd.DataFrame(&#123;<span class="string">'key'</span>: [<span class="string">'b'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>],</span><br><span class="line">                        <span class="string">'data'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">7</span>)&#125;)</span><br><span class="line">df_obj2 = pd.DataFrame(&#123;<span class="string">'key'</span>: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'d'</span>],</span><br><span class="line">                        <span class="string">'data'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">3</span>)&#125;)</span><br><span class="line"></span><br><span class="line">pd.merge(df_obj1, df_obj2, on=<span class="string">'key'</span>, suffixes=(<span class="string">'_left'</span>, <span class="string">'_right'</span>))</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data_left</th>
+<th>data_right</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>7</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按索引连接</span></span><br><span class="line">df_obj3 = pd.DataFrame(&#123;<span class="string">'key'</span>: [<span class="string">'b'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>],</span><br><span class="line">                        <span class="string">'data1'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">7</span>)&#125;)</span><br><span class="line">df_obj4 = pd.DataFrame(&#123;<span class="string">'data2'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">3</span>)&#125;, index=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'d'</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(df_obj3)</span><br><span class="line">print(df_obj4)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  <span class="type">key</span>  data1</span><br><span class="line"><span class="number">0</span>   b      <span class="number">7</span></span><br><span class="line"><span class="number">1</span>   b      <span class="number">4</span></span><br><span class="line"><span class="number">2</span>   a      <span class="number">1</span></span><br><span class="line"><span class="number">3</span>   c      <span class="number">9</span></span><br><span class="line"><span class="number">4</span>   a      <span class="number">2</span></span><br><span class="line"><span class="number">5</span>   a      <span class="number">9</span></span><br><span class="line"><span class="number">6</span>   b      <span class="number">7</span></span><br><span class="line">   data2</span><br><span class="line">a      <span class="number">9</span></span><br><span class="line">b      <span class="number">4</span></span><br><span class="line">d      <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.merge(df_obj3, df_obj4, left_on=<span class="string">'key'</span>, right_index=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>7</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>7</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>1</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>2</td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>9</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="按索引连接-right-index"><a href="#按索引连接-right-index" class="headerlink" title="按索引连接 right_index"></a>按索引连接 right_index</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按索引连接</span></span><br><span class="line">df_obj1 = pd.DataFrame(&#123;<span class="string">'key'</span>: [<span class="string">'b'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'c'</span>, <span class="string">'a'</span>, <span class="string">'a'</span>, <span class="string">'b'</span>],</span><br><span class="line">                        <span class="string">'data1'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">7</span>)&#125;)</span><br><span class="line">df_obj2 = pd.DataFrame(&#123;<span class="string">'data2'</span> : np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">3</span>)&#125;, index=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'d'</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(df_obj1)</span><br><span class="line">print(df_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">  <span class="type">key</span>  data1</span><br><span class="line"><span class="number">0</span>   b      <span class="number">0</span></span><br><span class="line"><span class="number">1</span>   b      <span class="number">2</span></span><br><span class="line"><span class="number">2</span>   a      <span class="number">7</span></span><br><span class="line"><span class="number">3</span>   c      <span class="number">3</span></span><br><span class="line"><span class="number">4</span>   a      <span class="number">1</span></span><br><span class="line"><span class="number">5</span>   a      <span class="number">1</span></span><br><span class="line"><span class="number">6</span>   b      <span class="number">6</span></span><br><span class="line">   data2</span><br><span class="line">a      <span class="number">2</span></span><br><span class="line">b      <span class="number">1</span></span><br><span class="line">d      <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.merge(df_obj1, df_obj2, left_on=<span class="string">'key'</span>, right_index=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>7</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="四、数据合并"><a href="#四、数据合并" class="headerlink" title="四、数据合并"></a>四、数据合并</h2><ul>
+<li>数据合并 concat</li>
+<li>按索引连接===right_index</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+<h3 id="numpy-的-concat"><a href="#numpy-的-concat" class="headerlink" title="numpy 的 concat"></a>numpy 的 concat</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr1 = np.random.randint(<span class="number">0</span>, <span class="number">10</span>, (<span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line">arr2 = np.random.randint(<span class="number">0</span>, <span class="number">10</span>, (<span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (arr1)</span><br><span class="line"><span class="keyword">print</span> (arr2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">[[<span class="number">6</span> <span class="number">0</span> <span class="number">3</span> <span class="number">2</span>]</span><br><span class="line"> [<span class="number">5</span> <span class="number">7</span> <span class="number">9</span> <span class="number">8</span>]</span><br><span class="line"> [<span class="number">5</span> <span class="number">8</span> <span class="number">0</span> <span class="number">3</span>]]</span><br><span class="line">[[<span class="number">6</span> <span class="number">5</span> <span class="number">7</span> <span class="number">9</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">7</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.concatenate([arr1, arr2])</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">array([[<span class="number">6</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">8</span>],</span><br><span class="line">       [<span class="number">5</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">6</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">7</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.concatenate([arr1, arr2], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">array([[<span class="number">6</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>],</span><br><span class="line">       [<span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">5</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">7</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="series-上的-concat"><a href="#series-上的-concat" class="headerlink" title="series 上的 concat"></a>series 上的 concat</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># index 没有重复的情况</span></span><br><span class="line">ser_obj1 = pd.Series(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">5</span>), index=range(<span class="number">0</span>,<span class="number">5</span>))</span><br><span class="line">ser_obj2 = pd.Series(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">4</span>), index=range(<span class="number">5</span>,<span class="number">9</span>))</span><br><span class="line">ser_obj3 = pd.Series(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">3</span>), index=range(<span class="number">9</span>,<span class="number">12</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([ser_obj1, ser_obj2, ser_obj3])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>     <span class="number">0</span></span><br><span class="line"><span class="number">1</span>     <span class="number">4</span></span><br><span class="line"><span class="number">2</span>     <span class="number">5</span></span><br><span class="line"><span class="number">3</span>     <span class="number">1</span></span><br><span class="line"><span class="number">4</span>     <span class="number">9</span></span><br><span class="line"><span class="number">5</span>     <span class="number">7</span></span><br><span class="line"><span class="number">6</span>     <span class="number">8</span></span><br><span class="line"><span class="number">7</span>     <span class="number">5</span></span><br><span class="line"><span class="number">8</span>     <span class="number">0</span></span><br><span class="line"><span class="number">9</span>     <span class="number">5</span></span><br><span class="line"><span class="number">10</span>    <span class="number">9</span></span><br><span class="line"><span class="number">11</span>    <span class="number">0</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>5</td>
+<td>NaN</td>
+<td>7.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>6</td>
+<td>NaN</td>
+<td>8.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NaN</td>
+<td>5.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>8</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>9</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>9.0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># index 有重复的情况</span></span><br><span class="line">ser_obj1 = pd.Series(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">5</span>), index=range(<span class="number">5</span>))</span><br><span class="line">ser_obj2 = pd.Series(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">4</span>), index=range(<span class="number">4</span>))</span><br><span class="line">ser_obj3 = pd.Series(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">3</span>), index=range(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (ser_obj1)</span><br><span class="line"><span class="keyword">print</span> (ser_obj2)</span><br><span class="line"><span class="keyword">print</span> (ser_obj3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">5</span></span><br><span class="line"><span class="number">1</span>    <span class="number">3</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">8</span></span><br><span class="line"><span class="number">4</span>    <span class="number">3</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br><span class="line"><span class="number">0</span>    <span class="number">5</span></span><br><span class="line"><span class="number">1</span>    <span class="number">3</span></span><br><span class="line"><span class="number">2</span>    <span class="number">2</span></span><br><span class="line"><span class="number">3</span>    <span class="number">1</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br><span class="line"><span class="number">0</span>    <span class="number">5</span></span><br><span class="line"><span class="number">1</span>    <span class="number">8</span></span><br><span class="line"><span class="number">2</span>    <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([ser_obj1, ser_obj2, ser_obj3])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">5</span></span><br><span class="line"><span class="number">1</span>    <span class="number">3</span></span><br><span class="line"><span class="number">2</span>    <span class="number">0</span></span><br><span class="line"><span class="number">3</span>    <span class="number">8</span></span><br><span class="line"><span class="number">4</span>    <span class="number">3</span></span><br><span class="line"><span class="number">0</span>    <span class="number">5</span></span><br><span class="line"><span class="number">1</span>    <span class="number">3</span></span><br><span class="line"><span class="number">2</span>    <span class="number">2</span></span><br><span class="line"><span class="number">3</span>    <span class="number">1</span></span><br><span class="line"><span class="number">0</span>    <span class="number">5</span></span><br><span class="line"><span class="number">1</span>    <span class="number">8</span></span><br><span class="line"><span class="number">2</span>    <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=<span class="number">1</span>, join=<span class="string">'inner'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dataframe-上的-concat"><a href="#dataframe-上的-concat" class="headerlink" title="dataframe 上的 concat"></a>dataframe 上的 concat</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj1 = pd.DataFrame(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, (<span class="number">3</span>, <span class="number">2</span>)), index=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>],</span><br><span class="line">                       columns=[<span class="string">'A'</span>, <span class="string">'B'</span>])</span><br><span class="line">df_obj2 = pd.DataFrame(np.random.randint(<span class="number">0</span>, <span class="number">10</span>, (<span class="number">2</span>, <span class="number">2</span>)), index=[<span class="string">'a'</span>, <span class="string">'b'</span>],</span><br><span class="line">                       columns=[<span class="string">'C'</span>, <span class="string">'D'</span>])</span><br><span class="line"><span class="keyword">print</span> (df_obj1)</span><br><span class="line"><span class="keyword">print</span> (df_obj2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">   A  B</span><br><span class="line">a  <span class="number">4</span>  <span class="number">3</span></span><br><span class="line">b  <span class="number">8</span>  <span class="number">1</span></span><br><span class="line">c  <span class="number">6</span>  <span class="number">3</span></span><br><span class="line">   C  D</span><br><span class="line">a  <span class="number">1</span>  <span class="number">3</span></span><br><span class="line">b  <span class="number">8</span>  <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([df_obj1, df_obj2])</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version</span><br><span class="line">of pandas will <span class="keyword">change</span> <span class="keyword">to</span> <span class="keyword">not</span> <span class="keyword">sort</span> <span class="keyword">by</span> default.</span><br><span class="line"></span><br><span class="line"><span class="keyword">To</span> <span class="keyword">accept</span> the future behavior, pass <span class="string">'sort=False'</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">To</span> retain the <span class="keyword">current</span> behavior <span class="keyword">and</span> silence the <span class="keyword">warning</span>, pass <span class="string">'sort=True'</span>.</span><br><span class="line"></span><br><span class="line">  <span class="string">"""Entry point for launching an IPython kernel.</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>b</td>
+<td>8.0</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>c</td>
+<td>6.0</td>
+<td>3.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>a</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>8.0</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([df_obj1, df_obj2], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version</span><br><span class="line">of pandas will <span class="keyword">change</span> <span class="keyword">to</span> <span class="keyword">not</span> <span class="keyword">sort</span> <span class="keyword">by</span> default.</span><br><span class="line"></span><br><span class="line"><span class="keyword">To</span> <span class="keyword">accept</span> the future behavior, pass <span class="string">'sort=False'</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">To</span> retain the <span class="keyword">current</span> behavior <span class="keyword">and</span> silence the <span class="keyword">warning</span>, pass <span class="string">'sort=True'</span>.</span><br><span class="line"></span><br><span class="line">  <span class="string">"""Entry point for launching an IPython kernel.</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>4</td>
+<td>3</td>
+<td>1.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>8</td>
+<td>1</td>
+<td>8.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>c</td>
+<td>6</td>
+<td>3</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+<h2 id="五、数据重构"><a href="#五、数据重构" class="headerlink" title="五、数据重构"></a>五、数据重构</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+<h3 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj = pd.DataFrame(np.random.randint(<span class="number">0</span>,<span class="number">10</span>, (<span class="number">5</span>,<span class="number">2</span>)), columns=[<span class="string">'data1'</span>, <span class="string">'data2'</span>])</span><br><span class="line">df_obj</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">stacked = df_obj.stack()</span><br><span class="line"><span class="keyword">print</span> (stacked)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>  <span class="string">data1</span>    <span class="number">0</span></span><br><span class="line">   <span class="string">data2</span>    <span class="number">4</span></span><br><span class="line"><span class="number">1</span>  <span class="string">data1</span>    <span class="number">6</span></span><br><span class="line">   <span class="string">data2</span>    <span class="number">2</span></span><br><span class="line"><span class="number">2</span>  <span class="string">data1</span>    <span class="number">9</span></span><br><span class="line">   <span class="string">data2</span>    <span class="number">8</span></span><br><span class="line"><span class="number">3</span>  <span class="string">data1</span>    <span class="number">7</span></span><br><span class="line">   <span class="string">data2</span>    <span class="number">0</span></span><br><span class="line"><span class="number">4</span>  <span class="string">data1</span>    <span class="number">3</span></span><br><span class="line">   <span class="string">data2</span>    <span class="number">1</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (type(stacked))</span><br><span class="line"><span class="keyword">print</span> (type(stacked.index))</span><br></pre></td></tr></table></figure>
+<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'pandas.core.series.Series'</span>&gt;</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">'pandas.core.indexes.multi.MultiIndex'</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="unstack"><a href="#unstack" class="headerlink" title="unstack"></a>unstack</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认操作内层索引</span></span><br><span class="line">stacked.unstack()</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过level指定操作索引的级别</span></span><br><span class="line">stacked.unstack(level=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data1</td>
+<td>0</td>
+<td>6</td>
+<td>9</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>data2</td>
+<td>4</td>
+<td>2</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六、数据转换"><a href="#六、数据转换" class="headerlink" title="六、数据转换"></a>六、数据转换</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+<h3 id="重复数据-duplicates-函数"><a href="#重复数据-duplicates-函数" class="headerlink" title="重复数据 duplicates 函数"></a>重复数据 duplicates 函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj = pd.DataFrame(&#123;<span class="string">'data1'</span> : [<span class="string">'a'</span>] * <span class="number">4</span> + [<span class="string">'b'</span>] * <span class="number">4</span>,</span><br><span class="line">                       <span class="string">'data2'</span> : np.random.randint(<span class="number">0</span>, <span class="number">4</span>, <span class="number">8</span>)&#125;)</span><br><span class="line">df_obj</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>b</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj.duplicated()</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">3</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">4</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">5</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">6</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">7</span>    <span class="literal">False</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">bool</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj.drop_duplicates()</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>b</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df_obj.drop_duplicates(<span class="string">'data2'</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a>map 函数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj = pd.Series(np.random.randint(<span class="number">0</span>,<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line">ser_obj</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1</span>    <span class="number">9</span></span><br><span class="line"><span class="number">2</span>    <span class="number">1</span></span><br><span class="line"><span class="number">3</span>    <span class="number">2</span></span><br><span class="line"><span class="number">4</span>    <span class="number">7</span></span><br><span class="line"><span class="number">5</span>    <span class="number">2</span></span><br><span class="line"><span class="number">6</span>    <span class="number">4</span></span><br><span class="line"><span class="number">7</span>    <span class="number">5</span></span><br><span class="line"><span class="number">8</span>    <span class="number">4</span></span><br><span class="line"><span class="number">9</span>    <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj.map(<span class="keyword">lambda</span> x : x ** <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>     <span class="number">1</span></span><br><span class="line"><span class="number">1</span>    <span class="number">81</span></span><br><span class="line"><span class="number">2</span>     <span class="number">1</span></span><br><span class="line"><span class="number">3</span>     <span class="number">4</span></span><br><span class="line"><span class="number">4</span>    <span class="number">49</span></span><br><span class="line"><span class="number">5</span>     <span class="number">4</span></span><br><span class="line"><span class="number">6</span>    <span class="number">16</span></span><br><span class="line"><span class="number">7</span>    <span class="number">25</span></span><br><span class="line"><span class="number">8</span>    <span class="number">16</span></span><br><span class="line"><span class="number">9</span>    <span class="number">36</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据替换-repalce"><a href="#数据替换-repalce" class="headerlink" title="数据替换 repalce"></a>数据替换 repalce</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 替换单个值</span></span><br><span class="line">ser_obj.replace(<span class="number">0</span>, <span class="number">-100</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1</span>    <span class="number">9</span></span><br><span class="line"><span class="number">2</span>    <span class="number">1</span></span><br><span class="line"><span class="number">3</span>    <span class="number">2</span></span><br><span class="line"><span class="number">4</span>    <span class="number">7</span></span><br><span class="line"><span class="number">5</span>    <span class="number">2</span></span><br><span class="line"><span class="number">6</span>    <span class="number">4</span></span><br><span class="line"><span class="number">7</span>    <span class="number">5</span></span><br><span class="line"><span class="number">8</span>    <span class="number">4</span></span><br><span class="line"><span class="number">9</span>    <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 替换多个值</span></span><br><span class="line">ser_obj.replace([<span class="number">0</span>, <span class="number">2</span>], <span class="number">-100</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>      <span class="number">1</span></span><br><span class="line"><span class="number">1</span>      <span class="number">9</span></span><br><span class="line"><span class="number">2</span>      <span class="number">1</span></span><br><span class="line"><span class="number">3</span>   <span class="number">-100</span></span><br><span class="line"><span class="number">4</span>      <span class="number">7</span></span><br><span class="line"><span class="number">5</span>   <span class="number">-100</span></span><br><span class="line"><span class="number">6</span>      <span class="number">4</span></span><br><span class="line"><span class="number">7</span>      <span class="number">5</span></span><br><span class="line"><span class="number">8</span>      <span class="number">4</span></span><br><span class="line"><span class="number">9</span>      <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int32</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 替换多个值</span></span><br><span class="line">ser_obj.replace([<span class="number">0</span>, <span class="number">2</span>], [<span class="number">-100</span>, <span class="number">-200</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>      <span class="number">1</span></span><br><span class="line"><span class="number">1</span>      <span class="number">9</span></span><br><span class="line"><span class="number">2</span>      <span class="number">1</span></span><br><span class="line"><span class="number">3</span>   <span class="number">-200</span></span><br><span class="line"><span class="number">4</span>      <span class="number">7</span></span><br><span class="line"><span class="number">5</span>   <span class="number">-200</span></span><br><span class="line"><span class="number">6</span>      <span class="number">4</span></span><br><span class="line"><span class="number">7</span>      <span class="number">5</span></span><br><span class="line"><span class="number">8</span>      <span class="number">4</span></span><br><span class="line"><span class="number">9</span>      <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ser_obj.map(<span class="keyword">lambda</span> x : x ** <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#### 3. 数据替换repalce</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换单个值</span></span><br><span class="line">ser_obj.replace(<span class="number">0</span>, <span class="number">-100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换多个值</span></span><br><span class="line">ser_obj.replace([<span class="number">0</span>, <span class="number">2</span>], <span class="number">-100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换多个值</span></span><br><span class="line">ser_obj.replace([<span class="number">0</span>, <span class="number">2</span>], [<span class="number">-100</span>, <span class="number">-200</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>      <span class="number">1</span></span><br><span class="line"><span class="number">1</span>      <span class="number">9</span></span><br><span class="line"><span class="number">2</span>      <span class="number">1</span></span><br><span class="line"><span class="number">3</span>   <span class="number">-200</span></span><br><span class="line"><span class="number">4</span>      <span class="number">7</span></span><br><span class="line"><span class="number">5</span>   <span class="number">-200</span></span><br><span class="line"><span class="number">6</span>      <span class="number">4</span></span><br><span class="line"><span class="number">7</span>      <span class="number">5</span></span><br><span class="line"><span class="number">8</span>      <span class="number">4</span></span><br><span class="line"><span class="number">9</span>      <span class="number">6</span></span><br><span class="line"><span class="attr">dtype:</span> <span class="string">int64</span></span><br></pre></td></tr></table></figure>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-10 15:02:40</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/DataAnalysis/">DataAnalysis</a>
+</li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/gvi1hn.md" download target="_blank">Data-清洗和规整.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:44</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-02-10-blog/gvi1hn.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/mk2z96/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>numpy-使用总结</b>
+      
+    </a>
+  
+  
+    <a href="/blog/dggm37/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>Data-描述数据</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/mk2z96/" class="prev" title="numpy-使用总结">
+    <i class="icon">&#xe600;</i>
+    
+    <b>numpy-使用总结</b>
+    
+  </a>
+  
+  
+  <a href="/blog/dggm37/" class="next" title="Data-描述数据">
+    <i class="icon">&#x261e;</i>
+    <b>Data-描述数据</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/gvi1hn"
+	   data-disqus-identifier="blog/gvi1hn" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/gvi1hn"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/gvi1hn",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、查看可视化设置风格matplotlib 预处理和折线图matplotlib 条形图matplot...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/oq4xcx/">Pandas-分组聚合</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/nfqdqf/">pandas-索引</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bok9m002wp8ujzef9sb1x" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<!-- TODO: HTML首部 -->
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>入门机器学习scikit-learn | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="机器学习基本概念、相关SOP、scikit-learn、主成分分析等">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="入门机器学习scikit-learn | 尼采般地抒情">
+  <meta property="og:url" content="https://yun.wztlink1013.com/blog/wgv3ak/">
+  <meta property="og:site_name" content="入门机器学习scikit-learn">
+  <meta property="og:description" content="机器学习基本概念、相关SOP、scikit-learn、主成分分析等">
+  <meta name="generator" content="https://hexo.io" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- <meta name="renderer" content="webkit"> -->
+  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <meta name="referrer" content="no-referrer" />
+  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://yun.wztlink1013.com/blog/uatg7m/" title="python-路径和nltk" />
+  <link rel="next" href="https://yun.wztlink1013.com/blog/pm7mpk/" title="VScode编写C/C++及其他使用" />
+  <!-- TODO: entry_blog -->
+  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+</head>
+
+
+<body>
+  <!-- TODO: CSS功能 -->
+  <div class="rainbow"></div>
+  <div class="container">
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="bread">
+        <a href="/">尼采般地抒情个人博客</a> »
+        <!-- TODO: entry_blog -->
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/MachingLearning/">MachingLearning</a>
+
+
+      </div>
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">入门机器学习scikit-learn<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/wgv3ak/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-05 15:24:29</time>
+          <span class="aria-readonly">本文发布时间为2020年02月05日15时24分29秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/MachingLearning/">MachingLearning</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: 
+<a class="article-tag-link" href="/blog/tags/scikit-learn/">scikit-learn</a>, <a class="article-tag-link" href="/blog/tags/sklearn/">sklearn</a>
+</span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/wgv3ak"
+                      data-disqus-identifier="blog/wgv3ak"
+                      id="changyan_count_unit"></a></span>
+        <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/wgv3ak/">https://yun.wztlink1013.com/blog/wgv3ak/</a>，<a href="https://yun.wztlink1013.com/blog/wgv3ak/#comments">参与评论</a></p>
+          <img src="/blogimgs/avatar.png" width="150">
+        </div>
+        <h2 id="一、机器学习的一些概念"><a href="#一、机器学习的一些概念" class="headerlink" title="一、机器学习的一些概念"></a>一、机器学习的一些概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>特征：一组数据的多个属性</li>
+<li>标签：人为指定特征</li>
+<li>监督学习：就像分类（离散化的标签），回归（连续性的标签）、【“有标准答案”】</li>
+<li>无监督学习：就像聚类【“无标准答案”】</li>
+<li><strong>数据</strong>：是机器学习的命脉</li>
+</ul>
+<h3 id="基本框架图"><a href="#基本框架图" class="headerlink" title="基本框架图"></a>基本框架图</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130909-116e16a4-e86a-46e0-93fb-ac0263257056.png#align=left&amp;display=inline&amp;height=271&amp;margin=%5Bobject%20Object%5D&amp;originHeight=692&amp;originWidth=1157&amp;size=0&amp;status=done&amp;style=shadow&amp;width=453" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686131288-431d8fe6-bf3f-4f3e-9986-9b282e9e2982.png#align=left&amp;display=inline&amp;height=356&amp;margin=%5Bobject%20Object%5D&amp;originHeight=651&amp;originWidth=869&amp;size=0&amp;status=done&amp;style=shadow&amp;width=475" alt></p>
+<h2 id="二、机器学习的一些阶段-步骤"><a href="#二、机器学习的一些阶段-步骤" class="headerlink" title="二、机器学习的一些阶段/步骤"></a>二、机器学习的一些阶段/步骤</h2><h3 id="sklearn-相关提及"><a href="#sklearn-相关提及" class="headerlink" title="sklearn 相关提及"></a>sklearn 相关提及</h3><p><a href="https://scikit-learn.org/stable/testimonials/testimonials.html" target="_blank" rel="noopener">官网 scikit-learn</a></p>
+<ol>
+<li>包含聚类、分类、回归等算法<br>eg：随机森林、k-means、SVM 等</li>
+<li>包含模型筛选、降维、预处理等算法</li>
+<li>要特别注意安装该包使用要注意的细节，具体参考上一篇博客</li>
+</ol>
+<h3 id="sklearn-处理机器学习的一般化-sop"><a href="#sklearn-处理机器学习的一般化-sop" class="headerlink" title="sklearn 处理机器学习的一般化 sop"></a>sklearn 处理机器学习的一般化 sop</h3><ol>
+<li><strong>准备数据集</strong><ul>
+<li><a href>数据分析</a>:（利用 np.reshape()成二维(n_samples,n_features)）</li>
+<li>划分数据集：train_test_split()</li>
+<li>特征工程：特征的提取、特征的归一化 nomalization</li>
+</ul>
+</li>
+<li><strong>选择模型</strong><ul>
+<li>根据不同场景选择合适的模型:<a href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html" target="_blank" rel="noopener">scikit-learn 的模型选择路线图</a></li>
+<li>分类、聚类、回归……</li>
+</ul>
+</li>
+<li>在训练集上<strong>训练模型</strong>，并调整参数<ul>
+<li>经验选定参数</li>
+<li>交叉验证确定最优的参数 cross validation</li>
+</ul>
+</li>
+<li>在测试集上<strong>测试模型</strong><ul>
+<li>predict 预测、score 真实值预测值评分、etc</li>
+</ul>
+</li>
+<li><strong>保存模型</strong><ul>
+<li><code>import pickle</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="主成分分析：将特征降维"><a href="#主成分分析：将特征降维" class="headerlink" title="主成分分析：将特征降维"></a>主成分分析：将特征降维</h3><ul>
+<li>统计学相关知识：方差（衡量在一个维度的偏差）、协方差（衡量一个维度是否对另一个维度有影响 cov（x，y））</li>
+<li>线代相关知识：特征值、特征向量、协方差向量</li>
+<li>PCA</li>
+</ul>
+<p><a href="http://q5e49p23n.bkt.clouddn.com/scikit_pca.html" target="_blank" rel="noopener">相关代码 html 页面</a></p>
+<h2 id="三、通过-scikit-learn-认识机器学习"><a href="#三、通过-scikit-learn-认识机器学习" class="headerlink" title="三、通过 scikit-learn 认识机器学习"></a>三、通过 scikit-learn 认识机器学习</h2><h3 id="加载示例数据集"><a href="#加载示例数据集" class="headerlink" title="加载示例数据集"></a>加载示例数据集</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line">iris = datasets.load_iris()<span class="comment">#用sklearn自身配带的数据</span></span><br><span class="line">digits = datasets.load_digits()</span><br><span class="line"><span class="comment"># C:\Users\wztli\Anaconda3\pkgs\scikit-learn-0.21.3-py37h6288b17_0\Lib\site-packages\sklearn\datasets\data</span></span><br><span class="line"><span class="comment"># 数据集在电脑中的位置</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看数据集</span></span><br><span class="line"><span class="comment"># iris</span></span><br><span class="line">print(iris.data[:<span class="number">5</span>])</span><br><span class="line">print(iris.data.shape)</span><br><span class="line">print(iris.target_names)</span><br><span class="line">print(iris.target)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[[<span class="number">5.1</span> <span class="number">3.5</span> <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.9</span> <span class="number">3.</span>  <span class="number">1.4</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.7</span> <span class="number">3.2</span> <span class="number">1.3</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">4.6</span> <span class="number">3.1</span> <span class="number">1.5</span> <span class="number">0.2</span>]</span><br><span class="line"> [<span class="number">5.</span>  <span class="number">3.6</span> <span class="number">1.4</span> <span class="number">0.2</span>]]</span><br><span class="line">(<span class="number">150</span>, <span class="number">4</span>)</span><br><span class="line">[<span class="string">'setosa'</span> <span class="string">'versicolor'</span> <span class="string">'virginica'</span>]</span><br><span class="line">[<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br><span class="line"> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line"> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># digits</span></span><br><span class="line">print(digits.data)</span><br><span class="line">print(digits.data.shape)</span><br><span class="line">print(digits.target_names)</span><br><span class="line">print(digits.target)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">5.</span> ...  <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">0.</span>]</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">0.</span> ... <span class="number">10.</span>  <span class="number">0.</span>  <span class="number">0.</span>]</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">0.</span> ... <span class="number">16.</span>  <span class="number">9.</span>  <span class="number">0.</span>]</span><br><span class="line"> ...</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">1.</span> ...  <span class="number">6.</span>  <span class="number">0.</span>  <span class="number">0.</span>]</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">2.</span> ... <span class="number">12.</span>  <span class="number">0.</span>  <span class="number">0.</span>]</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">0.</span> <span class="number">10.</span> ... <span class="number">12.</span>  <span class="number">1.</span>  <span class="number">0.</span>]]</span><br><span class="line">(<span class="number">1797</span>, <span class="number">64</span>)</span><br><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> ... <span class="number">8</span> <span class="number">9</span> <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="在训练集上训练模型"><a href="#在训练集上训练模型" class="headerlink" title="在训练集上训练模型"></a>在训练集上训练模型</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 手动划分训练集、测试集</span></span><br><span class="line">n_test = <span class="number">100</span> <span class="comment"># 测试样本个数</span></span><br><span class="line">train_X = digits.data[:-n_test, :]</span><br><span class="line">train_y = digits.target[:-n_test]</span><br><span class="line"></span><br><span class="line">test_X = digits.data[-n_test:, :]</span><br><span class="line">y_true = digits.target[-n_test:]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择SVM模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</span><br><span class="line"></span><br><span class="line">svm_model = svm.SVC(gamma=<span class="number">0.001</span>, C=<span class="number">100.</span>)</span><br><span class="line"><span class="comment"># svm_model = svm.SVC(gamma=100., C=1.)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">svm_model.fit(train_X, train_y)</span><br><span class="line"><span class="comment">#训练要放入两个参数：样本的特征数据，样本的标签</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">SVC(C=<span class="number">100.0</span>, cache_size=<span class="number">200</span>, class_weight=<span class="literal">None</span>, coef0=<span class="number">0.0</span>,</span><br><span class="line">    decision_function_shape=<span class="string">'ovr'</span>, degree=<span class="number">3</span>, gamma=<span class="number">0.001</span>, kernel=<span class="string">'rbf'</span>,</span><br><span class="line">    max_iter=<span class="number">-1</span>, probability=<span class="literal">False</span>, random_state=<span class="literal">None</span>, shrinking=<span class="literal">True</span>,</span><br><span class="line">    tol=<span class="number">0.001</span>, verbose=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择LR（逻辑回归）模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"></span><br><span class="line">lr_model = LogisticRegression()</span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">lr_model.fit(train_X, train_y)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">C:\Users\wztli\Anaconda3\lib\site-packages\sklearn\linear_model\logistic.py:<span class="number">432</span>: FutureWarning: Default solver will be changed to <span class="string">'lbfgs'</span> <span class="keyword">in</span> <span class="number">0.22</span>. Specify a solver to silence this warning.</span><br><span class="line">  FutureWarning)</span><br><span class="line">C:\Users\wztli\Anaconda3\lib\site-packages\sklearn\linear_model\logistic.py:<span class="number">469</span>: FutureWarning: Default multi_class will be changed to <span class="string">'auto'</span> <span class="keyword">in</span> <span class="number">0.22</span>. Specify the multi_class option to silence this warning.</span><br><span class="line">  <span class="string">"this warning."</span>, FutureWarning)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">LogisticRegression(C=<span class="number">1.0</span>, class_weight=<span class="literal">None</span>, dual=<span class="literal">False</span>, fit_intercept=<span class="literal">True</span>,</span><br><span class="line">                   intercept_scaling=<span class="number">1</span>, l1_ratio=<span class="literal">None</span>, max_iter=<span class="number">100</span>,</span><br><span class="line">                   multi_class=<span class="string">'warn'</span>, n_jobs=<span class="literal">None</span>, penalty=<span class="string">'l2'</span>,</span><br><span class="line">                   random_state=<span class="literal">None</span>, solver=<span class="string">'warn'</span>, tol=<span class="number">0.0001</span>, verbose=<span class="number">0</span>,</span><br><span class="line">                   warm_start=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="在测试集上测试模型"><a href="#在测试集上测试模型" class="headerlink" title="在测试集上测试模型"></a>在测试集上测试模型</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred_svm = svm_model.predict(test_X)</span><br><span class="line">y_pred_lr = lr_model.predict(test_X)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看结果</span></span><br><span class="line"><span class="comment"># 评价指标</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"></span><br><span class="line"><span class="comment">#print '预测标签：', y_pred</span></span><br><span class="line"><span class="comment">#print '真实标签：', y_true</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'SVM结果：'</span>, accuracy_score(y_true, y_pred_svm))</span><br><span class="line">print(<span class="string">'LR结果：'</span>, accuracy_score(y_true, y_pred_lr))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">SVM结果： <span class="number">0.98</span></span><br><span class="line">LR结果： <span class="number">0.94</span></span><br></pre></td></tr></table></figure>
+<h3 id="保存模型"><a href="#保存模型" class="headerlink" title="保存模型"></a>保存模型</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'svm_model.pkl'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    pickle.dump(svm_model, f)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新加载模型进行预测</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'svm_model.pkl'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    model = pickle.load(f)</span><br><span class="line"></span><br><span class="line">random_samples_index = np.random.randint(<span class="number">0</span>, <span class="number">1796</span>, <span class="number">5</span>)</span><br><span class="line">random_samples = digits.data[random_samples_index, :]</span><br><span class="line">random_targets = digits.target[random_samples_index]</span><br><span class="line"></span><br><span class="line">random_predict = model.predict(random_samples)</span><br><span class="line"></span><br><span class="line">print(random_predict)</span><br><span class="line">print(random_targets)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[<span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">3</span> <span class="number">8</span>]</span><br><span class="line">[<span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">3</span> <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="四、scikit-learn-入门"><a href="#四、scikit-learn-入门" class="headerlink" title="四、scikit-learn 入门"></a>四、scikit-learn 入门</h2><h3 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = np.random.randint(<span class="number">0</span>, <span class="number">100</span>, (<span class="number">10</span>, <span class="number">4</span>))</span><br><span class="line">y = np.random.randint(<span class="number">0</span>, <span class="number">4</span>, <span class="number">10</span>)</span><br><span class="line">y.sort()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'样本：'</span>)</span><br><span class="line">print(X)</span><br><span class="line">print(<span class="string">'标签：'</span>, y)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">样本：</span><br><span class="line">[[<span class="number">43</span> <span class="number">43</span> <span class="number">18</span> <span class="number">78</span>]</span><br><span class="line"> [<span class="number">74</span> <span class="number">24</span> <span class="number">42</span> <span class="number">37</span>]</span><br><span class="line"> [<span class="number">36</span> <span class="number">69</span> <span class="number">84</span> <span class="number">47</span>]</span><br><span class="line"> [<span class="number">70</span> <span class="number">62</span> <span class="number">77</span> <span class="number">30</span>]</span><br><span class="line"> [<span class="number">87</span> <span class="number">38</span>  <span class="number">3</span> <span class="number">96</span>]</span><br><span class="line"> [<span class="number">68</span> <span class="number">67</span> <span class="number">24</span>  <span class="number">7</span>]</span><br><span class="line"> [<span class="number">66</span> <span class="number">36</span> <span class="number">72</span> <span class="number">72</span>]</span><br><span class="line"> [<span class="number">12</span> <span class="number">94</span> <span class="number">87</span> <span class="number">72</span>]</span><br><span class="line"> [<span class="number">66</span>  <span class="number">5</span> <span class="number">92</span>  <span class="number">6</span>]</span><br><span class="line"> [<span class="number">41</span> <span class="number">59</span> <span class="number">60</span> <span class="number">91</span>]]</span><br><span class="line">标签： [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">3</span> <span class="number">3</span> <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分割训练集、测试集</span></span><br><span class="line"><span class="comment"># random_state确保每次随机分割得到相同的结果</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">1</span>/<span class="number">3.</span>, random_state=<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'训练集：'</span>)</span><br><span class="line">print(X_train)</span><br><span class="line">print(y_train)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'测试集：'</span>)</span><br><span class="line">print(X_test)</span><br><span class="line">print(y_test)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">训练集：</span><br><span class="line">[[<span class="number">63</span> <span class="number">56</span>  <span class="number">7</span> <span class="number">42</span>]</span><br><span class="line"> [<span class="number">40</span> <span class="number">47</span> <span class="number">17</span> <span class="number">23</span>]</span><br><span class="line"> [<span class="number">41</span> <span class="number">31</span> <span class="number">26</span>  <span class="number">8</span>]</span><br><span class="line"> [<span class="number">79</span> <span class="number">30</span> <span class="number">22</span> <span class="number">88</span>]</span><br><span class="line"> [<span class="number">54</span> <span class="number">85</span> <span class="number">48</span> <span class="number">54</span>]</span><br><span class="line"> [<span class="number">89</span> <span class="number">73</span> <span class="number">77</span> <span class="number">41</span>]]</span><br><span class="line">[<span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span>]</span><br><span class="line">测试集：</span><br><span class="line">[[ <span class="number">3</span>  <span class="number">0</span> <span class="number">42</span> <span class="number">86</span>]</span><br><span class="line"> [<span class="number">42</span> <span class="number">96</span> <span class="number">83</span> <span class="number">38</span>]</span><br><span class="line"> [<span class="number">33</span> <span class="number">45</span>  <span class="number">8</span> <span class="number">37</span>]</span><br><span class="line"> [ <span class="number">1</span> <span class="number">44</span> <span class="number">75</span>  <span class="number">7</span>]]</span><br><span class="line">[<span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 特征归一化</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"></span><br><span class="line">x1 = np.random.randint(<span class="number">0</span>, <span class="number">1000</span>, <span class="number">5</span>).reshape(<span class="number">5</span>,<span class="number">1</span>)</span><br><span class="line">x2 = np.random.randint(<span class="number">0</span>, <span class="number">10</span>, <span class="number">5</span>).reshape(<span class="number">5</span>, <span class="number">1</span>)</span><br><span class="line">x3 = np.random.randint(<span class="number">0</span>, <span class="number">100000</span>, <span class="number">5</span>).reshape(<span class="number">5</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">X = np.concatenate([x1, x2, x3], axis=<span class="number">1</span>)</span><br><span class="line">print(X)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[[  <span class="number">353</span>     <span class="number">4</span> <span class="number">27241</span>]</span><br><span class="line"> [  <span class="number">999</span>     <span class="number">4</span> <span class="number">34684</span>]</span><br><span class="line"> [  <span class="number">911</span>     <span class="number">4</span> <span class="number">78606</span>]</span><br><span class="line"> [  <span class="number">310</span>     <span class="number">6</span> <span class="number">44593</span>]</span><br><span class="line"> [  <span class="number">817</span>     <span class="number">9</span>  <span class="number">6356</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(preprocessing.scale(X))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[[<span class="number">-1.12443958</span> <span class="number">-0.71443451</span> <span class="number">-0.46550183</span>]</span><br><span class="line"> [ <span class="number">1.11060033</span> <span class="number">-0.71443451</span> <span class="number">-0.15209341</span>]</span><br><span class="line"> [ <span class="number">0.80613669</span> <span class="number">-0.71443451</span>  <span class="number">1.69736578</span>]</span><br><span class="line"> [<span class="number">-1.27321159</span>  <span class="number">0.30618622</span>  <span class="number">0.26515287</span>]</span><br><span class="line"> [ <span class="number">0.48091416</span>  <span class="number">1.83711731</span> <span class="number">-1.34492342</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成分类数据进行验证scale的必要性</span></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line">X, y = make_classification(n_samples=<span class="number">300</span>, n_features=<span class="number">2</span>, n_redundant=<span class="number">0</span>, n_informative=<span class="number">2</span>,</span><br><span class="line">                           random_state=<span class="number">25</span>, n_clusters_per_class=<span class="number">1</span>, scale=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">plt.scatter(X[:,<span class="number">0</span>], X[:,<span class="number">1</span>], c=y)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130636-3a18d8f2-51cb-4b04-8a0f-a40cf1d0b9b6.png#align=left&amp;display=inline&amp;height=248&amp;margin=%5Bobject%20Object%5D&amp;originHeight=248&amp;originWidth=384&amp;size=0&amp;status=done&amp;style=none&amp;width=384" alt></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注释掉以下这句表示不进行特征归一化</span></span><br><span class="line">X = preprocessing.scale(X)</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">1</span>/<span class="number">3.</span>, random_state=<span class="number">7</span>)</span><br><span class="line">svm_classifier = svm.SVC()</span><br><span class="line">svm_classifier.fit(X_train, y_train)</span><br><span class="line">svm_classifier.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">C:\Users\wztli\Anaconda3\lib\site-packages\sklearn\svm\base.py:<span class="number">193</span>: FutureWarning: The default value of gamma will change <span class="keyword">from</span> <span class="string">'auto'</span> to <span class="string">'scale'</span> <span class="keyword">in</span> version <span class="number">0.22</span> to account better <span class="keyword">for</span> unscaled features. Set gamma explicitly to <span class="string">'auto'</span> <span class="keyword">or</span> <span class="string">'scale'</span> to avoid this warning.</span><br><span class="line">  <span class="string">"avoid this warning."</span>, FutureWarning)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">0.25</span></span><br></pre></td></tr></table></figure>
+<h3 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 回归模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"></span><br><span class="line">boston_data = datasets.load_boston()</span><br><span class="line">X = boston_data.data</span><br><span class="line">y = boston_data.target</span><br><span class="line"></span><br><span class="line">print(<span class="string">'样本：'</span>)</span><br><span class="line">print(X[:<span class="number">5</span>, :])</span><br><span class="line">print(<span class="string">'标签：'</span>)</span><br><span class="line">print(y[:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">样本：</span><br><span class="line">[[<span class="number">6.3200e-03</span> <span class="number">1.8000e+01</span> <span class="number">2.3100e+00</span> <span class="number">0.0000e+00</span> <span class="number">5.3800e-01</span> <span class="number">6.5750e+00</span></span><br><span class="line">  <span class="number">6.5200e+01</span> <span class="number">4.0900e+00</span> <span class="number">1.0000e+00</span> <span class="number">2.9600e+02</span> <span class="number">1.5300e+01</span> <span class="number">3.9690e+02</span></span><br><span class="line">  <span class="number">4.9800e+00</span>]</span><br><span class="line"> [<span class="number">2.7310e-02</span> <span class="number">0.0000e+00</span> <span class="number">7.0700e+00</span> <span class="number">0.0000e+00</span> <span class="number">4.6900e-01</span> <span class="number">6.4210e+00</span></span><br><span class="line">  <span class="number">7.8900e+01</span> <span class="number">4.9671e+00</span> <span class="number">2.0000e+00</span> <span class="number">2.4200e+02</span> <span class="number">1.7800e+01</span> <span class="number">3.9690e+02</span></span><br><span class="line">  <span class="number">9.1400e+00</span>]</span><br><span class="line"> [<span class="number">2.7290e-02</span> <span class="number">0.0000e+00</span> <span class="number">7.0700e+00</span> <span class="number">0.0000e+00</span> <span class="number">4.6900e-01</span> <span class="number">7.1850e+00</span></span><br><span class="line">  <span class="number">6.1100e+01</span> <span class="number">4.9671e+00</span> <span class="number">2.0000e+00</span> <span class="number">2.4200e+02</span> <span class="number">1.7800e+01</span> <span class="number">3.9283e+02</span></span><br><span class="line">  <span class="number">4.0300e+00</span>]</span><br><span class="line"> [<span class="number">3.2370e-02</span> <span class="number">0.0000e+00</span> <span class="number">2.1800e+00</span> <span class="number">0.0000e+00</span> <span class="number">4.5800e-01</span> <span class="number">6.9980e+00</span></span><br><span class="line">  <span class="number">4.5800e+01</span> <span class="number">6.0622e+00</span> <span class="number">3.0000e+00</span> <span class="number">2.2200e+02</span> <span class="number">1.8700e+01</span> <span class="number">3.9463e+02</span></span><br><span class="line">  <span class="number">2.9400e+00</span>]</span><br><span class="line"> [<span class="number">6.9050e-02</span> <span class="number">0.0000e+00</span> <span class="number">2.1800e+00</span> <span class="number">0.0000e+00</span> <span class="number">4.5800e-01</span> <span class="number">7.1470e+00</span></span><br><span class="line">  <span class="number">5.4200e+01</span> <span class="number">6.0622e+00</span> <span class="number">3.0000e+00</span> <span class="number">2.2200e+02</span> <span class="number">1.8700e+01</span> <span class="number">3.9690e+02</span></span><br><span class="line">  <span class="number">5.3300e+00</span>]]</span><br><span class="line">标签：</span><br><span class="line">[<span class="number">24.</span>  <span class="number">21.6</span> <span class="number">34.7</span> <span class="number">33.4</span> <span class="number">36.2</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择线性回顾模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"></span><br><span class="line">lr_model = LinearRegression()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分割训练集、测试集</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">1</span>/<span class="number">3.</span>, random_state=<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">lr_model.fit(X_train, y_train)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LinearRegression(copy_X=<span class="literal">True</span>, fit_intercept=<span class="literal">True</span>, n_jobs=<span class="literal">None</span>, normalize=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 返回参数</span></span><br><span class="line">lr_model.get_params()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;<span class="string">'copy_X'</span>: <span class="literal">True</span>, <span class="string">'fit_intercept'</span>: <span class="literal">True</span>, <span class="string">'n_jobs'</span>: <span class="literal">None</span>, <span class="string">'normalize'</span>: <span class="literal">False</span>&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lr_model.score(X_train, y_train)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">0.7598132492351114</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lr_model.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">0.6693852753319398</span></span><br></pre></td></tr></table></figure>
+<h3 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split, cross_val_score</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">X = iris.data</span><br><span class="line">y = iris.target</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">1</span>/<span class="number">3.</span>, random_state=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">k_range = range(<span class="number">1</span>, <span class="number">31</span>)</span><br><span class="line">cv_scores = []</span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> k_range:</span><br><span class="line">    knn = KNeighborsClassifier(n)</span><br><span class="line">    scores = cross_val_score(knn, X_train, y_train, cv=<span class="number">10</span>, scoring=<span class="string">'accuracy'</span>) <span class="comment"># 分类问题使用</span></span><br><span class="line">    <span class="comment">#scores = cross_val_score(knn, X_train, y_train, cv=10, scoring='neg_mean_squared_error') # 回归问题使用</span></span><br><span class="line">    cv_scores.append(scores.mean())</span><br><span class="line"></span><br><span class="line">plt.plot(k_range, cv_scores)</span><br><span class="line">plt.xlabel(<span class="string">'K'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Accuracy'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130618-179a3dfa-9ffd-4f45-9cc2-d6f63e1ad2b9.png#align=left&amp;display=inline&amp;height=262&amp;margin=%5Bobject%20Object%5D&amp;originHeight=262&amp;originWidth=392&amp;size=0&amp;status=done&amp;style=none&amp;width=392" alt></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择最优的K</span></span><br><span class="line">best_knn = KNeighborsClassifier(n_neighbors=<span class="number">5</span>)</span><br><span class="line">best_knn.fit(X_train, y_train)</span><br><span class="line">print(best_knn.score(X_test, y_test))</span><br><span class="line">print(best_knn.predict(X_test))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">0.96</span></span><br><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">0</span> <span class="number">2</span></span><br><span class="line"> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">2</span> <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/wztlink1013/scikit-learn" target="_blank" rel="noopener">scikit-learn 中文文档 github</a>文中链接为英文文档</li>
+<li><a href="https://blog.csdn.net/Little_Fire/article/details/81062447" target="_blank" rel="noopener">解释 iris 数据集</a></li>
+</ul>
+
+      </div>
+    </div>
+    
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-05 15:24:29</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/MachingLearning/">MachingLearning</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/scikit-learn/">scikit-learn</a>, <a class="article-tag-link" href="/blog/tags/sklearn/">sklearn</a>
+</li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/wgv3ak.md" download target="_blank">入门机器学习scikit-learn.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
+		<li>最后编辑时间: 2020-11-07 14:40:43</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://github.com/barretlee/blog/edit/master/blog/src/_posts/2020-02-05-blog/wgv3ak.md" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			新建文章：<a href="https://github.com/barretlee/blog/new/master/blog/src/_posts" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" /></a>
+</div>
+
+    <!-- TODO:  导航表头中的下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <!-- TODO: entry_blog -->
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/translation/">翻译</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <!-- <a><a href="/comments/">最近评论</a></li> -->
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/uatg7m/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>python-路径和nltk</b>
+      
+    </a>
+  
+  
+    <a href="/blog/pm7mpk/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>VScode编写C/C++及其他使用</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/uatg7m/" class="prev" title="python-路径和nltk">
+    <i class="icon">&#xe600;</i>
+    
+    <b>python-路径和nltk</b>
+    
+  </a>
+  
+  
+  <a href="/blog/pm7mpk/" class="next" title="VScode编写C/C++及其他使用">
+    <i class="icon">&#x261e;</i>
+    <b>VScode编写C/C++及其他使用</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="http://demo.barretlee.com" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="http://demo.barretlee.com" target="_blank">Demo平台</a></p>
+          <p class="seperator"><a href="http://md.barretlee.com" target="_blank">WX格式</a></p>
+          <p><a href="http://snippets.barretlee.com" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <!-- <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span> -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/wgv3ak"
+	   data-disqus-identifier="blog/wgv3ak" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		<!-- TODO:  任何页面下的评论留言系统-->
+
+  <!-- <section id="comments">
+    <style>
+      .utterances{
+        max-width: 100%;
+        }
+    </style>
+    <script src="https://utteranc.es/client.js"
+          repo="wztlink1013/comment"
+          issue-term="title"
+          label="💬comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  </section> -->
+
+  <!-- <div id="gitalk" sid="blog/wgv3ak"></div> -->
+  <!-- <script charset="utf-8" type="text/javascript" src="/public/js/gitalk.js"></script> -->
+  <!-- TODO: utteranc评论：基于github issue的评论系统 -->
+  <style>
+    .utterances{
+      max-width: 100%;
+      }
+  </style>
+  <script src="https://utteranc.es/client.js"
+        repo="wztlink1013/comment"
+        issue-term="title"
+        label="💬comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- TODO: utteranc评论 -->
+  <!-- <script type="text/javascript">
+  var postContent = document.querySelectorAll('.post-content>p');
+  if (postContent && postContent.length) {
+    postContent = postContent.item(0).textContent + postContent.item(1).textContent;
+    postContent = postContent.length > 140 ? postContent.slice(0, 140) + '...' : postContent;
+  }
+
+  var gitalk = new Gitalk({
+    clientID: 'f2c1964e018d7d117141',
+    clientSecret: '955d647b2198c347af06933263d0ff5e5d276bc6',
+    language: "zh-CN",
+    perPage: 10,
+    createIssueManually: false,
+    repo: 'comment',
+    owner: 'wztlink1013',
+    admin: ['wztlink1013'],
+    id: "blog/wgv3ak",
+    body: '原文地址：' + location.href + '\n\n文摘：' + postContent || header.meta[description],
+    distractionFreeMode: false
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      gitalk.render('gitalk');
+    }, 2E3);
+  });
+
+  // show count
+  var commentTimer = setInterval(() => {
+    var count = document.querySelector('.gt-link-counts');
+    var showCount = document.querySelector('.hash-to-comments');
+    if (count && showCount) {
+      showCount.textContent = count.textContent;
+      clearInterval(commentTimer);
+    }
+  }, 500);
+  setTimeout(() => {
+    clearInterval(commentTimer);
+  }, 60 * 1E3);
+  </script> -->
+  
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-08-30 »</font> </span>
+				<a href="/blog/mssoff/">Bert-自然语言处理</a>
+				<span class="aria-readonly">发表时间为2020年08月30日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>why？BERT 可以用来干什么？处理这种非结构化的数据以及之前学习到的情感分析BERT 可以用于问...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-03-23 »</font> </span>
+				<a href="/blog/apohu8/">ANN神经网络</a>
+				<span class="aria-readonly">发表时间为2020年03月23日</span>
+				<div class="relative-box">
+          <a href="/blog/apohu8/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949882-81dbb96c-eafa-4294-aae3-242fd33fff2b.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=858&amp;size=0&amp;status=done&amp;style=none&amp;width=858" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949882-81dbb96c-eafa-4294-aae3-242fd33fff2b.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=858&amp;size=0&amp;status=done&amp;style=none&amp;width=858"/></a>
+          <span class="aria-readonly">文章概要 </span>一、基本结构神经网络基本结构 &gt; 何为深度学习？二、感知器和激活函数感知器激活函数（其中 w ...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-01-18 »</font> </span>
+				<a href="/blog/ldx7ak/">CNN(卷积)和GCN(离散卷积)</a>
+				<span class="aria-readonly">发表时间为2020年01月18日</span>
+				<div class="relative-box">
+          <a href="/blog/ldx7ak/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686034538-58c8f110-943e-4194-8c80-f9465c4fde8e.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;originHeight=402&amp;originWidth=453&amp;size=0&amp;status=done&amp;style=none&amp;width=453" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686034538-58c8f110-943e-4194-8c80-f9465c4fde8e.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;originHeight=402&amp;originWidth=453&amp;size=0&amp;status=done&amp;style=none&amp;width=453"/></a>
+          <span class="aria-readonly">文章概要 </span>一、CNN1. 卷积的理解从数学角度来看，卷积就是一种运算，就好比是线性代数的内积、向量积等。卷积分...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://hustskyking.cnblogs.com" target="_blank">旧博客</a> <font aria-hidden="true">»</font> <span>我的旧博客（博客园荣誉博客）</span></li>
+			
+			<li><a href="http://www.zhangmengxue.com" target="_blank">大额</a> <font aria-hidden="true">»</font> <span>大额大额哼歌等日落</span></li>
+			
+			<li><a href="http://www.zhangxinxu.com" target="_blank">张鑫旭</a> <font aria-hidden="true">»</font> <span>原来大学我俩一个团队的~</span></li>
+			
+			<li><a href="http://web-tinker.com" target="_blank">次碳酸钴</a> <font aria-hidden="true">»</font> <span>深度交流的一个好朋友</span></li>
+			
+			<li><a href="http://imququ.com" target="_blank">屈屈</a> <font aria-hidden="true">»</font> <span>好吧，蛐蛐同学</span></li>
+			
+			<li><a href="http://www.ruanyifeng.com" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>阮老师,哈哈,第一次设计博客就是抄的你的样式</span></li>
+			
+			<li><a href="http://annn.me" target="_blank">安记</a> <font aria-hidden="true">»</font> <span>阿安同学</span></li>
+			
+			<li><a href="http://mouto.org/" target="_blank">卜卜口</a> <font aria-hidden="true">»</font> <span>二次元化身</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/admin/#/posts/ckh7bokc7007dp8ujy7i7lq9f" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+<!-- TODO: 导入脚本 -->
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script>
+  window.onerror = function(e) {
+    window.console && window.console.log && window.console.log(e);
+    $('#loadLayer').remove();
+    return true;
+  };
+</script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+</script>
+</html>
