@@ -11,7 +11,7 @@
   <meta name="description" content="动态数组">
   <meta property="og:type" content="article">
   <meta property="og:title" content="动态数组 | 尼采般地抒情">
-  <meta property="og:url" content="https://yun.wztlink1013.com/blog/bx5ouf/">
+  <meta property="og:url" content="https://www.wztlink1013.com/blog/bx5ouf/">
   <meta property="og:site_name" content="动态数组">
   <meta property="og:description" content="动态数组">
   <meta name="generator" content="https://hexo.io" />
@@ -19,13 +19,13 @@
   <!-- <meta name="renderer" content="webkit"> -->
   <!-- 下面的是语雀图片不显示的解决办法 -->
   <meta name="referrer" content="no-referrer" />
-  <link href="https://yun.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
-  <link rel="shoticon" href="https://yun.wztlink1013.com/favicon.ico" type="image/x-icon">
-  <link rel="alternate" type="application/rss+xml" href="https://yun.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
-  <link rel="prev" href="https://yun.wztlink1013.com/blog/qp5kuu/" title="GitHub-CICD不同文件夹迁移" />
-  <link rel="next" href="https://yun.wztlink1013.com/blog/hmc9fy/" title="测试阿里云函数" />
+  <link href="https://www.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://www.wztlink1013.com/blog/qp5kuu/" title="GitHub-CICD不同文件夹迁移" />
+  <link rel="next" href="https://www.wztlink1013.com/blog/hmc9fy/" title="测试阿里云函数" />
   <!-- TODO: entry_blog -->
-  <link rel="start" href="https://yun.wztlink1013.com/blog/" title="Blog blog" />
+  <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
 </head>
 
@@ -51,7 +51,7 @@
 
       </div>
       <div class="post-title-wrapper">
-        <h1 class="post-title" itemprop="name">动态数组<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://yun.wztlink1013.com/blog/bx5ouf/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
+        <h1 class="post-title" itemprop="name">动态数组<!--<img src="https://game.weixin.qq.com/cgi-bin/comm/qrcode?s=10&m=1&d=http:https://www.wztlink1013.com/blog/bx5ouf/" alt="扫码分享" onerror="this.style.display='none';">--></h1>
         <a href="/about/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" alt="尼采般地抒情" /></a>
       </div>
       <div class="post-info">
@@ -75,7 +75,7 @@
       </div>
       <div class="post-content" itemprop="articleBody">
         <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
-          <p>原文地址：<a href="https://yun.wztlink1013.com/blog/bx5ouf/">https://yun.wztlink1013.com/blog/bx5ouf/</a>，<a href="https://yun.wztlink1013.com/blog/bx5ouf/#comments">参与评论</a></p>
+          <p>原文地址：<a href="https://www.wztlink1013.com/blog/bx5ouf/">https://www.wztlink1013.com/blog/bx5ouf/</a>，<a href="https://www.wztlink1013.com/blog/bx5ouf/#comments">参与评论</a></p>
           <img src="/blogimgs/avatar.png" width="150">
         </div>
         <h2 id="动态数组设计"><a href="#动态数组设计" class="headerlink" title="动态数组设计"></a>动态数组设计</h2><h3 id="private-设计"><a href="#private-设计" class="headerlink" title="private 设计"></a>private 设计</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 元素的数量</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line"><span class="comment">// 所有的元素</span></span><br><span class="line"><span class="keyword">private</span> E[] elements;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ELEMENT_NOT_FOUND = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 保证要有capacity的容量</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> capacity</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elements.length;</span><br><span class="line">    <span class="keyword">if</span> (oldCapacity &gt;= capacity) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 新容量为旧容量的1.5倍</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    E[] newElements = (E[]) <span class="keyword">new</span> Object[newCapacity];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        newElements[i] = elements[i];</span><br><span class="line">    &#125;</span><br><span class="line">    elements = newElements;</span><br><span class="line"></span><br><span class="line">    System.out.println(oldCapacity + <span class="string">"扩容为"</span> + newCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">outOfBounds</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Index:"</span> + index + <span class="string">", Size:"</span> + size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">rangeCheck</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= size) &#123;</span><br><span class="line">        outOfBounds(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">rangeCheckForAdd</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; size) &#123;</span><br><span class="line">        outOfBounds(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -404,7 +404,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckh7c63sr001cs8ujcyuz63yo" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckh7crt9h001160ujwoz0ct5s" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
