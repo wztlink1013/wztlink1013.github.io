@@ -2,8 +2,8 @@ var weiboName = "@尼采般地抒情";
 var disqusName = "";
 var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
 
-if (window.location.hostname === 'barretlee.com') {
-  window.location.href = location.url.replace('barretlee.com', 'www.barretlee.com');
+if (window.location.hostname === 'wztlink1013.com') {
+  window.location.href = location.url.replace('wztlink1013.com', 'www.wztlink1013.com');
 }
 
 var params = {};
@@ -20,7 +20,7 @@ var params = {};
 
 if (params['share']) {
   $('html').addClass('shareMode');
-  $('<p style="color:#555;text-align:right; font-size:14px;" id="authorAppend">文 / Barret李靖</p>').prependTo('.post-content');
+  $('<p style="color:#555;text-align:right; font-size:14px;" id="authorAppend">文 / 尼采般地抒情</p>').prependTo('.post-content');
 } else {
   $('html').removeClass('shareMode');
   $('#authorAppend').remove();
@@ -462,7 +462,7 @@ var operation = {
     });
   },
   insertWeibo: function () {
-    var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="//widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=1812166904&verifier=73dc4ca5&dpc=1"></iframe>';
+    var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="//widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=3456263867&verifier=73dc4ca5&dpc=1"></iframe>';
     if (/\/entry\//.test(window.location.href) && !isMobile.any() && ($(window).width() > 992) && !$(".rightbar-frame iframe").size()) {
       // $(window).on("load", function() {
       var $ifr = $(".rightbar-frame");
@@ -686,7 +686,7 @@ var operation = {
     } catch (e){}
 
     $("#share-weibo").off().on("click", function () {
-      var url = "http://service.weibo.com/share/share.php?appkey=1812166904&title=" +
+      var url = "http://service.weibo.com/share/share.php?appkey=3456263867&title=" +
         title + "&url=" + local + "&searchPic=false&style=simple"; // &pic=a.jpg;
 
       operation._shareWin(url);
@@ -1009,7 +1009,7 @@ $(window).on("load", function () {
       // weibo
       $("html").attr("xmlns:wb", "http://open.weibo.com/wb");
       $("head").append('<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>');
-      $("#followMeOnWeibo").html('<wb:follow-button uid="1812166904" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
+      $("#followMeOnWeibo").html('<wb:follow-button uid="3456263867" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
     });
   }
 
