@@ -365,7 +365,7 @@ var operation = {
     var $ctt = $(".article .post-content");
     // $('.wechat-info').remove();
     var wechatStr = '<div class="wechat-info"><b>温馨提示：</b>您现在处在 <span class="wechat-net">WiFi</span>' +
-      ' 网络下。若文章表述存在问题，可点击右下角留言框，或者直接给小胡子哥 <span class="wechat-email">邮件 ← 点击</span>。</div>';
+      ' 网络下。若文章表述存在问题，可点击右下角留言框，或者直接给尼采般地抒情 <span class="wechat-email">邮件 ← 点击</span>。</div>';
     if (isWeiXin) {
       $(".alipay, .wechatpay i").hide();
       $(".wechatpay b").css('display', 'block');
@@ -567,7 +567,7 @@ var operation = {
       $(".local-search-google i").on("click", function () {
         var val = $.trim($input.val());
         if (val) {
-          window.open('//www.google.com.hk/search?q=site:www.barretlee.com ' + val);
+          window.open('//www.google.com.hk/search?q=site:www.wztlink1013.com ' + val);
         }
       });
     }
@@ -1012,13 +1012,14 @@ $(window).on("load", function () {
       $("#followMeOnWeibo").html('<wb:follow-button uid="3456263867" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
     });
   }
-
+    // TODO: 百度统计
   setTimeout(function () {
+
     var _hmt = _hmt || [];
-    (function () {
+    (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?14788c3dc5c09194b1bad2d5ded36949";
-      var s = document.getElementsByTagName("script")[0];
+      hm.src = "https://hm.baidu.com/hm.js?fc4efeed24b6875e660e2e8dff1e7b1a";
+      var s = document.getElementsByTagName("script")[0]; 
       s.parentNode.insertBefore(hm, s);
     })();
 
@@ -1034,7 +1035,7 @@ $(window).on("load", function () {
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(bp, s);
     })();
-
+    // TODO: 谷歌分析
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r;
       i[r] = i[r] || function () {
@@ -1047,7 +1048,7 @@ $(window).on("load", function () {
       m.parentNode.insertBefore(a, m)
     })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-67248043-1', 'auto');
+    ga('create', 'UA-158896181-1', 'auto');
     ga('send', 'pageview');
   }, 2000);
 });
@@ -1583,7 +1584,7 @@ $(function () {
 // })();
 
 
-// 页面统计
+// TODO: 谷歌页面统计
 $(function () {
   var bszTag = {
     bszs: ["site_pv", "page_pv", "site_uv"],
