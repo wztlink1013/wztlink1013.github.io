@@ -1,8 +1,8 @@
-var searchFunc = function (url, search_id, content_id) {
+var searchFunc = function (path, search_id, content_id) {
   'use strict';
   var BTN = "<i id='local-search-close'>x</i>";
   $.ajax({
-    url: url,
+    url: path,
     dataType: "xml",
     success: function (xmlResponse) {
       // get the contents from search data
