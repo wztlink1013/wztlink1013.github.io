@@ -8,7 +8,7 @@
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?ec80cd60403085e1219d49c6442ff52d";
+  hm.src = "//hm.baidu.com/hm.js?fc4efeed24b6875e660e2e8dff1e7b1a";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
@@ -19,5 +19,5 @@ var _hmt = _hmt || [];
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-67248043-2', 'auto');
+ga('create', 'UA-158896181-1', 'auto');
 ga('send', 'pageview');

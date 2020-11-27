@@ -1023,7 +1023,7 @@ $(window).on("load", function () {
       s.parentNode.insertBefore(hm, s);
     })();
 
-    // 百度收录，自动推送
+    // TODO: 百度收录，自动推送
     (function () {
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
