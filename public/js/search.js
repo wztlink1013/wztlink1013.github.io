@@ -1,4 +1,4 @@
-var searchFunc = function (path, search_id, content_id) {
+var searchFunc = function (path="www.wztlink1013.com", search_id, content_id) {
   'use strict';
   var BTN = "<i id='local-search-close'>x</i>";
   $.ajax({
@@ -58,7 +58,7 @@ var searchFunc = function (path, search_id, content_id) {
           } else {
             isMatch = false;
           }
-          // TODO: show search results
+          // TODO: show search results【data_url不能变】
           if (isMatch) {
             str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
             // str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
