@@ -1017,7 +1017,7 @@ $(window).on("load", function () {
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?fc4efeed24b6875e660e2e8dff1e7b1a";
+      hm.src = "https://hm.baidu.com/hm.js?63827dcd82b61c5a5548efc20df96345";
       var s = document.getElementsByTagName("script")[0]; 
       s.parentNode.insertBefore(hm, s);
     })();
