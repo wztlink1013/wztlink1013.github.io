@@ -1017,7 +1017,7 @@ $(window).on("load", function () {
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?63827dcd82b61c5a5548efc20df96345";
+      hm.src = "//hm.baidu.com/hm.js?63827dcd82b61c5a5548efc20df96345";
       var s = document.getElementsByTagName("script")[0]; 
       s.parentNode.insertBefore(hm, s);
     })();
@@ -1027,9 +1027,9 @@ $(window).on("load", function () {
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
       if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        bp.src = '//zz.bdstatic.com/linksubmit/push.js';
       } else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
       }
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(bp, s);
