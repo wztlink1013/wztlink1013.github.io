@@ -2,10 +2,12 @@ var weiboName = "@尼采般地抒情";
 var disqusName = "";
 var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
 
+// TODO: 【域名的@和www】
 if (window.location.hostname === 'wztlink1013.com') {
   window.location.href = location.url.replace('wztlink1013.com', 'www.wztlink1013.com');
 }
 
+// TODO: 【定义寻找变量】
 var params = {};
 ~ function () {
   var search = location.href.split('?')[1];
@@ -18,6 +20,7 @@ var params = {};
   }
 }();
 
+// TODO: 【分享HTML模块】
 if (params['share']) {
   $('html').addClass('shareMode');
   $('<p style="color:#555;text-align:right; font-size:14px;" id="authorAppend">文 / 尼采般地抒情</p>').prependTo('.post-content');
@@ -26,6 +29,7 @@ if (params['share']) {
   $('#authorAppend').remove();
 }
 
+// TODO: 【判断来访者的url来源+浏览器】
 $(function () {
   var text = '';
   var m = navigator.appVersion.match(/MSIE (\d+)/i);
@@ -34,12 +38,14 @@ $(function () {
     // text = "您还在使用百度搜索，珍爱生命，请远离百度！<a href='javascript:void(0);' class='close'>关闭</a>";
   }
   if (m && m < 10) {
-    text = "更好的阅读体验，请使用最新版的 Chrome 浏览器。<a href='javascript:void(0);' class='close'>关闭</a>";
+    text = "更好的阅读体验，请使用最新版的 Chrome / Edge 浏览器。<a href='javascript:void(0);' class='close'>关闭</a>";
   }
   if (text && !$('html').attr('loaded')) {
     $(".rainbow").addClass('notice').html(text).hide().fadeIn();
   }
 });
+
+// TODO: 【判断https】
 
 // if (window.location.protocol == 'https:') {
 //   $("img").each(function () {
@@ -50,6 +56,7 @@ $(function () {
 //   });
 // }
 
+// TODO: 【Notifications API 的通知接口用于向用户配置和显示桌面通知。】
 function notify(notice) {
   if (!("Notification" in window)) {
     // window.console && console.warn("浏览器不支持提醒");
@@ -83,6 +90,7 @@ function notify(notice) {
  * Copyright 2013 Klaus Hartl
  * Released under the MIT license
  */
+// TODO: 【jQuery知识】
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD
@@ -180,7 +188,7 @@ function notify(notice) {
 var log = function (msg) {
   console && console.log && console.log(msg);
 };
-// 模板引擎
+// TODO: 【模板引擎】
 var tplEngine = function (tpl, data) {
   var reg = /<%([^%>]+)?%>/g,
     regOut = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g,
@@ -200,7 +208,7 @@ var tplEngine = function (tpl, data) {
   code += 'return r.join("");';
   return new Function(code.replace(/[\r\t\n]/g, '')).apply(data);
 };
-// 移动设备侦测
+// TODO: 【移动设备侦测】
 var isMobile = {
   Android: function () {
     return navigator.userAgent.match(/Android/i);
@@ -222,6 +230,7 @@ var isMobile = {
   }
 };
 
+// TODO: 【主要代码1】
 var operation = {
   init: function () {
     var $this = this;
@@ -241,6 +250,7 @@ var operation = {
     // });
     this.initSearch();
   },
+  // FIXME: 懒加载，图片可以换
   forceShowLazyloadImages: function() {
     if (this._forceShowImageTimer) clearTimeout(this._forceShowImageTimer);
     this._forceShowImageTimer = setTimeout(() => {
@@ -254,6 +264,7 @@ var operation = {
       });
     }, 10E3);
   },
+  // FIXME: 音乐
   runMusic: function () {
     var $box = $('.post-content .music');
     if (!params['share'] && !isMobile.any() && $box.size() && window.NM) {
@@ -272,6 +283,7 @@ var operation = {
       });
     }
   },
+  // FIXME: 搜索
   initSearch: function() {
     if ($('.local-search').size() && !isMobile.any()) {
       $.getScript('/public/js/search.js', function() {
@@ -279,6 +291,7 @@ var operation = {
       });
     }
   },
+  // FIXME: 加载畅言
   loadChangyanCount: function () {
     if ($('#changyan_count_unit').size()) {
       $.getScript('https://assets.changyan.sohu.com/upload/plugins/plugins.count.js');
@@ -360,6 +373,7 @@ var operation = {
       }
     }
   },
+  // FIXME: 微信里面的提示
   wechat: function () {
     var isWeiXin = /MicroMessenger/i.test(navigator.userAgent);
     var $ctt = $(".article .post-content");
@@ -407,7 +421,7 @@ var operation = {
       var data = {
         'debug': false,
         'app': 'wxddd17adddf433070',    // 选填，默认为空
-        'img': 'http://www.barretlee.com/blogimgs/avatar.png',
+        'img': 'https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png',
         'link': window.location.href,
         'desc': $('meta[name="description"]').attr('content'),
         'title': $('.post-title').text()
@@ -419,6 +433,7 @@ var operation = {
       wechat('weibo', data, callback);            // 微博
     });
   },
+  // FIXME: 欢迎访客？
   welcome: function () {
     var self = this;
     var visitor = $.cookie("visitor");
@@ -449,6 +464,7 @@ var operation = {
 
     $.removeCookie("visitor");
   },
+  // FIXME: 重新加载畅言
   reloadChangyan: function () {
     delete window.changyan;
     delete window.cyan;
@@ -461,9 +477,10 @@ var operation = {
       } catch (e) {}
     });
   },
+  // FIXME: 插入微博卡片
   insertWeibo: function () {
     var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="//widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=3456263867&verifier=73dc4ca5&dpc=1"></iframe>';
-    if (/\/entry\//.test(window.location.href) && !isMobile.any() && ($(window).width() > 992) && !$(".rightbar-frame iframe").size()) {
+    if (/\/blog\//.test(window.location.href) && !isMobile.any() && ($(window).width() > 992) && !$(".rightbar-frame iframe").size()) {
       // $(window).on("load", function() {
       var $ifr = $(".rightbar-frame");
       if (!$ifr.find('iframe').size()) {
@@ -477,6 +494,7 @@ var operation = {
       $(".rightbar-frame").remove()
     }
   },
+  // FIXME:
   alertMsg: function (msg, tag) {
     if (!msg) return;
     if (tag && 'Notification' in window) {
@@ -495,6 +513,7 @@ var operation = {
       }, 800);
     }, 3000);
   },
+  // FIXME: 提示tips？
   tips: function () {
     var htmlStr = [
       '<div class="arrow-tips">',
@@ -518,6 +537,7 @@ var operation = {
       $(".arrow-tips").remove();
     });
   },
+  // FIXME:
   bind: function () {
     var self = this;
     $(".notice .close").on("click", function (evt) {
@@ -623,6 +643,7 @@ var operation = {
     //   $('.footer-nav a').eq(0).trigger('click');
     // });
   },
+  // FIXME: 
   isIE: function (num) {
     var name = navigator.appVersion.toUpperCase();
     return num ? name.match(/MSIE (\d)/) && name.match(/MSIE (\d)/)[1] == num : /MSIE (\d)/.test(name);
@@ -654,7 +675,7 @@ var operation = {
   //     }
   //   });
   // },
-  // 底部tab切换
+  // FIXME: 底部tab切换
   footerNav: function () {
     $(".footer-nav a").on("click", function (evt) {
 
@@ -675,7 +696,7 @@ var operation = {
       $(".footer-nav a").eq(0).trigger("click");
     });
   },
-  // 分享
+  // FIXME: 分享微博、豆瓣、twitter
   share: function (title) {
     var local = location.href,
       title = $(".post-title").text() && ("文章《" + weiboName + " " + $(".post-title").text() + "》");
@@ -710,6 +731,7 @@ var operation = {
       operation._shareWin(url);
     });
   },
+  // FIXME: 分享2
   _shareWin: function (r) {
     var d = document;
     var x = function () {
@@ -721,7 +743,7 @@ var operation = {
       x()
     }
   },
-  // 回到顶部
+  // FIXME: 回到顶部
   toTop: function () {
     var $toTop = $(".gotop");
 
@@ -743,7 +765,7 @@ var operation = {
     });
   },
 
-  // 字体修改
+  // FIXME: 字体修改
   fontChange: function () {
     $(".font-type").on("click", function () {
       $(this).parent().find("a")
@@ -762,6 +784,7 @@ var operation = {
   }
 };
 
+// TODO: 【主要代码2】
 var decoration = {
   init: function () {
     this.initNav();
@@ -770,6 +793,7 @@ var decoration = {
     this.navTurner();
     this.sidebarNav();
   },
+  // FIXME: 
   initNav: function () {
     var self = this;
     var $nav = $('.arrow-expend');
@@ -807,7 +831,7 @@ var decoration = {
       }
     });
   },
-  // console 简介
+  // FIXME: console 简介
   consoleCtt: function () {
     if (window.console && window.console.log && !window.consoled) {
       window.consoled = true;
@@ -816,7 +840,7 @@ var decoration = {
       console.log("\n欢迎来到尼采般地抒情博客，热爱生活，热爱技术。%c\n\n联系方式: https://wztlink1013.com/about/", "color:red");
     }
   },
-  // 鼠标移动添加效果
+  // FIXME: 鼠标移动添加效果
   sidebarNav: function () {
     var left = 48;
     if (operation.isIE()) {
@@ -845,7 +869,7 @@ var decoration = {
       });
     });
   },
-  // 导航树
+  // FIXME: 导航树
   menuIndex: function ($obj) {
     if ($('h3', $obj).length > 2 && !isMobile.any()) {
       var h3 = [],
@@ -943,7 +967,7 @@ var decoration = {
     }
   },
 
-  // 导航栏开关
+  // FIXME: 导航栏开关
   navTurner: function () {
     if ($("#menuIndex a").size() < 3) {
       $(".func-nav").parent().find("a")
@@ -959,7 +983,7 @@ var decoration = {
       });
     }
   },
-
+  // FIXME: 重新加载下面的评论
   refreshComments: function () {
     var ret = {};
     $(".ds-comment-body p").each(function () {
@@ -983,6 +1007,7 @@ var decoration = {
   }
 };
 
+// TODO: 【应该是高亮 highlight】
 $(function () {
   // 初始化项目
   operation.init();
@@ -999,6 +1024,7 @@ $(function () {
 
 window.alert = function () {};
 
+// TODO: 【加载微博、百度统计、百度收录、360收录、谷歌分析】
 $(window).on("load", function () {
 
   var $wb = $("#followMeOnWeibo");
@@ -1012,7 +1038,7 @@ $(window).on("load", function () {
       $("#followMeOnWeibo").html('<wb:follow-button uid="3456263867" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
     });
   }
-    // TODO: 百度统计
+    // 百度统计
   setTimeout(function () {
     var _hmt = _hmt || [];
     (function() {
@@ -1022,7 +1048,7 @@ $(window).on("load", function () {
       s.parentNode.insertBefore(hm, s);
     })();
 
-    // TODO: 百度收录，自动推送
+    // 百度收录，自动推送
     (function () {
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -1034,12 +1060,12 @@ $(window).on("load", function () {
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(bp, s);
     })();
-    // TODO: 搜狗收录，自动推送
+    // 搜狗收录，自动推送，不能用，用了就网页白屏
     // (function(){
     //   var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
     //   document.write('<script src="' + src + '" id="sozz"><\/script>');
     //   })();
-    // TODO: 谷歌分析
+    // 谷歌分析
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r;
       i[r] = i[r] || function () {
@@ -1058,7 +1084,7 @@ $(window).on("load", function () {
 });
 
 
-
+// TODO: 【网站内部图像和文章给你内容等等】
 $(function () {
   var $layer = $("<div/>").css({
     position: "fixed",
@@ -1369,6 +1395,7 @@ $(function () {
 
 // just for fun.
 ;
+// TODO: 【点击头像，图像流】
 (function () {
 
   function randomItem(array) {
@@ -1588,7 +1615,7 @@ $(function () {
 // })();
 
 
-// TODO: 谷歌页面统计
+// TODO: 【卜算子】
 $(function () {
   var bszTag = {
     bszs: ["site_pv", "page_pv", "site_uv"],
