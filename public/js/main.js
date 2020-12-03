@@ -869,41 +869,42 @@ var decoration = {
       });
     });
   },
-  // FIXME: 导航树
+  // FIXME: 目录
   menuIndex: function ($obj) {
-    if ($('h3', $obj).length > 2 && !isMobile.any()) {
-      var h3 = [],
-        h4 = [],
+    if ($('h2', $obj).length >= 1 && !isMobile.any()) {
+      var h2 = [],
+        h3 = [],
         tmpl = '<ul>',
-        h3index = 0;
+        h2index = 0;
 
-      $.each($('h3,h4', $obj), function (index, item) {
-        if (item.tagName.toLowerCase() == 'h3') {
+      $.each($('h2,h3', $obj), function (index, item) {
+        if (item.tagName.toLowerCase() == 'h2') {
+          var h2item = {};
+          h2item.name = $(item).text();
+          h2item.id = 'menuIndex' + index;
+          h2.push(h2item);
+          h2index++;
+        } else {
           var h3item = {};
           h3item.name = $(item).text();
           h3item.id = 'menuIndex' + index;
-          h3.push(h3item);
-          h3index++;
-        } else {
-          var h4item = {};
-          h4item.name = $(item).text();
-          h4item.id = 'menuIndex' + index;
-          if (!h4[h3index - 1]) {
-            h4[h3index - 1] = [];
+          if (!h3[h2index - 1]) {
+            h3[h2index - 1] = [];
           }
-          h4[h3index - 1].push(h4item);
+          h3[h2index - 1].push(h3item);
         }
         item.id = 'menuIndex' + index
       });
 
       //添加h1
-      tmpl += '<li class="h1"><a href="#" data-top="0">' + $('h1').text() + '</a></li>';
+      // tmpl += '<li class="h1"><a href="#" data-top="0">' + $('h1').text() + '</a></li>';
+      tmpl += '<li class="h1"><a style="color:red" href="#" data-top="0">'+'文章目录：</a></li>';
 
-      for (var i = 0; i < h3.length; i++) {
-        tmpl += '<li><a href="#" data-id="' + h3[i].id + '">' + h3[i].name + '</a></li>';
-        if (h4[i]) {
-          for (var j = 0; j < h4[i].length; j++) {
-            tmpl += '<li class="h4"><a href="#" data-id="' + h4[i][j].id + '">' + h4[i][j].name + '</a></li>';
+      for (var i = 0; i < h2.length; i++) {
+        tmpl += '<li><a style="font-weight:bold;" href="#" data-id="' + h2[i].id + '">' + h2[i].name + '</a></li>';
+        if (h3[i]) {
+          for (var j = 0; j < h3[i].length; j++) {
+            tmpl += '<li class="h3"><a href="#" data-id="' + h3[i][j].id + '">' + h3[i][j].name + '</a></li>';
           }
         }
       }
@@ -966,6 +967,7 @@ var decoration = {
       $('#menuIndex').css('max-height', $(window).height() - 80);
     }
   },
+
 
   // FIXME: 导航栏开关
   navTurner: function () {
