@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="20. 有效的括号">
   <meta property="og:description" content="20. 有效的括号">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/veggl2/" title="⏱算法复杂度" />
   <link rel="next" href="https://www.wztlink1013.com/blog/yxy6mv/" title="栈设计" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -95,9 +97,100 @@
         </div>
         <h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>将所有的左半边括号 push 到栈内，然后遇到右半边括号，就将其与栈顶元素匹配测试，若能匹配成功则继续匹配，反之输出 false。</p>
 <p>在这之间注意比较当栈内没有元素了，而字符串还有待匹配的字符，输出 false，当栈内还有元素，外面与之匹配测试的右半边括号，也输出 false。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="栈实现"><a href="#栈实现" class="headerlink" title="栈实现"></a>栈实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Character&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++) &#123;</span><br><span class="line">            <span class="keyword">char</span> c = s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span> (c == <span class="string">'('</span> || c == <span class="string">'['</span> || c == <span class="string">'&#123;'</span>) &#123;</span><br><span class="line">                stack.push(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (stack.isEmpty()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">char</span> left = stack.pop();</span><br><span class="line">                <span class="keyword">if</span> (left == <span class="string">'('</span> &amp;&amp; c !=<span class="string">')'</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">if</span> (left == <span class="string">'['</span> &amp;&amp; c !=<span class="string">']'</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">if</span> (left == <span class="string">'&#123;'</span> &amp;&amp; c !=<span class="string">'&#125;'</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stack.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        Stack&lt;Character&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; s.length();i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (s.charAt(<span class="number">0</span>) == <span class="string">')'</span> || s.charAt(<span class="number">0</span>) == <span class="string">']'</span> || s.charAt(<span class="number">0</span>) == <span class="string">'&#125;'</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (s.charAt(i) == <span class="string">'('</span> || s.charAt(i) == <span class="string">'['</span> || s.charAt(i) == <span class="string">'&#123;'</span>)&#123;</span><br><span class="line">                stack.push(s.charAt(i));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (s.charAt(i) == <span class="string">')'</span> || s.charAt(i) == <span class="string">']'</span> || s.charAt(i) == <span class="string">'&#125;'</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span> (s.charAt(i) == <span class="string">')'</span>)&#123;</span><br><span class="line">                    <span class="keyword">if</span> (stack.isEmpty() == <span class="keyword">true</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (stack.pop() != <span class="string">'('</span>)</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (s.charAt(i) == <span class="string">']'</span>)&#123;</span><br><span class="line">                    <span class="keyword">if</span> (stack.isEmpty() == <span class="keyword">true</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (stack.pop() != <span class="string">'['</span>)</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (s.charAt(i) == <span class="string">'&#125;'</span>)&#123;</span><br><span class="line">                    <span class="keyword">if</span> (stack.isEmpty() == <span class="keyword">true</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (stack.pop() != <span class="string">'&#123;'</span>)</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (stack.isEmpty() == <span class="keyword">true</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="HashMap-实现"><a href="#HashMap-实现" class="headerlink" title="HashMap 实现"></a>HashMap 实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">true<span class="keyword">private</span> <span class="keyword">static</span> HashMap&lt;Character, Character&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">true<span class="keyword">static</span> &#123;</span><br><span class="line">truetrue<span class="comment">// key - value</span></span><br><span class="line">truetruemap.put(<span class="string">'('</span>, <span class="string">')'</span>);</span><br><span class="line">truetruemap.put(<span class="string">'&#123;'</span>, <span class="string">'&#125;'</span>);</span><br><span class="line">truetruemap.put(<span class="string">'['</span>, <span class="string">']'</span>);</span><br><span class="line">true&#125;</span><br><span class="line"></span><br><span class="line">true<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">truetrueStack&lt;Character&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">truetrue<span class="keyword">int</span> len = s.length();</span><br><span class="line">truetrue<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">truetruetrue<span class="keyword">char</span> c = s.charAt(i);</span><br><span class="line">truetruetrue<span class="keyword">if</span> (map.containsKey(c)) &#123; <span class="comment">// 左括号</span></span><br><span class="line">truetruetruetruestack.push(c);</span><br><span class="line">truetruetrue&#125; <span class="keyword">else</span> &#123; <span class="comment">// 右括号</span></span><br><span class="line">truetruetruetrue<span class="keyword">if</span> (stack.isEmpty()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">truetruetruetrue<span class="keyword">if</span> (c != map.get(stack.pop())) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">truetruetrue&#125;</span><br><span class="line">truetrue&#125;</span><br><span class="line">truetrue<span class="keyword">return</span> stack.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="栈实现"><a href="#栈实现" class="headerlink" title="栈实现"></a>栈实现</h3><pre><code class="java">class Solution {
+    public boolean isValid(String s) {
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+
+        int len = s.length();
+        for (int i=0;i&lt;len;i++) {
+            char c = s.charAt(i);
+            if (c == &#39;(&#39; || c == &#39;[&#39; || c == &#39;{&#39;) {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) return false;
+                char left = stack.pop();
+                if (left == &#39;(&#39; &amp;&amp; c !=&#39;)&#39;) return false;
+                if (left == &#39;[&#39; &amp;&amp; c !=&#39;]&#39;) return false;
+                if (left == &#39;{&#39; &amp;&amp; c !=&#39;}&#39;) return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+</code></pre>
+<pre><code class="java">class Solution {
+    public boolean isValid(String s) {
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+        for (int i = 0; i&lt; s.length();i++){
+            if (s.charAt(0) == &#39;)&#39; || s.charAt(0) == &#39;]&#39; || s.charAt(0) == &#39;}&#39;){
+                return false;
+            }
+            if (s.charAt(i) == &#39;(&#39; || s.charAt(i) == &#39;[&#39; || s.charAt(i) == &#39;{&#39;){
+                stack.push(s.charAt(i));
+            }
+            if (s.charAt(i) == &#39;)&#39; || s.charAt(i) == &#39;]&#39; || s.charAt(i) == &#39;}&#39;){
+                if (s.charAt(i) == &#39;)&#39;){
+                    if (stack.isEmpty() == true) {
+                        return false;
+                    }
+                    if (stack.pop() != &#39;(&#39;)
+                        return false;
+
+                }
+                if (s.charAt(i) == &#39;]&#39;){
+                    if (stack.isEmpty() == true) {
+                        return false;
+                    }
+                    if (stack.pop() != &#39;[&#39;)
+                        return false;
+
+                }
+                if (s.charAt(i) == &#39;}&#39;){
+                    if (stack.isEmpty() == true) {
+                        return false;
+                    }
+                    if (stack.pop() != &#39;{&#39;)
+                        return false;
+
+                }
+            }
+        }
+        if (stack.isEmpty() == true){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+}
+</code></pre>
+<h3 id="HashMap-实现"><a href="#HashMap-实现" class="headerlink" title="HashMap 实现"></a>HashMap 实现</h3><pre><code class="java">class Solution {
+    private static HashMap&lt;Character, Character&gt; map = new HashMap&lt;&gt;();
+    static {
+        // key - value
+        map.put(&#39;(&#39;, &#39;)&#39;);
+        map.put(&#39;{&#39;, &#39;}&#39;);
+        map.put(&#39;[&#39;, &#39;]&#39;);
+    }
+
+    public boolean isValid(String s) {
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+
+        int len = s.length();
+        for (int i = 0; i &lt; len; i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) { // 左括号
+                stack.push(c);
+            } else { // 右括号
+                if (stack.isEmpty()) return false;
+
+                if (c != map.get(stack.pop())) return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+</code></pre>
 
       </div>
     </div>
@@ -121,7 +214,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/aritwv.md" download target="_blank">20. 有效的括号.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/aritwv/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -403,7 +496,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/fgkbg2/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -466,7 +559,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms4t000ozvndkdhqyb6t" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snpr000o3rnbw7cj59r6" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -475,6 +568,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

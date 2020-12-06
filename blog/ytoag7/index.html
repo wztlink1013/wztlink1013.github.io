@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="uni-app简单api调用">
   <meta property="og:description" content="uni-app简单api调用【部分内容转载】">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/xnh83z/" title="搭建Windows子系统Linux" />
   <link rel="next" href="https://www.wztlink1013.com/blog/im0an1/" title="Android平台与开发技术" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -95,9 +97,30 @@
 <p>以前网页大多是 b/s，服务端代码混合在页面里；<br>现在是 c/s，前后端分离，通过 js api(类似 ajax 的<code>uni.request</code>)获取 json 数据，把数据绑定在界面上渲染。</p>
 <h3 id="文件类型变化"><a href="#文件类型变化" class="headerlink" title="文件类型变化"></a>文件类型变化</h3><p>.vue 文件通过编译，编译 js 文件</p>
 <h3 id="代码架构大变动"><a href="#代码架构大变动" class="headerlink" title="代码架构大变动"></a>代码架构大变动</h3><p>以前的 HTML 代码节点，有 html 大节点，还有 script 和 style 两个小结点</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 <p>现在 template 是一级节点，用于写<strong>tag 组件</strong>，script 和 style 是并列的一级节点，也就是有 3 个一级节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view&gt;</span><br><span class="line">    注意必须有一个view，且只能有一个根view。所有内容写在这个view下面。</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    注意必须有一个view，且只能有一个根view。所有内容写在这个view下面。
+  &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {};
+&lt;/script&gt;
+
+&lt;style&gt;&lt;/style&gt;
+</code></pre>
 <ul>
 <li><a href="https://cn.vuejs.org/v2/guide/single-file-components.html" target="_blank" rel="noopener">Vue 单文件组件</a></li>
 </ul>
@@ -142,21 +165,55 @@
 </ul>
 <h2 id="文件导入方式变化"><a href="#文件导入方式变化" class="headerlink" title="文件导入方式变化"></a>文件导入方式变化</h2><h3 id="js-引入方式"><a href="#js-引入方式" class="headerlink" title="js 引入方式"></a>js 引入方式</h3><p>以前通过<code>script `</code>src <code>、</code> link <code></code>href <code>引入外部的 js 和 css；
 现在是**es6**的写法，</code>import`引入外部的 js 模块(注意不是文件)或 css<br>以前</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">"js/jquery-1.10.2.js"</span> type=<span class="string">"text/javascript"</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;link href="css/</span>bootstrap.css<span class="string">" rel="</span>stylesheet<span class="string">" type="</span>text/css<span class="string">"/&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;script src=&quot;js/jquery-1.10.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;css/bootstrap.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
+</code></pre>
 <p>现在</p>
 <blockquote>
 <p>js 要 require 进来，变成了对象。</p>
 </blockquote>
 <p>在 hello uni-app 项目的 common 目录有一个工具类<code>util.js</code>，可以在 hello uni-app 中搜索这个例子查看。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">'../../../common/util.js'</span>); <span class="comment">//require这个js模块 var</span></span><br><span class="line">  formatedPlayTime = util.formatTime(playTime); <span class="comment">//调用js模块的方法</span></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;script&gt;
+  var util = require(&#39;../../../common/util.js&#39;); //require这个js模块 var
+  formatedPlayTime = util.formatTime(playTime); //调用js模块的方法
+&lt;/script&gt;
+</code></pre>
 <p>而在这个<code>util.js</code>里，要把之前的 function 封装为对象的方法<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604048264989-b4591bb0-e4bc-4581-aae5-bf7615f268b4.png#align=left&amp;display=inline&amp;height=231&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=606&amp;originWidth=1331&amp;size=70716&amp;status=done&amp;style=shadow&amp;width=508" alt="image.png"><br>当然还有一些高级的用法</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> dateUtils = <span class="built_in">require</span>(<span class="string">"../../../common/util.js"</span>).dateUtils; <span class="comment">//直接使用js模块的属性。在hello uni-app有示例</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> echarts <span class="keyword">from</span> <span class="string">"/components/echarts/echarts.simple.min.js"</span>; <span class="comment">//将js导入并重命名为echarts，然后使用echarts.来继续执行方法。</span></span><br></pre></td></tr></table></figure>
-<h3 id="CSS-引入方式"><a href="#CSS-引入方式" class="headerlink" title="CSS 引入方式"></a>CSS 引入方式</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;<span class="selector-tag">style</span>&gt;</span><br><span class="line">    <span class="keyword">@import</span> <span class="string">"./common/uni.css"</span>;</span><br><span class="line">    <span class="selector-class">.uni-hello-text</span>&#123;</span><br><span class="line">        <span class="attribute">color</span>:<span class="number">#7A7E83</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">var dateUtils = require(&quot;../../../common/util.js&quot;).dateUtils; //直接使用js模块的属性。在hello uni-app有示例
+import * as echarts from &quot;/components/echarts/echarts.simple.min.js&quot;; //将js导入并重命名为echarts，然后使用echarts.来继续执行方法。
+</code></pre>
+<h3 id="CSS-引入方式"><a href="#CSS-引入方式" class="headerlink" title="CSS 引入方式"></a>CSS 引入方式</h3><pre><code class="css">&lt;style&gt;
+    @import &quot;./common/uni.css&quot;;
+    .uni-hello-text{
+        color:#7A7E83;
+    }
+&lt;/style&gt;
+</code></pre>
 <p><strong>改全局样式：</strong>在根目录下的 app.vue 里写入，每个页面都会加载 app.vue 里的样式。</p>
 <h3 id="组件导入"><a href="#组件导入" class="headerlink" title="组件导入"></a>组件导入</h3><p>类似 hexo 博客主题设计一样，能以组件的形式模块化导入。<br>如下是导入一个角标的组件库，在页面上显示一个 abc 并且右上角有个数字角标 1，<a href="http://ext.dcloud.net.cn/plugin?id=21" target="_blank" rel="noopener">详见</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view&gt;</span><br><span class="line">    &lt;uni-badge text=&quot;abc&quot; :inverted=&quot;true&quot;&gt;&lt;/uni-badge</span><br><span class="line">    &gt;&lt;!--3.使用组件--&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import uniBadge from &quot;../../../components/uni-badge.vue&quot;; //1.导入组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;&#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123;</span><br><span class="line">    uniBadge, //2.注册组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    &lt;uni-badge text=&quot;abc&quot; :inverted=&quot;true&quot;&gt;&lt;/uni-badge
+    &gt;&lt;!--3.使用组件--&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import uniBadge from &quot;../../../components/uni-badge.vue&quot;; //1.导入组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
+export default {
+  data() {
+    return {};
+  },
+  components: {
+    uniBadge, //2.注册组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
+  },
+};
+&lt;/script&gt;
+</code></pre>
 <p>如需要全局导入 vue 组件，即每个页面都可以直接使用而不用引用和注册的话，在项目根目录下的 main.js 里处理。如下是 hello uni-app 里的例子。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//main.js</span></span><br><span class="line"><span class="keyword">import</span> pageHead <span class="keyword">from</span> <span class="string">"./components/page-head.vue"</span>; <span class="comment">//导入</span></span><br><span class="line">Vue.component(<span class="string">"page-head"</span>, pageHead); <span class="comment">//注册。注册后在每个vue的page页面里可以直接使用&lt;page-head&gt;&lt;/page-head&gt;组件。</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">//main.js
+import pageHead from &quot;./components/page-head.vue&quot;; //导入
+Vue.component(&quot;page-head&quot;, pageHead); //注册。注册后在每个vue的page页面里可以直接使用&lt;page-head&gt;&lt;/page-head&gt;组件。
+</code></pre>
 <p>上述的组件使用方式属于传统 vue 的概念。uni-app 2.7 以后推出了更简单的组件使用技术<a href="https://uniapp.dcloud.net.cn/collocation/pages?id=easycom" target="_blank" rel="noopener">easycom</a>，无需引用和注册组件，直接在 template 区域使用组件即可。</p>
 <h2 id="js-的变化"><a href="#js-的变化" class="headerlink" title="js 的变化"></a>js 的变化</h2><p>js 的变化，分为<strong>运行环境变化</strong>、<strong>数据绑定模式变化</strong>、<strong>api 变化</strong>3 部分。</p>
 <h3 id="运行环境从浏览器变成-v8-引擎"><a href="#运行环境从浏览器变成-v8-引擎" class="headerlink" title="运行环境从浏览器变成 v8 引擎"></a>运行环境从浏览器变成 v8 引擎</h3><p>标准 js 语法和 api 都支持，比如 if、for、settimeout、indexOf 等。</p>
@@ -166,9 +223,51 @@
 </blockquote>
 <p>在 uni-app 的各个端中，除了 h5 端，其他端的 js 都运行在一个独立的 v8 引擎下，不是在浏览器中，所以浏览器的对象无法使用。如果你做过小程序开发，对此应当很了解。<br><strong>这意味着依赖 document 的很多 HTML 的库，比如 jqurey 无法使用。</strong><br>当然 app 和小程序支持 web-view 组件，里面可以加载标准 HTML，这种页面仍然支持浏览器专用对象 window、document、navigator、location。</p>
 <h3 id="以前的-dom-操作，改成-vue-的-MVVM-模式"><a href="#以前的-dom-操作，改成-vue-的-MVVM-模式" class="headerlink" title="以前的 dom 操作，改成 vue 的 MVVM 模式"></a>以前的 dom 操作，改成 vue 的 MVVM 模式</h3><p>现在前端趋势是去 dom 化，改用<strong>mvvm 模式，</strong>更简洁的写法，大幅减少代码行数，同时差量渲染性能更好。<br>uni-app 使用 vue 的数据绑定方式解决 js 和 dom 界面交互的问题。<br>如果你想改变某个 dom 元素的显示内容，比如一个 view 的显示文字：<br><strong>以前</strong>是给 view 设 id，然后 js 里通过选择器获取 dom 元素，进一步通过 js 进行赋值操作，修改 dom 元素的属性或值。<br>如下演示了一段代码，页面中有个显示的文字区和一个按钮，点击按钮后会修改文字区的值</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">document</span>.addEventListener(<span class="string">"DOMContentLoaded"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">document</span>.getElementById(<span class="string">"spana"</span>).innerText = <span class="string">"456"</span>;</span></span><br><span class="line">      &#125;);</span><br><span class="line"><span class="actionscript">      <span class="function"><span class="keyword">function</span> <span class="title">changetextvalue</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">document</span>.getElementById(<span class="string">"spana"</span>).innerText = <span class="string">"789"</span>;</span></span><br><span class="line">      &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"spana"</span>&gt;</span>123<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">onclick</span>=<span class="string">"changetextvalue()"</span>&gt;</span>修改为789<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">&lt;html&gt;
+  &lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+        document.getElementById(&quot;spana&quot;).innerText = &quot;456&quot;;
+      });
+      function changetextvalue() {
+        document.getElementById(&quot;spana&quot;).innerText = &quot;789&quot;;
+      }
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;span id=&quot;spana&quot;&gt;123&lt;/span&gt;
+    &lt;button type=&quot;button&quot; onclick=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 <p>现在的做法，是<strong>vue 的绑定模式</strong>，给这个<strong>dom 元素绑定一个 js 变量</strong>，在 script 中修改 js 变量的值，dom 会自动变化，页面会自动更新渲染</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view&gt;</span><br><span class="line">    &lt;text&gt;&#123;&#123; textvalue &#125;&#125;&lt;/text</span><br><span class="line">    &gt;&lt;!-- 这里演示了组件值的绑定 --&gt;</span><br><span class="line">    &lt;button :type=&quot;buttontype&quot; @click=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button</span><br><span class="line">    &gt;&lt;!-- 这里演示了属性和事件的绑定 --&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      textvalue: &quot;123&quot;,</span><br><span class="line">      buttontype: &quot;primary&quot;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad() &#123;</span><br><span class="line">    this.textvalue = &quot;456&quot;; //这里修改textvalue的值，其实123都来不及显示就变成了456</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    changetextvalue() &#123;</span><br><span class="line">      this.textvalue = &quot;789&quot;; //这里修改textvalue的值，页面自动刷新为789</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    &lt;text&gt;{{ textvalue }}&lt;/text
+    &gt;&lt;!-- 这里演示了组件值的绑定 --&gt;
+    &lt;button :type=&quot;buttontype&quot; @click=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button
+    &gt;&lt;!-- 这里演示了属性和事件的绑定 --&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  data() {
+    return {
+      textvalue: &quot;123&quot;,
+      buttontype: &quot;primary&quot;,
+    };
+  },
+  onLoad() {
+    this.textvalue = &quot;456&quot;; //这里修改textvalue的值，其实123都来不及显示就变成了456
+  },
+  methods: {
+    changetextvalue() {
+      this.textvalue = &quot;789&quot;; //这里修改textvalue的值，页面自动刷新为789
+    },
+  },
+};
+&lt;/script&gt;
+</code></pre>
 <p>注意上述代码中的 <code>export default {}</code> 里的 <code>data(): {return { }}</code>。<br>在 vue 的设计中，这里存放着页面中需要绑定的数据，写在 data 里，才能被界面正确的绑定和渲染。<br>注意：uni-app 的 vue 页面是 vue 的单文件组件规范，按照 vue 的定义只接受 function，必须用 return 包起来。<br>如果你学过小程序的数据绑定，但不了解 vue，要注意：</p>
 <ul>
 <li>小程序的数据绑定参考了 vue，但自己修改了一些。在 uni-app 中只支持标准的 vue，不支持小程序的数据绑定语法</li>
@@ -180,7 +279,22 @@
 <li>现在，需要在 js 的<code>export default {}</code> 里的 <code>methods: {}</code> 里写一个方法，然后在组件中使用<code>@click=&quot;changetextvalue()&quot;</code></li>
 </ul>
 <p>在 js 中，与 data 和 methods 平级的，如上述示例代码中的<code>onload()</code>，称为生命周期。在普通 vue 页面里的生命周期叫页面生命周期。在项目根目录的 app.vue 文件中的生命周期叫应用生命周期。<br>除了<code>onload</code>，还有<code>onready</code>等很多生命周期，具体见<a href="https://uniapp.dcloud.io/collocation/frame/lifecycle" target="_blank" rel="noopener">uni-app 的生命周期</a><br>在高级用法里，<strong>vue 支持给组件设 ref（引用标记）</strong>，这类似于之前 html 中给一个 dom 元素设 id，然后在 js 中也可以用<code>this.$refs.xxx</code>来获取。如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view&gt;</span><br><span class="line">    &lt;view ref=&quot;testview&quot;&gt;11111&lt;/view&gt;</span><br><span class="line">    &lt;button @click=&quot;getTest&quot;&gt;获取test节点&lt;/button&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    getTest() &#123;</span><br><span class="line">      console.log(this.$refs.testview);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    &lt;view ref=&quot;testview&quot;&gt;11111&lt;/view&gt;
+    &lt;button @click=&quot;getTest&quot;&gt;获取test节点&lt;/button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  methods: {
+    getTest() {
+      console.log(this.$refs.testview);
+    },
+  },
+};
+&lt;/script&gt;
+</code></pre>
 <h3 id="js-api-的变化"><a href="#js-api-的变化" class="headerlink" title="js api 的变化"></a>js api 的变化</h3><p>因为 uni-app 的 api 是<strong>参考小程序</strong>的，所以<strong>和浏览器的 js api</strong>有很多不同，如</p>
 <ol>
 <li>alert,confirm 改成 <a href="https://uniapp.dcloud.io/api/ui/prompt?id=showmodal" target="_blank" rel="noopener">uni.showmodel</a></li>
@@ -196,7 +310,9 @@
 <li>*选择器不支持；</li>
 <li>元素选择器里没有 body，改为了 page。微信小程序即是如此。</li>
 </ol>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">page</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="css">page {
+}
+</code></pre>
 <ul>
 <li><strong>单位方面：</strong>px 无法动态适应不同宽度的屏幕，rem 无法用于 nvue/weex。如果想使用根据屏幕宽度自适应的单位，推荐使用 rpx，全端支持。 <a href="https://uniapp.dcloud.io/frame?id=%e5%b0%ba%e5%af%b8%e5%8d%95%e4%bd%8d" target="_blank" rel="noopener">尺寸单位文档</a></li>
 <li><strong>布局方面：</strong>uni-app 推荐使用 flex 布局，这个布局思路和传统流式布局有点区别。但 flex 的特色在于，不管是什么技术都支持这种排版，web、小程序/快应用、weex/rn、原生的 iOS、Android 开发，全都支持 flex。它是通吃所有端的新一代布局方案。相关教程请自行百度学习。</li>
@@ -227,7 +343,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/ytoag7.md" download target="_blank">uni-app简单api调用.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:47</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/ytoag7/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -542,7 +658,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms9o0093zvnd7utsjjy4" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snuk00933rnbzj5nrn6t" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -551,6 +667,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

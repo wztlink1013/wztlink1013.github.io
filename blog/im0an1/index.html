@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="Android平台与开发技术">
   <meta property="og:description" content="Android平台与开发技术">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/ytoag7/" title="uni-app简单api调用" />
   <link rel="next" href="https://www.wztlink1013.com/blog/gcwu9h/" title="npm ERR! Unexpected end of JSON input while parsing" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -144,8 +146,25 @@
 <h3 id="gradle-国内源配置方法"><a href="#gradle-国内源配置方法" class="headerlink" title="gradle 国内源配置方法"></a>gradle 国内源配置方法</h3><p>Android Studio 在构建项目时会拉取 gradle 资源，而 goole 和 jcenter 在国内的网络环境并不好用，容易产生 connect timeout 等错误。</p>
 <p>因此将地址修改成阿里云的国内镜像。<br>一、允许使用 maven 仓库<br>　　点击 File-&gt;Settings 进入设置界面，勾选“Enable embedded Maven repository”，</p>
 <p>二、修改 build.gradle<br>　　在项目文件中找到 build.gradle 文件，修改其中的 buildscript 和 allprojects 地址：</p>
-<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">buildscript</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        maven&#123; url <span class="string">'http://maven.aliyun.com/nexus/content/groups/public/'</span> &#125;</span><br><span class="line">        maven&#123; url <span class="string">'http://maven.aliyun.com/nexus/content/repositories/jcenter'</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">'com.android.tools.build:gradle:3.3.0-alpha13'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        maven&#123; url <span class="string">'http://maven.aliyun.com/nexus/content/groups/public/'</span>&#125;</span><br><span class="line">        maven&#123; url <span class="string">'http://maven.aliyun.com/nexus/content/repositories/jcenter'</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">task</span> clean(type: <span class="keyword">Delete</span>) &#123;</span><br><span class="line">    <span class="keyword">delete</span> rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>gradle 的文件下载下来以后会保存在本地，也有缓存。这意味着不同的项目如果有相同的 gradle 依赖，则不需要重复下载。因此也不是每次打开新项目都需要修改 build.gradle 文件。</p>
+<pre><code>buildscript {
+    repositories {
+        maven{ url &#39;http://maven.aliyun.com/nexus/content/groups/public/&#39; }
+        maven{ url &#39;http://maven.aliyun.com/nexus/content/repositories/jcenter&#39;}
+    }
+    dependencies {
+        classpath &#39;com.android.tools.build:gradle:3.3.0-alpha13&#39;
+    }
+}
+allprojects {
+    repositories {
+        maven{ url &#39;http://maven.aliyun.com/nexus/content/groups/public/&#39;}
+        maven{ url &#39;http://maven.aliyun.com/nexus/content/repositories/jcenter&#39;}
+    }
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+</code></pre><p>gradle 的文件下载下来以后会保存在本地，也有缓存。这意味着不同的项目如果有相同的 gradle 依赖，则不需要重复下载。因此也不是每次打开新项目都需要修改 build.gradle 文件。</p>
 <p>如果修改 build.gradle 后重新 build 还是有错，可以尝试新建一个相同 API 版本的项目。</p>
 <p>参考：</p>
 <ul>
@@ -195,7 +214,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/im0an1.md" download target="_blank">Android平台与开发技术.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/im0an1/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -510,7 +529,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms940085zvndjccb22zx" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snu300853rnbrrv6ucqc" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -519,6 +538,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

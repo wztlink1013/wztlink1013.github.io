@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="读取本地数据">
   <meta property="og:description" content="数据分析当中读取本地数据，txt，csv，json，SQLite，SqLite_json等数据类型">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/dggm37/" title="Data-描述数据" />
   <link rel="next" href="https://www.wztlink1013.com/blog/ozvhfb/" title="爬虫框架" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -94,87 +96,397 @@
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
         <p>##</p>
-<h2 id="一、TXT-文件操作"><a href="#一、TXT-文件操作" class="headerlink" title="一、TXT 文件操作"></a>一、TXT 文件操作</h2><h3 id="读取全部内容"><a href="#读取全部内容" class="headerlink" title="读取全部内容"></a>读取全部内容</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">txt_filename = <span class="string">'./files/python_wiki.txt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file_obj = open(txt_filename,<span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取整个文件内容</span></span><br><span class="line">all_content = file_obj.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">file_obj.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (all_content)</span><br></pre></td></tr></table></figure>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[<span class="string">24</span>][<span class="symbol">25</span>] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[<span class="string">26</span>][<span class="symbol">27</span>] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]</span><br><span class="line">Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]</span><br><span class="line">Python interpreters are available for many operating systems, allowing Python code to run on a wide variety of systems. CPython, the reference implementation of Python, is open source software[30] and has a community-based development model, as do nearly all of its variant implementations. CPython is managed by the non-profit Python Software Foundation.</span><br></pre></td></tr></table></figure>
-<h3 id="逐行读取"><a href="#逐行读取" class="headerlink" title="逐行读取"></a>逐行读取</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">txt_filename = <span class="string">'./files/python_wiki.txt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file_obj = open(txt_filename, <span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 逐行读取</span></span><br><span class="line">line1 = file_obj.readline()</span><br><span class="line"><span class="keyword">print</span> (line1)</span><br></pre></td></tr></table></figure>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[<span class="string">24</span>][<span class="symbol">25</span>] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[<span class="string">26</span>][<span class="symbol">27</span>] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 继续读下一行【不会全部读完】</span></span><br><span class="line">line2 = file_obj.readline()</span><br><span class="line"><span class="keyword">print</span> (line2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">file_obj.close()</span><br></pre></td></tr></table></figure>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">Python supports multiple programming paradigms, including object-oriented, imperative <span class="keyword">and</span> functional programming <span class="keyword">or</span> procedural styles. It features a dynamic<span class="built_in"> type system </span><span class="keyword">and</span> automatic memory management <span class="keyword">and</span> has a large <span class="keyword">and</span> comprehensive standard library.[29]</span><br></pre></td></tr></table></figure>
-<h3 id="读取全部内容，返回列表"><a href="#读取全部内容，返回列表" class="headerlink" title="读取全部内容，返回列表"></a>读取全部内容，返回列表</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">txt_filename = <span class="string">'./files/python_wiki.txt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file_obj = open(txt_filename, <span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line">lines = file_obj.readlines()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'%i: %s'</span> %(i, line))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭文件</span></span><br><span class="line">file_obj.close()</span><br></pre></td></tr></table></figure>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">0: Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[<span class="string">24</span>][<span class="symbol">25</span>] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[<span class="string">26</span>][<span class="symbol">27</span>] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]</span><br><span class="line"></span><br><span class="line">1: Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]</span><br><span class="line"></span><br><span class="line">2: Python interpreters are available for many operating systems, allowing Python code to run on a wide variety of systems. CPython, the reference implementation of Python, is open source software[30] and has a community-based development model, as do nearly all of its variant implementations. CPython is managed by the non-profit Python Software Foundation.</span><br></pre></td></tr></table></figure>
-<h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">txt_filename = <span class="string">'./files/test_write.txt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file_obj = open(txt_filename, <span class="string">'w'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入全部内容</span></span><br><span class="line">file_obj.write(<span class="string">"《Python数据分析》"</span>)</span><br><span class="line">file_obj.close()</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">txt_filename = <span class="string">'./files/test_write.txt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">file_obj = open(txt_filename, <span class="string">'w'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入字符串列表</span></span><br><span class="line">lines = [<span class="string">'这是第%i行\n'</span> %n <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line">file_obj.writelines(lines)</span><br><span class="line">file_obj.close()</span><br></pre></td></tr></table></figure>
-<h3 id="with-语句"><a href="#with-语句" class="headerlink" title="with 语句"></a>with 语句</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">txt_filename = <span class="string">'./files/test_write.txt'</span></span><br><span class="line"><span class="keyword">with</span> open(txt_filename, <span class="string">'r'</span>) <span class="keyword">as</span> f_obj:</span><br><span class="line">    <span class="keyword">print</span> (f_obj.read())</span><br></pre></td></tr></table></figure>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">这是第<span class="number">0</span>行</span><br><span class="line">这是第<span class="number">1</span>行</span><br><span class="line">这是第<span class="number">2</span>行</span><br><span class="line">这是第<span class="number">3</span>行</span><br><span class="line">这是第<span class="number">4</span>行</span><br><span class="line">这是第<span class="number">5</span>行</span><br><span class="line">这是第<span class="number">6</span>行</span><br><span class="line">这是第<span class="number">7</span>行</span><br><span class="line">这是第<span class="number">8</span>行</span><br><span class="line">这是第<span class="number">9</span>行</span><br></pre></td></tr></table></figure>
-<h2 id="二、CSV-文件操作"><a href="#二、CSV-文件操作" class="headerlink" title="二、CSV 文件操作"></a>二、CSV 文件操作</h2><h3 id="pandas-读-csv-文件"><a href="#pandas-读-csv-文件" class="headerlink" title="pandas 读 csv 文件"></a>pandas 读 csv 文件</h3><blockquote>
+<h2 id="一、TXT-文件操作"><a href="#一、TXT-文件操作" class="headerlink" title="一、TXT 文件操作"></a>一、TXT 文件操作</h2><h3 id="读取全部内容"><a href="#读取全部内容" class="headerlink" title="读取全部内容"></a>读取全部内容</h3><pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename,&#39;r&#39;)
+
+# 读取整个文件内容
+all_content = file_obj.read()
+
+# 关闭文件
+file_obj.close()
+
+print (all_content)
+</code></pre>
+<pre><code>Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[24][25] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[26][27] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]
+Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]
+Python interpreters are available for many operating systems, allowing Python code to run on a wide variety of systems. CPython, the reference implementation of Python, is open source software[30] and has a community-based development model, as do nearly all of its variant implementations. CPython is managed by the non-profit Python Software Foundation.
+</code></pre><h3 id="逐行读取"><a href="#逐行读取" class="headerlink" title="逐行读取"></a>逐行读取</h3><pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;r&#39;)
+
+# 逐行读取
+line1 = file_obj.readline()
+print (line1)
+</code></pre>
+<pre><code>Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[24][25] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[26][27] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]
+</code></pre><pre><code class="python"># 继续读下一行【不会全部读完】
+line2 = file_obj.readline()
+print (line2)
+
+# 关闭文件
+file_obj.close()
+</code></pre>
+<pre><code>Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]
+</code></pre><h3 id="读取全部内容，返回列表"><a href="#读取全部内容，返回列表" class="headerlink" title="读取全部内容，返回列表"></a>读取全部内容，返回列表</h3><pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;r&#39;)
+
+lines = file_obj.readlines()
+
+for i, line in enumerate(lines):
+    print (&#39;%i: %s&#39; %(i, line))
+
+# 关闭文件
+file_obj.close()
+</code></pre>
+<pre><code>0: Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[24][25] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[26][27] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]
+
+1: Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]
+
+2: Python interpreters are available for many operating systems, allowing Python code to run on a wide variety of systems. CPython, the reference implementation of Python, is open source software[30] and has a community-based development model, as do nearly all of its variant implementations. CPython is managed by the non-profit Python Software Foundation.
+</code></pre><h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><pre><code class="python">txt_filename = &#39;./files/test_write.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;w&#39;)
+
+# 写入全部内容
+file_obj.write(&quot;《Python数据分析》&quot;)
+file_obj.close()
+</code></pre>
+<pre><code class="python">txt_filename = &#39;./files/test_write.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;w&#39;)
+
+# 写入字符串列表
+lines = [&#39;这是第%i行\n&#39; %n for n in range(10)]
+file_obj.writelines(lines)
+file_obj.close()
+</code></pre>
+<h3 id="with-语句"><a href="#with-语句" class="headerlink" title="with 语句"></a>with 语句</h3><pre><code class="python">txt_filename = &#39;./files/test_write.txt&#39;
+with open(txt_filename, &#39;r&#39;) as f_obj:
+    print (f_obj.read())
+</code></pre>
+<pre><code>这是第0行
+这是第1行
+这是第2行
+这是第3行
+这是第4行
+这是第5行
+这是第6行
+这是第7行
+这是第8行
+这是第9行
+</code></pre><h2 id="二、CSV-文件操作"><a href="#二、CSV-文件操作" class="headerlink" title="二、CSV 文件操作"></a>二、CSV 文件操作</h2><h3 id="pandas-读-csv-文件"><a href="#pandas-读-csv-文件" class="headerlink" title="pandas 读 csv 文件"></a>pandas 读 csv 文件</h3><blockquote>
 <p>根据路径导入数据以及指定的列</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">filename = <span class="string">'./files/presidential_polls.csv'</span></span><br><span class="line">df = pd.read_csv(filename, usecols=[<span class="string">'cycle'</span>, <span class="string">'type'</span>, <span class="string">'startdate'</span>])<span class="comment">#导入指定列</span></span><br><span class="line"><span class="keyword">print</span> (type(df))</span><br><span class="line"><span class="keyword">print</span> (df.head())</span><br></pre></td></tr></table></figure>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">&lt;class 'pandas.core.frame.DataFrame'&gt;</span><br><span class="line">   cycle        type   startdate</span><br><span class="line"><span class="number">0</span>   <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">25</span>/<span class="number">2016</span></span><br><span class="line"><span class="number">1</span>   <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">27</span>/<span class="number">2016</span></span><br><span class="line"><span class="number">2</span>   <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">27</span>/<span class="number">2016</span></span><br><span class="line"><span class="number">3</span>   <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">20</span>/<span class="number">2016</span></span><br><span class="line"><span class="number">4</span>   <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">20</span>/<span class="number">2016</span></span><br></pre></td></tr></table></figure>
-<blockquote>
+<pre><code class="python">import pandas as pd
+filename = &#39;./files/presidential_polls.csv&#39;
+df = pd.read_csv(filename, usecols=[&#39;cycle&#39;, &#39;type&#39;, &#39;startdate&#39;])#导入指定列
+print (type(df))
+print (df.head())
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+   cycle        type   startdate
+0   2016  polls-plus  10/25/2016
+1   2016  polls-plus  10/27/2016
+2   2016  polls-plus  10/27/2016
+3   2016  polls-plus  10/20/2016
+4   2016  polls-plus  10/20/2016
+</code></pre><blockquote>
 <p>引用指定的列</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cycle_se = df[<span class="string">'cycle'</span>]</span><br><span class="line"><span class="keyword">print</span> (type(cycle_se))</span><br><span class="line"><span class="keyword">print</span> (cycle_se.head())</span><br></pre></td></tr></table></figure>
-<figure class="highlight delphi"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'pandas.core.series.Series'</span>&gt;</span><br><span class="line"><span class="number">0</span>    <span class="number">2016</span></span><br><span class="line"><span class="number">1</span>    <span class="number">2016</span></span><br><span class="line"><span class="number">2</span>    <span class="number">2016</span></span><br><span class="line"><span class="number">3</span>    <span class="number">2016</span></span><br><span class="line"><span class="number">4</span>    <span class="number">2016</span></span><br><span class="line"><span class="keyword">Name</span>: cycle, dtype: int64</span><br></pre></td></tr></table></figure>
-<blockquote>
+<pre><code class="python">cycle_se = df[&#39;cycle&#39;]
+print (type(cycle_se))
+print (cycle_se.head())
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.series.Series&#39;&gt;
+0    2016
+1    2016
+2    2016
+3    2016
+4    2016
+Name: cycle, dtype: int64
+</code></pre><blockquote>
 <p>多层索引成 dataframe 类型</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">filename = <span class="string">'./files/presidential_polls.csv'</span></span><br><span class="line">df1 = pd.read_csv(filename,usecols=[<span class="string">'cycle'</span>, <span class="string">'type'</span>, <span class="string">'startdate'</span>,<span class="string">'state'</span>,<span class="string">'grade'</span>],index_col = [<span class="string">'state'</span>,<span class="string">'grade'</span>])</span><br><span class="line">print(df1.head())</span><br></pre></td></tr></table></figure>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">                cycle        type   startdate</span><br><span class="line"><span class="section">state</span>    grade</span><br><span class="line">U.S.     B       <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">25</span>/<span class="number">2016</span></span><br><span class="line">         A+      <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">27</span>/<span class="number">2016</span></span><br><span class="line">Virginia A+      <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">27</span>/<span class="number">2016</span></span><br><span class="line">Florida  A       <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">20</span>/<span class="number">2016</span></span><br><span class="line">U.S.     B+      <span class="number">2016</span>  polls-plus  <span class="number">10</span>/<span class="number">20</span>/<span class="number">2016</span></span><br></pre></td></tr></table></figure>
-<blockquote>
+<pre><code class="python">filename = &#39;./files/presidential_polls.csv&#39;
+df1 = pd.read_csv(filename,usecols=[&#39;cycle&#39;, &#39;type&#39;, &#39;startdate&#39;,&#39;state&#39;,&#39;grade&#39;],index_col = [&#39;state&#39;,&#39;grade&#39;])
+print(df1.head())
+</code></pre>
+<pre><code>                cycle        type   startdate
+state    grade
+U.S.     B       2016  polls-plus  10/25/2016
+         A+      2016  polls-plus  10/27/2016
+Virginia A+      2016  polls-plus  10/27/2016
+Florida  A       2016  polls-plus  10/20/2016
+U.S.     B+      2016  polls-plus  10/20/2016
+</code></pre><blockquote>
 <p>跳过指定的行</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">filename = <span class="string">'./files/presidential_polls.csv'</span></span><br><span class="line">df2 = pd.read_csv(filename,usecols=[<span class="string">'cycle'</span>, <span class="string">'type'</span>, <span class="string">'startdate'</span>,<span class="string">'state'</span>,<span class="string">'grade'</span>],skiprows=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">print(df2.head())</span><br></pre></td></tr></table></figure>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">   cycle        type         <span class="section">state</span>   startdate grade</span><br><span class="line"><span class="number">0</span>   <span class="number">2016</span>  polls-plus       Florida  <span class="number">10</span>/<span class="number">20</span>/<span class="number">2016</span>     A</span><br><span class="line"><span class="number">1</span>   <span class="number">2016</span>  polls-plus          U.S.  <span class="number">10</span>/<span class="number">20</span>/<span class="number">2016</span>    B+</span><br><span class="line"><span class="number">2</span>   <span class="number">2016</span>  polls-plus          U.S.  <span class="number">10</span>/<span class="number">22</span>/<span class="number">2016</span>     A</span><br><span class="line"><span class="number">3</span>   <span class="number">2016</span>  polls-plus          U.S.  <span class="number">10</span>/<span class="number">26</span>/<span class="number">2016</span>    A-</span><br><span class="line"><span class="number">4</span>   <span class="number">2016</span>  polls-plus  Pennsylvania  <span class="number">10</span>/<span class="number">25</span>/<span class="number">2016</span>    B-</span><br></pre></td></tr></table></figure>
-<h3 id="pandas-写-csv-文件"><a href="#pandas-写-csv-文件" class="headerlink" title="pandas 写 csv 文件"></a>pandas 写 csv 文件</h3><blockquote>
+<pre><code class="python">filename = &#39;./files/presidential_polls.csv&#39;
+df2 = pd.read_csv(filename,usecols=[&#39;cycle&#39;, &#39;type&#39;, &#39;startdate&#39;,&#39;state&#39;,&#39;grade&#39;],skiprows=[1, 2, 3])
+print(df2.head())
+</code></pre>
+<pre><code>   cycle        type         state   startdate grade
+0   2016  polls-plus       Florida  10/20/2016     A
+1   2016  polls-plus          U.S.  10/20/2016    B+
+2   2016  polls-plus          U.S.  10/22/2016     A
+3   2016  polls-plus          U.S.  10/26/2016    A-
+4   2016  polls-plus  Pennsylvania  10/25/2016    B-
+</code></pre><h3 id="pandas-写-csv-文件"><a href="#pandas-写-csv-文件" class="headerlink" title="pandas 写 csv 文件"></a>pandas 写 csv 文件</h3><blockquote>
 <p>·to_csv 里面的 index 参数作用？===可能是不要索引的意思。</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">filename = <span class="string">'./files/pandas_output.csv'</span></span><br><span class="line">df.to_csv(filename, index=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="三、JSON-文件操作"><a href="#三、JSON-文件操作" class="headerlink" title="三、JSON 文件操作"></a>三、JSON 文件操作</h2><h3 id="json-读操作"><a href="#json-读操作" class="headerlink" title="json 读操作"></a>json 读操作</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">filename = <span class="string">'./files/global_temperature.json'</span></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f_obj:</span><br><span class="line">    json_data = json.load(f_obj)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回值是dict类型</span></span><br><span class="line"><span class="keyword">print</span> (type(json_data))</span><br></pre></td></tr></table></figure>
-<figure class="highlight ceylon"><table><tr><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">'dict'</span>&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">print</span> (json_data.keys())</span><br></pre></td></tr></table></figure>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">dict_keys</span><span class="params">([<span class="string">'description'</span>, <span class="string">'data'</span>])</span></span></span><br></pre></td></tr></table></figure>
-<h3 id="json-转-CSV"><a href="#json-转-CSV" class="headerlink" title="json 转 CSV"></a>json 转 CSV</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#print json_data['data'].keys()</span></span><br><span class="line"><span class="keyword">print</span> (json_data[<span class="string">'data'</span>].values())</span><br></pre></td></tr></table></figure>
-<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">dict_values(['-0.<span class="number">1247</span>', '-0.<span class="number">0707</span>', '-0.<span class="number">0710</span>', '-0.<span class="number">1481</span>', '-0.<span class="number">2099</span>', '-0.<span class="number">2220</span>', '-0.<span class="number">2101</span>', '-0.<span class="number">2559</span>', '-0.<span class="number">1541</span>', '-0.<span class="number">1032</span>', '-0.<span class="number">3233</span>', '-0.<span class="number">2552</span>', '-0.<span class="number">3079</span>', '-0.<span class="number">3221</span>', '-0.<span class="number">2828</span>', '-0.<span class="number">2279</span>', '-0.<span class="number">0971</span>', '-0.<span class="number">1232</span>', '-0.<span class="number">2578</span>', '-0.<span class="number">1172</span>', '-0.<span class="number">0704</span>', '-0.<span class="number">1471</span>', '-0.<span class="number">2535</span>', '-0.<span class="number">3442</span>', '-0.<span class="number">4240</span>', '-0.<span class="number">2967</span>', '-0.<span class="number">2208</span>', '-0.<span class="number">3767</span>', '-0.<span class="number">4441</span>', '-0.<span class="number">4332</span>', '-0.<span class="number">3862</span>', '-0.<span class="number">4367</span>', '-0.<span class="number">3318</span>', '-0.<span class="number">3205</span>', '-0.<span class="number">1444</span>', '-0.<span class="number">0747</span>', '-0.<span class="number">2979</span>', '-0.<span class="number">3193</span>', '-0.<span class="number">2118</span>', '-0.<span class="number">2082</span>', '-0.<span class="number">2152</span>', '-0.<span class="number">1517</span>', '-0.<span class="number">2318</span>', '-0.<span class="number">2161</span>', '-0.<span class="number">2510</span>', '-0.<span class="number">1464</span>', '-0.<span class="number">0618</span>', '-0.<span class="number">1506</span>', '-0.<span class="number">1749</span>', '-0.<span class="number">2982</span>', '-0.<span class="number">1016</span>', '-0.<span class="number">0714</span>', '-0.<span class="number">1214</span>', '-0.<span class="number">2481</span>', '-0.<span class="number">1075</span>', '-0.<span class="number">1445</span>', '-0.<span class="number">1173</span>', '-0.<span class="number">0204</span>', '-0.<span class="number">0318</span>', '-0.<span class="number">0157</span>', '0.<span class="number">0927</span>', '0.<span class="number">1974</span>', '0.<span class="number">1549</span>', '0.<span class="number">1598</span>', '0.<span class="number">2948</span>', '0.<span class="number">1754</span>', '-0.<span class="number">0013</span>', '-0.<span class="number">0455</span>', '-0.<span class="number">0471</span>', '-0.<span class="number">0550</span>', '-0.<span class="number">1579</span>', '-0.<span class="number">0095</span>', '0.<span class="number">0288</span>', '0.<span class="number">0997</span>', '-0.<span class="number">1118</span>', '-0.<span class="number">1305</span>', '-0.<span class="number">1945</span>', '0.<span class="number">0538</span>', '0.<span class="number">1145</span>', '0.<span class="number">0640</span>', '0.<span class="number">0252</span>', '0.<span class="number">0818</span>', '0.<span class="number">0924</span>', '0.<span class="number">1100</span>', '-0.<span class="number">1461</span>', '-0.<span class="number">0752</span>', '-0.<span class="number">0204</span>', '-0.<span class="number">0112</span>', '-0.<span class="number">0282</span>', '0.<span class="number">0937</span>', '0.<span class="number">0383</span>', '-0.<span class="number">0775</span>', '0.<span class="number">0280</span>', '0.<span class="number">1654</span>', '-0.<span class="number">0698</span>', '0.<span class="number">0060</span>', '-0.<span class="number">0769</span>', '0.<span class="number">1996</span>', '0.<span class="number">1139</span>', '0.<span class="number">2288</span>', '0.<span class="number">2651</span>', '0.<span class="number">3024</span>', '0.<span class="number">1836</span>', '0.<span class="number">3429</span>', '0.<span class="number">1510</span>', '0.<span class="number">1357</span>', '0.<span class="number">2308</span>', '0.<span class="number">3710</span>', '0.<span class="number">3770</span>', '0.<span class="number">2982</span>', '0.<span class="number">4350</span>', '0.<span class="number">4079</span>', '0.<span class="number">2583</span>', '0.<span class="number">2857</span>', '0.<span class="number">3420</span>', '0.<span class="number">4593</span>', '0.<span class="number">3225</span>', '0.<span class="number">5185</span>', '0.<span class="number">6335</span>', '0.<span class="number">4427</span>', '0.<span class="number">4255</span>', '0.<span class="number">5455</span>', '0.<span class="number">6018</span>', '0.<span class="number">6145</span>', '0.<span class="number">5806</span>', '0.<span class="number">6583</span>', '0.<span class="number">6139</span>', '0.<span class="number">6113</span>', '0.<span class="number">5415</span>', '0.<span class="number">6354</span>', '0.<span class="number">7008</span>', '0.<span class="number">5759</span>', '0.<span class="number">6219</span>', '0.<span class="number">6687</span>', '0.<span class="number">7402</span>', '0.<span class="number">8990</span>'])</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 转换key</span></span><br><span class="line">year_str_lst = json_data[<span class="string">'data'</span>].keys()</span><br><span class="line">year_lst = [int(year_str) <span class="keyword">for</span> year_str <span class="keyword">in</span> year_str_lst]</span><br><span class="line"><span class="keyword">print</span> (year_lst)</span><br></pre></td></tr></table></figure>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[<span class="number">1880</span>, <span class="number">1881</span>, <span class="number">1882</span>, <span class="number">1883</span>, <span class="number">1884</span>, <span class="number">1885</span>, <span class="number">1886</span>, <span class="number">1887</span>, <span class="number">1888</span>, <span class="number">1889</span>, <span class="number">1890</span>, <span class="number">1891</span>, <span class="number">1892</span>, <span class="number">1893</span>, <span class="number">1894</span>, <span class="number">1895</span>, <span class="number">1896</span>, <span class="number">1897</span>, <span class="number">1898</span>, <span class="number">1899</span>, <span class="number">1900</span>, <span class="number">1901</span>, <span class="number">1902</span>, <span class="number">1903</span>, <span class="number">1904</span>, <span class="number">1905</span>, <span class="number">1906</span>, <span class="number">1907</span>, <span class="number">1908</span>, <span class="number">1909</span>, <span class="number">1910</span>, <span class="number">1911</span>, <span class="number">1912</span>, <span class="number">1913</span>, <span class="number">1914</span>, <span class="number">1915</span>, <span class="number">1916</span>, <span class="number">1917</span>, <span class="number">1918</span>, <span class="number">1919</span>, <span class="number">1920</span>, <span class="number">1921</span>, <span class="number">1922</span>, <span class="number">1923</span>, <span class="number">1924</span>, <span class="number">1925</span>, <span class="number">1926</span>, <span class="number">1927</span>, <span class="number">1928</span>, <span class="number">1929</span>, <span class="number">1930</span>, <span class="number">1931</span>, <span class="number">1932</span>, <span class="number">1933</span>, <span class="number">1934</span>, <span class="number">1935</span>, <span class="number">1936</span>, <span class="number">1937</span>, <span class="number">1938</span>, <span class="number">1939</span>, <span class="number">1940</span>, <span class="number">1941</span>, <span class="number">1942</span>, <span class="number">1943</span>, <span class="number">1944</span>, <span class="number">1945</span>, <span class="number">1946</span>, <span class="number">1947</span>, <span class="number">1948</span>, <span class="number">1949</span>, <span class="number">1950</span>, <span class="number">1951</span>, <span class="number">1952</span>, <span class="number">1953</span>, <span class="number">1954</span>, <span class="number">1955</span>, <span class="number">1956</span>, <span class="number">1957</span>, <span class="number">1958</span>, <span class="number">1959</span>, <span class="number">1960</span>, <span class="number">1961</span>, <span class="number">1962</span>, <span class="number">1963</span>, <span class="number">1964</span>, <span class="number">1965</span>, <span class="number">1966</span>, <span class="number">1967</span>, <span class="number">1968</span>, <span class="number">1969</span>, <span class="number">1970</span>, <span class="number">1971</span>, <span class="number">1972</span>, <span class="number">1973</span>, <span class="number">1974</span>, <span class="number">1975</span>, <span class="number">1976</span>, <span class="number">1977</span>, <span class="number">1978</span>, <span class="number">1979</span>, <span class="number">1980</span>, <span class="number">1981</span>, <span class="number">1982</span>, <span class="number">1983</span>, <span class="number">1984</span>, <span class="number">1985</span>, <span class="number">1986</span>, <span class="number">1987</span>, <span class="number">1988</span>, <span class="number">1989</span>, <span class="number">1990</span>, <span class="number">1991</span>, <span class="number">1992</span>, <span class="number">1993</span>, <span class="number">1994</span>, <span class="number">1995</span>, <span class="number">1996</span>, <span class="number">1997</span>, <span class="number">1998</span>, <span class="number">1999</span>, <span class="number">2000</span>, <span class="number">2001</span>, <span class="number">2002</span>, <span class="number">2003</span>, <span class="number">2004</span>, <span class="number">2005</span>, <span class="number">2006</span>, <span class="number">2007</span>, <span class="number">2008</span>, <span class="number">2009</span>, <span class="number">2010</span>, <span class="number">2011</span>, <span class="number">2012</span>, <span class="number">2013</span>, <span class="number">2014</span>, <span class="number">2015</span>]</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 转换value</span></span><br><span class="line">temp_str_lst = json_data[<span class="string">'data'</span>].values()</span><br><span class="line">temp_lst = [float(temp_str) <span class="keyword">for</span> temp_str <span class="keyword">in</span> temp_str_lst]</span><br><span class="line"><span class="keyword">print</span> (temp_lst)</span><br></pre></td></tr></table></figure>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[<span class="number">-0.1247</span>, <span class="number">-0.0707</span>, <span class="number">-0.071</span>, <span class="number">-0.1481</span>, <span class="number">-0.2099</span>, <span class="number">-0.222</span>, <span class="number">-0.2101</span>, <span class="number">-0.2559</span>, <span class="number">-0.1541</span>, <span class="number">-0.1032</span>, <span class="number">-0.3233</span>, <span class="number">-0.2552</span>, <span class="number">-0.3079</span>, <span class="number">-0.3221</span>, <span class="number">-0.2828</span>, <span class="number">-0.2279</span>, <span class="number">-0.0971</span>, <span class="number">-0.1232</span>, <span class="number">-0.2578</span>, <span class="number">-0.1172</span>, <span class="number">-0.0704</span>, <span class="number">-0.1471</span>, <span class="number">-0.2535</span>, <span class="number">-0.3442</span>, <span class="number">-0.424</span>, <span class="number">-0.2967</span>, <span class="number">-0.2208</span>, <span class="number">-0.3767</span>, <span class="number">-0.4441</span>, <span class="number">-0.4332</span>, <span class="number">-0.3862</span>, <span class="number">-0.4367</span>, <span class="number">-0.3318</span>, <span class="number">-0.3205</span>, <span class="number">-0.1444</span>, <span class="number">-0.0747</span>, <span class="number">-0.2979</span>, <span class="number">-0.3193</span>, <span class="number">-0.2118</span>, <span class="number">-0.2082</span>, <span class="number">-0.2152</span>, <span class="number">-0.1517</span>, <span class="number">-0.2318</span>, <span class="number">-0.2161</span>, <span class="number">-0.251</span>, <span class="number">-0.1464</span>, <span class="number">-0.0618</span>, <span class="number">-0.1506</span>, <span class="number">-0.1749</span>, <span class="number">-0.2982</span>, <span class="number">-0.1016</span>, <span class="number">-0.0714</span>, <span class="number">-0.1214</span>, <span class="number">-0.2481</span>, <span class="number">-0.1075</span>, <span class="number">-0.1445</span>, <span class="number">-0.1173</span>, <span class="number">-0.0204</span>, <span class="number">-0.0318</span>, <span class="number">-0.0157</span>, <span class="number">0.0927</span>, <span class="number">0.1974</span>, <span class="number">0.1549</span>, <span class="number">0.1598</span>, <span class="number">0.2948</span>, <span class="number">0.1754</span>, <span class="number">-0.0013</span>, <span class="number">-0.0455</span>, <span class="number">-0.0471</span>, <span class="number">-0.055</span>, <span class="number">-0.1579</span>, <span class="number">-0.0095</span>, <span class="number">0.0288</span>, <span class="number">0.0997</span>, <span class="number">-0.1118</span>, <span class="number">-0.1305</span>, <span class="number">-0.1945</span>, <span class="number">0.0538</span>, <span class="number">0.1145</span>, <span class="number">0.064</span>, <span class="number">0.0252</span>, <span class="number">0.0818</span>, <span class="number">0.0924</span>, <span class="number">0.11</span>, <span class="number">-0.1461</span>, <span class="number">-0.0752</span>, <span class="number">-0.0204</span>, <span class="number">-0.0112</span>, <span class="number">-0.0282</span>, <span class="number">0.0937</span>, <span class="number">0.0383</span>, <span class="number">-0.0775</span>, <span class="number">0.028</span>, <span class="number">0.1654</span>, <span class="number">-0.0698</span>, <span class="number">0.006</span>, <span class="number">-0.0769</span>, <span class="number">0.1996</span>, <span class="number">0.1139</span>, <span class="number">0.2288</span>, <span class="number">0.2651</span>, <span class="number">0.3024</span>, <span class="number">0.1836</span>, <span class="number">0.3429</span>, <span class="number">0.151</span>, <span class="number">0.1357</span>, <span class="number">0.2308</span>, <span class="number">0.371</span>, <span class="number">0.377</span>, <span class="number">0.2982</span>, <span class="number">0.435</span>, <span class="number">0.4079</span>, <span class="number">0.2583</span>, <span class="number">0.2857</span>, <span class="number">0.342</span>, <span class="number">0.4593</span>, <span class="number">0.3225</span>, <span class="number">0.5185</span>, <span class="number">0.6335</span>, <span class="number">0.4427</span>, <span class="number">0.4255</span>, <span class="number">0.5455</span>, <span class="number">0.6018</span>, <span class="number">0.6145</span>, <span class="number">0.5806</span>, <span class="number">0.6583</span>, <span class="number">0.6139</span>, <span class="number">0.6113</span>, <span class="number">0.5415</span>, <span class="number">0.6354</span>, <span class="number">0.7008</span>, <span class="number">0.5759</span>, <span class="number">0.6219</span>, <span class="number">0.6687</span>, <span class="number">0.7402</span>, <span class="number">0.899</span>]</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建 dataframe</span></span><br><span class="line">year_se = pd.Series(year_lst, name = <span class="string">'year'</span>)</span><br><span class="line">temp_se = pd.Series(temp_lst, name = <span class="string">'temperature'</span>)</span><br><span class="line">result_df = pd.concat([year_se, temp_se], axis = <span class="number">1</span>)</span><br><span class="line"><span class="keyword">print</span> (result_df.head())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存csv</span></span><br><span class="line">result_df.to_csv(<span class="string">'./files/json_to_csv.csv'</span>, index = <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">   year  temperature</span><br><span class="line"><span class="number">0</span>  <span class="number">1880</span>      <span class="number">-0.1247</span></span><br><span class="line"><span class="number">1</span>  <span class="number">1881</span>      <span class="number">-0.0707</span></span><br><span class="line"><span class="number">2</span>  <span class="number">1882</span>      <span class="number">-0.0710</span></span><br><span class="line"><span class="number">3</span>  <span class="number">1883</span>      <span class="number">-0.1481</span></span><br><span class="line"><span class="number">4</span>  <span class="number">1884</span>      <span class="number">-0.2099</span></span><br></pre></td></tr></table></figure>
-<h3 id="写-json-操作"><a href="#写-json-操作" class="headerlink" title="写 json 操作"></a>写 json 操作</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">book_dict = [&#123;<span class="string">'书名'</span>:<span class="string">'无声告白'</span>, <span class="string">'作者'</span>:<span class="string">'伍绮诗'</span>&#125;, &#123;<span class="string">'书名'</span>:<span class="string">'我不是潘金莲'</span>, <span class="string">'作者'</span>:<span class="string">'刘震云'</span>&#125;, &#123;<span class="string">'书名'</span>:<span class="string">'沉默的大多数 (王小波集)'</span>, <span class="string">'作者'</span>:<span class="string">'王小波'</span>&#125;]</span><br><span class="line"></span><br><span class="line">filename = <span class="string">'./files/json_output.json'</span></span><br><span class="line"><span class="keyword">with</span> open(filename, <span class="string">'w'</span>) <span class="keyword">as</span> f_obj:</span><br><span class="line">    f_obj.write(json.dumps(book_dict, ensure_ascii=<span class="literal">False</span>))</span><br><span class="line"><span class="comment"># 不需要加, encoding='utf-8'参数</span></span><br></pre></td></tr></table></figure>
-<h2 id="四、SQLite-基本操作"><a href="#四、SQLite-基本操作" class="headerlink" title="四、SQLite 基本操作"></a>四、SQLite 基本操作</h2><h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line"></span><br><span class="line">db_path = <span class="string">'./files/test.sqlite'</span></span><br><span class="line"></span><br><span class="line">conn = sqlite3.connect(db_path)</span><br><span class="line">cur = conn.cursor()</span><br><span class="line">conn.text_factory = str  <span class="comment"># 处理中文</span></span><br></pre></td></tr></table></figure>
-<h3 id="获取基本信息"><a href="#获取基本信息" class="headerlink" title="获取基本信息"></a>获取基本信息</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cur.execute(<span class="string">'SELECT SQLITE_VERSION()'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (<span class="string">'SQLite版本：%s'</span> %str(cur.fetchone()[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">SQLite</span>版本：3<span class="selector-class">.30</span><span class="selector-class">.0</span></span><br></pre></td></tr></table></figure>
-<h3 id="逐条插入数据"><a href="#逐条插入数据" class="headerlink" title="逐条插入数据"></a>逐条插入数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cur.execute(<span class="string">"DROP TABLE IF EXISTS book"</span>)</span><br><span class="line">cur.execute(<span class="string">"CREATE TABLE book(id INT, name TEXT, price DOUBLE)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(1,'肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷',14.40)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(2,'法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货)',100.00)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(3,'活着本来单纯:丰子恺散文漫画精品集(收藏本)',30.90)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(4,'自在独行:贾平凹的独行世界',26.80)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(5,'当你的才华还撑不起你的梦想时',23.00)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(6,'巨人的陨落(套装共3册)',84.90)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(7,'孤独深处(收录雨果奖获奖作品《北京折叠》)',21.90)"</span>)</span><br><span class="line">cur.execute(<span class="string">"INSERT INTO book VALUES(8,'世界知名企业员工指定培训教材:所谓情商高,就是会说话',22.00)"</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">&lt;sqlite3<span class="number">.</span>Cursor <span class="meta">at</span> <span class="number">0x2d2d64e7c00</span>&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="批量插入数据"><a href="#批量插入数据" class="headerlink" title="批量插入数据"></a>批量插入数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">books = (</span><br><span class="line">    (<span class="number">9</span>, <span class="string">'人间草木'</span>, <span class="number">30.00</span>),</span><br><span class="line">    (<span class="number">10</span>,<span class="string">'你的善良必须有点锋芒'</span>, <span class="number">20.50</span>),</span><br><span class="line">    (<span class="number">11</span>, <span class="string">'这么慢,那么美'</span>, <span class="number">24.80</span>),</span><br><span class="line">    (<span class="number">12</span>, <span class="string">'考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版)'</span>, <span class="number">23.90</span>)</span><br><span class="line">)</span><br><span class="line">cur.executemany(<span class="string">"INSERT INTO book VALUES(?, ?, ?)"</span>, books)</span><br></pre></td></tr></table></figure>
-<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">&lt;sqlite3<span class="number">.</span>Cursor <span class="meta">at</span> <span class="number">0x2d2d64e7c00</span>&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conn.commit()</span><br></pre></td></tr></table></figure>
-<h3 id="查找数据"><a href="#查找数据" class="headerlink" title="查找数据"></a>查找数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cur.execute(<span class="string">'SELECT * FROM book'</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过索引号访问</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'序号: %i, 书名: %s, 价格: %.2f'</span> %(row[<span class="number">0</span>], row[<span class="number">1</span>], row[<span class="number">2</span>]))</span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">序号:</span> <span class="number">1</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷,</span> <span class="string">价格:</span> <span class="number">14.40</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">2</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册)</span> <span class="string">(两种封面随机发货),</span> <span class="string">价格:</span> <span class="number">100.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">3</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">活着本来单纯:丰子恺散文漫画精品集(收藏本),</span> <span class="string">价格:</span> <span class="number">30.90</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">4</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">自在独行:贾平凹的独行世界,</span> <span class="string">价格:</span> <span class="number">26.80</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">5</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">当你的才华还撑不起你的梦想时,</span> <span class="string">价格:</span> <span class="number">23.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">6</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">巨人的陨落(套装共3册),</span> <span class="string">价格:</span> <span class="number">84.90</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">7</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">孤独深处(收录雨果奖获奖作品《北京折叠》),</span> <span class="string">价格:</span> <span class="number">21.90</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">8</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">世界知名企业员工指定培训教材:所谓情商高,就是会说话,</span> <span class="string">价格:</span> <span class="number">22.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">9</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">人间草木,</span> <span class="string">价格:</span> <span class="number">30.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">10</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">你的善良必须有点锋芒,</span> <span class="string">价格:</span> <span class="number">20.50</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">11</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">这么慢,那么美,</span> <span class="string">价格:</span> <span class="number">24.80</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">12</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版),</span> <span class="string">价格:</span> <span class="number">23.90</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conn.row_factory = sqlite3.Row</span><br><span class="line">cur = conn.cursor()</span><br><span class="line">cur.execute(<span class="string">'SELECT * FROM book'</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过列名访问</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'序号: %i, 书名: %s, 价格: %.2f'</span> %(row[<span class="string">'id'</span>], row[<span class="string">'name'</span>], row[<span class="string">'price'</span>]))</span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">序号:</span> <span class="number">1</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷,</span> <span class="string">价格:</span> <span class="number">14.40</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">2</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册)</span> <span class="string">(两种封面随机发货),</span> <span class="string">价格:</span> <span class="number">100.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">3</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">活着本来单纯:丰子恺散文漫画精品集(收藏本),</span> <span class="string">价格:</span> <span class="number">30.90</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">4</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">自在独行:贾平凹的独行世界,</span> <span class="string">价格:</span> <span class="number">26.80</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">5</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">当你的才华还撑不起你的梦想时,</span> <span class="string">价格:</span> <span class="number">23.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">6</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">巨人的陨落(套装共3册),</span> <span class="string">价格:</span> <span class="number">84.90</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">7</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">孤独深处(收录雨果奖获奖作品《北京折叠》),</span> <span class="string">价格:</span> <span class="number">21.90</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">8</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">世界知名企业员工指定培训教材:所谓情商高,就是会说话,</span> <span class="string">价格:</span> <span class="number">22.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">9</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">人间草木,</span> <span class="string">价格:</span> <span class="number">30.00</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">10</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">你的善良必须有点锋芒,</span> <span class="string">价格:</span> <span class="number">20.50</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">11</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">这么慢,那么美,</span> <span class="string">价格:</span> <span class="number">24.80</span></span><br><span class="line"><span class="string">序号:</span> <span class="number">12</span><span class="string">,</span> <span class="string">书名:</span> <span class="string">考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版),</span> <span class="string">价格:</span> <span class="number">23.90</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
-<h2 id="五、SQLite-json-操作"><a href="#五、SQLite-json-操作" class="headerlink" title="五、SQLite_json 操作"></a>五、SQLite_json 操作</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line"></span><br><span class="line">db_path = <span class="string">'./files/test_join.sqlite'</span></span><br><span class="line"></span><br><span class="line">conn = sqlite3.connect(db_path)</span><br><span class="line">cur = conn.cursor()</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建 depaetment 表，并插入数据</span></span><br><span class="line">cur.execute(<span class="string">"DROP TABLE IF EXISTS department"</span>)</span><br><span class="line">cur.execute(<span class="string">"CREATE TABLE department(\</span></span><br><span class="line"><span class="string">                id INT PRIMARY KEY NOT NULL, \</span></span><br><span class="line"><span class="string">                dept CHAR(50) NOT NULL, \</span></span><br><span class="line"><span class="string">                emp_id INT NOT NULL)"</span>)</span><br><span class="line">depts = (</span><br><span class="line">        (<span class="number">1</span>, <span class="string">'IT Builing'</span>, <span class="number">1</span>),</span><br><span class="line">        (<span class="number">2</span>, <span class="string">'Engineerin'</span>, <span class="number">2</span>),</span><br><span class="line">        (<span class="number">3</span>, <span class="string">'Finance'</span>, <span class="number">7</span>)</span><br><span class="line">)</span><br><span class="line">cur.executemany(<span class="string">"INSERT INTO department VALUES(?, ?, ?)"</span>, depts)</span><br></pre></td></tr></table></figure>
-<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">&lt;sqlite3<span class="number">.</span>Cursor <span class="meta">at</span> <span class="number">0x2d2d64f70a0</span>&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conn.commit()</span><br></pre></td></tr></table></figure>
-<h3 id="CROSS-JOIN-交叉连接"><a href="#CROSS-JOIN-交叉连接" class="headerlink" title="CROSS JOIN 交叉连接"></a>CROSS JOIN 交叉连接</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cur.execute(<span class="string">"SELECT emp_id, name, dept FROM company CROSS JOIN department;"</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 建 company 表，并插入数据</span></span><br><span class="line">cur.execute(<span class="string">"DROP TABLE IF EXISTS company"</span>)</span><br><span class="line">cur.execute(<span class="string">"CREATE TABLE company(\</span></span><br><span class="line"><span class="string">                    id INT PRIMARY KEY NOT NULL, \</span></span><br><span class="line"><span class="string">                    name CHAR(50) NOT NULL, \</span></span><br><span class="line"><span class="string">                    age INT NOT NULL, \</span></span><br><span class="line"><span class="string">                    address CHAR(50) NOT NULL,\</span></span><br><span class="line"><span class="string">                    salary DOUBLE NOT NULL)"</span>)</span><br><span class="line">companies = (</span><br><span class="line">        (<span class="number">1</span>, <span class="string">'Paul'</span>, <span class="number">32</span>, <span class="string">'California'</span>, <span class="number">20000.0</span>),</span><br><span class="line">        (<span class="number">2</span>, <span class="string">'Allen'</span>, <span class="number">25</span>, <span class="string">'Texas'</span>, <span class="number">15000.0</span>),</span><br><span class="line">        (<span class="number">3</span>, <span class="string">'Teddy'</span>, <span class="number">23</span>, <span class="string">'Norway'</span>, <span class="number">20000.0</span>),</span><br><span class="line">        (<span class="number">4</span>, <span class="string">'Mark'</span>, <span class="number">25</span>, <span class="string">'Rich-Mond'</span>, <span class="number">65000.0</span>),</span><br><span class="line">        (<span class="number">5</span>, <span class="string">'David'</span>, <span class="number">27</span>, <span class="string">'Texas'</span>, <span class="number">85000.0</span>),</span><br><span class="line">        (<span class="number">6</span>, <span class="string">'Kim'</span>, <span class="number">22</span>, <span class="string">'South-Hall'</span>, <span class="number">45000.0</span>),</span><br><span class="line">        (<span class="number">7</span>, <span class="string">'James'</span>, <span class="number">24</span>, <span class="string">'Houston'</span>, <span class="number">10000.0</span>)</span><br><span class="line">)</span><br><span class="line">cur.executemany(<span class="string">"INSERT INTO company VALUES (?, ?, ?, ?, ?)"</span>, companies)</span><br></pre></td></tr></table></figure>
-<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">&lt;sqlite3<span class="number">.</span>Cursor <span class="meta">at</span> <span class="number">0x2d2d64f70a0</span>&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="INNER-JOIN-内连接"><a href="#INNER-JOIN-内连接" class="headerlink" title="INNER JOIN 内连接"></a>INNER JOIN 内连接</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cur.execute(<span class="string">"SELECT emp_id, name, dept FROM company INNER JOIN department \</span></span><br><span class="line"><span class="string">            ON company.id = department.emp_id;"</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br></pre></td></tr></table></figure>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">1</span>, <span class="symbol">'Paul</span>', <span class="symbol">'IT</span> Builing')</span><br><span class="line">(<span class="name">2</span>, <span class="symbol">'Allen</span>', <span class="symbol">'Engineerin</span>')</span><br><span class="line">(<span class="name">7</span>, <span class="symbol">'James</span>', <span class="symbol">'Finance</span>')</span><br></pre></td></tr></table></figure>
-<h3 id="OUTER-JOIN-外连接"><a href="#OUTER-JOIN-外连接" class="headerlink" title="OUTER JOIN 外连接"></a>OUTER JOIN 外连接</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 左连接</span></span><br><span class="line">cur.execute(<span class="string">"SELECT emp_id, name, dept FROM company LEFT OUTER JOIN department \</span></span><br><span class="line"><span class="string">            ON company.id = department.emp_id;"</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br></pre></td></tr></table></figure>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">1</span>, <span class="symbol">'Paul</span>', <span class="symbol">'IT</span> Builing')</span><br><span class="line">(<span class="name">2</span>, <span class="symbol">'Allen</span>', <span class="symbol">'Engineerin</span>')</span><br><span class="line">(<span class="name">None</span>, <span class="symbol">'Teddy</span>', None)</span><br><span class="line">(<span class="name">None</span>, <span class="symbol">'Mark</span>', None)</span><br><span class="line">(<span class="name">None</span>, <span class="symbol">'David</span>', None)</span><br><span class="line">(<span class="name">None</span>, <span class="symbol">'Kim</span>', None)</span><br><span class="line">(<span class="name">7</span>, <span class="symbol">'James</span>', <span class="symbol">'Finance</span>')</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 右连接 （目前不支持）</span></span><br><span class="line">cur.execute(<span class="string">"SELECT emp_id, name, dept FROM company RIGHT OUTER JOIN department \</span></span><br><span class="line"><span class="string">            ON company.id = department.emp_id;"</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">OperationalError                          Traceback (most recent <span class="keyword">call</span> <span class="keyword">last</span>)</span><br><span class="line"></span><br><span class="line">&lt;ipython-<span class="keyword">input</span><span class="number">-41</span>-ce0fc573748b&gt; <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;</span><br><span class="line">      <span class="number">1</span> <span class="comment"># 右连接 （目前不支持）</span></span><br><span class="line">      <span class="number">2</span> cur.execute(<span class="string">"SELECT emp_id, name, dept FROM company RIGHT OUTER JOIN department \</span></span><br><span class="line"><span class="string">----&gt; 3             ON company.id = department.emp_id;"</span>)</span><br><span class="line">      <span class="number">4</span> <span class="keyword">rows</span> = cur.fetchall()</span><br><span class="line">      <span class="number">5</span> <span class="keyword">for</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">rows</span>:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">OperationalError: <span class="keyword">RIGHT</span> <span class="keyword">and</span> <span class="keyword">FULL</span> <span class="keyword">OUTER</span> JOINs <span class="keyword">are</span> <span class="keyword">not</span> currently supported</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 右连接，交换两张表</span></span><br><span class="line">cur.execute(<span class="string">"SELECT emp_id, name, dept FROM department LEFT OUTER JOIN company \</span></span><br><span class="line"><span class="string">            ON company.id = department.emp_id;"</span>)</span><br><span class="line">rows = cur.fetchall()</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> rows:</span><br><span class="line">    <span class="keyword">print</span> (row)</span><br></pre></td></tr></table></figure>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name">1</span>, <span class="symbol">'Paul</span>', <span class="symbol">'IT</span> Builing')</span><br><span class="line">(<span class="name">2</span>, <span class="symbol">'Allen</span>', <span class="symbol">'Engineerin</span>')</span><br><span class="line">(<span class="name">7</span>, <span class="symbol">'James</span>', <span class="symbol">'Finance</span>')</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sqlite&gt; SELECT EMP_ID, NAME, DEPT FROM COMPANY LEFT OUTER JOIN DEPARTMENT</span><br><span class="line">      ON COMPANY.ID = DEPARTMENT.EMP_ID;</span><br></pre></td></tr></table></figure>
-<figure class="highlight n1ql"><table><tr><td class="code"><pre><span class="line">  File "&lt;ipython-input-43-a0833b733075&gt;", line 1</span><br><span class="line">    sqlite&gt; <span class="keyword">SELECT</span> EMP_ID, NAME, DEPT <span class="keyword">FROM</span> COMPANY <span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> DEPARTMENT</span><br><span class="line">                        ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
-<h2 id="六、Excel-文件操作"><a href="#六、Excel-文件操作" class="headerlink" title="六、Excel 文件操作"></a>六、Excel 文件操作</h2><p>pandas.read_excel(io, sheet_name=0, header=0, names=None, index_col=None, usecols=None, squeeze=False, dtype=None, engine=None, converters=None, true_values=None, false_values=None, skiprows=None, nrows=None, na_values=None, keep_default_na=True, verbose=False, parse_dates=False, date_parser=None, thousands=None, comment=None, skipfooter=0, convert_float=True, mangle_dupe_cols=True, **kwds)</p>
+<pre><code class="python">filename = &#39;./files/pandas_output.csv&#39;
+df.to_csv(filename, index=None)
+</code></pre>
+<h2 id="三、JSON-文件操作"><a href="#三、JSON-文件操作" class="headerlink" title="三、JSON 文件操作"></a>三、JSON 文件操作</h2><h3 id="json-读操作"><a href="#json-读操作" class="headerlink" title="json 读操作"></a>json 读操作</h3><pre><code class="python">import json
+
+filename = &#39;./files/global_temperature.json&#39;
+with open(filename, &#39;r&#39;) as f_obj:
+    json_data = json.load(f_obj)
+
+# 返回值是dict类型
+print (type(json_data))
+</code></pre>
+<pre><code>&lt;class &#39;dict&#39;&gt;
+</code></pre><pre><code class="python">print (json_data.keys())
+</code></pre>
+<pre><code>dict_keys([&#39;description&#39;, &#39;data&#39;])
+</code></pre><h3 id="json-转-CSV"><a href="#json-转-CSV" class="headerlink" title="json 转 CSV"></a>json 转 CSV</h3><pre><code class="python">#print json_data[&#39;data&#39;].keys()
+print (json_data[&#39;data&#39;].values())
+</code></pre>
+<pre><code>dict_values([&#39;-0.1247&#39;, &#39;-0.0707&#39;, &#39;-0.0710&#39;, &#39;-0.1481&#39;, &#39;-0.2099&#39;, &#39;-0.2220&#39;, &#39;-0.2101&#39;, &#39;-0.2559&#39;, &#39;-0.1541&#39;, &#39;-0.1032&#39;, &#39;-0.3233&#39;, &#39;-0.2552&#39;, &#39;-0.3079&#39;, &#39;-0.3221&#39;, &#39;-0.2828&#39;, &#39;-0.2279&#39;, &#39;-0.0971&#39;, &#39;-0.1232&#39;, &#39;-0.2578&#39;, &#39;-0.1172&#39;, &#39;-0.0704&#39;, &#39;-0.1471&#39;, &#39;-0.2535&#39;, &#39;-0.3442&#39;, &#39;-0.4240&#39;, &#39;-0.2967&#39;, &#39;-0.2208&#39;, &#39;-0.3767&#39;, &#39;-0.4441&#39;, &#39;-0.4332&#39;, &#39;-0.3862&#39;, &#39;-0.4367&#39;, &#39;-0.3318&#39;, &#39;-0.3205&#39;, &#39;-0.1444&#39;, &#39;-0.0747&#39;, &#39;-0.2979&#39;, &#39;-0.3193&#39;, &#39;-0.2118&#39;, &#39;-0.2082&#39;, &#39;-0.2152&#39;, &#39;-0.1517&#39;, &#39;-0.2318&#39;, &#39;-0.2161&#39;, &#39;-0.2510&#39;, &#39;-0.1464&#39;, &#39;-0.0618&#39;, &#39;-0.1506&#39;, &#39;-0.1749&#39;, &#39;-0.2982&#39;, &#39;-0.1016&#39;, &#39;-0.0714&#39;, &#39;-0.1214&#39;, &#39;-0.2481&#39;, &#39;-0.1075&#39;, &#39;-0.1445&#39;, &#39;-0.1173&#39;, &#39;-0.0204&#39;, &#39;-0.0318&#39;, &#39;-0.0157&#39;, &#39;0.0927&#39;, &#39;0.1974&#39;, &#39;0.1549&#39;, &#39;0.1598&#39;, &#39;0.2948&#39;, &#39;0.1754&#39;, &#39;-0.0013&#39;, &#39;-0.0455&#39;, &#39;-0.0471&#39;, &#39;-0.0550&#39;, &#39;-0.1579&#39;, &#39;-0.0095&#39;, &#39;0.0288&#39;, &#39;0.0997&#39;, &#39;-0.1118&#39;, &#39;-0.1305&#39;, &#39;-0.1945&#39;, &#39;0.0538&#39;, &#39;0.1145&#39;, &#39;0.0640&#39;, &#39;0.0252&#39;, &#39;0.0818&#39;, &#39;0.0924&#39;, &#39;0.1100&#39;, &#39;-0.1461&#39;, &#39;-0.0752&#39;, &#39;-0.0204&#39;, &#39;-0.0112&#39;, &#39;-0.0282&#39;, &#39;0.0937&#39;, &#39;0.0383&#39;, &#39;-0.0775&#39;, &#39;0.0280&#39;, &#39;0.1654&#39;, &#39;-0.0698&#39;, &#39;0.0060&#39;, &#39;-0.0769&#39;, &#39;0.1996&#39;, &#39;0.1139&#39;, &#39;0.2288&#39;, &#39;0.2651&#39;, &#39;0.3024&#39;, &#39;0.1836&#39;, &#39;0.3429&#39;, &#39;0.1510&#39;, &#39;0.1357&#39;, &#39;0.2308&#39;, &#39;0.3710&#39;, &#39;0.3770&#39;, &#39;0.2982&#39;, &#39;0.4350&#39;, &#39;0.4079&#39;, &#39;0.2583&#39;, &#39;0.2857&#39;, &#39;0.3420&#39;, &#39;0.4593&#39;, &#39;0.3225&#39;, &#39;0.5185&#39;, &#39;0.6335&#39;, &#39;0.4427&#39;, &#39;0.4255&#39;, &#39;0.5455&#39;, &#39;0.6018&#39;, &#39;0.6145&#39;, &#39;0.5806&#39;, &#39;0.6583&#39;, &#39;0.6139&#39;, &#39;0.6113&#39;, &#39;0.5415&#39;, &#39;0.6354&#39;, &#39;0.7008&#39;, &#39;0.5759&#39;, &#39;0.6219&#39;, &#39;0.6687&#39;, &#39;0.7402&#39;, &#39;0.8990&#39;])
+</code></pre><pre><code class="python"># 转换key
+year_str_lst = json_data[&#39;data&#39;].keys()
+year_lst = [int(year_str) for year_str in year_str_lst]
+print (year_lst)
+</code></pre>
+<pre><code>[1880, 1881, 1882, 1883, 1884, 1885, 1886, 1887, 1888, 1889, 1890, 1891, 1892, 1893, 1894, 1895, 1896, 1897, 1898, 1899, 1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1910, 1911, 1912, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+</code></pre><pre><code class="python"># 转换value
+temp_str_lst = json_data[&#39;data&#39;].values()
+temp_lst = [float(temp_str) for temp_str in temp_str_lst]
+print (temp_lst)
+</code></pre>
+<pre><code>[-0.1247, -0.0707, -0.071, -0.1481, -0.2099, -0.222, -0.2101, -0.2559, -0.1541, -0.1032, -0.3233, -0.2552, -0.3079, -0.3221, -0.2828, -0.2279, -0.0971, -0.1232, -0.2578, -0.1172, -0.0704, -0.1471, -0.2535, -0.3442, -0.424, -0.2967, -0.2208, -0.3767, -0.4441, -0.4332, -0.3862, -0.4367, -0.3318, -0.3205, -0.1444, -0.0747, -0.2979, -0.3193, -0.2118, -0.2082, -0.2152, -0.1517, -0.2318, -0.2161, -0.251, -0.1464, -0.0618, -0.1506, -0.1749, -0.2982, -0.1016, -0.0714, -0.1214, -0.2481, -0.1075, -0.1445, -0.1173, -0.0204, -0.0318, -0.0157, 0.0927, 0.1974, 0.1549, 0.1598, 0.2948, 0.1754, -0.0013, -0.0455, -0.0471, -0.055, -0.1579, -0.0095, 0.0288, 0.0997, -0.1118, -0.1305, -0.1945, 0.0538, 0.1145, 0.064, 0.0252, 0.0818, 0.0924, 0.11, -0.1461, -0.0752, -0.0204, -0.0112, -0.0282, 0.0937, 0.0383, -0.0775, 0.028, 0.1654, -0.0698, 0.006, -0.0769, 0.1996, 0.1139, 0.2288, 0.2651, 0.3024, 0.1836, 0.3429, 0.151, 0.1357, 0.2308, 0.371, 0.377, 0.2982, 0.435, 0.4079, 0.2583, 0.2857, 0.342, 0.4593, 0.3225, 0.5185, 0.6335, 0.4427, 0.4255, 0.5455, 0.6018, 0.6145, 0.5806, 0.6583, 0.6139, 0.6113, 0.5415, 0.6354, 0.7008, 0.5759, 0.6219, 0.6687, 0.7402, 0.899]
+</code></pre><pre><code class="python">import pandas as pd
+
+# 构建 dataframe
+year_se = pd.Series(year_lst, name = &#39;year&#39;)
+temp_se = pd.Series(temp_lst, name = &#39;temperature&#39;)
+result_df = pd.concat([year_se, temp_se], axis = 1)
+print (result_df.head())
+
+# 保存csv
+result_df.to_csv(&#39;./files/json_to_csv.csv&#39;, index = None)
+</code></pre>
+<pre><code>   year  temperature
+0  1880      -0.1247
+1  1881      -0.0707
+2  1882      -0.0710
+3  1883      -0.1481
+4  1884      -0.2099
+</code></pre><h3 id="写-json-操作"><a href="#写-json-操作" class="headerlink" title="写 json 操作"></a>写 json 操作</h3><pre><code class="python">book_dict = [{&#39;书名&#39;:&#39;无声告白&#39;, &#39;作者&#39;:&#39;伍绮诗&#39;}, {&#39;书名&#39;:&#39;我不是潘金莲&#39;, &#39;作者&#39;:&#39;刘震云&#39;}, {&#39;书名&#39;:&#39;沉默的大多数 (王小波集)&#39;, &#39;作者&#39;:&#39;王小波&#39;}]
+
+filename = &#39;./files/json_output.json&#39;
+with open(filename, &#39;w&#39;) as f_obj:
+    f_obj.write(json.dumps(book_dict, ensure_ascii=False))
+# 不需要加, encoding=&#39;utf-8&#39;参数
+</code></pre>
+<h2 id="四、SQLite-基本操作"><a href="#四、SQLite-基本操作" class="headerlink" title="四、SQLite 基本操作"></a>四、SQLite 基本操作</h2><h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><pre><code class="python">import sqlite3
+
+db_path = &#39;./files/test.sqlite&#39;
+
+conn = sqlite3.connect(db_path)
+cur = conn.cursor()
+conn.text_factory = str  # 处理中文
+</code></pre>
+<h3 id="获取基本信息"><a href="#获取基本信息" class="headerlink" title="获取基本信息"></a>获取基本信息</h3><pre><code class="python">cur.execute(&#39;SELECT SQLITE_VERSION()&#39;)
+
+print (&#39;SQLite版本：%s&#39; %str(cur.fetchone()[0]))
+</code></pre>
+<pre><code>SQLite版本：3.30.0
+</code></pre><h3 id="逐条插入数据"><a href="#逐条插入数据" class="headerlink" title="逐条插入数据"></a>逐条插入数据</h3><pre><code class="python">cur.execute(&quot;DROP TABLE IF EXISTS book&quot;)
+cur.execute(&quot;CREATE TABLE book(id INT, name TEXT, price DOUBLE)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(1,&#39;肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷&#39;,14.40)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(2,&#39;法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货)&#39;,100.00)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(3,&#39;活着本来单纯:丰子恺散文漫画精品集(收藏本)&#39;,30.90)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(4,&#39;自在独行:贾平凹的独行世界&#39;,26.80)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(5,&#39;当你的才华还撑不起你的梦想时&#39;,23.00)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(6,&#39;巨人的陨落(套装共3册)&#39;,84.90)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(7,&#39;孤独深处(收录雨果奖获奖作品《北京折叠》)&#39;,21.90)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(8,&#39;世界知名企业员工指定培训教材:所谓情商高,就是会说话&#39;,22.00)&quot;)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64e7c00&gt;
+</code></pre><h3 id="批量插入数据"><a href="#批量插入数据" class="headerlink" title="批量插入数据"></a>批量插入数据</h3><pre><code class="python">books = (
+    (9, &#39;人间草木&#39;, 30.00),
+    (10,&#39;你的善良必须有点锋芒&#39;, 20.50),
+    (11, &#39;这么慢,那么美&#39;, 24.80),
+    (12, &#39;考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版)&#39;, 23.90)
+)
+cur.executemany(&quot;INSERT INTO book VALUES(?, ?, ?)&quot;, books)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64e7c00&gt;
+</code></pre><pre><code class="python">conn.commit()
+</code></pre>
+<h3 id="查找数据"><a href="#查找数据" class="headerlink" title="查找数据"></a>查找数据</h3><pre><code class="python">cur.execute(&#39;SELECT * FROM book&#39;)
+rows = cur.fetchall()
+
+# 通过索引号访问
+for row in rows:
+    print (&#39;序号: %i, 书名: %s, 价格: %.2f&#39; %(row[0], row[1], row[2]))
+</code></pre>
+<pre><code>序号: 1, 书名: 肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷, 价格: 14.40
+序号: 2, 书名: 法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货), 价格: 100.00
+序号: 3, 书名: 活着本来单纯:丰子恺散文漫画精品集(收藏本), 价格: 30.90
+序号: 4, 书名: 自在独行:贾平凹的独行世界, 价格: 26.80
+序号: 5, 书名: 当你的才华还撑不起你的梦想时, 价格: 23.00
+序号: 6, 书名: 巨人的陨落(套装共3册), 价格: 84.90
+序号: 7, 书名: 孤独深处(收录雨果奖获奖作品《北京折叠》), 价格: 21.90
+序号: 8, 书名: 世界知名企业员工指定培训教材:所谓情商高,就是会说话, 价格: 22.00
+序号: 9, 书名: 人间草木, 价格: 30.00
+序号: 10, 书名: 你的善良必须有点锋芒, 价格: 20.50
+序号: 11, 书名: 这么慢,那么美, 价格: 24.80
+序号: 12, 书名: 考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版), 价格: 23.90
+</code></pre><pre><code class="python">conn.row_factory = sqlite3.Row
+cur = conn.cursor()
+cur.execute(&#39;SELECT * FROM book&#39;)
+rows = cur.fetchall()
+
+# 通过列名访问
+for row in rows:
+    print (&#39;序号: %i, 书名: %s, 价格: %.2f&#39; %(row[&#39;id&#39;], row[&#39;name&#39;], row[&#39;price&#39;]))
+</code></pre>
+<pre><code>序号: 1, 书名: 肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷, 价格: 14.40
+序号: 2, 书名: 法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货), 价格: 100.00
+序号: 3, 书名: 活着本来单纯:丰子恺散文漫画精品集(收藏本), 价格: 30.90
+序号: 4, 书名: 自在独行:贾平凹的独行世界, 价格: 26.80
+序号: 5, 书名: 当你的才华还撑不起你的梦想时, 价格: 23.00
+序号: 6, 书名: 巨人的陨落(套装共3册), 价格: 84.90
+序号: 7, 书名: 孤独深处(收录雨果奖获奖作品《北京折叠》), 价格: 21.90
+序号: 8, 书名: 世界知名企业员工指定培训教材:所谓情商高,就是会说话, 价格: 22.00
+序号: 9, 书名: 人间草木, 价格: 30.00
+序号: 10, 书名: 你的善良必须有点锋芒, 价格: 20.50
+序号: 11, 书名: 这么慢,那么美, 价格: 24.80
+序号: 12, 书名: 考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版), 价格: 23.90
+</code></pre><pre><code class="python">conn.close()
+</code></pre>
+<h2 id="五、SQLite-json-操作"><a href="#五、SQLite-json-操作" class="headerlink" title="五、SQLite_json 操作"></a>五、SQLite_json 操作</h2><pre><code class="python">import sqlite3
+
+db_path = &#39;./files/test_join.sqlite&#39;
+
+conn = sqlite3.connect(db_path)
+cur = conn.cursor()
+</code></pre>
+<pre><code class="python"># 建 depaetment 表，并插入数据
+cur.execute(&quot;DROP TABLE IF EXISTS department&quot;)
+cur.execute(&quot;CREATE TABLE department(\
+                id INT PRIMARY KEY NOT NULL, \
+                dept CHAR(50) NOT NULL, \
+                emp_id INT NOT NULL)&quot;)
+depts = (
+        (1, &#39;IT Builing&#39;, 1),
+        (2, &#39;Engineerin&#39;, 2),
+        (3, &#39;Finance&#39;, 7)
+)
+cur.executemany(&quot;INSERT INTO department VALUES(?, ?, ?)&quot;, depts)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64f70a0&gt;
+</code></pre><pre><code class="python">conn.commit()
+</code></pre>
+<h3 id="CROSS-JOIN-交叉连接"><a href="#CROSS-JOIN-交叉连接" class="headerlink" title="CROSS JOIN 交叉连接"></a>CROSS JOIN 交叉连接</h3><pre><code class="python">cur.execute(&quot;SELECT emp_id, name, dept FROM company CROSS JOIN department;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code class="python"># 建 company 表，并插入数据
+cur.execute(&quot;DROP TABLE IF EXISTS company&quot;)
+cur.execute(&quot;CREATE TABLE company(\
+                    id INT PRIMARY KEY NOT NULL, \
+                    name CHAR(50) NOT NULL, \
+                    age INT NOT NULL, \
+                    address CHAR(50) NOT NULL,\
+                    salary DOUBLE NOT NULL)&quot;)
+companies = (
+        (1, &#39;Paul&#39;, 32, &#39;California&#39;, 20000.0),
+        (2, &#39;Allen&#39;, 25, &#39;Texas&#39;, 15000.0),
+        (3, &#39;Teddy&#39;, 23, &#39;Norway&#39;, 20000.0),
+        (4, &#39;Mark&#39;, 25, &#39;Rich-Mond&#39;, 65000.0),
+        (5, &#39;David&#39;, 27, &#39;Texas&#39;, 85000.0),
+        (6, &#39;Kim&#39;, 22, &#39;South-Hall&#39;, 45000.0),
+        (7, &#39;James&#39;, 24, &#39;Houston&#39;, 10000.0)
+)
+cur.executemany(&quot;INSERT INTO company VALUES (?, ?, ?, ?, ?)&quot;, companies)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64f70a0&gt;
+</code></pre><h3 id="INNER-JOIN-内连接"><a href="#INNER-JOIN-内连接" class="headerlink" title="INNER JOIN 内连接"></a>INNER JOIN 内连接</h3><pre><code class="python">cur.execute(&quot;SELECT emp_id, name, dept FROM company INNER JOIN department \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>(1, &#39;Paul&#39;, &#39;IT Builing&#39;)
+(2, &#39;Allen&#39;, &#39;Engineerin&#39;)
+(7, &#39;James&#39;, &#39;Finance&#39;)
+</code></pre><h3 id="OUTER-JOIN-外连接"><a href="#OUTER-JOIN-外连接" class="headerlink" title="OUTER JOIN 外连接"></a>OUTER JOIN 外连接</h3><pre><code class="python"># 左连接
+cur.execute(&quot;SELECT emp_id, name, dept FROM company LEFT OUTER JOIN department \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>(1, &#39;Paul&#39;, &#39;IT Builing&#39;)
+(2, &#39;Allen&#39;, &#39;Engineerin&#39;)
+(None, &#39;Teddy&#39;, None)
+(None, &#39;Mark&#39;, None)
+(None, &#39;David&#39;, None)
+(None, &#39;Kim&#39;, None)
+(7, &#39;James&#39;, &#39;Finance&#39;)
+</code></pre><pre><code class="python"># 右连接 （目前不支持）
+cur.execute(&quot;SELECT emp_id, name, dept FROM company RIGHT OUTER JOIN department \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>---------------------------------------------------------------------------
+
+OperationalError                          Traceback (most recent call last)
+
+&lt;ipython-input-41-ce0fc573748b&gt; in &lt;module&gt;
+      1 # 右连接 （目前不支持）
+      2 cur.execute(&quot;SELECT emp_id, name, dept FROM company RIGHT OUTER JOIN department \
+----&gt; 3             ON company.id = department.emp_id;&quot;)
+      4 rows = cur.fetchall()
+      5 for row in rows:
+
+
+OperationalError: RIGHT and FULL OUTER JOINs are not currently supported
+</code></pre><pre><code class="python"># 右连接，交换两张表
+cur.execute(&quot;SELECT emp_id, name, dept FROM department LEFT OUTER JOIN company \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>(1, &#39;Paul&#39;, &#39;IT Builing&#39;)
+(2, &#39;Allen&#39;, &#39;Engineerin&#39;)
+(7, &#39;James&#39;, &#39;Finance&#39;)
+</code></pre><pre><code class="python">sqlite&gt; SELECT EMP_ID, NAME, DEPT FROM COMPANY LEFT OUTER JOIN DEPARTMENT
+      ON COMPANY.ID = DEPARTMENT.EMP_ID;
+</code></pre>
+<pre><code>  File &quot;&lt;ipython-input-43-a0833b733075&gt;&quot;, line 1
+    sqlite&gt; SELECT EMP_ID, NAME, DEPT FROM COMPANY LEFT OUTER JOIN DEPARTMENT
+                        ^
+SyntaxError: invalid syntax
+</code></pre><h2 id="六、Excel-文件操作"><a href="#六、Excel-文件操作" class="headerlink" title="六、Excel 文件操作"></a>六、Excel 文件操作</h2><p>pandas.read_excel(io, sheet_name=0, header=0, names=None, index_col=None, usecols=None, squeeze=False, dtype=None, engine=None, converters=None, true_values=None, false_values=None, skiprows=None, nrows=None, na_values=None, keep_default_na=True, verbose=False, parse_dates=False, date_parser=None, thousands=None, comment=None, skipfooter=0, convert_float=True, mangle_dupe_cols=True, **kwds)</p>
 <p>df_fujian = pd.read_excel(“./datafiles/fujian.xlsx”,sheet_name=’日数据’)</p>
 
       </div>
@@ -199,7 +511,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/lb8ugs.md" download target="_blank">读取本地数据.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:50</li>
+		<li>最后编辑时间: 2020-12-06 12:57:57</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/lb8ugs/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -544,7 +856,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6msa4009gzvndhdd8gc7x" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snuw009g3rnbtg83xqpa" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -553,6 +865,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

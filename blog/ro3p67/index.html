@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="Python-qrcode和myqr花式二维码">
   <meta property="og:description" content="qrcode myqr两个库的使用">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/pix070/" title="SSH-登录" />
   <link rel="next" href="https://www.wztlink1013.com/blog/delag2/" title="UTC-GMT-GST" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -97,11 +99,87 @@
 <p><a href="https://pypi.org/project/MyQR/" target="_blank" rel="noopener">https://pypi.org/project/MyQR/</a></p>
 <h2 id="二、下载包"><a href="#二、下载包" class="headerlink" title="二、下载包"></a>二、下载包</h2><p>pip install qrcode  #方法多，体量小</p>
 <p>pip install myqr    #操作简单，功能强大</p>
-<h2 id="三、代码"><a href="#三、代码" class="headerlink" title="三、代码"></a>三、代码</h2><h3 id="qrcode-一行字二维码"><a href="#qrcode-一行字二维码" class="headerlink" title="qrcode 一行字二维码"></a>qrcode 一行字二维码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> qrcode</span><br><span class="line"></span><br><span class="line">qrcode.make(<span class="string">"不睡觉干嘛呢"</span>).get_image().show()   <span class="comment">#设置URL必须添加http://</span></span><br></pre></td></tr></table></figure>
-<h3 id="qrcode-一行字二维码-1"><a href="#qrcode-一行字二维码-1" class="headerlink" title="qrcode 一行字二维码"></a>qrcode 一行字二维码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> qrcode</span><br><span class="line"></span><br><span class="line">text = input(<span class="string">"输入文字或URL："</span>)</span><br><span class="line">img =qrcode.make(text)</span><br><span class="line">img.save()                            <span class="comment">#保存图片至本地目录，可以设定路径</span></span><br><span class="line">img.show()</span><br></pre></td></tr></table></figure>
-<h3 id="qrcode-生成-logo-二维码"><a href="#qrcode-生成-logo-二维码" class="headerlink" title="qrcode 生成 logo 二维码"></a>qrcode 生成 logo 二维码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> qrcode,os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_qrcode</span><span class="params">(url,qrcodename)</span>:</span></span><br><span class="line">    qr = qrcode.QRCode(</span><br><span class="line">        version=<span class="number">1</span>,  <span class="comment"># 设置容错率为最高</span></span><br><span class="line">        error_correction=qrcode.ERROR_CORRECT_H, <span class="comment"># 用于控制二维码的错误纠正程度</span></span><br><span class="line">        box_size=<span class="number">8</span>, <span class="comment"># 控制二维码中每个格子的像素数，默认为10</span></span><br><span class="line">        border=<span class="number">1</span>, <span class="comment"># 二维码四周留白，包含的格子数，默认为4</span></span><br><span class="line">        <span class="comment">#image_factory=None,  保存在模块根目录的image文件夹下</span></span><br><span class="line">        <span class="comment">#mask_pattern=None</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    qr.add_data(url) <span class="comment"># QRCode.add_data(data)函数添加数据</span></span><br><span class="line">    qr.make(fit=<span class="literal">True</span>)  <span class="comment"># QRCode.make(fit=True)函数生成图片</span></span><br><span class="line"></span><br><span class="line">    img = qr.make_image()</span><br><span class="line">    img = img.convert(<span class="string">"RGBA"</span>) <span class="comment"># 二维码设为彩色</span></span><br><span class="line">    logo = Image.open(<span class="string">'xx.jpg'</span>) <span class="comment"># 传gif生成的二维码也是没有动态效果的</span></span><br><span class="line"></span><br><span class="line">    w , h = img.size</span><br><span class="line">    logo_w , logo_h = logo.size</span><br><span class="line">    factor = <span class="number">4</span>   <span class="comment"># 默认logo最大设为图片的四分之一</span></span><br><span class="line">    s_w = int(w / factor)</span><br><span class="line">    s_h = int(h / factor)</span><br><span class="line">    <span class="keyword">if</span> logo_w &gt; s_w <span class="keyword">or</span> logo_h &gt; s_h:</span><br><span class="line">        logo_w = s_w</span><br><span class="line">        logo_h = s_h</span><br><span class="line"></span><br><span class="line">    logo = logo.resize((logo_w, logo_h), Image.ANTIALIAS)</span><br><span class="line">    l_w = int((w - logo_w) / <span class="number">2</span>)</span><br><span class="line">    l_h = int((h - logo_h) / <span class="number">2</span>)</span><br><span class="line">    logo = logo.convert(<span class="string">"RGBA"</span>)</span><br><span class="line">    img.paste(logo, (l_w, l_h), logo)</span><br><span class="line">    img.show()</span><br><span class="line">    img.save(os.getcwd()+<span class="string">'/'</span> + qrcodename + <span class="string">'.png'</span>, quality=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="myqr-动态二维码"><a href="#myqr-动态二维码" class="headerlink" title="myqr 动态二维码"></a>myqr 动态二维码</h3><figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">相关参数：</span><br><span class="line">    words：二维码内容，链接或者句子</span><br><span class="line">    <span class="keyword">version</span>：二维码大小，范围为[1,40]</span><br><span class="line">    level：二维码纠错级别，范围为&#123;L,M,Q,H&#125;，H为最高级，默认。</span><br><span class="line">    picture：自定义二维码背景图，支持格式为 <span class="string">.jpg</span>，<span class="string">.png</span>，<span class="string">.bmp</span>，<span class="string">.gif</span>，默认为黑白色</span><br><span class="line">    colorized：二维码背景颜色，默认为 False，即黑白色</span><br><span class="line">    contrast：对比度，值越高对比度越高，默认为 1.0</span><br><span class="line">    brightness：亮度，值越高亮度越高，默认为 1.0，值常和对比度相同</span><br><span class="line">    save_name：二维码名称，默认为 qrcode.png</span><br><span class="line">    save_dir：二维码路径，默认为程序工作路径</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 调用库</span></span><br><span class="line"><span class="keyword">from</span> MyQR <span class="keyword">import</span> myqr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 函数部分</span></span><br><span class="line">myqr.run(</span><br><span class="line">    <span class="comment"># 网址</span></span><br><span class="line">    words=<span class="string">'https://wztlink1013.com'</span>,</span><br><span class="line">    <span class="comment"># 控制边长，范围是1到40，数字越大边长越大，默认边长是取决于你输入的信息的长度和使用的纠错等级</span></span><br><span class="line">    version=<span class="number">5</span>,</span><br><span class="line">    <span class="comment"># 控制纠错水平，范围是L、M、Q、H，从左到右依次升高</span></span><br><span class="line">    level=<span class="string">'H'</span>,</span><br><span class="line">    <span class="comment"># 将QR二维码图像与一张同目录下的图片相结合，此处设置该图片，可以是gif</span></span><br><span class="line">    picture=<span class="string">'./input/girl.gif'</span>,</span><br><span class="line">    <span class="comment"># 默认是黑白(False)，可以选择彩色(True)</span></span><br><span class="line">    colorized=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment"># 调节图片的对比度，1.0 表示原始图片，更小的值表示更低对比度，更大反之。默认为1.0。</span></span><br><span class="line">    contrast=<span class="number">1.0</span>,</span><br><span class="line">    <span class="comment"># 调节图片的亮度，用法与contrast相同</span></span><br><span class="line">    brightness=<span class="number">1.0</span>,</span><br><span class="line">    <span class="comment"># 输出文件名，格式可以是jpg，png，bmp，gif</span></span><br><span class="line">    save_name=<span class="string">'girl.gif'</span>,</span><br><span class="line">    save_dir=<span class="string">'./output'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="三、代码"><a href="#三、代码" class="headerlink" title="三、代码"></a>三、代码</h2><h3 id="qrcode-一行字二维码"><a href="#qrcode-一行字二维码" class="headerlink" title="qrcode 一行字二维码"></a>qrcode 一行字二维码</h3><pre><code class="python">import qrcode
+
+qrcode.make(&quot;不睡觉干嘛呢&quot;).get_image().show()   #设置URL必须添加http://
+</code></pre>
+<h3 id="qrcode-一行字二维码-1"><a href="#qrcode-一行字二维码-1" class="headerlink" title="qrcode 一行字二维码"></a>qrcode 一行字二维码</h3><pre><code class="python">import qrcode
+
+text = input(&quot;输入文字或URL：&quot;)
+img =qrcode.make(text)
+img.save()                            #保存图片至本地目录，可以设定路径
+img.show()
+</code></pre>
+<h3 id="qrcode-生成-logo-二维码"><a href="#qrcode-生成-logo-二维码" class="headerlink" title="qrcode 生成 logo 二维码"></a>qrcode 生成 logo 二维码</h3><pre><code class="python">from PIL import Image
+import qrcode,os
+
+def create_qrcode(url,qrcodename):
+    qr = qrcode.QRCode(
+        version=1,  # 设置容错率为最高
+        error_correction=qrcode.ERROR_CORRECT_H, # 用于控制二维码的错误纠正程度
+        box_size=8, # 控制二维码中每个格子的像素数，默认为10
+        border=1, # 二维码四周留白，包含的格子数，默认为4
+        #image_factory=None,  保存在模块根目录的image文件夹下
+        #mask_pattern=None
+    )
+
+    qr.add_data(url) # QRCode.add_data(data)函数添加数据
+    qr.make(fit=True)  # QRCode.make(fit=True)函数生成图片
+
+    img = qr.make_image()
+    img = img.convert(&quot;RGBA&quot;) # 二维码设为彩色
+    logo = Image.open(&#39;xx.jpg&#39;) # 传gif生成的二维码也是没有动态效果的
+
+    w , h = img.size
+    logo_w , logo_h = logo.size
+    factor = 4   # 默认logo最大设为图片的四分之一
+    s_w = int(w / factor)
+    s_h = int(h / factor)
+    if logo_w &gt; s_w or logo_h &gt; s_h:
+        logo_w = s_w
+        logo_h = s_h
+
+    logo = logo.resize((logo_w, logo_h), Image.ANTIALIAS)
+    l_w = int((w - logo_w) / 2)
+    l_h = int((h - logo_h) / 2)
+    logo = logo.convert(&quot;RGBA&quot;)
+    img.paste(logo, (l_w, l_h), logo)
+    img.show()
+    img.save(os.getcwd()+&#39;/&#39; + qrcodename + &#39;.png&#39;, quality=100)
+</code></pre>
+<h3 id="myqr-动态二维码"><a href="#myqr-动态二维码" class="headerlink" title="myqr 动态二维码"></a>myqr 动态二维码</h3><pre><code>相关参数：
+    words：二维码内容，链接或者句子
+    version：二维码大小，范围为[1,40]
+    level：二维码纠错级别，范围为{L,M,Q,H}，H为最高级，默认。
+    picture：自定义二维码背景图，支持格式为 .jpg，.png，.bmp，.gif，默认为黑白色
+    colorized：二维码背景颜色，默认为 False，即黑白色
+    contrast：对比度，值越高对比度越高，默认为 1.0
+    brightness：亮度，值越高亮度越高，默认为 1.0，值常和对比度相同
+    save_name：二维码名称，默认为 qrcode.png
+    save_dir：二维码路径，默认为程序工作路径
+</code></pre><pre><code class="python"># 调用库
+from MyQR import myqr
+
+# 函数部分
+myqr.run(
+    # 网址
+    words=&#39;https://wztlink1013.com&#39;,
+    # 控制边长，范围是1到40，数字越大边长越大，默认边长是取决于你输入的信息的长度和使用的纠错等级
+    version=5,
+    # 控制纠错水平，范围是L、M、Q、H，从左到右依次升高
+    level=&#39;H&#39;,
+    # 将QR二维码图像与一张同目录下的图片相结合，此处设置该图片，可以是gif
+    picture=&#39;./input/girl.gif&#39;,
+    # 默认是黑白(False)，可以选择彩色(True)
+    colorized=True,
+    # 调节图片的对比度，1.0 表示原始图片，更小的值表示更低对比度，更大反之。默认为1.0。
+    contrast=1.0,
+    # 调节图片的亮度，用法与contrast相同
+    brightness=1.0,
+    # 输出文件名，格式可以是jpg，png，bmp，gif
+    save_name=&#39;girl.gif&#39;,
+    save_dir=&#39;./output&#39;)
+</code></pre>
 
       </div>
     </div>
@@ -125,7 +203,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/ro3p67.md" download target="_blank">Python-qrcode和myqr花式二维码.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/ro3p67/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -377,7 +455,7 @@
 				<span class="aria-readonly">发表时间为2020年11月14日</span>
 				<div class="relative-box">
           
-          <span class="aria-readonly">文章概要 </span>常用形式[](int x, int y) -&gt; int &#123; int z = x + ...
+          <span class="aria-readonly">文章概要 </span>常用形式[](int x, int y) -&gt; int { int z = x + y; re...
         </div>
 			</li>
 			
@@ -470,7 +548,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms7n005uzvnd4awi475j" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snsm005u3rnbf78ct4re" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -479,6 +557,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

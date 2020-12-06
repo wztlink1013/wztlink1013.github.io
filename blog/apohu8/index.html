@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="ANN神经网络">
   <meta property="og:description" content="神经网络（2020.03.23信息系统项目实践课）">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/gnwdxp/" title="数据库系统概论笔记" />
   <link rel="next" href="https://www.wztlink1013.com/blog/ewt4nc/" title="Python-基本语法" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -107,7 +109,86 @@
 <p>激活函数的选择<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950003-072268a5-122d-4340-85d5-85eeb04236fe.png#align=left&amp;display=inline&amp;height=538&amp;margin=%5Bobject%20Object%5D&amp;originHeight=538&amp;originWidth=861&amp;size=0&amp;status=done&amp;style=none&amp;width=861" alt></p>
 </blockquote>
 <h2 id="三、感知器的训练"><a href="#三、感知器的训练" class="headerlink" title="三、感知器的训练"></a>三、感知器的训练</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950698-fc03bb22-76e6-4328-9a6b-ee2168250fec.png#align=left&amp;display=inline&amp;height=529&amp;margin=%5Bobject%20Object%5D&amp;originHeight=529&amp;originWidth=872&amp;size=0&amp;status=done&amp;style=none&amp;width=872" alt></p>
-<h2 id="四、简单代码实现"><a href="#四、简单代码实现" class="headerlink" title="四、简单代码实现"></a>四、简单代码实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Perceptron</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    构造函数的初始化</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,input_num,activator)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        构造函数的初始化</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        self.activator = activator</span><br><span class="line">        self.weights = [<span class="number">0.0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(input_num)]</span><br><span class="line">        self.bias = <span class="number">0.0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        打印学习后的权重值和偏置项</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'weights\t:%s\nbias\t:%f\n'</span> %(self.weights,self.bias)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,input_vec)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        输入向量，输出感知器的计算结果</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">return</span> self.activator(</span><br><span class="line">            reduce(<span class="keyword">lambda</span> a,b: a+b,</span><br><span class="line">                    list(map(<span class="keyword">lambda</span> x,w: x*w,</span><br><span class="line">                        input_vec,self.weights)</span><br><span class="line">                 ),<span class="number">0.0</span>)+self.bias)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(self,input_vecs,labels,iteration,rate)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        输入训练数据：一组向量、与每个向量对应的label；以及训练轮数、学习率</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(iteration):</span><br><span class="line">            self._one_iteration(input_vecs,labels,rate)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_one_iteration</span><span class="params">(self,input_vecs,labels,rate)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        迭代，把所有的训练数据过一遍</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        samples = zip(input_vecs,labels)</span><br><span class="line">        <span class="keyword">for</span> (input_vec,label) <span class="keyword">in</span> samples:</span><br><span class="line">            output = self.predict(input_vec)</span><br><span class="line">            self._update_weights(input_vec,output,label,rate)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_update_weights</span><span class="params">(self,input_vec,output,label,rate)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        按照感知器规则更新权重</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        delta = label - output</span><br><span class="line">        self.weights = map(</span><br><span class="line">            <span class="keyword">lambda</span> x, w:w+rate*delta*x,</span><br><span class="line">            input_vec,self.weights)</span><br><span class="line">        self.weights = list(self.weights)</span><br><span class="line">        self.bias += rate*delta</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    定义激活函数</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> x&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_training_dataset</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    训练数据</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    input_vecs = [[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>]]</span><br><span class="line">    labels = [<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> input_vecs,labels</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_and_perceptron</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    训练感知器</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    p = Perceptron(<span class="number">2</span>,f)</span><br><span class="line">    input_vecs,labels = get_training_dataset()</span><br><span class="line">    p.train(input_vecs,labels,<span class="number">10</span>,<span class="number">0.1</span>)</span><br><span class="line">    <span class="keyword">return</span> p</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    and_perception = train_and_perceptron()</span><br><span class="line">    print(and_perception)</span><br><span class="line">    print(<span class="string">'1 and 1 = %d'</span> % and_perception.predict([<span class="number">1</span>,<span class="number">1</span>]))</span><br><span class="line">    print(<span class="string">'0 and 0 = %d'</span> % and_perception.predict([<span class="number">0</span>,<span class="number">0</span>]))</span><br><span class="line">    print(<span class="string">'1 and 0 = %d'</span> % and_perception.predict([<span class="number">1</span>,<span class="number">0</span>]))</span><br><span class="line">    print(<span class="string">'0 and 1 = %d'</span> % and_perception.predict([<span class="number">0</span>,<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+<h2 id="四、简单代码实现"><a href="#四、简单代码实现" class="headerlink" title="四、简单代码实现"></a>四、简单代码实现</h2><pre><code class="python">from functools import reduce
+
+class Perceptron(object):
+    &#39;&#39;&#39;
+    构造函数的初始化
+    &#39;&#39;&#39;
+    def __init__(self,input_num,activator):
+        &#39;&#39;&#39;
+        构造函数的初始化
+        &#39;&#39;&#39;
+        self.activator = activator
+        self.weights = [0.0 for _ in range(input_num)]
+        self.bias = 0.0
+    def __str__(self):
+        &#39;&#39;&#39;
+        打印学习后的权重值和偏置项
+        &#39;&#39;&#39;
+        return &#39;weights\t:%s\nbias\t:%f\n&#39; %(self.weights,self.bias)
+    def predict(self,input_vec):
+        &#39;&#39;&#39;
+        输入向量，输出感知器的计算结果
+        &#39;&#39;&#39;
+        return self.activator(
+            reduce(lambda a,b: a+b,
+                    list(map(lambda x,w: x*w,
+                        input_vec,self.weights)
+                 ),0.0)+self.bias)
+    def train(self,input_vecs,labels,iteration,rate):
+        &#39;&#39;&#39;
+        输入训练数据：一组向量、与每个向量对应的label；以及训练轮数、学习率
+        &#39;&#39;&#39;
+        for i in range(iteration):
+            self._one_iteration(input_vecs,labels,rate)
+    def _one_iteration(self,input_vecs,labels,rate):
+        &#39;&#39;&#39;
+        迭代，把所有的训练数据过一遍
+        &#39;&#39;&#39;
+        samples = zip(input_vecs,labels)
+        for (input_vec,label) in samples:
+            output = self.predict(input_vec)
+            self._update_weights(input_vec,output,label,rate)
+    def _update_weights(self,input_vec,output,label,rate):
+        &#39;&#39;&#39;
+        按照感知器规则更新权重
+        &#39;&#39;&#39;
+        delta = label - output
+        self.weights = map(
+            lambda x, w:w+rate*delta*x,
+            input_vec,self.weights)
+        self.weights = list(self.weights)
+        self.bias += rate*delta
+def f(x):
+    &#39;&#39;&#39;
+    定义激活函数
+    &#39;&#39;&#39;
+    return 1 if x&gt;0 else 0
+def get_training_dataset():
+    &#39;&#39;&#39;
+    训练数据
+    &#39;&#39;&#39;
+    input_vecs = [[1,1],[0,0],[1,0],[0,1]]
+    labels = [1,0,0,0]
+    return input_vecs,labels
+def train_and_perceptron():
+    &#39;&#39;&#39;
+    训练感知器
+    &#39;&#39;&#39;
+    p = Perceptron(2,f)
+    input_vecs,labels = get_training_dataset()
+    p.train(input_vecs,labels,10,0.1)
+    return p
+
+if __name__ == &#39;__main__&#39;:
+    and_perception = train_and_perceptron()
+    print(and_perception)
+    print(&#39;1 and 1 = %d&#39; % and_perception.predict([1,1]))
+    print(&#39;0 and 0 = %d&#39; % and_perception.predict([0,0]))
+    print(&#39;1 and 0 = %d&#39; % and_perception.predict([1,0]))
+    print(&#39;0 and 1 = %d&#39; % and_perception.predict([0,1]))
+</code></pre>
 <blockquote>
 <p>运行结果：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949806-ba54dca5-89a6-474a-809c-0b0238184755.png#align=left&amp;display=inline&amp;height=261&amp;margin=%5Bobject%20Object%5D&amp;originHeight=261&amp;originWidth=536&amp;size=0&amp;status=done&amp;style=none&amp;width=536" alt></p>
 </blockquote>
@@ -132,7 +213,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/apohu8.md" download target="_blank">ANN神经网络.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:57</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/apohu8/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -467,7 +548,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms4s000nzvndzksnotlo" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snpq000n3rnba3qohmdg" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -476,6 +557,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

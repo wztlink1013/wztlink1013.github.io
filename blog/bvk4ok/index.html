@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="莱文斯坦距离(LD)问题">
   <meta property="og:description" content="莱温斯坦举例问题">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/lkgrkx/" title="IDEA控制台输出中文乱码问题" />
   <link rel="next" href="https://www.wztlink1013.com/blog/ab9fkt/" title="分治算法+归并排序" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -119,7 +121,188 @@
 <p>综上应该填 1</p>
 <p>其他格子也一样以上述方法填写。</p>
 <p>有个作业遗留问题，在 CAAIS 里面每个得出的值右上标的 <code>U</code>  <code>L</code>  <code>0</code>  <code>1</code>  这些的依次顺序是怎么个顺序？<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603615446981-23bea432-08ee-490a-9037-018ba6280c3b.png#align=left&amp;display=inline&amp;height=201&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=401&amp;originWidth=651&amp;size=49834&amp;status=done&amp;style=shadow&amp;width=325.5" alt="image.png"></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> LEN_NAME=<span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> NS_LSEditDist &#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Initialization</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">GetLSEditDist</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">GetLSEdits</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y, <span class="keyword">int</span> OptD)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OutputE</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OutputP</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> m, n;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; E;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt; P;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">string</span> xe, ye;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">LSEditDistCaller</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Initialization(x, y);</span><br><span class="line">        <span class="keyword">int</span> OptD = GetLSEditDist(x, y);</span><br><span class="line">        GetLSEdits(x, y);</span><br><span class="line">        Output(x, y, OptD);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">GetLSEditDist</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                E[i][j] = min(E[i - <span class="number">1</span>][j] + <span class="number">1</span>,</span><br><span class="line">                              min(E[i][j - <span class="number">1</span>] + <span class="number">1</span>,</span><br><span class="line">                                  E[i - <span class="number">1</span>][j - <span class="number">1</span>] + (x[i - <span class="number">1</span>] != y[j - <span class="number">1</span>])));</span><br><span class="line">                <span class="keyword">if</span> (E[i][j] == E[i - <span class="number">1</span>][j] + <span class="number">1</span>)</span><br><span class="line">                    P[i][j] = <span class="string">'U'</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (E[i][j] == E[i][j - <span class="number">1</span>] + <span class="number">1</span>)</span><br><span class="line">                    P[i][j] = <span class="string">'L'</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (x[i - <span class="number">1</span>] != y[j - <span class="number">1</span>])</span><br><span class="line">                    P[i][j] = <span class="string">'1'</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> E[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">GetLSEdits</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = m, j = n;</span><br><span class="line">        <span class="keyword">while</span> (i &gt; <span class="number">0</span> || j &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (P[i][j] == <span class="string">'0'</span> || P[i][j] == <span class="string">'1'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                xe.insert(<span class="number">0</span>, <span class="number">1</span>, x[i - <span class="number">1</span>]);</span><br><span class="line">                ye.insert(<span class="number">0</span>, <span class="number">1</span>, y[j - <span class="number">1</span>]);</span><br><span class="line">                i--; j--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (P[i][j] == <span class="string">'U'</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                xe.insert(xe.begin(), x[i - <span class="number">1</span>]);</span><br><span class="line">                ye.insert(ye.begin(), <span class="string">'-'</span>);</span><br><span class="line">                i--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                xe.insert(xe.begin(), <span class="string">'-'</span>);</span><br><span class="line">                ye.insert(ye.begin(), y[j - <span class="number">1</span>]);</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Initialization</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m = x.length();</span><br><span class="line">        n = y.length();</span><br><span class="line">        E.clear();</span><br><span class="line">        E.resize(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">        P.clear();</span><br><span class="line">        P.resize(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;(n + <span class="number">1</span>, <span class="string">'0'</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            E[<span class="number">0</span>][j] = j;</span><br><span class="line">            P[<span class="number">0</span>][j] = <span class="string">'L'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            E[i][<span class="number">0</span>] = i;</span><br><span class="line">            P[i][<span class="number">0</span>] = <span class="string">'U'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        xe.clear();</span><br><span class="line">        ye.clear();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y, <span class="keyword">int</span> OptD)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Levenshtein distance: \n"</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Strings: %s, %s\n\n"</span>, x.c_str(), y.c_str());</span><br><span class="line">        OutputE(x, y);</span><br><span class="line">        OutputP(x, y);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Distance: %d\n"</span>, OptD);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Edited strings:\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> c : xe)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%2c"</span>, c);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> c : ye)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%2c"</span>, c);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OutputE</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" E  "</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%2c"</span>, y[j]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"  "</span>);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%2c"</span>, x[i - <span class="number">1</span>]);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%2d"</span>, E[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OutputP</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;x, <span class="keyword">const</span> <span class="built_in">string</span> &amp;y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" P  "</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%2c"</span>, y[j]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"  "</span>);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%2c"</span>, x[i - <span class="number">1</span>]);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%2c"</span>, P[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="comment">//namespace NS_LSEditDist</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">rand_str</span><span class="params">(<span class="keyword">char</span> *str,<span class="keyword">const</span> <span class="keyword">int</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;++i)</span><br><span class="line">        str[i]=<span class="string">'a'</span>+rand()%<span class="number">26</span>;</span><br><span class="line">    str[++i]=<span class="string">'\0'</span>;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> NS_LSEditDist;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; <span class="built_in">abs</span> = &#123;</span><br><span class="line">            &#123; <span class="string">"water"</span>, <span class="string">"wheat"</span> &#125;,</span><br><span class="line">            &#123; <span class="string">"servant"</span>, <span class="string">"reveal"</span> &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> ab : <span class="built_in">abs</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> a = ab[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">string</span> b = ab[<span class="number">1</span>];</span><br><span class="line">        LSEditDistCaller(a, b);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"两个100位字符串的LevenShtein距离："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    srand(time(<span class="literal">NULL</span>));</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">char</span> name[LEN_NAME+<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">string</span> x = rand_str(name,LEN_NAME);</span><br><span class="line">    <span class="built_in">string</span> y = rand_str(name,LEN_NAME);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"字符串1："</span>&lt;&lt;x&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"字符串2："</span>&lt;&lt;y&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    LSEditDistCaller(x, y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include&lt;iostream&gt;
+#include&lt;ctime&gt;
+
+const int LEN_NAME=100;
+
+namespace NS_LSEditDist {
+    using namespace std;
+    void Initialization(const string &amp;x, const string &amp;y);
+    int GetLSEditDist(const string &amp;x, const string &amp;y);
+    void GetLSEdits(const string &amp;x, const string &amp;y);
+    void Output(const string &amp;x, const string &amp;y, int OptD);
+    void OutputE(const string &amp;x, const string &amp;y);
+    void OutputP(const string &amp;x, const string &amp;y);
+    static int m, n;
+    static vector&lt;vector&lt;int&gt;&gt; E;
+    static vector&lt;vector&lt;char&gt;&gt; P;
+    static string xe, ye;
+    void LSEditDistCaller(const string &amp;x, const string &amp;y)
+    {
+        Initialization(x, y);
+        int OptD = GetLSEditDist(x, y);
+        GetLSEdits(x, y);
+        Output(x, y, OptD);
+    }
+    int GetLSEditDist(const string &amp;x, const string &amp;y)
+    {
+        for (int i = 1; i &lt;= m; i++)
+            for (int j = 1; j &lt;= n; j++)
+            {
+                E[i][j] = min(E[i - 1][j] + 1,
+                              min(E[i][j - 1] + 1,
+                                  E[i - 1][j - 1] + (x[i - 1] != y[j - 1])));
+                if (E[i][j] == E[i - 1][j] + 1)
+                    P[i][j] = &#39;U&#39;;
+                else if (E[i][j] == E[i][j - 1] + 1)
+                    P[i][j] = &#39;L&#39;;
+                else if (x[i - 1] != y[j - 1])
+                    P[i][j] = &#39;1&#39;;
+            }
+        return E[m][n];
+    }
+    void GetLSEdits(const string &amp;x, const string &amp;y)
+    {
+        int i = m, j = n;
+        while (i &gt; 0 || j &gt; 0)
+        {
+            if (P[i][j] == &#39;0&#39; || P[i][j] == &#39;1&#39;)
+            {
+                xe.insert(0, 1, x[i - 1]);
+                ye.insert(0, 1, y[j - 1]);
+                i--; j--;
+            }
+            else if (P[i][j] == &#39;U&#39;)
+            {
+                xe.insert(xe.begin(), x[i - 1]);
+                ye.insert(ye.begin(), &#39;-&#39;);
+                i--;
+            }
+            else
+            {
+                xe.insert(xe.begin(), &#39;-&#39;);
+                ye.insert(ye.begin(), y[j - 1]);
+                j--;
+            }
+        }
+    }
+    void Initialization(const string &amp;x, const string &amp;y)
+    {
+        m = x.length();
+        n = y.length();
+        E.clear();
+        E.resize(m + 1, vector&lt;int&gt;(n + 1, 0));
+        P.clear();
+        P.resize(m + 1, vector&lt;char&gt;(n + 1, &#39;0&#39;));
+        for (int j = 1; j &lt;= n; j++)
+        {
+            E[0][j] = j;
+            P[0][j] = &#39;L&#39;;
+        }
+        for (int i = 1; i &lt;= m; i++)
+        {
+            E[i][0] = i;
+            P[i][0] = &#39;U&#39;;
+        }
+        xe.clear();
+        ye.clear();
+    }
+    void Output(const string &amp;x, const string &amp;y, int OptD)
+    {
+        printf(&quot;Levenshtein distance: \n&quot;);
+        printf(&quot;Strings: %s, %s\n\n&quot;, x.c_str(), y.c_str());
+        OutputE(x, y);
+        OutputP(x, y);
+        printf(&quot;Distance: %d\n&quot;, OptD);
+        printf(&quot;Edited strings:\n&quot;);
+        for (auto c : xe)
+            printf(&quot;%2c&quot;, c);
+        printf(&quot;\n&quot;);
+        for (auto c : ye)
+            printf(&quot;%2c&quot;, c);
+        printf(&quot;\n\n&quot;);
+    }
+    void OutputE(const string &amp;x, const string &amp;y)
+    {
+        printf(&quot; E  &quot;);
+        for (int j = 0; j &lt; n; j++)
+            printf(&quot;%2c&quot;, y[j]);
+        printf(&quot;\n&quot;);
+        for (int i = 0; i &lt;= m; i++)
+        {
+            if (i == 0)
+                printf(&quot;  &quot;);
+            else
+                printf(&quot;%2c&quot;, x[i - 1]);
+            for (int j = 0; j &lt;= n; j++)
+            {
+                printf(&quot;%2d&quot;, E[i][j]);
+            }
+            printf(&quot;\n&quot;);
+        }
+        printf(&quot;\n&quot;);
+    }
+    void OutputP(const string &amp;x, const string &amp;y)
+    {
+        printf(&quot; P  &quot;);
+        for (int j = 0; j &lt; n; j++)
+            printf(&quot;%2c&quot;, y[j]);
+        printf(&quot;\n&quot;);
+        for (int i = 0; i &lt;= m; i++)
+        {
+            if (i == 0)
+                printf(&quot;  &quot;);
+            else
+                printf(&quot;%2c&quot;, x[i - 1]);
+            for (int j = 0; j &lt;= n; j++)
+            {
+                printf(&quot;%2c&quot;, P[i][j]);
+            }
+            printf(&quot;\n&quot;);
+        }
+        printf(&quot;\n&quot;);
+    }
+} //namespace NS_LSEditDist
+char *rand_str(char *str,const int len)
+{
+    int i;
+    for(i=0;i&lt;len;++i)
+        str[i]=&#39;a&#39;+rand()%26;
+    str[++i]=&#39;\0&#39;;
+    return str;
+}
+using namespace NS_LSEditDist;
+int main()
+{
+    vector&lt;vector&lt;string&gt;&gt; abs = {
+            { &quot;water&quot;, &quot;wheat&quot; },
+            { &quot;servant&quot;, &quot;reveal&quot; }
+    };
+    for (auto ab : abs)
+    {
+        string a = ab[0];
+        string b = ab[1];
+        LSEditDistCaller(a, b);
+    }
+
+    cout&lt;&lt;&quot;两个100位字符串的LevenShtein距离：&quot;&lt;&lt;endl;
+
+    srand(time(NULL));
+    int i;
+    char name[LEN_NAME+1];
+    string x = rand_str(name,LEN_NAME);
+    string y = rand_str(name,LEN_NAME);
+
+    cout&lt;&lt;&quot;字符串1：&quot;&lt;&lt;x&lt;&lt;endl;
+    cout&lt;&lt;&quot;字符串2：&quot;&lt;&lt;y&lt;&lt;endl;
+
+    LSEditDistCaller(x, y);
+}
+</code></pre>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://zh.wikipedia.org/wiki/%E8%90%8A%E6%96%87%E6%96%AF%E5%9D%A6%E8%B7%9D%E9%9B%A2" target="_blank" rel="noopener">莱文斯坦距离</a></li>
 <li><a href="https://www.dazhuanlan.com/2019/12/06/5dea0cb03281f/" target="_blank" rel="noopener">理解 Levenshtein Distancee</a></li>
@@ -146,7 +329,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/bvk4ok.md" download target="_blank">莱文斯坦距离(LD)问题.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/bvk4ok/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -491,7 +674,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms530012zvndxwi5yzxl" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snq100123rnb103rlo5n" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -500,6 +683,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

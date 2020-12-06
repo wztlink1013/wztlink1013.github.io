@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="task_07_网络层">
   <meta property="og:description" content="task_07_网络层">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/bw80k6/" title="task_06_数据链路层-广播信道" />
   <link rel="next" href="https://www.wztlink1013.com/blog/zeszpb/" title="C++随机字符串生成函数" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -113,9 +115,239 @@
 <li>课上自主演示 3（课堂演示可以使用自己的电脑）<br>|</li>
 </ul>
 <h2 id="ping-和-tracert"><a href="#ping-和-tracert" class="headerlink" title="ping 和 tracert"></a>ping 和 tracert</h2><h3 id="ping-和-tracert-命令"><a href="#ping-和-tracert-命令" class="headerlink" title="ping 和 tracert 命令"></a>ping 和 tracert 命令</h3><p><strong>ping</strong>命令一般用来测试两台机器或者机器和服务器之间网络是否连通。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603437323252-a3bf1470-c4ae-450a-b0fd-4d83281aab46.png#align=left&amp;display=inline&amp;height=156&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=311&amp;originWidth=1439&amp;size=57273&amp;status=done&amp;style=shadow&amp;width=719.5" alt="image.png"><br><strong>tracert</strong>命令显示数据报到达目标主机途中所经过的路径（路由器），并且显示到达每个节点（路由器）的花费时间，显示的信息比 ping 出来的信息要多，要详细。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603437358485-aef50645-6ff9-4395-bbae-0bfe22ce3dc1.png#align=left&amp;display=inline&amp;height=269&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=538&amp;originWidth=1436&amp;size=63435&amp;status=done&amp;style=shadow&amp;width=718" alt="image.png"></p>
-<h3 id="编程实现"><a href="#编程实现" class="headerlink" title="编程实现"></a>编程实现</h3><h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.InetAddress;</span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.net.UnknownHostException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommandUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    String tracert = <span class="string">"tracert -h 10 "</span>; <span class="comment">//模拟tracert命令</span></span><br><span class="line">    String ping = <span class="string">"ping"</span>;<span class="comment">//模拟 ping 命令</span></span><br><span class="line">    String routePrint = <span class="string">"route print -4"</span>;<span class="comment">//模拟route print命令</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        String input = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"resource"</span>)</span><br><span class="line">        Scanner scanner = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="comment">//利用while循环接收输入的命令行参数</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">"Please input destination server IP address ：\n"</span>);</span><br><span class="line"></span><br><span class="line">            input = scanner.next();</span><br><span class="line"></span><br><span class="line">            CommandUtil host = <span class="keyword">new</span> CommandUtil();</span><br><span class="line"></span><br><span class="line">            host.tracert = host.tracert + <span class="string">" "</span> + input;</span><br><span class="line"></span><br><span class="line">            host.ping = host.ping + <span class="string">" "</span> + input;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                host.command(host.routePrint);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException exception) &#123;</span><br><span class="line"></span><br><span class="line">                exception.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                host.command(host.tracert) ;</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException exception) &#123;</span><br><span class="line"></span><br><span class="line">                exception.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                host.command(host.ping);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException exception) &#123;</span><br><span class="line"></span><br><span class="line">                exception.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            InetAddress ipAddress;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                ipAddress = InetAddress.getByName(input);</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"IP address : "</span>+ipAddress);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (UnknownHostException exception) &#123;</span><br><span class="line"></span><br><span class="line">                exception.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            URL url;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                url = <span class="keyword">new</span> URL(<span class="string">"http"</span>,input,<span class="number">80</span>,<span class="string">"index.html"</span>);</span><br><span class="line"></span><br><span class="line">                System.out.println();<span class="comment">//输出服务器地址</span></span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"Get the Server-Name# : "</span>+url.getHost());</span><br><span class="line"></span><br><span class="line">                System.out.println();<span class="comment">//输出首页文件</span></span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"Get the default file# : "</span>+url.getFile());</span><br><span class="line"></span><br><span class="line">                System.out.println();<span class="comment">//输出首页协议和端口</span></span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"Get the protocol# : "</span>+url.getProtocol()+<span class="string">" "</span>+url.getPort());</span><br><span class="line"></span><br><span class="line">                System.out.println();</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line"></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"Get serverName &amp; IPAddress："</span>+InetAddress.getByName(input));</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (UnknownHostException e) &#123;</span><br><span class="line"></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">long</span> freeMemory = Runtime.getRuntime().freeMemory();</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">"Surplus memory of JVM: "</span>+freeMemory+<span class="string">"B"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//模拟 tracert 命令</span></span><br><span class="line"></span><br><span class="line">    StringBuffer commandResult = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">command</span><span class="params">(String tracerCommand)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        <span class="comment">//第一步：创建进程(是接口不必初始化)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//1.通过Runtime类的getRuntime().exec()传入需要运行的命令参数</span></span><br><span class="line"></span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        System.out.println(InetAddress.getByName(<span class="string">"localhost"</span>)+<span class="string">" is tracking the destination server..."</span>);</span><br><span class="line"></span><br><span class="line">        Process process = Runtime.getRuntime().exec(tracerCommand);</span><br><span class="line"></span><br><span class="line">        readResult(process.getInputStream());</span><br><span class="line"></span><br><span class="line">        process.destroy();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//第二步：通过输入流来将命令执行结果输出到控制台</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readResult</span><span class="params">(InputStream inputStream)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line"></span><br><span class="line">        commandResult = <span class="keyword">new</span> StringBuffer();  <span class="comment">//初始化命令行</span></span><br><span class="line"></span><br><span class="line">        String commandInfo = <span class="keyword">null</span>; <span class="comment">//定义用于接收命令行执行结果的字符串</span></span><br><span class="line"></span><br><span class="line">        BufferedReader bufferedReader =</span><br><span class="line">                <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(inputStream));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> ( (commandInfo = bufferedReader.readLine()) != <span class="keyword">null</span>)  &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(commandInfo);</span><br><span class="line">        &#125;</span><br><span class="line">        bufferedReader.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h4><figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\bin\java.exe <span class="string">"-javaagent:D:\JetBrains\IntelliJ IDEA 2020.1.3\lib\idea_rt.jar=39614:D:\JetBrains\IntelliJ IDEA 2020.1.3\bin"</span> -Dfile.encoding=GBK -classpath <span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">charsets</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">deploy</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">access</span>-<span class="title">bridge</span>-64.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">cldrdata</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">dnsns</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">jaccess</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">jfxrt</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">localedata</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">nashorn</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">sunec</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">sunjce_provider</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">sunmscapi</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">sunpkcs11</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">ext</span>\<span class="title">zipfs</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">javaws</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">jce</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">jfr</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">jfxswt</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">jsse</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">management</span>-<span class="title">agent</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">plugin</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">resources</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\Java\jdk1.<span class="number">8.0_181</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">rt</span>.<span class="title">jar</span>;</span><span class="symbol">D:</span>\project-java\jiwang\<span class="keyword">out</span>\production\jiwang CommandUtil</span><br><span class="line">Please input destination server IP address ：</span><br><span class="line"></span><br><span class="line">baidu.com</span><br><span class="line"></span><br><span class="line">localhost/<span class="number">127.0</span>.<span class="number">0.1</span> is tracking the destination server...</span><br><span class="line">===========================================================================</span><br><span class="line">接口列表</span><br><span class="line">  <span class="number">6</span>...b4 b6 <span class="number">86</span> df cc <span class="number">9</span>d ......Realtek PCIe GbE Family Controller</span><br><span class="line"> <span class="number">11</span>...<span class="number">0</span>c <span class="number">54</span> <span class="number">15</span> fb <span class="number">33</span> <span class="number">95</span> ......Microsoft Wi-Fi Direct Virtual Adapter</span><br><span class="line"> <span class="number">14</span>...<span class="number">0e</span> <span class="number">54</span> <span class="number">15</span> fb <span class="number">33</span> <span class="number">94</span> ......Microsoft Wi-Fi Direct Virtual Adapter <span class="comment">#2</span></span><br><span class="line"> <span class="number">16</span>...<span class="number">0</span>c <span class="number">54</span> <span class="number">15</span> fb <span class="number">33</span> <span class="number">94</span> ......Intel(R) Dual Band Wireless-AC <span class="number">3168</span></span><br><span class="line"> <span class="number">17</span>...<span class="number">0</span>c <span class="number">54</span> <span class="number">15</span> fb <span class="number">33</span> <span class="number">98</span> ......Bluetooth Device (Personal Area Network)</span><br><span class="line">  <span class="number">1</span>...........................Software Loopback Interface <span class="number">1</span></span><br><span class="line">===========================================================================</span><br><span class="line"></span><br><span class="line">IPv4 路由表</span><br><span class="line">===========================================================================</span><br><span class="line">活动路由:</span><br><span class="line">网络目标        网络掩码          网关       接口   跃点数</span><br><span class="line">          <span class="number">0.0</span>.<span class="number">0.0</span>          <span class="number">0.0</span>.<span class="number">0.0</span>      <span class="number">192.168</span>.<span class="number">2.1</span>    <span class="number">192.168</span>.<span class="number">2.132</span>     <span class="number">35</span></span><br><span class="line">        <span class="number">127.0</span>.<span class="number">0.0</span>        <span class="number">255.0</span>.<span class="number">0.0</span>            在链路上         <span class="number">127.0</span>.<span class="number">0.1</span>    <span class="number">331</span></span><br><span class="line">        <span class="number">127.0</span>.<span class="number">0.1</span>  <span class="number">255.255</span>.<span class="number">255.255</span>            在链路上         <span class="number">127.0</span>.<span class="number">0.1</span>    <span class="number">331</span></span><br><span class="line">  <span class="number">127.255</span>.<span class="number">255.255</span>  <span class="number">255.255</span>.<span class="number">255.255</span>            在链路上         <span class="number">127.0</span>.<span class="number">0.1</span>    <span class="number">331</span></span><br><span class="line">      <span class="number">192.168</span>.<span class="number">2.0</span>    <span class="number">255.255</span>.<span class="number">255.0</span>            在链路上     <span class="number">192.168</span>.<span class="number">2.132</span>    <span class="number">291</span></span><br><span class="line">    <span class="number">192.168</span>.<span class="number">2.132</span>  <span class="number">255.255</span>.<span class="number">255.255</span>            在链路上     <span class="number">192.168</span>.<span class="number">2.132</span>    <span class="number">291</span></span><br><span class="line">    <span class="number">192.168</span>.<span class="number">2.255</span>  <span class="number">255.255</span>.<span class="number">255.255</span>            在链路上     <span class="number">192.168</span>.<span class="number">2.132</span>    <span class="number">291</span></span><br><span class="line">        <span class="number">224.0</span>.<span class="number">0.0</span>        <span class="number">240.0</span>.<span class="number">0.0</span>            在链路上         <span class="number">127.0</span>.<span class="number">0.1</span>    <span class="number">331</span></span><br><span class="line">        <span class="number">224.0</span>.<span class="number">0.0</span>        <span class="number">240.0</span>.<span class="number">0.0</span>            在链路上     <span class="number">192.168</span>.<span class="number">2.132</span>    <span class="number">291</span></span><br><span class="line">  <span class="number">255.255</span>.<span class="number">255.255</span>  <span class="number">255.255</span>.<span class="number">255.255</span>            在链路上         <span class="number">127.0</span>.<span class="number">0.1</span>    <span class="number">331</span></span><br><span class="line">  <span class="number">255.255</span>.<span class="number">255.255</span>  <span class="number">255.255</span>.<span class="number">255.255</span>            在链路上     <span class="number">192.168</span>.<span class="number">2.132</span>    <span class="number">291</span></span><br><span class="line">===========================================================================</span><br><span class="line">永久路由:</span><br><span class="line">  无</span><br><span class="line"></span><br><span class="line">localhost/<span class="number">127.0</span>.<span class="number">0.1</span> is tracking the destination server...</span><br><span class="line"></span><br><span class="line">通过最多 <span class="number">10</span> 个跃点跟踪</span><br><span class="line">到 baidu.com [<span class="number">39.156</span>.<span class="number">69.79</span>] 的路由:</span><br><span class="line"></span><br><span class="line">  <span class="number">1</span>     <span class="number">1</span> ms     <span class="number">1</span> ms     <span class="number">1</span> ms  RM2100.lan [<span class="number">192.168</span>.<span class="number">2.1</span>]</span><br><span class="line">  <span class="number">2</span>     *        *        *     请求超时。</span><br><span class="line">  <span class="number">3</span>     *        *        *     请求超时。</span><br><span class="line">  <span class="number">4</span>     <span class="number">4</span> ms     <span class="number">3</span> ms     <span class="number">3</span> ms  <span class="number">192.168</span>.<span class="number">100.253</span></span><br><span class="line">  <span class="number">5</span>     <span class="number">4</span> ms     <span class="number">5</span> ms    <span class="number">10</span> ms  <span class="number">192.168</span>.<span class="number">100.114</span></span><br><span class="line">  <span class="number">6</span>     <span class="number">3</span> ms     <span class="number">3</span> ms     <span class="number">3</span> ms  <span class="number">192.168</span>.<span class="number">100.118</span></span><br><span class="line">  <span class="number">7</span>     *        *        *     请求超时。</span><br><span class="line">  <span class="number">8</span>     *        *        *     请求超时。</span><br><span class="line">  <span class="number">9</span>     *        *        *     请求超时。</span><br><span class="line"> <span class="number">10</span>     *        *        *     请求超时。</span><br><span class="line"></span><br><span class="line">跟踪完成。</span><br><span class="line"></span><br><span class="line">localhost/<span class="number">127.0</span>.<span class="number">0.1</span> is tracking the destination server...</span><br><span class="line"></span><br><span class="line">正在 Ping baidu.com [<span class="number">39.156</span>.<span class="number">69.79</span>] 具有 <span class="number">32</span> 字节的数据:</span><br><span class="line">来自 <span class="number">39.156</span>.<span class="number">69.79</span> 的回复: 字节=<span class="number">32</span> 时间=<span class="number">20</span>ms TTL=<span class="number">48</span></span><br><span class="line">来自 <span class="number">39.156</span>.<span class="number">69.79</span> 的回复: 字节=<span class="number">32</span> 时间=<span class="number">20</span>ms TTL=<span class="number">48</span></span><br><span class="line">来自 <span class="number">39.156</span>.<span class="number">69.79</span> 的回复: 字节=<span class="number">32</span> 时间=<span class="number">20</span>ms TTL=<span class="number">48</span></span><br><span class="line">来自 <span class="number">39.156</span>.<span class="number">69.79</span> 的回复: 字节=<span class="number">32</span> 时间=<span class="number">20</span>ms TTL=<span class="number">48</span></span><br><span class="line"></span><br><span class="line"><span class="number">39.156</span>.<span class="number">69.79</span> 的 Ping 统计信息:</span><br><span class="line">    数据包: 已发送 = <span class="number">4</span>，已接收 = <span class="number">4</span>，丢失 = <span class="number">0</span> (<span class="number">0</span>% 丢失)，</span><br><span class="line">往返行程的估计时间(以毫秒为单位):</span><br><span class="line">    最短 = <span class="number">20</span>ms，最长 = <span class="number">20</span>ms，平均 = <span class="number">20</span>ms</span><br><span class="line">IP address : baidu.com/<span class="number">39.156</span>.<span class="number">69.79</span></span><br><span class="line"></span><br><span class="line">Get the Server-Name<span class="comment"># : baidu.com</span></span><br><span class="line"></span><br><span class="line">Get the default file<span class="comment"># : index.html</span></span><br><span class="line"></span><br><span class="line">Get the protocol<span class="comment"># : http 80</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Get serverName &amp; IPAddress：baidu.com/<span class="number">39.156</span>.<span class="number">69.79</span></span><br><span class="line">Surplus memory <span class="keyword">of</span> <span class="symbol">JVM:</span> <span class="number">124194640</span>B</span><br></pre></td></tr></table></figure>
+<h3 id="编程实现"><a href="#编程实现" class="headerlink" title="编程实现"></a>编程实现</h3><h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><pre><code class="java">import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import java.util.Scanner;
+
+public class CommandUtil {
+
+    String tracert = &quot;tracert -h 10 &quot;; //模拟tracert命令
+    String ping = &quot;ping&quot;;//模拟 ping 命令
+    String routePrint = &quot;route print -4&quot;;//模拟route print命令
+
+    public static void main(String args[]){
+
+        String input = null;
+
+        @SuppressWarnings(&quot;resource&quot;)
+        Scanner scanner = new Scanner(System.in);
+        //利用while循环接收输入的命令行参数
+        while(true){
+
+            System.out.println(&quot;Please input destination server IP address ：\n&quot;);
+
+            input = scanner.next();
+
+            CommandUtil host = new CommandUtil();
+
+            host.tracert = host.tracert + &quot; &quot; + input;
+
+            host.ping = host.ping + &quot; &quot; + input;
+
+            try {
+
+                host.command(host.routePrint);
+
+            } catch (IOException exception) {
+
+                exception.printStackTrace();
+            }
+
+            try {
+
+                host.command(host.tracert) ;
+
+            } catch (IOException exception) {
+
+                exception.printStackTrace();
+            }
+
+            try {
+
+                host.command(host.ping);
+
+            } catch (IOException exception) {
+
+                exception.printStackTrace();
+            }
+
+            InetAddress ipAddress;
+
+            try {
+
+                ipAddress = InetAddress.getByName(input);
+
+                System.out.println(&quot;IP address : &quot;+ipAddress);
+
+            } catch (UnknownHostException exception) {
+
+                exception.printStackTrace();
+            }
+
+            URL url;
+
+            try {
+                url = new URL(&quot;http&quot;,input,80,&quot;index.html&quot;);
+
+                System.out.println();//输出服务器地址
+
+                System.out.println(&quot;Get the Server-Name# : &quot;+url.getHost());
+
+                System.out.println();//输出首页文件
+
+                System.out.println(&quot;Get the default file# : &quot;+url.getFile());
+
+                System.out.println();//输出首页协议和端口
+
+                System.out.println(&quot;Get the protocol# : &quot;+url.getProtocol()+&quot; &quot;+url.getPort());
+
+                System.out.println();
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+            }
+
+            System.out.println();
+
+            try {
+
+                System.out.println(&quot;Get serverName &amp; IPAddress：&quot;+InetAddress.getByName(input));
+
+            } catch (UnknownHostException e) {
+
+                e.printStackTrace();
+            }
+
+            long freeMemory = Runtime.getRuntime().freeMemory();
+
+            System.out.println(&quot;Surplus memory of JVM: &quot;+freeMemory+&quot;B&quot;);
+
+        }
+    }
+    //模拟 tracert 命令
+
+    StringBuffer commandResult = null;
+
+    private void command(String tracerCommand) throws IOException{
+        //第一步：创建进程(是接口不必初始化)
+
+        //1.通过Runtime类的getRuntime().exec()传入需要运行的命令参数
+
+        System.out.println();
+
+        System.out.println(InetAddress.getByName(&quot;localhost&quot;)+&quot; is tracking the destination server...&quot;);
+
+        Process process = Runtime.getRuntime().exec(tracerCommand);
+
+        readResult(process.getInputStream());
+
+        process.destroy();
+    }
+    //第二步：通过输入流来将命令执行结果输出到控制台
+
+    private void readResult(InputStream inputStream) throws IOException{
+
+        commandResult = new StringBuffer();  //初始化命令行
+
+        String commandInfo = null; //定义用于接收命令行执行结果的字符串
+
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(inputStream));
+
+        while ( (commandInfo = bufferedReader.readLine()) != null)  {
+
+            System.out.println(commandInfo);
+        }
+        bufferedReader.close();
+    }
+}
+</code></pre>
+<h4 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h4><pre><code>D:\Java\jdk1.8.0_181\bin\java.exe &quot;-javaagent:D:\JetBrains\IntelliJ IDEA 2020.1.3\lib\idea_rt.jar=39614:D:\JetBrains\IntelliJ IDEA 2020.1.3\bin&quot; -Dfile.encoding=GBK -classpath D:\Java\jdk1.8.0_181\jre\lib\charsets.jar;D:\Java\jdk1.8.0_181\jre\lib\deploy.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\access-bridge-64.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\cldrdata.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\dnsns.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\jaccess.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\jfxrt.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\localedata.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\nashorn.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunec.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunjce_provider.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunmscapi.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunpkcs11.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\zipfs.jar;D:\Java\jdk1.8.0_181\jre\lib\javaws.jar;D:\Java\jdk1.8.0_181\jre\lib\jce.jar;D:\Java\jdk1.8.0_181\jre\lib\jfr.jar;D:\Java\jdk1.8.0_181\jre\lib\jfxswt.jar;D:\Java\jdk1.8.0_181\jre\lib\jsse.jar;D:\Java\jdk1.8.0_181\jre\lib\management-agent.jar;D:\Java\jdk1.8.0_181\jre\lib\plugin.jar;D:\Java\jdk1.8.0_181\jre\lib\resources.jar;D:\Java\jdk1.8.0_181\jre\lib\rt.jar;D:\project-java\jiwang\out\production\jiwang CommandUtil
+Please input destination server IP address ：
+
+baidu.com
+
+localhost/127.0.0.1 is tracking the destination server...
+===========================================================================
+接口列表
+  6...b4 b6 86 df cc 9d ......Realtek PCIe GbE Family Controller
+ 11...0c 54 15 fb 33 95 ......Microsoft Wi-Fi Direct Virtual Adapter
+ 14...0e 54 15 fb 33 94 ......Microsoft Wi-Fi Direct Virtual Adapter #2
+ 16...0c 54 15 fb 33 94 ......Intel(R) Dual Band Wireless-AC 3168
+ 17...0c 54 15 fb 33 98 ......Bluetooth Device (Personal Area Network)
+  1...........................Software Loopback Interface 1
+===========================================================================
+
+IPv4 路由表
+===========================================================================
+活动路由:
+网络目标        网络掩码          网关       接口   跃点数
+          0.0.0.0          0.0.0.0      192.168.2.1    192.168.2.132     35
+        127.0.0.0        255.0.0.0            在链路上         127.0.0.1    331
+        127.0.0.1  255.255.255.255            在链路上         127.0.0.1    331
+  127.255.255.255  255.255.255.255            在链路上         127.0.0.1    331
+      192.168.2.0    255.255.255.0            在链路上     192.168.2.132    291
+    192.168.2.132  255.255.255.255            在链路上     192.168.2.132    291
+    192.168.2.255  255.255.255.255            在链路上     192.168.2.132    291
+        224.0.0.0        240.0.0.0            在链路上         127.0.0.1    331
+        224.0.0.0        240.0.0.0            在链路上     192.168.2.132    291
+  255.255.255.255  255.255.255.255            在链路上         127.0.0.1    331
+  255.255.255.255  255.255.255.255            在链路上     192.168.2.132    291
+===========================================================================
+永久路由:
+  无
+
+localhost/127.0.0.1 is tracking the destination server...
+
+通过最多 10 个跃点跟踪
+到 baidu.com [39.156.69.79] 的路由:
+
+  1     1 ms     1 ms     1 ms  RM2100.lan [192.168.2.1]
+  2     *        *        *     请求超时。
+  3     *        *        *     请求超时。
+  4     4 ms     3 ms     3 ms  192.168.100.253
+  5     4 ms     5 ms    10 ms  192.168.100.114
+  6     3 ms     3 ms     3 ms  192.168.100.118
+  7     *        *        *     请求超时。
+  8     *        *        *     请求超时。
+  9     *        *        *     请求超时。
+ 10     *        *        *     请求超时。
+
+跟踪完成。
+
+localhost/127.0.0.1 is tracking the destination server...
+
+正在 Ping baidu.com [39.156.69.79] 具有 32 字节的数据:
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+
+39.156.69.79 的 Ping 统计信息:
+    数据包: 已发送 = 4，已接收 = 4，丢失 = 0 (0% 丢失)，
+往返行程的估计时间(以毫秒为单位):
+    最短 = 20ms，最长 = 20ms，平均 = 20ms
+IP address : baidu.com/39.156.69.79
+
+Get the Server-Name# : baidu.com
+
+Get the default file# : index.html
+
+Get the protocol# : http 80
+
+
+Get serverName &amp; IPAddress：baidu.com/39.156.69.79
+Surplus memory of JVM: 124194640B
+</code></pre>
       </div>
     </div>
     <!-- FIXME: 不知道用哪了 -->
@@ -136,7 +368,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/qlrcf6.md" download target="_blank">task_07_网络层.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/qlrcf6/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -481,7 +713,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms9c008kzvndckaz6unl" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snub008k3rnbg9wxt89r" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -490,6 +722,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

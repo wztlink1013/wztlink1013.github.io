@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="贪心算法-Huffman算法">
   <meta property="og:description" content="贪心算法-Huffman算法">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/zhdy1x/" title="sdnu-dboj-成绩管理-Movie" />
   <link rel="next" href="https://www.wztlink1013.com/blog/uq89oe/" title="C++匿名函数" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -100,7 +102,173 @@
 </blockquote>
 <p>在进行到 E 的时候，此时的队列应该为 120 107 42 37，所以此时需要重新调整队列，然后进行到结束。</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340899720-d8867a90-d01c-4bf6-8ec7-ca0e812a99dd.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=443&amp;originWidth=376&amp;size=24239&amp;status=done&amp;style=shadow&amp;width=188" alt="image.png"><br>最后的编码结果为：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605341313840-61587c86-135d-4ba0-96aa-844868de1d56.png#align=left&amp;display=inline&amp;height=101&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=201&amp;originWidth=165&amp;size=4405&amp;status=done&amp;style=shadow&amp;width=82.5" alt="image.png"></p>
-<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> NS_HuffmanCoding &#123;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BuildHuffmanTree</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Initialization</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;&gt; chars)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Finalization</span><span class="params">()</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HFMNode</span> &#123;</span></span><br><span class="line">  <span class="keyword">char</span> Ch; <span class="keyword">int</span> Freq;</span><br><span class="line">  HFMNode* Left, * Right;</span><br><span class="line">  HFMNode(<span class="keyword">char</span> pCh, <span class="keyword">int</span> pFreq, HFMNode* pLeft, HFMNode* pRight)</span><br><span class="line">    : Ch(pCh), Freq(pFreq), Left(pLeft), Right(pRight) &#123;&#125;</span><br><span class="line">  HFMNode(<span class="keyword">char</span> pCh, <span class="keyword">int</span> pFreq)</span><br><span class="line">    : HFMNode(pCh, pFreq, <span class="literal">NULL</span>, <span class="literal">NULL</span>) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MinHeapify</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertH</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H, HFMNode* node)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SiftDown</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H, <span class="keyword">int</span> i)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SiftUp</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H, <span class="keyword">int</span> i)</span></span>;</span><br><span class="line"><span class="function">HFMNode* <span class="title">ExtractMin</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DeleteANode</span><span class="params">(HFMNode* node)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShowInput</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;&gt; chars)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;HFMNode*&gt; Q;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HuffmanCodingCaller</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;&gt; chars)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ShowInput(chars);</span><br><span class="line">  Initialization(chars);</span><br><span class="line">  BuildHuffmanTree();</span><br><span class="line">  Output();</span><br><span class="line">  Finalization();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BuildHuffmanTree</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> C = <span class="string">'A'</span>;</span><br><span class="line">  <span class="keyword">while</span> (Q.size() &gt; <span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    HFMNode* x = ExtractMin(Q);</span><br><span class="line">    HFMNode* y = ExtractMin(Q);</span><br><span class="line">    HFMNode* z = <span class="keyword">new</span> HFMNode(C++, x-&gt;Freq + y-&gt;Freq, x, y);</span><br><span class="line">    InsertH(Q, z);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">HFMNode* <span class="title">ExtractMin</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  swap(H.front(), H.back());</span><br><span class="line">  HFMNode* p = H.back();</span><br><span class="line">  H.pop_back();</span><br><span class="line">  <span class="keyword">if</span> (!H.empty())</span><br><span class="line">    SiftDown(H, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SiftDown</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H, <span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> ((i = (i &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>) &lt; H.size()) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((i + <span class="number">1</span> &lt; H.size()) &amp;&amp; (H[i + <span class="number">1</span>]-&gt;Freq &lt; H[i]-&gt;Freq))</span><br><span class="line">            i = i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (H[(i - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>]-&gt;Freq &gt; H[i]-&gt;Freq)</span><br><span class="line">            swap(H[(i - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>], H[i]);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertH</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H, HFMNode* node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  H.push_back(node);</span><br><span class="line">  SiftUp(H, H.size() - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SiftUp</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H, <span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (i &gt; <span class="number">0</span> &amp;&amp; H[i]-&gt;Freq &lt; H[(i - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>]-&gt;Freq) &#123;</span><br><span class="line">    swap(H[i], H[(i - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>]);</span><br><span class="line">    i = (i - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MinHeapify</span><span class="params">(<span class="built_in">vector</span>&lt;HFMNode*&gt;&amp; H)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = (H.size() &gt;&gt; <span class="number">1</span>) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    SiftDown(H, i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Initialization</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;&gt; chars)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  Q.clear();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> ch : chars)</span><br><span class="line">    Q.push_back(<span class="keyword">new</span> HFMNode(ch.first, ch.second));</span><br><span class="line">  MinHeapify(Q);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Finalization</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  DeleteANode(Q[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DeleteANode</span><span class="params">(HFMNode* node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (node-&gt;Left)</span><br><span class="line">  &#123;</span><br><span class="line">    DeleteANode(node-&gt;Left);</span><br><span class="line">    DeleteANode(node-&gt;Right);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">delete</span> node;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShowInput</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;&gt; chars)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Huffman coding input: \n"</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> c : chars)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c,%d; "</span>, c.first, c.second);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; coding;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&gt; codingList;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetHuffmanCoding</span><span class="params">(HFMNode* node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (node-&gt;Left)</span><br><span class="line">  &#123;</span><br><span class="line">    coding.push_back(<span class="string">'0'</span>);</span><br><span class="line">    GetHuffmanCoding(node-&gt;Left);</span><br><span class="line">    coding.pop_back();</span><br><span class="line">    coding.push_back(<span class="string">'1'</span>);</span><br><span class="line">    GetHuffmanCoding(node-&gt;Right);</span><br><span class="line">    coding.pop_back();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    codingList.push_back(pair&lt;<span class="keyword">char</span>,</span><br><span class="line">      <span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;(node-&gt;Ch, coding));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Huffman coding:\n"</span>);</span><br><span class="line">  coding.clear();</span><br><span class="line">  codingList.clear();</span><br><span class="line">  GetHuffmanCoding(Q[<span class="number">0</span>]);</span><br><span class="line">  sort(codingList.begin(), codingList.end());</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> c1 : codingList)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"  %c: "</span>, c1.first);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> c2 : c1.second)</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%c"</span>, c2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="comment">//namespace NS_HuffmanCoding</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> NS_HuffmanCoding;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TestHuffmanCoding</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt;&gt;&gt; charLists = &#123;</span><br><span class="line">      <span class="comment">//Introduction to Algorithms</span></span><br><span class="line">     &#123;</span><br><span class="line">        &#123; &#123;<span class="string">'a'</span>,<span class="number">40</span>&#125;, &#123;<span class="string">'b'</span>,<span class="number">13</span>&#125;, &#123;<span class="string">'c'</span>,<span class="number">12</span>&#125;,</span><br><span class="line">          &#123;<span class="string">'d'</span>,<span class="number">16</span>&#125;, &#123;<span class="string">'e'</span>,<span class="number">9</span>&#125;, &#123;<span class="string">'f'</span>,<span class="number">5</span>&#125; &#125;,</span><br><span class="line">     &#125;,</span><br><span class="line">     <span class="comment">//ÑÏÎµÃô</span></span><br><span class="line">     &#123;</span><br><span class="line">        &#123; &#123;<span class="string">'a'</span>,<span class="number">5</span>&#125;, &#123;<span class="string">'b'</span>,<span class="number">29</span>&#125;, &#123;<span class="string">'c'</span>,<span class="number">7</span>&#125;, &#123;<span class="string">'d'</span>,<span class="number">8</span>&#125;,</span><br><span class="line">          &#123;<span class="string">'e'</span>,<span class="number">14</span>&#125;, &#123;<span class="string">'f'</span>,<span class="number">23</span>&#125;, &#123;<span class="string">'g'</span>,<span class="number">3</span>&#125;, &#123;<span class="string">'h'</span>,<span class="number">11</span>&#125; &#125;,</span><br><span class="line">     &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">int</span> n = charLists.size();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    HuffmanCodingCaller(charLists[i]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+namespace NS_HuffmanCoding {
+using namespace std;
+void BuildHuffmanTree();
+void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars);
+void Finalization();
+struct HFMNode {
+  char Ch; int Freq;
+  HFMNode* Left, * Right;
+  HFMNode(char pCh, int pFreq, HFMNode* pLeft, HFMNode* pRight)
+    : Ch(pCh), Freq(pFreq), Left(pLeft), Right(pRight) {}
+  HFMNode(char pCh, int pFreq)
+    : HFMNode(pCh, pFreq, NULL, NULL) {}
+};
+void MinHeapify(vector&lt;HFMNode*&gt;&amp; H);
+void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node);
+void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i);
+void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i);
+HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H);
+void DeleteANode(HFMNode* node);
+void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars);
+void Output();
+static vector&lt;HFMNode*&gt; Q;
+void HuffmanCodingCaller(vector&lt;pair&lt;char, int&gt;&gt; chars)
+{
+  ShowInput(chars);
+  Initialization(chars);
+  BuildHuffmanTree();
+  Output();
+  Finalization();
+}
+void BuildHuffmanTree()
+{
+  char C = &#39;A&#39;;
+  while (Q.size() &gt; 1)
+  {
+    HFMNode* x = ExtractMin(Q);
+    HFMNode* y = ExtractMin(Q);
+    HFMNode* z = new HFMNode(C++, x-&gt;Freq + y-&gt;Freq, x, y);
+    InsertH(Q, z);
+  }
+}
+HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H)
+{
+  swap(H.front(), H.back());
+  HFMNode* p = H.back();
+  H.pop_back();
+  if (!H.empty())
+    SiftDown(H, 0);
+  return p;
+}
+void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i)
+{
+    while ((i = (i &lt;&lt; 1) + 1) &lt; H.size()) {
+        if ((i + 1 &lt; H.size()) &amp;&amp; (H[i + 1]-&gt;Freq &lt; H[i]-&gt;Freq))
+            i = i + 1;
+        if (H[(i - 1) &gt;&gt; 1]-&gt;Freq &gt; H[i]-&gt;Freq)
+            swap(H[(i - 1) &gt;&gt; 1], H[i]);
+        else break;
+    }
+}
+void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node)
+{
+  H.push_back(node);
+  SiftUp(H, H.size() - 1);
+}
+void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i)
+{
+  while (i &gt; 0 &amp;&amp; H[i]-&gt;Freq &lt; H[(i - 1) &gt;&gt; 1]-&gt;Freq) {
+    swap(H[i], H[(i - 1) &gt;&gt; 1]);
+    i = (i - 1) &gt;&gt; 1;
+  }
+}
+void MinHeapify(vector&lt;HFMNode*&gt;&amp; H)
+{
+  for (int i = (H.size() &gt;&gt; 1) - 1; i &gt;= 0; i--) {
+    SiftDown(H, i);
+  }
+}
+
+void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars)
+{
+  Q.clear();
+  for (auto ch : chars)
+    Q.push_back(new HFMNode(ch.first, ch.second));
+  MinHeapify(Q);
+}
+void Finalization()
+{
+  DeleteANode(Q[0]);
+}
+void DeleteANode(HFMNode* node)
+{
+  if (node-&gt;Left)
+  {
+    DeleteANode(node-&gt;Left);
+    DeleteANode(node-&gt;Right);
+  }
+  delete node;
+}
+void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars)
+{
+  printf(&quot;Huffman coding input: \n&quot;);
+  for (auto c : chars)
+    printf(&quot;%c,%d; &quot;, c.first, c.second);
+  printf(&quot;\n&quot;);
+}
+static vector&lt;char&gt; coding;
+static vector&lt;pair&lt;char, vector&lt;char&gt;&gt;&gt; codingList;
+void GetHuffmanCoding(HFMNode* node)
+{
+  if (node-&gt;Left)
+  {
+    coding.push_back(&#39;0&#39;);
+    GetHuffmanCoding(node-&gt;Left);
+    coding.pop_back();
+    coding.push_back(&#39;1&#39;);
+    GetHuffmanCoding(node-&gt;Right);
+    coding.pop_back();
+  }
+  else
+  {
+    codingList.push_back(pair&lt;char,
+      vector&lt;char&gt;&gt;(node-&gt;Ch, coding));
+  }
+}
+void Output()
+{
+  printf(&quot;Huffman coding:\n&quot;);
+  coding.clear();
+  codingList.clear();
+  GetHuffmanCoding(Q[0]);
+  sort(codingList.begin(), codingList.end());
+  for (auto c1 : codingList)
+  {
+    printf(&quot;  %c: &quot;, c1.first);
+    for (auto c2 : c1.second)
+      printf(&quot;%c&quot;, c2);
+    printf(&quot;\n&quot;);
+  }
+  printf(&quot;\n&quot;);
+}
+} //namespace NS_HuffmanCoding
+using namespace NS_HuffmanCoding;
+void TestHuffmanCoding()
+{
+  vector&lt;vector&lt;pair&lt;char, int&gt;&gt;&gt; charLists = {
+      //Introduction to Algorithms
+     {
+        { {&#39;a&#39;,40}, {&#39;b&#39;,13}, {&#39;c&#39;,12},
+          {&#39;d&#39;,16}, {&#39;e&#39;,9}, {&#39;f&#39;,5} },
+     },
+     //ÑÏÎµÃô
+     {
+        { {&#39;a&#39;,5}, {&#39;b&#39;,29}, {&#39;c&#39;,7}, {&#39;d&#39;,8},
+          {&#39;e&#39;,14}, {&#39;f&#39;,23}, {&#39;g&#39;,3}, {&#39;h&#39;,11} },
+     },
+  };
+  int n = charLists.size();
+  for (int i = 0; i &lt; n; i++)
+  {
+    HuffmanCodingCaller(charLists[i]);
+  }
+}
+</code></pre>
 
       </div>
     </div>
@@ -122,7 +290,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/ggu8v9.md" download target="_blank">贪心算法-Huffman算法.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:47</li>
+		<li>最后编辑时间: 2020-12-06 12:57:54</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/ggu8v9/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -467,7 +635,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms61002vzvndo6xq9h4c" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snqu002v3rnb5146tsxg" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -476,6 +644,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

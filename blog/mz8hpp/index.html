@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="递归+子集问题">
   <meta property="og:description" content="递归+子集问题">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/czgm7d/" title="穷举+洗牌算法" />
   <link rel="next" href="https://www.wztlink1013.com/blog/rnsz9o/" title="JAVA-常用类" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -113,8 +115,90 @@
 <p>思路一：利用动态数组数据结构</p>
 </blockquote>
 <p>输入的 n 就是动态数组的初始大小<br>然后依次利用“吞进来”和“吐出去”尾元素来实现</p>
-<h2 id="五、代码实现"><a href="#五、代码实现" class="headerlink" title="五、代码实现"></a>五、代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.al._递归法_;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 作用：测量代码运行时间</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Times</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SimpleDateFormat fmt = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"HH:mm:ss.SSS"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(String title, Task task)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (task == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">        title = (title == <span class="keyword">null</span>) ? <span class="string">""</span> : (<span class="string">"【"</span> + title + <span class="string">"】"</span>);</span><br><span class="line">        System.out.println(title);</span><br><span class="line">        System.out.println(<span class="string">"开始："</span> + fmt.format(<span class="keyword">new</span> Date()));</span><br><span class="line">        <span class="keyword">long</span> begin = System.currentTimeMillis();</span><br><span class="line">        task.execute();</span><br><span class="line">        <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"结束："</span> + fmt.format(<span class="keyword">new</span> Date()));</span><br><span class="line">        <span class="keyword">double</span> delta = (end - begin) / <span class="number">1000.0</span>;</span><br><span class="line">        System.out.println(<span class="string">"耗时："</span> + delta + <span class="string">"秒"</span>);</span><br><span class="line">        System.out.println(<span class="string">"-------------------------------------"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.al._递归法_;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 子集问题</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSetting</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> ArrayList&lt;Integer&gt; x  = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">4</span>;</span><br><span class="line">        Times.test(<span class="string">"当n = "</span> + n + <span class="string">"时候的耗费时间"</span>, <span class="keyword">new</span> Times.Task() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Subsetting(n);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Subsetting</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            x.add(<span class="number">0</span>);</span><br><span class="line">            Subsetting(n - <span class="number">1</span>);</span><br><span class="line">            x.remove(x.size() - <span class="number">1</span>);</span><br><span class="line">            x.add(<span class="number">1</span>);</span><br><span class="line">            Subsetting(n - <span class="number">1</span>);</span><br><span class="line">            x.remove(x.size() - <span class="number">1</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            OutputOneSubsetBinary();</span><br><span class="line">            OutputOneSubset();</span><br><span class="line">            System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OutputOneSubset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.printf(<span class="string">"; &#123;"</span>);</span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = x.size() - <span class="number">1</span>; i &gt;=<span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (x.get(i) == <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (k &gt; <span class="number">0</span>)</span><br><span class="line">                    System.out.printf(<span class="string">","</span>);</span><br><span class="line">                System.out.printf(<span class="string">"%d"</span>, x.size() - i);</span><br><span class="line">                k++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.printf(<span class="string">"&#125;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OutputOneSubsetBinary</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.printf(<span class="string">"%010d: "</span>, ++cnt);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = x.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">            System.out.printf(<span class="string">"%d"</span>, x.get(i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="五、代码实现"><a href="#五、代码实现" class="headerlink" title="五、代码实现"></a>五、代码实现</h2><pre><code class="java">package com.wztlink1013.al._递归法_;
+/*
+ * 作用：测量代码运行时间
+ */
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Times {
+    private static final SimpleDateFormat fmt = new SimpleDateFormat(&quot;HH:mm:ss.SSS&quot;);
+
+    public interface Task {
+        void execute();
+    }
+
+    public static void test(String title, Task task) {
+        if (task == null) return;
+        title = (title == null) ? &quot;&quot; : (&quot;【&quot; + title + &quot;】&quot;);
+        System.out.println(title);
+        System.out.println(&quot;开始：&quot; + fmt.format(new Date()));
+        long begin = System.currentTimeMillis();
+        task.execute();
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;结束：&quot; + fmt.format(new Date()));
+        double delta = (end - begin) / 1000.0;
+        System.out.println(&quot;耗时：&quot; + delta + &quot;秒&quot;);
+        System.out.println(&quot;-------------------------------------&quot;);
+    }
+}
+</code></pre>
+<pre><code class="java">package com.wztlink1013.al._递归法_;
+
+import java.util.ArrayList;
+
+/**
+ * 子集问题
+ */
+public class SubSetting {
+    static ArrayList&lt;Integer&gt; x  = new ArrayList&lt;Integer&gt;();
+    static int cnt = 0;
+    public static void main(String args[]) {
+        int n = 4;
+        Times.test(&quot;当n = &quot; + n + &quot;时候的耗费时间&quot;, new Times.Task() {
+            public void execute() {
+                Subsetting(n);
+            }
+        });
+    }
+
+    private static void Subsetting(int n) {
+        if (n &gt; 0) {
+            x.add(0);
+            Subsetting(n - 1);
+            x.remove(x.size() - 1);
+            x.add(1);
+            Subsetting(n - 1);
+            x.remove(x.size() - 1);
+        }else {
+            OutputOneSubsetBinary();
+            OutputOneSubset();
+            System.out.print(&quot;\n&quot;);
+        }
+    }
+
+    private static void OutputOneSubset() {
+        System.out.printf(&quot;; {&quot;);
+        int k = 0;
+        for (int i = x.size() - 1; i &gt;=0; i--) {
+            if (x.get(i) == 1) {
+                if (k &gt; 0)
+                    System.out.printf(&quot;,&quot;);
+                System.out.printf(&quot;%d&quot;, x.size() - i);
+                k++;
+            }
+        }
+        System.out.printf(&quot;}&quot;);
+    }
+
+    private static void OutputOneSubsetBinary() {
+        System.out.printf(&quot;%010d: &quot;, ++cnt);
+        for (int i = x.size() - 1; i &gt;= 0; i--)
+            System.out.printf(&quot;%d&quot;, x.get(i));
+    }
+}
+</code></pre>
 <p>运行结果：</p>
 <blockquote>
 <p>n：18（分钟）</p>
@@ -143,7 +227,28 @@
 <blockquote>
 <p>网上查的代码！</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Main</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printSubsets</span><span class="params">(String[] set)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = set.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="number">1</span>&lt;&lt;n); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.print(<span class="string">"&#123; "</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">                <span class="keyword">if</span> ((i &amp; (<span class="number">1</span> &lt;&lt; j)) &gt; <span class="number">0</span>)</span><br><span class="line">                    System.out.print(set[j] + <span class="string">" "</span>);</span><br><span class="line">            System.out.println(<span class="string">"&#125;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String[] set = &#123;<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>,</span><br><span class="line">                        <span class="string">"5"</span>, <span class="string">"6"</span>, <span class="string">"7"</span>, <span class="string">"8"</span>&#125;;</span><br><span class="line">        printSubsets(set);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="java">class Main
+{
+    static void printSubsets(String[] set)
+    {
+        int n = set.length;
+        for (int i = 0; i &lt; (1&lt;&lt;n); i++)
+        {
+            System.out.print(&quot;{ &quot;);
+            for (int j = 0; j &lt; n; j++)
+                if ((i &amp; (1 &lt;&lt; j)) &gt; 0)
+                    System.out.print(set[j] + &quot; &quot;);
+            System.out.println(&quot;}&quot;);
+        }
+    }
+    public static void main(String[] args)
+    {
+        String[] set = {&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;,
+                        &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;};
+        printSubsets(set);
+    }
+}
+</code></pre>
 
       </div>
     </div>
@@ -165,7 +270,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/mz8hpp.md" download target="_blank">递归+子集问题.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/mz8hpp/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -510,7 +615,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms76004ozvndaviykwvv" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snrv004o3rnbohwvy7pc" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -519,6 +624,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

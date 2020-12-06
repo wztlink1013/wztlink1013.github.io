@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="0-1背包问题">
   <meta property="og:description" content="0-1背包问题">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/zugllf/" title="task_04_物理层" />
   <link rel="next" href="https://www.wztlink1013.com/blog/bkbll1/" title="TSP问题" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -128,7 +130,102 @@
 <hr>
 <p><strong>格子如上方式填就好了！</strong></p>
 <h3 id="递归思路"><a href="#递归思路" class="headerlink" title="递归思路"></a>递归思路</h3><p>第二节课将递归的时候，也讲了这个问题的递归思路。不过复杂度记得是指数级的，暂时不写了~~</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="动态规划-Code"><a href="#动态规划-Code" class="headerlink" title="动态规划 Code"></a>动态规划 Code</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">namespace</span> NS_DP0_1Knapsack &#123;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">DP0_1Knapsack</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> W, <span class="keyword">int</span> *w, <span class="keyword">int</span> *v)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> W, <span class="keyword">int</span> *w, <span class="keyword">int</span> *v, <span class="keyword">int</span> OptV)</span></span>;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; V;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; x;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DP0_1KnapsackCaller</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> W, <span class="keyword">int</span> *w, <span class="keyword">int</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    V.clear();</span><br><span class="line">    V.resize(n + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(W + <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">    x.resize(n + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> OptV = DP0_1Knapsack(n, W, w, v);</span><br><span class="line">    Output(n, W, w, v, OptV);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">DP0_1Knapsack</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> W, <span class="keyword">int</span> *w, <span class="keyword">int</span> *v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= W; j++)</span><br><span class="line">            <span class="keyword">if</span> (j &lt; w[i - <span class="number">1</span>])</span><br><span class="line">                V[i][j] = V[i - <span class="number">1</span>][j];</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (V[i - <span class="number">1</span>][j] &gt;=</span><br><span class="line">                V[i - <span class="number">1</span>][j - w[i - <span class="number">1</span>]] + v[i - <span class="number">1</span>])</span><br><span class="line">                V[i][j] = V[i - <span class="number">1</span>][j];</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                V[i][j] = V[i - <span class="number">1</span>][j - w[i - <span class="number">1</span>]] + v[i - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> j = W;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n; i &gt; <span class="number">0</span>; i--)</span><br><span class="line">        <span class="keyword">if</span> (V[i][j] == V[i - <span class="number">1</span>][j])</span><br><span class="line">            x[i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;   x[i] = <span class="number">1</span>; j -= w[i - <span class="number">1</span>];  &#125;</span><br><span class="line">    <span class="keyword">return</span> V[n][W];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> W, <span class="keyword">int</span> *w, <span class="keyword">int</span> *v, <span class="keyword">int</span> OptV)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//inputs</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"DP to solve 0-1 knapsack:\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d items with knapsack capacity %d.\n"</span>, n , W);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%-6s: "</span>, <span class="string">"Weight"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%3d"</span>, w[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%-6s: "</span>, <span class="string">"Value"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%3d"</span>, v[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="comment">//the value matrix</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\nThe value matrix:\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"  "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= W; j++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%3d"</span>, j);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%2d"</span>, i);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= W; j++)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%3d"</span>, V[i][j]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//solution</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\nThe optimal value: %d\n"</span>, OptV);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The optimal solution:\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%2d"</span>, x[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="comment">//namespace NS_DP0_1Knapsack</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> NS_DP0_1Knapsack;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 物品个数</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; N = &#123; <span class="number">4</span>,  <span class="number">10</span>&#125;;</span><br><span class="line">    <span class="comment">// 背包容量</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; W = &#123; <span class="number">8</span>,  <span class="number">100</span>&#125;;</span><br><span class="line">    <span class="comment">// 各物品重量</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; w = &#123;</span><br><span class="line">        &#123; <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span> &#125;,</span><br><span class="line">        &#123; <span class="number">4</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">5</span> &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 各物品价值</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; v = &#123;</span><br><span class="line">        &#123; <span class="number">15</span>, <span class="number">10</span>, <span class="number">6</span>, <span class="number">2</span> &#125;,</span><br><span class="line">        &#123; <span class="number">15</span>, <span class="number">10</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">23</span>, <span class="number">12</span>, <span class="number">33</span>, <span class="number">7</span>, <span class="number">22</span>, <span class="number">10</span> &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m = N.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        DP0_1KnapsackCaller(N[i], W[i], &amp;w[i][<span class="number">0</span>], &amp;v[i][<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="动态规划-Code"><a href="#动态规划-Code" class="headerlink" title="动态规划 Code"></a>动态规划 Code</h3><pre><code class="cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+namespace NS_DP0_1Knapsack {
+int DP0_1Knapsack(int n, int W, int *w, int *v);
+void Output(int n, int W, int *w, int *v, int OptV);
+static vector&lt;vector&lt;int&gt;&gt; V;
+static vector&lt;int&gt; x;
+void DP0_1KnapsackCaller(int n, int W, int *w, int *v)
+{
+    V.clear();
+    V.resize(n + 1, vector&lt;int&gt;(W + 1, 0));
+    x.resize(n + 1);
+    int OptV = DP0_1Knapsack(n, W, w, v);
+    Output(n, W, w, v, OptV);
+}
+int DP0_1Knapsack(int n, int W, int *w, int *v)
+{
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 1; j &lt;= W; j++)
+            if (j &lt; w[i - 1])
+                V[i][j] = V[i - 1][j];
+            else if (V[i - 1][j] &gt;=
+                V[i - 1][j - w[i - 1]] + v[i - 1])
+                V[i][j] = V[i - 1][j];
+            else
+                V[i][j] = V[i - 1][j - w[i - 1]] + v[i - 1];
+    int j = W;
+    for (int i = n; i &gt; 0; i--)
+        if (V[i][j] == V[i - 1][j])
+            x[i] = 0;
+        else
+        {   x[i] = 1; j -= w[i - 1];  }
+    return V[n][W];
+}
+void Output(int n, int W, int *w, int *v, int OptV)
+{
+    //inputs
+    printf(&quot;DP to solve 0-1 knapsack:\n&quot;);
+    printf(&quot;%d items with knapsack capacity %d.\n&quot;, n , W);
+    printf(&quot;%-6s: &quot;, &quot;Weight&quot;);
+    for (int i = 0; i &lt; n; i++)
+        printf(&quot;%3d&quot;, w[i]);
+    printf(&quot;\n&quot;);
+    printf(&quot;%-6s: &quot;, &quot;Value&quot;);
+    for (int i = 0; i &lt; n; i++)
+        printf(&quot;%3d&quot;, v[i]);
+    printf(&quot;\n&quot;);
+    //the value matrix
+    printf(&quot;\nThe value matrix:\n&quot;);
+    printf(&quot;  &quot;);
+    for (int j = 0; j &lt;= W; j++)
+        printf(&quot;%3d&quot;, j);
+    printf(&quot;\n&quot;);
+    for (int i = 0; i &lt;= n; i++)
+    {
+        printf(&quot;%2d&quot;, i);
+        for (int j = 0; j &lt;= W; j++)
+            printf(&quot;%3d&quot;, V[i][j]);
+        printf(&quot;\n&quot;);
+    }
+    //solution
+    printf(&quot;\nThe optimal value: %d\n&quot;, OptV);
+    printf(&quot;The optimal solution:\n&quot;);
+    for (int i = 1; i &lt;= n; i++)
+        printf(&quot;%2d&quot;, x[i]);
+    printf(&quot;\n\n&quot;);
+}
+} //namespace NS_DP0_1Knapsack
+using namespace NS_DP0_1Knapsack;
+int main()
+{
+    // 物品个数
+    vector&lt;int&gt; N = { 4,  10};
+    // 背包容量
+    vector&lt;int&gt; W = { 8,  100};
+    // 各物品重量
+    vector&lt;vector&lt;int&gt;&gt; w = {
+        { 5, 4, 3, 2 },
+        { 4, 3, 7, 2, 9, 3, 1, 7, 2, 5 }
+    };
+    // 各物品价值
+    vector&lt;vector&lt;int&gt;&gt; v = {
+        { 15, 10, 6, 2 },
+        { 15, 10, 6, 2, 23, 12, 33, 7, 22, 10 }
+    };
+
+    int m = N.size();
+    for (int i = 0; i &lt; m; i++)
+    {
+        DP0_1KnapsackCaller(N[i], W[i], &amp;w[i][0], &amp;v[i][0]);
+    }
+
+    return 0;
+}
+</code></pre>
 <h3 id="动态规划-Result"><a href="#动态规划-Result" class="headerlink" title="动态规划 Result"></a>动态规划 Result</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603943258085-fac4811f-87e7-4eef-8194-ee47d88063a6.png#align=left&amp;display=inline&amp;height=379&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=757&amp;originWidth=1920&amp;size=74181&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603943276039-f6f74edf-4871-426d-8af8-e1a62edaf071.png#align=left&amp;display=inline&amp;height=276&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=552&amp;originWidth=1920&amp;size=66929&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603943291836-84a15101-d6e7-4c9f-91b5-1122afd7ac5c.png#align=left&amp;display=inline&amp;height=177&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=353&amp;originWidth=1920&amp;size=29292&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"></p>
 
       </div>
@@ -151,7 +248,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/kb5sse.md" download target="_blank">0-1背包问题.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/kb5sse/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -496,7 +593,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms6g003lzvndjjzy2zrt" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snr9003l3rnb9lnfsmra" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -505,6 +602,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

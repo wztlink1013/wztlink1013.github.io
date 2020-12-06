@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="栈设计">
   <meta property="og:description" content="栈">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/aritwv/" title="20. 有效的括号" />
   <link rel="next" href="https://www.wztlink1013.com/blog/zqmygi/" title="队列设计" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -93,8 +95,46 @@
         </div>
         <h2 id="栈的设计"><a href="#栈的设计" class="headerlink" title="栈的设计"></a>栈的设计</h2><h3 id="栈的特点"><a href="#栈的特点" class="headerlink" title="栈的特点"></a>栈的特点</h3><p>栈的最重要特点就是其元素的<strong>后进先出，先进后出</strong>。</p>
 <h3 id="栈的接口设计"><a href="#栈的接口设计" class="headerlink" title="栈的接口设计"></a>栈的接口设计</h3><p>栈可以<strong>直接继承</strong>之前所学的 ArrayList 亦或是 List 接口。<br>这过程中需要注意，最好不要直接继承，因为如果直接继承，会将接口里面的其他方法也继承下来，会导致栈的对外接口不合理，解决办法就是在<strong>类设计内部 new 一个 private List 对象</strong>来设计栈。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>; <span class="comment">// 元素的数量</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>; <span class="comment">// 栈是否为空</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(E element)</span></span>; <span class="comment">// 入栈</span></span><br><span class="line"><span class="function">E <span class="title">pop</span><span class="params">()</span></span>; <span class="comment">// 出栈</span></span><br><span class="line"><span class="function">E <span class="title">top</span><span class="params">()</span></span>; <span class="comment">// 获取栈顶元素</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>; <span class="comment">// 清空栈</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.ds.stack;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.wztlink1013.ds.stack.list.ArrayList;</span><br><span class="line"><span class="keyword">import</span> com.wztlink1013.ds.stack.list.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stack</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;E&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        list.clear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> list.size();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> list.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(E element)</span> </span>&#123;</span><br><span class="line">        list.add(element);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> list.remove(list.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> list.get(list.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="java">int size(); // 元素的数量
+boolean isEmpty(); // 栈是否为空
+void push(E element); // 入栈
+E pop(); // 出栈
+E top(); // 获取栈顶元素
+void clear(); // 清空栈
+</code></pre>
+<pre><code class="java">package com.wztlink1013.ds.stack;
+
+import com.wztlink1013.ds.stack.list.ArrayList;
+import com.wztlink1013.ds.stack.list.List;
+
+public class Stack&lt;E&gt; {
+    private List&lt;E&gt; list = new ArrayList&lt;&gt;();
+
+    public void clear() {
+        list.clear();
+    }
+
+    public int size() {
+        return list.size();
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    public void push(E element) {
+        list.add(element);
+    }
+
+    public E pop() {
+        return list.remove(list.size() - 1);
+    }
+
+    public E top() {
+        return list.get(list.size() - 1);
+    }
+}
+</code></pre>
 <h2 id="栈的应用"><a href="#栈的应用" class="headerlink" title="栈的应用"></a>栈的应用</h2><p><strong>浏览器的前进和后退</strong>的功能。<br>假如有网页 a、b、c、d，依次点击 abc 三个网页，然后回退至 b 网页，这个时候，就相当于在 1 栈中有 ab 两个网页（且 b 为栈顶元素），c 暂时放到 2 栈中，此时依然可以使用回退前进功能，但是现在在 b 页面上在新输入 d 网页并进入，此时 2 栈被清空，d 为 1 栈的栈顶元素，在此时的 d 页面内，不能使用浏览器的前进功能，只能使用后退功能。</p>
 <p>##</p>
 
@@ -118,7 +158,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/yxy6mv.md" download target="_blank">栈设计.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/yxy6mv/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -400,7 +440,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/fgkbg2/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -463,7 +503,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms8c007bzvndgn5zionk" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4sntb007b3rnbiy7atuhp" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -472,6 +512,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

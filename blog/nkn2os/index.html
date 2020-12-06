@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="链表JAVA设计">
   <meta property="og:description" content="链表">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/nlhg88/" title="链表C++设计" />
   <link rel="next" href="https://www.wztlink1013.com/blog/mirmuq/" title="task_01_课程介绍及考核方式" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -104,13 +106,431 @@
 <h3 id="接口-List-设计"><a href="#接口-List-设计" class="headerlink" title="接口 List 设计"></a>接口 List 设计</h3><blockquote>
 <p>只用来声明对外接口，不能声明</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.ds.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * fun：实现ArrayList和LinkedList的接口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ELEMENT_NOT_FOUND = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 元素的数量[抽象类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否为空[抽象类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否包含某个元素[抽象类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(E element)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加元素到尾部[抽象类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(E element)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 清除所有元素[实现类中实现]</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取index位置的元素[实现类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置index位置的元素[实现类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 原来的元素ֵ</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">E <span class="title">set</span><span class="params">(<span class="keyword">int</span> index, E element)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在index位置插入一个元素[实现类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除index位置的元素[实现类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">E <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 查看元素的索引[实现类中实现]</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(E element)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
+
+/**
+ * fun：实现ArrayList和LinkedList的接口
+ *
+ */
+
+public interface List&lt;E&gt; {
+    static final int ELEMENT_NOT_FOUND = -1;
+
+    /**
+     * 元素的数量[抽象类中实现]
+     * @return
+     */
+    int size();
+
+    /**
+     * 是否为空[抽象类中实现]
+     * @return
+     */
+    boolean isEmpty();
+
+    /**
+     * 是否包含某个元素[抽象类中实现]
+     * @param element
+     * @return
+     */
+    boolean contains(E element);
+
+    /**
+     * 添加元素到尾部[抽象类中实现]
+     * @param element
+     */
+    void add(E element);
+
+    /**
+     * 清除所有元素[实现类中实现]
+     */
+    void clear();
+
+    /**
+     * 获取index位置的元素[实现类中实现]
+     * @param index
+     * @return
+     */
+    E get(int index);
+
+    /**
+     * 设置index位置的元素[实现类中实现]
+     * @param index
+     * @param element
+     * @return 原来的元素ֵ
+     */
+    E set(int index, E element);
+
+    /**
+     * 在index位置插入一个元素[实现类中实现]
+     * @param index
+     * @param element
+     */
+    void add(int index, E element);
+
+    /**
+     * 删除index位置的元素[实现类中实现]
+     * @param index
+     * @return
+     */
+    E remove(int index);
+
+    /**
+     * 查看元素的索引[实现类中实现]
+     * @param element
+     * @return
+     */
+    int indexOf(E element);
+}
+
+</code></pre>
 <h3 id="抽象类-AbstractList-设计"><a href="#抽象类-AbstractList-设计" class="headerlink" title="抽象类 AbstractList 设计"></a>抽象类 AbstractList 设计</h3><blockquote>
 <p>放 ArrayList 和 LinkedList 的公共代码<br>声明抽象类 abstract，就意味着可以不用全部实现接口 List 里面的所有方法，</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.ds.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * fun：放ArrayList和LinkedList公共代码的抽象类（父类）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> size;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 元素的数量</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否为空</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否包含某个元素</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(E element)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> indexOf(element) != ELEMENT_NOT_FOUND;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 添加元素到尾部</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E element)</span> </span>&#123;</span><br><span class="line">        add(size, element);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 下面三个是ArrayList和LinkedList两个实现类中的公共代码</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">outOfBounds</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Index:"</span> + index + <span class="string">", Size:"</span> + size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">rangeCheck</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= size) &#123;</span><br><span class="line">            outOfBounds(index);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">rangeCheckForAdd</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; size) &#123;</span><br><span class="line">            outOfBounds(index);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="ArrayList-设计"><a href="#ArrayList-设计" class="headerlink" title="ArrayList 设计"></a>ArrayList 设计</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.ds.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *fun：实现动态数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> E[] elements;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(<span class="keyword">int</span> capaticy)</span> </span>&#123;</span><br><span class="line">        capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;</span><br><span class="line">        elements = (E[]) <span class="keyword">new</span> Object[capaticy];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(DEFAULT_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            elements[i] = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        rangeCheck(index);</span><br><span class="line">        <span class="keyword">return</span> elements[index];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">set</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">        rangeCheck(index);</span><br><span class="line"></span><br><span class="line">        E old = elements[index];</span><br><span class="line">        elements[index] = element;</span><br><span class="line">        <span class="keyword">return</span> old;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">        rangeCheckForAdd(index);</span><br><span class="line"></span><br><span class="line">        ensureCapacity(size + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = size; i &gt; index; i--) &#123;</span><br><span class="line">            elements[i] = elements[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        elements[index] = element;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        rangeCheck(index);</span><br><span class="line"></span><br><span class="line">        E old = elements[index];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index + <span class="number">1</span>; i &lt; size; i++) &#123;</span><br><span class="line">            elements[i - <span class="number">1</span>] = elements[i];</span><br><span class="line">        &#125;</span><br><span class="line">        elements[--size] = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> old;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(E element)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (element == <span class="keyword">null</span>) &#123;  <span class="comment">// 1</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (elements[i] == <span class="keyword">null</span>) <span class="keyword">return</span> i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (element.equals(elements[i])) <span class="keyword">return</span> i; <span class="comment">// n</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ELEMENT_NOT_FOUND;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 保证要有capacity的容量</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> capacity</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> oldCapacity = elements.length;</span><br><span class="line">        <span class="keyword">if</span> (oldCapacity &gt;= capacity) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 新容量为旧容量的1.5倍</span></span><br><span class="line">        <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">        E[] newElements = (E[]) <span class="keyword">new</span> Object[newCapacity];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            newElements[i] = elements[i];</span><br><span class="line">        &#125;</span><br><span class="line">        elements = newElements;</span><br><span class="line"></span><br><span class="line">        System.out.println(oldCapacity + <span class="string">"扩容为"</span> + newCapacity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// size=3, [99, 88, 77]</span></span><br><span class="line">        StringBuilder string = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        string.append(<span class="string">"size="</span>).append(size).append(<span class="string">", ["</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i != <span class="number">0</span>) &#123;</span><br><span class="line">                string.append(<span class="string">", "</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            string.append(elements[i]);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        string.append(<span class="string">"]"</span>);</span><br><span class="line">        <span class="keyword">return</span> string.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 新添加功能</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(E element)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;size;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (element == elements[i])&#123;</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ELEMENT_NOT_FOUND;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="LinkedList-设计"><a href="#LinkedList-设计" class="headerlink" title="LinkedList 设计"></a>LinkedList 设计</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.ds.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *fun：链表的实现</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;E&gt; first;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;E&gt; last;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">        E element;</span><br><span class="line">        Node&lt;E&gt; prev;</span><br><span class="line">        Node&lt;E&gt; next;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(E element, Node&lt;E&gt; next)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.element = element;</span><br><span class="line">            <span class="keyword">this</span>.next = next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">        first = <span class="keyword">null</span>;</span><br><span class="line">        last = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> node(index).element;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">set</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">        Node&lt;E&gt; node = node(index);</span><br><span class="line">        E old = node.element;</span><br><span class="line">        node.element = element;</span><br><span class="line">        <span class="keyword">return</span> old;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index == <span class="number">0</span>)&#123;</span><br><span class="line">            first = <span class="keyword">new</span> Node&lt;&gt;(element, first);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Node&lt;E&gt; prev = node(index - <span class="number">1</span>);</span><br><span class="line">            prev.next = <span class="keyword">new</span> Node&lt;&gt;(element, prev.next);</span><br><span class="line">        &#125;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        Node&lt;E&gt; node = first;</span></span><br><span class="line"><span class="comment">//        if (index == 0) &#123;</span></span><br><span class="line"><span class="comment">//            first = first.next;</span></span><br><span class="line"><span class="comment">//        &#125; else &#123;</span></span><br><span class="line"><span class="comment">//            Node&lt;E&gt; prev = node(index -1);</span></span><br><span class="line"><span class="comment">//            node = prev.next;</span></span><br><span class="line"><span class="comment">//            prev.next = node.next;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line">        rangeCheck(index);</span><br><span class="line"></span><br><span class="line">        Node&lt;E&gt; node = node(index);</span><br><span class="line">        Node&lt;E&gt; prev = node.prev;</span><br><span class="line">        Node&lt;E&gt; next = node.next;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (prev == <span class="keyword">null</span>) &#123; <span class="comment">// index == 0</span></span><br><span class="line">            first = next;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            prev.next = next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (next == <span class="keyword">null</span>) &#123; <span class="comment">// index == size - 1</span></span><br><span class="line">            last = prev;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            next.prev = prev;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        size--;</span><br><span class="line">        <span class="keyword">return</span> node.element;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(E element)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (element == <span class="keyword">null</span>) &#123;</span><br><span class="line">            Node&lt;E&gt; node = first;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (node.element == <span class="keyword">null</span>) <span class="keyword">return</span> i;</span><br><span class="line"></span><br><span class="line">                node = node.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Node&lt;E&gt; node = first;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (element.equals(node.element)) <span class="keyword">return</span> i;</span><br><span class="line"></span><br><span class="line">                node = node.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ELEMENT_NOT_FOUND;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取index位置对应的节点对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Node&lt;E&gt; <span class="title">node</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        rangeCheck(index);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (index &lt; (size &gt;&gt; <span class="number">1</span>)) &#123;</span><br><span class="line">            Node&lt;E&gt; node = first;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; index; i++) &#123;</span><br><span class="line">                node = node.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Node&lt;E&gt; node = last;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = size - <span class="number">1</span>; i &gt; index; i--) &#123;</span><br><span class="line">                node = node.prev;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StringBuilder string = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        string.append(<span class="string">"size="</span>).append(size).append(<span class="string">", ["</span>);</span><br><span class="line">        Node&lt;E&gt; node = first;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i != <span class="number">0</span>) &#123;</span><br><span class="line">                string.append(<span class="string">", "</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            string.append(node);</span><br><span class="line"></span><br><span class="line">            node = node.next;</span><br><span class="line">        &#125;</span><br><span class="line">        string.append(<span class="string">"]"</span>);</span><br><span class="line">        <span class="keyword">return</span> string.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
+
+/**
+ * fun：放ArrayList和LinkedList公共代码的抽象类（父类）
+ *
+ */
+
+public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; {
+
+    protected int size;
+    /**
+     * 元素的数量
+     * @return
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
+     * 是否为空
+     * @return
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     * 是否包含某个元素
+     * @param element
+     * @return
+     */
+    public boolean contains(E element) {
+        return indexOf(element) != ELEMENT_NOT_FOUND;
+    }
+
+    /**
+     * 添加元素到尾部
+     * @param element
+     */
+    public void add(E element) {
+        add(size, element);
+    }
+
+    /**
+     * 下面三个是ArrayList和LinkedList两个实现类中的公共代码
+     * */
+    protected void outOfBounds(int index) {
+        throw new IndexOutOfBoundsException(&quot;Index:&quot; + index + &quot;, Size:&quot; + size);
+    }
+
+    protected void rangeCheck(int index) {
+        if (index &lt; 0 || index &gt;= size) {
+            outOfBounds(index);
+        }
+    }
+
+    protected void rangeCheckForAdd(int index) {
+        if (index &lt; 0 || index &gt; size) {
+            outOfBounds(index);
+        }
+    }
+}
+
+</code></pre>
+<h3 id="ArrayList-设计"><a href="#ArrayList-设计" class="headerlink" title="ArrayList 设计"></a>ArrayList 设计</h3><pre><code class="java">package com.wztlink1013.ds.linkedlist;
+
+/**
+ *fun：实现动态数组
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; {
+    private E[] elements;
+
+    private static final int DEFAULT_CAPACITY = 10;
+
+    public ArrayList(int capaticy) {
+        capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
+        elements = (E[]) new Object[capaticy];
+    }
+
+    public ArrayList() {
+        this(DEFAULT_CAPACITY);
+    }
+
+
+    @Override
+    public void clear() {
+        for (int i = 0; i &lt; size; i++) {
+            elements[i] = null;
+        }
+        size = 0;
+    }
+
+    @Override
+    public E get(int index) {
+        rangeCheck(index);
+        return elements[index];
+    }
+
+    @Override
+    public E set(int index, E element) {
+        rangeCheck(index);
+
+        E old = elements[index];
+        elements[index] = element;
+        return old;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        rangeCheckForAdd(index);
+
+        ensureCapacity(size + 1);
+
+        for (int i = size; i &gt; index; i--) {
+            elements[i] = elements[i - 1];
+        }
+        elements[index] = element;
+        size++;
+    }
+
+    @Override
+    public E remove(int index) {
+        rangeCheck(index);
+
+        E old = elements[index];
+        for (int i = index + 1; i &lt; size; i++) {
+            elements[i - 1] = elements[i];
+        }
+        elements[--size] = null;
+        return old;
+    }
+
+    @Override
+    public int indexOf(E element) {
+        if (element == null) {  // 1
+            for (int i = 0; i &lt; size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            for (int i = 0; i &lt; size; i++) {
+                if (element.equals(elements[i])) return i; // n
+            }
+        }
+        return ELEMENT_NOT_FOUND;
+    }
+
+
+    /**
+     * 保证要有capacity的容量
+     * @param capacity
+     */
+    private void ensureCapacity(int capacity) {
+        int oldCapacity = elements.length;
+        if (oldCapacity &gt;= capacity) return;
+
+        // 新容量为旧容量的1.5倍
+        int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i &lt; size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+
+        System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
+    }
+
+    @Override
+    public String toString() {
+        // size=3, [99, 88, 77]
+        StringBuilder string = new StringBuilder();
+        string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
+        for (int i = 0; i &lt; size; i++) {
+            if (i != 0) {
+                string.append(&quot;, &quot;);
+            }
+
+            string.append(elements[i]);
+
+        }
+        string.append(&quot;]&quot;);
+        return string.toString();
+    }
+
+    /**
+     * 新添加功能
+     */
+    public int search(E element){
+        for (int i = 0;i&lt;size;i++){
+            if (element == elements[i]){
+                return i;
+            }
+        }
+        return ELEMENT_NOT_FOUND;
+    }
+
+}
+
+</code></pre>
+<h3 id="LinkedList-设计"><a href="#LinkedList-设计" class="headerlink" title="LinkedList 设计"></a>LinkedList 设计</h3><pre><code class="java">package com.wztlink1013.ds.linkedlist;
+
+/**
+ *fun：链表的实现
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; {
+    private Node&lt;E&gt; first;
+    private Node&lt;E&gt; last;
+
+    private static class Node&lt;E&gt; {
+        E element;
+        Node&lt;E&gt; prev;
+        Node&lt;E&gt; next;
+        public Node(E element, Node&lt;E&gt; next) {
+            this.element = element;
+            this.next = next;
+        }
+    }
+
+    @Override
+    public void clear() {
+        size = 0;
+        first = null;
+        last = null;
+    }
+
+    @Override
+    public E get(int index) {
+        return node(index).element;
+    }
+
+    @Override
+    public E set(int index, E element) {
+        Node&lt;E&gt; node = node(index);
+        E old = node.element;
+        node.element = element;
+        return old;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        if (index == 0){
+            first = new Node&lt;&gt;(element, first);
+        } else {
+            Node&lt;E&gt; prev = node(index - 1);
+            prev.next = new Node&lt;&gt;(element, prev.next);
+        }
+        size++;
+    }
+
+    @Override
+    public E remove(int index) {
+//        Node&lt;E&gt; node = first;
+//        if (index == 0) {
+//            first = first.next;
+//        } else {
+//            Node&lt;E&gt; prev = node(index -1);
+//            node = prev.next;
+//            prev.next = node.next;
+//        }
+        rangeCheck(index);
+
+        Node&lt;E&gt; node = node(index);
+        Node&lt;E&gt; prev = node.prev;
+        Node&lt;E&gt; next = node.next;
+
+        if (prev == null) { // index == 0
+            first = next;
+        } else {
+            prev.next = next;
+        }
+
+        if (next == null) { // index == size - 1
+            last = prev;
+        } else {
+            next.prev = prev;
+        }
+
+        size--;
+        return node.element;
+    }
+
+    @Override
+    public int indexOf(E element) {
+        if (element == null) {
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; size; i++) {
+                if (node.element == null) return i;
+
+                node = node.next;
+            }
+        } else {
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; size; i++) {
+                if (element.equals(node.element)) return i;
+
+                node = node.next;
+            }
+        }
+        return ELEMENT_NOT_FOUND;
+    }
+
+    /**
+     * 获取index位置对应的节点对象
+     * @param index
+     * @return
+     */
+    private Node&lt;E&gt; node(int index) {
+        rangeCheck(index);
+
+        if (index &lt; (size &gt;&gt; 1)) {
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; index; i++) {
+                node = node.next;
+            }
+            return node;
+        } else {
+            Node&lt;E&gt; node = last;
+            for (int i = size - 1; i &gt; index; i--) {
+                node = node.prev;
+            }
+            return node;
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
+        Node&lt;E&gt; node = first;
+        for (int i = 0; i &lt; size; i++) {
+            if (i != 0) {
+                string.append(&quot;, &quot;);
+            }
+
+            string.append(node);
+
+            node = node.next;
+        }
+        string.append(&quot;]&quot;);
+        return string.toString();
+    }
+}
+</code></pre>
 <p>##</p>
 
       </div>
@@ -133,7 +553,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/nkn2os.md" download target="_blank">链表JAVA设计.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/nkn2os/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -415,7 +835,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/fgkbg2/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -478,7 +898,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms9a008gzvnd54vtugn4" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snu9008g3rnb9d01956r" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -487,6 +907,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

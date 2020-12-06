@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="python-路径和nltk">
   <meta property="og:description" content="路径的相关报错，以及nltk的下载报错">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/lli6u1/" title="DataAnalysis-SOP" />
   <link rel="next" href="https://www.wztlink1013.com/blog/wgv3ak/" title="入门机器学习scikit-learn" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -91,10 +93,14 @@
           <p>原文地址：<a href="https://www.wztlink1013.com/blog/uatg7m/">https://www.wztlink1013.com/blog/uatg7m/</a>，<a href="https://www.wztlink1013.com/blog/uatg7m/#comments">参与评论</a></p>
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
-        <h2 id="一、路径相关"><a href="#一、路径相关" class="headerlink" title="一、路径相关"></a>一、路径相关</h2><h3 id="路径相关报错信息"><a href="#路径相关报错信息" class="headerlink" title="路径相关报错信息"></a>路径相关报错信息</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">IOError: [Errno <span class="number">2</span>] No such file <span class="keyword">or</span> directory</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.read_csv() 报错 OSError: Initializing <span class="keyword">from</span> file failed</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">(unicode error) <span class="string">'unicodeescape'</span> codec can<span class="string">'t decode bytes in position 2-3: truncated \UXXXXXXXX escape [duplicate]</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">File <span class="string">b'train.csv'</span> does <span class="keyword">not</span> exist even though file exist</span><br></pre></td></tr></table></figure>
+        <h2 id="一、路径相关"><a href="#一、路径相关" class="headerlink" title="一、路径相关"></a>一、路径相关</h2><h3 id="路径相关报错信息"><a href="#路径相关报错信息" class="headerlink" title="路径相关报错信息"></a>路径相关报错信息</h3><pre><code class="python">IOError: [Errno 2] No such file or directory
+</code></pre>
+<pre><code class="python">pandas.read_csv() 报错 OSError: Initializing from file failed
+</code></pre>
+<pre><code class="python">(unicode error) &#39;unicodeescape&#39; codec can&#39;t decode bytes in position 2-3: truncated \UXXXXXXXX escape [duplicate]
+</code></pre>
+<pre><code class="python">File b&#39;train.csv&#39; does not exist even though file exist
+</code></pre>
 <h3 id="分析与解决问题"><a href="#分析与解决问题" class="headerlink" title="分析与解决问题"></a>分析与解决问题</h3><p>编写 python 代码过程中，出现了类似这种一系列路径相关的错误，原因是，自己更改了<strong>相关文件夹/文件在电脑中的位置</strong>，解决办法就新建一个项目建一个全新路径或者修改现有路径</p>
 <ul>
 <li><code>\</code>绝对路径 会报错（转义字符）处理：① 双引号前面加一个 r②<code>\</code>换成<code>\\</code>（硬盘代号后面的第一个）</li>
@@ -105,12 +111,12 @@
 </blockquote>
 <h3 id="PS：路径含中文"><a href="#PS：路径含中文" class="headerlink" title="PS：路径含中文"></a>PS：路径含中文</h3><p>假如路径、文件名都完整，还是报错的原因是这个参数中有中文，即使 Python3 已经支持中文，但是调用 pandas 的 read_csv()方法时，默认使用 C engine 作为 parser engine，而当文件名中含有中文的时候，用 C engine 在部分情况下就会出错。所以在调用 read_csv()方法时指定 engine 为 Python 就可以解决问题。根治：将路径编程全英文，这是必要素养习惯！</p>
 <p><code>da4=pd.read_csv(xxxxxxxxxx,engine=&#39;python&#39;)</code></p>
-<h3 id="PS：utf-8"><a href="#PS：utf-8" class="headerlink" title="PS：utf-8"></a>PS：utf-8</h3><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">UnicodeDecodeError：: <span class="symbol">'utf</span>-<span class="number">8</span>' codec can<span class="symbol">'t</span> decode byte <span class="number">0</span>xc8 <span class="keyword">in</span> position <span class="number">0</span>: invalid contin</span><br></pre></td></tr></table></figure>
-<blockquote>
+<h3 id="PS：utf-8"><a href="#PS：utf-8" class="headerlink" title="PS：utf-8"></a>PS：utf-8</h3><pre><code>UnicodeDecodeError：: &#39;utf-8&#39; codec can&#39;t decode byte 0xc8 in position 0: invalid contin
+</code></pre><blockquote>
 <p>解决办法：<code>data_1 = pd.read_csv(data1, encoding = &#39;gb2312&#39;)</code>或者 gb2312 换成 gbk<br>参考：<a href="https://blog.csdn.net/qq_18888869/article/details/82625343" target="_blank" rel="noopener">https://blog.csdn.net/qq_18888869/article/details/82625343</a></p>
 </blockquote>
-<h2 id="二、nltk-相关"><a href="#二、nltk-相关" class="headerlink" title="二、nltk 相关"></a>二、nltk 相关</h2><h3 id="nltk-下载报错信息"><a href="#nltk-下载报错信息" class="headerlink" title="nltk 下载报错信息"></a>nltk 下载报错信息</h3><figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bug:[WinError </span><span class="number">10054</span>] 远程主机强迫关闭了一个现有的连接</span><br></pre></td></tr></table></figure>
-<h3 id="分析与解决问题-1"><a href="#分析与解决问题-1" class="headerlink" title="分析与解决问题"></a>分析与解决问题</h3><p>原因：模型权重参数文件（.h5）较大，下载出现中断，下载失败</p>
+<h2 id="二、nltk-相关"><a href="#二、nltk-相关" class="headerlink" title="二、nltk 相关"></a>二、nltk 相关</h2><h3 id="nltk-下载报错信息"><a href="#nltk-下载报错信息" class="headerlink" title="nltk 下载报错信息"></a>nltk 下载报错信息</h3><pre><code>bug:[WinError 10054] 远程主机强迫关闭了一个现有的连接
+</code></pre><h3 id="分析与解决问题-1"><a href="#分析与解决问题-1" class="headerlink" title="分析与解决问题"></a>分析与解决问题</h3><p>原因：模型权重参数文件（.h5）较大，下载出现中断，下载失败</p>
 <blockquote>
 <ul>
 <li>解决办法：手动下载模型，放到指定目录</li>
@@ -143,7 +149,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/uatg7m.md" download target="_blank">python-路径和nltk.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/uatg7m/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -415,7 +421,7 @@
 				<span class="aria-readonly">发表时间为2020年10月26日</span>
 				<div class="relative-box">
           
-          <span class="aria-readonly">文章概要 </span>报错信息Cannot set property 'innerHTML' of null问题解决如果 ...
+          <span class="aria-readonly">文章概要 </span>报错信息Cannot set property &#39;innerHTML&#39; of nul...
         </div>
 			</li>
 			
@@ -488,7 +494,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms7v006ezvndlmtjkoqg" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snsw006e3rnb5rjntxlc" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -497,6 +503,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="测试阿里云函数">
   <meta property="og:description" content="测试阿里云函数">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/rwfqhp/" title="729. 我的日程安排表 I" />
   <link rel="next" href="https://www.wztlink1013.com/blog/xm6cb9/" title="测试语雀文章" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -93,15 +95,41 @@
           <p>原文地址：<a href="https://www.wztlink1013.com/blog/hmc9fy/">https://www.wztlink1013.com/blog/hmc9fy/</a>，<a href="https://www.wztlink1013.com/blog/hmc9fy/#comments">参与评论</a></p>
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
-        <h2 id="一、Python3-的执行环境"><a href="#一、Python3-的执行环境" class="headerlink" title="一、Python3 的执行环境"></a>一、Python3 的执行环境</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">OK = <span class="string">b'ok\n'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">    status = <span class="string">'200 OK'</span></span><br><span class="line">    response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">    sync_yuque()</span><br><span class="line">    start_response(status, response_headers)</span><br><span class="line">    <span class="keyword">return</span> [OK]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sync_yuque</span><span class="params">()</span>:</span></span><br><span class="line">    requests.post(<span class="string">"https://api.github.com/repos/wztlink1013/Blog3.0/dispatches"</span>,</span><br><span class="line">    json=&#123;<span class="string">'event_type'</span>: <span class="string">"run-it"</span>&#125;,</span><br><span class="line">    headers=&#123;<span class="string">"User-Agent"</span>:<span class="string">'curl/7.52.1'</span>,</span><br><span class="line">              <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,</span><br><span class="line">              <span class="string">'Accept'</span>: <span class="string">'application/vnd.github.everest-preview+json'</span>,</span><br><span class="line">              <span class="string">'Authorization'</span>: <span class="string">'token 一串英文数字'</span>&#125;)</span><br></pre></td></tr></table></figure>
+        <h2 id="一、Python3-的执行环境"><a href="#一、Python3-的执行环境" class="headerlink" title="一、Python3 的执行环境"></a>一、Python3 的执行环境</h2><pre><code class="python"># -*- coding: utf-8 -*-
+
+import logging
+import requests
+OK = b&#39;ok\n&#39;
+
+def handler(environ, start_response):
+    status = &#39;200 OK&#39;
+    response_headers = [(&#39;Content-type&#39;, &#39;text/plain&#39;)]
+    sync_yuque()
+    start_response(status, response_headers)
+    return [OK]
+
+def sync_yuque():
+    requests.post(&quot;https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;,
+    json={&#39;event_type&#39;: &quot;run-it&quot;},
+    headers={&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
+              &#39;Content-Type&#39;: &#39;application/json&#39;,
+              &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
+              &#39;Authorization&#39;: &#39;token 一串英文数字&#39;})
+</code></pre>
 <h2 id="二、测试-GitHub-Actions-触发"><a href="#二、测试-GitHub-Actions-触发" class="headerlink" title="二、测试 GitHub Actions 触发"></a>二、测试 GitHub Actions 触发</h2><blockquote>
 <p>不行</p>
 </blockquote>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">repository_dispatch:</span></span><br><span class="line"><span class="attr">watch:</span></span><br><span class="line">  <span class="attr">types:</span> <span class="string">[started]</span></span><br><span class="line"><span class="attr">issue_comment:</span></span><br><span class="line">  <span class="attr">types:</span> <span class="string">[created,</span> <span class="string">edited,</span> <span class="string">deleted]</span></span><br></pre></td></tr></table></figure>
+<pre><code class="yaml">repository_dispatch:
+watch:
+  types: [started]
+issue_comment:
+  types: [created, edited, deleted]
+</code></pre>
 <blockquote>
 <p>行</p>
 </blockquote>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[repository_dispatch,</span> <span class="string">watch]</span> <span class="comment"># wztch默认只有star会触发，取消star不会触发</span></span><br></pre></td></tr></table></figure>
+<pre><code class="yaml">[repository_dispatch, watch] # wztch默认只有star会触发，取消star不会触发
+</code></pre>
 <h2 id="三、webhook-自定义触发"><a href="#三、webhook-自定义触发" class="headerlink" title="三、webhook 自定义触发"></a>三、webhook 自定义触发</h2><blockquote>
 <p><strong>仅主动推送更新触发</strong>：只在文档发布或更新的时候勾选了「文档有较大更新，推送给关注人」才会触 Webhooks</p>
 </blockquote>
@@ -130,7 +158,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/hmc9fy.md" download target="_blank">测试阿里云函数.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:51</li>
+		<li>最后编辑时间: 2020-12-06 12:57:58</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/hmc9fy/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -475,7 +503,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms660034zvndoi6k05au" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snqz00343rnb7smsfm3z" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -484,6 +512,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

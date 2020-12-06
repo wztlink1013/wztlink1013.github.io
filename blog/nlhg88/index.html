@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="链表C++设计">
   <meta property="og:description" content="链表C++设计">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/pmd7dz/" title="509. 斐波那契数" />
   <link rel="next" href="https://www.wztlink1013.com/blog/nkn2os/" title="链表JAVA设计" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -102,7 +104,234 @@
 </blockquote>
 </li>
 </ul>
-<h2 id="C-实现"><a href="#C-实现" class="headerlink" title="C++实现"></a>C++实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">LNode</span> &#123;</span></span><br><span class="line">true<span class="keyword">int</span> data; <span class="comment">//结点的数据域</span></span><br><span class="line">true<span class="class"><span class="keyword">struct</span> <span class="title">LNode</span> *<span class="title">next</span>;</span> <span class="comment">//结点的指针域</span></span><br><span class="line">&#125;LNode, *LinkList; <span class="comment">//LinkList为指向结构体LNode的指针类型</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">InitList_L</span><span class="params">(LinkList &amp;L)</span><span class="comment">//构造一个空的单链表L//结构体指针类型变量做为函数的形式参数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    L=<span class="keyword">new</span> LNode;     <span class="comment">//生成新结点作为头结点，用头指针L指向头结点//变量名 = new 类型</span></span><br><span class="line">true<span class="keyword">if</span>(!L)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;  <span class="comment">//生成结点失败</span></span><br><span class="line">trueL-&gt;next=<span class="literal">NULL</span>;   <span class="comment">//头结点的指针域置空</span></span><br><span class="line">true<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateList_H</span><span class="params">(LinkList &amp;L)</span><span class="comment">//前插法创建单链表</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">//输入n个元素的值，建立到头结点的单链表L</span></span><br><span class="line">true<span class="keyword">int</span> n;</span><br><span class="line">trueLinkList s; <span class="comment">//定义一个所建立的结构体指针变量</span></span><br><span class="line">trueL=<span class="keyword">new</span> LNode; <span class="comment">//生成新结点作为头结点，用头指针L指向头结点</span></span><br><span class="line">trueL-&gt;next=<span class="literal">NULL</span>; <span class="comment">//先建立一个带头结点的空链表</span></span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt;<span class="string">"请输入元素个数n："</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">true<span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt;<span class="string">"请依次输入n个元素："</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt;<span class="string">"前插法创建单链表..."</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">true<span class="keyword">while</span>(n--)</span><br><span class="line">    &#123;</span><br><span class="line">truetrues=<span class="keyword">new</span> LNode; <span class="comment">//生成新结点s</span></span><br><span class="line">truetrue<span class="built_in">cin</span>&gt;&gt;s-&gt;data; <span class="comment">//输入元素值赋给新结点的数据域</span></span><br><span class="line">truetrues-&gt;next=L-&gt;next;</span><br><span class="line">truetrueL-&gt;next=s; <span class="comment">//将新结点s插入到头结点之后</span></span><br><span class="line">true&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateList_R</span><span class="params">(LinkList &amp;L)</span><span class="comment">//尾插法创建单链表</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">//输入n个元素的值，建立带表头结点的单链表L</span></span><br><span class="line">true<span class="keyword">int</span> n;</span><br><span class="line">trueLinkList s, r;</span><br><span class="line">trueL=<span class="keyword">new</span> LNode;</span><br><span class="line">trueL-&gt;next=<span class="literal">NULL</span>; <span class="comment">//先建立一个带头结点的空链表</span></span><br><span class="line">truer=L; <span class="comment">//尾指针r指向头结点</span></span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt;<span class="string">"请输入元素个数n："</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">true<span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt;<span class="string">"请依次输入n个元素："</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt;<span class="string">"尾插法创建单链表..."</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">true<span class="keyword">while</span>(n--)</span><br><span class="line">    &#123;</span><br><span class="line">truetrues=<span class="keyword">new</span> LNode;<span class="comment">//生成新结点</span></span><br><span class="line">truetrue<span class="built_in">cin</span>&gt;&gt;s-&gt;data; <span class="comment">//输入元素值赋给新结点的数据域</span></span><br><span class="line">truetrues-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">truetruer-&gt;next=s;<span class="comment">//将新结点s插入尾结点*r之后</span></span><br><span class="line">truetruer=s;<span class="comment">//r指向新的尾结点s</span></span><br><span class="line">true&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">GetElem_L</span><span class="params">(LinkList L, <span class="keyword">int</span> i, <span class="keyword">int</span> &amp;e)</span><span class="comment">//单链表的取值</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">//在带头结点的单链表L中查找第i个元素</span></span><br><span class="line">true<span class="comment">//用e记录L中第i个数据元素的值</span></span><br><span class="line">true<span class="keyword">int</span> j;</span><br><span class="line">trueLinkList p;</span><br><span class="line">truep=L-&gt;next;<span class="comment">//p指向首元结点</span></span><br><span class="line">truej=<span class="number">1</span>; <span class="comment">//j为计数器</span></span><br><span class="line">true<span class="keyword">while</span> (j&lt;i &amp;&amp; p) <span class="comment">//顺链域向后扫描，直到p指向第i个元素或p为空</span></span><br><span class="line">    &#123;</span><br><span class="line">truetruep=p-&gt;next; <span class="comment">//p指向下一个结点	类似结点的自加</span></span><br><span class="line">truetruej++; <span class="comment">//计数器j相应加1</span></span><br><span class="line">true&#125;</span><br><span class="line">true<span class="keyword">if</span> (!p || j&gt;i)</span><br><span class="line">truetrue<span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//i值不合法i＞n或i&lt;=0</span></span><br><span class="line">truee=p-&gt;data; <span class="comment">//取第i个结点的数据域</span></span><br><span class="line">true<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">LocateElem_L</span><span class="params">(LinkList L, <span class="keyword">int</span> e)</span> <span class="comment">//按值查找</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">//在带头结点的单链表L中查找值为e的元素</span></span><br><span class="line">trueLinkList p;</span><br><span class="line">truep=L-&gt;next;</span><br><span class="line">true<span class="keyword">while</span> (p &amp;&amp; p-&gt;data!=e)<span class="comment">//顺链域向后扫描，直到p为空或p所指结点的数据域等于e</span></span><br><span class="line">truetruep=p-&gt;next; <span class="comment">//p指向下一个结点</span></span><br><span class="line">true<span class="keyword">if</span>(!p)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//查找失败p为NULL</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ListInsert_L</span><span class="params">(LinkList &amp;L, <span class="keyword">int</span> i, <span class="keyword">int</span> e)</span><span class="comment">//单链表的插入</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">//在带头结点的单链表L中第i个位置插入值为e的新结点</span></span><br><span class="line">true<span class="keyword">int</span> j;</span><br><span class="line">trueLinkList p, s;</span><br><span class="line">truep=L;</span><br><span class="line">truej=<span class="number">0</span>;</span><br><span class="line">true<span class="keyword">while</span> (p&amp;&amp;j&lt;i<span class="number">-1</span>) <span class="comment">//查找第i-1个结点，p指向该结点</span></span><br><span class="line">    &#123;</span><br><span class="line">truetruep=p-&gt;next;</span><br><span class="line">truetruej++;</span><br><span class="line">true&#125;</span><br><span class="line">true<span class="keyword">if</span> (!p || j&gt;i<span class="number">-1</span>)<span class="comment">//i＞n+1或者i＜1</span></span><br><span class="line">truetrue<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">trues=<span class="keyword">new</span> LNode;     <span class="comment">//生成新结点</span></span><br><span class="line">trues-&gt;data=e;       <span class="comment">//将新结点的数据域置为e</span></span><br><span class="line">trues-&gt;next=p-&gt;next; <span class="comment">//将新结点的指针域指向结点ai</span></span><br><span class="line">truep-&gt;next=s;       <span class="comment">//将结点p的指针域指向结点s</span></span><br><span class="line">true<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ListDelete_L</span><span class="params">(LinkList &amp;L, <span class="keyword">int</span> i)</span> <span class="comment">//单链表的删除</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">//在带头结点的单链表L中，删除第i个位置</span></span><br><span class="line">trueLinkList p, q;</span><br><span class="line">true<span class="keyword">int</span> j;</span><br><span class="line">truep=L;</span><br><span class="line">truej=<span class="number">0</span>;</span><br><span class="line">true<span class="keyword">while</span>((p-&gt;next)&amp;&amp;(j&lt;i<span class="number">-1</span>)) <span class="comment">//查找第i-1个结点，p指向该结点</span></span><br><span class="line">true&#123;</span><br><span class="line">truetruep=p-&gt;next;</span><br><span class="line">truetruej++;</span><br><span class="line">true&#125;</span><br><span class="line">true<span class="keyword">if</span> (!(p-&gt;next)||(j&gt;i<span class="number">-1</span>))<span class="comment">//当i&gt;n或i&lt;1时，删除位置不合理</span></span><br><span class="line">truetrue<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">trueq=p-&gt;next;        <span class="comment">//临时保存被删结点的地址以备释放空间</span></span><br><span class="line">truep-&gt;next=q-&gt;next; <span class="comment">//改变删除结点前驱结点的指针域</span></span><br><span class="line">true<span class="keyword">delete</span> q;        <span class="comment">//释放被删除结点的空间</span></span><br><span class="line">true<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Listprint_L</span><span class="params">(LinkList L)</span> <span class="comment">//单链表的输出</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p;</span><br><span class="line">    p=L-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;p-&gt;data&lt;&lt;<span class="string">"\t"</span>;</span><br><span class="line">truetruep=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="keyword">int</span> i,x,e,choose;</span><br><span class="line">trueLinkList L;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"1. 初始化\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"2. 创建单链表（前插法）\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"3. 创建单链表（尾插法）\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"4. 取值\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"5. 查找\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"6. 插入\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"7. 删除\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"8. 输出\n"</span>;</span><br><span class="line">true<span class="built_in">cout</span> &lt;&lt; <span class="string">"0. 退出\n"</span>;</span><br><span class="line">truechoose=<span class="number">-1</span>;</span><br><span class="line">true<span class="keyword">while</span> (choose!=<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">truetrue<span class="built_in">cout</span>&lt;&lt;<span class="string">"请输入数字选择:"</span>;</span><br><span class="line">truetrue<span class="built_in">cin</span>&gt;&gt;choose;</span><br><span class="line">truetrue<span class="keyword">switch</span> (choose)</span><br><span class="line">truetrue&#123;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">1</span>: <span class="comment">//初始化一个空的单链表</span></span><br><span class="line">truetruetrue<span class="keyword">if</span> (InitList_L(L))</span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"初始化一个空的单链表!\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">2</span>: <span class="comment">//创建单链表（前插法）</span></span><br><span class="line">truetruetrueCreateList_H(L);</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"前插法创建单链表输出结果:\n"</span>;</span><br><span class="line">            Listprint_L(L);</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>: <span class="comment">//创建单链表（尾插法）</span></span><br><span class="line">truetruetrueCreateList_R(L);</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"尾插法创建单链表输出结果:\n"</span>;</span><br><span class="line">            Listprint_L(L);</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">4</span>: <span class="comment">//单链表的按序号取值</span></span><br><span class="line">truetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"请输入一个位置i用来取值:"</span>;</span><br><span class="line">truetruetrue<span class="built_in">cin</span> &gt;&gt; i;</span><br><span class="line">truetruetrue<span class="keyword">if</span> (GetElem_L(L,i,e))</span><br><span class="line">            &#123;</span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"查找成功\n"</span>;</span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"第"</span> &lt;&lt; i &lt;&lt; <span class="string">"个元素是："</span>&lt;&lt;e&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">truetruetrue&#125;</span><br><span class="line">truetruetrue<span class="keyword">else</span></span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"查找失败\n\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">5</span>: <span class="comment">//单链表的按值查找</span></span><br><span class="line">truetruetrue<span class="built_in">cout</span>&lt;&lt;<span class="string">"请输入所要查找元素x:"</span>;</span><br><span class="line">truetruetrue<span class="built_in">cin</span>&gt;&gt;x;</span><br><span class="line">truetruetrue<span class="keyword">if</span> (LocateElem_L(L,x))</span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"查找成功\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">else</span></span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"查找失败! "</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">6</span>: <span class="comment">//单链表的插入</span></span><br><span class="line">truetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"请输入插入的位置和元素（用空格隔开）:"</span>;</span><br><span class="line">truetruetrue<span class="built_in">cin</span> &gt;&gt; i;</span><br><span class="line">truetruetrue<span class="built_in">cin</span> &gt;&gt; x;</span><br><span class="line">truetruetrue<span class="keyword">if</span> (ListInsert_L(L, i, x))</span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入成功.\n\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">else</span></span><br><span class="line">truetruetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入失败!\n\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">7</span>: <span class="comment">//单链表的删除</span></span><br><span class="line">truetruetrue<span class="built_in">cout</span>&lt;&lt;<span class="string">"请输入所要删除的元素位置i:"</span>;</span><br><span class="line">truetruetrue<span class="built_in">cin</span>&gt;&gt;i;</span><br><span class="line">truetruetrue<span class="keyword">if</span> (ListDelete_L(L, i))</span><br><span class="line">truetruetruetrue<span class="built_in">cout</span>&lt;&lt;<span class="string">"删除成功!\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">else</span></span><br><span class="line">truetruetruetrue<span class="built_in">cout</span>&lt;&lt;<span class="string">"删除失败!\n"</span>;</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue<span class="keyword">case</span> <span class="number">8</span>: <span class="comment">//单链表的输出</span></span><br><span class="line">truetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="string">"当前单链表的数据元素分别为:\n"</span>;</span><br><span class="line">truetruetrueListprint_L(L);</span><br><span class="line">truetruetrue<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">truetruetrue<span class="keyword">break</span>;</span><br><span class="line">truetrue&#125;</span><br><span class="line">true&#125;</span><br><span class="line">truesystem(<span class="string">"pause"</span>);</span><br><span class="line">true<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="C-实现"><a href="#C-实现" class="headerlink" title="C++实现"></a>C++实现</h2><pre><code class="cpp">#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;iomanip&gt;
+#include&lt;stdlib.h&gt;
+using namespace std;
+
+
+typedef struct LNode {
+    int data; //结点的数据域
+    struct LNode *next; //结点的指针域
+}LNode, *LinkList; //LinkList为指向结构体LNode的指针类型
+
+bool InitList_L(LinkList &amp;L)//构造一个空的单链表L//结构体指针类型变量做为函数的形式参数
+{
+    L=new LNode;     //生成新结点作为头结点，用头指针L指向头结点//变量名 = new 类型
+    if(!L)
+      return false;  //生成结点失败
+    L-&gt;next=NULL;   //头结点的指针域置空
+    return true;
+}
+
+void CreateList_H(LinkList &amp;L)//前插法创建单链表
+{
+    //输入n个元素的值，建立到头结点的单链表L
+    int n;
+    LinkList s; //定义一个所建立的结构体指针变量
+    L=new LNode; //生成新结点作为头结点，用头指针L指向头结点
+    L-&gt;next=NULL; //先建立一个带头结点的空链表
+    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt; endl;
+    cin&gt;&gt;n;
+    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
+    cout &lt;&lt;&quot;前插法创建单链表...&quot; &lt;&lt;endl;
+    while(n--)
+    {
+        s=new LNode; //生成新结点s
+        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
+        s-&gt;next=L-&gt;next;
+        L-&gt;next=s; //将新结点s插入到头结点之后
+    }
+}
+
+void CreateList_R(LinkList &amp;L)//尾插法创建单链表
+{
+    //输入n个元素的值，建立带表头结点的单链表L
+    int n;
+    LinkList s, r;
+    L=new LNode;
+    L-&gt;next=NULL; //先建立一个带头结点的空链表
+    r=L; //尾指针r指向头结点
+    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt;endl;
+    cin&gt;&gt;n;
+    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
+    cout &lt;&lt;&quot;尾插法创建单链表...&quot; &lt;&lt;endl;
+    while(n--)
+    {
+        s=new LNode;//生成新结点
+        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
+        s-&gt;next=NULL;
+        r-&gt;next=s;//将新结点s插入尾结点*r之后
+        r=s;//r指向新的尾结点s
+    }
+}
+
+bool GetElem_L(LinkList L, int i, int &amp;e)//单链表的取值
+{
+    //在带头结点的单链表L中查找第i个元素
+    //用e记录L中第i个数据元素的值
+    int j;
+    LinkList p;
+    p=L-&gt;next;//p指向首元结点
+    j=1; //j为计数器
+    while (j&lt;i &amp;&amp; p) //顺链域向后扫描，直到p指向第i个元素或p为空
+    {
+        p=p-&gt;next; //p指向下一个结点    类似结点的自加
+        j++; //计数器j相应加1
+    }
+    if (!p || j&gt;i)
+        return false; //i值不合法i＞n或i&lt;=0
+    e=p-&gt;data; //取第i个结点的数据域
+    return true;
+}
+
+bool LocateElem_L(LinkList L, int e) //按值查找
+{
+    //在带头结点的单链表L中查找值为e的元素
+    LinkList p;
+    p=L-&gt;next;
+    while (p &amp;&amp; p-&gt;data!=e)//顺链域向后扫描，直到p为空或p所指结点的数据域等于e
+        p=p-&gt;next; //p指向下一个结点
+    if(!p)
+        return false; //查找失败p为NULL
+    return true;
+}
+
+bool ListInsert_L(LinkList &amp;L, int i, int e)//单链表的插入
+{
+    //在带头结点的单链表L中第i个位置插入值为e的新结点
+    int j;
+    LinkList p, s;
+    p=L;
+    j=0;
+    while (p&amp;&amp;j&lt;i-1) //查找第i-1个结点，p指向该结点
+    {
+        p=p-&gt;next;
+        j++;
+    }
+    if (!p || j&gt;i-1)//i＞n+1或者i＜1
+        return false;
+    s=new LNode;     //生成新结点
+    s-&gt;data=e;       //将新结点的数据域置为e
+    s-&gt;next=p-&gt;next; //将新结点的指针域指向结点ai
+    p-&gt;next=s;       //将结点p的指针域指向结点s
+    return true;
+}
+
+bool ListDelete_L(LinkList &amp;L, int i) //单链表的删除
+{
+    //在带头结点的单链表L中，删除第i个位置
+    LinkList p, q;
+    int j;
+    p=L;
+    j=0;
+    while((p-&gt;next)&amp;&amp;(j&lt;i-1)) //查找第i-1个结点，p指向该结点
+    {
+        p=p-&gt;next;
+        j++;
+    }
+    if (!(p-&gt;next)||(j&gt;i-1))//当i&gt;n或i&lt;1时，删除位置不合理
+        return false;
+    q=p-&gt;next;        //临时保存被删结点的地址以备释放空间
+    p-&gt;next=q-&gt;next; //改变删除结点前驱结点的指针域
+    delete q;        //释放被删除结点的空间
+    return true;
+}
+
+void Listprint_L(LinkList L) //单链表的输出
+{
+    LinkList p;
+    p=L-&gt;next;
+    while (p)
+    {
+        cout&lt;&lt;p-&gt;data&lt;&lt;&quot;\t&quot;;
+        p=p-&gt;next;
+    }
+    cout&lt;&lt;endl;
+}
+
+int main()
+{
+    int i,x,e,choose;
+    LinkList L;
+    cout &lt;&lt; &quot;1. 初始化\n&quot;;
+    cout &lt;&lt; &quot;2. 创建单链表（前插法）\n&quot;;
+    cout &lt;&lt; &quot;3. 创建单链表（尾插法）\n&quot;;
+    cout &lt;&lt; &quot;4. 取值\n&quot;;
+    cout &lt;&lt; &quot;5. 查找\n&quot;;
+    cout &lt;&lt; &quot;6. 插入\n&quot;;
+    cout &lt;&lt; &quot;7. 删除\n&quot;;
+    cout &lt;&lt; &quot;8. 输出\n&quot;;
+    cout &lt;&lt; &quot;0. 退出\n&quot;;
+    choose=-1;
+    while (choose!=0)
+    {
+        cout&lt;&lt;&quot;请输入数字选择:&quot;;
+        cin&gt;&gt;choose;
+        switch (choose)
+        {
+        case 1: //初始化一个空的单链表
+            if (InitList_L(L))
+                cout &lt;&lt; &quot;初始化一个空的单链表!\n&quot;;
+            break;
+        case 2: //创建单链表（前插法）
+            CreateList_H(L);
+            cout &lt;&lt; &quot;前插法创建单链表输出结果:\n&quot;;
+            Listprint_L(L);
+            break;
+        case 3: //创建单链表（尾插法）
+            CreateList_R(L);
+            cout &lt;&lt; &quot;尾插法创建单链表输出结果:\n&quot;;
+            Listprint_L(L);
+            break;
+        case 4: //单链表的按序号取值
+            cout &lt;&lt; &quot;请输入一个位置i用来取值:&quot;;
+            cin &gt;&gt; i;
+            if (GetElem_L(L,i,e))
+            {
+                cout &lt;&lt; &quot;查找成功\n&quot;;
+                cout &lt;&lt; &quot;第&quot; &lt;&lt; i &lt;&lt; &quot;个元素是：&quot;&lt;&lt;e&lt;&lt; endl;
+            }
+            else
+                cout &lt;&lt; &quot;查找失败\n\n&quot;;
+            break;
+        case 5: //单链表的按值查找
+            cout&lt;&lt;&quot;请输入所要查找元素x:&quot;;
+            cin&gt;&gt;x;
+            if (LocateElem_L(L,x))
+                cout &lt;&lt; &quot;查找成功\n&quot;;
+            else
+                cout &lt;&lt; &quot;查找失败! &quot; &lt;&lt;endl;
+            break;
+        case 6: //单链表的插入
+            cout &lt;&lt; &quot;请输入插入的位置和元素（用空格隔开）:&quot;;
+            cin &gt;&gt; i;
+            cin &gt;&gt; x;
+            if (ListInsert_L(L, i, x))
+                cout &lt;&lt; &quot;插入成功.\n\n&quot;;
+            else
+                cout &lt;&lt; &quot;插入失败!\n\n&quot;;
+            break;
+        case 7: //单链表的删除
+            cout&lt;&lt;&quot;请输入所要删除的元素位置i:&quot;;
+            cin&gt;&gt;i;
+            if (ListDelete_L(L, i))
+                cout&lt;&lt;&quot;删除成功!\n&quot;;
+            else
+                cout&lt;&lt;&quot;删除失败!\n&quot;;
+            break;
+        case 8: //单链表的输出
+            cout &lt;&lt; &quot;当前单链表的数据元素分别为:\n&quot;;
+            Listprint_L(L);
+            cout &lt;&lt; endl;
+            break;
+        }
+    }
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
 
       </div>
     </div>
@@ -124,7 +353,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/nlhg88.md" download target="_blank">链表C++设计.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:55</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/nlhg88/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -406,7 +635,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/fgkbg2/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -469,7 +698,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms77004qzvndvvq80w51" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snrw004q3rnb60v2hp0r" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -478,6 +707,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

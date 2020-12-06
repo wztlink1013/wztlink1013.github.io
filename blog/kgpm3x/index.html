@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="203. 移除链表元素">
   <meta property="og:description" content="203. 移除链表元素">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/fgkbg2/" title="141. 环形链表" />
   <link rel="next" href="https://www.wztlink1013.com/blog/lg67md/" title="83. 删除排序链表中的重复元素" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -91,9 +93,27 @@
           <p>原文地址：<a href="https://www.wztlink1013.com/blog/kgpm3x/">https://www.wztlink1013.com/blog/kgpm3x/</a>，<a href="https://www.wztlink1013.com/blog/kgpm3x/#comments">参与评论</a></p>
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
-        <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+        <pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</code></pre>
 <h2 id="203-移除链表元素"><a href="#203-移除链表元素" class="headerlink" title="203. 移除链表元素"></a>203. 移除链表元素</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195857807-2e8c8296-2d79-4e36-b304-f02c4dee52b3.png#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=200&amp;originWidth=729&amp;size=15034&amp;status=done&amp;style=shadow&amp;width=364.5" alt="image.png"></p>
-<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">removeElements</span><span class="params">(ListNode head, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 将整个链表想象成head+子链表</span></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// 先处理子链表</span></span><br><span class="line">        head.next = removeElements(head.next, val);</span><br><span class="line">        <span class="comment">// 再处理头结点</span></span><br><span class="line">        <span class="keyword">return</span> head.val == val ? head.next : head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        // 将整个链表想象成head+子链表
+        if (head == null)
+            return null;
+        // 先处理子链表
+        head.next = removeElements(head.next, val);
+        // 再处理头结点
+        return head.val == val ? head.next : head;
+    }
+}
+</code></pre>
 
       </div>
     </div>
@@ -115,7 +135,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/kgpm3x.md" download target="_blank">203. 移除链表元素.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:47</li>
+		<li>最后编辑时间: 2020-12-06 12:57:54</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/kgpm3x/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -397,7 +417,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/fgkbg2/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -460,7 +480,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms6k003uzvndjyx9mzvm" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snre003u3rnb2x0kzll5" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -469,6 +489,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

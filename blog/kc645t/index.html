@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="银行家算法（C++实现）">
   <meta property="og:description" content="C++实现银行家算法（大二上）">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/mssoff/" title="Bert-自然语言处理" />
   <link rel="next" href="https://www.wztlink1013.com/blog/ef1q5c/" title="JAVA-泛型" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -92,7 +94,300 @@
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
         <h2 id="一、银行家算法"><a href="#一、银行家算法" class="headerlink" title="一、银行家算法"></a>一、银行家算法</h2><p>课本伪代码的实现，避免死锁</p>
-<h2 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="comment">//定义全局变量</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> x=<span class="number">50</span>,y=<span class="number">50</span>; <span class="comment">//x为进程个数 y为资源种类数</span></span><br><span class="line"><span class="keyword">int</span> Available[y]; <span class="comment">//各资源可利用的数量</span></span><br><span class="line"><span class="keyword">int</span> Allocation[x][y]; <span class="comment">//各进程当前已分配的资源数量</span></span><br><span class="line"><span class="keyword">int</span> Max[x][y]; <span class="comment">//各进程对各类资源的最大需求数</span></span><br><span class="line"><span class="keyword">int</span> Need[x][y]; <span class="comment">//尚需多少资源</span></span><br><span class="line"><span class="keyword">int</span> Request[y]; <span class="comment">//申请多少资源</span></span><br><span class="line"><span class="keyword">int</span> Work[y]; <span class="comment">//工作向量，表示系统可提供给进程继续运行所需的各类资源数量</span></span><br><span class="line"><span class="keyword">int</span> Finish[x]; <span class="comment">//表示系统是否有足够的资源分配给进程，1为是</span></span><br><span class="line"><span class="keyword">int</span> p[x]; <span class="comment">//存储安全序列</span></span><br><span class="line"><span class="keyword">int</span> i,j; <span class="comment">//i表示进程，j表示资源</span></span><br><span class="line"><span class="keyword">int</span> n,m; <span class="comment">//n为进程i的数量,m为资源j种类数</span></span><br><span class="line"><span class="keyword">int</span> l=<span class="number">0</span>; <span class="comment">//l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的</span></span><br><span class="line"><span class="keyword">int</span> counter=<span class="number">0</span>; <span class="comment">//记数器,记录可执行的进程数</span></span><br><span class="line"><span class="comment">//函数声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">chushihua</span><span class="params">()</span></span>; <span class="comment">//初始化函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">safe</span><span class="params">()</span></span>; <span class="comment">//安全性算法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>; <span class="comment">//函数show,输出当前状态</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bank</span><span class="params">()</span></span>; <span class="comment">//银行家算法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">jieshu</span><span class="params">()</span></span>; <span class="comment">//结束函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">chushihua</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"输入进程的数量: "</span>;<span class="comment">//从此开始输入有关数据</span></span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"输入资源种类数: "</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;m;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"输入各种资源当前可用的数量( "</span>&lt;&lt;m&lt;&lt;<span class="string">" 种): "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"输入资源 "</span>&lt;&lt;j&lt;&lt;<span class="string">" 可利用的数量Available["</span>&lt;&lt;j&lt;&lt;<span class="string">"]: "</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;Available[j]; <span class="comment">//输入数字的过程</span></span><br><span class="line">Work[j]=Available[j]; <span class="comment">//初始化Work[j]，它的初始值就是当前可用的资源数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"输入各进程当前已分配的资源数量Allocation["</span>&lt;&lt;n&lt;&lt;<span class="string">"]["</span>&lt;&lt;m&lt;&lt;<span class="string">"]: "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;n; i++) <span class="comment">//n为进程数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 输入进程 "</span>&lt;&lt;i&lt;&lt;<span class="string">" 当前已分配的资源 "</span>&lt;&lt;j&lt;&lt;<span class="string">" 数量: "</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;Allocation[i][j];</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">Finish[i]=<span class="number">0</span>;<span class="comment">//初始化Finish[i]</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"输入各进程对各类资源的最大需求Max["</span>&lt;&lt;n&lt;&lt;<span class="string">"]["</span>&lt;&lt;m&lt;&lt;<span class="string">"]: "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;n; i++)<span class="comment">//n为进程数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 输入进程 "</span>&lt;&lt;i&lt;&lt;<span class="string">" 对资源 "</span>&lt;&lt;j&lt;&lt;<span class="string">" 的最大需求数: "</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;Max[i][j];</span><br><span class="line"><span class="keyword">if</span>(Max[i][j]&gt;=Allocation[i][j]) <span class="comment">//若最大需求大于已分配，则计算需求量</span></span><br><span class="line">Need[i][j] = Max[i][j]-Allocation[i][j];</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">Need[i][j]=<span class="number">0</span>;<span class="comment">//Max小于已分配的时候，此类资源已足够不需再申请</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"初始化完成"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//安全性算法函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">safe</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">l=<span class="number">0</span>;<span class="comment">//l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的</span></span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;n;i++)<span class="comment">//n为进程数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (Finish[i]==<span class="number">0</span>)</span><br><span class="line">&#123; <span class="comment">//逐个查找Finish[i]==0的进程 条件一</span></span><br><span class="line">counter=<span class="number">0</span>; <span class="comment">//记数器,记录有多少个进程已经执行</span></span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (Work[j]&gt;=Need[i][j])</span><br><span class="line">counter=counter+<span class="number">1</span>;<span class="comment">//可用大于需求，记数，该进程可以执行</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(counter==m) <span class="comment">//i进程的每类资源都符合Work[j]&gt;=Need[i][j] 条件二</span></span><br><span class="line">&#123;</span><br><span class="line">p[l]=i; <span class="comment">//存储安全序列</span></span><br><span class="line">Finish[i]=<span class="number">1</span>; <span class="comment">//i进程标志为可分配</span></span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m;j++)</span><br><span class="line">Work[j]=Work[j]+Allocation[i][j]; <span class="comment">//释放资源</span></span><br><span class="line">l=l+<span class="number">1</span>; <span class="comment">//记数,现在有l个进程是安全的，当l=n时说明满足安全序列</span></span><br><span class="line">i= <span class="number">-1</span>; <span class="comment">//从第一个进程开始继续寻找满足条件一二的进程</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//显示当前状态函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> <span class="comment">//函数show,输出当前资源分配情况</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i,j; <span class="comment">//局部变量，i表示进程，j表示资源</span></span><br><span class="line"><span class="keyword">int</span> All[y]; <span class="comment">//各种资源的总数量</span></span><br><span class="line"><span class="keyword">int</span> L1; <span class="comment">//局部变量L1</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"当前的状态为："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"各种资源的总数量:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;m;j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 资源"</span>&lt;&lt;j&lt;&lt;<span class="string">": "</span>;</span><br><span class="line">All[j]=Available[j]; <span class="comment">//总数量=可用的+已分配的</span></span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++) <span class="comment">//n为进程数</span></span><br><span class="line">All[j]+=Allocation[i][j];</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;All[j]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"当前各种资源可用的量为(available):"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;m;j++)<span class="comment">//m为资源数</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 资源"</span>&lt;&lt;j&lt;&lt;<span class="string">": "</span>&lt;&lt;Available[j]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"各进程所需的最大资源量(Max): "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;m;i++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 资源"</span>&lt;&lt;i&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(L1=<span class="number">0</span>;L1&lt;n;L1++)<span class="comment">//n为进程数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;L1&lt;&lt;<span class="string">": "</span>;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;m;j++)</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Max[L1][j]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"各进程已经得到的资源量(allocation): "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;m;i++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 资源"</span>&lt;&lt;i&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(L1=<span class="number">0</span>;L1&lt;n;L1++)<span class="comment">//n为进程数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;L1&lt;&lt;<span class="string">": "</span>;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;m;j++)</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Allocation[L1][j]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"各进程还需要的资源量(need):"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;m;i++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">" 资源"</span>&lt;&lt;i&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(L1=<span class="number">0</span>;L1&lt;n;L1++)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;L1&lt;&lt;<span class="string">": "</span>;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;m;j++)</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Need[L1][j]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//银行家算法函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bank</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"进程申请分配资源："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">int</span> k=<span class="number">0</span>; <span class="comment">//用于输入进程编号</span></span><br><span class="line"><span class="keyword">bool</span> r=<span class="literal">false</span>; <span class="comment">// 初值为假，输入Y继续申请则置为真</span></span><br><span class="line"><span class="keyword">do</span>&#123;<span class="comment">//输入请求</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"输入申请资源的进程(0-"</span>&lt;&lt;n<span class="number">-1</span>&lt;&lt;<span class="string">"): "</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;k;<span class="comment">//进程编号</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">while</span>(k&gt;n<span class="number">-1</span>) <span class="comment">//输入错误处理</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"无该进程号，重新输入："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"输入申请资源的进程(0--"</span>&lt;&lt;n<span class="number">-1</span>&lt;&lt;<span class="string">"): "</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;k;<span class="comment">//进程编号</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"输入该进程申请各类资源的数量: "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">do</span>&#123; <span class="comment">//do……while 循环判断申请输入的情况</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"进程 "</span>&lt;&lt;k&lt;&lt;<span class="string">" 申请资源["</span>&lt;&lt;j&lt;&lt;<span class="string">"]的数量:"</span>;</span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;Request[j];<span class="comment">//输入请求进程数</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">if</span>(Request[j]&gt;Need[k][j])&#123; <span class="comment">//申请大于需求量时出错，提示重新输入 cout&lt;&lt;"申请量大于需要量!"&lt;&lt;endl;</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"申请的资源"</span>&lt;&lt;j&lt;&lt;<span class="string">"的数量为"</span>&lt;&lt;Request[j]&lt;&lt;<span class="string">",大于进程"</span>&lt;&lt;k&lt;&lt;<span class="string">"对该资源需求量"</span>&lt;&lt;Need[k][j]&lt;&lt;<span class="string">"。"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"重新输入!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//先判断是否申请大于需求量，再判断是否申请大于可利用量</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(Request[j]&gt;Available[j])&#123; <span class="comment">//申请大于可利用量， 应该阻塞等待</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\n没有那么多资源，目前可利用资源"</span>&lt;&lt;j&lt;&lt;<span class="string">"数量为"</span>&lt;&lt;Available[j]&lt;&lt;<span class="string">",本次申请不成功，进程等待!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">Finish[k]=<span class="number">0</span>; <span class="comment">//该进程等待</span></span><br><span class="line"><span class="keyword">goto</span> error; <span class="comment">//goto语句跳转，结束本次申请</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;<span class="keyword">while</span>(Request[j]&gt;Need[k][j]); <span class="comment">//Request[j]&gt;Available[j]</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//改变Available、Allocation、Need的值</span></span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++) &#123;<span class="comment">//m为资源数</span></span><br><span class="line">Available[j] = Available[j]-Request[j];<span class="comment">//可用的资源数=可用的资源数-请求分配的资源数</span></span><br><span class="line">Allocation[k][j] = Allocation[k][j]+Request[j];<span class="comment">//已分配的资源数=已分配的资源数+请求的资源数</span></span><br><span class="line">Need[k][j] = Need[k][j]-Request[j];<span class="comment">//还需要的资源数=还需要的资源数-请求的资源数</span></span><br><span class="line">Work[j] = Available[j];</span><br><span class="line">&#125;</span><br><span class="line">safe(); <span class="comment">//调用安全性算法函数，判断当前状态的安全性</span></span><br><span class="line"><span class="keyword">if</span> (l&lt;n)<span class="comment">//l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的</span></span><br><span class="line">&#123;</span><br><span class="line">l=<span class="number">0</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\n试分配后,状态不安全,所以不予分配!恢复原状态"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="comment">//恢复数据</span></span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;m; j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line">Available[j] = Available[j]+Request[j];</span><br><span class="line">Allocation[k][j] = Allocation[k][j]-Request[j];</span><br><span class="line">Need[k][j] = Need[k][j]+Request[j];</span><br><span class="line">Work[j] = Available[j];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;n; i++)<span class="comment">//n为进程数</span></span><br><span class="line">Finish[i]=<span class="number">0</span>; <span class="comment">//进程均置为未分配状态</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span><span class="comment">//l=n，即所有的Finish[i]=1,每一个进程均能执行</span></span><br><span class="line">&#123;</span><br><span class="line">l=<span class="number">0</span>;<span class="comment">//判断标志</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\n申请资源成功!!!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;m;j++)<span class="comment">//m为资源数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(Need[k][j]==<span class="number">0</span>);</span><br><span class="line"><span class="keyword">else</span> &#123; <span class="comment">//有一种资源还没全部申请到，则该进程不可执行，不能释放拥有的资源</span></span><br><span class="line">l=<span class="number">1</span>; <span class="comment">//置l为1，作为判断标志</span></span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(l!=<span class="number">1</span>)&#123; <span class="comment">//进程可以执行，则释放该进程的所有资源</span></span><br><span class="line"><span class="keyword">for</span> (j=<span class="number">0</span>;j&lt;m;j++)&#123;<span class="comment">//m为资源数</span></span><br><span class="line">Available[j]=Available[j]+Allocation[k][j];</span><br><span class="line">Allocation[k][j]=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"该进程已得到所有需求资源，执行后将释放其所有拥有资源！"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">l=<span class="number">0</span>; <span class="comment">//归零</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\n安全的状态!"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"安全序列为: "</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;p[<span class="number">0</span>]&lt;&lt;<span class="string">")"</span>; <span class="comment">//输出安全序列，考虑显示格式，先输出第一个</span></span><br><span class="line">Finish[<span class="number">0</span>]=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;n; i++)&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"==&gt;&gt;"</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;p[i]&lt;&lt;<span class="string">")"</span>;</span><br><span class="line">Finish[i]=<span class="number">0</span>; <span class="comment">//所有进程置为未分配状态</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">show(); <span class="comment">//显示当前状态</span></span><br><span class="line">error: <span class="comment">//申请大于可利用量， 应该阻塞等待,结束本次资源申请，GOTO 语句跳转至此</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"是否继续申请资源(y/n)或（Y/N）?"</span>;</span><br><span class="line"><span class="keyword">char</span>* b=<span class="keyword">new</span> <span class="keyword">char</span>; <span class="comment">//输入y/n，判断是否继续申请 &lt;&lt;endl</span></span><br><span class="line"><span class="built_in">cin</span>&gt;&gt;b;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"-------------------------------------------"</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">if</span>(*b==<span class="string">'y'</span>||*b==<span class="string">'Y'</span>)</span><br><span class="line">r=<span class="literal">true</span>;<span class="comment">//继续申请</span></span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">r=<span class="literal">false</span>; <span class="comment">//不继续申请</span></span><br><span class="line">jieshu(); <span class="comment">//调用结束函数</span></span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="keyword">while</span> (r==<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//结束函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">jieshu</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\t\t 演示计算完毕"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//主函数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"\t\t\t\t模拟银行家算法"</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">chushihua(); <span class="comment">//初始化函数调用</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">show(); <span class="comment">//输出当前状态</span></span><br><span class="line">safe(); <span class="comment">//判断当前状态的安全性</span></span><br><span class="line"><span class="keyword">if</span> (l&lt;n) <span class="comment">//l在safe中是用来记录安全的进程的个数的</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\n当前状态不安全，拒绝申请！"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">int</span> i; <span class="comment">//局部变量</span></span><br><span class="line">l=<span class="number">0</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"\n当前的状态是安全的!安全序列为:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;p[<span class="number">0</span>]&lt;&lt;<span class="string">")"</span>; <span class="comment">//输出安全序列</span></span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">1</span>; i&lt;n; i++)</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"-&gt;&gt;"</span>&lt;&lt;<span class="string">"进程"</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;p[i]&lt;&lt;<span class="string">")"</span>;</span><br><span class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;n; i++)</span><br><span class="line">Finish[i]=<span class="number">0</span>; <span class="comment">//所有进程置为未分配状态</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">bank(); <span class="comment">//调用银行家算法函数</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"\t\t 演示计算完毕"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h2><pre><code class="cpp">#include &lt;iostream&gt;
+using namespace std;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+//定义全局变量
+const int x=50,y=50; //x为进程个数 y为资源种类数
+int Available[y]; //各资源可利用的数量
+int Allocation[x][y]; //各进程当前已分配的资源数量
+int Max[x][y]; //各进程对各类资源的最大需求数
+int Need[x][y]; //尚需多少资源
+int Request[y]; //申请多少资源
+int Work[y]; //工作向量，表示系统可提供给进程继续运行所需的各类资源数量
+int Finish[x]; //表示系统是否有足够的资源分配给进程，1为是
+int p[x]; //存储安全序列
+int i,j; //i表示进程，j表示资源
+int n,m; //n为进程i的数量,m为资源j种类数
+int l=0; //l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的
+int counter=0; //记数器,记录可执行的进程数
+//函数声明
+void chushihua(); //初始化函数
+void safe(); //安全性算法
+void show(); //函数show,输出当前状态
+void bank(); //银行家算法
+void jieshu(); //结束函数
+void chushihua()
+{
+cout&lt;&lt;&quot;输入进程的数量: &quot;;//从此开始输入有关数据
+cin&gt;&gt;n;
+cout&lt;&lt;&quot;输入资源种类数: &quot;;
+cin&gt;&gt;m;
+cout&lt;&lt;endl&lt;&lt;&quot;输入各种资源当前可用的数量( &quot;&lt;&lt;m&lt;&lt;&quot; 种): &quot;&lt;&lt;endl;
+for (j=0; j&lt;m; j++)//m为资源数
+{
+cout&lt;&lt;&quot;输入资源 &quot;&lt;&lt;j&lt;&lt;&quot; 可利用的数量Available[&quot;&lt;&lt;j&lt;&lt;&quot;]: &quot;;
+cin&gt;&gt;Available[j]; //输入数字的过程
+Work[j]=Available[j]; //初始化Work[j]，它的初始值就是当前可用的资源数
+}
+cout&lt;&lt;endl&lt;&lt;&quot;输入各进程当前已分配的资源数量Allocation[&quot;&lt;&lt;n&lt;&lt;&quot;][&quot;&lt;&lt;m&lt;&lt;&quot;]: &quot;&lt;&lt;endl;
+for (i=0; i&lt;n; i++) //n为进程数
+{
+for (j=0; j&lt;m; j++)//m为资源数
+{
+cout&lt;&lt;&quot; 输入进程 &quot;&lt;&lt;i&lt;&lt;&quot; 当前已分配的资源 &quot;&lt;&lt;j&lt;&lt;&quot; 数量: &quot;;
+cin&gt;&gt;Allocation[i][j];
+}
+cout&lt;&lt;endl;
+Finish[i]=0;//初始化Finish[i]
+}
+cout&lt;&lt;endl&lt;&lt;&quot;输入各进程对各类资源的最大需求Max[&quot;&lt;&lt;n&lt;&lt;&quot;][&quot;&lt;&lt;m&lt;&lt;&quot;]: &quot;&lt;&lt;endl;
+for (i=0; i&lt;n; i++)//n为进程数
+{
+for (j=0; j&lt;m; j++)//m为资源数
+{
+cout&lt;&lt;&quot; 输入进程 &quot;&lt;&lt;i&lt;&lt;&quot; 对资源 &quot;&lt;&lt;j&lt;&lt;&quot; 的最大需求数: &quot;;
+cin&gt;&gt;Max[i][j];
+if(Max[i][j]&gt;=Allocation[i][j]) //若最大需求大于已分配，则计算需求量
+Need[i][j] = Max[i][j]-Allocation[i][j];
+else
+Need[i][j]=0;//Max小于已分配的时候，此类资源已足够不需再申请
+}
+cout&lt;&lt;endl;
+}
+cout&lt;&lt;endl&lt;&lt;&quot;初始化完成&quot;&lt;&lt;endl;
+}
+//安全性算法函数
+void safe()
+{
+l=0;//l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的
+for (i=0; i&lt;n;i++)//n为进程数
+{
+if (Finish[i]==0)
+{ //逐个查找Finish[i]==0的进程 条件一
+counter=0; //记数器,记录有多少个进程已经执行
+for (j=0; j&lt;m; j++)//m为资源数
+{
+if (Work[j]&gt;=Need[i][j])
+counter=counter+1;//可用大于需求，记数，该进程可以执行
+}
+if(counter==m) //i进程的每类资源都符合Work[j]&gt;=Need[i][j] 条件二
+{
+p[l]=i; //存储安全序列
+Finish[i]=1; //i进程标志为可分配
+for (j=0; j&lt;m;j++)
+Work[j]=Work[j]+Allocation[i][j]; //释放资源
+l=l+1; //记数,现在有l个进程是安全的，当l=n时说明满足安全序列
+i= -1; //从第一个进程开始继续寻找满足条件一二的进程
+}
+}
+}
+}
+//显示当前状态函数
+void show() //函数show,输出当前资源分配情况
+{
+int i,j; //局部变量，i表示进程，j表示资源
+int All[y]; //各种资源的总数量
+int L1; //局部变量L1
+cout&lt;&lt;&quot;当前的状态为：&quot;&lt;&lt;endl;
+cout&lt;&lt;&quot;各种资源的总数量:&quot;&lt;&lt;endl;
+for (j=0;j&lt;m;j++)//m为资源数
+{
+cout&lt;&lt;&quot; 资源&quot;&lt;&lt;j&lt;&lt;&quot;: &quot;;
+All[j]=Available[j]; //总数量=可用的+已分配的
+for(i=0;i&lt;n;i++) //n为进程数
+All[j]+=Allocation[i][j];
+cout&lt;&lt;All[j]&lt;&lt;&quot; &quot;;
+}
+cout&lt;&lt;endl&lt;&lt;&quot;当前各种资源可用的量为(available):&quot;&lt;&lt;endl;
+for(j=0;j&lt;m;j++)//m为资源数
+cout&lt;&lt;&quot; 资源&quot;&lt;&lt;j&lt;&lt;&quot;: &quot;&lt;&lt;Available[j]&lt;&lt;&quot; &quot;;
+cout&lt;&lt;endl&lt;&lt;&quot;各进程所需的最大资源量(Max): &quot;&lt;&lt;endl;
+for(i=0;i&lt;m;i++)//m为资源数
+{
+cout&lt;&lt;&quot; 资源&quot;&lt;&lt;i&lt;&lt;&quot; &quot;;
+}
+cout&lt;&lt;endl;
+for(L1=0;L1&lt;n;L1++)//n为进程数
+{
+cout&lt;&lt;&quot;进程&quot;&lt;&lt;L1&lt;&lt;&quot;: &quot;;
+for (j=0;j&lt;m;j++)
+cout&lt;&lt;Max[L1][j]&lt;&lt;&quot; &quot;;
+cout&lt;&lt;endl;
+}
+cout&lt;&lt;endl&lt;&lt;&quot;各进程已经得到的资源量(allocation): &quot;&lt;&lt;endl;
+for(i=0;i&lt;m;i++)//m为资源数
+{
+cout&lt;&lt;&quot; 资源&quot;&lt;&lt;i&lt;&lt;&quot; &quot;;
+}
+cout&lt;&lt;endl;
+for(L1=0;L1&lt;n;L1++)//n为进程数
+{
+cout&lt;&lt;&quot;进程&quot;&lt;&lt;L1&lt;&lt;&quot;: &quot;;
+for (j=0;j&lt;m;j++)
+cout&lt;&lt;Allocation[L1][j]&lt;&lt;&quot; &quot;;
+cout&lt;&lt;endl;
+}
+cout&lt;&lt;endl&lt;&lt;&quot;各进程还需要的资源量(need):&quot;&lt;&lt;endl;
+for(i=0;i&lt;m;i++)//m为资源数
+{
+cout&lt;&lt;&quot; 资源&quot;&lt;&lt;i&lt;&lt;&quot; &quot;;
+}
+cout&lt;&lt;endl;
+for(L1=0;L1&lt;n;L1++)
+{
+cout&lt;&lt;&quot;进程&quot;&lt;&lt;L1&lt;&lt;&quot;: &quot;;
+for (j=0;j&lt;m;j++)
+cout&lt;&lt;Need[L1][j]&lt;&lt;&quot; &quot;;
+cout&lt;&lt;endl;
+}
+}
+//银行家算法函数
+void bank()
+{
+cout&lt;&lt;endl&lt;&lt;&quot;进程申请分配资源：&quot;&lt;&lt;endl;
+int k=0; //用于输入进程编号
+bool r=false; // 初值为假，输入Y继续申请则置为真
+do{//输入请求
+cout&lt;&lt;&quot;输入申请资源的进程(0-&quot;&lt;&lt;n-1&lt;&lt;&quot;): &quot;;
+cin&gt;&gt;k;//进程编号
+cout&lt;&lt;endl;
+while(k&gt;n-1) //输入错误处理
+{
+cout&lt;&lt;endl&lt;&lt;&quot;无该进程号，重新输入：&quot;&lt;&lt;endl;
+cout&lt;&lt;endl&lt;&lt;&quot;输入申请资源的进程(0--&quot;&lt;&lt;n-1&lt;&lt;&quot;): &quot;;
+cin&gt;&gt;k;//进程编号
+cout&lt;&lt;endl;
+}
+cout&lt;&lt;endl&lt;&lt;&quot;输入该进程申请各类资源的数量: &quot;&lt;&lt;endl;
+for (j=0; j&lt;m; j++)//m为资源数
+{
+do{ //do……while 循环判断申请输入的情况
+cout&lt;&lt;&quot;进程 &quot;&lt;&lt;k&lt;&lt;&quot; 申请资源[&quot;&lt;&lt;j&lt;&lt;&quot;]的数量:&quot;;
+cin&gt;&gt;Request[j];//输入请求进程数
+cout&lt;&lt;endl;
+if(Request[j]&gt;Need[k][j]){ //申请大于需求量时出错，提示重新输入 cout&lt;&lt;&quot;申请量大于需要量!&quot;&lt;&lt;endl;
+cout&lt;&lt;&quot;申请的资源&quot;&lt;&lt;j&lt;&lt;&quot;的数量为&quot;&lt;&lt;Request[j]&lt;&lt;&quot;,大于进程&quot;&lt;&lt;k&lt;&lt;&quot;对该资源需求量&quot;&lt;&lt;Need[k][j]&lt;&lt;&quot;。&quot;&lt;&lt;endl;
+cout&lt;&lt;&quot;重新输入!&quot;&lt;&lt;endl;
+}
+//先判断是否申请大于需求量，再判断是否申请大于可利用量
+else if(Request[j]&gt;Available[j]){ //申请大于可利用量， 应该阻塞等待
+cout&lt;&lt;&quot;\n没有那么多资源，目前可利用资源&quot;&lt;&lt;j&lt;&lt;&quot;数量为&quot;&lt;&lt;Available[j]&lt;&lt;&quot;,本次申请不成功，进程等待!&quot;&lt;&lt;endl;
+Finish[k]=0; //该进程等待
+goto error; //goto语句跳转，结束本次申请
+}
+}while(Request[j]&gt;Need[k][j]); //Request[j]&gt;Available[j]
+}
+//改变Available、Allocation、Need的值
+for (j=0; j&lt;m; j++) {//m为资源数
+Available[j] = Available[j]-Request[j];//可用的资源数=可用的资源数-请求分配的资源数
+Allocation[k][j] = Allocation[k][j]+Request[j];//已分配的资源数=已分配的资源数+请求的资源数
+Need[k][j] = Need[k][j]-Request[j];//还需要的资源数=还需要的资源数-请求的资源数
+Work[j] = Available[j];
+}
+safe(); //调用安全性算法函数，判断当前状态的安全性
+if (l&lt;n)//l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的
+{
+l=0;
+cout&lt;&lt;&quot;\n试分配后,状态不安全,所以不予分配!恢复原状态&quot;&lt;&lt;endl;
+//恢复数据
+for (j=0; j&lt;m; j++)//m为资源数
+{
+Available[j] = Available[j]+Request[j];
+Allocation[k][j] = Allocation[k][j]-Request[j];
+Need[k][j] = Need[k][j]+Request[j];
+Work[j] = Available[j];
+}
+for (i=0; i&lt;n; i++)//n为进程数
+Finish[i]=0; //进程均置为未分配状态
+}
+else//l=n，即所有的Finish[i]=1,每一个进程均能执行
+{
+l=0;//判断标志
+cout&lt;&lt;&quot;\n申请资源成功!!!&quot;&lt;&lt;endl;
+for(j=0;j&lt;m;j++)//m为资源数
+{
+if(Need[k][j]==0);
+else { //有一种资源还没全部申请到，则该进程不可执行，不能释放拥有的资源
+l=1; //置l为1，作为判断标志
+break;
+}
+}
+if(l!=1){ //进程可以执行，则释放该进程的所有资源
+for (j=0;j&lt;m;j++){//m为资源数
+Available[j]=Available[j]+Allocation[k][j];
+Allocation[k][j]=0;
+}
+cout&lt;&lt;&quot;该进程已得到所有需求资源，执行后将释放其所有拥有资源！&quot;&lt;&lt;endl;
+}
+l=0; //归零
+cout&lt;&lt;&quot;\n安全的状态!&quot;&lt;&lt;endl;
+cout&lt;&lt;&quot;安全序列为: &quot;;
+cout&lt;&lt;endl&lt;&lt;&quot;进程&quot;&lt;&lt;&quot;(&quot;&lt;&lt;p[0]&lt;&lt;&quot;)&quot;; //输出安全序列，考虑显示格式，先输出第一个
+Finish[0]=0;
+for (i=1; i&lt;n; i++){
+cout&lt;&lt;&quot;==&gt;&gt;&quot;&lt;&lt;&quot;进程&quot;&lt;&lt;&quot;(&quot;&lt;&lt;p[i]&lt;&lt;&quot;)&quot;;
+Finish[i]=0; //所有进程置为未分配状态
+}
+cout&lt;&lt;endl&lt;&lt;endl;
+}
+show(); //显示当前状态
+error: //申请大于可利用量， 应该阻塞等待,结束本次资源申请，GOTO 语句跳转至此
+cout&lt;&lt;endl&lt;&lt;&quot;是否继续申请资源(y/n)或（Y/N）?&quot;;
+char* b=new char; //输入y/n，判断是否继续申请 &lt;&lt;endl
+cin&gt;&gt;b;
+cout&lt;&lt;endl;
+cout&lt;&lt;&quot;-------------------------------------------&quot;&lt;&lt;endl&lt;&lt;endl;
+cout&lt;&lt;endl;
+if(*b==&#39;y&#39;||*b==&#39;Y&#39;)
+r=true;//继续申请
+else{
+r=false; //不继续申请
+jieshu(); //调用结束函数
+}
+} while (r==true);
+}
+//结束函数
+void jieshu()
+{
+cout&lt;&lt;endl&lt;&lt;endl;
+cout&lt;&lt;&quot;\t\t 演示计算完毕&quot;&lt;&lt;endl;
+cout&lt;&lt;endl&lt;&lt;endl;
+}
+//主函数
+int main()
+{
+cout&lt;&lt;endl&lt;&lt;endl&lt;&lt;&quot;\t\t\t\t模拟银行家算法&quot;&lt;&lt;endl&lt;&lt;endl;
+chushihua(); //初始化函数调用
+cout&lt;&lt;endl;
+show(); //输出当前状态
+safe(); //判断当前状态的安全性
+if (l&lt;n) //l在safe中是用来记录安全的进程的个数的
+{
+cout&lt;&lt;&quot;\n当前状态不安全，拒绝申请！&quot;&lt;&lt;endl;
+cout&lt;&lt;endl;
+return 0;
+}
+else
+{
+int i; //局部变量
+l=0;
+cout&lt;&lt;endl&lt;&lt;&quot;\n当前的状态是安全的!安全序列为:&quot;&lt;&lt;endl;
+cout&lt;&lt;&quot;进程&quot;&lt;&lt;&quot;(&quot;&lt;&lt;p[0]&lt;&lt;&quot;)&quot;; //输出安全序列
+for (i=1; i&lt;n; i++)
+cout&lt;&lt;&quot;-&gt;&gt;&quot;&lt;&lt;&quot;进程&quot;&lt;&lt;&quot;(&quot;&lt;&lt;p[i]&lt;&lt;&quot;)&quot;;
+for (i=0; i&lt;n; i++)
+Finish[i]=0; //所有进程置为未分配状态
+cout&lt;&lt;endl;
+}
+bank(); //调用银行家算法函数
+cout&lt;&lt;&quot;\t\t 演示计算完毕&quot;&lt;&lt;endl;
+return 0;
+}
+
+</code></pre>
 
       </div>
     </div>
@@ -114,7 +409,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/kc645t.md" download target="_blank">银行家算法（C++实现）.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/kc645t/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -429,7 +724,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms950087zvndz1z73ceh" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snu400873rnbrvbdtg5m" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -438,6 +733,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

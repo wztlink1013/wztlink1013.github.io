@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="表查询操作">
   <meta property="og:description" content="表的查询总结">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/zqbaxc/" title="表基本操作" />
   <link rel="next" href="https://www.wztlink1013.com/blog/wot7wd/" title="DB_Student数据库记录" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -94,7 +96,17 @@
         <h2 id="基本词汇"><a href="#基本词汇" class="headerlink" title="基本词汇"></a>基本词汇</h2><blockquote>
 <p>查询就是 SELECT 语句</p>
 </blockquote>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  [ <span class="keyword">ALL</span> | <span class="keyword">DISTINCT</span> ]</span><br><span class="line">truetrue[ TOP expression [ <span class="keyword">PERCENT</span> ] [ <span class="keyword">WITH</span> <span class="keyword">TIES</span> ] ]</span><br><span class="line">true&lt;列名&gt; 											<span class="comment">/*指定要选择的列及其限定*/</span></span><br><span class="line">true[ <span class="keyword">INTO</span> &lt;表名&gt; ] 							<span class="comment">/*INTO子句，指定结果存入新表*/</span></span><br><span class="line">true[ <span class="keyword">FROM</span> &lt;查询对象&gt; ]						<span class="comment">/*FROM子句，指定表或视图*/</span></span><br><span class="line">true[ <span class="keyword">WHERE</span> &lt;条件&gt; ] 							<span class="comment">/*WHERE子句，指定查询条件*/</span></span><br><span class="line">true[ <span class="keyword">GROUP</span> <span class="keyword">BY</span> &lt;分组表达式&gt;] 				<span class="comment">/*GROUP BY子句，指定分组表达式*/</span></span><br><span class="line">true[ <span class="keyword">HAVING</span> &lt;分组统计条件&gt;] 				<span class="comment">/*HAVING子句，指定分组统计条件*/</span></span><br><span class="line">true[ <span class="keyword">ORDER</span> <span class="keyword">BY</span> &lt;排序表达式&gt; [ <span class="keyword">ASC</span> | <span class="keyword">DESC</span> ] ] <span class="comment">/*ORDER子句，指定排序表达式和顺序*/</span></span><br></pre></td></tr></table></figure>
+<pre><code class="sql">SELECT  [ ALL | DISTINCT ]
+        [ TOP expression [ PERCENT ] [ WITH TIES ] ]
+    &lt;列名&gt;                                             /*指定要选择的列及其限定*/
+    [ INTO &lt;表名&gt; ]                             /*INTO子句，指定结果存入新表*/
+    [ FROM &lt;查询对象&gt; ]                        /*FROM子句，指定表或视图*/
+    [ WHERE &lt;条件&gt; ]                             /*WHERE子句，指定查询条件*/
+    [ GROUP BY &lt;分组表达式&gt;]                 /*GROUP BY子句，指定分组表达式*/
+    [ HAVING &lt;分组统计条件&gt;]                 /*HAVING子句，指定分组统计条件*/
+    [ ORDER BY &lt;排序表达式&gt; [ ASC | DESC ] ] /*ORDER子句，指定排序表达式和顺序*/
+
+</code></pre>
 <blockquote>
 <p>说明：所有被使用的子句必须按语法说明中显示的顺序严格地排序。例如，一个 HAVING 子句必须位于 GROUP BY 子句之后，并位于 ORDER BY 子句之前。<br>SELECT 语句返回一个表的结果集，通常该结果集被称为表值表达式。</p>
 </blockquote>
@@ -102,41 +114,90 @@
 <h3 id="where"><a href="#where" class="headerlink" title="where"></a>where</h3><blockquote>
 <p>条件</p>
 </blockquote>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> Sname</span><br><span class="line">truetrue<span class="keyword">from</span> Student</span><br><span class="line">truetrue<span class="keyword">where</span> Sdept=<span class="string">'CS'</span></span><br></pre></td></tr></table></figure>
-<h3 id="as"><a href="#as" class="headerlink" title="as"></a>as</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">id</span> <span class="keyword">AS</span> userId，username <span class="keyword">AS</span> uname</span><br><span class="line">true<span class="keyword">FROM</span> <span class="keyword">users</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">select distinct Sname
+        from Student
+        where Sdept=&#39;CS&#39;
+</code></pre>
+<h3 id="as"><a href="#as" class="headerlink" title="as"></a>as</h3><pre><code class="sql">SELECT id AS userId，username AS uname
+    FROM users;
+</code></pre>
 <p>查询出来的列名，就变成了别名。AS 其实可以省略，但可能会出现问题。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">id</span> username  <span class="keyword">FROM</span> <span class="keyword">users</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">SELECT id username  FROM users;
+</code></pre>
 <p>这样会将 username 视作 id 的别名。</p>
-<h3 id="like"><a href="#like" class="headerlink" title="like"></a>like</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 书名 <span class="keyword">AS</span> BookName, 作译者 <span class="keyword">AS</span> Author, 出版社 <span class="keyword">AS</span> Press</span><br><span class="line"><span class="keyword">FROM</span> TBook</span><br><span class="line"><span class="keyword">WHERE</span> 书名 <span class="keyword">LIKE</span> <span class="string">'%SQL Server%'</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Sname, Sno, Ssex</span><br><span class="line">    <span class="keyword">from</span> Student</span><br><span class="line">    <span class="keyword">where</span> Sname <span class="keyword">not</span> <span class="keyword">like</span> <span class="string">'刘_'</span></span><br></pre></td></tr></table></figure>
-<h3 id="is-not"><a href="#is-not" class="headerlink" title="is not"></a>is not</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Sno, Cno</span><br><span class="line">    <span class="keyword">from</span> SC</span><br><span class="line">    <span class="keyword">where</span> Grade <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span></span><br></pre></td></tr></table></figure>
-<h3 id="and、or"><a href="#and、or" class="headerlink" title="and、or"></a>and、or</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Sname, Ssex</span><br><span class="line">    <span class="keyword">from</span> Student</span><br><span class="line">    <span class="keyword">where</span> Sdept=<span class="string">'CS'</span> <span class="keyword">or</span> Sdept=<span class="string">'MA'</span> <span class="keyword">or</span> Sdept=<span class="string">'IS'</span></span><br></pre></td></tr></table></figure>
+<h3 id="like"><a href="#like" class="headerlink" title="like"></a>like</h3><pre><code class="sql">SELECT 书名 AS BookName, 作译者 AS Author, 出版社 AS Press
+FROM TBook
+WHERE 书名 LIKE &#39;%SQL Server%&#39;
+</code></pre>
+<pre><code class="sql">select Sname, Sno, Ssex
+    from Student
+    where Sname not like &#39;刘_&#39;
+</code></pre>
+<h3 id="is-not"><a href="#is-not" class="headerlink" title="is not"></a>is not</h3><pre><code class="sql">select Sno, Cno
+    from SC
+    where Grade is not null
+</code></pre>
+<h3 id="and、or"><a href="#and、or" class="headerlink" title="and、or"></a>and、or</h3><pre><code class="sql">select Sname, Ssex
+    from Student
+    where Sdept=&#39;CS&#39; or Sdept=&#39;MA&#39; or Sdept=&#39;IS&#39;
+</code></pre>
 <blockquote>
 <p>键可以不用引号，但是值要引号<br>列名又空格也需要加引号</p>
 </blockquote>
 <h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><blockquote>
 <p>前五行数据</p>
 </blockquote>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> top <span class="number">5</span> *</span><br><span class="line">true<span class="keyword">from</span> rating</span><br></pre></td></tr></table></figure>
-<h3 id="not-in"><a href="#not-in" class="headerlink" title="not in"></a>not in</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Sname, Ssex</span><br><span class="line">    <span class="keyword">from</span> Student</span><br><span class="line">    <span class="keyword">where</span> Sdept <span class="keyword">not</span> <span class="keyword">in</span> (<span class="string">'CS'</span>, <span class="string">'MA'</span>, <span class="string">'IS'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">select top 5 *
+    from rating
+</code></pre>
+<h3 id="not-in"><a href="#not-in" class="headerlink" title="not in"></a>not in</h3><pre><code class="sql">select Sname, Ssex
+    from Student
+    where Sdept not in (&#39;CS&#39;, &#39;MA&#39;, &#39;IS&#39;)
+</code></pre>
 <h3 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h3><ul>
 <li>有公共的列，在前面表名以示区分</li>
 <li>指明两个表的公共<strong>相等</strong>的列</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> TLend.ISBN, TLend.借书时间, TLend.借书证号, TLend.图书<span class="keyword">ID</span>, TLend.应还时间,TReader.姓名</span><br><span class="line"><span class="keyword">from</span> TReader,TLend, TBook</span><br><span class="line"><span class="keyword">where</span> TReader.借书证号 = TLend.借书证号</span><br><span class="line">true<span class="keyword">and</span> TBook.ISBN = TLend.ISBN</span><br><span class="line">true<span class="keyword">and</span> TLend.借书证号 = <span class="string">'081101'</span></span><br><span class="line">true<span class="keyword">and</span> TBook.书名 = <span class="string">'SQL Server实用教程（第3版）'</span></span><br></pre></td></tr></table></figure>
-<h3 id="join-on"><a href="#join-on" class="headerlink" title="join on"></a>join on</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> 姓名</span><br><span class="line">true<span class="keyword">from</span> TReader <span class="keyword">join</span> HLend</span><br><span class="line">true<span class="keyword">on</span> TReader.借书证号 = HLend.借书证号</span><br><span class="line">true<span class="keyword">where</span> (还书时间 - 借书时间)&gt;<span class="number">5</span></span><br></pre></td></tr></table></figure>
-<h3 id="count"><a href="#count" class="headerlink" title="count"></a>count</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) 读者总数</span><br><span class="line">true<span class="keyword">from</span> TReader</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">select TLend.ISBN, TLend.借书时间, TLend.借书证号, TLend.图书ID, TLend.应还时间,TReader.姓名
+from TReader,TLend, TBook
+where TReader.借书证号 = TLend.借书证号
+    and TBook.ISBN = TLend.ISBN
+    and TLend.借书证号 = &#39;081101&#39;
+    and TBook.书名 = &#39;SQL Server实用教程（第3版）&#39;
+</code></pre>
+<h3 id="join-on"><a href="#join-on" class="headerlink" title="join on"></a>join on</h3><pre><code class="sql">select 姓名
+    from TReader join HLend
+    on TReader.借书证号 = HLend.借书证号
+    where (还书时间 - 借书时间)&gt;5
+</code></pre>
+<h3 id="count"><a href="#count" class="headerlink" title="count"></a>count</h3><pre><code class="sql">select count(*) 读者总数
+    from TReader
+</code></pre>
 <h3 id="order-by"><a href="#order-by" class="headerlink" title="order by"></a>order by</h3><p>排序 ORDER BY</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> Sno, Grade</span><br><span class="line">    <span class="keyword">from</span> SC</span><br><span class="line">    <span class="keyword">where</span> Cno=<span class="string">'3'</span></span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> Grade <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> *</span><br><span class="line">truetrue<span class="keyword">FROM</span> <span class="keyword">users</span></span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">id</span> <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">select Sno, Grade
+    from SC
+    where Cno=&#39;3&#39;
+    order by Grade desc
+</code></pre>
+<pre><code class="sql">SELECT *
+        FROM users
+    ORDER BY id DESC;
+</code></pre>
 <p>可以排序多个字段，如果第一个字段能排出结果，就不会用到第 2 个字段。比如：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line">    <span class="keyword">from</span> Student</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> Sdept <span class="keyword">asc</span>, Sage <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+<pre><code class="sql">select *
+    from Student
+    order by Sdept asc, Sage desc
+</code></pre>
 <p>因为年龄 age 有相同的，继续排序就要用到 id 的降序。</p>
 <h3 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h3><p>限制返回记录的数量 LIMIT</p>
 <p>LIMIT 有两种语法结构，第一种比较常见。</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">[LIMIT &#123;[offset,] row_count|row_count OFFSET offset&#125;]</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">[LIMIT {[offset,] row_count|row_count OFFSET offset}]
+</code></pre>
 <p>起始位置，偏移量</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> ;</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">LIMIT</span> <span class="number">3</span>,<span class="number">2</span>;</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span> <span class="keyword">LIMIT</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">SELECT * FROM users ;
+SELECT * FROM users LIMIT 3,2;
+SELECT * FROM users LIMIT 2;
+</code></pre>
 <p>3，2：表示从第 3 条开始返回，返回两条记录。注意记录从 0 开始编号，即结果集中的从第 0 条开始。<br>如果 LIMIT 后面只有一个参数，认作是偏移量，起始位置缺省为 0。</p>
 <h3 id="union"><a href="#union" class="headerlink" title="union"></a>union</h3><blockquote>
 <p>合并查询结果 UNION</p>
@@ -145,28 +206,49 @@
 <blockquote>
 <p>去重效率比不去重效率低</p>
 </blockquote>
-<h2 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h2><figure class="highlight"><table><tr><td class="code"><pre><span class="line">[GROUP BY &#123;col_name|position&#125; [ASC|DESC],...]</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> 专业, <span class="keyword">count</span>(*) 不同专业人数</span><br><span class="line">true<span class="keyword">from</span> TReader</span><br><span class="line">true<span class="keyword">group</span> <span class="keyword">by</span> 专业</span><br></pre></td></tr></table></figure>
+<h2 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h2><pre><code class="sql">[GROUP BY {col_name|position} [ASC|DESC],...]
+</code></pre>
+<pre><code class="sql">select 专业, count(*) 不同专业人数
+    from TReader
+    group by 专业
+</code></pre>
 <h3 id="having"><a href="#having" class="headerlink" title="having"></a>having</h3><p>与 GROUP BY 分组联用。只对部分记录做分组操作。有两种用法，比如：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sex,age</span><br><span class="line">true<span class="keyword">FROM</span> <span class="keyword">users</span></span><br><span class="line">  <span class="keyword">GROUP</span> <span class="keyword">BY</span> sex</span><br><span class="line">  <span class="keyword">HAVING</span> age &gt; <span class="number">35</span>;</span><br><span class="line"><span class="keyword">SELECT</span> sex</span><br><span class="line">true<span class="keyword">FROM</span> <span class="keyword">users</span></span><br><span class="line">  <span class="keyword">GROUP</span> <span class="keyword">BY</span> sex</span><br><span class="line">  <span class="keyword">HAVING</span> <span class="keyword">count</span>(<span class="keyword">id</span>) &gt;=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">SELECT sex,age
+    FROM users
+  GROUP BY sex
+  HAVING age &gt; 35;
+SELECT sex
+    FROM users
+  GROUP BY sex
+  HAVING count(id) &gt;=2;
+</code></pre>
 <ul>
 <li>第一种，注意后面的 HAVING 的字段必须在前面 SELECT 部分出现才行。</li>
 <li>第二种，在 HAVING 后面使用<em>聚合函数</em>，前面无需出现相应字段。</li>
 </ul>
 <h3 id="asc、desc"><a href="#asc、desc" class="headerlink" title="asc、desc"></a>asc、desc</h3><p>排序升序 asc、降序 desc</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> *</span><br><span class="line">true<span class="keyword">FROM</span> TReader</span><br><span class="line">true<span class="keyword">WHERE</span> 专业=<span class="string">'计算机'</span></span><br><span class="line">true<span class="keyword">ORDER</span> <span class="keyword">BY</span> 出生时间 <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+<pre><code class="sql">SELECT *
+    FROM TReader
+    WHERE 专业=&#39;计算机&#39;
+    ORDER BY 出生时间 desc
+</code></pre>
 <p>##</p>
 <h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><p>子查询（Subquery）是指嵌套在查询内部，且必须始终出现在圆括号内。外面的查询并非只是指的查找。可以包含的关键字或条件：</p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">DISTINCT、<span class="keyword">GROUP</span> <span class="title">BY</span>、<span class="keyword">ORDER</span> <span class="title">BY</span>、LIMIT、函数等</span><br></pre></td></tr></table></figure>
-<p>外层的查询可以是：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>、<span class="keyword">INSERT</span>、<span class="keyword">UPDATE</span>、<span class="keyword">SET</span>、<span class="keyword">DO</span></span><br></pre></td></tr></table></figure>
-<h3 id="①-使用比较运算符的子查询"><a href="#①-使用比较运算符的子查询" class="headerlink" title="① 使用比较运算符的子查询"></a>① 使用比较运算符的子查询</h3><ul>
+<pre><code>DISTINCT、GROUP BY、ORDER BY、LIMIT、函数等
+</code></pre><p>外层的查询可以是：</p>
+<pre><code>SELECT、INSERT、UPDATE、SET、DO
+</code></pre><h3 id="①-使用比较运算符的子查询"><a href="#①-使用比较运算符的子查询" class="headerlink" title="① 使用比较运算符的子查询"></a>① 使用比较运算符的子查询</h3><ul>
 <li>比较运算符<blockquote>
 <p>=,&gt;,&lt;,&gt;=,&lt;=,&lt;&gt;,!=,&lt;=&gt;</p>
 </blockquote>
 </li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> *</span><br><span class="line">true<span class="keyword">FROM</span> av</span><br><span class="line">  <span class="keyword">WHERE</span> 身高&gt;=(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">AVG</span>(身高)</span><br><span class="line">    <span class="keyword">FROM</span> av);</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">SELECT *
+    FROM av
+  WHERE 身高&gt;=(
+    SELECT AVG(身高)
+    FROM av);
+</code></pre>
 <ul>
 <li>修饰比较运算符<blockquote>
 <p>使用 ANY、SOME、ALL，ANY 和 SOME 是等价的。</p>
@@ -204,10 +286,16 @@
 </tr>
 </tbody>
 </table>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> emp.empno,emp.ename,emp.job,emp.sal</span><br><span class="line">true<span class="keyword">from</span> scott.emp</span><br><span class="line">  <span class="keyword">where</span> sal &gt;<span class="keyword">any</span>(</span><br><span class="line">    <span class="keyword">select</span> sal</span><br><span class="line">    <span class="keyword">from</span> scott.emp</span><br><span class="line">    <span class="keyword">where</span> job=<span class="string">"MANAGER"</span>);</span><br></pre></td></tr></table></figure>
+<pre><code class="sql">select emp.empno,emp.ename,emp.job,emp.sal
+    from scott.emp
+  where sal &gt;any(
+    select sal
+    from scott.emp
+    where job=&quot;MANAGER&quot;);
+</code></pre>
 <p>等价于下边两步的执行过程：<br>（1）执行“select sal from scott.emp where job=”MANAGER””<br>（2）查询到 3 个薪水值 2975、2850 和 2450，父查询执行下列语句：<br>select emp.empno,emp.ename,emp.job,emp.sal from scott.emp where<strong> sal &gt;2975 or sal&gt;2850 or sal&gt;2450;</strong></p>
-<h3 id="②-使用-not-in-的子查询"><a href="#②-使用-not-in-的子查询" class="headerlink" title="② 使用[not]in 的子查询"></a>② 使用[not]in 的子查询</h3><figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">operand</span> <span class="selector-tag">comparison_operator</span> <span class="selector-attr">[NOT]</span> <span class="selector-tag">IN</span> (subquery)</span><br></pre></td></tr></table></figure>
-<p>=ANY 和 IN 等效<br>!=ALL 和 NOT IN 等效</p>
+<h3 id="②-使用-not-in-的子查询"><a href="#②-使用-not-in-的子查询" class="headerlink" title="② 使用[not]in 的子查询"></a>② 使用[not]in 的子查询</h3><pre><code>operand comparison_operator [NOT] IN (subquery)
+</code></pre><p>=ANY 和 IN 等效<br>!=ALL 和 NOT IN 等效</p>
 <h3 id="③-使用-not-exists-的子查询"><a href="#③-使用-not-exists-的子查询" class="headerlink" title="③ 使用[not]exists 的子查询"></a>③ 使用[not]exists 的子查询</h3><p>如果子查询返回任何行，EXISTS 将返回 TRUE，否则返回 FALSE。<br>该类子查询使用较少</p>
 
       </div>
@@ -230,7 +318,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/igxqxi.md" download target="_blank">表查询操作.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:49</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/igxqxi/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -482,7 +570,7 @@
 				<span class="aria-readonly">发表时间为2020年11月14日</span>
 				<div class="relative-box">
           
-          <span class="aria-readonly">文章概要 </span>常用形式[](int x, int y) -&gt; int &#123; int z = x + ...
+          <span class="aria-readonly">文章概要 </span>常用形式[](int x, int y) -&gt; int { int z = x + y; re...
         </div>
 			</li>
 			
@@ -575,7 +663,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms680039zvnd3nbil1jm" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snr000363rnbontenu5s" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -584,6 +672,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

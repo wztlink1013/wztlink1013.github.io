@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="贪心算法-Kruskal 算法">
   <meta property="og:description" content="贪心算法-Kruskal 算法">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/uq89oe/" title="C++匿名函数" />
   <link rel="next" href="https://www.wztlink1013.com/blog/frhg9i/" title="api学习笔记" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -109,7 +111,229 @@
 </blockquote>
 <h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</p>
 <p>比如有如下这么一个图：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png#align=left&amp;display=inline&amp;height=95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=189&amp;originWidth=438&amp;size=10882&amp;status=done&amp;style=shadow&amp;width=219" alt="image.png"><br>单独分析 ①② 边和 ③④ 边情况下，两个不在一个集合里面，<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png#align=left&amp;display=inline&amp;height=96&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=192&amp;originWidth=769&amp;size=21600&amp;status=done&amp;style=shadow&amp;width=384.5" alt="image.png"><br>不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为 3 的时候，此时就需要将左右两个集合合并了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png#align=left&amp;display=inline&amp;height=101&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=202&amp;originWidth=748&amp;size=22229&amp;status=done&amp;style=shadow&amp;width=374" alt="image.png"><br>最后的结果样式就为如下<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png#align=left&amp;display=inline&amp;height=146&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=292&amp;originWidth=780&amp;size=31319&amp;status=done&amp;style=shadow&amp;width=390" alt="image.png"></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> NS_KruskalMST &#123;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KruskalMST</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FindSet</span><span class="params">(<span class="keyword">int</span> u)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">UnionSets</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Initialization</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenEdges</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeSets</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">(<span class="keyword">int</span> v0)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF INT_MAX</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; WMatrix;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;pair&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, <span class="keyword">int</span>&gt;&gt; Edges;</span><br><span class="line"><span class="comment">//Node struct for the disjoint set</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DJSNode</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> Parent; <span class="keyword">int</span> Rank;</span><br><span class="line">    DJSNode(<span class="keyword">int</span> p) : Parent(p), Rank(<span class="number">0</span>) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;DJSNode&gt; DisjointSet;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; MST;</span><br><span class="line"><span class="comment">//The adjacency list for MST</span></span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; MSTList;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; Prev;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KruskalMSTCaller</span><span class="params">(<span class="keyword">int</span> an,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; &amp;wMatrix, <span class="keyword">int</span> v0)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    n = an;</span><br><span class="line">    WMatrix = wMatrix;</span><br><span class="line">    Initialization();</span><br><span class="line">    KruskalMST();</span><br><span class="line">    Output(v0);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">KruskalMST</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;e: Edges)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> u = e.first.first;</span><br><span class="line">        <span class="keyword">int</span> v = e.first.second;</span><br><span class="line">        <span class="keyword">int</span> setU = FindSet(u);</span><br><span class="line">        <span class="keyword">int</span> setV = FindSet(v);</span><br><span class="line">        <span class="keyword">if</span> (setU != setV)</span><br><span class="line">        &#123;</span><br><span class="line">            MST.push_back(e.first);</span><br><span class="line">            <span class="keyword">if</span> (MST.size() == n - <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            UnionSets(setU, setV);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FindSet</span><span class="params">(<span class="keyword">int</span> u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (u != DisjointSet[u].Parent)</span><br><span class="line">        u = DisjointSet[u].Parent;</span><br><span class="line">        <span class="comment">//For path compression:</span></span><br><span class="line">        <span class="comment">//DisjointSet[u].Parent =</span></span><br><span class="line">        <span class="comment">//    FindSet(DisjointSet[u].Parent);</span></span><br><span class="line">    <span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">UnionSets</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)</span><br><span class="line">        DisjointSet[v].Parent = u;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        DisjointSet[u].Parent = v;</span><br><span class="line">    <span class="keyword">if</span> (DisjointSet[u].Rank == DisjointSet[v].Rank)</span><br><span class="line">        DisjointSet[u].Rank++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Initialization</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    GenEdges();</span><br><span class="line">    sort(Edges.begin(), Edges.end(),</span><br><span class="line">        [](pair&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, <span class="keyword">int</span>&gt;a,</span><br><span class="line">            pair&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;, <span class="keyword">int</span>&gt;b)</span><br><span class="line">        &#123;<span class="keyword">return</span> a.second &lt; b.second; &#125;);</span><br><span class="line">    MakeSets();</span><br><span class="line">    MST.clear();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenEdges</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Edges.clear();</span><br><span class="line">    <span class="comment">//Traverse the upper triangle of WMatrix</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j++)</span><br><span class="line">            <span class="keyword">if</span> (WMatrix[i][j] != INF)</span><br><span class="line">                Edges.push_back(&#123; &#123;i, j&#125;,</span><br><span class="line">                    WMatrix[i][j] &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MakeSets</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    DisjointSet.clear();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        DisjointSet.push_back(DJSNode(i));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OutputWMatrix</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"n = %d\n"</span>, n);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The weight matrix:\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%3c"</span>, <span class="string">' '</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%3d"</span>, j + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%3d"</span>, i + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> j : WMatrix[i])</span><br><span class="line">            <span class="keyword">if</span> (j &lt; INF)</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%3d"</span>, j);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%3c"</span>, <span class="string">'*'</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OutputPath</span><span class="params">(<span class="keyword">int</span> u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Prev[u] == <span class="number">-1</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, u + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        OutputPath(Prev[u]);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"-%d"</span>, u + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenMSTList</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MSTList.clear();</span><br><span class="line">    MSTList.resize(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;e: MST)</span><br><span class="line">    &#123;</span><br><span class="line">        MSTList[e.first].push_back(e.second);</span><br><span class="line">        MSTList[e.second].push_back(e.first);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenPrev</span><span class="params">(<span class="keyword">int</span> v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;u : MSTList[v])</span><br><span class="line">        <span class="keyword">if</span> (u != <span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Prev[u] = v;</span><br><span class="line">            <span class="keyword">auto</span> w = find(MSTList[u].begin(),</span><br><span class="line">                MSTList[u].end(), v);</span><br><span class="line">            MSTList[u][w - MSTList[u].begin()] = <span class="number">-1</span>;</span><br><span class="line">            GenPrev(u);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Output</span><span class="params">(<span class="keyword">int</span> v0)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Kruskal's MST algorithm\n"</span>);</span><br><span class="line">    OutputWMatrix();</span><br><span class="line">    <span class="keyword">int</span> wSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++)</span><br><span class="line">        wSum += WMatrix[MST[i].first][MST[i].second];</span><br><span class="line">    GenMSTList();</span><br><span class="line">    Prev.clear();</span><br><span class="line">    Prev.resize(n);</span><br><span class="line">    Prev[v0] = <span class="number">-1</span>;</span><br><span class="line">    GenPrev(v0);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The MST edges:\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Edge Weight\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;e : MST)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" %d-%d  %d\n"</span>, e.first + <span class="number">1</span>, e.second + <span class="number">1</span>,</span><br><span class="line">            WMatrix[e.first][e.second]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Total MST weight: %d\n"</span>, wSum);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The MST paths from vertex %d:\n"</span>, v0 + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> u = <span class="number">0</span>; u &lt; n; u++)</span><br><span class="line">        <span class="keyword">if</span> (u != v0)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%3d: "</span>, u + <span class="number">1</span>);</span><br><span class="line">            OutputPath(u);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="comment">//namespace NS_KruskalMST</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> NS_KruskalMST;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TestKruskalMST</span><span class="params">(<span class="keyword">int</span> v0 = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&gt; w = &#123;</span><br><span class="line">        <span class="comment">//https://www.geeksforgeeks.org/</span></span><br><span class="line">        <span class="comment">//prims-minimum-spanning-tree-mst-greedy-algo-5/</span></span><br><span class="line">        &#123;</span><br><span class="line">            &#123;   <span class="number">0</span>,  <span class="number">2</span>,INF,  <span class="number">6</span>,INF &#125;,</span><br><span class="line">            &#123;   <span class="number">2</span>,  <span class="number">0</span>,  <span class="number">3</span>,  <span class="number">8</span>,  <span class="number">5</span> &#125;,</span><br><span class="line">            &#123; INF,  <span class="number">3</span>,  <span class="number">0</span>,INF,  <span class="number">7</span> &#125;,</span><br><span class="line">            &#123;   <span class="number">6</span>,  <span class="number">8</span>,INF,  <span class="number">0</span>,  <span class="number">9</span> &#125;,</span><br><span class="line">            &#123; INF,  <span class="number">5</span>,  <span class="number">7</span>,  <span class="number">9</span>,  <span class="number">0</span> &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">// Dijkstra's algorithm on Wikipedia</span></span><br><span class="line">        &#123;</span><br><span class="line">            &#123;   <span class="number">0</span>,  <span class="number">7</span>,  <span class="number">9</span>,INF,INF, <span class="number">14</span> &#125;,</span><br><span class="line">            &#123;   <span class="number">7</span>,  <span class="number">0</span>, <span class="number">10</span>, <span class="number">15</span>,INF,INF &#125;,</span><br><span class="line">            &#123;   <span class="number">9</span>, <span class="number">10</span>,  <span class="number">0</span>, <span class="number">11</span>,INF,  <span class="number">2</span> &#125;,</span><br><span class="line">            &#123; INF, <span class="number">15</span>, <span class="number">11</span>,  <span class="number">0</span>,  <span class="number">6</span>,INF &#125;,</span><br><span class="line">            &#123; INF,INF,INF,  <span class="number">6</span>,  <span class="number">0</span>,  <span class="number">9</span> &#125;,</span><br><span class="line">            &#123;  <span class="number">14</span>,INF,  <span class="number">2</span>,INF,  <span class="number">9</span>,  <span class="number">0</span> &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">//https://www.geeksforgeeks.org/</span></span><br><span class="line">        <span class="comment">//kruskals-minimum-spanning-tree-using-stl-in-c/</span></span><br><span class="line">        &#123;</span><br><span class="line">            &#123;   <span class="number">0</span>,  <span class="number">4</span>,INF,INF,INF,INF,INF,  <span class="number">8</span>,INF &#125;,</span><br><span class="line">            &#123;   <span class="number">4</span>,  <span class="number">0</span>,  <span class="number">8</span>,INF,INF,INF,INF, <span class="number">11</span>,INF &#125;,</span><br><span class="line">            &#123; INF,  <span class="number">8</span>,  <span class="number">0</span>,  <span class="number">7</span>,INF,  <span class="number">4</span>,INF,INF,  <span class="number">2</span> &#125;,</span><br><span class="line">            &#123; INF,INF,  <span class="number">7</span>,  <span class="number">0</span>,  <span class="number">9</span>, <span class="number">14</span>,INF,INF,INF &#125;,</span><br><span class="line">            &#123; INF,INF,INF,  <span class="number">9</span>,  <span class="number">0</span>, <span class="number">10</span>,INF,INF,INF &#125;,</span><br><span class="line">            &#123; INF,INF,  <span class="number">4</span>, <span class="number">14</span>, <span class="number">10</span>,  <span class="number">0</span>,  <span class="number">2</span>,INF,INF &#125;,</span><br><span class="line">            &#123; INF,INF,INF,INF,INF,  <span class="number">2</span>,  <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">6</span> &#125;,</span><br><span class="line">            &#123;   <span class="number">8</span>, <span class="number">11</span>,INF,INF,INF,INF,  <span class="number">1</span>,  <span class="number">0</span>,  <span class="number">7</span> &#125;,</span><br><span class="line">            &#123; INF,INF,  <span class="number">2</span>,INF,INF,INF,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">0</span> &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">int</span> k = w.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (v0 &gt; w[i].size() - <span class="number">1</span>)</span><br><span class="line">        v0 = w[i].size() - <span class="number">1</span>;</span><br><span class="line">      KruskalMSTCaller(w[i].size(), w[i], v0);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+namespace NS_KruskalMST {
+using namespace std;
+void KruskalMST();
+int FindSet(int u);
+void UnionSets(int u, int v);
+void Initialization();
+void GenEdges();
+void MakeSets();
+void Output(int v0);
+#define INF INT_MAX
+static int n;
+static vector&lt;vector&lt;int&gt;&gt; WMatrix;
+static vector&lt;pair&lt;pair&lt;int, int&gt;, int&gt;&gt; Edges;
+//Node struct for the disjoint set
+struct DJSNode {
+    int Parent; int Rank;
+    DJSNode(int p) : Parent(p), Rank(0) {}
+};
+static vector&lt;DJSNode&gt; DisjointSet;
+static vector&lt;pair&lt;int, int&gt;&gt; MST;
+//The adjacency list for MST
+static vector&lt;vector&lt;int&gt;&gt; MSTList;
+static vector&lt;int&gt; Prev;
+void KruskalMSTCaller(int an,
+    vector&lt;vector&lt;int&gt;&gt; &amp;wMatrix, int v0)
+{
+    n = an;
+    WMatrix = wMatrix;
+    Initialization();
+    KruskalMST();
+    Output(v0);
+}
+void KruskalMST()
+{
+    for (auto &amp;e: Edges)
+    {
+        int u = e.first.first;
+        int v = e.first.second;
+        int setU = FindSet(u);
+        int setV = FindSet(v);
+        if (setU != setV)
+        {
+            MST.push_back(e.first);
+            if (MST.size() == n - 1)
+                break;
+            UnionSets(setU, setV);
+        }
+    }
+}
+int FindSet(int u)
+{
+    while (u != DisjointSet[u].Parent)
+        u = DisjointSet[u].Parent;
+        //For path compression:
+        //DisjointSet[u].Parent =
+        //    FindSet(DisjointSet[u].Parent);
+    return u;
+}
+void UnionSets(int u, int v)
+{
+    if (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)
+        DisjointSet[v].Parent = u;
+    else
+        DisjointSet[u].Parent = v;
+    if (DisjointSet[u].Rank == DisjointSet[v].Rank)
+        DisjointSet[u].Rank++;
+}
+void Initialization()
+{
+    GenEdges();
+    sort(Edges.begin(), Edges.end(),
+        [](pair&lt;pair&lt;int, int&gt;, int&gt;a,
+            pair&lt;pair&lt;int, int&gt;, int&gt;b)
+        {return a.second &lt; b.second; });
+    MakeSets();
+    MST.clear();
+}
+void GenEdges()
+{
+    Edges.clear();
+    //Traverse the upper triangle of WMatrix
+    for (int i = 0; i &lt; n - 1; i++)
+    {
+        for (int j = i + 1; j &lt; n; j++)
+            if (WMatrix[i][j] != INF)
+                Edges.push_back({ {i, j},
+                    WMatrix[i][j] });
+    }
+}
+void MakeSets()
+{
+    DisjointSet.clear();
+    for (int i = 0; i &lt; n; i++)
+        DisjointSet.push_back(DJSNode(i));
+}
+void OutputWMatrix()
+{
+    printf(&quot;n = %d\n&quot;, n);
+    printf(&quot;The weight matrix:\n&quot;);
+    printf(&quot;%3c&quot;, &#39; &#39;);
+    for (int j = 0; j &lt; n; j++)
+        printf(&quot;%3d&quot;, j + 1);
+    printf(&quot;\n&quot;);
+    for (int i = 0; i &lt; n; i++)
+    {
+        printf(&quot;%3d&quot;, i + 1);
+        for (auto j : WMatrix[i])
+            if (j &lt; INF)
+                printf(&quot;%3d&quot;, j);
+            else
+                printf(&quot;%3c&quot;, &#39;*&#39;);
+        printf(&quot;\n&quot;);
+    }
+}
+void OutputPath(int u)
+{
+    if (Prev[u] == -1)
+        printf(&quot;%d&quot;, u + 1);
+    else
+    {
+        OutputPath(Prev[u]);
+        printf(&quot;-%d&quot;, u + 1);
+    }
+}
+void GenMSTList()
+{
+    MSTList.clear();
+    MSTList.resize(n);
+    for (auto &amp;e: MST)
+    {
+        MSTList[e.first].push_back(e.second);
+        MSTList[e.second].push_back(e.first);
+    }
+}
+void GenPrev(int v)
+{
+    for (auto &amp;u : MSTList[v])
+        if (u != -1)
+        {
+            Prev[u] = v;
+            auto w = find(MSTList[u].begin(),
+                MSTList[u].end(), v);
+            MSTList[u][w - MSTList[u].begin()] = -1;
+            GenPrev(u);
+        }
+}
+void Output(int v0)
+{
+    printf(&quot;Kruskal&#39;s MST algorithm\n&quot;);
+    OutputWMatrix();
+    int wSum = 0;
+    for (int i = 0; i &lt; n - 1; i++)
+        wSum += WMatrix[MST[i].first][MST[i].second];
+    GenMSTList();
+    Prev.clear();
+    Prev.resize(n);
+    Prev[v0] = -1;
+    GenPrev(v0);
+    printf(&quot;The MST edges:\n&quot;);
+    printf(&quot;Edge Weight\n&quot;);
+    for (auto &amp;e : MST)
+        printf(&quot; %d-%d  %d\n&quot;, e.first + 1, e.second + 1,
+            WMatrix[e.first][e.second]);
+    printf(&quot;Total MST weight: %d\n&quot;, wSum);
+    printf(&quot;The MST paths from vertex %d:\n&quot;, v0 + 1);
+    for (int u = 0; u &lt; n; u++)
+        if (u != v0)
+        {
+            printf(&quot;%3d: &quot;, u + 1);
+            OutputPath(u);
+            printf(&quot;\n&quot;);
+        }
+    printf(&quot;\n&quot;);
+}
+} //namespace NS_KruskalMST
+using namespace NS_KruskalMST;
+void TestKruskalMST(int v0 = 0)
+{
+    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; w = {
+        //https://www.geeksforgeeks.org/
+        //prims-minimum-spanning-tree-mst-greedy-algo-5/
+        {
+            {   0,  2,INF,  6,INF },
+            {   2,  0,  3,  8,  5 },
+            { INF,  3,  0,INF,  7 },
+            {   6,  8,INF,  0,  9 },
+            { INF,  5,  7,  9,  0 }
+        },
+        // Dijkstra&#39;s algorithm on Wikipedia
+        {
+            {   0,  7,  9,INF,INF, 14 },
+            {   7,  0, 10, 15,INF,INF },
+            {   9, 10,  0, 11,INF,  2 },
+            { INF, 15, 11,  0,  6,INF },
+            { INF,INF,INF,  6,  0,  9 },
+            {  14,INF,  2,INF,  9,  0 },
+        },
+        //https://www.geeksforgeeks.org/
+        //kruskals-minimum-spanning-tree-using-stl-in-c/
+        {
+            {   0,  4,INF,INF,INF,INF,INF,  8,INF },
+            {   4,  0,  8,INF,INF,INF,INF, 11,INF },
+            { INF,  8,  0,  7,INF,  4,INF,INF,  2 },
+            { INF,INF,  7,  0,  9, 14,INF,INF,INF },
+            { INF,INF,INF,  9,  0, 10,INF,INF,INF },
+            { INF,INF,  4, 14, 10,  0,  2,INF,INF },
+            { INF,INF,INF,INF,INF,  2,  0,  1,  6 },
+            {   8, 11,INF,INF,INF,INF,  1,  0,  7 },
+            { INF,INF,  2,INF,INF,INF,  6,  7,  0 },
+        },
+    };
+    int k = w.size();
+    for (int i = 0; i &lt; k; i++)
+    {
+      if (v0 &gt; w[i].size() - 1)
+        v0 = w[i].size() - 1;
+      KruskalMSTCaller(w[i].size(), w[i], v0);
+    }
+}
+</code></pre>
 
       </div>
     </div>
@@ -131,7 +355,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/ghf568.md" download target="_blank">贪心算法-Kruskal 算法.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:47</li>
+		<li>最后编辑时间: 2020-12-06 12:57:54</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/ghf568/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -476,7 +700,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms920083zvndbo6gx1jd" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snu200833rnbm3wfwh6x" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -485,6 +709,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

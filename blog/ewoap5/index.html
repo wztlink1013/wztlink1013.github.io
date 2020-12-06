@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="P150.逆波兰表达式求值">
   <meta property="og:description" content="P150.逆波兰表达式求值">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   
   <link rel="next" href="https://www.wztlink1013.com/blog/gw1d4z/" title="部署出错at formatNunjucksError" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -92,7 +94,127 @@
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
         <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wztlink1013.problems.leetcode.editor.cn;</span><br><span class="line"></span><br><span class="line"><span class="comment">// P150.逆波兰表达式求值</span></span><br><span class="line"><span class="comment">// P150.evaluate-reverse-polish-notation</span></span><br><span class="line"><span class="comment">//根据 逆波兰表示法，求表达式的值。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 整数除法只保留整数部分。</span></span><br><span class="line"><span class="comment">// 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 示例 1：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 输入: ["2", "1", "+", "3", "*"]</span></span><br><span class="line"><span class="comment">//输出: 9</span></span><br><span class="line"><span class="comment">//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 示例 2：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 输入: ["4", "13", "5", "/", "+"]</span></span><br><span class="line"><span class="comment">//输出: 6</span></span><br><span class="line"><span class="comment">//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 示例 3：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 输入: ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]</span></span><br><span class="line"><span class="comment">//输出: 22</span></span><br><span class="line"><span class="comment">//解释:</span></span><br><span class="line"><span class="comment">//该算式转化为常见的中缀算术表达式为：</span></span><br><span class="line"><span class="comment">//  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5</span></span><br><span class="line"><span class="comment">//= ((10 * (6 / (12 * -11))) + 17) + 5</span></span><br><span class="line"><span class="comment">//= ((10 * (6 / -132)) + 17) + 5</span></span><br><span class="line"><span class="comment">//= ((10 * 0) + 17) + 5</span></span><br><span class="line"><span class="comment">//= (0 + 17) + 5</span></span><br><span class="line"><span class="comment">//= 17 + 5</span></span><br><span class="line"><span class="comment">//= 22</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 逆波兰表达式：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。</span></span><br><span class="line"><span class="comment">// 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 逆波兰表达式主要有以下两个优点：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。</span></span><br><span class="line"><span class="comment">// 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Related Topics 栈</span></span><br><span class="line"><span class="comment">// 👍 213 👎 0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Stack;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">P150EvaluateReversePolishNotation</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Solution solution = <span class="keyword">new</span> P150EvaluateReversePolishNotation().<span class="keyword">new</span> Solution();</span><br><span class="line">        String[] tokens_1 = &#123;<span class="string">"10"</span>, <span class="string">"6"</span>, <span class="string">"9"</span>, <span class="string">"3"</span>, <span class="string">"+"</span>, <span class="string">"-11"</span>, <span class="string">"*"</span>, <span class="string">"/"</span>, <span class="string">"*"</span>, <span class="string">"17"</span>, <span class="string">"+"</span>, <span class="string">"5"</span>, <span class="string">"+"</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> temp = solution.evalRPN(tokens_1);</span><br><span class="line">        System.out.println(temp);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//leetcode submit region begin(Prohibit modification and deletion)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(String[] tokens)</span> </span>&#123;</span><br><span class="line">        Stack&lt;String&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        String temp = <span class="string">"0"</span>;</span><br><span class="line">        stack.push(temp);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String token : tokens) &#123;</span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (token.equals(<span class="string">"+"</span>)) &#123;</span><br><span class="line">                sum += Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop());</span><br><span class="line">                String str = String.valueOf(sum);</span><br><span class="line">                stack.push(str);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">"-"</span>)) &#123;</span><br><span class="line">                <span class="keyword">int</span> i = Integer.parseInt(stack.pop());</span><br><span class="line">                <span class="keyword">int</span> j = Integer.parseInt(stack.pop());</span><br><span class="line">                sum += j-i;</span><br><span class="line">                String str = String.valueOf(sum);</span><br><span class="line">                stack.push(str);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">"*"</span>)) &#123;</span><br><span class="line">                sum += Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop());</span><br><span class="line">                String str = String.valueOf(sum);</span><br><span class="line">                stack.push(str);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">"/"</span>)) &#123;</span><br><span class="line">                <span class="keyword">int</span> i = Integer.parseInt(stack.pop());</span><br><span class="line">                <span class="keyword">int</span> j = Integer.parseInt(stack.pop());</span><br><span class="line">                sum += j / i;</span><br><span class="line">                String str = String.valueOf(sum);</span><br><span class="line">                stack.push(str);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                stack.push(token);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> result = Integer.parseInt(stack.pop());</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//leetcode submit region end(Prohibit modification and deletion)</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+
+// P150.逆波兰表达式求值
+// P150.evaluate-reverse-polish-notation
+//根据 逆波兰表示法，求表达式的值。
+//
+// 有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
+//
+//
+//
+// 说明：
+//
+//
+// 整数除法只保留整数部分。
+// 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。
+//
+//
+//
+//
+// 示例 1：
+//
+// 输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]
+//输出: 9
+//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
+//
+//
+// 示例 2：
+//
+// 输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;]
+//输出: 6
+//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
+//
+//
+// 示例 3：
+//
+// 输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]
+//输出: 22
+//解释:
+//该算式转化为常见的中缀算术表达式为：
+//  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+//= ((10 * (6 / (12 * -11))) + 17) + 5
+//= ((10 * (6 / -132)) + 17) + 5
+//= ((10 * 0) + 17) + 5
+//= (0 + 17) + 5
+//= 17 + 5
+//= 22
+//
+//
+//
+// 逆波兰表达式：
+//
+// 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。
+//
+//
+// 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。
+// 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。
+//
+//
+// 逆波兰表达式主要有以下两个优点：
+//
+//
+// 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。
+// 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。
+//
+// Related Topics 栈
+// 👍 213 👎 0
+
+
+import java.util.Stack;
+
+public class P150EvaluateReversePolishNotation{
+    public static void main(String[] args) {
+        Solution solution = new P150EvaluateReversePolishNotation().new Solution();
+        String[] tokens_1 = {&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;};
+        int temp = solution.evalRPN(tokens_1);
+        System.out.println(temp);
+
+    }
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack&lt;String&gt; stack = new Stack&lt;&gt;();
+
+        String temp = &quot;0&quot;;
+        stack.push(temp);
+
+        for (String token : tokens) {
+            int sum = 0;
+            if (token.equals(&quot;+&quot;)) {
+                sum += Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop());
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else if (token.equals(&quot;-&quot;)) {
+                int i = Integer.parseInt(stack.pop());
+                int j = Integer.parseInt(stack.pop());
+                sum += j-i;
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else if (token.equals(&quot;*&quot;)) {
+                sum += Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop());
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else if (token.equals(&quot;/&quot;)) {
+                int i = Integer.parseInt(stack.pop());
+                int j = Integer.parseInt(stack.pop());
+                sum += j / i;
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else {
+                stack.push(token);
+            }
+        }
+        int result = Integer.parseInt(stack.pop());
+        return result;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+}
+</code></pre>
 
       </div>
     </div>
@@ -114,7 +236,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/ewoap5.md" download target="_blank">P150.逆波兰表达式求值.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:47</li>
+		<li>最后编辑时间: 2020-12-06 12:57:54</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/ewoap5/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -371,7 +493,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/fgkbg2/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195777983-5574f7c4-135c-45c2-aef2-6118e954bf68.png#align=left&amp;display=inline&amp;height=172&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=343&amp;originWidth=726&amp;size=36403&amp;status=done&amp;style=shadow&amp;width=363"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -381,7 +503,7 @@
 				<span class="aria-readonly">发表时间为2020年09月06日</span>
 				<div class="relative-box">
           <a href="/blog/kgpm3x/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195857807-2e8c8296-2d79-4e36-b304-f02c4dee52b3.png#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=200&amp;originWidth=729&amp;size=15034&amp;status=done&amp;style=shadow&amp;width=364.5" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195857807-2e8c8296-2d79-4e36-b304-f02c4dee52b3.png#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=200&amp;originWidth=729&amp;size=15034&amp;status=done&amp;style=shadow&amp;width=364.5"/></a>
-          <span class="aria-readonly">文章概要 </span>/** * public class ListNode &#123; *     int val; ...
+          <span class="aria-readonly">文章概要 </span>/** * public class ListNode { *     int val; *    ...
         </div>
 			</li>
 			
@@ -444,7 +566,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms5n0027zvndz61ert6h" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snqj00273rnbkc5n023m" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -453,6 +575,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">

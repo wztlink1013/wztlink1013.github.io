@@ -15,13 +15,13 @@
   <meta property="og:site_name" content="DOM（文档对象模型）">
   <meta property="og:description" content="DOM学习笔记">
   <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长验证 -->
+  <!-- 百度站长 -->
   <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
-  <!-- 谷歌站长验证 -->
+  <!-- 谷歌站长 -->
   <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- <meta name="renderer" content="webkit"> -->
-  <!-- 下面的是语雀图片不显示的解决办法 -->
+  <!-- 解决语雀图片不显示 -->
   <meta name="referrer" content="no-referrer" />
   <!-- 搜狗站长 -->
   <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
@@ -30,11 +30,13 @@
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/yoi6sh/" title="BOM（浏览器对象模型）" />
   <link rel="next" href="https://www.wztlink1013.com/blog/tzgflu/" title="DB_MBook初始化" />
-  <!-- TODO: entry_blog -->
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
   <link rel="stylesheet" href="/public/css/style.css?v=20191101">
-  <!-- TODO: 使用font-awesome-4.7.0 -->
-  <link rel="stylesheet" href="/public/css/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.18.1/styles/solarized-light.css">
+
 </head>
 
 
@@ -103,20 +105,33 @@
 <h2 id="改变-HTML"><a href="#改变-HTML" class="headerlink" title="改变 HTML"></a>改变 HTML</h2><ul>
 <li>直接通过 js 将新的内容加入到 HTML 内容中，不过需要需要注意的就是，不要在 HTMl 都加载完了再触发该 js，不然会让新加的内容覆盖原来的已加载完的 HTML 内容。</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;<span class="built_in">document</span>.write(<span class="built_in">Date</span>());&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;script&gt;document.write(Date());&lt;/script&gt;
+</code></pre>
 <ul>
 <li>改变 HTML 内容</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">var</span> element=<span class="built_in">document</span>.getElementById(<span class="string">"header"</span>); element.innerHTML=<span class="string">"新标题"</span>;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;script&gt;
+  var element=document.getElementById(&quot;header&quot;); element.innerHTML=&quot;新标题&quot;;
+&lt;/script&gt;
+</code></pre>
 <ul>
 <li>改变 HTML 属性</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;<span class="built_in">document</span>.getElementById(<span class="string">"image"</span>).src=<span class="string">"landscape.jpg"</span>;&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="改变-CSS"><a href="#改变-CSS" class="headerlink" title="改变 CSS"></a>改变 CSS</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">"p2"</span>).style.color=<span class="string">"blue"</span>;</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">"p2"</span>).style.fontFamily=<span class="string">"Arial"</span>;</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">"p2"</span>).style.fontSize=<span class="string">"larger"</span>;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;script&gt;document.getElementById(&quot;image&quot;).src=&quot;landscape.jpg&quot;;&lt;/script&gt;
+</code></pre>
+<h2 id="改变-CSS"><a href="#改变-CSS" class="headerlink" title="改变 CSS"></a>改变 CSS</h2><pre><code class="javascript">&lt;script&gt;
+  document.getElementById(&quot;p2&quot;).style.color=&quot;blue&quot;;
+  document.getElementById(&quot;p2&quot;).style.fontFamily=&quot;Arial&quot;;
+  document.getElementById(&quot;p2&quot;).style.fontSize=&quot;larger&quot;;
+&lt;/script&gt;
+</code></pre>
 <blockquote>
 <p>改变 CSS 也可以用触发事件的方式来改变</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;h1 id=<span class="string">"id1"</span>&gt;我的标题 <span class="number">1</span>&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">&lt;button type="button"</span></span><br><span class="line"><span class="regexp">onclick="document.getElementById('id1').style.color='red'"&gt;点我!&lt;/</span>button&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;h1 id=&quot;id1&quot;&gt;我的标题 1&lt;/h1&gt;
+&lt;button type=&quot;button&quot;
+onclick=&quot;document.getElementById(&#39;id1&#39;).style.color=&#39;red&#39;&quot;&gt;点我!&lt;/button&gt;
+</code></pre>
 <h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><blockquote>
 <p>当对 HTML 元素或者鼠标执行某些行为的时候，就会触发一些时间</p>
 </blockquote>
@@ -156,7 +171,32 @@
 <li>创建新的 HTML 元素 (节点) - appendChild()</li>
 <li>创建新的 HTML 元素 (节点) - insertBefore()</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">&lt;title&gt;菜鸟教程(runoob.com)&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;div id=<span class="string">"div1"</span>&gt;</span><br><span class="line">&lt;p id=<span class="string">"p1"</span>&gt;这是一个段落。&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">&lt;p id="p2"&gt;这是另外一个段落。&lt;/</span>p&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">var para = document.createElement("p");</span></span><br><span class="line"><span class="regexp">var node = document.createTextNode("这是一个新的段落。");</span></span><br><span class="line"><span class="regexp">para.appendChild(node);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">var element = document.getElementById("div1");</span></span><br><span class="line"><span class="regexp">var child = document.getElementById("p1");</span></span><br><span class="line"><span class="regexp">element.insertBefore(para, child);</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br><span class="line"></span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div id=&quot;div1&quot;&gt;
+&lt;p id=&quot;p1&quot;&gt;这是一个段落。&lt;/p&gt;
+&lt;p id=&quot;p2&quot;&gt;这是另外一个段落。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+var para = document.createElement(&quot;p&quot;);
+var node = document.createTextNode(&quot;这是一个新的段落。&quot;);
+para.appendChild(node);
+
+var element = document.getElementById(&quot;div1&quot;);
+var child = document.getElementById(&quot;p1&quot;);
+element.insertBefore(para, child);
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 <ul>
 <li>移除已存在的元素</li>
 </ul>
@@ -168,7 +208,30 @@
 <li>length 属性，类似数组，但不是！也就意味着没有通常我们印象中的数组其他属性。</li>
 </ul>
 <h2 id="NodeList"><a href="#NodeList" class="headerlink" title="NodeList"></a>NodeList</h2><p>NodeList 对象是一个从文档中获取的节点列表 (集合) 。<br>NodeList 对象类似 HTMLCollection 对象。<br>一些旧版本浏览器中的方法（如：getElementsByClassName()）返回的是 NodeList 对象，而不是 HTMLCollection 对象。<br>所有浏览器的 childNodes 属性返回的是 NodeList 对象。<br>大部分浏览器的 querySelectorAll() 返回 NodeList 对象。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">&lt;title&gt;菜鸟教程(runoob.com)&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;h2&gt;JavaScript HTML DOM!&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;p&gt;Hello World!&lt;/</span>p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;Hello Runoob!&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;p id="demo"&gt;&lt;/</span>p&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">var</span> myNodelist = <span class="built_in">document</span>.querySelectorAll(<span class="string">"p"</span>);</span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">"demo"</span>).innerHTML = <span class="string">"文档包含 "</span> + myNodelist.length + <span class="string">" 个段落。"</span>;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;/</span>body&gt;</span><br><span class="line">&lt;<span class="regexp">/html&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="javascript">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h2&gt;JavaScript HTML DOM!&lt;/h2&gt;
+
+&lt;p&gt;Hello World!&lt;/p&gt;
+
+&lt;p&gt;Hello Runoob!&lt;/p&gt;
+
+&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+var myNodelist = document.querySelectorAll(&quot;p&quot;);
+document.getElementById(&quot;demo&quot;).innerHTML = &quot;文档包含 &quot; + myNodelist.length + &quot; 个段落。&quot;;
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 <p><strong>两者区别：</strong><br>HTMLCollection 是 HTML 元素的集合。<br>NodeList 是一个文档节点的集合。<br>NodeList 与 HTMLCollection 有很多类似的地方。<br>NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, …) 来获取元素。<br>NodeList 与 HTMLCollection 都有 length 属性。<br>HTMLCollection 元素可以通过 name，id 或索引来获取。<br>NodeList 只能通过索引来获取。<br>只有 NodeList 对象有包含属性节点和文本节点。</p>
 <h2 id="querySelector"><a href="#querySelector" class="headerlink" title="querySelector"></a>querySelector</h2><blockquote>
 <p>功能：返回文档中匹配指定的 CSS 选择器中的一个元素</p>
@@ -195,7 +258,7 @@
 		
 		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/fkgmui.md" download target="_blank">DOM（文档对象模型）.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 3.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh" target="_blank">CC BY-NC-ND 3.0</a>）</li>
-		<li>最后编辑时间: 2020-12-05 04:13:48</li>
+		<li>最后编辑时间: 2020-12-06 12:57:56</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/fkgmui/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -447,7 +510,7 @@
 				<span class="aria-readonly">发表时间为2020年11月14日</span>
 				<div class="relative-box">
           
-          <span class="aria-readonly">文章概要 </span>常用形式[](int x, int y) -&gt; int &#123; int z = x + ...
+          <span class="aria-readonly">文章概要 </span>常用形式[](int x, int y) -&gt; int { int z = x + y; re...
         </div>
 			</li>
 			
@@ -540,7 +603,7 @@
 			<!-- TODO:  网站信息：网站最底下的信息-->
 
 <div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/admin/#/posts/ckib6ms5v002kzvnd92nc8ngn" target="_blank">🧙‍♂️</a>
+	<a class="page_editor" href="/admin/#/posts/ckid4snqp002k3rnb0r6qcqse" target="_blank">🧙‍♂️</a>
 	<span>&copy;2019-2020 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
 	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
 	<a href='https://union.zhaodao.ai/#random' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
@@ -549,6 +612,11 @@
 		</div>
 	</div>
 </div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
 </div>
 <!-- TODO: 回到顶部 -->
 <div class="tools-wrapper" tabindex="0" aria-hidden="true">
