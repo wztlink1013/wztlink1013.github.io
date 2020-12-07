@@ -471,8 +471,8 @@ var operation = {
     $.getScript('https://changyan.sohu.com/upload/changyan.js', function () {
       try {
         window.changyan.api.config({
-          appid: 'cyt0XnPCt',
-          conf: 'prod_5fde9cb8b23a2209a1ad60ab2dd5fe82'
+          appid: 'cyuNYQOX7',
+          conf: '97d154a54b3006d5dd823b82262c5e05'
         });
       } catch (e) {}
     });
