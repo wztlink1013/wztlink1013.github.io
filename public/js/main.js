@@ -1324,5 +1324,12 @@ $(function () {
 new Valine({
   el: '#vcomments',
   appId: 'X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz',
-  appKey: 'eLj5sRf1iOMf8SL8me8IJtdM'
+  appKey: 'eLj5sRf1iOMf8SL8me8IJtdM',
+  placeholder: '小伙伴也可以填写上述信息用Valine评论',
+  meta: ['nick','mail','link'],
+  avatar: 'robohash',
+  pageSize: 5,
+  highlight: true,
+  recordIP: true,
+  visitor: true
 })
