@@ -1320,7 +1320,7 @@ $(function () {
   });
 });
 
-// TODO: valine评论，css无效，js代码在main里面
+// TODO: valine评论
 new Valine({
   el: '#vcomments',
   appId: 'X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz',
