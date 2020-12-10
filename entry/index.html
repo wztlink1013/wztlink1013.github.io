@@ -38,7 +38,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
   <!-- 引入valine所需js -->
   <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
-
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz", "eLj5sRf1iOMf8SL8me8IJtdM");</script>
 </head>
 
 
@@ -79,7 +80,38 @@
 	<div class="clearfix response-overflow">
 	<!-- TODO:  右侧边栏-->
 	<div class="rightbar">
-		<!-- TODO:  文章分类组件（js代码写成）-->
+		<!-- TODO:  热门文章 -->
+		<div id="hot" class="rightbar-frame" aria-hidden="true">
+			<h2>热门文章</h2>
+			<ul>
+			<script type="text/javascript">
+				var time=0
+				var title=""
+				var url=""
+				var query = new AV.Query('Counter');
+				query.notEqualTo('#hot',0);
+				query.descending('time');
+				query.limit(1000);
+				query.find().then(function (todo) {
+					// 只展示9条热门文章,太多了放不下
+				  for (var i=0;i<9;i++){
+					var result=todo[i].attributes;
+					time=result.time;
+					title=result.title;
+					url=result.url;
+					var content="<p>"+
+						"<font color='#1C1C1C'>"+"🌡"+time+"℃:"+"</font>"+
+						"<a href='"+"https://www.wztlink1013.com"+url+"'>"+title+"</a>"+
+						"</p>";
+					document.getElementById("hot").innerHTML+=content
+				  }
+				}, function (error) {
+				  console.log("error");
+				});
+			  </script>
+			  </ul>
+		</div>
+		<!-- TODO:  文章分类 -->
 		<div class="entry-cates" aria-hidden="true">
 			<h2>文章分类</h2>
 			<ul>
@@ -110,10 +142,6 @@
 				
 			</ul>
 		</div>
-		<!-- TODO:  微博秀-->
-		<div class="rightbar-frame" aria-hidden="true">
-		</div>
-
 	</div>
 
 	<!-- TODO:  左侧边栏js代码-->
@@ -279,7 +307,7 @@
     }
 </style>
 <span><b>utterances评论区</b></span>
-<em>登录GitHub评论（推荐）</em>
+<em>（登录GitHub评论<b>推荐</b>）</em>
 
 <script src="https://utteranc.es/client.js"
     repo="wztlink1013/comment"
@@ -292,6 +320,7 @@
 
 
 <span><b>valine评论区</b></span>
+<em>（填写昵称邮箱）</em>
 <div id="vcomments" class="valine-container"></div>
 
 <!-- TODO:  网站信息：网站最底下的信息-->

@@ -478,22 +478,22 @@ var operation = {
   //   });
   // },
   // FIXME: 插入微博卡片
-  insertWeibo: function () {
-    var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="//widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=3456263867&verifier=73dc4ca5&dpc=1"></iframe>';
-    if (/\/blog\//.test(window.location.href) && !isMobile.any() && ($(window).width() > 992) && !$(".rightbar-frame iframe").size()) {
-      // $(window).on("load", function() {
-      var $ifr = $(".rightbar-frame");
-      if (!$ifr.find('iframe').size()) {
-        $(window).on('load', function () {
-          $ifr.css("background", "none").append(htmlStr);
-        });
-      }
-      // });
-    }
-    if (isMobile.any()) {
-      $(".rightbar-frame").remove()
-    }
-  },
+  // insertWeibo: function () {
+  //   var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="//widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=3456263867&verifier=73dc4ca5&dpc=1"></iframe>';
+  //   if (/\/blog\//.test(window.location.href) && !isMobile.any() && ($(window).width() > 992) && !$(".rightbar-frame iframe").size()) {
+  //     // $(window).on("load", function() {
+  //     var $ifr = $(".rightbar-frame");
+  //     if (!$ifr.find('iframe').size()) {
+  //       $(window).on('load', function () {
+  //         $ifr.css("background", "none").append(htmlStr);
+  //       });
+  //     }
+  //     // });
+  //   }
+  //   if (isMobile.any()) {
+  //     $(".rightbar-frame").remove()
+  //   }
+  // },
   // FIXME:
   alertMsg: function (msg, tag) {
     if (!msg) return;
