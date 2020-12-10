@@ -242,7 +242,7 @@ var operation = {
     this.footerNav();
     this.bind();
     this.tips();
-    this.insertWeibo();
+    // this.insertWeibo();
     // $(window).on('load', function () {
     //   setTimeout(function () {
     //     $this.loadChangyanCount();
@@ -394,7 +394,7 @@ var operation = {
       $ctt.prepend(wechatStr);
       wechat('network', function (res) {
         var network = res.err_msg.split(':')[1];
-        network = network == 'wifi' ? 'wifi' : network == 'wwan' ? '5g' : '4g';
+        network = network == 'wifi' ? 'wifi' : network == 'wwan' ? '4g' : '5g';
         $(".wechat-net").text(network);
       });
       $(".wechat-email").on("click", function () {
@@ -591,9 +591,9 @@ var operation = {
         }
       });
     }
-    $(window).on("resize", function () {
-      self.insertWeibo();
-    });
+    // $(window).on("resize", function () {
+    //   self.insertWeibo();
+    // });
     $(window).on("keydown", function (evt) {
       if (evt.shiftKey && evt.altKey) {
         if (evt.keyCode == 39) { // right
