@@ -1,7 +1,8 @@
-var searchFunc = function (path="www.wztlink1013.com", search_id, content_id) {
+var searchFunc = function (path, search_id, content_id) {
   'use strict';
   var BTN = "<i id='local-search-close'>x</i>";
   $.ajax({
+    // path: www.wztlink1013.com,
     url: path,
     dataType: "xml",
     success: function (xmlResponse) {
@@ -58,10 +59,9 @@ var searchFunc = function (path="www.wztlink1013.com", search_id, content_id) {
           } else {
             isMatch = false;
           }
-          // TODO: show search results【data_url不能变】
+          // show search results
           if (isMatch) {
             str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
-            // str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
             var content = data.content.trim().replace(/<[^>]+>/g, "");
             if (first_occur >= 0) {
               // cut out 100 characters
@@ -92,8 +92,6 @@ var searchFunc = function (path="www.wztlink1013.com", search_id, content_id) {
             }
             str += "</li>";
           }
-
-          
         });
         str += "</ul>";
         if (str.indexOf('<li>') === -1) {
