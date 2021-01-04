@@ -631,7 +631,7 @@ var operation = {
         // shift + alt + o
         if (evt.keyCode === 79 && /blog\/(\d+\/){3}/.test(window.location.pathname)) {
           var path = window.location.pathname.slice(6, -1).replace(/\//g, "-") + ".md";
-          var jumpUrl = "https://github.com/barretlee/blog/edit/master/blog/src/_posts/" + path;
+          var jumpUrl = "https://github.com/wztlink1013/blog/edit/master/blog/src/_posts/" + path;
           window.open(jumpUrl);
         }
       }
@@ -711,7 +711,7 @@ var operation = {
       x()
     }
   },
-  // FIXME: 回到顶部
+  // FIXME: 回到顶部 
   toTop: function () {
     var $toTop = $(".gotop");
 
@@ -947,7 +947,7 @@ var decoration = {
     } else {
       $(".func-nav").parent().on("click", function () {
         $("#menuIndex").slideToggle();
-        var text = $(this).find("a").text() == "显示目录" ? "隐藏目录" : "显示目录";
+        var text = $(this).find("a").text() == "开" ? "关" : "开";
         $(this).find("a").text(text);
       });
     }
