@@ -839,7 +839,8 @@ var decoration = {
   },
   // FIXME: 目录
   menuIndex: function ($obj) {
-    if ($('h2', $obj).length >= 1 && !isMobile.any()) {
+    // $('h2', $obj).length >= 1 && !isMobile.any()
+    if ($('h2', $obj).length >= 1) {
       var h2 = [],
         h3 = [],
         tmpl = '<ul>',
@@ -940,10 +941,10 @@ var decoration = {
   navTurner: function () {
     if ($("#menuIndex a").size() < 3) {
       $(".func-nav").parent().find("a")
-        .text("首页瞧瞧~").parents(".func-item").off().on("click", function () {
+        .text("首").parents(".func-item").off().on("click", function () {
           window.location.href = "/";
         });
-      $(".func-nav span").text("首页");
+      $(".func-nav span").text("首");
     } else {
       $(".func-nav").parent().on("click", function () {
         $("#menuIndex").slideToggle();
