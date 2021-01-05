@@ -771,8 +771,7 @@ private void rangeCheckForAdd(int index) {
     }
 }
 </code></pre>
-<h3 id="构造函数设计"><a href="#构造函数设计" class="headerlink" title="构造函数设计"></a>构造函数设计</h3><p>在 new 一个对象之后，给定空间大小，抑或是扩容</p>
-<pre><code class="java">public ArrayList(int capaticy) {
+<h3 id="构造函数设计"><a href="#构造函数设计" class="headerlink" title="构造函数设计"></a>构造函数设计</h3><pre><code class="java">public ArrayList(int capaticy) {
     capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
     elements = (E[]) new Object[capaticy];
 }
@@ -1259,7 +1258,7 @@ pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避
     <title>JAVA-泛型</title>
     <url>/blog/ef1q5c/</url>
     <content><![CDATA[<p>###</p>
-<p>TODO: 有时候尖括号中有 E，有时候没有，查清楚</p>
+<p>类似 C++里面的模板，定义的时候就是直接在后面加上<e> <code>public class ArrayList&lt;E&gt;</code>  使用就是 <code>private E[] array</code> ;</e></p>
 <p>##</p>
 ]]></content>
       <categories>
@@ -6065,7 +6064,88 @@ Require stack:
   <entry>
     <title>JAVA-正则表达式</title>
     <url>/blog/xm1a2g/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h2 id="常见匹配符号"><a href="#常见匹配符号" class="headerlink" title="常见匹配符号"></a>常见匹配符号</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">正则表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>.</code></td>
+<td style="text-align:center">匹配所有单个字符，除了换行符（Linux 中换行是 <code>\n</code>，Windows 中换行是 <code>\r\n</code>）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>^regex</code></td>
+<td style="text-align:center">正则必须匹配字符串开头</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>regex$</code></td>
+<td style="text-align:center">正则必须匹配字符串结尾</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[abc]</code></td>
+<td style="text-align:center">复选集定义，匹配字母 a 或 b 或 c</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[abc][vz]</code></td>
+<td style="text-align:center">复选集定义，匹配字母 a 或 b 或 c，后面跟着 v 或 z</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[^abc]</code></td>
+<td style="text-align:center">当插入符 <code>^</code> 在中括号中以第一个字符开始显示，则表示否定模式。此模式匹配所有字符，除了 a 或 b 或 c</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[a-d1-7]</code></td>
+<td style="text-align:center">范围匹配，匹配字母 a 到 d 和数字从 1 到 7 之间，但不匹配 d1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>XZ</code></td>
+<td style="text-align:center">匹配 X 后直接跟着 Z</td>
+</tr>
+<tr>
+<td style="text-align:center">X&#124;Z</td>
+<td style="text-align:center">匹配 X 或 Z</td>
+</tr>
+</tbody>
+</table>
+<h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">正则表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>\d</code></td>
+<td style="text-align:center">匹配一个数字，是 <code>[0-9]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\D</code></td>
+<td style="text-align:center">匹配一个非数字，是 <code>[^0-9]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\s</code></td>
+<td style="text-align:center">匹配一个空格，是 <code>[ \t\n\x0b\r\f]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\S</code></td>
+<td style="text-align:center">匹配一个非空格</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\w</code></td>
+<td style="text-align:center">匹配一个单词字符（大小写字母、数字、下划线），是 <code>[a-zA-Z_0-9]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\W</code></td>
+<td style="text-align:center">匹配一个非单词字符（除了大小写字母、数字、下划线之外的字符），等同于 <code>[^\w]</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h2><p>| 正则表达式 | 描述 | 举例 |<br>| <code>*</code> | 匹配 &gt;=0 个，是 <code>{0,}</code> 的简写 | <code>X*</code> 表示匹配零个或多个字母 X，<code>.*</code> 表示匹配任何字符串 |<br>| :—: | :—: | :—: |<br>| <code>+</code> | 匹配 &gt;=1 个，是 <code>{1,}</code> 的简写 | <code>X+</code> 表示匹配一个或多个字母 X |<br>| <code>?</code> | 匹配 1 个或 0 个，是 <code>{0,1}</code> 的简写 | <code>X?</code> 表示匹配 0 个或 1 个字母 X |<br>| <code>{X}</code> | 只匹配 X 个字符 | <code>\d{3}</code> 表示匹配 3 个数字，<code>.{10}</code> 表示匹配任何长度是 10 的字符串 |<br>| <code>{X,Y}</code> | 匹配 &gt;=X 且 &lt;=Y 个 | <code>\d{1,4}</code> 表示匹配至少 1 个最多 4 个数字 |<br>| <code>*?</code> | 如果 <code>?</code> 是限定符 <code>*</code> 或 <code>+</code> 或 <code>?</code> 或 <code>{}</code> 后面的第一个字符，那么表示<strong>非贪婪模式</strong>（尽可能少的匹配字符），而不是默认的<strong>贪婪模式</strong> | |</p>
+]]></content>
       <categories>
         <category>Language</category>
       </categories>
@@ -6808,6 +6888,14 @@ ALTER TABLE users add FOREIGN KEY (pid) REFERENCE provinces (id);
     <content><![CDATA[<h2 id="Queue-队列设计"><a href="#Queue-队列设计" class="headerlink" title="Queue 队列设计"></a>Queue 队列设计</h2><blockquote>
 <p>在头尾两端进行操作，先进先出 FIFO</p>
 </blockquote>
+<p>队列的接口设计</p>
+<pre><code class="java">int size(); //队列元素个数
+boolean isEmpty(); //队列是否为空
+void clear(); //清空队列元素
+void enQueue(E element); //入队
+E deQueue(); // 出队
+E front(); //获取队列的头元素
+</code></pre>
 <pre><code class="java">package com.wztlink1013.ds.queue;
 
 import com.wztlink1013.ds.queue.list.LinkedList;
@@ -9145,7 +9233,7 @@ ${question.code}
 <p><strong>LinkedList</strong>不需要构造函数，<strong>ArrayList</strong>需要，后者需要一个容量的初始化。</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603191040309-0ed4b536-89c0-449d-85cc-e763afcb73ea.png#align=left&amp;display=inline&amp;height=300&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=600&amp;originWidth=557&amp;size=89515&amp;status=done&amp;style=shadow&amp;width=278.5" alt="image.png"></p>
 <h3 id="接口-List-设计"><a href="#接口-List-设计" class="headerlink" title="接口 List 设计"></a>接口 List 设计</h3><blockquote>
-<p>只用来声明对外接口，不能声明</p>
+<p>只用来<strong>声明对外接口</strong>，不能声明</p>
 </blockquote>
 <pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
@@ -9226,7 +9314,12 @@ public interface List&lt;E&gt; {
 
 </code></pre>
 <h3 id="抽象类-AbstractList-设计"><a href="#抽象类-AbstractList-设计" class="headerlink" title="抽象类 AbstractList 设计"></a>抽象类 AbstractList 设计</h3><blockquote>
-<p>放 ArrayList 和 LinkedList 的公共代码<br>声明抽象类 abstract，就意味着可以不用全部实现接口 List 里面的所有方法，</p>
+<p>放 ArrayList 和 LinkedList 的公共代码</p>
+<ul>
+<li>实现 List 接口类的共同代码</li>
+<li>ArrayList 和 LinkedList 都用得到但是不对外公开的代码</li>
+</ul>
+<p>声明抽象类 abstract，就意味着可以不用全部实现接口 List 里面的所有方法</p>
 </blockquote>
 <pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
@@ -9292,7 +9385,9 @@ public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; {
 }
 
 </code></pre>
-<h3 id="ArrayList-设计"><a href="#ArrayList-设计" class="headerlink" title="ArrayList 设计"></a>ArrayList 设计</h3><pre><code class="java">package com.wztlink1013.ds.linkedlist;
+<h3 id="ArrayList-设计"><a href="#ArrayList-设计" class="headerlink" title="ArrayList 设计"></a>ArrayList 设计</h3><blockquote>
+</blockquote>
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
 /**
  *fun：实现动态数组
