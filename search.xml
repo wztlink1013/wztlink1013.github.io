@@ -4277,6 +4277,22 @@ int main()
       </categories>
   </entry>
   <entry>
+    <title>CPP-LINKfatal error LNK1561: 必须定义入口点</title>
+    <url>/blog/oyvpk4/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><pre><code class="cpp">LINK : fatal error LNK1561: 必须定义入口点
+</code></pre>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>每个应用程序(文件格式为 exe)都应该有个启动点，这个点就是 main 函数。缺少就会出现 link error 。</p>
+<p>解决方法</p>
+<ol>
+<li>添加含有 main 函数的 CPP 文件</li>
+<li>右击属性，在常规项中修改配置类型，将应用程序修改为库，动静态库</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Bug</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Jupyter使用总结</title>
     <url>/blog/ouipza/</url>
     <content><![CDATA[<h2 id="一、Jupyter-环境的搭建"><a href="#一、Jupyter-环境的搭建" class="headerlink" title="一、Jupyter 环境的搭建"></a>一、Jupyter 环境的搭建</h2><ol>
@@ -4302,22 +4318,6 @@ int main()
 ]]></content>
       <categories>
         <category>Environment</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CPP-LINKfatal error LNK1561: 必须定义入口点</title>
-    <url>/blog/oyvpk4/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><pre><code class="cpp">LINK : fatal error LNK1561: 必须定义入口点
-</code></pre>
-<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>每个应用程序(文件格式为 exe)都应该有个启动点，这个点就是 main 函数。缺少就会出现 link error 。</p>
-<p>解决方法</p>
-<ol>
-<li>添加含有 main 函数的 CPP 文件</li>
-<li>右击属性，在常规项中修改配置类型，将应用程序修改为库，动静态库</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Bug</category>
       </categories>
   </entry>
   <entry>
@@ -5292,6 +5292,34 @@ myqr.run(
       </categories>
   </entry>
   <entry>
+    <title>P486. 预测赢家</title>
+    <url>/blog/srvbwz/</url>
+    <content><![CDATA[<h3 id="486-预测赢家"><a href="#486-预测赢家" class="headerlink" title="486. 预测赢家"></a>486. 预测赢家</h3><pre><code class="java">class Solution {
+    public boolean PredictTheWinner(int[] nums) {
+        return total(nums, 0, nums.length - 1, 1) &gt;= 0;
+    }
+
+    public int total(int[] nums, int start, int end, int turn) {
+        if (start == end) {
+            return nums[start] * turn;
+        }
+        int scoreStart = nums[start] * turn + total(nums, start + 1, end, -turn);
+        int scoreEnd = nums[end] * turn + total(nums, start, end - 1, -turn);
+        return Math.max(scoreStart * turn, scoreEnd * turn) * turn;
+//        if(turn == 1){
+//            return Math.max(scoreStart ,scoreEnd );
+//        }else{
+//            return Math.min(scoreStart ,scoreEnd );
+//        }
+    }
+}
+</code></pre>
+]]></content>
+      <categories>
+        <category>DataStructure</category>
+      </categories>
+  </entry>
+  <entry>
     <title>P876. 链表的中间结点</title>
     <url>/blog/serpsb/</url>
     <content><![CDATA[<pre><code class="java">/**
@@ -5316,34 +5344,6 @@ myqr.run(
             if (fast == null) return slow;
         }
         return slow;
-    }
-}
-</code></pre>
-]]></content>
-      <categories>
-        <category>DataStructure</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>P486. 预测赢家</title>
-    <url>/blog/srvbwz/</url>
-    <content><![CDATA[<h3 id="486-预测赢家"><a href="#486-预测赢家" class="headerlink" title="486. 预测赢家"></a>486. 预测赢家</h3><pre><code class="java">class Solution {
-    public boolean PredictTheWinner(int[] nums) {
-        return total(nums, 0, nums.length - 1, 1) &gt;= 0;
-    }
-
-    public int total(int[] nums, int start, int end, int turn) {
-        if (start == end) {
-            return nums[start] * turn;
-        }
-        int scoreStart = nums[start] * turn + total(nums, start + 1, end, -turn);
-        int scoreEnd = nums[end] * turn + total(nums, start, end - 1, -turn);
-        return Math.max(scoreStart * turn, scoreEnd * turn) * turn;
-//        if(turn == 1){
-//            return Math.max(scoreStart ,scoreEnd );
-//        }else{
-//            return Math.min(scoreStart ,scoreEnd );
-//        }
     }
 }
 </code></pre>
