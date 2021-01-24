@@ -728,7 +728,18 @@ int main()
   <entry>
     <title>动态数组设计</title>
     <url>/blog/bx5ouf/</url>
-    <content><![CDATA[<h2 id="动态数组设计"><a href="#动态数组设计" class="headerlink" title="动态数组设计"></a>动态数组设计</h2><h3 id="private-设计"><a href="#private-设计" class="headerlink" title="private 设计"></a>private 设计</h3><pre><code class="java">// 元素的数量
+    <content><![CDATA[<h2 id="动态数组设计"><a href="#动态数组设计" class="headerlink" title="动态数组设计"></a>动态数组设计</h2><h3 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h3><pre><code class="java">public int size(); // 返回动态数组元素个数
+public boolean isEmpty(); // 是否为空
+public boolean contains(E element); // 是否包含某个元素
+public void add(E element); // 在数组尾部添加元素
+public E get(int index); // 返回index位置对应的元素
+public E set(int index, E element); // 设置/更换index位置上的值
+public void add (int index, E element); // 在index位置上添加元素
+public E remove(int index); // 移除index位置上的值
+public int indexOf(E element); // 查看元素的位置
+public void clear(); // 清空动态数组所有元素
+</code></pre>
+<h3 id="private-设计"><a href="#private-设计" class="headerlink" title="private 设计"></a>private 设计</h3><pre><code class="java">// 元素的数量
 private int size;
 // 所有的元素
 private E[] elements;
@@ -779,17 +790,6 @@ private void rangeCheckForAdd(int index) {
 public ArrayList() {
     this(DEFAULT_CAPACITY);
 }
-</code></pre>
-<h3 id="对外接口"><a href="#对外接口" class="headerlink" title="对外接口"></a>对外接口</h3><pre><code class="java">public int size(); // 返回动态数组元素个数
-public boolean isEmpty(); // 是否为空
-public boolean contains(E element); // 是否包含某个元素
-public void add(E element); // 在数组尾部添加元素
-public E get(int index); // 返回index位置对应的元素
-public E set(int index, E element); // 设置/更换index位置上的值
-public void add (int index, E element); // 在index位置上添加元素
-public E remove(int index); // 移除index位置上的值
-public int indexOf(E element); // 查看元素的位置
-public void clear(); // 清空动态数组所有元素
 </code></pre>
 <h3 id="重写输出"><a href="#重写输出" class="headerlink" title="重写输出"></a>重写输出</h3><pre><code class="java">@Override
 public String toString() {
@@ -2525,6 +2525,92 @@ void TestHuffmanCoding()
       <categories>
         <category>Algorithm</category>
       </categories>
+  </entry>
+  <entry>
+    <title>P674. 最长连续递增序列</title>
+    <url>/blog/guaorh/</url>
+    <content><![CDATA[<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+
+// P674.最长连续递增序列
+// P674.longest-continuous-increasing-subsequence
+//给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
+//
+// 连续递增的子序列 可以由两个下标 l 和 r（l &lt; r）确定，如果对于每个 l &lt;= i &lt; r，都有 nums[i] &lt; nums[i + 1] ，那
+//么子序列 [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] 就是连续递增子序列。
+//
+//
+//
+// 示例 1：
+//
+//
+//输入：nums = [1,3,5,4,7]
+//输出：3
+//解释：最长连续递增序列是 [1,3,5], 长度为3。
+//尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为 5 和 7 在原数组里被 4 隔开。
+//
+//
+// 示例 2：
+//
+//
+//输入：nums = [2,2,2,2,2]
+//输出：1
+//解释：最长连续递增序列是 [2], 长度为1。
+//
+//
+//
+//
+// 提示：
+//
+//
+// 0 &lt;= nums.length &lt;= 104
+// -109 &lt;= nums[i] &lt;= 109
+//
+// Related Topics 数组
+// 👍 147 👎 0
+
+public class P674LongestContinuousIncreasingSubsequence{
+    public static void main(String[] args) {
+        Solution solution = new P674LongestContinuousIncreasingSubsequence().new Solution();
+        int [] nums = {1,3,5,7};
+        int result = solution.findLengthOfLCIS(nums);
+        System.out.println(result);
+    }
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        if (nums.length == 0) { return 0; }
+        int result = 1;
+        int count = 1;
+        for (int i=0; i&lt;nums.length-1; i++) {
+            if (nums[i] &lt; nums[i+1] ) {
+                count++;
+                if (result &lt; count) {result = count;}
+            } else {
+                if (result &lt; count) {result = count;}
+                count = 1;
+            }
+        }
+        return result;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+}
+</code></pre>
+<h2 id="细节注意"><a href="#细节注意" class="headerlink" title="细节注意"></a>细节注意</h2><ul>
+<li>56 行 count++</li>
+<li>将 57 和 59 行代码删去，改为如下表达式赋值</li>
+</ul>
+<pre><code class="java">result = count &gt; result ? count : result;
+</code></pre>
+]]></content>
+      <categories>
+        <category>DataStructure</category>
+      </categories>
+      <tags>
+        <tag>数组</tag>
+      </tags>
   </entry>
   <entry>
     <title>hexo-部署出错at formatNunjucksError</title>
