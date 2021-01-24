@@ -1,5 +1,4 @@
 var weiboName = "@尼采般地抒情";
-var disqusName = "";
 var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
 
 // TODO: 【域名的@和www】
@@ -291,88 +290,7 @@ var operation = {
       });
     }
   },
-  // FIXME: 加载畅言
-  // loadChangyanCount: function () {
-  //   if ($('#changyan_count_unit').size()) {
-  //     $.getScript('https://assets.changyan.sohu.com/upload/plugins/plugins.count.js');
-  //   }
-  //   if ($('.cy_cmt_count').size()) {
-  //     var spanArr = document.getElementsByClassName('cy_cmt_count');
-  //     spanArr = [].slice.call(spanArr, 0);
-  //     var len = spanArr.length;
-  //     var delta = 40;
-  //     var loopLen = Math.ceil(len / delta);
-  //     for (var i = 0; i < loopLen; i++) {
-  //       fetchData(spanArr.slice(i * delta, (i + 1) * delta));
-  //     }
-  //     var cnt = 0;
-  //     window.setCmtSum = function (json) {
-  //       var spanArr = document.getElementsByClassName('cy_cmt_count');
-  //       spanArr = [].slice.call(spanArr, cnt * delta, (cnt + 1) * delta);
-  //       cnt++;
-  //       for (var i = 0; i < spanArr.length; i++) {
-  //         if (spanArr[i].className.indexOf('cy_cmt_count') > -1) {
-  //           try {
-  //             var strArr = spanArr[i].id.split("::");
-  //             var sum = json.result[strArr[1]].sum;
-  //             if (sum) {
-  //               spanArr[i].innerHTML = json.result[strArr[1]].sum + '条评论';
-  //             } else {
-  //               spanArr[i].innerHTML = '暂无评论';
-  //             }
-  //           } catch (e) {}
-  //         }
-  //         if (spanArr[i].className.indexOf('cy_cmt_participate') > -1) {
-  //           try {
-  //             var strArr = spanArr[i].id.split("::");
-  //             spanArr[i].innerHTML = json.result[strArr[1]].parts
-  //           } catch (e) {}
-  //         }
-  //         if (spanArr[i].className.indexOf('cy_cmt_like') > -1) {
-  //           try {
-  //             var strArr = spanArr[i].id.split("::");
-  //             spanArr[i].innerHTML = json.result[strArr[1]].likes
-  //           } catch (e) {}
-  //         }
-  //         if (spanArr[i].className.indexOf('cy_cmt_share') > -1) {
-  //           try {
-  //             var strArr = spanArr[i].id.split("::");
-  //             spanArr[i].innerHTML = json.result[strArr[1]].shares
-  //           } catch (e) {}
-  //         }
-  //       }
-  //     }
-  //     function fetchData (spanArr) {
-  //       var newSourceId = '';
-  //       var newTopicId = '';
-  //       var newUrl = '';
-  //       for (var i = 0; i < spanArr.length; i++) {
-  //         if (/cy_cmt_[count|participate|like|share]/.test(spanArr[i].className)) {
-  //           try {
-  //             var strArr = spanArr[i].id.split("::");
-  //             switch (strArr[0]) {
-  //               case 'topicId':
-  //                 newTopicId += ',' + strArr[1];
-  //                 break;
-  //               case 'sourceId':
-  //                 newSourceId += ',' + strArr[1];
-  //                 break;
-  //               case 'url':
-  //                 newUrl += ',' + encodeURIComponent(strArr[1]);
-  //                 break;
-  //               default:
-  //             }
-  //           } catch (e) {}
-  //         }
-  //       }
-  //       var clientId = 'cyt0XnPCt';
-  //       var head = document.getElementsByTagName('head')[0];
-  //       var scriptDom = document.createElement('script');
-  //       scriptDom.src = "https://changyan.sohu.com/api/2/topic/count?client_id=" + clientId + "&topic_id=" + newTopicId.substring(1) + "&topic_source_id=" + newSourceId.substring(1) + "&topic_url=" + newUrl.substring(1) + "&callback=setCmtSum";
-  //       head.appendChild(scriptDom)
-  //     }
-  //   }
-  // },
+
   // FIXME: 微信里面的提示
   wechat: function () {
     var isWeiXin = /MicroMessenger/i.test(navigator.userAgent);
@@ -997,39 +915,39 @@ window.alert = function () {};
 // TODO: 【加载微博、百度统计、百度收录、360收录、谷歌分析】
 $(window).on("load", function () {
 
-  var $wb = $("#followMeOnWeibo");
-  if ($wb.size() > 0 && !$wb.attr("loaded")) {
-    $wb.parent().on("mouseenter", function () {
-      $wb.parent().off();
-      $wb.attr("loaded", 1);
-      // weibo
-      $("html").attr("xmlns:wb", "http://open.weibo.com/wb");
-      $("head").append('<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>');
-      $("#followMeOnWeibo").html('<wb:follow-button uid="3456263867" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
-    });
-  }
+  // var $wb = $("#followMeOnWeibo");
+  // if ($wb.size() > 0 && !$wb.attr("loaded")) {
+  //   $wb.parent().on("mouseenter", function () {
+  //     $wb.parent().off();
+  //     $wb.attr("loaded", 1);
+  //     // weibo
+  //     $("html").attr("xmlns:wb", "http://open.weibo.com/wb");
+  //     $("head").append('<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>');
+  //     $("#followMeOnWeibo").html('<wb:follow-button uid="3456263867" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
+  //   });
+  // }
     // 百度统计
   setTimeout(function () {
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?63827dcd82b61c5a5548efc20df96345";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
+    // var _hmt = _hmt || [];
+    // (function() {
+    //   var hm = document.createElement("script");
+    //   hm.src = "//hm.baidu.com/hm.js?63827dcd82b61c5a5548efc20df96345";
+    //   var s = document.getElementsByTagName("script")[0]; 
+    //   s.parentNode.insertBefore(hm, s);
+    // })();
 
     // 百度收录，自动推送
-    (function () {
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      if (curProtocol === 'https') {
-        bp.src = '//zz.bdstatic.com/linksubmit/push.js';
-      } else {
-        bp.src = '//push.zhanzhang.baidu.com/push.js';
-      }
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
+    // (function () {
+    //   var bp = document.createElement('script');
+    //   var curProtocol = window.location.protocol.split(':')[0];
+    //   if (curProtocol === 'https') {
+    //     bp.src = '//zz.bdstatic.com/linksubmit/push.js';
+    //   } else {
+    //     bp.src = '//push.zhanzhang.baidu.com/push.js';
+    //   }
+    //   var s = document.getElementsByTagName("script")[0];
+    //   s.parentNode.insertBefore(bp, s);
+    // })();
     // 搜狗收录，自动推送，不能用，用了就网页白屏
     // (function(){
     //   var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
