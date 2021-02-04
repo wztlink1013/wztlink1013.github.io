@@ -51,6 +51,34 @@
       </categories>
   </entry>
   <entry>
+    <title>数据库操作</title>
+    <url>/blog/afuf5u/</url>
+    <content><![CDATA[<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><pre><code class="sql">CREATE {DATABASE|SCHEMA} [IF NOT EXISTS] db_name [DEFAULT] CHARCTER SET [=] charset_name;
+</code></pre>
+<blockquote>
+<p>注意设置字符集的时候，utf-8 要写作 utf8。</p>
+</blockquote>
+<h2 id="使用数据库"><a href="#使用数据库" class="headerlink" title="使用数据库"></a>使用数据库</h2><blockquote>
+<p>使用指定数据库</p>
+</blockquote>
+<pre><code class="sql">use DATABASE
+go
+</code></pre>
+<h2 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h2><pre><code class="sql">ALTER {DATABASE|SCHEMA} db_name [DEFAUTL] CHARCTER SET [=] charset_name;
+</code></pre>
+<h3 id="修改数据库编码格式"><a href="#修改数据库编码格式" class="headerlink" title="修改数据库编码格式"></a>修改数据库编码格式</h3><pre><code>SET NAMES GBK;
+</code></pre><p>GBK 也可以是其他编码格式。但这只是修改你客户端显示的编码格式。服务端并不变化。<br><strong>修改配置文件来改服务端编码</strong><br>打开/etc/my.cnf 文件<br>在[mysqld]条目下：增加</p>
+<pre><code>character_set_server=utf8
+init_connect=&#39;SET NAMES utf8&#39;
+</code></pre><p>有时在数据库创建完成后，编码格式是无法修改的。只能删掉重新建。</p>
+<h2 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h2><pre><code class="mysql">    DROP {DATABASE|SCHEMA} [IF EXISTS] db_name;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Language</category>
+      </categories>
+  </entry>
+  <entry>
     <title>JAVA-抽象类和接口</title>
     <url>/blog/akog9h/</url>
     <content><![CDATA[<h2 id="概念名词"><a href="#概念名词" class="headerlink" title="概念名词"></a>概念名词</h2><ul>
@@ -185,34 +213,6 @@ if __name__ == &#39;__main__&#39;:
 ]]></content>
       <categories>
         <category>MachingLearning</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>数据库操作</title>
-    <url>/blog/afuf5u/</url>
-    <content><![CDATA[<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><pre><code class="sql">CREATE {DATABASE|SCHEMA} [IF NOT EXISTS] db_name [DEFAULT] CHARCTER SET [=] charset_name;
-</code></pre>
-<blockquote>
-<p>注意设置字符集的时候，utf-8 要写作 utf8。</p>
-</blockquote>
-<h2 id="使用数据库"><a href="#使用数据库" class="headerlink" title="使用数据库"></a>使用数据库</h2><blockquote>
-<p>使用指定数据库</p>
-</blockquote>
-<pre><code class="sql">use DATABASE
-go
-</code></pre>
-<h2 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h2><pre><code class="sql">ALTER {DATABASE|SCHEMA} db_name [DEFAUTL] CHARCTER SET [=] charset_name;
-</code></pre>
-<h3 id="修改数据库编码格式"><a href="#修改数据库编码格式" class="headerlink" title="修改数据库编码格式"></a>修改数据库编码格式</h3><pre><code>SET NAMES GBK;
-</code></pre><p>GBK 也可以是其他编码格式。但这只是修改你客户端显示的编码格式。服务端并不变化。<br><strong>修改配置文件来改服务端编码</strong><br>打开/etc/my.cnf 文件<br>在[mysqld]条目下：增加</p>
-<pre><code>character_set_server=utf8
-init_connect=&#39;SET NAMES utf8&#39;
-</code></pre><p>有时在数据库创建完成后，编码格式是无法修改的。只能删掉重新建。</p>
-<h2 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h2><pre><code class="mysql">    DROP {DATABASE|SCHEMA} [IF EXISTS] db_name;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Language</category>
       </categories>
   </entry>
   <entry>
@@ -852,27 +852,6 @@ public String toString() {
       </categories>
   </entry>
   <entry>
-    <title>配置java开发环境</title>
-    <url>/blog/cwqx6l/</url>
-    <content><![CDATA[<h2 id="一、下载"><a href="#一、下载" class="headerlink" title="一、下载"></a>一、下载</h2><p><a href="https://www.oracle.com/cn/java/technologies/javase-downloads.html" target="_blank" rel="noopener">https://www.oracle.com/cn/java/technologies/javase-downloads.html</a></p>
-<h2 id="二、环境变量配置"><a href="#二、环境变量配置" class="headerlink" title="二、环境变量配置"></a>二、环境变量配置</h2><p><strong>在系统变量下</strong></p>
-<h3 id="CLASSPATH"><a href="#CLASSPATH" class="headerlink" title="CLASSPATH"></a>CLASSPATH</h3><blockquote>
-<p>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet-api.jar;</p>
-</blockquote>
-<p>其中<code>%CATALINA_HOME%\common\lib\servlet-api.jar;</code>为 tomcat 的加包配置</p>
-<h3 id="JAVA-HOME"><a href="#JAVA-HOME" class="headerlink" title="JAVA_HOME"></a>JAVA_HOME</h3><blockquote>
-<p>C:\Program Files\Java\jdk1.8.0_181</p>
-</blockquote>
-<h3 id="path"><a href="#path" class="headerlink" title="path"></a>path</h3><blockquote>
-<p>%JAVA_HOME%\bin<br>%JAVA_HOME%\jre\bin</p>
-</blockquote>
-<h2 id="三、测试"><a href="#三、测试" class="headerlink" title="三、测试"></a>三、测试</h2><p>CMD 下输入<code>java -version</code></p>
-]]></content>
-      <categories>
-        <category>Environment</category>
-      </categories>
-  </entry>
-  <entry>
     <title>P224.基本计算器</title>
     <url>/blog/ckr31m/</url>
     <content><![CDATA[<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>用栈来作为临时存取非括号的求和数。对字符串进行逐个遍历，然后对遇到的每个字符串进行判断</p>
@@ -978,6 +957,27 @@ class Solution {
       <tags>
         <tag>栈</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>配置java开发环境</title>
+    <url>/blog/cwqx6l/</url>
+    <content><![CDATA[<h2 id="一、下载"><a href="#一、下载" class="headerlink" title="一、下载"></a>一、下载</h2><p><a href="https://www.oracle.com/cn/java/technologies/javase-downloads.html" target="_blank" rel="noopener">https://www.oracle.com/cn/java/technologies/javase-downloads.html</a></p>
+<h2 id="二、环境变量配置"><a href="#二、环境变量配置" class="headerlink" title="二、环境变量配置"></a>二、环境变量配置</h2><p><strong>在系统变量下</strong></p>
+<h3 id="CLASSPATH"><a href="#CLASSPATH" class="headerlink" title="CLASSPATH"></a>CLASSPATH</h3><blockquote>
+<p>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;%CATALINA_HOME%\common\lib\servlet-api.jar;</p>
+</blockquote>
+<p>其中<code>%CATALINA_HOME%\common\lib\servlet-api.jar;</code>为 tomcat 的加包配置</p>
+<h3 id="JAVA-HOME"><a href="#JAVA-HOME" class="headerlink" title="JAVA_HOME"></a>JAVA_HOME</h3><blockquote>
+<p>C:\Program Files\Java\jdk1.8.0_181</p>
+</blockquote>
+<h3 id="path"><a href="#path" class="headerlink" title="path"></a>path</h3><blockquote>
+<p>%JAVA_HOME%\bin<br>%JAVA_HOME%\jre\bin</p>
+</blockquote>
+<h2 id="三、测试"><a href="#三、测试" class="headerlink" title="三、测试"></a>三、测试</h2><p>CMD 下输入<code>java -version</code></p>
+]]></content>
+      <categories>
+        <category>Environment</category>
+      </categories>
   </entry>
   <entry>
     <title>穷举+洗牌算法</title>
@@ -2724,41 +2724,6 @@ fd1/*
       </categories>
   </entry>
   <entry>
-    <title>AfterEffects</title>
-    <url>/blog/ikze6c/</url>
-    <content><![CDATA[<h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><ul>
-<li>帧</li>
-<li>关键帧：开头、结尾中间的计算机会帮助</li>
-<li>FPS：帧数率===飞车掉帧</li>
-<li>视频格式：了解一些常见的格式的各自特点</li>
-<li>比特率：也适影响到了视频的因素</li>
-<li>格式转换：常用的格式转换软件===格式工厂，魔音工厂</li>
-</ul>
-<h2 id="菜单栏"><a href="#菜单栏" class="headerlink" title="菜单栏"></a>菜单栏</h2><ul>
-<li>文件</li>
-<li>编辑栏</li>
-</ul>
-<h2 id="大作业设计"><a href="#大作业设计" class="headerlink" title="大作业设计"></a>大作业设计</h2><h3 id="bgm"><a href="#bgm" class="headerlink" title="bgm"></a>bgm</h3><p>next to you</p>
-<h3 id="片段设计"><a href="#片段设计" class="headerlink" title="片段设计"></a>片段设计</h3><blockquote>
-<p>片段 1：</p>
-</blockquote>
-<p>千与千寻<br>龙猫<br>天空之城<br>ps：每个片段之间的过渡添加一些过渡元素<br>过渡要有一点蒙太奇的感觉、比如张口，下一个片段也要有这个就好<br>站在一起淋雨作为尾巴</p>
-<blockquote>
-<p>片段 2：</p>
-</blockquote>
-<p>电子相册展示放映</p>
-<blockquote>
-<p>片段 3：</p>
-</blockquote>
-<p>宫崎骏画像<br>开头开车的时候，加一段字幕：有种诗情画意<br>就是标题，主题<br>致敬：那些年的感动<br>和车子一起向左走动</p>
-<p>片头开车 女孩拿桶子 趴在龙猫身上说话 祈祷种子 一段电子相册 一起飞 黄色龙猫奔跑 电子相册 等车 黄色龙猫跑 树上唱歌</p>
-<p>车子 🚗===小女孩拿桶子===龙猫的大嘴===车站见面龙猫===一起种树===抱起来飞===一起唱歌</p>
-]]></content>
-      <categories>
-        <category>PostProduction</category>
-      </categories>
-  </entry>
-  <entry>
     <title>表查询操作</title>
     <url>/blog/igxqxi/</url>
     <content><![CDATA[<h2 id="基本词汇"><a href="#基本词汇" class="headerlink" title="基本词汇"></a>基本词汇</h2><blockquote>
@@ -2968,6 +2933,41 @@ SELECT sex
 ]]></content>
       <categories>
         <category>Language</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>AfterEffects</title>
+    <url>/blog/ikze6c/</url>
+    <content><![CDATA[<h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><ul>
+<li>帧</li>
+<li>关键帧：开头、结尾中间的计算机会帮助</li>
+<li>FPS：帧数率===飞车掉帧</li>
+<li>视频格式：了解一些常见的格式的各自特点</li>
+<li>比特率：也适影响到了视频的因素</li>
+<li>格式转换：常用的格式转换软件===格式工厂，魔音工厂</li>
+</ul>
+<h2 id="菜单栏"><a href="#菜单栏" class="headerlink" title="菜单栏"></a>菜单栏</h2><ul>
+<li>文件</li>
+<li>编辑栏</li>
+</ul>
+<h2 id="大作业设计"><a href="#大作业设计" class="headerlink" title="大作业设计"></a>大作业设计</h2><h3 id="bgm"><a href="#bgm" class="headerlink" title="bgm"></a>bgm</h3><p>next to you</p>
+<h3 id="片段设计"><a href="#片段设计" class="headerlink" title="片段设计"></a>片段设计</h3><blockquote>
+<p>片段 1：</p>
+</blockquote>
+<p>千与千寻<br>龙猫<br>天空之城<br>ps：每个片段之间的过渡添加一些过渡元素<br>过渡要有一点蒙太奇的感觉、比如张口，下一个片段也要有这个就好<br>站在一起淋雨作为尾巴</p>
+<blockquote>
+<p>片段 2：</p>
+</blockquote>
+<p>电子相册展示放映</p>
+<blockquote>
+<p>片段 3：</p>
+</blockquote>
+<p>宫崎骏画像<br>开头开车的时候，加一段字幕：有种诗情画意<br>就是标题，主题<br>致敬：那些年的感动<br>和车子一起向左走动</p>
+<p>片头开车 女孩拿桶子 趴在龙猫身上说话 祈祷种子 一段电子相册 一起飞 黄色龙猫奔跑 电子相册 等车 黄色龙猫跑 树上唱歌</p>
+<p>车子 🚗===小女孩拿桶子===龙猫的大嘴===车站见面龙猫===一起种树===抱起来飞===一起唱歌</p>
+]]></content>
+      <categories>
+        <category>PostProduction</category>
       </categories>
   </entry>
   <entry>
@@ -3324,6 +3324,31 @@ plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
       </tags>
   </entry>
   <entry>
+    <title>CNN(卷积)和GCN(离散卷积)</title>
+    <url>/blog/ldx7ak/</url>
+    <content><![CDATA[<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><h3 id="1-卷积的理解"><a href="#1-卷积的理解" class="headerlink" title="1. 卷积的理解"></a>1. 卷积的理解</h3><ul>
+<li>从数学角度来看，卷积就是一种运算，就好比是线性代数的内积、向量积等。</li>
+<li>卷积分两种类型，一种是连续类型，一种是离散类型。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686034538-58c8f110-943e-4194-8c80-f9465c4fde8e.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;originHeight=402&amp;originWidth=453&amp;size=0&amp;status=done&amp;style=none&amp;width=453" alt></li>
+</ul>
+<h3 id="2-Examples"><a href="#2-Examples" class="headerlink" title="2. Examples"></a>2. Examples</h3><ol>
+<li>离散卷积===掷骰子<br>加入同时掷两个骰子，求骰子显现数之和为 4 的概率为多少？其实就是高中所学的排列组合问题，可以看作是卷积离散形式的显性表现形式。</li>
+<li>连续卷积===做馒头<br>由于时间变化和食物腐败特性，做馒头的同时也会有馒头的腐败，给定相关数据，求一天之中腐败的馒头数量。</li>
+</ol>
+<h3 id="3-卷积在计算机领域简单应用"><a href="#3-卷积在计算机领域简单应用" class="headerlink" title="3. 卷积在计算机领域简单应用"></a>3. 卷积在计算机领域简单应用</h3><ul>
+<li>降噪图像：将图像按照矩阵的形式表达为一个数据集，对目标的一个像素点，进行平均矩阵运算，此时的矩阵表达形式可以映射到卷积的数学表达形式。</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.zhihu.com/question/22298352/answer/228543288" target="_blank" rel="noopener">如何通俗易懂地解释卷积？ - 马同学的回答 - 知乎</a></li>
+<li><a href="https://www.zhihu.com/question/52237725/answer/545340892" target="_blank" rel="noopener">解释一下卷积神经网络的卷积核？ - superbrother 的回答 - 知乎</a></li>
+<li><a href="https://www.zhihu.com/question/54504471/answer/332657604" target="_blank" rel="noopener">如何理解 Graph Convolutional Network（GCN）？-superbrother 的回答-知乎</a></li>
+<li><a href="https://www.cnblogs.com/maybe2030/p/4665847.html#top" target="_blank" rel="noopener">复杂网络的解释</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>MachingLearning</category>
+      </categories>
+  </entry>
+  <entry>
     <title>P83. 删除排序链表中的重复元素</title>
     <url>/blog/lg67md/</url>
     <content><![CDATA[<pre><code class="java">/**
@@ -3403,31 +3428,6 @@ git  push  --force  --quiet  &quot;https://${Coding_Username}:${Coding_Token}@${
 ]]></content>
       <categories>
         <category>Environment</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CNN(卷积)和GCN(离散卷积)</title>
-    <url>/blog/ldx7ak/</url>
-    <content><![CDATA[<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><h3 id="1-卷积的理解"><a href="#1-卷积的理解" class="headerlink" title="1. 卷积的理解"></a>1. 卷积的理解</h3><ul>
-<li>从数学角度来看，卷积就是一种运算，就好比是线性代数的内积、向量积等。</li>
-<li>卷积分两种类型，一种是连续类型，一种是离散类型。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686034538-58c8f110-943e-4194-8c80-f9465c4fde8e.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;originHeight=402&amp;originWidth=453&amp;size=0&amp;status=done&amp;style=none&amp;width=453" alt></li>
-</ul>
-<h3 id="2-Examples"><a href="#2-Examples" class="headerlink" title="2. Examples"></a>2. Examples</h3><ol>
-<li>离散卷积===掷骰子<br>加入同时掷两个骰子，求骰子显现数之和为 4 的概率为多少？其实就是高中所学的排列组合问题，可以看作是卷积离散形式的显性表现形式。</li>
-<li>连续卷积===做馒头<br>由于时间变化和食物腐败特性，做馒头的同时也会有馒头的腐败，给定相关数据，求一天之中腐败的馒头数量。</li>
-</ol>
-<h3 id="3-卷积在计算机领域简单应用"><a href="#3-卷积在计算机领域简单应用" class="headerlink" title="3. 卷积在计算机领域简单应用"></a>3. 卷积在计算机领域简单应用</h3><ul>
-<li>降噪图像：将图像按照矩阵的形式表达为一个数据集，对目标的一个像素点，进行平均矩阵运算，此时的矩阵表达形式可以映射到卷积的数学表达形式。</li>
-</ul>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://www.zhihu.com/question/22298352/answer/228543288" target="_blank" rel="noopener">如何通俗易懂地解释卷积？ - 马同学的回答 - 知乎</a></li>
-<li><a href="https://www.zhihu.com/question/52237725/answer/545340892" target="_blank" rel="noopener">解释一下卷积神经网络的卷积核？ - superbrother 的回答 - 知乎</a></li>
-<li><a href="https://www.zhihu.com/question/54504471/answer/332657604" target="_blank" rel="noopener">如何理解 Graph Convolutional Network（GCN）？-superbrother 的回答-知乎</a></li>
-<li><a href="https://www.cnblogs.com/maybe2030/p/4665847.html#top" target="_blank" rel="noopener">复杂网络的解释</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>MachingLearning</category>
       </categories>
   </entry>
   <entry>
@@ -3573,103 +3573,6 @@ print (data_1.head(10))
       </tags>
   </entry>
   <entry>
-    <title>JavaWeb大作业要求</title>
-    <url>/blog/mpib4g/</url>
-    <content><![CDATA[<h2 id="一、大作业架构要求"><a href="#一、大作业架构要求" class="headerlink" title="一、大作业架构要求"></a>一、大作业架构要求</h2><p>基于 JSP 技术完成一个 WEB 管理系统的开发。系统内容按以下要求完成</p>
-<h3 id="1-网站目录管理"><a href="#1-网站目录管理" class="headerlink" title="1.网站目录管理"></a>1.网站目录管理</h3><p>建立一个完整的总文件夹，所有系统内容都要包含在建立的这个文件夹内，系统各类元素文件在总文件夹中以子文件夹形式分类清楚。（如图片都放在子文件夹 image 里，html 页都放在 pages 子文件夹内，数据库文件放在 DB 文件夹内）</p>
-<h3 id="2-系统前台设计（JSP-设计）"><a href="#2-系统前台设计（JSP-设计）" class="headerlink" title="2.系统前台设计（JSP 设计）"></a>2.系统前台设计（JSP 设计）</h3><p>a)页面设计美观，使用方便。</p>
-<p>b)如所选题目要求功能较少，需要自己扩充其它功能。</p>
-<p>c)使用 MVC 模式：即 JavaBean+JSP+Servlet 技术。</p>
-<h3 id="3-系统后台管理："><a href="#3-系统后台管理：" class="headerlink" title="3.系统后台管理："></a>3.系统后台管理：</h3><p>普通用户的主要功能模块：登录与注册等。</p>
-<p>管理员的主要功能模块：用户信息的管理（添加、删除、修改、查询）。</p>
-<h3 id="4-数据库设计"><a href="#4-数据库设计" class="headerlink" title="4.数据库设计"></a>4.数据库设计</h3><p>用 MySql 创建后台数据库，并完善数据库的结构和数据。数据库至少包含：用户信息表、相关业务数据表等。</p>
-<h2 id="二、大作业实验报告要求"><a href="#二、大作业实验报告要求" class="headerlink" title="二、大作业实验报告要求"></a>二、大作业实验报告要求</h2><p>附带一份课程设计报告，也放在总文件夹中。</p>
-<p>(1) 设计报告参照以下提纲书写：</p>
-<pre><code>i.    需求分析。
-ii.    数据库结构设计。
-iii.程序结构框图。
-iv.    程序功能说明。
-v.    系统实现界面。
-vi.    总结及体会。
-</code></pre><p>(2) 设计报告按照以下格式打印：</p>
-<pre><code>a)    打印用纸：A4
-b)    页面设置：上：3.5cm,下:2.5 cm,左:3.0 cm,右:2.4 cm,页眉：2.5 cm，页脚：1.8 cm，行间距：1.25倍行距。
-c)    字体、字号：
-   大标题：黑体、三号；
-   小标题：黑体、四号；
-   正文部分：宋体、小四；
-</code></pre><p>(3) 作业提交要求</p>
-<pre><code>a)    作品（1组1份）保存到文件夹以压缩文件的形式上交，文件命名：作品名+班级1+学号1+姓名1+班级2+学号2+姓名2...，上交后应自备一份备份，以备教师手中的作品因故无法正常读取时补交。
-b)    提交网页设计报告电子版（1组1份），文件命名：报告++班级1+学号1+姓名1+班级2+学号2+姓名2...，上交后应自备一份备份，以备教师手中的作品因故无法正常读取时补交。
-c)    做好自己作品的著作权保护，如果发现抄袭或者雷同现象，一律评为不及格。
-d)    作品演示之前提交设计报告电子版和作品以班级为单位，由课代表收齐，发送至课代表或U盘拷贝给任课老师，时间预计在教学的17-18周。设计报告纸质版（以班级为单位，由课代表收齐，统一交到学院楼402），纸质版的提交时间根据学校开学情况再行通知。
-</code></pre><h2 id="三、展示要求"><a href="#三、展示要求" class="headerlink" title="三、展示要求"></a>三、展示要求</h2><h3 id="演示时间安排"><a href="#演示时间安排" class="headerlink" title="演示时间安排"></a>演示时间安排</h3><pre><code>演示时间另行通知，预计17-18周上课时间。
-</code></pre><h3 id="汇报要求"><a href="#汇报要求" class="headerlink" title="汇报要求"></a>汇报要求</h3><pre><code>a)    6月4日前，确定分组情况并上报课代表汇总。
-b)    演示时间：10分钟/组，包括6分钟展示，4分钟答疑。
-c)    材料准备：打印评分表（1人1份）、填写完成的设计报告（1组1份）（见下页），同一小组一并装订，汇报前上交。
-d)    汇报顺序：随机抽取。组长首先介绍分工，然后各成员分别介绍各自工作。
-</code></pre><h3 id="任务安排"><a href="#任务安排" class="headerlink" title="任务安排"></a>任务安排</h3><pre><code>(1)    项目分组完成（每组1-3人）。每人承担项目的一部分任务，如：总体设计、数据库设计、代码实现、美工、文档等。每组设一位组长，组长负责总体设计和最终代码的整合。负责数据库、美工、文档的同学也要完成项目中部分简单功能模块的代码。（分组项目，培养团队合作的精神、锻炼与他人沟通的能力。）
-(2)    提交电子版完整的设计报告和源程序。
-(3)    设计分三阶段
-    第一阶段: 明确系统功能需求，设计数据库
-    第二阶段: 系统功能模块分析并用JSP实现相应页面
-    第三阶段: 整理文档和调试程序，演示答辩。答辩时需要演示项目作品功能，叙述小组分工和每个人的工作量。回答老师提出的问题。答辩，或队员协助演示作品的功能。答辩6分钟，老师提问4分钟。最后老师从作品功能完善性、交互界面美观性、文档规范性、答辩是否流畅等几个方面给出小组答辩成绩。个人最终成绩=小组成绩*0.4+个人得分*0.6。
-</code></pre><h2 id="四、评分表"><a href="#四、评分表" class="headerlink" title="四、评分表"></a>四、评分表</h2><table>
-<thead>
-<tr>
-<th>姓名</th>
-<th>内容</th>
-<th>分值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>一、主题与内容（20 分）</td>
-<td>1.主题鲜明，题材合适，内容能很好为主题服务</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>2.页面具有较强的个人设计创意,色彩搭配鲜明,内容布局合理</td>
-<td></td>
-</tr>
-<tr>
-<td>二、常规技术(50 分)</td>
-<td>1.页面布局合理，页面内容清晰明了，在页面中，插入文字、图片、表格、表单、超级链接、多媒体等各种对象，网页中部分页面可应用行为或者网页特效</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>2.表单、数据库操作技术</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>3.Jsp、Servlet 技术</td>
-<td></td>
-</tr>
-<tr>
-<td>三、其他技术(10 分)</td>
-<td>1.有特色的结束，如有自己制作的动画、JS 脚本特效等</td>
-<td></td>
-</tr>
-<tr>
-<td>四、作业设计报告(20 分)</td>
-<td>1.项目文档内容详细完整、结构清晰、提交文件名正确</td>
-</tr>
-</tbody>
-</table>
-<p>打印说明:</p>
-<ol>
-<li>小组成员每人单独打印一份，在第一列表头中填写姓名；</li>
-<li>作业答辩时，将评分表装订在作业设计报告前面。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-  </entry>
-  <entry>
     <title>👨‍💻编程习惯</title>
     <url>/blog/ml46ei/</url>
     <content><![CDATA[<h2 id="一、代码"><a href="#一、代码" class="headerlink" title="一、代码"></a>一、代码</h2><h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ul>
@@ -3780,6 +3683,103 @@ private String logType
 ]]></content>
       <categories>
         <category>软件工程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>JavaWeb大作业要求</title>
+    <url>/blog/mpib4g/</url>
+    <content><![CDATA[<h2 id="一、大作业架构要求"><a href="#一、大作业架构要求" class="headerlink" title="一、大作业架构要求"></a>一、大作业架构要求</h2><p>基于 JSP 技术完成一个 WEB 管理系统的开发。系统内容按以下要求完成</p>
+<h3 id="1-网站目录管理"><a href="#1-网站目录管理" class="headerlink" title="1.网站目录管理"></a>1.网站目录管理</h3><p>建立一个完整的总文件夹，所有系统内容都要包含在建立的这个文件夹内，系统各类元素文件在总文件夹中以子文件夹形式分类清楚。（如图片都放在子文件夹 image 里，html 页都放在 pages 子文件夹内，数据库文件放在 DB 文件夹内）</p>
+<h3 id="2-系统前台设计（JSP-设计）"><a href="#2-系统前台设计（JSP-设计）" class="headerlink" title="2.系统前台设计（JSP 设计）"></a>2.系统前台设计（JSP 设计）</h3><p>a)页面设计美观，使用方便。</p>
+<p>b)如所选题目要求功能较少，需要自己扩充其它功能。</p>
+<p>c)使用 MVC 模式：即 JavaBean+JSP+Servlet 技术。</p>
+<h3 id="3-系统后台管理："><a href="#3-系统后台管理：" class="headerlink" title="3.系统后台管理："></a>3.系统后台管理：</h3><p>普通用户的主要功能模块：登录与注册等。</p>
+<p>管理员的主要功能模块：用户信息的管理（添加、删除、修改、查询）。</p>
+<h3 id="4-数据库设计"><a href="#4-数据库设计" class="headerlink" title="4.数据库设计"></a>4.数据库设计</h3><p>用 MySql 创建后台数据库，并完善数据库的结构和数据。数据库至少包含：用户信息表、相关业务数据表等。</p>
+<h2 id="二、大作业实验报告要求"><a href="#二、大作业实验报告要求" class="headerlink" title="二、大作业实验报告要求"></a>二、大作业实验报告要求</h2><p>附带一份课程设计报告，也放在总文件夹中。</p>
+<p>(1) 设计报告参照以下提纲书写：</p>
+<pre><code>i.    需求分析。
+ii.    数据库结构设计。
+iii.程序结构框图。
+iv.    程序功能说明。
+v.    系统实现界面。
+vi.    总结及体会。
+</code></pre><p>(2) 设计报告按照以下格式打印：</p>
+<pre><code>a)    打印用纸：A4
+b)    页面设置：上：3.5cm,下:2.5 cm,左:3.0 cm,右:2.4 cm,页眉：2.5 cm，页脚：1.8 cm，行间距：1.25倍行距。
+c)    字体、字号：
+   大标题：黑体、三号；
+   小标题：黑体、四号；
+   正文部分：宋体、小四；
+</code></pre><p>(3) 作业提交要求</p>
+<pre><code>a)    作品（1组1份）保存到文件夹以压缩文件的形式上交，文件命名：作品名+班级1+学号1+姓名1+班级2+学号2+姓名2...，上交后应自备一份备份，以备教师手中的作品因故无法正常读取时补交。
+b)    提交网页设计报告电子版（1组1份），文件命名：报告++班级1+学号1+姓名1+班级2+学号2+姓名2...，上交后应自备一份备份，以备教师手中的作品因故无法正常读取时补交。
+c)    做好自己作品的著作权保护，如果发现抄袭或者雷同现象，一律评为不及格。
+d)    作品演示之前提交设计报告电子版和作品以班级为单位，由课代表收齐，发送至课代表或U盘拷贝给任课老师，时间预计在教学的17-18周。设计报告纸质版（以班级为单位，由课代表收齐，统一交到学院楼402），纸质版的提交时间根据学校开学情况再行通知。
+</code></pre><h2 id="三、展示要求"><a href="#三、展示要求" class="headerlink" title="三、展示要求"></a>三、展示要求</h2><h3 id="演示时间安排"><a href="#演示时间安排" class="headerlink" title="演示时间安排"></a>演示时间安排</h3><pre><code>演示时间另行通知，预计17-18周上课时间。
+</code></pre><h3 id="汇报要求"><a href="#汇报要求" class="headerlink" title="汇报要求"></a>汇报要求</h3><pre><code>a)    6月4日前，确定分组情况并上报课代表汇总。
+b)    演示时间：10分钟/组，包括6分钟展示，4分钟答疑。
+c)    材料准备：打印评分表（1人1份）、填写完成的设计报告（1组1份）（见下页），同一小组一并装订，汇报前上交。
+d)    汇报顺序：随机抽取。组长首先介绍分工，然后各成员分别介绍各自工作。
+</code></pre><h3 id="任务安排"><a href="#任务安排" class="headerlink" title="任务安排"></a>任务安排</h3><pre><code>(1)    项目分组完成（每组1-3人）。每人承担项目的一部分任务，如：总体设计、数据库设计、代码实现、美工、文档等。每组设一位组长，组长负责总体设计和最终代码的整合。负责数据库、美工、文档的同学也要完成项目中部分简单功能模块的代码。（分组项目，培养团队合作的精神、锻炼与他人沟通的能力。）
+(2)    提交电子版完整的设计报告和源程序。
+(3)    设计分三阶段
+    第一阶段: 明确系统功能需求，设计数据库
+    第二阶段: 系统功能模块分析并用JSP实现相应页面
+    第三阶段: 整理文档和调试程序，演示答辩。答辩时需要演示项目作品功能，叙述小组分工和每个人的工作量。回答老师提出的问题。答辩，或队员协助演示作品的功能。答辩6分钟，老师提问4分钟。最后老师从作品功能完善性、交互界面美观性、文档规范性、答辩是否流畅等几个方面给出小组答辩成绩。个人最终成绩=小组成绩*0.4+个人得分*0.6。
+</code></pre><h2 id="四、评分表"><a href="#四、评分表" class="headerlink" title="四、评分表"></a>四、评分表</h2><table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>内容</th>
+<th>分值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一、主题与内容（20 分）</td>
+<td>1.主题鲜明，题材合适，内容能很好为主题服务</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2.页面具有较强的个人设计创意,色彩搭配鲜明,内容布局合理</td>
+<td></td>
+</tr>
+<tr>
+<td>二、常规技术(50 分)</td>
+<td>1.页面布局合理，页面内容清晰明了，在页面中，插入文字、图片、表格、表单、超级链接、多媒体等各种对象，网页中部分页面可应用行为或者网页特效</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2.表单、数据库操作技术</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>3.Jsp、Servlet 技术</td>
+<td></td>
+</tr>
+<tr>
+<td>三、其他技术(10 分)</td>
+<td>1.有特色的结束，如有自己制作的动画、JS 脚本特效等</td>
+<td></td>
+</tr>
+<tr>
+<td>四、作业设计报告(20 分)</td>
+<td>1.项目文档内容详细完整、结构清晰、提交文件名正确</td>
+</tr>
+</tbody>
+</table>
+<p>打印说明:</p>
+<ol>
+<li>小组成员每人单独打印一份，在第一列表头中填写姓名；</li>
+<li>作业答辩时，将评分表装订在作业设计报告前面。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Web</category>
       </categories>
   </entry>
   <entry>
@@ -5159,39 +5159,6 @@ myqr.run(
       </categories>
   </entry>
   <entry>
-    <title>P876. 链表的中间结点</title>
-    <url>/blog/serpsb/</url>
-    <content><![CDATA[<pre><code class="java">/**
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-</code></pre>
-<h2 id="876-链表的中间结点"><a href="#876-链表的中间结点" class="headerlink" title="876. 链表的中间结点"></a>876. 链表的中间结点</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195941092-8cd11b96-c174-425e-ab68-a7015110092e.png#align=left&amp;display=inline&amp;height=208&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=415&amp;originWidth=717&amp;size=49665&amp;status=done&amp;style=shadow&amp;width=358.5" alt="image.png"></p>
-<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
-    public ListNode middleNode(ListNode head) {
-        if (head.next == null) return head;
-        if (head.next.next == null) return head.next;
-
-        ListNode slow = head.next;
-        ListNode fast = head.next.next;
-        while (fast != null &amp;&amp; fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-            if (fast == null) return slow;
-        }
-        return slow;
-    }
-}
-</code></pre>
-]]></content>
-      <categories>
-        <category>DataStructure</category>
-      </categories>
-  </entry>
-  <entry>
     <title>软件工程知识小结</title>
     <url>/blog/sc6tzq/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
@@ -5356,6 +5323,39 @@ myqr.run(
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h2 id="维护"><a href="#维护" class="headerlink" title="维护"></a>维护</h2>]]></content>
       <categories>
         <category>软件工程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>P876. 链表的中间结点</title>
+    <url>/blog/serpsb/</url>
+    <content><![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</code></pre>
+<h2 id="876-链表的中间结点"><a href="#876-链表的中间结点" class="headerlink" title="876. 链表的中间结点"></a>876. 链表的中间结点</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195941092-8cd11b96-c174-425e-ab68-a7015110092e.png#align=left&amp;display=inline&amp;height=208&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=415&amp;originWidth=717&amp;size=49665&amp;status=done&amp;style=shadow&amp;width=358.5" alt="image.png"></p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
+    public ListNode middleNode(ListNode head) {
+        if (head.next == null) return head;
+        if (head.next.next == null) return head.next;
+
+        ListNode slow = head.next;
+        ListNode fast = head.next.next;
+        while (fast != null &amp;&amp; fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == null) return slow;
+        }
+        return slow;
+    }
+}
+</code></pre>
+]]></content>
+      <categories>
+        <category>DataStructure</category>
       </categories>
   </entry>
   <entry>
@@ -6160,6 +6160,27 @@ SET FOREIGN_KEY_CHECKS = 1;
       </categories>
   </entry>
   <entry>
+    <title>Navicat-1045报错</title>
+    <url>/blog/wp9hok/</url>
+    <content><![CDATA[<h2 id="一、报错信息"><a href="#一、报错信息" class="headerlink" title="一、报错信息"></a>一、报错信息</h2><pre><code>1045-Access denied for user root@localhost(using password:YES)
+</code></pre><h2 id="二、问题分析与解决"><a href="#二、问题分析与解决" class="headerlink" title="二、问题分析与解决"></a>二、问题分析与解决</h2><p>不被接入，改 root 密码</p>
+<p>在 mysql 控制台里面改密码</p>
+<p><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED WITH mysql_native_password BY &#39;你的密码&#39;;</code></p>
+<p>刷新数据库</p>
+<p><code>flush privileges;</code></p>
+<p>退出</p>
+<p><code>quit;</code></p>
+<p>重启 Navicat 再次链接即可。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://blog.csdn.net/acoolgiser/article/details/82967317?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159185926319725250149590%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=159185926319725250149590&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_ctr_v3-4-82967317.ecpm_v1_rank_ctr_v3&amp;utm_term=1045-Access+denied+for+user+ro" target="_blank" rel="noopener">acoolgiser</a></li>
+<li><a href="https://blog.csdn.net/zhang_yu_ling/article/details/103177296?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159185926319725250149590%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=159185926319725250149590&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_ctr_v3-2-103177296.ecpm_v1_rank_ctr_v3&amp;utm_term=1045-Access+denied+for+user+ro" target="_blank" rel="noopener">张张张 i</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Bug</category>
+      </categories>
+  </entry>
+  <entry>
     <title>yuque-未拉取成功</title>
     <url>/blog/wsmygb/</url>
     <content><![CDATA[<h2 id="一、报错信息"><a href="#一、报错信息" class="headerlink" title="一、报错信息"></a>一、报错信息</h2><pre><code class="bash">$ yuque-hexo sync
@@ -6218,41 +6239,6 @@ Require stack:
       <categories>
         <category>Bug</category>
       </categories>
-  </entry>
-  <entry>
-    <title>Navicat-1045报错</title>
-    <url>/blog/wp9hok/</url>
-    <content><![CDATA[<h2 id="一、报错信息"><a href="#一、报错信息" class="headerlink" title="一、报错信息"></a>一、报错信息</h2><pre><code>1045-Access denied for user root@localhost(using password:YES)
-</code></pre><h2 id="二、问题分析与解决"><a href="#二、问题分析与解决" class="headerlink" title="二、问题分析与解决"></a>二、问题分析与解决</h2><p>不被接入，改 root 密码</p>
-<p>在 mysql 控制台里面改密码</p>
-<p><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED WITH mysql_native_password BY &#39;你的密码&#39;;</code></p>
-<p>刷新数据库</p>
-<p><code>flush privileges;</code></p>
-<p>退出</p>
-<p><code>quit;</code></p>
-<p>重启 Navicat 再次链接即可。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://blog.csdn.net/acoolgiser/article/details/82967317?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159185926319725250149590%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=159185926319725250149590&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_ctr_v3-4-82967317.ecpm_v1_rank_ctr_v3&amp;utm_term=1045-Access+denied+for+user+ro" target="_blank" rel="noopener">acoolgiser</a></li>
-<li><a href="https://blog.csdn.net/zhang_yu_ling/article/details/103177296?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159185926319725250149590%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=159185926319725250149590&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_ctr_v3-2-103177296.ecpm_v1_rank_ctr_v3&amp;utm_term=1045-Access+denied+for+user+ro" target="_blank" rel="noopener">张张张 i</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Bug</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>搭建Windows子系统Linux</title>
-    <url>/blog/xnh83z/</url>
-    <content><![CDATA[<h2 id="Windows-子系统-Linux"><a href="#Windows-子系统-Linux" class="headerlink" title="Windows 子系统 Linux"></a>Windows 子系统 Linux</h2><h3 id="子系统-Linux-下载安装"><a href="#子系统-Linux-下载安装" class="headerlink" title="子系统 Linux 下载安装"></a>子系统 Linux 下载安装</h3><p>在 windows 里面搜索 <code>windows功能</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913834448-30d164c9-e0a6-47f8-baac-03c5d6648186.png#align=left&amp;display=inline&amp;height=517&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1033&amp;originWidth=1176&amp;size=659449&amp;status=done&amp;style=shadow&amp;width=588" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913865729-b20b3a35-ab49-48c9-be97-9f3c56d6d7a6.png#align=left&amp;display=inline&amp;height=295&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=590&amp;originWidth=623&amp;size=61833&amp;status=done&amp;style=shadow&amp;width=311.5" alt="image.png"><br>然后已知下一步操作即可，该过程中会有重启的过程。<br>之后重启之后在应用商店下载 Ubuntu 系统，如下。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913776014-38c5ce17-996d-4827-8c49-bb047b2f7d3c.png#align=left&amp;display=inline&amp;height=339&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=948&amp;originWidth=1200&amp;size=183352&amp;status=done&amp;style=shadow&amp;width=429" alt="image.png"><br>然后启动的时候，会有让自己输入用户名和密码的情况。输入确认就好了（<strong>输入密码的时候，终端内不会显示光标以及输入的字符！但是会有密码验证</strong>）</p>
-<h3 id="子系统-Linux-文件目录"><a href="#子系统-Linux-文件目录" class="headerlink" title="子系统 Linux 文件目录"></a>子系统 Linux 文件目录</h3><p><code>C:\Users\wztli\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\wztlink1013</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914117863-4fc253c2-1978-44b1-94c6-48e82a3ddf3a.png#align=left&amp;display=inline&amp;height=111&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=221&amp;originWidth=1468&amp;size=28524&amp;status=done&amp;style=shadow&amp;width=734" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914176405-056c5008-8168-40f8-a599-0e7951cad309.png#align=left&amp;display=inline&amp;height=293&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=585&amp;originWidth=1406&amp;size=115194&amp;status=done&amp;style=shadow&amp;width=703" alt="image.png"></p>
-<h3 id="Linux-访问-Windows-文件"><a href="#Linux-访问-Windows-文件" class="headerlink" title="Linux 访问 Windows 文件"></a>Linux 访问 Windows 文件</h3><p>如下图中 1 所示，访问时，需要先将 Windows 磁盘挂载到/mnt 下面，然后就可以访问了。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914600884-f758bc8f-668d-4354-be9f-f9be774cfff1.png#align=left&amp;display=inline&amp;height=189&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=1122&amp;size=63616&amp;status=done&amp;style=shadow&amp;width=561" alt="image.png"></p>
-]]></content>
-      <categories>
-        <category>Environment</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
   </entry>
   <entry>
     <title>JAVA-正则表达式</title>
@@ -6342,6 +6328,20 @@ Require stack:
       <categories>
         <category>Language</category>
       </categories>
+  </entry>
+  <entry>
+    <title>搭建Windows子系统Linux</title>
+    <url>/blog/xnh83z/</url>
+    <content><![CDATA[<h2 id="Windows-子系统-Linux"><a href="#Windows-子系统-Linux" class="headerlink" title="Windows 子系统 Linux"></a>Windows 子系统 Linux</h2><h3 id="子系统-Linux-下载安装"><a href="#子系统-Linux-下载安装" class="headerlink" title="子系统 Linux 下载安装"></a>子系统 Linux 下载安装</h3><p>在 windows 里面搜索 <code>windows功能</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913834448-30d164c9-e0a6-47f8-baac-03c5d6648186.png#align=left&amp;display=inline&amp;height=517&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1033&amp;originWidth=1176&amp;size=659449&amp;status=done&amp;style=shadow&amp;width=588" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913865729-b20b3a35-ab49-48c9-be97-9f3c56d6d7a6.png#align=left&amp;display=inline&amp;height=295&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=590&amp;originWidth=623&amp;size=61833&amp;status=done&amp;style=shadow&amp;width=311.5" alt="image.png"><br>然后已知下一步操作即可，该过程中会有重启的过程。<br>之后重启之后在应用商店下载 Ubuntu 系统，如下。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913776014-38c5ce17-996d-4827-8c49-bb047b2f7d3c.png#align=left&amp;display=inline&amp;height=339&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=948&amp;originWidth=1200&amp;size=183352&amp;status=done&amp;style=shadow&amp;width=429" alt="image.png"><br>然后启动的时候，会有让自己输入用户名和密码的情况。输入确认就好了（<strong>输入密码的时候，终端内不会显示光标以及输入的字符！但是会有密码验证</strong>）</p>
+<h3 id="子系统-Linux-文件目录"><a href="#子系统-Linux-文件目录" class="headerlink" title="子系统 Linux 文件目录"></a>子系统 Linux 文件目录</h3><p><code>C:\Users\wztli\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\wztlink1013</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914117863-4fc253c2-1978-44b1-94c6-48e82a3ddf3a.png#align=left&amp;display=inline&amp;height=111&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=221&amp;originWidth=1468&amp;size=28524&amp;status=done&amp;style=shadow&amp;width=734" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914176405-056c5008-8168-40f8-a599-0e7951cad309.png#align=left&amp;display=inline&amp;height=293&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=585&amp;originWidth=1406&amp;size=115194&amp;status=done&amp;style=shadow&amp;width=703" alt="image.png"></p>
+<h3 id="Linux-访问-Windows-文件"><a href="#Linux-访问-Windows-文件" class="headerlink" title="Linux 访问 Windows 文件"></a>Linux 访问 Windows 文件</h3><p>如下图中 1 所示，访问时，需要先将 Windows 磁盘挂载到/mnt 下面，然后就可以访问了。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914600884-f758bc8f-668d-4354-be9f-f9be774cfff1.png#align=left&amp;display=inline&amp;height=189&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=1122&amp;size=63616&amp;status=done&amp;style=shadow&amp;width=561" alt="image.png"></p>
+]]></content>
+      <categories>
+        <category>Environment</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>搭建“文本三巨头”环境</title>
