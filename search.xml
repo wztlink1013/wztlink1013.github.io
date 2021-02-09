@@ -185,135 +185,6 @@ init_connect=&#39;SET NAMES utf8&#39;
       </categories>
   </entry>
   <entry>
-    <title>P20. 有效的括号</title>
-    <url>/blog/aritwv/</url>
-    <content><![CDATA[<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>将所有的左半边括号 push 到栈内，然后遇到右半边括号，就将其与栈顶元素匹配测试，若能匹配成功则继续匹配，反之输出 false。</p>
-<p>在这之间注意比较当栈内没有元素了，而字符串还有待匹配的字符，输出 false，当栈内还有元素，外面与之匹配测试的右半边括号，也输出 false。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="栈实现"><a href="#栈实现" class="headerlink" title="栈实现"></a>栈实现</h3><pre><code class="java">class Solution {
-    public boolean isValid(String s) {
-        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
-
-        int len = s.length();
-        for (int i=0;i&lt;len;i++) {
-            char c = s.charAt(i);
-            if (c == &#39;(&#39; || c == &#39;[&#39; || c == &#39;{&#39;) {
-                stack.push(c);
-            } else {
-                if (stack.isEmpty()) return false;
-                char left = stack.pop();
-                if (left == &#39;(&#39; &amp;&amp; c !=&#39;)&#39;) return false;
-                if (left == &#39;[&#39; &amp;&amp; c !=&#39;]&#39;) return false;
-                if (left == &#39;{&#39; &amp;&amp; c !=&#39;}&#39;) return false;
-            }
-        }
-        return stack.isEmpty();
-    }
-}
-</code></pre>
-<pre><code class="java">class Solution {
-    public boolean isValid(String s) {
-        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
-        for (int i = 0; i&lt; s.length();i++){
-            if (s.charAt(0) == &#39;)&#39; || s.charAt(0) == &#39;]&#39; || s.charAt(0) == &#39;}&#39;){
-                return false;
-            }
-            if (s.charAt(i) == &#39;(&#39; || s.charAt(i) == &#39;[&#39; || s.charAt(i) == &#39;{&#39;){
-                stack.push(s.charAt(i));
-            }
-            if (s.charAt(i) == &#39;)&#39; || s.charAt(i) == &#39;]&#39; || s.charAt(i) == &#39;}&#39;){
-                if (s.charAt(i) == &#39;)&#39;){
-                    if (stack.isEmpty() == true) {
-                        return false;
-                    }
-                    if (stack.pop() != &#39;(&#39;)
-                        return false;
-
-                }
-                if (s.charAt(i) == &#39;]&#39;){
-                    if (stack.isEmpty() == true) {
-                        return false;
-                    }
-                    if (stack.pop() != &#39;[&#39;)
-                        return false;
-
-                }
-                if (s.charAt(i) == &#39;}&#39;){
-                    if (stack.isEmpty() == true) {
-                        return false;
-                    }
-                    if (stack.pop() != &#39;{&#39;)
-                        return false;
-
-                }
-            }
-        }
-        if (stack.isEmpty() == true){
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-}
-</code></pre>
-<h3 id="HashMap-实现"><a href="#HashMap-实现" class="headerlink" title="HashMap 实现"></a>HashMap 实现</h3><pre><code class="java">class Solution {
-    private static HashMap&lt;Character, Character&gt; map = new HashMap&lt;&gt;();
-    static {
-        // key - value
-        map.put(&#39;(&#39;, &#39;)&#39;);
-        map.put(&#39;{&#39;, &#39;}&#39;);
-        map.put(&#39;[&#39;, &#39;]&#39;);
-    }
-
-    public boolean isValid(String s) {
-        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
-
-        int len = s.length();
-        for (int i = 0; i &lt; len; i++) {
-            char c = s.charAt(i);
-            if (map.containsKey(c)) { // 左括号
-                stack.push(c);
-            } else { // 右括号
-                if (stack.isEmpty()) return false;
-
-                if (c != map.get(stack.pop())) return false;
-            }
-        }
-        return stack.isEmpty();
-    }
-}
-</code></pre>
-]]></content>
-      <categories>
-        <category>DataStructure</category>
-      </categories>
-      <tags>
-        <tag>栈</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Eclipse的使用总结</title>
-    <url>/blog/at014v/</url>
-    <content><![CDATA[<h2 id="一、Eclipse-的下载与安装"><a href="#一、Eclipse-的下载与安装" class="headerlink" title="一、Eclipse 的下载与安装"></a>一、Eclipse 的下载与安装</h2><p><a href="https://www.eclipse.org/downloads/" target="_blank" rel="noopener">下载地址</a><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180944-7ec7ebc3-8c39-44a7-9bec-85fded021a40.png#align=left&amp;display=inline&amp;height=441&amp;margin=%5Bobject%20Object%5D&amp;originHeight=441&amp;originWidth=1817&amp;size=0&amp;status=done&amp;style=none&amp;width=1817" alt></p>
-<p><strong>注意不要下错版本，不然开发不了 web 环境</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180923-a106c8c7-aebe-4f0a-bc06-d166bfc8894d.png#align=left&amp;display=inline&amp;height=758&amp;margin=%5Bobject%20Object%5D&amp;originHeight=758&amp;originWidth=731&amp;size=0&amp;status=done&amp;style=none&amp;width=731" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180948-16e05303-0d11-454e-8bbd-71a11d7a3ef7.png#align=left&amp;display=inline&amp;height=763&amp;margin=%5Bobject%20Object%5D&amp;originHeight=763&amp;originWidth=741&amp;size=0&amp;status=done&amp;style=none&amp;width=741" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180925-0262b0ea-f7af-493b-85a5-d8e7cbd12751.png#align=left&amp;display=inline&amp;height=373&amp;margin=%5Bobject%20Object%5D&amp;originHeight=373&amp;originWidth=762&amp;size=0&amp;status=done&amp;style=none&amp;width=762" alt></p>
-<h2 id="二、插件"><a href="#二、插件" class="headerlink" title="二、插件"></a>二、插件</h2><blockquote>
-<p>进入：<code>Help Eclipse</code> <code>MarketPlace</code></p>
-</blockquote>
-<ul>
-<li>Plugin1：Waka Time</li>
-</ul>
-<h2 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h2><h3 id="样式"><a href="#样式" class="headerlink" title="样式"></a>样式</h3><ul>
-<li>字体设置</li>
-<li>行数显示</li>
-<li>更改工作空间的默认编码</li>
-<li>代码增强显示，在设置中的<code>java</code>中的<code>content Assistant</code>中，将<code>.</code>改为<code>.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</code></li>
-</ul>
-<h3 id="导入已存在的项目"><a href="#导入已存在的项目" class="headerlink" title="导入已存在的项目"></a>导入已存在的项目</h3>]]></content>
-      <categories>
-        <category>Environment</category>
-      </categories>
-  </entry>
-  <entry>
     <title>ANN神经网络</title>
     <url>/blog/apohu8/</url>
     <content><![CDATA[<h2 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h2><blockquote>
@@ -421,6 +292,113 @@ if __name__ == &#39;__main__&#39;:
       </categories>
   </entry>
   <entry>
+    <title>P20. 有效的括号</title>
+    <url>/blog/aritwv/</url>
+    <content><![CDATA[<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>将所有的左半边括号 push 到栈内，然后遇到右半边括号，就将其与栈顶元素匹配测试，若能匹配成功则继续匹配，反之输出 false。</p>
+<p>在这之间注意比较当栈内没有元素了，而字符串还有待匹配的字符，输出 false，当栈内还有元素，外面与之匹配测试的右半边括号，也输出 false。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="栈实现"><a href="#栈实现" class="headerlink" title="栈实现"></a>栈实现</h3><pre><code class="java">class Solution {
+    public boolean isValid(String s) {
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+
+        int len = s.length();
+        for (int i=0;i&lt;len;i++) {
+            char c = s.charAt(i);
+            if (c == &#39;(&#39; || c == &#39;[&#39; || c == &#39;{&#39;) {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) return false;
+                char left = stack.pop();
+                if (left == &#39;(&#39; &amp;&amp; c !=&#39;)&#39;) return false;
+                if (left == &#39;[&#39; &amp;&amp; c !=&#39;]&#39;) return false;
+                if (left == &#39;{&#39; &amp;&amp; c !=&#39;}&#39;) return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+</code></pre>
+<pre><code class="java">class Solution {
+    public boolean isValid(String s) {
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+        for (int i = 0; i&lt; s.length();i++){
+            if (s.charAt(0) == &#39;)&#39; || s.charAt(0) == &#39;]&#39; || s.charAt(0) == &#39;}&#39;){
+                return false;
+            }
+            if (s.charAt(i) == &#39;(&#39; || s.charAt(i) == &#39;[&#39; || s.charAt(i) == &#39;{&#39;){
+                stack.push(s.charAt(i));
+            }
+            if (s.charAt(i) == &#39;)&#39; || s.charAt(i) == &#39;]&#39; || s.charAt(i) == &#39;}&#39;){
+                if (s.charAt(i) == &#39;)&#39;){
+                    if (stack.isEmpty() == true) {
+                        return false;
+                    }
+                    if (stack.pop() != &#39;(&#39;)
+                        return false;
+
+                }
+                if (s.charAt(i) == &#39;]&#39;){
+                    if (stack.isEmpty() == true) {
+                        return false;
+                    }
+                    if (stack.pop() != &#39;[&#39;)
+                        return false;
+
+                }
+                if (s.charAt(i) == &#39;}&#39;){
+                    if (stack.isEmpty() == true) {
+                        return false;
+                    }
+                    if (stack.pop() != &#39;{&#39;)
+                        return false;
+
+                }
+            }
+        }
+        if (stack.isEmpty() == true){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+}
+</code></pre>
+<h3 id="HashMap-实现"><a href="#HashMap-实现" class="headerlink" title="HashMap 实现"></a>HashMap 实现</h3><pre><code class="java">class Solution {
+    private static HashMap&lt;Character, Character&gt; map = new HashMap&lt;&gt;();
+    static {
+        // key - value
+        map.put(&#39;(&#39;, &#39;)&#39;);
+        map.put(&#39;{&#39;, &#39;}&#39;);
+        map.put(&#39;[&#39;, &#39;]&#39;);
+    }
+
+    public boolean isValid(String s) {
+        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+
+        int len = s.length();
+        for (int i = 0; i &lt; len; i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) { // 左括号
+                stack.push(c);
+            } else { // 右括号
+                if (stack.isEmpty()) return false;
+
+                if (c != map.get(stack.pop())) return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+</code></pre>
+]]></content>
+      <categories>
+        <category>DataStructure</category>
+      </categories>
+      <tags>
+        <tag>栈</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>约束</title>
     <url>/blog/bhcyvg/</url>
     <content><![CDATA[<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>根据列的数目分为：</p>
@@ -489,6 +467,28 @@ if __name__ == &#39;__main__&#39;:
 ]]></content>
       <categories>
         <category>Language</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Eclipse的使用总结</title>
+    <url>/blog/at014v/</url>
+    <content><![CDATA[<h2 id="一、Eclipse-的下载与安装"><a href="#一、Eclipse-的下载与安装" class="headerlink" title="一、Eclipse 的下载与安装"></a>一、Eclipse 的下载与安装</h2><p><a href="https://www.eclipse.org/downloads/" target="_blank" rel="noopener">下载地址</a><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180944-7ec7ebc3-8c39-44a7-9bec-85fded021a40.png#align=left&amp;display=inline&amp;height=441&amp;margin=%5Bobject%20Object%5D&amp;originHeight=441&amp;originWidth=1817&amp;size=0&amp;status=done&amp;style=none&amp;width=1817" alt></p>
+<p><strong>注意不要下错版本，不然开发不了 web 环境</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180923-a106c8c7-aebe-4f0a-bc06-d166bfc8894d.png#align=left&amp;display=inline&amp;height=758&amp;margin=%5Bobject%20Object%5D&amp;originHeight=758&amp;originWidth=731&amp;size=0&amp;status=done&amp;style=none&amp;width=731" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180948-16e05303-0d11-454e-8bbd-71a11d7a3ef7.png#align=left&amp;display=inline&amp;height=763&amp;margin=%5Bobject%20Object%5D&amp;originHeight=763&amp;originWidth=741&amp;size=0&amp;status=done&amp;style=none&amp;width=741" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685180925-0262b0ea-f7af-493b-85a5-d8e7cbd12751.png#align=left&amp;display=inline&amp;height=373&amp;margin=%5Bobject%20Object%5D&amp;originHeight=373&amp;originWidth=762&amp;size=0&amp;status=done&amp;style=none&amp;width=762" alt></p>
+<h2 id="二、插件"><a href="#二、插件" class="headerlink" title="二、插件"></a>二、插件</h2><blockquote>
+<p>进入：<code>Help Eclipse</code> <code>MarketPlace</code></p>
+</blockquote>
+<ul>
+<li>Plugin1：Waka Time</li>
+</ul>
+<h2 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h2><h3 id="样式"><a href="#样式" class="headerlink" title="样式"></a>样式</h3><ul>
+<li>字体设置</li>
+<li>行数显示</li>
+<li>更改工作空间的默认编码</li>
+<li>代码增强显示，在设置中的<code>java</code>中的<code>content Assistant</code>中，将<code>.</code>改为<code>.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</code></li>
+</ul>
+<h3 id="导入已存在的项目"><a href="#导入已存在的项目" class="headerlink" title="导入已存在的项目"></a>导入已存在的项目</h3>]]></content>
+      <categories>
+        <category>Environment</category>
       </categories>
   </entry>
   <entry>
@@ -3305,23 +3305,6 @@ public class Permuting {
       </categories>
   </entry>
   <entry>
-    <title>数据可视化</title>
-    <url>/blog/kt0kvc/</url>
-    <content><![CDATA[<h2 id="一、GitHub-Juper-NoteBook-笔记"><a href="#一、GitHub-Juper-NoteBook-笔记" class="headerlink" title="一、GitHub Juper NoteBook 笔记"></a>一、GitHub Juper NoteBook 笔记</h2><ul>
-<li><a href="https://github.com/wztlink1013/data-analysis-mining" target="_blank" rel="noopener">https://github.com/wztlink1013/data-analysis-mining</a></li>
-</ul>
-<h2 id="二、零碎总结"><a href="#二、零碎总结" class="headerlink" title="二、零碎总结"></a>二、零碎总结</h2><h3 id="matplotlib-调整子图间距，调整整体空白"><a href="#matplotlib-调整子图间距，调整整体空白" class="headerlink" title="matplotlib 调整子图间距，调整整体空白"></a>matplotlib 调整子图间距，调整整体空白</h3><pre><code class="python">fig.tight_layout() #调整整体空白
-plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
-</code></pre>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s/DaQL6bqr0wu5iYt-cVkz6g" target="_blank" rel="noopener">Matplotlib 可视化最有价值的 50 个图表</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>DataAnalysis</category>
-      </categories>
-  </entry>
-  <entry>
     <title>P83. 删除排序链表中的重复元素</title>
     <url>/blog/lg67md/</url>
     <content><![CDATA[<pre><code class="java">/**
@@ -4450,6 +4433,23 @@ Error running Tomcat8: Address localhost:8080 is already in use
 ]]></content>
       <categories>
         <category>Bug</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数据可视化</title>
+    <url>/blog/kt0kvc/</url>
+    <content><![CDATA[<h2 id="一、GitHub-Juper-NoteBook-笔记"><a href="#一、GitHub-Juper-NoteBook-笔记" class="headerlink" title="一、GitHub Juper NoteBook 笔记"></a>一、GitHub Juper NoteBook 笔记</h2><ul>
+<li><a href="https://github.com/wztlink1013/data-analysis-mining" target="_blank" rel="noopener">https://github.com/wztlink1013/data-analysis-mining</a></li>
+</ul>
+<h2 id="二、零碎总结"><a href="#二、零碎总结" class="headerlink" title="二、零碎总结"></a>二、零碎总结</h2><h3 id="matplotlib-调整子图间距，调整整体空白"><a href="#matplotlib-调整子图间距，调整整体空白" class="headerlink" title="matplotlib 调整子图间距，调整整体空白"></a>matplotlib 调整子图间距，调整整体空白</h3><pre><code class="python">fig.tight_layout() #调整整体空白
+plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
+</code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/DaQL6bqr0wu5iYt-cVkz6g" target="_blank" rel="noopener">Matplotlib 可视化最有价值的 50 个图表</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>DataAnalysis</category>
       </categories>
   </entry>
   <entry>
