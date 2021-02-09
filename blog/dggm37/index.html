@@ -2,17 +2,17 @@
 <html lang="zh-cn">
 <head>
   <meta charset="UTF-8">
-  <title>Data-描述数据 | 尼采般地抒情</title>
+  <title>数据的清洗和规整（二） | 尼采般地抒情</title>
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
   <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
   <meta name="email" content="wztlink1013@163.com">
-  <meta name="description" content="数据描述函数tail;head;info;describe……">
+  <meta name="description" content="规整数据：连接、合并、重构、转换etc">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Data-描述数据 | 尼采般地抒情">
+  <meta property="og:title" content="数据的清洗和规整（二） | 尼采般地抒情">
   <meta property="og:url" content="https://www.wztlink1013.com/blog/dggm37/">
-  <meta property="og:site_name" content="Data-描述数据">
-  <meta property="og:description" content="数据描述函数tail;head;info;describe……">
+  <meta property="og:site_name" content="数据的清洗和规整（二）">
+  <meta property="og:description" content="规整数据：连接、合并、重构、转换etc">
   <meta name="generator" content="https://hexo.io" />
   <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -27,8 +27,8 @@
   <link href="https://www.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
   <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
-  <link rel="prev" href="https://www.wztlink1013.com/blog/gvi1hn/" title="Data-清洗和规整" />
-  <link rel="next" href="https://www.wztlink1013.com/blog/lb8ugs/" title="读取本地数据" />
+  <link rel="prev" href="https://www.wztlink1013.com/blog/gvi1hn/" title="数据的清洗和规整（一）" />
+  <link rel="next" href="https://www.wztlink1013.com/blog/lb8ugs/" title="数据的本地读取" />
   <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
   <!-- 引入整体样式 -->
@@ -68,7 +68,7 @@
       </div>
       <!-- TODO: 头像+文章大标题 -->
       <div class="post-title-wrapper">
-        <h1 class="post-title" itemprop="name">Data-描述数据</h1>
+        <h1 class="post-title" itemprop="name">数据的清洗和规整（二）</h1>
         <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
       </div>
       <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
@@ -82,9 +82,7 @@
 	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
 </span>
-        <span tabindex="0" aria-hidden="true">标签: 
-<a class="article-tag-link" href="/blog/tags/DataAnalysis/">DataAnalysis</a>
-</span>
+        <span tabindex="0" aria-hidden="true">标签: </span>
         <span class="aria-readonly">下面是正文内容</span>
         <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
                       class="ds-thread-count hash-to-comments disqus-comment-count"
@@ -93,7 +91,7 @@
                       id="changyan_count_unit"></a></span>
         <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
         <!-- TODO: valine文章计数 -->
-        <span id="/blog/dggm37/" class="leancloud_visitors" data-flag-title="Data-描述数据">
+        <span id="/blog/dggm37/" class="leancloud_visitors" data-flag-title="数据的清洗和规整（二）">
           <em class="post-meta-item-text">阅读量: </em>
           <i class="leancloud-visitors-count">loading</i>
         </span>
@@ -104,54 +102,1308 @@
           <p>原文地址：<a href="https://www.wztlink1013.com/blog/dggm37/">https://www.wztlink1013.com/blog/dggm37/</a>，<a href="https://www.wztlink1013.com/blog/dggm37/#comments">参与评论</a></p>
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
-        <h2 id="一、数据预览：tail（）；head（）"><a href="#一、数据预览：tail（）；head（）" class="headerlink" title="一、数据预览：tail（）；head（）"></a>一、数据预览：tail（）；head（）</h2><pre><code class="python">import numpy as np
+        <h2 id="三、数据规整-连接-含索引"><a href="#三、数据规整-连接-含索引" class="headerlink" title="三、数据规整-连接-含索引"></a>三、数据规整-连接-含索引</h2><ul>
+<li>数据连接 merge</li>
+</ul>
+<pre><code class="python">import pandas as pd
+import numpy as np
+</code></pre>
+<pre><code class="python">df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data1&#39; : [&#39;sfd&#39;,&#39;fdsf&#39;,&#39;we&#39;,24,3253,234,23]})
+df_obj2 = pd.DataFrame({&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;],
+                        &#39;data2&#39; : np.random.randint(0,10,3)})
+
+print (df_obj1)
+print (df_obj2)
+</code></pre>
+<pre><code>  key data1
+0   b   sfd
+1   b  fdsf
+2   a    we
+3   c    24
+4   a  3253
+5   a   234
+6   b    23
+  key  data2
+0   a      0
+1   b      6
+2   d      6
+</code></pre><h3 id="merge-和-on"><a href="#merge-和-on" class="headerlink" title="merge 和 on"></a>merge 和 on</h3><blockquote>
+<p>默认将重叠列的列名作为“外键”进行连接</p>
+</blockquote>
+<pre><code class="python">pd.merge(df_obj1, df_obj2)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># on显示指定“外键”
+pd.merge(df_obj1, df_obj2, on=&#39;key&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="left-on-和-right-on"><a href="#left-on-和-right-on" class="headerlink" title="left-on 和 right-on"></a>left-on 和 right-on</h3><pre><code class="python"># left_on，right_on分别指定左侧数据和右侧数据的“外键”
+
+# 更改列名
+df_obj1 = df_obj1.rename(columns={&#39;key&#39;:&#39;key1&#39;})
+df_obj2 = df_obj2.rename(columns={&#39;key&#39;:&#39;key2&#39;})
+</code></pre>
+<pre><code class="python">print(df_obj1)
+print(df_obj2)
+</code></pre>
+<pre><code>  key1 data1
+0    b   sfd
+1    b  fdsf
+2    a    we
+3    c    24
+4    a  3253
+5    a   234
+6    b    23
+  key2  data2
+0    a      0
+1    b      6
+2    d      6
+</code></pre><pre><code class="python">pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how"><a href="#how" class="headerlink" title="how"></a>how</h3><pre><code class="python"># “外连接”
+pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;outer&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>c</td>
+<td>24</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>d</td>
+<td>6.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 左连接
+pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;left&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>c</td>
+<td>24</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 右连接
+pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;right&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>d</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="处理重复列名-suffixes"><a href="#处理重复列名-suffixes" class="headerlink" title="处理重复列名 suffixes"></a>处理重复列名 suffixes</h3><pre><code class="python"># 处理重复列名
+df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data&#39; : np.random.randint(0,10,7)})
+df_obj2 = pd.DataFrame({&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;],
+                        &#39;data&#39; : np.random.randint(0,10,3)})
+
+pd.merge(df_obj1, df_obj2, on=&#39;key&#39;, suffixes=(&#39;_left&#39;, &#39;_right&#39;))
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data_left</th>
+<th>data_right</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>7</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 按索引连接
+df_obj3 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data1&#39; : np.random.randint(0,10,7)})
+df_obj4 = pd.DataFrame({&#39;data2&#39; : np.random.randint(0,10,3)}, index=[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;])
+</code></pre>
+<pre><code class="python">print(df_obj3)
+print(df_obj4)
+</code></pre>
+<pre><code>  key  data1
+0   b      7
+1   b      4
+2   a      1
+3   c      9
+4   a      2
+5   a      9
+6   b      7
+   data2
+a      9
+b      4
+d      0
+</code></pre><pre><code class="python">pd.merge(df_obj3, df_obj4, left_on=&#39;key&#39;, right_index=True)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>7</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>7</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>1</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>2</td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>9</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="按索引连接-right-index"><a href="#按索引连接-right-index" class="headerlink" title="按索引连接 right_index"></a>按索引连接 right_index</h3><pre><code class="python"># 按索引连接
+df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data1&#39; : np.random.randint(0,10,7)})
+df_obj2 = pd.DataFrame({&#39;data2&#39; : np.random.randint(0,10,3)}, index=[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;])
+</code></pre>
+<pre><code class="python">print(df_obj1)
+print(df_obj2)
+</code></pre>
+<pre><code>  key  data1
+0   b      0
+1   b      2
+2   a      7
+3   c      3
+4   a      1
+5   a      1
+6   b      6
+   data2
+a      2
+b      1
+d      1
+</code></pre><pre><code class="python">pd.merge(df_obj1, df_obj2, left_on=&#39;key&#39;, right_index=True)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>7</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="四、数据合并"><a href="#四、数据合并" class="headerlink" title="四、数据合并"></a>四、数据合并</h2><ul>
+<li>数据合并 concat</li>
+<li>按索引连接===right_index</li>
+</ul>
+<pre><code class="python">import numpy as np
 import pandas as pd
-df_obj = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
-print(df_obj.tail())# 数据预览尾巴
-print(df_obj.head())# 数据预览头部
 </code></pre>
-<pre><code>          a         b         c         d
-0 -0.507788  0.213237  0.003150 -0.777312
-1 -0.896653 -2.188016 -0.114848  0.167057
-2 -1.131242 -0.142287 -1.027330  1.861814
-3  0.369608  0.823453  1.030830 -0.041778
-4 -0.647625  0.056791 -0.394078 -1.347718
-          a         b         c         d
-0 -0.507788  0.213237  0.003150 -0.777312
-1 -0.896653 -2.188016 -0.114848  0.167057
-2 -1.131242 -0.142287 -1.027330  1.861814
-3  0.369608  0.823453  1.030830 -0.041778
-4 -0.647625  0.056791 -0.394078 -1.347718
-</code></pre><h2 id="二、数据描述：shape；info"><a href="#二、数据描述：shape；info" class="headerlink" title="二、数据描述：shape；info()"></a>二、数据描述：shape；info()</h2><pre><code class="python">print (&#39;数据集有%i行，%i列&#39; %(df_obj.shape[0], df_obj.shape[1]))
+<h3 id="numpy-的-concat"><a href="#numpy-的-concat" class="headerlink" title="numpy 的 concat"></a>numpy 的 concat</h3><pre><code class="python">arr1 = np.random.randint(0, 10, (3, 4))
+arr2 = np.random.randint(0, 10, (3, 4))
+
+print (arr1)
+print (arr2)
 </code></pre>
-<pre><code>数据集有5行，4列
-</code></pre><pre><code class="python">print(df_obj.info())
+<pre><code>[[6 0 3 2]
+ [5 7 9 8]
+ [5 8 0 3]]
+[[6 5 7 9]
+ [0 1 0 0]
+ [1 1 1 7]]
+</code></pre><pre><code class="python">np.concatenate([arr1, arr2])
 </code></pre>
-<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 5 entries, 0 to 4
-Data columns (total 4 columns):
-a    5 non-null float64
-b    5 non-null float64
-c    5 non-null float64
-d    5 non-null float64
-dtypes: float64(4)
-memory usage: 288.0 bytes
-None
-</code></pre><h2 id="三、数据统计：describe"><a href="#三、数据统计：describe" class="headerlink" title="三、数据统计：describe()"></a>三、数据统计：describe()</h2><pre><code class="python">print(df_obj.describe())
+<pre><code>array([[6, 0, 3, 2],
+       [5, 7, 9, 8],
+       [5, 8, 0, 3],
+       [6, 5, 7, 9],
+       [0, 1, 0, 0],
+       [1, 1, 1, 7]])
+</code></pre><pre><code class="python">np.concatenate([arr1, arr2], axis=1)
 </code></pre>
-<pre><code>              a         b         c         d
-count  5.000000  5.000000  5.000000  5.000000
-mean  -0.562740 -0.247365 -0.100455 -0.027587
-std    0.573191  1.143294  0.747673  1.215808
-min   -1.131242 -2.188016 -1.027330 -1.347718
-25%   -0.896653 -0.142287 -0.394078 -0.777312
-50%   -0.647625  0.056791 -0.114848 -0.041778
-75%   -0.507788  0.213237  0.003150  0.167057
-max    0.369608  0.823453  1.030830  1.861814
-</code></pre><h2 id="四、pandas-不完全显示行列"><a href="#四、pandas-不完全显示行列" class="headerlink" title="四、pandas 不完全显示行列"></a>四、pandas 不完全显示行列</h2><pre><code>pd.set_option(&#39;display.max_rows&#39;, 100)        //显示的最大行数（避免只显示部分行数据）
-pd.set_option(&#39;display.max_columns&#39;, 1000)    //显示的最大列数（避免列显示不全）
-pd.set_option(&quot;display.max_colwidth&quot;, 1000)   //每一列最大的宽度（避免属性值或列名显示不全）
-pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避免换行）
+<pre><code>array([[6, 0, 3, 2, 6, 5, 7, 9],
+       [5, 7, 9, 8, 0, 1, 0, 0],
+       [5, 8, 0, 3, 1, 1, 1, 7]])
+</code></pre><h3 id="series-上的-concat"><a href="#series-上的-concat" class="headerlink" title="series 上的 concat"></a>series 上的 concat</h3><pre><code class="python"># index 没有重复的情况
+ser_obj1 = pd.Series(np.random.randint(0, 10, 5), index=range(0,5))
+ser_obj2 = pd.Series(np.random.randint(0, 10, 4), index=range(5,9))
+ser_obj3 = pd.Series(np.random.randint(0, 10, 3), index=range(9,12))
+</code></pre>
+<pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3])
+</code></pre>
+<pre><code>0     0
+1     4
+2     5
+3     1
+4     9
+5     7
+6     8
+7     5
+8     0
+9     5
+10    9
+11    0
+dtype: int32
+</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=1)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>5</td>
+<td>NaN</td>
+<td>7.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>6</td>
+<td>NaN</td>
+<td>8.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NaN</td>
+<td>5.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>8</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>9</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>9.0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># index 有重复的情况
+ser_obj1 = pd.Series(np.random.randint(0, 10, 5), index=range(5))
+ser_obj2 = pd.Series(np.random.randint(0, 10, 4), index=range(4))
+ser_obj3 = pd.Series(np.random.randint(0, 10, 3), index=range(3))
+
+print (ser_obj1)
+print (ser_obj2)
+print (ser_obj3)
+</code></pre>
+<pre><code>0    5
+1    3
+2    0
+3    8
+4    3
+dtype: int32
+0    5
+1    3
+2    2
+3    1
+dtype: int32
+0    5
+1    8
+2    6
+dtype: int32
+</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3])
+</code></pre>
+<pre><code>0    5
+1    3
+2    0
+3    8
+4    3
+0    5
+1    3
+2    2
+3    1
+0    5
+1    8
+2    6
+dtype: int32
+</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=1, join=&#39;inner&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dataframe-上的-concat"><a href="#dataframe-上的-concat" class="headerlink" title="dataframe 上的 concat"></a>dataframe 上的 concat</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randint(0, 10, (3, 2)), index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],
+                       columns=[&#39;A&#39;, &#39;B&#39;])
+df_obj2 = pd.DataFrame(np.random.randint(0, 10, (2, 2)), index=[&#39;a&#39;, &#39;b&#39;],
+                       columns=[&#39;C&#39;, &#39;D&#39;])
+print (df_obj1)
+print (df_obj2)
+</code></pre>
+<pre><code>   A  B
+a  4  3
+b  8  1
+c  6  3
+   C  D
+a  1  3
+b  8  2
+</code></pre><pre><code class="python">pd.concat([df_obj1, df_obj2])
+</code></pre>
+<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
+of pandas will change to not sort by default.
+
+To accept the future behavior, pass &#39;sort=False&#39;.
+
+To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
+
+  &quot;&quot;&quot;Entry point for launching an IPython kernel.
+</code></pre><table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>b</td>
+<td>8.0</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>c</td>
+<td>6.0</td>
+<td>3.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>a</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>8.0</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">pd.concat([df_obj1, df_obj2], axis=1)
+</code></pre>
+<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
+of pandas will change to not sort by default.
+
+To accept the future behavior, pass &#39;sort=False&#39;.
+
+To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
+
+  &quot;&quot;&quot;Entry point for launching an IPython kernel.
+</code></pre><table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>4</td>
+<td>3</td>
+<td>1.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>8</td>
+<td>1</td>
+<td>8.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>c</td>
+<td>6</td>
+<td>3</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+<h2 id="五、数据重构"><a href="#五、数据重构" class="headerlink" title="五、数据重构"></a>五、数据重构</h2><pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<h3 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h3><pre><code class="python">df_obj = pd.DataFrame(np.random.randint(0,10, (5,2)), columns=[&#39;data1&#39;, &#39;data2&#39;])
+df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">stacked = df_obj.stack()
+print (stacked)
+</code></pre>
+<pre><code>0  data1    0
+   data2    4
+1  data1    6
+   data2    2
+2  data1    9
+   data2    8
+3  data1    7
+   data2    0
+4  data1    3
+   data2    1
+dtype: int32
+</code></pre><pre><code class="python">print (type(stacked))
+print (type(stacked.index))
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.series.Series&#39;&gt;
+&lt;class &#39;pandas.core.indexes.multi.MultiIndex&#39;&gt;
+</code></pre><h3 id="unstack"><a href="#unstack" class="headerlink" title="unstack"></a>unstack</h3><pre><code class="python"># 默认操作内层索引
+stacked.unstack()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 通过level指定操作索引的级别
+stacked.unstack(level=0)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data1</td>
+<td>0</td>
+<td>6</td>
+<td>9</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>data2</td>
+<td>4</td>
+<td>2</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六、数据转换"><a href="#六、数据转换" class="headerlink" title="六、数据转换"></a>六、数据转换</h2><pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<h3 id="重复数据-duplicates-函数"><a href="#重复数据-duplicates-函数" class="headerlink" title="重复数据 duplicates 函数"></a>重复数据 duplicates 函数</h3><pre><code class="python">df_obj = pd.DataFrame({&#39;data1&#39; : [&#39;a&#39;] * 4 + [&#39;b&#39;] * 4,
+                       &#39;data2&#39; : np.random.randint(0, 4, 8)})
+df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>b</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">df_obj.duplicated()
+</code></pre>
+<pre><code>0    False
+1    False
+2     True
+3    False
+4    False
+5    False
+6     True
+7    False
+dtype: bool
+</code></pre><pre><code class="python">df_obj.drop_duplicates()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>b</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">df_obj.drop_duplicates(&#39;data2&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a>map 函数</h3><pre><code class="python">ser_obj = pd.Series(np.random.randint(0,10,10))
+ser_obj
+</code></pre>
+<pre><code>0    1
+1    9
+2    1
+3    2
+4    7
+5    2
+6    4
+7    5
+8    4
+9    6
+dtype: int32
+</code></pre><pre><code class="python">ser_obj.map(lambda x : x ** 2)
+</code></pre>
+<pre><code>0     1
+1    81
+2     1
+3     4
+4    49
+5     4
+6    16
+7    25
+8    16
+9    36
+dtype: int64
+</code></pre><h3 id="数据替换-repalce"><a href="#数据替换-repalce" class="headerlink" title="数据替换 repalce"></a>数据替换 repalce</h3><pre><code class="python"># 替换单个值
+ser_obj.replace(0, -100)
+</code></pre>
+<pre><code>0    1
+1    9
+2    1
+3    2
+4    7
+5    2
+6    4
+7    5
+8    4
+9    6
+dtype: int32
+</code></pre><pre><code class="python"># 替换多个值
+ser_obj.replace([0, 2], -100)
+</code></pre>
+<pre><code>0      1
+1      9
+2      1
+3   -100
+4      7
+5   -100
+6      4
+7      5
+8      4
+9      6
+dtype: int32
+</code></pre><pre><code class="python"># 替换多个值
+ser_obj.replace([0, 2], [-100, -200])
+</code></pre>
+<pre><code>0      1
+1      9
+2      1
+3   -200
+4      7
+5   -200
+6      4
+7      5
+8      4
+9      6
+dtype: int64
+</code></pre><pre><code class="python">ser_obj.map(lambda x : x ** 2)
+
+#### 3. 数据替换repalce
+
+# 替换单个值
+ser_obj.replace(0, -100)
+
+# 替换多个值
+ser_obj.replace([0, 2], -100)
+
+# 替换多个值
+ser_obj.replace([0, 2], [-100, -200])
+</code></pre>
+<pre><code>0      1
+1      9
+2      1
+3   -200
+4      7
+5   -200
+6      4
+7      5
+8      4
+9      6
+dtype: int64
 </code></pre>
       </div>
     </div>
@@ -169,13 +1421,11 @@ pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避
 	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
 </li>
-		<li>文章标签: 
-<a class="article-tag-link" href="/blog/tags/DataAnalysis/">DataAnalysis</a>
-</li>
+		<li>文章标签: </li>
 		
-		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/dggm37.md" download target="_blank">Data-描述数据.md</a></li> -->
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/dggm37.md" download target="_blank">数据的清洗和规整（二）.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
-		<li>最后编辑时间: 2021-02-09 10:07:01</li>
+		<li>最后编辑时间: 2021-02-09 12:02:28</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/dggm37/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -205,14 +1455,14 @@ pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避
       <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
       <span class="aria-readonly">上一篇文章</span>
       
-        <b>Data-清洗和规整</b>
+        <b>数据的清洗和规整（一）</b>
       
     </a>
   
   
     <a href="/blog/lb8ugs/" class="post-next">
       <span class="aria-readonly">下一篇文章</span>
-      <b>读取本地数据</b>
+      <b>数据的本地读取</b>
       <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
     </a>
   
@@ -221,17 +1471,17 @@ pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避
 
 <div class="page-relative-fixed" tabindex="0" aria-hidden="true">
   
-  <a href="/blog/gvi1hn/" class="prev" title="Data-清洗和规整">
+  <a href="/blog/gvi1hn/" class="prev" title="数据的清洗和规整（一）">
     <i class="icon">&#xe600;</i>
     
-    <b>Data-清洗和规整</b>
+    <b>数据的清洗和规整（一）</b>
     
   </a>
   
   
-  <a href="/blog/lb8ugs/" class="next" title="读取本地数据">
+  <a href="/blog/lb8ugs/" class="next" title="数据的本地读取">
     <i class="icon">&#x261e;</i>
-    <b>读取本地数据</b>
+    <b>数据的本地读取</b>
   </a>
   
 </div>
@@ -338,7 +1588,7 @@ pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避
 		<ul>
 			<li>
 				<span><font aria-hidden="true">2020-05-29 »</font> </span>
-				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<a href="/blog/delag2/">时间格式UTC、GMT、GST</a>
 				<span class="aria-readonly">发表时间为2020年05月29日</span>
 				<div class="relative-box">
           
@@ -347,32 +1597,32 @@ pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避
 			</li>
 			
 			<li>
-				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
-				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<span><font aria-hidden="true">2020-02-12 »</font> </span>
+				<a href="/blog/zsvfxg/">爬虫框架和Scrapy使用</a>
+				<span class="aria-readonly">发表时间为2020年02月12日</span>
 				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>GitHub 笔记源码jupyter notebookhttps://github.com/wztl...
+          <a href="/blog/zsvfxg/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/webp/1484158/1598673193957-7a7456b0-3de1-4c77-b849-cc2572555ed5.webp#align=left&amp;display=inline&amp;height=281&amp;margin=%5Bobject%20Object%5D&amp;originHeight=541&amp;originWidth=801&amp;size=0&amp;status=done&amp;style=shadow&amp;width=416" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/webp/1484158/1598673193957-7a7456b0-3de1-4c77-b849-cc2572555ed5.webp#align=left&amp;display=inline&amp;height=281&amp;margin=%5Bobject%20Object%5D&amp;originHeight=541&amp;originWidth=801&amp;size=0&amp;status=done&amp;style=shadow&amp;width=416"/></a>
+          <span class="aria-readonly">文章概要 </span>一、爬虫基本架构url 管理模块就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环使用 pyt...
         </div>
 			</li>
 			
 			<li>
 				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/oq4xcx/">Pandas-分组聚合</a>
+				<a href="/blog/kt0kvc/">数据可视化</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、GitHub Juper NoteBook 笔记https://github.com/wztli...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/oq4xcx/">Pandas使用——分组聚合</a>
 				<span class="aria-readonly">发表时间为2020年02月10日</span>
 				<div class="relative-box">
           
           <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
-        </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/nfqdqf/">pandas-索引</a>
-				<span class="aria-readonly">发表时间为2020年02月10日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
         </div>
 			</li>
 			

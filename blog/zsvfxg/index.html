@@ -2,17 +2,17 @@
 <html lang="zh-cn">
 <head>
   <meta charset="UTF-8">
-  <title>Scrapy使用 | 尼采般地抒情</title>
+  <title>爬虫框架和Scrapy使用 | 尼采般地抒情</title>
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
   <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
   <meta name="email" content="wztlink1013@163.com">
-  <meta name="description" content="Spider框架Scrapy">
+  <meta name="description" content="爬虫框架和Scrapy使用">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Scrapy使用 | 尼采般地抒情">
+  <meta property="og:title" content="爬虫框架和Scrapy使用 | 尼采般地抒情">
   <meta property="og:url" content="https://www.wztlink1013.com/blog/zsvfxg/">
-  <meta property="og:site_name" content="Scrapy使用">
-  <meta property="og:description" content="Spider框架Scrapy">
+  <meta property="og:site_name" content="爬虫框架和Scrapy使用">
+  <meta property="og:description" content="爬虫框架和Scrapy使用">
   <meta name="generator" content="https://hexo.io" />
   <!-- 文档兼容模式的定义 -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -28,7 +28,7 @@
   <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
   <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
   <link rel="prev" href="https://www.wztlink1013.com/blog/eywygo/" title="JAVA-面向对象" />
-  <link rel="next" href="https://www.wztlink1013.com/blog/kt0kvc/" title="Data-数据可视化综述" />
+  <link rel="next" href="https://www.wztlink1013.com/blog/kt0kvc/" title="数据可视化" />
   <!-- 通知搜索引擎,文档的开始（rel="start"） -->
   <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
   <!-- 引入整体样式 -->
@@ -62,13 +62,13 @@
         <a href="/">尼采般地抒情</a> »
         <a href="/blog/">博客</a> »
         
-	<a class="category-link" href="/blog/categories/Spider/">Spider</a>
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
 
       </div>
       <!-- TODO: 头像+文章大标题 -->
       <div class="post-title-wrapper">
-        <h1 class="post-title" itemprop="name">Scrapy使用</h1>
+        <h1 class="post-title" itemprop="name">爬虫框架和Scrapy使用</h1>
         <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
       </div>
       <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
@@ -79,12 +79,10 @@
           <span class="aria-readonly">本文发布时间为2020年02月12日09时18分39秒</span>
         </span>
         <span>分类: 
-	<a class="category-link" href="/blog/categories/Spider/">Spider</a>
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
 </span>
-        <span tabindex="0" aria-hidden="true">标签: 
-<a class="article-tag-link" href="/blog/tags/scrapy/">scrapy</a>, <a class="article-tag-link" href="/blog/tags/spider/">spider</a>
-</span>
+        <span tabindex="0" aria-hidden="true">标签: </span>
         <span class="aria-readonly">下面是正文内容</span>
         <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
                       class="ds-thread-count hash-to-comments disqus-comment-count"
@@ -93,7 +91,7 @@
                       id="changyan_count_unit"></a></span>
         <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
         <!-- TODO: valine文章计数 -->
-        <span id="/blog/zsvfxg/" class="leancloud_visitors" data-flag-title="Scrapy使用">
+        <span id="/blog/zsvfxg/" class="leancloud_visitors" data-flag-title="爬虫框架和Scrapy使用">
           <em class="post-meta-item-text">阅读量: </em>
           <i class="leancloud-visitors-count">loading</i>
         </span>
@@ -104,8 +102,41 @@
           <p>原文地址：<a href="https://www.wztlink1013.com/blog/zsvfxg/">https://www.wztlink1013.com/blog/zsvfxg/</a>，<a href="https://www.wztlink1013.com/blog/zsvfxg/#comments">参与评论</a></p>
           <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
         </div>
-        <p>##</p>
-<h2 id="一、Scrapy"><a href="#一、Scrapy" class="headerlink" title="一、Scrapy"></a>一、Scrapy</h2><h3 id="Scrapy-基础"><a href="#Scrapy-基础" class="headerlink" title="Scrapy 基础"></a>Scrapy 基础</h3><ul>
+        <h2 id="一、爬虫基本架构"><a href="#一、爬虫基本架构" class="headerlink" title="一、爬虫基本架构"></a>一、爬虫基本架构</h2><h3 id="url-管理模块"><a href="#url-管理模块" class="headerlink" title="url 管理模块"></a>url 管理模块</h3><ul>
+<li>就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环</li>
+<li>使用 python 当中的 set 数据结构</li>
+</ul>
+<h3 id="网页下载模块"><a href="#网页下载模块" class="headerlink" title="网页下载模块"></a>网页下载模块</h3><blockquote>
+<p>将对应的 url 模块下载到本地或者读入内存</p>
+</blockquote>
+<blockquote>
+<p>实现方式</p>
+</blockquote>
+<ul>
+<li>通过 url 下载</li>
+</ul>
+<pre><code class="python">from urllib.request import urlopen
+test_url = &quot;https://wztlink1013.github.io&quot;
+response = urlopen(test_url)
+print (response.getcode()) # 200 表示访问成功
+print (response.read())
+</code></pre>
+<ul>
+<li>通过 Request 访问</li>
+<li>通过 cookie 访问</li>
+</ul>
+<h3 id="网页解析模块"><a href="#网页解析模块" class="headerlink" title="网页解析模块"></a>网页解析模块</h3><blockquote>
+<p>从已经下载的网页中爬取数据，实现方式有：</p>
+</blockquote>
+<ol>
+<li>正则表达式</li>
+<li>html.parser</li>
+<li><strong>BeautifulSoup：结构化解析网页</strong></li>
+<li>lxml</li>
+<li>结构化解析</li>
+<li>DOM（Document Object Model），树形结构，就是 html 的基本骨架</li>
+</ol>
+<h2 id="二、BeautifulSoup-解析网页"><a href="#二、BeautifulSoup-解析网页" class="headerlink" title="二、BeautifulSoup 解析网页"></a>二、BeautifulSoup 解析网页</h2><h2 id="三、Scrapy"><a href="#三、Scrapy" class="headerlink" title="三、Scrapy"></a>三、Scrapy</h2><h3 id="Scrapy-基础"><a href="#Scrapy-基础" class="headerlink" title="Scrapy 基础"></a>Scrapy 基础</h3><ul>
 <li>是一个爬虫框架，同时易扩展，可以添加新的模块达到自定义扩展</li>
 <li>输出格式多样：json，csv，xml 等</li>
 <li>自动处理编码</li>
@@ -114,7 +145,7 @@
 <blockquote>
 <p>下载方法以及问题，在 anaconda 博客中</p>
 </blockquote>
-<h2 id="二、Scrapy-使用"><a href="#二、Scrapy-使用" class="headerlink" title="二、Scrapy 使用"></a>二、Scrapy 使用</h2><h3 id="使用-SOP"><a href="#使用-SOP" class="headerlink" title="使用 SOP"></a>使用 SOP</h3><ul>
+<h2 id="四、Scrapy-使用"><a href="#四、Scrapy-使用" class="headerlink" title="四、Scrapy 使用"></a>四、Scrapy 使用</h2><h3 id="使用-SOP"><a href="#使用-SOP" class="headerlink" title="使用 SOP"></a>使用 SOP</h3><ul>
 <li>创建工程<ul>
 <li>键入<code>cmd</code> <code>cd</code>到需要下载的目录下</li>
 <li>输入<code>scrapy startproject tutorial</code>（最后是项目名字）</li>
@@ -151,16 +182,14 @@
 		<li>作者:  <a href="/" itemprop="name">尼采般地抒情</a></li>
 		<li>发表日期:  2020-02-12 09:18:39</li>
 		<li>文章分类: 
-	<a class="category-link" href="/blog/categories/Spider/">Spider</a>
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
 </li>
-		<li>文章标签: 
-<a class="article-tag-link" href="/blog/tags/scrapy/">scrapy</a>, <a class="article-tag-link" href="/blog/tags/spider/">spider</a>
-</li>
+		<li>文章标签: </li>
 		
-		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/zsvfxg.md" download target="_blank">Scrapy使用.md</a></li> -->
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/zsvfxg.md" download target="_blank">爬虫框架和Scrapy使用.md</a></li> -->
 		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
-		<li>最后编辑时间: 2021-02-09 10:07:01</li>
+		<li>最后编辑时间: 2021-02-09 12:02:28</li>
 		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
 		<li style="opacity: 0.3; text-align: right;">
 			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/zsvfxg/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
@@ -197,7 +226,7 @@
   
     <a href="/blog/kt0kvc/" class="post-next">
       <span class="aria-readonly">下一篇文章</span>
-      <b>Data-数据可视化综述</b>
+      <b>数据可视化</b>
       <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
     </a>
   
@@ -214,9 +243,9 @@
   </a>
   
   
-  <a href="/blog/kt0kvc/" class="next" title="Data-数据可视化综述">
+  <a href="/blog/kt0kvc/" class="next" title="数据可视化">
     <i class="icon">&#x261e;</i>
-    <b>Data-数据可视化综述</b>
+    <b>数据可视化</b>
   </a>
   
 </div>
@@ -322,12 +351,42 @@
 		
 		<ul>
 			<li>
-				<span><font aria-hidden="true">2020-02-08 »</font> </span>
-				<a href="/blog/ozvhfb/">爬虫框架</a>
-				<span class="aria-readonly">发表时间为2020年02月08日</span>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">时间格式UTC、GMT、GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
 				<div class="relative-box">
           
-          <span class="aria-readonly">文章概要 </span>一、爬虫基本架构url 管理模块就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环使用 pyt...
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">数据可视化</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、GitHub Juper NoteBook 笔记https://github.com/wztli...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/oq4xcx/">Pandas使用——分组聚合</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/nfqdqf/">Pandas使用——各种索引</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
         </div>
 			</li>
 			

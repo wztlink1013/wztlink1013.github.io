@@ -125,9 +125,6 @@ COMMENT &#39;string&#39;
       <categories>
         <category>Language</category>
       </categories>
-      <tags>
-        <tag>SQL</tag>
-      </tags>
   </entry>
   <entry>
     <title>数据库操作</title>
@@ -185,113 +182,6 @@ init_connect=&#39;SET NAMES utf8&#39;
 ]]></content>
       <categories>
         <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ANN神经网络</title>
-    <url>/blog/apohu8/</url>
-    <content><![CDATA[<h2 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h2><blockquote>
-<p>神经网络基本结构<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949882-81dbb96c-eafa-4294-aae3-242fd33fff2b.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=858&amp;size=0&amp;status=done&amp;style=none&amp;width=858" alt> &gt; <img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950067-4d0671d6-b294-4284-9eff-9409d230e91e.png#align=left&amp;display=inline&amp;height=470&amp;margin=%5Bobject%20Object%5D&amp;originHeight=470&amp;originWidth=768&amp;size=0&amp;status=done&amp;style=none&amp;width=768" alt></p>
-</blockquote>
-<blockquote>
-<p>何为深度学习？<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949953-b8d95ff1-6384-4e59-b3d6-1f8151f08204.png#align=left&amp;display=inline&amp;height=400&amp;margin=%5Bobject%20Object%5D&amp;originHeight=400&amp;originWidth=842&amp;size=0&amp;status=done&amp;style=none&amp;width=842" alt></p>
-</blockquote>
-<h2 id="二、感知器和激活函数"><a href="#二、感知器和激活函数" class="headerlink" title="二、感知器和激活函数"></a>二、感知器和激活函数</h2><blockquote>
-<p>感知器<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949922-e9c76c57-f1c5-4ff1-af82-25c35a4005b1.png#align=left&amp;display=inline&amp;height=514&amp;margin=%5Bobject%20Object%5D&amp;originHeight=514&amp;originWidth=802&amp;size=0&amp;status=done&amp;style=none&amp;width=802" alt></p>
-</blockquote>
-<blockquote>
-<p>激活函数（其中 w 和 x 为向量点乘；b 为偏置，w0）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949961-18eeecb5-c82e-4f71-a543-9bd0c0f27043.png#align=left&amp;display=inline&amp;height=511&amp;margin=%5Bobject%20Object%5D&amp;originHeight=511&amp;originWidth=836&amp;size=0&amp;status=done&amp;style=none&amp;width=836" alt></p>
-</blockquote>
-<blockquote>
-<p>激活函数的选择<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950003-072268a5-122d-4340-85d5-85eeb04236fe.png#align=left&amp;display=inline&amp;height=538&amp;margin=%5Bobject%20Object%5D&amp;originHeight=538&amp;originWidth=861&amp;size=0&amp;status=done&amp;style=none&amp;width=861" alt></p>
-</blockquote>
-<h2 id="三、感知器的训练"><a href="#三、感知器的训练" class="headerlink" title="三、感知器的训练"></a>三、感知器的训练</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950698-fc03bb22-76e6-4328-9a6b-ee2168250fec.png#align=left&amp;display=inline&amp;height=529&amp;margin=%5Bobject%20Object%5D&amp;originHeight=529&amp;originWidth=872&amp;size=0&amp;status=done&amp;style=none&amp;width=872" alt></p>
-<h2 id="四、简单代码实现"><a href="#四、简单代码实现" class="headerlink" title="四、简单代码实现"></a>四、简单代码实现</h2><pre><code class="python">from functools import reduce
-
-class Perceptron(object):
-    &#39;&#39;&#39;
-    构造函数的初始化
-    &#39;&#39;&#39;
-    def __init__(self,input_num,activator):
-        &#39;&#39;&#39;
-        构造函数的初始化
-        &#39;&#39;&#39;
-        self.activator = activator
-        self.weights = [0.0 for _ in range(input_num)]
-        self.bias = 0.0
-    def __str__(self):
-        &#39;&#39;&#39;
-        打印学习后的权重值和偏置项
-        &#39;&#39;&#39;
-        return &#39;weights\t:%s\nbias\t:%f\n&#39; %(self.weights,self.bias)
-    def predict(self,input_vec):
-        &#39;&#39;&#39;
-        输入向量，输出感知器的计算结果
-        &#39;&#39;&#39;
-        return self.activator(
-            reduce(lambda a,b: a+b,
-                    list(map(lambda x,w: x*w,
-                        input_vec,self.weights)
-                 ),0.0)+self.bias)
-    def train(self,input_vecs,labels,iteration,rate):
-        &#39;&#39;&#39;
-        输入训练数据：一组向量、与每个向量对应的label；以及训练轮数、学习率
-        &#39;&#39;&#39;
-        for i in range(iteration):
-            self._one_iteration(input_vecs,labels,rate)
-    def _one_iteration(self,input_vecs,labels,rate):
-        &#39;&#39;&#39;
-        迭代，把所有的训练数据过一遍
-        &#39;&#39;&#39;
-        samples = zip(input_vecs,labels)
-        for (input_vec,label) in samples:
-            output = self.predict(input_vec)
-            self._update_weights(input_vec,output,label,rate)
-    def _update_weights(self,input_vec,output,label,rate):
-        &#39;&#39;&#39;
-        按照感知器规则更新权重
-        &#39;&#39;&#39;
-        delta = label - output
-        self.weights = map(
-            lambda x, w:w+rate*delta*x,
-            input_vec,self.weights)
-        self.weights = list(self.weights)
-        self.bias += rate*delta
-def f(x):
-    &#39;&#39;&#39;
-    定义激活函数
-    &#39;&#39;&#39;
-    return 1 if x&gt;0 else 0
-def get_training_dataset():
-    &#39;&#39;&#39;
-    训练数据
-    &#39;&#39;&#39;
-    input_vecs = [[1,1],[0,0],[1,0],[0,1]]
-    labels = [1,0,0,0]
-    return input_vecs,labels
-def train_and_perceptron():
-    &#39;&#39;&#39;
-    训练感知器
-    &#39;&#39;&#39;
-    p = Perceptron(2,f)
-    input_vecs,labels = get_training_dataset()
-    p.train(input_vecs,labels,10,0.1)
-    return p
-
-if __name__ == &#39;__main__&#39;:
-    and_perception = train_and_perceptron()
-    print(and_perception)
-    print(&#39;1 and 1 = %d&#39; % and_perception.predict([1,1]))
-    print(&#39;0 and 0 = %d&#39; % and_perception.predict([0,0]))
-    print(&#39;1 and 0 = %d&#39; % and_perception.predict([1,0]))
-    print(&#39;0 and 1 = %d&#39; % and_perception.predict([0,1]))
-</code></pre>
-<blockquote>
-<p>运行结果：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949806-ba54dca5-89a6-474a-809c-0b0238184755.png#align=left&amp;display=inline&amp;height=261&amp;margin=%5Bobject%20Object%5D&amp;originHeight=261&amp;originWidth=536&amp;size=0&amp;status=done&amp;style=none&amp;width=536" alt></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>MachingLearning</category>
       </categories>
   </entry>
   <entry>
@@ -421,6 +311,113 @@ if __name__ == &#39;__main__&#39;:
 <h3 id="导入已存在的项目"><a href="#导入已存在的项目" class="headerlink" title="导入已存在的项目"></a>导入已存在的项目</h3>]]></content>
       <categories>
         <category>Environment</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ANN神经网络</title>
+    <url>/blog/apohu8/</url>
+    <content><![CDATA[<h2 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h2><blockquote>
+<p>神经网络基本结构<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949882-81dbb96c-eafa-4294-aae3-242fd33fff2b.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=858&amp;size=0&amp;status=done&amp;style=none&amp;width=858" alt> &gt; <img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950067-4d0671d6-b294-4284-9eff-9409d230e91e.png#align=left&amp;display=inline&amp;height=470&amp;margin=%5Bobject%20Object%5D&amp;originHeight=470&amp;originWidth=768&amp;size=0&amp;status=done&amp;style=none&amp;width=768" alt></p>
+</blockquote>
+<blockquote>
+<p>何为深度学习？<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949953-b8d95ff1-6384-4e59-b3d6-1f8151f08204.png#align=left&amp;display=inline&amp;height=400&amp;margin=%5Bobject%20Object%5D&amp;originHeight=400&amp;originWidth=842&amp;size=0&amp;status=done&amp;style=none&amp;width=842" alt></p>
+</blockquote>
+<h2 id="二、感知器和激活函数"><a href="#二、感知器和激活函数" class="headerlink" title="二、感知器和激活函数"></a>二、感知器和激活函数</h2><blockquote>
+<p>感知器<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949922-e9c76c57-f1c5-4ff1-af82-25c35a4005b1.png#align=left&amp;display=inline&amp;height=514&amp;margin=%5Bobject%20Object%5D&amp;originHeight=514&amp;originWidth=802&amp;size=0&amp;status=done&amp;style=none&amp;width=802" alt></p>
+</blockquote>
+<blockquote>
+<p>激活函数（其中 w 和 x 为向量点乘；b 为偏置，w0）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949961-18eeecb5-c82e-4f71-a543-9bd0c0f27043.png#align=left&amp;display=inline&amp;height=511&amp;margin=%5Bobject%20Object%5D&amp;originHeight=511&amp;originWidth=836&amp;size=0&amp;status=done&amp;style=none&amp;width=836" alt></p>
+</blockquote>
+<blockquote>
+<p>激活函数的选择<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950003-072268a5-122d-4340-85d5-85eeb04236fe.png#align=left&amp;display=inline&amp;height=538&amp;margin=%5Bobject%20Object%5D&amp;originHeight=538&amp;originWidth=861&amp;size=0&amp;status=done&amp;style=none&amp;width=861" alt></p>
+</blockquote>
+<h2 id="三、感知器的训练"><a href="#三、感知器的训练" class="headerlink" title="三、感知器的训练"></a>三、感知器的训练</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685950698-fc03bb22-76e6-4328-9a6b-ee2168250fec.png#align=left&amp;display=inline&amp;height=529&amp;margin=%5Bobject%20Object%5D&amp;originHeight=529&amp;originWidth=872&amp;size=0&amp;status=done&amp;style=none&amp;width=872" alt></p>
+<h2 id="四、简单代码实现"><a href="#四、简单代码实现" class="headerlink" title="四、简单代码实现"></a>四、简单代码实现</h2><pre><code class="python">from functools import reduce
+
+class Perceptron(object):
+    &#39;&#39;&#39;
+    构造函数的初始化
+    &#39;&#39;&#39;
+    def __init__(self,input_num,activator):
+        &#39;&#39;&#39;
+        构造函数的初始化
+        &#39;&#39;&#39;
+        self.activator = activator
+        self.weights = [0.0 for _ in range(input_num)]
+        self.bias = 0.0
+    def __str__(self):
+        &#39;&#39;&#39;
+        打印学习后的权重值和偏置项
+        &#39;&#39;&#39;
+        return &#39;weights\t:%s\nbias\t:%f\n&#39; %(self.weights,self.bias)
+    def predict(self,input_vec):
+        &#39;&#39;&#39;
+        输入向量，输出感知器的计算结果
+        &#39;&#39;&#39;
+        return self.activator(
+            reduce(lambda a,b: a+b,
+                    list(map(lambda x,w: x*w,
+                        input_vec,self.weights)
+                 ),0.0)+self.bias)
+    def train(self,input_vecs,labels,iteration,rate):
+        &#39;&#39;&#39;
+        输入训练数据：一组向量、与每个向量对应的label；以及训练轮数、学习率
+        &#39;&#39;&#39;
+        for i in range(iteration):
+            self._one_iteration(input_vecs,labels,rate)
+    def _one_iteration(self,input_vecs,labels,rate):
+        &#39;&#39;&#39;
+        迭代，把所有的训练数据过一遍
+        &#39;&#39;&#39;
+        samples = zip(input_vecs,labels)
+        for (input_vec,label) in samples:
+            output = self.predict(input_vec)
+            self._update_weights(input_vec,output,label,rate)
+    def _update_weights(self,input_vec,output,label,rate):
+        &#39;&#39;&#39;
+        按照感知器规则更新权重
+        &#39;&#39;&#39;
+        delta = label - output
+        self.weights = map(
+            lambda x, w:w+rate*delta*x,
+            input_vec,self.weights)
+        self.weights = list(self.weights)
+        self.bias += rate*delta
+def f(x):
+    &#39;&#39;&#39;
+    定义激活函数
+    &#39;&#39;&#39;
+    return 1 if x&gt;0 else 0
+def get_training_dataset():
+    &#39;&#39;&#39;
+    训练数据
+    &#39;&#39;&#39;
+    input_vecs = [[1,1],[0,0],[1,0],[0,1]]
+    labels = [1,0,0,0]
+    return input_vecs,labels
+def train_and_perceptron():
+    &#39;&#39;&#39;
+    训练感知器
+    &#39;&#39;&#39;
+    p = Perceptron(2,f)
+    input_vecs,labels = get_training_dataset()
+    p.train(input_vecs,labels,10,0.1)
+    return p
+
+if __name__ == &#39;__main__&#39;:
+    and_perception = train_and_perceptron()
+    print(and_perception)
+    print(&#39;1 and 1 = %d&#39; % and_perception.predict([1,1]))
+    print(&#39;0 and 0 = %d&#39; % and_perception.predict([0,0]))
+    print(&#39;1 and 0 = %d&#39; % and_perception.predict([1,0]))
+    print(&#39;0 and 1 = %d&#39; % and_perception.predict([0,1]))
+</code></pre>
+<blockquote>
+<p>运行结果：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949806-ba54dca5-89a6-474a-809c-0b0238184755.png#align=left&amp;display=inline&amp;height=261&amp;margin=%5Bobject%20Object%5D&amp;originHeight=261&amp;originWidth=536&amp;size=0&amp;status=done&amp;style=none&amp;width=536" alt></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>MachingLearning</category>
       </categories>
   </entry>
   <entry>
@@ -898,28 +895,23 @@ public String toString() {
   <entry>
     <title>GitHub+PicGo构建免费图床及其高效使用</title>
     <url>/blog/bzf30z/</url>
-    <content><![CDATA[<h2 id="一、搭建缘由"><a href="#一、搭建缘由" class="headerlink" title="一、搭建缘由"></a>一、搭建缘由</h2><p>一开始搭建博客，避免不了要用许多图片，最初使用七牛云来做博客图床，但是后来发现，七牛云只有 30 天的临时域名，hhhhhhh，果然啊，天下就没有免费的好事啊~后来就发现 GitHub 配合 PicGo 可以作图床，而且加上 jsDlivr 速度可观。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956661-8671ebfe-4f99-494d-b759-a9c75cd67b41.png#align=left&amp;display=inline&amp;height=670&amp;margin=%5Bobject%20Object%5D&amp;originHeight=670&amp;originWidth=807&amp;size=0&amp;status=done&amp;style=none&amp;width=807" alt></p>
-<h2 id="二、GitHub-相关配置"><a href="#二、GitHub-相关配置" class="headerlink" title="二、GitHub 相关配置"></a>二、GitHub 相关配置</h2><h3 id="新建-figure-图床仓库"><a href="#新建-figure-图床仓库" class="headerlink" title="新建 figure 图床仓库"></a>新建 figure 图床仓库</h3><p>常规新建仓库方式，命名 figure（可以换，下面仓库名也得跟着换）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926957158-9c7f8749-4d8e-4bc9-9e1c-7d3db5a307b1.png#align=left&amp;display=inline&amp;height=241&amp;margin=%5Bobject%20Object%5D&amp;originHeight=241&amp;originWidth=1812&amp;size=0&amp;status=done&amp;style=none&amp;width=1812" alt></p>
-<h3 id="生成一个-Token-密匙"><a href="#生成一个-Token-密匙" class="headerlink" title="生成一个 Token 密匙"></a>生成一个 Token 密匙</h3><p>点击 setting<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956634-4c139fbc-0469-4749-89b8-f139226aa7d2.png#align=left&amp;display=inline&amp;height=904&amp;margin=%5Bobject%20Object%5D&amp;originHeight=904&amp;originWidth=1823&amp;size=0&amp;status=done&amp;style=shadow&amp;width=1823" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605839703428-b18e3c24-48e0-44ed-9715-81fcd822d4e8.png#align=left&amp;display=inline&amp;height=237&amp;margin=%5Bobject%20Object%5D&amp;originHeight=444&amp;originWidth=1120&amp;size=0&amp;status=done&amp;style=shadow&amp;width=599" alt><br><strong>只需要勾选第一个仓库选项就可以了！</strong></p>
-<h2 id="三、PicGo-相关配置"><a href="#三、PicGo-相关配置" class="headerlink" title="三、PicGo 相关配置"></a>三、PicGo 相关配置</h2><h3 id="下载及注意事项"><a href="#下载及注意事项" class="headerlink" title="下载及注意事项"></a>下载及注意事项</h3><p><a href="https://github.com/Molunerfinn/PicGo/releases" target="_blank" rel="noopener">下载地址</a></p>
-<p>注意：下载 picgo 时候，要科学上网，谷歌插件没用，只能用小飞机或其他的软件（得开全局配置下载）</p>
+    <content><![CDATA[<h2 id="一、搭建缘由"><a href="#一、搭建缘由" class="headerlink" title="一、搭建缘由"></a>一、搭建缘由</h2><p>一开始搭建博客，避免不了要用许多图片，最初使用七牛云来做博客图床，但是后来发现，七牛云只有 30 天的临时域名，hhhhhhh，果然啊，天下就没有免费的好事啊~后来就发现 GitHub 配合 PicGo 可以作图床，而且加上 jsDlivr 速度可观。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956661-8671ebfe-4f99-494d-b759-a9c75cd67b41.png#align=left&amp;display=inline&amp;height=670&amp;margin=%5Bobject%20Object%5D&amp;originHeight=670&amp;originWidth=807&amp;size=0&amp;status=done&amp;style=stroke&amp;width=807" alt></p>
+<h2 id="二、GitHub-相关配置"><a href="#二、GitHub-相关配置" class="headerlink" title="二、GitHub 相关配置"></a>二、GitHub 相关配置</h2><h3 id="新建-figure-图床仓库"><a href="#新建-figure-图床仓库" class="headerlink" title="新建 figure 图床仓库"></a>新建 figure 图床仓库</h3><p>常规新建仓库方式，命名 figure<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926957158-9c7f8749-4d8e-4bc9-9e1c-7d3db5a307b1.png#align=left&amp;display=inline&amp;height=241&amp;margin=%5Bobject%20Object%5D&amp;originHeight=241&amp;originWidth=1812&amp;size=0&amp;status=done&amp;style=stroke&amp;width=1812" alt></p>
+<h3 id="生成一个-Token-密匙"><a href="#生成一个-Token-密匙" class="headerlink" title="生成一个 Token 密匙"></a>生成一个 Token 密匙</h3><p>点击 setting<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956634-4c139fbc-0469-4749-89b8-f139226aa7d2.png#align=left&amp;display=inline&amp;height=904&amp;margin=%5Bobject%20Object%5D&amp;originHeight=904&amp;originWidth=1823&amp;size=0&amp;status=done&amp;style=stroke&amp;width=1823" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605839703428-b18e3c24-48e0-44ed-9715-81fcd822d4e8.png#align=left&amp;display=inline&amp;height=237&amp;margin=%5Bobject%20Object%5D&amp;originHeight=444&amp;originWidth=1120&amp;size=0&amp;status=done&amp;style=stroke&amp;width=599" alt><br><strong>只需要勾选第一个仓库选项就可以了！</strong></p>
+<h2 id="三、PicGo-相关配置"><a href="#三、PicGo-相关配置" class="headerlink" title="三、PicGo 相关配置"></a>三、PicGo 相关配置</h2><h3 id="下载及注意事项"><a href="#下载及注意事项" class="headerlink" title="下载及注意事项"></a>下载及注意事项</h3><p><a href="https://github.com/Molunerfinn/PicGo/releases" target="_blank" rel="noopener">下载地址</a><br>注意：下载 picgo 时候，要科学上网</p>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956815-db5cf455-f628-4c4d-9242-1687e15a7f03.png#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;originHeight=564&amp;originWidth=1002&amp;size=0&amp;status=done&amp;style=none&amp;width=1002" alt></p>
 <h2 id="四、高效写博客"><a href="#四、高效写博客" class="headerlink" title="四、高效写博客"></a>四、高效写博客</h2><h3 id="Snipaste-截图软件"><a href="#Snipaste-截图软件" class="headerlink" title="Snipaste 截图软件"></a>Snipaste 截图软件</h3><blockquote>
-<p><strong>常用</strong>快捷键【惠普 💻+非机械键盘，所以记录下】</p>
+<p><strong>常用</strong>快捷键【作者是用的惠普笔记本电脑，不同电脑键盘的使用方式会不一样】</p>
 </blockquote>
-<p>fn+f1：截屏（可编辑）</p>
-<p>esc：退出</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956785-4e12ba13-c4c6-4e5a-9758-5d3de27f9718.png#align=left&amp;display=inline&amp;height=446&amp;margin=%5Bobject%20Object%5D&amp;originHeight=446&amp;originWidth=553&amp;size=0&amp;status=done&amp;style=none&amp;width=553" alt></p>
-<h3 id="结合-PicGo-使用"><a href="#结合-PicGo-使用" class="headerlink" title="结合 PicGo 使用"></a>结合 PicGo 使用</h3><ul>
-<li>PicGo+Snipaste 快捷键结合<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956619-08d5eae3-3b21-42cc-a2d8-85d6d2f8ed62.png#align=left&amp;display=inline&amp;height=220&amp;margin=%5Bobject%20Object%5D&amp;originHeight=220&amp;originWidth=847&amp;size=0&amp;status=done&amp;style=none&amp;width=847" alt></li>
-</ul>
+<p>fn+f1：截屏（可编辑）<br>esc：退出<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956785-4e12ba13-c4c6-4e5a-9758-5d3de27f9718.png#align=left&amp;display=inline&amp;height=446&amp;margin=%5Bobject%20Object%5D&amp;originHeight=446&amp;originWidth=553&amp;size=0&amp;status=done&amp;style=stroke&amp;width=553" alt></p>
+<h3 id="结合-PicGo-使用"><a href="#结合-PicGo-使用" class="headerlink" title="结合 PicGo 使用"></a>结合 PicGo 使用</h3><p>PicGo+Snipaste 快捷键结合<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956619-08d5eae3-3b21-42cc-a2d8-85d6d2f8ed62.png#align=left&amp;display=inline&amp;height=220&amp;margin=%5Bobject%20Object%5D&amp;originHeight=220&amp;originWidth=847&amp;size=0&amp;status=done&amp;style=stroke&amp;width=847" alt></p>
 <h3 id="综合使用-SOP"><a href="#综合使用-SOP" class="headerlink" title="综合使用 SOP"></a>综合使用 SOP</h3><ol>
-<li>按<code>fn+f1</code>截完图按<code>ctrl+c</code>将刚刚截图放到剪贴板</li>
+<li>按<code>fn+f1</code>截完图，再按<code>ctrl+c</code>将刚刚截图放到剪贴板</li>
 <li>再按<code>ctrl+shift+p</code>使用 picgo 快捷键将剪贴板上的图片上传同时将此时图片的外链复制到剪贴板</li>
 </ol>
 <h2 id="五、相关补充"><a href="#五、相关补充" class="headerlink" title="五、相关补充"></a>五、相关补充</h2><h3 id="上传失败"><a href="#上传失败" class="headerlink" title="上传失败"></a>上传失败</h3><p><code>问题1：有些时候上传picgo时，会出现配置报错的情况</code></p>
 <blockquote>
-<p>方案 1：在 picgo 的配置中，改一下文件夹名字（相当于在仓库下新建一个文件夹），就比如本来存到 blogarticle3/文件夹下，改成 blogarticle4/就好了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956579-eafc7cfa-1e0b-41be-ae5b-c6560b8c7638.png#align=left&amp;display=inline&amp;height=186&amp;margin=%5Bobject%20Object%5D&amp;originHeight=186&amp;originWidth=1320&amp;size=0&amp;status=done&amp;style=none&amp;width=1320" alt><br>方案 2：将下图所示的<code>上传前重命名</code>打开同时<code>设置Server</code>内容开换成关，关换成开，为什么呢？玄学···<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956785-fb091672-3c17-49db-a0e7-965e20c93f5c.png#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;originHeight=564&amp;originWidth=1002&amp;size=0&amp;status=done&amp;style=none&amp;width=1002" alt><br>方案 3：将 PicGo 软件叉掉重新运行。玄学····<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926957260-3a981036-cd74-4a90-8665-d2510470f2c9.png#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;originHeight=564&amp;originWidth=1002&amp;size=0&amp;status=done&amp;style=none&amp;width=1002" alt></p>
+<p>方案 1：在 picgo 的配置中，改一下文件夹名字（相当于在仓库下新建一个文件夹），就比如本来存到 blogarticle3/文件夹下，改成 blogarticle4/就好了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956579-eafc7cfa-1e0b-41be-ae5b-c6560b8c7638.png#align=left&amp;display=inline&amp;height=186&amp;margin=%5Bobject%20Object%5D&amp;originHeight=186&amp;originWidth=1320&amp;size=0&amp;status=done&amp;style=none&amp;width=1320" alt><br>方案 2：将下图所示的<code>上传前重命名</code>打开同时<code>设置Server</code>内容开换成关，关换成开，玄学……<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956785-fb091672-3c17-49db-a0e7-965e20c93f5c.png#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;originHeight=564&amp;originWidth=1002&amp;size=0&amp;status=done&amp;style=none&amp;width=1002" alt><br>方案 3：将 PicGo 软件叉掉重新运行。玄学····<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926957260-3a981036-cd74-4a90-8665-d2510470f2c9.png#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;originHeight=564&amp;originWidth=1002&amp;size=0&amp;status=done&amp;style=none&amp;width=1002" alt><br>方案 4（最优方案）：科学上网</p>
 </blockquote>
 <h3 id="关于插件"><a href="#关于插件" class="headerlink" title="关于插件"></a>关于插件</h3><p>在插件列表里面下载这三个拓展插件，其中两个国内的托管 coding 和 gitee，还有一个 github plus 版本，不过觉得国内的外链范围肯定是要小一点的应该，最好是优先使用 github 图床，coding 和 gitee 的作为文章使用，有关博客配置的使用 CDN 等。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956548-b7b5ad1b-2586-42c5-8f7d-9dd17c265fcf.png#align=left&amp;display=inline&amp;height=341&amp;margin=%5Bobject%20Object%5D&amp;originHeight=341&amp;originWidth=771&amp;size=0&amp;status=done&amp;style=none&amp;width=771" alt></p>
 <h4 id="Coding-配置"><a href="#Coding-配置" class="headerlink" title="Coding 配置"></a>Coding 配置</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926956265-035a546d-2ecd-48c3-8eec-c9ef7779653b.png#align=left&amp;display=inline&amp;height=486&amp;margin=%5Bobject%20Object%5D&amp;originHeight=486&amp;originWidth=739&amp;size=0&amp;status=done&amp;style=none&amp;width=739" alt></p>
@@ -1125,7 +1117,7 @@ class Solution {
       </tags>
   </entry>
   <entry>
-    <title>UTC-GMT-GST</title>
+    <title>时间格式UTC、GMT、GST</title>
     <url>/blog/delag2/</url>
     <content><![CDATA[<h2 id="一、三者区别与关系"><a href="#一、三者区别与关系" class="headerlink" title="一、三者区别与关系"></a>一、三者区别与关系</h2><h3 id="UTC：世界标准时间"><a href="#UTC：世界标准时间" class="headerlink" title="UTC：世界标准时间"></a><strong>UTC：世界标准时间</strong></h3><p>协调世界时（英：Coordinated Universal Time ，法：Temps Universel Coordonné），又称世界统一时间，世界标准时间，国际协调时间。英文（CUT）和法文（TUC）的缩写不同，作为妥协，简称 UTC。</p>
 <h3 id="GMT：格林尼治时间"><a href="#GMT：格林尼治时间" class="headerlink" title="GMT：格林尼治时间"></a><strong>GMT：格林尼治时间</strong></h3><p>世界时 UT   即格林尼治时间，格林尼治所在地的标准时间。以地球自转为基础的时间计量系统。地球自转的角度可用地方子午线相对于地球上的基本参考点的运动来度量。为了测量地球自转，人们在地球上选取了两个基本参考点：春分点（见分至点）和平太阳，由此确定的时间分别称为恒星时和平太阳时。</p>
@@ -1197,65 +1189,6 @@ toString日期输出：Sat May 23 15:03:25 CST 2020
       <categories>
         <category>DataAnalysis</category>
       </categories>
-  </entry>
-  <entry>
-    <title>Data-描述数据</title>
-    <url>/blog/dggm37/</url>
-    <content><![CDATA[<h2 id="一、数据预览：tail（）；head（）"><a href="#一、数据预览：tail（）；head（）" class="headerlink" title="一、数据预览：tail（）；head（）"></a>一、数据预览：tail（）；head（）</h2><pre><code class="python">import numpy as np
-import pandas as pd
-df_obj = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
-print(df_obj.tail())# 数据预览尾巴
-print(df_obj.head())# 数据预览头部
-</code></pre>
-<pre><code>          a         b         c         d
-0 -0.507788  0.213237  0.003150 -0.777312
-1 -0.896653 -2.188016 -0.114848  0.167057
-2 -1.131242 -0.142287 -1.027330  1.861814
-3  0.369608  0.823453  1.030830 -0.041778
-4 -0.647625  0.056791 -0.394078 -1.347718
-          a         b         c         d
-0 -0.507788  0.213237  0.003150 -0.777312
-1 -0.896653 -2.188016 -0.114848  0.167057
-2 -1.131242 -0.142287 -1.027330  1.861814
-3  0.369608  0.823453  1.030830 -0.041778
-4 -0.647625  0.056791 -0.394078 -1.347718
-</code></pre><h2 id="二、数据描述：shape；info"><a href="#二、数据描述：shape；info" class="headerlink" title="二、数据描述：shape；info()"></a>二、数据描述：shape；info()</h2><pre><code class="python">print (&#39;数据集有%i行，%i列&#39; %(df_obj.shape[0], df_obj.shape[1]))
-</code></pre>
-<pre><code>数据集有5行，4列
-</code></pre><pre><code class="python">print(df_obj.info())
-</code></pre>
-<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 5 entries, 0 to 4
-Data columns (total 4 columns):
-a    5 non-null float64
-b    5 non-null float64
-c    5 non-null float64
-d    5 non-null float64
-dtypes: float64(4)
-memory usage: 288.0 bytes
-None
-</code></pre><h2 id="三、数据统计：describe"><a href="#三、数据统计：describe" class="headerlink" title="三、数据统计：describe()"></a>三、数据统计：describe()</h2><pre><code class="python">print(df_obj.describe())
-</code></pre>
-<pre><code>              a         b         c         d
-count  5.000000  5.000000  5.000000  5.000000
-mean  -0.562740 -0.247365 -0.100455 -0.027587
-std    0.573191  1.143294  0.747673  1.215808
-min   -1.131242 -2.188016 -1.027330 -1.347718
-25%   -0.896653 -0.142287 -0.394078 -0.777312
-50%   -0.647625  0.056791 -0.114848 -0.041778
-75%   -0.507788  0.213237  0.003150  0.167057
-max    0.369608  0.823453  1.030830  1.861814
-</code></pre><h2 id="四、pandas-不完全显示行列"><a href="#四、pandas-不完全显示行列" class="headerlink" title="四、pandas 不完全显示行列"></a>四、pandas 不完全显示行列</h2><pre><code>pd.set_option(&#39;display.max_rows&#39;, 100)        //显示的最大行数（避免只显示部分行数据）
-pd.set_option(&#39;display.max_columns&#39;, 1000)    //显示的最大列数（避免列显示不全）
-pd.set_option(&quot;display.max_colwidth&quot;, 1000)   //每一列最大的宽度（避免属性值或列名显示不全）
-pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避免换行）
-</code></pre>]]></content>
-      <categories>
-        <category>DataAnalysis</category>
-      </categories>
-      <tags>
-        <tag>DataAnalysis</tag>
-      </tags>
   </entry>
   <entry>
     <title>P1. P18.两/四数之和</title>
@@ -2067,158 +2000,6 @@ mycircle.getArea()
       </categories>
   </entry>
   <entry>
-    <title>DOM（文档对象模型）</title>
-    <url>/blog/fkgmui/</url>
-    <content><![CDATA[<h2 id="DOM（文档对象模型）"><a href="#DOM（文档对象模型）" class="headerlink" title="DOM（文档对象模型）"></a>DOM（文档对象模型）</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598689552517-1346b948-8d7e-49f9-b450-fdbbcee61c73.png#align=left&amp;display=inline&amp;height=247&amp;margin=%5Bobject%20Object%5D&amp;originHeight=334&amp;originWidth=950&amp;size=0&amp;status=done&amp;style=shadow&amp;width=703" alt></p>
-<h2 id="查找-HTML-元素"><a href="#查找-HTML-元素" class="headerlink" title="查找 HTML 元素"></a>查找 HTML 元素</h2><blockquote>
-<p>通过 id、标签名、类名来查找</p>
-</blockquote>
-<ul>
-<li>document.getElementById(“”)</li>
-<li>document.getElementByTagName(“”)</li>
-<li>document.getElementByClassName(“”)</li>
-</ul>
-<h2 id="改变-HTML"><a href="#改变-HTML" class="headerlink" title="改变 HTML"></a>改变 HTML</h2><ul>
-<li>直接通过 js 将新的内容加入到 HTML 内容中，不过需要需要注意的就是，不要在 HTMl 都加载完了再触发该 js，不然会让新加的内容覆盖原来的已加载完的 HTML 内容。</li>
-</ul>
-<pre><code class="javascript">&lt;script&gt;document.write(Date());&lt;/script&gt;
-</code></pre>
-<ul>
-<li>改变 HTML 内容</li>
-</ul>
-<pre><code class="javascript">&lt;script&gt;
-  var element=document.getElementById(&quot;header&quot;); element.innerHTML=&quot;新标题&quot;;
-&lt;/script&gt;
-</code></pre>
-<ul>
-<li>改变 HTML 属性</li>
-</ul>
-<pre><code class="javascript">&lt;script&gt;document.getElementById(&quot;image&quot;).src=&quot;landscape.jpg&quot;;&lt;/script&gt;
-</code></pre>
-<h2 id="改变-CSS"><a href="#改变-CSS" class="headerlink" title="改变 CSS"></a>改变 CSS</h2><pre><code class="javascript">&lt;script&gt;
-  document.getElementById(&quot;p2&quot;).style.color=&quot;blue&quot;;
-  document.getElementById(&quot;p2&quot;).style.fontFamily=&quot;Arial&quot;;
-  document.getElementById(&quot;p2&quot;).style.fontSize=&quot;larger&quot;;
-&lt;/script&gt;
-</code></pre>
-<blockquote>
-<p>改变 CSS 也可以用触发事件的方式来改变</p>
-</blockquote>
-<pre><code class="javascript">&lt;h1 id=&quot;id1&quot;&gt;我的标题 1&lt;/h1&gt;
-&lt;button type=&quot;button&quot;
-onclick=&quot;document.getElementById(&#39;id1&#39;).style.color=&#39;red&#39;&quot;&gt;点我!&lt;/button&gt;
-</code></pre>
-<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><blockquote>
-<p>当对 HTML 元素或者鼠标执行某些行为的时候，就会触发一些时间</p>
-</blockquote>
-<ul>
-<li>onclick：点击具有该事件属性的元素时，就会触发</li>
-</ul>
-<p>具体的形式有两种：第一种是直接在标签中写完整 js 文本，第二种在 script 代码中调用元素的 id 然后在运行代码</p>
-<ul>
-<li>onload 和 unload：该元素已经全部展示完毕</li>
-<li>onchange：“改变”即触发，最常用的就是 input 标签中的使用，比如输入完自己的账号，然后想让账号小写字母全部编程大写字母就可以了</li>
-<li>onmouseover 和 onmouseout：鼠标移到/移出该处执行</li>
-<li>onmousedown 和 onmouseup：鼠标指针一直点着/松着触发</li>
-</ul>
-<h2 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h2><blockquote>
-<p>对一个元素执行不同事件的时候，触发相应的结果，结果就是一个元素对其“监听”。</p>
-</blockquote>
-<p><code>element.addEventListener(event, function, useCapture);</code></p>
-<ul>
-<li>第一个参数是事件的类型 (如 “click” 或 “mousedown”).</li>
-<li>第二个参数是事件触发后调用的函数。</li>
-<li><p>第三个参数是个布尔值用于描述事件是冒泡还是捕获。该参数是可选的。</p>
-<blockquote>
-<p>注意:不要使用 “on” 前缀。 例如，使用 “click” ,而不是使用 “onclick”。</p>
-</blockquote>
-</li>
-<li><p>可以对一个元素赋以多个事件监听</p>
-</li>
-<li>也可以对 window 对象进行事件监听</li>
-<li>事件冒泡和事件捕获</li>
-<li>移除事件监听的方法 removeEventListener()</li>
-</ul>
-<p>**</p>
-<h2 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h2><blockquote>
-<p>给文档中添加新的元素，或者是改变元素</p>
-</blockquote>
-<ul>
-<li>创建新的 HTML 元素 (节点) - appendChild()</li>
-<li>创建新的 HTML 元素 (节点) - insertBefore()</li>
-</ul>
-<pre><code class="javascript">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;div id=&quot;div1&quot;&gt;
-&lt;p id=&quot;p1&quot;&gt;这是一个段落。&lt;/p&gt;
-&lt;p id=&quot;p2&quot;&gt;这是另外一个段落。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-var para = document.createElement(&quot;p&quot;);
-var node = document.createTextNode(&quot;这是一个新的段落。&quot;);
-para.appendChild(node);
-
-var element = document.getElementById(&quot;div1&quot;);
-var child = document.getElementById(&quot;p1&quot;);
-element.insertBefore(para, child);
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<ul>
-<li>移除已存在的元素</li>
-</ul>
-<h2 id="HTMLCollection"><a href="#HTMLCollection" class="headerlink" title="HTMLCollection"></a>HTMLCollection</h2><blockquote>
-<p>就是将“文档”中所有选定的元素进行“编号”，有点类似数组但不是数组。</p>
-</blockquote>
-<p>就如查找出文档中所有</p><p>标签，按照顺序又第 0 个、第 1 个依次列举下来。</p>
-<ul>
-<li>length 属性，类似数组，但不是！也就意味着没有通常我们印象中的数组其他属性。</li>
-</ul>
-<h2 id="NodeList"><a href="#NodeList" class="headerlink" title="NodeList"></a>NodeList</h2><p>NodeList 对象是一个从文档中获取的节点列表 (集合) 。<br>NodeList 对象类似 HTMLCollection 对象。<br>一些旧版本浏览器中的方法（如：getElementsByClassName()）返回的是 NodeList 对象，而不是 HTMLCollection 对象。<br>所有浏览器的 childNodes 属性返回的是 NodeList 对象。<br>大部分浏览器的 querySelectorAll() 返回 NodeList 对象。</p>
-<pre><code class="javascript">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;h2&gt;JavaScript HTML DOM!&lt;/h2&gt;
-
-&lt;p&gt;Hello World!&lt;/p&gt;
-
-&lt;p&gt;Hello Runoob!&lt;/p&gt;
-
-&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
-
-&lt;script&gt;
-var myNodelist = document.querySelectorAll(&quot;p&quot;);
-document.getElementById(&quot;demo&quot;).innerHTML = &quot;文档包含 &quot; + myNodelist.length + &quot; 个段落。&quot;;
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p><strong>两者区别：</strong><br>HTMLCollection 是 HTML 元素的集合。<br>NodeList 是一个文档节点的集合。<br>NodeList 与 HTMLCollection 有很多类似的地方。<br>NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, …) 来获取元素。<br>NodeList 与 HTMLCollection 都有 length 属性。<br>HTMLCollection 元素可以通过 name，id 或索引来获取。<br>NodeList 只能通过索引来获取。<br>只有 NodeList 对象有包含属性节点和文本节点。</p>
-<h2 id="querySelector"><a href="#querySelector" class="headerlink" title="querySelector"></a>querySelector</h2><blockquote>
-<p>功能：返回文档中匹配指定的 CSS 选择器中的一个元素</p>
-</blockquote>
-<p><code>document.querySelector(&quot;#demo&quot;);</code></p>
-]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
     <title>权限管理</title>
     <url>/blog/frgbbo/</url>
     <content><![CDATA[<h1 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h1><blockquote>
@@ -2300,44 +2081,6 @@ REVOKE ALL ON *.* FROM &#39;jelly&#39;@&#39;%&#39;;
 ]]></content>
       <categories>
         <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>api学习笔记</title>
-    <url>/blog/frhg9i/</url>
-    <content><![CDATA[<h3 id="uniapp-官方里面的-API-相关信息"><a href="#uniapp-官方里面的-API-相关信息" class="headerlink" title="uniapp 官方里面的 API 相关信息"></a>uniapp 官方里面的 API 相关信息</h3><blockquote>
-<p>列表的详情接口</p>
-</blockquote>
-<h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><ul>
-<li>api<ul>
-<li><a href="https://unidemo.dcloud.net.cn/api/news" target="_blank" rel="noopener">https://unidemo.dcloud.net.cn/api/news</a></li>
-</ul>
-</li>
-<li>返回数据格式<ul>
-<li>post_id 新闻 id 如 ： 72980</li>
-<li>title 标题</li>
-<li>created_at 创建时间</li>
-<li>author_avatar 图标</li>
-</ul>
-</li>
-</ul>
-<h4 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h4><ul>
-<li><p><strong>地址</strong></p>
-<blockquote>
-<p><a href="https://unidemo.dcloud.net.cn/api/news/36kr/" target="_blank" rel="noopener">https://unidemo.dcloud.net.cn/api/news/36kr/</a> + id（id 为新闻 id，上个页面传过来的）</p>
-</blockquote>
-</li>
-<li><p><strong>使用 rich-text 【富文本组件】来展示新闻内容</strong></p>
-</li>
-</ul>
-<p><code>&lt;rich-text class=&quot;richText&quot; :nodes=&quot;strings&quot;&gt;&lt;/rich-text&gt;</code></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><a href="https://blog.csdn.net/m15801872696/article/details/90141941?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.pc_relevant_is_cache&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.pc_relevant_is_cache" target="_blank" rel="noopener">简单 api 的使用教程</a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="noopener">阮一峰-RESTful API 设计指南</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Web</category>
       </categories>
   </entry>
   <entry>
@@ -2691,6 +2434,240 @@ class Solution {
       <tags>
         <tag>数组</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>数据的清洗和规整（一）</title>
+    <url>/blog/gvi1hn/</url>
+    <content><![CDATA[<h2 id="一、数据预览：tail（）、head（）"><a href="#一、数据预览：tail（）、head（）" class="headerlink" title="一、数据预览：tail（）、head（）"></a>一、数据预览：tail（）、head（）</h2><pre><code class="python">import numpy as np
+import pandas as pd
+df_obj = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+print(df_obj.tail())# 数据预览尾巴
+print(df_obj.head())# 数据预览头部
+</code></pre>
+<pre><code>          a         b         c         d
+0 -0.507788  0.213237  0.003150 -0.777312
+1 -0.896653 -2.188016 -0.114848  0.167057
+2 -1.131242 -0.142287 -1.027330  1.861814
+3  0.369608  0.823453  1.030830 -0.041778
+4 -0.647625  0.056791 -0.394078 -1.347718
+          a         b         c         d
+0 -0.507788  0.213237  0.003150 -0.777312
+1 -0.896653 -2.188016 -0.114848  0.167057
+2 -1.131242 -0.142287 -1.027330  1.861814
+3  0.369608  0.823453  1.030830 -0.041778
+4 -0.647625  0.056791 -0.394078 -1.347718
+</code></pre><h2 id="二、数据描述：shape、info"><a href="#二、数据描述：shape、info" class="headerlink" title="二、数据描述：shape、info()"></a>二、数据描述：shape、info()</h2><pre><code class="python">print (&#39;数据集有%i行，%i列&#39; %(df_obj.shape[0], df_obj.shape[1]))
+</code></pre>
+<pre><code>数据集有5行，4列
+</code></pre><pre><code class="python">print(df_obj.info())
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5 entries, 0 to 4
+Data columns (total 4 columns):
+a    5 non-null float64
+b    5 non-null float64
+c    5 non-null float64
+d    5 non-null float64
+dtypes: float64(4)
+memory usage: 288.0 bytes
+None
+</code></pre><h2 id="三、数据统计：describe"><a href="#三、数据统计：describe" class="headerlink" title="三、数据统计：describe()"></a>三、数据统计：describe()</h2><pre><code class="python">print(df_obj.describe())
+</code></pre>
+<pre><code>              a         b         c         d
+count  5.000000  5.000000  5.000000  5.000000
+mean  -0.562740 -0.247365 -0.100455 -0.027587
+std    0.573191  1.143294  0.747673  1.215808
+min   -1.131242 -2.188016 -1.027330 -1.347718
+25%   -0.896653 -0.142287 -0.394078 -0.777312
+50%   -0.647625  0.056791 -0.114848 -0.041778
+75%   -0.507788  0.213237  0.003150  0.167057
+max    0.369608  0.823453  1.030830  1.861814
+</code></pre><h2 id="四、pandas-不完全显示行列"><a href="#四、pandas-不完全显示行列" class="headerlink" title="四、pandas 不完全显示行列"></a>四、pandas 不完全显示行列</h2><pre><code>pd.set_option(&#39;display.max_rows&#39;, 100)        //显示的最大行数（避免只显示部分行数据）
+pd.set_option(&#39;display.max_columns&#39;, 1000)    //显示的最大列数（避免列显示不全）
+pd.set_option(&quot;display.max_colwidth&quot;, 1000)   //每一列最大的宽度（避免属性值或列名显示不全）
+pd.set_option(&#39;display.width&#39;, 1000)          //每一行的宽度（避免换行）
+</code></pre><h2 id="五、删除指定行列数据"><a href="#五、删除指定行列数据" class="headerlink" title="五、删除指定行列数据"></a>五、删除指定行列数据</h2><pre><code class="python">import pandas as pd
+import numpy as np
+</code></pre>
+<pre><code class="python">dict_data = {&#39;A&#39;: 1.,
+             &#39;B&#39;: pd.Timestamp(&#39;20161217&#39;),
+             &#39;C&#39;: pd.Series(1, index=list(range(4)),dtype=&#39;float32&#39;),
+             &#39;D&#39;: np.array([3] * 4,dtype=&#39;int32&#39;),
+             &#39;E&#39; : pd.Categorical([&quot;Python&quot;,&quot;Java&quot;,&quot;C++&quot;,&quot;C#&quot;]),
+             &#39;F&#39; : &#39;ChinaHadoop&#39; }
+df_obj2 = pd.DataFrame(dict_data)
+print(df_obj2)
+</code></pre>
+<pre><code>     A          B    C  D       E            F
+0  1.0 2016-12-17  1.0  3  Python  ChinaHadoop
+1  1.0 2016-12-17  1.0  3    Java  ChinaHadoop
+2  1.0 2016-12-17  1.0  3     C++  ChinaHadoop
+3  1.0 2016-12-17  1.0  3      C#  ChinaHadoop
+</code></pre><h3 id="del"><a href="#del" class="headerlink" title="del"></a>del</h3><blockquote>
+<p>删除列</p>
+</blockquote>
+<pre><code class="python">del df_obj2[&#39;A&#39;]
+print (df_obj2.head())
+</code></pre>
+<pre><code>           B    C  D       E            F
+0 2016-12-17  1.0  3  Python  ChinaHadoop
+1 2016-12-17  1.0  3    Java  ChinaHadoop
+2 2016-12-17  1.0  3     C++  ChinaHadoop
+3 2016-12-17  1.0  3      C#  ChinaHadoop
+</code></pre><h3 id="drop"><a href="#drop" class="headerlink" title="drop"></a>drop</h3><blockquote>
+<p>删除行/列数据</p>
+</blockquote>
+<pre><code class="python">dict_data = {&#39;A&#39;: 1.,
+             &#39;B&#39;: pd.Timestamp(&#39;20161217&#39;),
+             &#39;C&#39;: pd.Series(1, index=list(range(4)),dtype=&#39;float32&#39;),
+             &#39;D&#39;: np.array([3] * 4,dtype=&#39;int32&#39;),
+             &#39;E&#39; : pd.Categorical([&quot;Python&quot;,&quot;Java&quot;,&quot;C++&quot;,&quot;C#&quot;]),
+             &#39;F&#39; : &#39;ChinaHadoop&#39; }
+df_obj3 = pd.DataFrame(dict_data,index = [&#39;sfd&#39;,&#39;sdfd&#39;,&#39;wer&#39;,&#39;rwer&#39;])
+print (df_obj3.head(7))
+print(df_obj3.drop(&#39;wer&#39;))#删除行
+print(df_obj3.drop(&#39;F&#39;,axis=1))#删除列
+</code></pre>
+<pre><code>        A          B   C  D       E            F
+sfd   1.0 2016-12-17 NaN  3  Python  ChinaHadoop
+sdfd  1.0 2016-12-17 NaN  3    Java  ChinaHadoop
+wer   1.0 2016-12-17 NaN  3     C++  ChinaHadoop
+rwer  1.0 2016-12-17 NaN  3      C#  ChinaHadoop
+        A          B   C  D       E            F
+sfd   1.0 2016-12-17 NaN  3  Python  ChinaHadoop
+sdfd  1.0 2016-12-17 NaN  3    Java  ChinaHadoop
+rwer  1.0 2016-12-17 NaN  3      C#  ChinaHadoop
+        A          B   C  D       E
+sfd   1.0 2016-12-17 NaN  3  Python
+sdfd  1.0 2016-12-17 NaN  3    Java
+wer   1.0 2016-12-17 NaN  3     C++
+rwer  1.0 2016-12-17 NaN  3      C#
+</code></pre><h2 id="六、处理缺失数据"><a href="#六、处理缺失数据" class="headerlink" title="六、处理缺失数据"></a>六、处理缺失数据</h2><pre><code class="python">df_data = pd.DataFrame([np.random.randn(3), [1., np.nan, np.nan],
+                       [4., np.nan, np.nan], [1., np.nan, 2.]])
+df_data.head()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-0.702713</td>
+<td>-0.991383</td>
+<td>-1.058464</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1.000000</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4.000000</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.000000</td>
+<td>NaN</td>
+<td>2.000000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="判断是否存在缺失值"><a href="#判断是否存在缺失值" class="headerlink" title="判断是否存在缺失值"></a>判断是否存在缺失值</h3><pre><code class="python">df_data.isnull()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr>
+<td>1</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>2</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>3</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<h3 id="丢弃缺失数据"><a href="#丢弃缺失数据" class="headerlink" title="丢弃缺失数据"></a>丢弃缺失数据</h3><pre><code class="python">print(df_data.dropna(axis=0))
+#0是行；1是列
+</code></pre>
+<pre><code>          0         1         2
+0 -0.702713 -0.991383 -1.058464
+</code></pre><h3 id="填充缺失数据"><a href="#填充缺失数据" class="headerlink" title="填充缺失数据"></a>填充缺失数据</h3><pre><code class="python">df_data.fillna(-100.)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-0.702713</td>
+<td>-0.991383</td>
+<td>-1.058464</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1.000000</td>
+<td>-100.000000</td>
+<td>-100.000000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4.000000</td>
+<td>-100.000000</td>
+<td>-100.000000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.000000</td>
+<td>-100.000000</td>
+<td>2.000000</td>
+</tr>
+</tbody>
+</table>
+<p>##</p>
+]]></content>
+      <categories>
+        <category>DataAnalysis</category>
+      </categories>
   </entry>
   <entry>
     <title>hexo-部署出错at formatNunjucksError</title>
@@ -3088,22 +3065,6 @@ return newHead; //返回新的“倒置”头节点
       </categories>
   </entry>
   <entry>
-    <title>SQL语句的优化</title>
-    <url>/blog/ix3gza/</url>
-    <content><![CDATA[<h2 id="IN-操作优化"><a href="#IN-操作优化" class="headerlink" title="IN 操作优化"></a>IN 操作优化</h2><ul>
-<li>IN 后面只能接常量，且最多不超过 200 个</li>
-<li>IN 后面不能接子查询</li>
-</ul>
-<pre><code class="sql">select * from tb1 where tb1.id in (select id from tb2 where tb2.c1...)
-// 优化后：
-select tb1.* from tb1, (select id from tb2 where tb2.c1...)t where tb1.id = t.id;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
     <title>0-1背包问题</title>
     <url>/blog/kb5sse/</url>
     <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。</p>
@@ -3344,13 +3305,12 @@ public class Permuting {
       </categories>
   </entry>
   <entry>
-    <title>Data-数据可视化综述</title>
+    <title>数据可视化</title>
     <url>/blog/kt0kvc/</url>
-    <content><![CDATA[<h2 id="GitHub-笔记源码"><a href="#GitHub-笔记源码" class="headerlink" title="GitHub 笔记源码"></a>GitHub 笔记源码</h2><p>jupyter notebook</p>
-<ul>
+    <content><![CDATA[<h2 id="一、GitHub-Juper-NoteBook-笔记"><a href="#一、GitHub-Juper-NoteBook-笔记" class="headerlink" title="一、GitHub Juper NoteBook 笔记"></a>一、GitHub Juper NoteBook 笔记</h2><ul>
 <li><a href="https://github.com/wztlink1013/data-analysis-mining" target="_blank" rel="noopener">https://github.com/wztlink1013/data-analysis-mining</a></li>
 </ul>
-<h2 id="零碎"><a href="#零碎" class="headerlink" title="零碎"></a>零碎</h2><h3 id="matplotlib-调整子图间距，调整整体空白"><a href="#matplotlib-调整子图间距，调整整体空白" class="headerlink" title="matplotlib 调整子图间距，调整整体空白"></a>matplotlib 调整子图间距，调整整体空白</h3><pre><code class="python">fig.tight_layout() #调整整体空白
+<h2 id="二、零碎总结"><a href="#二、零碎总结" class="headerlink" title="二、零碎总结"></a>二、零碎总结</h2><h3 id="matplotlib-调整子图间距，调整整体空白"><a href="#matplotlib-调整子图间距，调整整体空白" class="headerlink" title="matplotlib 调整子图间距，调整整体空白"></a>matplotlib 调整子图间距，调整整体空白</h3><pre><code class="python">fig.tight_layout() #调整整体空白
 plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
 </code></pre>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
@@ -3359,38 +3319,6 @@ plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
 ]]></content>
       <categories>
         <category>DataAnalysis</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>matplotlib</tag>
-        <tag>pandas</tag>
-        <tag>seaborn</tag>
-        <tag>bokeh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CNN(卷积)和GCN(离散卷积)</title>
-    <url>/blog/ldx7ak/</url>
-    <content><![CDATA[<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><h3 id="1-卷积的理解"><a href="#1-卷积的理解" class="headerlink" title="1. 卷积的理解"></a>1. 卷积的理解</h3><ul>
-<li>从数学角度来看，卷积就是一种运算，就好比是线性代数的内积、向量积等。</li>
-<li>卷积分两种类型，一种是连续类型，一种是离散类型。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686034538-58c8f110-943e-4194-8c80-f9465c4fde8e.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;originHeight=402&amp;originWidth=453&amp;size=0&amp;status=done&amp;style=none&amp;width=453" alt></li>
-</ul>
-<h3 id="2-Examples"><a href="#2-Examples" class="headerlink" title="2. Examples"></a>2. Examples</h3><ol>
-<li>离散卷积===掷骰子<br>加入同时掷两个骰子，求骰子显现数之和为 4 的概率为多少？其实就是高中所学的排列组合问题，可以看作是卷积离散形式的显性表现形式。</li>
-<li>连续卷积===做馒头<br>由于时间变化和食物腐败特性，做馒头的同时也会有馒头的腐败，给定相关数据，求一天之中腐败的馒头数量。</li>
-</ol>
-<h3 id="3-卷积在计算机领域简单应用"><a href="#3-卷积在计算机领域简单应用" class="headerlink" title="3. 卷积在计算机领域简单应用"></a>3. 卷积在计算机领域简单应用</h3><ul>
-<li>降噪图像：将图像按照矩阵的形式表达为一个数据集，对目标的一个像素点，进行平均矩阵运算，此时的矩阵表达形式可以映射到卷积的数学表达形式。</li>
-</ul>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://www.zhihu.com/question/22298352/answer/228543288" target="_blank" rel="noopener">如何通俗易懂地解释卷积？ - 马同学的回答 - 知乎</a></li>
-<li><a href="https://www.zhihu.com/question/52237725/answer/545340892" target="_blank" rel="noopener">解释一下卷积神经网络的卷积核？ - superbrother 的回答 - 知乎</a></li>
-<li><a href="https://www.zhihu.com/question/54504471/answer/332657604" target="_blank" rel="noopener">如何理解 Graph Convolutional Network（GCN）？-superbrother 的回答-知乎</a></li>
-<li><a href="https://www.cnblogs.com/maybe2030/p/4665847.html#top" target="_blank" rel="noopener">复杂网络的解释</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>MachingLearning</category>
       </categories>
   </entry>
   <entry>
@@ -3498,124 +3426,6 @@ git  push  --force  --quiet  &quot;https://${Coding_Username}:${Coding_Token}@${
       <categories>
         <category>Bug</category>
       </categories>
-  </entry>
-  <entry>
-    <title>DataAnalysis-SOP</title>
-    <url>/blog/lli6u1/</url>
-    <content><![CDATA[<h2 id="一、关于数据分析"><a href="#一、关于数据分析" class="headerlink" title="一、关于数据分析"></a>一、关于数据分析</h2><ul>
-<li>[x] 互联网最热职位：研发工程师、产品经理、人力资源、市场营销、运营、数据分析（供不应求）</li>
-<li>[x] 数据分析的步骤：明确目的/思路、数据收集、数据处理、数据分析、数据展现</li>
-<li><p>[x] 数据分析工具对比</p>
-<blockquote>
-<p>Python||R||Matlab||Scala||Sas||Spss<br>python 做数据分析是因为库比较多</p>
-</blockquote>
-</li>
-<li><p>[x] 什么是数据分析？：数据分析是一个检查 Inspecting、清理 Cleansing、转换 Tranforming、和建模数据 Modeling 的过程，其目标是发现有用的信息，提出结论和支持决策。统计、计算、可视化和数据挖掘是数据分析师工作描述的各个方面。数据分析师，一般执行相同的功能，在一定程度上具有相同的资格。然而，特定的企业或行业可以塑造工作职责、技能、资格以及就业和晋升前景。</p>
-</li>
-</ul>
-<pre><code>职位概述：数据分析师专业人员做什么？数据分析师获取、组装并帮助其他人解释和理解数据。要做到这一点，分析师必须培养分析、沟通、计算机、数学和统计方面等的技能。
-
-具体的经济部门可以指导分析人员使用的数据类型。例如，医疗数据分析师的工作描述需要处理不同的信息，如实验室数据、保险索赔、处方记录、办公室或医院访问。在市场营销中，他们处理的是处理客户偏好、销售和统计数据分析中重要部分的客户。
-
-数据分析师工作职责：
-使用统计公式计算和分析数据。
-验证数据的准确性、完整性和可靠性。
-使用记录、报告和调查等资源编译统计信息。
-将数据和其他信息输入计算机。
-在研究或调查中采访参与者，跟踪或记录他们的回答。
-收集或准备图表、图表、表格和其他对数据、调查和发现的描述。
-寻找和识别新的数据收集源和方法。
-获取客户数据收集需求
-数据分析师工作基本技能：
-分析能力。数据分析师的工作描述包括识别模式和基于数据呈现其他结论的能力。通过分析技能，数据分析师还可以确定数据、来源和物料的可靠性。
-计算机技能。数据分析人员依靠数据库、文字处理器和其他计算机应用程序来计算数据、概率和其他统计数据，并准备显示数据。事实上，软件应用程序包括结构化查询语言(SQL)和其他数据库用户查询产品，以及面向分析或科学方法的查询产品。
-数学能力。要分析和计算数据，分析人员必须具备数学技能，例如乘法、除法和使用其他数学操作。计算比率、分数、百分比和各种公式的能力可以帮助数据分析师准备有用的图表、报告和图表。
-沟通技巧。倾听和理解参与者的回答有助于确保可靠的调查和结果。沟通还包括清晰而直接地向主管、团队成员以及第三方用户展示结果、结论和其他信息。
-成为一名数据分析师
-在数据分析师的工作描述中包含了数学、统计学和计算机方面的背景知识，这取决于企业或行业，潜在的数据分析师包括与行业相关的课程和获得资格的工作经验。
-工作经验
-数据分析师可以从需要使用电子表格、数据库和其他计算机应用程序的工作中获得经验。对于某些公司，数据分析师职位描述要求应聘者具有SQL服务器和其他数据库系统的经验。那些有数据挖掘经验的人也可以提高就业前景。
-与教育和培训一样，企业可能更青睐具有特定行业经验的求职者。例如，财产保险公司的数据分析师可能曾为其他保险公司、抵押贷款公司、银行或保险机构工作。在学校环境中，申请人通常会带着以前的工作经历来学习或衡量学生的表现和教学方法。
-数据分析师的潜在短缺，就业机会比比皆是。随着公司寻求提高市场份额，寻找客户或控制成本，对数据分析师的需求应该会增加，特别是在营销，销售和医疗保健方面。总而言之，为了帮助组织实现这些目标和其他目标，数据分析师必须确保获取它们的数据和方法可靠且清晰地传达。
-</code></pre><h2 id="二、工作环境准备"><a href="#二、工作环境准备" class="headerlink" title="二、工作环境准备"></a>二、工作环境准备</h2><pre><code>a. python2和python3的差异、2.7和3版本的选用
-    &#39;&#39;&#39;bytes和str的相互应用&#39;&#39;&#39;
-    ch_str=&#39;python的新特性&#39;
-    #print(ch_str+&#39;\n&#39;)
-    #print(type(ch_str))
-    b_str=ch_str.encode(&#39;utf-8&#39;)#字符型转化为字节型
-    #print(b_str)
-    #print(type(b_str))
-    ch_str=b_str.decode(&#39;utf-8&#39;)#字节性转化字符型
-    print(ch_str)
-    print(type(ch_str))
-    【有什么作用呢？？】
-b. Six库
-c. 编码方式的差异：中文编码方式——UTF-8的选加
-d. python环境
-    i. Anaconda：有许多的第三方库
-        1) Jupyter notebook：想办法把本地的文件开源到GitHub上
-    ii. IDE：没有最好的，只有适合自己的；全都需要自己配置
-        1) Eclipse+Pydev完全免费
-        2) Pycharm部分免费
-        设置配置python解释器有问题！===配置路径被隐藏的问题
-        调试：断点调试/交互式调试====不是很会用！！！
-        3) spyder完全免费，适合熟悉matlab的开发者
-    iii. Ipython：简单验证思路===交互式命令的使用
-        § 在对像后面加一个&#39;?&#39;===显示对象的信息&#39;??&#39;===显示多个信息
-        Eg：fucktion_name??
-        ps：不要在后面加注释#否则会出错===我也不知道为啥
-        § 魔术命令的使用%time %timeit（一条语句） %%time %%timeit(多条语句)
-        Eg：%timeit output&gt;&gt;&gt;
-        26.9 ns ± 1.8 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
-</code></pre><h2 id="三、建模四个基本模型"><a href="#三、建模四个基本模型" class="headerlink" title="三、建模四个基本模型"></a>三、建模四个基本模型</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><blockquote>
-<p>离散预测值；预先定义的</p>
-</blockquote>
-<ul>
-<li>朴素贝叶斯</li>
-<li>人工神经网络</li>
-</ul>
-<h3 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h3><blockquote>
-<p>连续预测值</p>
-</blockquote>
-<ul>
-<li>Logistic 回归</li>
-</ul>
-<h3 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h3><blockquote>
-<p>预先没有被定义===未被标记的。</p>
-</blockquote>
-<ul>
-<li>K-Means 聚类</li>
-</ul>
-<h3 id="时序分析"><a href="#时序分析" class="headerlink" title="时序分析"></a>时序分析</h3><ul>
-<li>ARIMA 时序</li>
-</ul>
-<h2 id="四、CODE-SOP"><a href="#四、CODE-SOP" class="headerlink" title="四、CODE_SOP"></a>四、CODE_SOP</h2><h3 id="载入常用包"><a href="#载入常用包" class="headerlink" title="载入常用包"></a>载入常用包</h3><pre><code class="python">import pandas as pd
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns
-from scipy import stats
-
-matplotlib.rcParams[&#39;font.sans-serif&#39;]=[&#39;SimHei&#39;]
-matplotlib.rcParams[&#39;axes.unicode_minus&#39;]=False
-</code></pre>
-<h3 id="获取并查看数据"><a href="#获取并查看数据" class="headerlink" title="获取并查看数据"></a>获取并查看数据</h3><pre><code class="python">data = &#39;./data/train.csv&#39;
-data_1 = pd.read_csv(data)
-
-print (&#39;基本信息有：\n&#39;)
-print (data_1.info())
-print (&#39;数据集有%i行，%i列&#39; %(data_1.shape[0], data_1.shape[1]))
-print (&#39;数据预览:&#39;)
-print (data_1.head(10))
-……
-</code></pre>
-<h3 id="数据的清洗和规整"><a href="#数据的清洗和规整" class="headerlink" title="数据的清洗和规整"></a>数据的清洗和规整</h3><h3 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h3><h3 id="数据挖掘"><a href="#数据挖掘" class="headerlink" title="数据挖掘"></a>数据挖掘</h3>]]></content>
-      <categories>
-        <category>DataAnalysis</category>
-      </categories>
-      <tags>
-        <tag>DataAnalysis</tag>
-      </tags>
   </entry>
   <entry>
     <title>👨‍💻编程习惯</title>
@@ -3731,7 +3541,7 @@ private String logType
       </categories>
   </entry>
   <entry>
-    <title>Bert-自然语言处理</title>
+    <title>对谷歌BERT模型的思考</title>
     <url>/blog/mssoff/</url>
     <content><![CDATA[<h2 id="why？"><a href="#why？" class="headerlink" title="why？"></a>why？</h2><blockquote>
 <p>BERT 可以用来干什么？</p>
@@ -3783,7 +3593,7 @@ private String logType
     <title>🐞[bug]解决总结</title>
     <url>/blog/mtigbx/</url>
     <content><![CDATA[<blockquote>
-<p>好吧，学完软工之后，得用一个比较正式的词来描述——调试 🤣<br>——2021-01-04</p>
+<p>好吧，学完软工之后，得用一个比较正式的词来描述——调试</p>
 </blockquote>
 <h2 id="一、关于-bug"><a href="#一、关于-bug" class="headerlink" title="一、关于 bug"></a>一、关于 bug</h2><p>在编写程序过程中，总会出现各种各样的 bug，按 bug 得类型来分的话</p>
 <ul>
@@ -4301,52 +4111,6 @@ int main()
       <categories>
         <category>Bug</category>
       </categories>
-  </entry>
-  <entry>
-    <title>爬虫框架</title>
-    <url>/blog/ozvhfb/</url>
-    <content><![CDATA[<h2 id="一、爬虫基本架构"><a href="#一、爬虫基本架构" class="headerlink" title="一、爬虫基本架构"></a>一、爬虫基本架构</h2><h3 id="url-管理模块"><a href="#url-管理模块" class="headerlink" title="url 管理模块"></a>url 管理模块</h3><ul>
-<li>就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环</li>
-<li>使用 python 当中的 set 数据结构</li>
-</ul>
-<h3 id="网页下载模块"><a href="#网页下载模块" class="headerlink" title="网页下载模块"></a>网页下载模块</h3><blockquote>
-<p>将对应的 url 模块下载到本地或者读入内存</p>
-</blockquote>
-<blockquote>
-<p>实现方式</p>
-</blockquote>
-<ul>
-<li>通过 url 下载</li>
-</ul>
-<pre><code class="python">from urllib.request import urlopen
-test_url = &quot;https://wztlink1013.github.io&quot;
-response = urlopen(test_url)
-print (response.getcode()) # 200 表示访问成功
-print (response.read())
-</code></pre>
-<ul>
-<li>通过 Request 访问</li>
-<li>通过 cookie 访问</li>
-</ul>
-<h3 id="网页解析模块"><a href="#网页解析模块" class="headerlink" title="网页解析模块"></a>网页解析模块</h3><blockquote>
-<p>从已经下载的网页中爬取数据，实现方式有：</p>
-</blockquote>
-<ol>
-<li>正则表达式</li>
-<li>html.parser</li>
-<li><strong>BeautifulSoup：结构化解析网页</strong></li>
-<li>lxml</li>
-<li>结构化解析</li>
-<li>DOM（Document Object Model），树形结构，就是 html 的基本骨架</li>
-</ol>
-<h2 id="二、BeautifulSoup-解析网页"><a href="#二、BeautifulSoup-解析网页" class="headerlink" title="二、BeautifulSoup 解析网页"></a>二、BeautifulSoup 解析网页</h2>]]></content>
-      <categories>
-        <category>Spider</category>
-      </categories>
-      <tags>
-        <tag>spider</tag>
-        <tag>beautifulsoup</tag>
-      </tags>
   </entry>
   <entry>
     <title>SSH-登录报错</title>
@@ -5335,7 +5099,7 @@ myqr.run(
       </categories>
   </entry>
   <entry>
-    <title>索引</title>
+    <title>表查询优化——索引</title>
     <url>/blog/tr2ahg/</url>
     <content><![CDATA[<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p>索引能提高查询效率，但是查询效率和修改效率一直是一个矛盾。</p>
 <h2 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h2><pre><code class="mysql">-- 单独创建，colname为列名
@@ -5437,167 +5201,6 @@ SELECT *,_rowid FROM test;
       </categories>
   </entry>
   <entry>
-    <title>JavaScript</title>
-    <url>/blog/uke79e/</url>
-    <content><![CDATA[<h2 id="一、JavaScript-技术"><a href="#一、JavaScript-技术" class="headerlink" title="一、JavaScript 技术"></a>一、JavaScript 技术</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598689552509-6b3557cb-db72-41b3-b64b-183931a83443.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;originHeight=323&amp;originWidth=744&amp;size=0&amp;status=done&amp;style=shadow&amp;width=508" alt></p>
-<h2 id="二、基本语法"><a href="#二、基本语法" class="headerlink" title="二、基本语法"></a>二、基本语法</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><blockquote>
-<p>体现动态变量的优越性，会根据值的不同，反过来改变变量的类型</p>
-</blockquote>
-<ul>
-<li><p>var</p>
-<ul>
-<li>就类似全局变量</li>
-<li>能用 window.调用</li>
-<li>可以先使用后声明</li>
-</ul>
-</li>
-<li><p>let</p>
-<ul>
-<li>作用域在<strong>块</strong>中</li>
-<li>不能用 window.调用</li>
-<li>不能先使用后声明</li>
-<li>可以不用初始化</li>
-</ul>
-</li>
-<li>const<ul>
-<li>必须<strong>初始化</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="输出语句"><a href="#输出语句" class="headerlink" title="输出语句"></a>输出语句</h3><ul>
-<li>window 对象。alert</li>
-<li>inner.HTML</li>
-<li>console 控制台输出</li>
-<li>document.write</li>
-</ul>
-<h3 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h3><pre><code class="javascript">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;script&gt;
-function validateForm() {
-    var x = document.forms[&quot;myForm&quot;][&quot;fname&quot;].value;
-    if (x == null || x == &quot;&quot;) {
-        alert(&quot;需要输入名字。&quot;);
-        return false;
-    }
-}
-&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;form name=&quot;myForm&quot; action=&quot;demo_form.php&quot;
-onsubmit=&quot;return validateForm()&quot; method=&quot;post&quot;&gt;
-名字: &lt;input type=&quot;text&quot; name=&quot;fname&quot;&gt;
-&lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;
-&lt;/form&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>**</p>
-<h3 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h3><p>JSON 和 JavaScript 相互转换，JSON 格式化后之后，就是 JavaScript 对象**</p>
-<h2 id="三、函数"><a href="#三、函数" class="headerlink" title="三、函数"></a>三、函数</h2><h3 id="Function-构造函数"><a href="#Function-构造函数" class="headerlink" title="Function()构造函数"></a>Function()构造函数</h3><pre><code class="javascript">var myFunction = new Function(&quot;a&quot;, &quot;b&quot;, &quot;return a * b&quot;);
-
-var x = myFunction(4, 3);
-</code></pre>
-<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p>ES6 中新加了<strong>箭头函数</strong></p>
-<pre><code class="javascript">const funName = (x, y) =&gt; {
-  x * y;
-};
-</code></pre>
-<h3 id="自调用函数"><a href="#自调用函数" class="headerlink" title="自调用函数"></a>自调用函数</h3><pre><code class="javascript">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;p&gt;函数可以自动调用：&lt;/p&gt;
-&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
-&lt;script&gt;
-(function () {
-    document.getElementById(&quot;demo&quot;).innerHTML = &quot;Hello! 我是自己调用的&quot;;
-})();
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><p>实际上是 window 对象调用，知识默认隐藏 window 调用</p>
-<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>对于变量而言，有全局变量和局部变量，对于局部变量 ，其中有一个问题就是，函数内部不能定义局部变量来进行<strong>计数</strong>功能，只能定义全局变量来实现。<br>利用<strong>子调用函数来解决这个问题</strong>，</p>
-<pre><code class="javascript">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;p&gt;局部变量计数。&lt;/p&gt;
-&lt;button type=&quot;button&quot; onclick=&quot;myFunction()&quot;&gt;计数!&lt;/button&gt;
-&lt;p id=&quot;demo&quot;&gt;0&lt;/p&gt;
-&lt;script&gt;
-var add = (function () {
-    var counter = 0;
-    return function () {return counter += 1;}
-})();
-function myFunction(){
-    document.getElementById(&quot;demo&quot;).innerHTML = add();
-}
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="others"><a href="#others" class="headerlink" title="others"></a>others</h3><ul>
-<li>async 异步，告诉浏览器遇到 script 标签不要中断 HTML 的加载</li>
-<li>defer 异步，和 async 不同的是，这个是要按照<code>&lt;head&gt;</code>里面的<code>&lt;script&gt;</code>顺序来加载运行的</li>
-<li>let 变量（旧版本 var）</li>
-<li>const 常量</li>
-</ul>
-<h3 id="函数总结"><a href="#函数总结" class="headerlink" title="函数总结"></a>函数总结</h3><ul>
-<li>document.querySelector(‘p’);获取 dom 节点</li>
-<li>addEventListener(‘click’, updateName)事件监听</li>
-<li>prompt 弹出输入框</li>
-<li>textContent 改变 dom 节点上的文字内容</li>
-<li>document.createElement(‘p’);创建节点</li>
-<li>document.querySelectorAll(‘button’);获取 dom 节点</li>
-</ul>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606532491444-a0fd85ec-3730-4edb-8ed2-d559c0a4e9ab.png#align=left&amp;display=inline&amp;height=730&amp;margin=%5Bobject%20Object%5D&amp;originHeight=730&amp;originWidth=1039&amp;size=0&amp;status=done&amp;style=none&amp;width=1039" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606532490804-3ae5f0db-3158-4349-8675-073dac569e22.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=1052&amp;size=0&amp;status=done&amp;style=none&amp;width=1052" alt></p>
-<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><ul>
-<li>length 字符串长度，返回一个数字</li>
-<li>indexOf（）检索特定字符串，返回索引值</li>
-<li>slice（）查找子字符串并提取出来，类似 numpy 索引，返回一个新的字符串</li>
-<li>toLowerCase()全部换为小写，返回新的字符串</li>
-<li>toUpperCase()全部换为大写，返回新的字符串</li>
-<li>replace()替换字符串的某部分，返回新的字符串</li>
-</ul>
-<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><ul>
-<li>length 数组长度</li>
-<li>split(‘,’)将一串字符串按照”,”划分变成数组</li>
-<li>join(‘,’)和 split 函数相反，将数组个元素用”,”拼接成一个字符串</li>
-<li>toString()打印数组</li>
-<li>push()最后插入元素</li>
-<li>pop()最后删除元素</li>
-<li>unshift()第一个元素插入元素</li>
-<li>shift()第一个元素删除元素</li>
-</ul>
-<p>**</p>
-<h2 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h2><blockquote>
-<p><code>var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);</code></p>
-</blockquote>
-<ul>
-<li>返回要给 bool 类型值，<code>/^http(s)?:\/\/(\w+?\.)?baidu.com/</code>正则表达式和<code>document.referrer</code>之间是否匹配</li>
-<li>document.referrer 返回的是一个 URI, 当前页面就是从这个 URI 所代表的页面 跳转或打开的.</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++匿名函数</title>
     <url>/blog/uq89oe/</url>
     <content><![CDATA[<h3 id="常用形式"><a href="#常用形式" class="headerlink" title="常用形式"></a>常用形式</h3><pre><code class="cpp">[](int x, int y) -&gt; int { int z = x + y; return z; } //这样显示指定返回类型:
@@ -5696,7 +5299,7 @@ def sync_yuque():
       </categories>
   </entry>
   <entry>
-    <title>高级概念</title>
+    <title>备份</title>
     <url>/blog/vab07n/</url>
     <content><![CDATA[<h1 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h1><p>如果是 MyISAM 的数据库引擎，那么直接复制相应的数据库文件即可。<br>如果是 InnoDB 则需要利用命令。这也是更为一般的普适方法。</p>
 <p>利用 MySQL 提供的工具———— <strong>mysqldump</strong></p>
@@ -5811,7 +5414,7 @@ mysqldump -uroot -p world &gt;d:\config\world.sql**
       </categories>
   </entry>
   <entry>
-    <title>GitHub Actions+语雀+serverless云函数实现hexo自动化部署写作</title>
+    <title>GitHub Actions+语雀+serverless云函数实现hexo自动化部署</title>
     <url>/blog/vyeuk3/</url>
     <content><![CDATA[<h2 id="一、整体思路"><a href="#一、整体思路" class="headerlink" title="一、整体思路"></a>一、整体思路</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg#align=left&amp;display=inline&amp;height=368&amp;margin=%5Bobject%20Object%5D&amp;name=yuque_diagram.jpg&amp;originHeight=368&amp;originWidth=2062&amp;size=71238&amp;status=done&amp;style=shadow&amp;width=2062" alt="yuque_diagram.jpg"><br>利用语雀插件同步语雀云端的文章到博客源码 source/_posts/blog 文件夹下，利用 GitHub Actions 自动化部署将 GitHub 私有仓库的博客文件编译成静态博客文件并部署到静态博客仓库下，但是这样并不能解决语雀一发布文章就触发 GitHub 源码仓库的 GitHub Actions，所以需要中间 TencentCloud 云函数/Aliyun 云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发 GitHub 私有的源码仓库下的 GitHub Actions 达到编译静态博客的效果。</p>
 <h2 id="二、网站源文件配置"><a href="#二、网站源文件配置" class="headerlink" title="二、网站源文件配置"></a>二、网站源文件配置</h2><h3 id="yuque-hexo-插件"><a href="#yuque-hexo-插件" class="headerlink" title="yuque-hexo 插件"></a>yuque-hexo 插件</h3><blockquote>
@@ -5952,65 +5555,6 @@ def main_handler(event, context):
       <tags>
         <tag>serverless</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>CSS</title>
-    <url>/blog/wo0738/</url>
-    <content><![CDATA[<p>##</p>
-<h3 id="一些属性"><a href="#一些属性" class="headerlink" title="一些属性"></a>一些属性</h3><ul>
-<li>position<ul>
-<li>static</li>
-<li>relative：相对定位，会根据它本来的位置进行位置的变动（top，left……）</li>
-<li>absolute：根据“最近的非 static 祖先元素”</li>
-<li>fixed：固定定位，经常用在滚动屏幕上，其他内容还在滚动，再 fixed 仍在“原处”</li>
-<li>sticky：粘性定位，类似绝对定位和固定定位差不多</li>
-<li>flex：<a href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html" target="_blank" rel="noopener">阮一峰 Flex 布局教程：语法篇</a> + <a href="http://www.ruanyifeng.com/blog/2015/07/flex-examples.html" target="_blank" rel="noopener">阮一峰 Flex 布局教程：实例篇</a></li>
-</ul>
-</li>
-<li>display</li>
-<li><code>*zoom:1;</code>  作用：设置或检索网页缩放比例，一般给低版本的 ie 做兼容情况下，使用（<a href="https://www.cnblogs.com/lizm166/p/9430493.html" target="_blank" rel="noopener">https://www.cnblogs.com/lizm166/p/9430493.html</a>）</li>
-<li>tabindex：a 标签下的，用键盘 tab 键可以聚集在此（<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/tabindex" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/tabindex</a>）</li>
-<li>aria-label：给当前元素加描述，不可视的，</li>
-<li>aria-hidden=”true”：用于屏幕阅读器的，帮助残障人士更好的访问网站，通过隐藏一些不必要的内容，来优化阅读</li>
-</ul>
-<h3 id="单位"><a href="#单位" class="headerlink" title="单位"></a>单位</h3><ul>
-<li>rpx：微信小程序</li>
-</ul>
-<h2 id="二、CSS"><a href="#二、CSS" class="headerlink" title="二、CSS"></a>二、CSS</h2><ul>
-<li>选择器</li>
-<li>CSS 引入：外部引入、内部引入 <code>&lt;style&gt;</code> 、内联引入</li>
-<li>层叠：自身覆盖赢自身</li>
-<li>优先级：类赢标签选择器<ul>
-<li><code>!important</code>无视一切</li>
-</ul>
-</li>
-<li>继承：比如页面继承自 body，除非自身得标签单独设置</li>
-<li>属性和值</li>
-<li>函数<ul>
-<li><code>width: calc(90% - 30px);</code></li>
-<li><code>transform: rotate(0.8turn)</code></li>
-</ul>
-</li>
-<li><code>@rules</code> 符号：引入其他的样式表、判断 media 情况查看是否可以将媒体查询添加到 CSS 中，该查询将根据视口宽度更改样式。更改浏览器窗口的宽度以查看结果。</li>
-<li>速记属性</li>
-<li>注释：用“—-”来定位</li>
-</ul>
-<h3 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h3><p><a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/The_box_model" target="_blank" rel="noopener">MDN 链接</a></p>
-<ul>
-<li><code>display: flex;</code>将块级盒子（block box）编程内联盒子（inline box）</li>
-<li><code>display: block;</code>把内联盒子换成块级盒子</li>
-<li><code>display: inline;</code>将其编程内联盒子</li>
-<li><code>display: inline-flex;</code></li>
-</ul>
-<h3 id="背景和边框"><a href="#背景和边框" class="headerlink" title="背景和边框"></a>背景和边框</h3><p><a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/The_box_model" target="_blank" rel="noopener">MDN 链接</a></p>
-<h3 id="溢出"><a href="#溢出" class="headerlink" title="溢出"></a>溢出</h3><p><a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/Overflowing_content" target="_blank" rel="noopener">MDN 链接</a></p>
-<blockquote>
-<p>处理在盒模型当中内容太多溢出的情况</p>
-</blockquote>
-<h3 id="值和单位"><a href="#值和单位" class="headerlink" title="值和单位"></a>值和单位</h3>]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
   </entry>
   <entry>
     <title>Navicat-1045报错</title>
@@ -6222,135 +5766,6 @@ Require stack:
         <tag>zsh</tag>
         <tag>tmux</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>BOM（浏览器对象模型）</title>
-    <url>/blog/yoi6sh/</url>
-    <content><![CDATA[<h2 id="BOM（浏览器对象模型）"><a href="#BOM（浏览器对象模型）" class="headerlink" title="BOM（浏览器对象模型）"></a>BOM（浏览器对象模型）</h2><blockquote>
-<p>BOM 作用对象就是浏览器，从这一方面来说，DOM 也是 BOM 的属性之一<br>通常所使用的 onclick 事件其实是 window.onclick，只不过是默认不写。</p>
-</blockquote>
-<h2 id="窗口大小"><a href="#窗口大小" class="headerlink" title="窗口大小"></a>窗口大小</h2><pre><code class="javascript">var w =
-  window.innerWidth ||
-  document.documentElement.clientWidth ||
-  document.body.clientWidth;
-
-var h =
-  window.innerHeight ||
-  document.documentElement.clientHeight ||
-  document.body.clientHeight;
-</code></pre>
-<h2 id="Screen"><a href="#Screen" class="headerlink" title="Screen"></a>Screen</h2><p>可用的屏幕宽度/高度</p>
-<pre><code class="javascript">&lt;script&gt;document.write(&quot;可用宽度: &quot; + screen.availWidth);&lt;/script&gt;
-</code></pre>
-<h2 id="Location"><a href="#Location" class="headerlink" title="Location"></a>Location</h2><p>用于获得当前的页面地址（URL），并且把浏览器重定向到新的页面</p>
-<ul>
-<li>location.hostname：返回 web 主机域名</li>
-<li>location.pathname：返回当前页面的路径和文件名</li>
-<li>location.port：返回 web 主机的端口（80 或 443）</li>
-<li>location.protocol：返回所使用的 web 协议</li>
-<li>location.href：返回当前页面的 URL</li>
-<li>location.assign()：加载新的文档</li>
-<li>location.replace(‘’)：进入新的页面</li>
-</ul>
-<h2 id="History"><a href="#History" class="headerlink" title="History"></a>History</h2><p>包含浏览器的历史</p>
-<h2 id="Navigator"><a href="#Navigator" class="headerlink" title="Navigator"></a>Navigator</h2><p>浏览器相关信息</p>
-<pre><code class="javascript">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;菜鸟教程(runoob.com)&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;div id=&quot;example&quot;&gt;&lt;/div&gt;
-&lt;script&gt;
-txt = &quot;&lt;p&gt;浏览器代号: &quot; + navigator.appCodeName + &quot;&lt;/p&gt;&quot;;
-txt+= &quot;&lt;p&gt;浏览器名称: &quot; + navigator.appName + &quot;&lt;/p&gt;&quot;;
-txt+= &quot;&lt;p&gt;浏览器版本: &quot; + navigator.appVersion + &quot;&lt;/p&gt;&quot;;
-txt+= &quot;&lt;p&gt;启用Cookies: &quot; + navigator.cookieEnabled + &quot;&lt;/p&gt;&quot;;
-txt+= &quot;&lt;p&gt;硬件平台: &quot; + navigator.platform + &quot;&lt;/p&gt;&quot;;
-txt+= &quot;&lt;p&gt;用户代理: &quot; + navigator.userAgent + &quot;&lt;/p&gt;&quot;;
-txt+= &quot;&lt;p&gt;用户代理语言: &quot; + navigator.systemLanguage + &quot;&lt;/p&gt;&quot;;
-document.getElementById(&quot;example&quot;).innerHTML=txt;
-&lt;/script&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<h2 id="弹窗"><a href="#弹窗" class="headerlink" title="弹窗"></a>弹窗</h2><ul>
-<li>警告框：alert(“hello”);</li>
-<li>确认框：confirm(“按下按钮”);</li>
-<li>提示框：prompt(“请输入你的名字”,”Harry Potter”);</li>
-<li>换行：alert(“Hello\nHow are you?”);</li>
-</ul>
-<h2 id="计时事件"><a href="#计时事件" class="headerlink" title="计时事件"></a>计时事件</h2><blockquote>
-<p>设定一个时间然后再执行代码</p>
-</blockquote>
-<ul>
-<li>setInterval()</li>
-</ul>
-<pre><code class="javascript">&lt;p&gt;在页面显示一个时钟&lt;/p&gt;
-&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
-&lt;script&gt;
-var myVar=setInterval(function(){myTimer()},1000);
-function myTimer(){
-    var d=new Date();
-    var t=d.toLocaleTimeString();
-    document.getElementById(&quot;demo&quot;).innerHTML=t;
-}
-&lt;/script&gt;
-</code></pre>
-<ul>
-<li>clearInterval()</li>
-</ul>
-<pre><code class="javascript">&lt;p&gt;页面上显示时钟：&lt;/p&gt;
-&lt;p id=&quot;demo&quot;&gt;&lt;/p&gt;
-&lt;button onclick=&quot;myStopFunction()&quot;&gt;停止&lt;/button&gt;
-&lt;script&gt;
-var myVar=setInterval(function(){myTimer()},1000);
-function myTimer(){
-    var d=new Date();
-    var t=d.toLocaleTimeString();
-    document.getElementById(&quot;demo&quot;).innerHTML=t;
-}
-function myStopFunction(){
-    clearInterval(myVar);
-}
-&lt;/script&gt;
-</code></pre>
-<ul>
-<li>setTimeouot()</li>
-</ul>
-<pre><code class="javascript">&lt;p&gt;点击按钮，在等待 3 秒后弹出 &quot;Hello&quot;。&lt;/p&gt;
-&lt;button onclick=&quot;myFunction()&quot;&gt;点我&lt;/button&gt;
-&lt;script&gt;
-function myFunction(){
-    setTimeout(function(){alert(&quot;Hello&quot;)},3000);
-}
-&lt;/script&gt;
-</code></pre>
-<ul>
-<li>clearTimeout()</li>
-</ul>
-<pre><code class="javascript">&lt;p&gt;点击第一个按钮等待3秒后出现&quot;Hello&quot;弹框。&lt;/p&gt;
-&lt;p&gt;点击第二个按钮来阻止第一个函数运行。（你必须在3秒之前点击它）。&lt;/p&gt;
-&lt;button onclick=&quot;myFunction()&quot;&gt;点我&lt;/button&gt;
-&lt;button onclick=&quot;myStopFunction()&quot;&gt;停止弹框&lt;/button&gt;
-&lt;script&gt;
-var myVar;
-function myFunction(){
-    myVar=setTimeout(function(){alert(&quot;Hello&quot;)},3000);
-}
-function myStopFunction(){
-    clearTimeout(myVar);
-}
-&lt;/script&gt;
-</code></pre>
-<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>记录用户在网页中信息</p>
-]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
   </entry>
   <entry>
     <title>栈设计</title>
@@ -6729,35 +6144,6 @@ where mID in (
       </categories>
   </entry>
   <entry>
-    <title>HTML</title>
-    <url>/blog/zokcng/</url>
-    <content><![CDATA[<h2 id="HTML-技术"><a href="#HTML-技术" class="headerlink" title="HTML 技术"></a>HTML 技术</h2><blockquote>
-<p>单标记和双标记<br>熟悉一些常用标签的使用</p>
-</blockquote>
-<p>文本控制、文本标签、图像标签、表格标签、表单标签、列表标签、超链接标签、div</p>
-<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><ul>
-<li>元标签<code>&lt;meta&gt;</code></li>
-</ul>
-<h3 id="html-观鸟网"><a href="#html-观鸟网" class="headerlink" title="html-观鸟网"></a>html-观鸟网</h3><p>学会布局</p>
-<ul>
-<li><code>&lt;head&gt;</code></li>
-<li><code>&lt;body&gt;</code><ul>
-<li><code>&lt;header&gt;</code></li>
-<li><code>&lt;main&gt;</code><ul>
-<li><code>&lt;section&gt;</code></li>
-<li><code>&lt;aside&gt;</code></li>
-<li><code>&lt;footer&gt;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
     <title>表基本操作</title>
     <url>/blog/zqbaxc/</url>
     <content><![CDATA[<h1 id="表基本操作"><a href="#表基本操作" class="headerlink" title="表基本操作"></a>表基本操作</h1><h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><pre><code class="sql">Create table student(
@@ -7067,10 +6453,43 @@ public class Deque&lt;E&gt; {
       </categories>
   </entry>
   <entry>
-    <title>Scrapy使用</title>
+    <title>爬虫框架和Scrapy使用</title>
     <url>/blog/zsvfxg/</url>
-    <content><![CDATA[<p>##</p>
-<h2 id="一、Scrapy"><a href="#一、Scrapy" class="headerlink" title="一、Scrapy"></a>一、Scrapy</h2><h3 id="Scrapy-基础"><a href="#Scrapy-基础" class="headerlink" title="Scrapy 基础"></a>Scrapy 基础</h3><ul>
+    <content><![CDATA[<h2 id="一、爬虫基本架构"><a href="#一、爬虫基本架构" class="headerlink" title="一、爬虫基本架构"></a>一、爬虫基本架构</h2><h3 id="url-管理模块"><a href="#url-管理模块" class="headerlink" title="url 管理模块"></a>url 管理模块</h3><ul>
+<li>就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环</li>
+<li>使用 python 当中的 set 数据结构</li>
+</ul>
+<h3 id="网页下载模块"><a href="#网页下载模块" class="headerlink" title="网页下载模块"></a>网页下载模块</h3><blockquote>
+<p>将对应的 url 模块下载到本地或者读入内存</p>
+</blockquote>
+<blockquote>
+<p>实现方式</p>
+</blockquote>
+<ul>
+<li>通过 url 下载</li>
+</ul>
+<pre><code class="python">from urllib.request import urlopen
+test_url = &quot;https://wztlink1013.github.io&quot;
+response = urlopen(test_url)
+print (response.getcode()) # 200 表示访问成功
+print (response.read())
+</code></pre>
+<ul>
+<li>通过 Request 访问</li>
+<li>通过 cookie 访问</li>
+</ul>
+<h3 id="网页解析模块"><a href="#网页解析模块" class="headerlink" title="网页解析模块"></a>网页解析模块</h3><blockquote>
+<p>从已经下载的网页中爬取数据，实现方式有：</p>
+</blockquote>
+<ol>
+<li>正则表达式</li>
+<li>html.parser</li>
+<li><strong>BeautifulSoup：结构化解析网页</strong></li>
+<li>lxml</li>
+<li>结构化解析</li>
+<li>DOM（Document Object Model），树形结构，就是 html 的基本骨架</li>
+</ol>
+<h2 id="二、BeautifulSoup-解析网页"><a href="#二、BeautifulSoup-解析网页" class="headerlink" title="二、BeautifulSoup 解析网页"></a>二、BeautifulSoup 解析网页</h2><h2 id="三、Scrapy"><a href="#三、Scrapy" class="headerlink" title="三、Scrapy"></a>三、Scrapy</h2><h3 id="Scrapy-基础"><a href="#Scrapy-基础" class="headerlink" title="Scrapy 基础"></a>Scrapy 基础</h3><ul>
 <li>是一个爬虫框架，同时易扩展，可以添加新的模块达到自定义扩展</li>
 <li>输出格式多样：json，csv，xml 等</li>
 <li>自动处理编码</li>
@@ -7079,7 +6498,7 @@ public class Deque&lt;E&gt; {
 <blockquote>
 <p>下载方法以及问题，在 anaconda 博客中</p>
 </blockquote>
-<h2 id="二、Scrapy-使用"><a href="#二、Scrapy-使用" class="headerlink" title="二、Scrapy 使用"></a>二、Scrapy 使用</h2><h3 id="使用-SOP"><a href="#使用-SOP" class="headerlink" title="使用 SOP"></a>使用 SOP</h3><ul>
+<h2 id="四、Scrapy-使用"><a href="#四、Scrapy-使用" class="headerlink" title="四、Scrapy 使用"></a>四、Scrapy 使用</h2><h3 id="使用-SOP"><a href="#使用-SOP" class="headerlink" title="使用 SOP"></a>使用 SOP</h3><ul>
 <li>创建工程<ul>
 <li>键入<code>cmd</code> <code>cd</code>到需要下载的目录下</li>
 <li>输入<code>scrapy startproject tutorial</code>（最后是项目名字）</li>
@@ -7104,12 +6523,1318 @@ public class Deque&lt;E&gt; {
 </ul>
 ]]></content>
       <categories>
-        <category>Spider</category>
+        <category>DataAnalysis</category>
       </categories>
-      <tags>
-        <tag>spider</tag>
-        <tag>scrapy</tag>
-      </tags>
+  </entry>
+  <entry>
+    <title>数据的清洗和规整（二）</title>
+    <url>/blog/dggm37/</url>
+    <content><![CDATA[<h2 id="三、数据规整-连接-含索引"><a href="#三、数据规整-连接-含索引" class="headerlink" title="三、数据规整-连接-含索引"></a>三、数据规整-连接-含索引</h2><ul>
+<li>数据连接 merge</li>
+</ul>
+<pre><code class="python">import pandas as pd
+import numpy as np
+</code></pre>
+<pre><code class="python">df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data1&#39; : [&#39;sfd&#39;,&#39;fdsf&#39;,&#39;we&#39;,24,3253,234,23]})
+df_obj2 = pd.DataFrame({&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;],
+                        &#39;data2&#39; : np.random.randint(0,10,3)})
+
+print (df_obj1)
+print (df_obj2)
+</code></pre>
+<pre><code>  key data1
+0   b   sfd
+1   b  fdsf
+2   a    we
+3   c    24
+4   a  3253
+5   a   234
+6   b    23
+  key  data2
+0   a      0
+1   b      6
+2   d      6
+</code></pre><h3 id="merge-和-on"><a href="#merge-和-on" class="headerlink" title="merge 和 on"></a>merge 和 on</h3><blockquote>
+<p>默认将重叠列的列名作为“外键”进行连接</p>
+</blockquote>
+<pre><code class="python">pd.merge(df_obj1, df_obj2)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># on显示指定“外键”
+pd.merge(df_obj1, df_obj2, on=&#39;key&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="left-on-和-right-on"><a href="#left-on-和-right-on" class="headerlink" title="left-on 和 right-on"></a>left-on 和 right-on</h3><pre><code class="python"># left_on，right_on分别指定左侧数据和右侧数据的“外键”
+
+# 更改列名
+df_obj1 = df_obj1.rename(columns={&#39;key&#39;:&#39;key1&#39;})
+df_obj2 = df_obj2.rename(columns={&#39;key&#39;:&#39;key2&#39;})
+</code></pre>
+<pre><code class="python">print(df_obj1)
+print(df_obj2)
+</code></pre>
+<pre><code>  key1 data1
+0    b   sfd
+1    b  fdsf
+2    a    we
+3    c    24
+4    a  3253
+5    a   234
+6    b    23
+  key2  data2
+0    a      0
+1    b      6
+2    d      6
+</code></pre><pre><code class="python">pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how"><a href="#how" class="headerlink" title="how"></a>how</h3><pre><code class="python"># “外连接”
+pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;outer&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>c</td>
+<td>24</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>d</td>
+<td>6.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 左连接
+pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;left&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>c</td>
+<td>24</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 右连接
+pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;right&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>data1</th>
+<th>key2</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>sfd</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>fdsf</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>23</td>
+<td>b</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>we</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3253</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>234</td>
+<td>a</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>d</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="处理重复列名-suffixes"><a href="#处理重复列名-suffixes" class="headerlink" title="处理重复列名 suffixes"></a>处理重复列名 suffixes</h3><pre><code class="python"># 处理重复列名
+df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data&#39; : np.random.randint(0,10,7)})
+df_obj2 = pd.DataFrame({&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;],
+                        &#39;data&#39; : np.random.randint(0,10,3)})
+
+pd.merge(df_obj1, df_obj2, on=&#39;key&#39;, suffixes=(&#39;_left&#39;, &#39;_right&#39;))
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data_left</th>
+<th>data_right</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>b</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>7</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 按索引连接
+df_obj3 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data1&#39; : np.random.randint(0,10,7)})
+df_obj4 = pd.DataFrame({&#39;data2&#39; : np.random.randint(0,10,3)}, index=[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;])
+</code></pre>
+<pre><code class="python">print(df_obj3)
+print(df_obj4)
+</code></pre>
+<pre><code>  key  data1
+0   b      7
+1   b      4
+2   a      1
+3   c      9
+4   a      2
+5   a      9
+6   b      7
+   data2
+a      9
+b      4
+d      0
+</code></pre><pre><code class="python">pd.merge(df_obj3, df_obj4, left_on=&#39;key&#39;, right_index=True)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>7</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>7</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>1</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>2</td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>9</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="按索引连接-right-index"><a href="#按索引连接-right-index" class="headerlink" title="按索引连接 right_index"></a>按索引连接 right_index</h3><pre><code class="python"># 按索引连接
+df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
+                        &#39;data1&#39; : np.random.randint(0,10,7)})
+df_obj2 = pd.DataFrame({&#39;data2&#39; : np.random.randint(0,10,3)}, index=[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;])
+</code></pre>
+<pre><code class="python">print(df_obj1)
+print(df_obj2)
+</code></pre>
+<pre><code>  key  data1
+0   b      0
+1   b      2
+2   a      7
+3   c      3
+4   a      1
+5   a      1
+6   b      6
+   data2
+a      2
+b      1
+d      1
+</code></pre><pre><code class="python">pd.merge(df_obj1, df_obj2, left_on=&#39;key&#39;, right_index=True)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>b</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>7</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="四、数据合并"><a href="#四、数据合并" class="headerlink" title="四、数据合并"></a>四、数据合并</h2><ul>
+<li>数据合并 concat</li>
+<li>按索引连接===right_index</li>
+</ul>
+<pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<h3 id="numpy-的-concat"><a href="#numpy-的-concat" class="headerlink" title="numpy 的 concat"></a>numpy 的 concat</h3><pre><code class="python">arr1 = np.random.randint(0, 10, (3, 4))
+arr2 = np.random.randint(0, 10, (3, 4))
+
+print (arr1)
+print (arr2)
+</code></pre>
+<pre><code>[[6 0 3 2]
+ [5 7 9 8]
+ [5 8 0 3]]
+[[6 5 7 9]
+ [0 1 0 0]
+ [1 1 1 7]]
+</code></pre><pre><code class="python">np.concatenate([arr1, arr2])
+</code></pre>
+<pre><code>array([[6, 0, 3, 2],
+       [5, 7, 9, 8],
+       [5, 8, 0, 3],
+       [6, 5, 7, 9],
+       [0, 1, 0, 0],
+       [1, 1, 1, 7]])
+</code></pre><pre><code class="python">np.concatenate([arr1, arr2], axis=1)
+</code></pre>
+<pre><code>array([[6, 0, 3, 2, 6, 5, 7, 9],
+       [5, 7, 9, 8, 0, 1, 0, 0],
+       [5, 8, 0, 3, 1, 1, 1, 7]])
+</code></pre><h3 id="series-上的-concat"><a href="#series-上的-concat" class="headerlink" title="series 上的 concat"></a>series 上的 concat</h3><pre><code class="python"># index 没有重复的情况
+ser_obj1 = pd.Series(np.random.randint(0, 10, 5), index=range(0,5))
+ser_obj2 = pd.Series(np.random.randint(0, 10, 4), index=range(5,9))
+ser_obj3 = pd.Series(np.random.randint(0, 10, 3), index=range(9,12))
+</code></pre>
+<pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3])
+</code></pre>
+<pre><code>0     0
+1     4
+2     5
+3     1
+4     9
+5     7
+6     8
+7     5
+8     0
+9     5
+10    9
+11    0
+dtype: int32
+</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=1)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>5</td>
+<td>NaN</td>
+<td>7.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>6</td>
+<td>NaN</td>
+<td>8.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>7</td>
+<td>NaN</td>
+<td>5.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>8</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>9</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>9.0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># index 有重复的情况
+ser_obj1 = pd.Series(np.random.randint(0, 10, 5), index=range(5))
+ser_obj2 = pd.Series(np.random.randint(0, 10, 4), index=range(4))
+ser_obj3 = pd.Series(np.random.randint(0, 10, 3), index=range(3))
+
+print (ser_obj1)
+print (ser_obj2)
+print (ser_obj3)
+</code></pre>
+<pre><code>0    5
+1    3
+2    0
+3    8
+4    3
+dtype: int32
+0    5
+1    3
+2    2
+3    1
+dtype: int32
+0    5
+1    8
+2    6
+dtype: int32
+</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3])
+</code></pre>
+<pre><code>0    5
+1    3
+2    0
+3    8
+4    3
+0    5
+1    3
+2    2
+3    1
+0    5
+1    8
+2    6
+dtype: int32
+</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=1, join=&#39;inner&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dataframe-上的-concat"><a href="#dataframe-上的-concat" class="headerlink" title="dataframe 上的 concat"></a>dataframe 上的 concat</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randint(0, 10, (3, 2)), index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],
+                       columns=[&#39;A&#39;, &#39;B&#39;])
+df_obj2 = pd.DataFrame(np.random.randint(0, 10, (2, 2)), index=[&#39;a&#39;, &#39;b&#39;],
+                       columns=[&#39;C&#39;, &#39;D&#39;])
+print (df_obj1)
+print (df_obj2)
+</code></pre>
+<pre><code>   A  B
+a  4  3
+b  8  1
+c  6  3
+   C  D
+a  1  3
+b  8  2
+</code></pre><pre><code class="python">pd.concat([df_obj1, df_obj2])
+</code></pre>
+<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
+of pandas will change to not sort by default.
+
+To accept the future behavior, pass &#39;sort=False&#39;.
+
+To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
+
+  &quot;&quot;&quot;Entry point for launching an IPython kernel.
+</code></pre><table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>b</td>
+<td>8.0</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>c</td>
+<td>6.0</td>
+<td>3.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>a</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>8.0</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">pd.concat([df_obj1, df_obj2], axis=1)
+</code></pre>
+<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
+of pandas will change to not sort by default.
+
+To accept the future behavior, pass &#39;sort=False&#39;.
+
+To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
+
+  &quot;&quot;&quot;Entry point for launching an IPython kernel.
+</code></pre><table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>4</td>
+<td>3</td>
+<td>1.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>b</td>
+<td>8</td>
+<td>1</td>
+<td>8.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>c</td>
+<td>6</td>
+<td>3</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+<h2 id="五、数据重构"><a href="#五、数据重构" class="headerlink" title="五、数据重构"></a>五、数据重构</h2><pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<h3 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h3><pre><code class="python">df_obj = pd.DataFrame(np.random.randint(0,10, (5,2)), columns=[&#39;data1&#39;, &#39;data2&#39;])
+df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">stacked = df_obj.stack()
+print (stacked)
+</code></pre>
+<pre><code>0  data1    0
+   data2    4
+1  data1    6
+   data2    2
+2  data1    9
+   data2    8
+3  data1    7
+   data2    0
+4  data1    3
+   data2    1
+dtype: int32
+</code></pre><pre><code class="python">print (type(stacked))
+print (type(stacked.index))
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.series.Series&#39;&gt;
+&lt;class &#39;pandas.core.indexes.multi.MultiIndex&#39;&gt;
+</code></pre><h3 id="unstack"><a href="#unstack" class="headerlink" title="unstack"></a>unstack</h3><pre><code class="python"># 默认操作内层索引
+stacked.unstack()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>7</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 通过level指定操作索引的级别
+stacked.unstack(level=0)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data1</td>
+<td>0</td>
+<td>6</td>
+<td>9</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>data2</td>
+<td>4</td>
+<td>2</td>
+<td>8</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六、数据转换"><a href="#六、数据转换" class="headerlink" title="六、数据转换"></a>六、数据转换</h2><pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<h3 id="重复数据-duplicates-函数"><a href="#重复数据-duplicates-函数" class="headerlink" title="重复数据 duplicates 函数"></a>重复数据 duplicates 函数</h3><pre><code class="python">df_obj = pd.DataFrame({&#39;data1&#39; : [&#39;a&#39;] * 4 + [&#39;b&#39;] * 4,
+                       &#39;data2&#39; : np.random.randint(0, 4, 8)})
+df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>b</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">df_obj.duplicated()
+</code></pre>
+<pre><code>0    False
+1    False
+2     True
+3    False
+4    False
+5    False
+6     True
+7    False
+dtype: bool
+</code></pre><pre><code class="python">df_obj.drop_duplicates()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>b</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">df_obj.drop_duplicates(&#39;data2&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a>map 函数</h3><pre><code class="python">ser_obj = pd.Series(np.random.randint(0,10,10))
+ser_obj
+</code></pre>
+<pre><code>0    1
+1    9
+2    1
+3    2
+4    7
+5    2
+6    4
+7    5
+8    4
+9    6
+dtype: int32
+</code></pre><pre><code class="python">ser_obj.map(lambda x : x ** 2)
+</code></pre>
+<pre><code>0     1
+1    81
+2     1
+3     4
+4    49
+5     4
+6    16
+7    25
+8    16
+9    36
+dtype: int64
+</code></pre><h3 id="数据替换-repalce"><a href="#数据替换-repalce" class="headerlink" title="数据替换 repalce"></a>数据替换 repalce</h3><pre><code class="python"># 替换单个值
+ser_obj.replace(0, -100)
+</code></pre>
+<pre><code>0    1
+1    9
+2    1
+3    2
+4    7
+5    2
+6    4
+7    5
+8    4
+9    6
+dtype: int32
+</code></pre><pre><code class="python"># 替换多个值
+ser_obj.replace([0, 2], -100)
+</code></pre>
+<pre><code>0      1
+1      9
+2      1
+3   -100
+4      7
+5   -100
+6      4
+7      5
+8      4
+9      6
+dtype: int32
+</code></pre><pre><code class="python"># 替换多个值
+ser_obj.replace([0, 2], [-100, -200])
+</code></pre>
+<pre><code>0      1
+1      9
+2      1
+3   -200
+4      7
+5   -200
+6      4
+7      5
+8      4
+9      6
+dtype: int64
+</code></pre><pre><code class="python">ser_obj.map(lambda x : x ** 2)
+
+#### 3. 数据替换repalce
+
+# 替换单个值
+ser_obj.replace(0, -100)
+
+# 替换多个值
+ser_obj.replace([0, 2], -100)
+
+# 替换多个值
+ser_obj.replace([0, 2], [-100, -200])
+</code></pre>
+<pre><code>0      1
+1      9
+2      1
+3   -200
+4      7
+5   -200
+6      4
+7      5
+8      4
+9      6
+dtype: int64
+</code></pre>]]></content>
+      <categories>
+        <category>DataAnalysis</category>
+      </categories>
   </entry>
   <entry>
     <title>JAVA-基础知识</title>
@@ -7841,114 +8566,6 @@ void TestKruskalMST(int v0 = 0)
       </categories>
   </entry>
   <entry>
-    <title>Android平台与开发技术</title>
-    <url>/blog/im0an1/</url>
-    <content><![CDATA[<h2 id="一、目的"><a href="#一、目的" class="headerlink" title="一、目的"></a>一、目的</h2><p>大学期间，有没有能够<strong>有专业能力的项目实战</strong>。希望在你的将来的简历中加入技术方面的项目介绍。</p>
-<h2 id="二、考核方式"><a href="#二、考核方式" class="headerlink" title="二、考核方式"></a>二、考核方式</h2><p>PBL 的方式组队，开发一个创意项目。**</p>
-<h2 id="三、课程背景"><a href="#三、课程背景" class="headerlink" title="三、课程背景"></a>三、课程背景</h2><ol>
-<li><strong>Android 平台简介</strong></li>
-<li><strong>Google  提供了官方的 Android Studio</strong><ol>
-<li>Java  或者  Kotlin</li>
-</ol>
-</li>
-<li><strong>Apple 提供了官方的开发环境</strong><ol>
-<li>Swift 或者 OC</li>
-</ol>
-</li>
-<li><strong>Wechat 提供了官方的开发环境</strong><ol>
-<li>SNS  排第一的产品；Facebook</li>
-<li>小程序，JD</li>
-</ol>
-</li>
-<li><strong>其他平台</strong><ol>
-<li>百度小程序等**</li>
-</ol>
-</li>
-</ol>
-<h2 id="四、技术路线"><a href="#四、技术路线" class="headerlink" title="四、技术路线"></a>四、技术路线</h2><ol>
-<li><strong>uni-app</strong>  是一个使用 <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue.js</a> 开发所有前端应用的<strong>框架</strong>，开发者编写一套代码，<strong>可发布到 iOS、Android、H5、以及各种小程序</strong>（微信/支付宝/百度/头条/QQ/钉钉/淘宝）、快应用等多个平台。</li>
-<li><strong>DCloud 公司</strong>拥有 500 万开发者用户，几十万应用案例、10 亿手机端月活用户，数千款 uni-app 插件、70+微信/qq 群。阿里小程序工具官方内置 uni-app（<a href="https://docs.alipay.com/mini/ide/0.70-stable" target="_blank" rel="noopener">详见</a>），腾讯课堂官方为 uni-app 录制培训课程（<a href="https://ask.dcloud.net.cn/article/35640" target="_blank" rel="noopener">详见</a>），开发者可以放心选择。</li>
-<li>uni-app 在手，做啥都不愁。即使不跨端，uni-app 也是更好的小程序开发框架（<a href="https://ask.dcloud.net.cn/article/35947" target="_blank" rel="noopener">详见</a>）、更好的 App 跨平台框架、更方便的 H5 开发框架。不管领导安排什么样的项目，你都可以快速交付，不需要转换开发思维、不需要更改开发习惯。</li>
-</ol>
-<h2 id="五、快速上手-安装环境"><a href="#五、快速上手-安装环境" class="headerlink" title="五、快速上手+安装环境"></a>五、快速上手+安装环境</h2><p><strong>uni-app 支持通过可视化界面、</strong><a href="https://uniapp.dcloud.io/quickstart?id=%e9%80%9a%e8%bf%87vue-cli%e5%91%bd%e4%bb%a4%e8%a1%8c" target="_blank" rel="noopener"><strong>vue-cli 命令行</strong></a><strong> 两种方式快速创建项目。</strong></p>
-<h3 id="通过-HBuilderX-可视化界面"><a href="#通过-HBuilderX-可视化界面" class="headerlink" title="通过  HBuilderX  可视化界面"></a><a href="https://uniapp.dcloud.io/quickstart?id=_1-%e9%80%9a%e8%bf%87-hbuilderx-%e5%8f%af%e8%a7%86%e5%8c%96%e7%95%8c%e9%9d%a2" target="_blank" rel="noopener">通过  HBuilderX  可视化界面</a></h3><ol>
-<li>可视化的方式比较简单，HBuilderX 内置相关环境，开箱即用，无需配置 nodejs。</li>
-<li>开始之前，开发者需先下载安装如下工具：</li>
-<li>HBuilderX：<a href="https://www.dcloud.io/hbuilderx.html" target="_blank" rel="noopener">官方 IDE 下载地址</a></li>
-<li><a href="https://www.dcloud.io/hbuilderx.html" target="_blank" rel="noopener">HBuilderX</a>是通用的前端开发工具，但为 uni-app 做了特别强化。</li>
-<li>下载 App 开发版，可开箱即用；如下载标准版，在运行或发行 uni-app 时，会提示安装 uni-app 插件，插件下载完成后方可使用。</li>
-</ol>
-<h3 id="Chrome-最新版-Edge"><a href="#Chrome-最新版-Edge" class="headerlink" title="Chrome/最新版 Edge"></a>Chrome/最新版 Edge</h3><ul>
-<li><a href="https://www.google.com/intl/zh-CN/chrome/" target="_blank" rel="noopener">https://www.google.com/intl/zh-CN/chrome/</a></li>
-<li>Edge(最新)浏览器：<a href="https://www.microsoftedgeinsider.com/en-us/download" target="_blank" rel="noopener">下载地址（DEV 版本会消去插件开发者禁用状态）</a></li>
-</ul>
-<h3 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h3><ul>
-<li>下载地址：<a href="https://developer.android.com/studio" target="_blank" rel="noopener">https://developer.android.com/studio</a></li>
-</ul>
-<p>参考：</p>
-<ul>
-<li><a href="https://blog.csdn.net/wangmx1993328/article/details/81905195" target="_blank" rel="noopener">https://blog.csdn.net/wangmx1993328/article/details/81905195</a></li>
-<li><a href="https://blog.csdn.net/qq_41976613/article/details/91432304?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.add_param_isCf&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.add_param_isCf" target="_blank" rel="noopener">https://blog.csdn.net/qq_41976613/article/details/91432304?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.add_param_isCf&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.add_param_isCf</a></li>
-<li><a href="https://blog.csdn.net/qq_41976613/article/details/104394870" target="_blank" rel="noopener">https://blog.csdn.net/qq_41976613/article/details/104394870</a></li>
-<li><a href="https://blog.csdn.net/liqz666/article/details/80243836?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.edu_weight&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.edu_weight" target="_blank" rel="noopener">https://blog.csdn.net/liqz666/article/details/80243836?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.edu_weight&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.edu_weight</a></li>
-<li><a href="https://blog.csdn.net/weixin_43717445/article/details/108719984" target="_blank" rel="noopener">https://blog.csdn.net/weixin_43717445/article/details/108719984</a></li>
-</ul>
-<h3 id="gradle-国内源配置方法"><a href="#gradle-国内源配置方法" class="headerlink" title="gradle 国内源配置方法"></a>gradle 国内源配置方法</h3><p>Android Studio 在构建项目时会拉取 gradle 资源，而 goole 和 jcenter 在国内的网络环境并不好用，容易产生 connect timeout 等错误。</p>
-<p>因此将地址修改成阿里云的国内镜像。<br>一、允许使用 maven 仓库<br>　　点击 File-&gt;Settings 进入设置界面，勾选“Enable embedded Maven repository”，</p>
-<p>二、修改 build.gradle<br>　　在项目文件中找到 build.gradle 文件，修改其中的 buildscript 和 allprojects 地址：</p>
-<pre><code>buildscript {
-    repositories {
-        maven{ url &#39;http://maven.aliyun.com/nexus/content/groups/public/&#39; }
-        maven{ url &#39;http://maven.aliyun.com/nexus/content/repositories/jcenter&#39;}
-    }
-    dependencies {
-        classpath &#39;com.android.tools.build:gradle:3.3.0-alpha13&#39;
-    }
-}
-allprojects {
-    repositories {
-        maven{ url &#39;http://maven.aliyun.com/nexus/content/groups/public/&#39;}
-        maven{ url &#39;http://maven.aliyun.com/nexus/content/repositories/jcenter&#39;}
-    }
-}
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-</code></pre><p>gradle 的文件下载下来以后会保存在本地，也有缓存。这意味着不同的项目如果有相同的 gradle 依赖，则不需要重复下载。因此也不是每次打开新项目都需要修改 build.gradle 文件。</p>
-<p>如果修改 build.gradle 后重新 build 还是有错，可以尝试新建一个相同 API 版本的项目。</p>
-<p>参考：</p>
-<ul>
-<li><a href="https://maven.aliyun.com/mvn/guide" target="_blank" rel="noopener">阿里云 gradle 配置指南</a></li>
-</ul>
-<h2 id="六、考核方式"><a href="#六、考核方式" class="headerlink" title="六、考核方式"></a>六、考核方式</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605441751743-cb395908-39ce-4303-ab00-0c885d05abe9.png#align=left&amp;display=inline&amp;height=294&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=588&amp;originWidth=1192&amp;size=83972&amp;status=done&amp;style=none&amp;width=596" alt="image.png"></p>
-<h2 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h2><h3 id="前端后端"><a href="#前端后端" class="headerlink" title="前端后端"></a>前端后端</h3><p>Web 前端分为网页设计师、网页美工、Web 前端开发工程师。<br>首先网页设计师是对网页的架构、色彩以及网站的整体页面代码负责。<br>网页美工只针对 UI 这块儿的东西，比如网站是否做的漂亮。<br>Web 前端开发工程师是负责交互设计的，需要和程序猿进行交互设计的配合。<br>Web 前端需要掌握的有脚本技术 javascript DIV+CSS 现下最流行的页面搭建技术，ajax 和 jquery 以及简单的后端程序等。 后端的话可供开发的语言有 asp、php、jsp、.NET 这些后端开发语言的话搭建环境都不一样，具体如果你想学的话看是想从事前端部分还是后端程序部分。后端开发如果有一定的条件的话可以转为软件开发。不过要有一定的语言基础，类似 java 语言、C++等。关键是看你的兴趣爱好。<br>这个到后期不会区分这么细，做前端到后期也会懂一些后端的技术，反之，后端也是。<br>在实际的开发过程中，我们当前这样定位前端、后端开发人员。 1)前端开发人员：精通 JS，能熟练应用 JQuery，懂 CSS，能熟练运用这些知识，进行交互效果的开发。 2)后端开发人员：会写 Java 代码，会写 SQL 语句，能做简单的数据库设计，会 Spring 和 iBatis，懂一些设计模式等。<br>现在来看，对前后端的要求还是蛮低的，尤其是后端，新员工经过实习之后都是可以参与到后端开发的，没有太高的技术门槛，唯一需要做的就是先变成熟练工种，这个阶段没有涉及到设计模式、架构、效率等一些列问题。在约的专家对我的主要建议就是从这里入手。<br>Web 前端: 顾名思义是来做 Web 的前端的。我们这里所说的前端泛指 Web 前端，也就是在 Web 应用中用户可以看得见碰得着的东西。包括 Web 页面的结构、Web 的外观视觉表现以及 Web 层面的交互实现。<br>Web 后端：后端更多的是与数据库进行交互以处理相应的业务逻辑。需要考虑的是如何实现功能、数据的存取、平台的稳定性与性能等。<br>通过企业对前后端人员招聘的要求，分析企业对前端、后端的技术要求：<br>Web 前端： 1)精通 HTML，能够书写语义合理，结构清晰，易维护的 HTML 结构。 2)精通 CSS，能够还原视觉设计，并兼容业界承认的主流浏览器。 3)熟悉 JavaScript，了解 ECMAScript 基础内容，掌握 1~2 种 js 框架，如 JQuery 4)对常见的浏览器兼容问题有清晰的理解，并有可靠的解决方案。 5)对性能有一定的要求，了解 yahoo 的性能优化建议，并可以在项目中有效实施。<br>Web 后端： 1)精通 jsp，servlet，java bean，JMS，EJB，Jdbc，Flex 开发，或者对相关的工具、类库以及框架非常熟悉，如 Velocity，Spring，Hibernate，iBatis，OSGI 等，对 Web 开发的模式有较深的理解 2)练使用 oracle、sqlserver、mysql 等常用的数据库系统，对数据库有较强的设计能力 3)熟悉 maven 项目配置管理工具，熟悉 tomcat、jboss 等应用服务器，同时对在高并发处理情况下的负载调优有相关经验者优先考虑 4)精通面向对象分析和设计技术，包括设计模式、UML 建模等 5)熟悉网络编程，具有设计和开发对外 API 接口经验和能力，同时具备跨平台的 API 规范设计以及 API 高效调用设计能力</p>
-<h3 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h3><ul>
-<li>PHP</li>
-<li><p>Node.js</p>
-<blockquote>
-<p>JavaScript<br>node.js+express+ejs</p>
-</blockquote>
-</li>
-<li><p>Spring Boot</p>
-<blockquote>
-<p>Java 框架，难</p>
-</blockquote>
-</li>
-<li><p>数据库</p>
-<blockquote>
-<ul>
-<li>MyBatis-Plus</li>
-<li>DCloud</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-<h3 id="推荐课程"><a href="#推荐课程" class="headerlink" title="推荐课程"></a>推荐课程</h3>]]></content>
-      <categories>
-        <category>Mobile</category>
-      </categories>
-  </entry>
-  <entry>
     <title>银行家算法（C++实现）</title>
     <url>/blog/kc645t/</url>
     <content><![CDATA[<h2 id="一、银行家算法"><a href="#一、银行家算法" class="headerlink" title="一、银行家算法"></a>一、银行家算法</h2><p><strong>功能：避免死锁</strong></p>
@@ -8255,7 +8872,7 @@ return 0;
       </categories>
   </entry>
   <entry>
-    <title>pandas-基本知识</title>
+    <title>pandas基本知识</title>
     <url>/blog/li8bkt/</url>
     <content><![CDATA[<h2 id="一、Pandas-数据结构"><a href="#一、Pandas-数据结构" class="headerlink" title="一、Pandas 数据结构"></a>一、Pandas 数据结构</h2><pre><code class="python">import pandas as pd
 </code></pre>
@@ -8645,7 +9262,7 @@ ValueError: The column label &#39;1&#39; is not unique.
       </categories>
   </entry>
   <entry>
-    <title>numpy-使用总结</title>
+    <title>Numpy库使用总结</title>
     <url>/blog/mk2z96/</url>
     <content><![CDATA[<h2 id="一、NumPy"><a href="#一、NumPy" class="headerlink" title="一、NumPy"></a>一、NumPy</h2><h3 id="ndarray-理解多维数组"><a href="#ndarray-理解多维数组" class="headerlink" title="ndarray 理解多维数组"></a>ndarray 理解多维数组</h3><pre><code class="python">import numpy as np
 
@@ -9023,9 +9640,6 @@ print (np.unique(arr))
       <categories>
         <category>DataAnalysis</category>
       </categories>
-      <tags>
-        <tag>numpy</tag>
-      </tags>
   </entry>
   <entry>
     <title>Anaconda+JetBrains系列软件使用总结</title>
@@ -10925,7 +11539,7 @@ public class HelloWordServlet extends HttpServlet {
       </categories>
   </entry>
   <entry>
-    <title>C-C++遗忘知识</title>
+    <title>C和C++遗忘知识</title>
     <url>/blog/uakfgc/</url>
     <content><![CDATA[<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>相关概念的理解容易混淆，记住之前学习理解的一个准则！<code>*p 的理解意义就是p 所指向的那个东西</code></p>
 <ul>
@@ -10964,7 +11578,7 @@ public class HelloWordServlet extends HttpServlet {
 <h2 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h2><p>C++模板知识</p>
 <ul>
 <li>函数模板</li>
-<li>类模板<br>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<br>STL 概述当中，vector 容器，顺序容器：向量 vector、列表 list、双端队列 deque</li>
+<li>类模板<br>STL 概述当中，vector 容器，顺序容器：向量 vector、列表 list、双端队列 deque</li>
 </ul>
 <blockquote>
 <p><a href="https://www.cnblogs.com/mr-wid/archive/2013/01/22/2871105.html" target="_blank" rel="noopener">https://www.cnblogs.com/mr-wid/archive/2013/01/22/2871105.html</a></p>
@@ -11015,7 +11629,7 @@ public class HelloWordServlet extends HttpServlet {
       </categories>
   </entry>
   <entry>
-    <title>入门机器学习scikit-learn</title>
+    <title>机器学习scikit-learn库的使用</title>
     <url>/blog/wgv3ak/</url>
     <content><![CDATA[<h2 id="一、机器学习的一些概念"><a href="#一、机器学习的一些概念" class="headerlink" title="一、机器学习的一些概念"></a>一、机器学习的一些概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
 <li>特征：一组数据的多个属性</li>
@@ -11806,1500 +12420,9 @@ Checksum: 0x915b [validation disabled] //TCP数据段的校验和
       </categories>
   </entry>
   <entry>
-    <title>Data-清洗和规整</title>
-    <url>/blog/gvi1hn/</url>
-    <content><![CDATA[<h2 id="一、删除指定行列数据"><a href="#一、删除指定行列数据" class="headerlink" title="一、删除指定行列数据"></a>一、删除指定行列数据</h2><pre><code class="python">import pandas as pd
-import numpy as np
-</code></pre>
-<pre><code class="python">dict_data = {&#39;A&#39;: 1.,
-             &#39;B&#39;: pd.Timestamp(&#39;20161217&#39;),
-             &#39;C&#39;: pd.Series(1, index=list(range(4)),dtype=&#39;float32&#39;),
-             &#39;D&#39;: np.array([3] * 4,dtype=&#39;int32&#39;),
-             &#39;E&#39; : pd.Categorical([&quot;Python&quot;,&quot;Java&quot;,&quot;C++&quot;,&quot;C#&quot;]),
-             &#39;F&#39; : &#39;ChinaHadoop&#39; }
-df_obj2 = pd.DataFrame(dict_data)
-print(df_obj2)
-</code></pre>
-<pre><code>     A          B    C  D       E            F
-0  1.0 2016-12-17  1.0  3  Python  ChinaHadoop
-1  1.0 2016-12-17  1.0  3    Java  ChinaHadoop
-2  1.0 2016-12-17  1.0  3     C++  ChinaHadoop
-3  1.0 2016-12-17  1.0  3      C#  ChinaHadoop
-</code></pre><h3 id="del"><a href="#del" class="headerlink" title="del"></a>del</h3><blockquote>
-<p>删除列</p>
-</blockquote>
-<pre><code class="python">del df_obj2[&#39;A&#39;]
-print (df_obj2.head())
-</code></pre>
-<pre><code>           B    C  D       E            F
-0 2016-12-17  1.0  3  Python  ChinaHadoop
-1 2016-12-17  1.0  3    Java  ChinaHadoop
-2 2016-12-17  1.0  3     C++  ChinaHadoop
-3 2016-12-17  1.0  3      C#  ChinaHadoop
-</code></pre><h3 id="drop"><a href="#drop" class="headerlink" title="drop"></a>drop</h3><blockquote>
-<p>删除行/列数据</p>
-</blockquote>
-<pre><code class="python">dict_data = {&#39;A&#39;: 1.,
-             &#39;B&#39;: pd.Timestamp(&#39;20161217&#39;),
-             &#39;C&#39;: pd.Series(1, index=list(range(4)),dtype=&#39;float32&#39;),
-             &#39;D&#39;: np.array([3] * 4,dtype=&#39;int32&#39;),
-             &#39;E&#39; : pd.Categorical([&quot;Python&quot;,&quot;Java&quot;,&quot;C++&quot;,&quot;C#&quot;]),
-             &#39;F&#39; : &#39;ChinaHadoop&#39; }
-df_obj3 = pd.DataFrame(dict_data,index = [&#39;sfd&#39;,&#39;sdfd&#39;,&#39;wer&#39;,&#39;rwer&#39;])
-print (df_obj3.head(7))
-print(df_obj3.drop(&#39;wer&#39;))#删除行
-print(df_obj3.drop(&#39;F&#39;,axis=1))#删除列
-</code></pre>
-<pre><code>        A          B   C  D       E            F
-sfd   1.0 2016-12-17 NaN  3  Python  ChinaHadoop
-sdfd  1.0 2016-12-17 NaN  3    Java  ChinaHadoop
-wer   1.0 2016-12-17 NaN  3     C++  ChinaHadoop
-rwer  1.0 2016-12-17 NaN  3      C#  ChinaHadoop
-        A          B   C  D       E            F
-sfd   1.0 2016-12-17 NaN  3  Python  ChinaHadoop
-sdfd  1.0 2016-12-17 NaN  3    Java  ChinaHadoop
-rwer  1.0 2016-12-17 NaN  3      C#  ChinaHadoop
-        A          B   C  D       E
-sfd   1.0 2016-12-17 NaN  3  Python
-sdfd  1.0 2016-12-17 NaN  3    Java
-wer   1.0 2016-12-17 NaN  3     C++
-rwer  1.0 2016-12-17 NaN  3      C#
-</code></pre><h2 id="二、处理缺失数据"><a href="#二、处理缺失数据" class="headerlink" title="二、处理缺失数据"></a>二、处理缺失数据</h2><pre><code class="python">df_data = pd.DataFrame([np.random.randn(3), [1., np.nan, np.nan],
-                       [4., np.nan, np.nan], [1., np.nan, 2.]])
-df_data.head()
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>-0.702713</td>
-<td>-0.991383</td>
-<td>-1.058464</td>
-</tr>
-<tr>
-<td>1</td>
-<td>1.000000</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>2</td>
-<td>4.000000</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>3</td>
-<td>1.000000</td>
-<td>NaN</td>
-<td>2.000000</td>
-</tr>
-</tbody>
-</table>
-<h3 id="判断是否存在缺失值"><a href="#判断是否存在缺失值" class="headerlink" title="判断是否存在缺失值"></a>判断是否存在缺失值</h3><pre><code class="python">df_data.isnull()
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>False</td>
-<td>False</td>
-<td>False</td>
-</tr>
-<tr>
-<td>1</td>
-<td>False</td>
-<td>True</td>
-<td>True</td>
-</tr>
-<tr>
-<td>2</td>
-<td>False</td>
-<td>True</td>
-<td>True</td>
-</tr>
-<tr>
-<td>3</td>
-<td>False</td>
-<td>True</td>
-<td>False</td>
-</tr>
-</tbody>
-</table>
-<h3 id="丢弃缺失数据"><a href="#丢弃缺失数据" class="headerlink" title="丢弃缺失数据"></a>丢弃缺失数据</h3><pre><code class="python">print(df_data.dropna(axis=0))
-#0是行；1是列
-</code></pre>
-<pre><code>          0         1         2
-0 -0.702713 -0.991383 -1.058464
-</code></pre><h3 id="填充缺失数据"><a href="#填充缺失数据" class="headerlink" title="填充缺失数据"></a>填充缺失数据</h3><pre><code class="python">df_data.fillna(-100.)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>-0.702713</td>
-<td>-0.991383</td>
-<td>-1.058464</td>
-</tr>
-<tr>
-<td>1</td>
-<td>1.000000</td>
-<td>-100.000000</td>
-<td>-100.000000</td>
-</tr>
-<tr>
-<td>2</td>
-<td>4.000000</td>
-<td>-100.000000</td>
-<td>-100.000000</td>
-</tr>
-<tr>
-<td>3</td>
-<td>1.000000</td>
-<td>-100.000000</td>
-<td>2.000000</td>
-</tr>
-</tbody>
-</table>
-<h2 id="三、数据规整-连接-含索引"><a href="#三、数据规整-连接-含索引" class="headerlink" title="三、数据规整-连接-含索引"></a>三、数据规整-连接-含索引</h2><ul>
-<li>数据连接 merge</li>
-</ul>
-<pre><code class="python">import pandas as pd
-import numpy as np
-</code></pre>
-<pre><code class="python">df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
-                        &#39;data1&#39; : [&#39;sfd&#39;,&#39;fdsf&#39;,&#39;we&#39;,24,3253,234,23]})
-df_obj2 = pd.DataFrame({&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;],
-                        &#39;data2&#39; : np.random.randint(0,10,3)})
-
-print (df_obj1)
-print (df_obj2)
-</code></pre>
-<pre><code>  key data1
-0   b   sfd
-1   b  fdsf
-2   a    we
-3   c    24
-4   a  3253
-5   a   234
-6   b    23
-  key  data2
-0   a      0
-1   b      6
-2   d      6
-</code></pre><h3 id="merge-和-on"><a href="#merge-和-on" class="headerlink" title="merge 和 on"></a>merge 和 on</h3><blockquote>
-<p>默认将重叠列的列名作为“外键”进行连接</p>
-</blockquote>
-<pre><code class="python">pd.merge(df_obj1, df_obj2)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key</th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>sfd</td>
-<td>6</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>fdsf</td>
-<td>6</td>
-</tr>
-<tr>
-<td>2</td>
-<td>b</td>
-<td>23</td>
-<td>6</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>we</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3253</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>234</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python"># on显示指定“外键”
-pd.merge(df_obj1, df_obj2, on=&#39;key&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key</th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>sfd</td>
-<td>6</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>fdsf</td>
-<td>6</td>
-</tr>
-<tr>
-<td>2</td>
-<td>b</td>
-<td>23</td>
-<td>6</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>we</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3253</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>234</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<h3 id="left-on-和-right-on"><a href="#left-on-和-right-on" class="headerlink" title="left-on 和 right-on"></a>left-on 和 right-on</h3><pre><code class="python"># left_on，right_on分别指定左侧数据和右侧数据的“外键”
-
-# 更改列名
-df_obj1 = df_obj1.rename(columns={&#39;key&#39;:&#39;key1&#39;})
-df_obj2 = df_obj2.rename(columns={&#39;key&#39;:&#39;key2&#39;})
-</code></pre>
-<pre><code class="python">print(df_obj1)
-print(df_obj2)
-</code></pre>
-<pre><code>  key1 data1
-0    b   sfd
-1    b  fdsf
-2    a    we
-3    c    24
-4    a  3253
-5    a   234
-6    b    23
-  key2  data2
-0    a      0
-1    b      6
-2    d      6
-</code></pre><pre><code class="python">pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key1</th>
-<th>data1</th>
-<th>key2</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>sfd</td>
-<td>b</td>
-<td>6</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>fdsf</td>
-<td>b</td>
-<td>6</td>
-</tr>
-<tr>
-<td>2</td>
-<td>b</td>
-<td>23</td>
-<td>b</td>
-<td>6</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>we</td>
-<td>a</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3253</td>
-<td>a</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>234</td>
-<td>a</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<h3 id="how"><a href="#how" class="headerlink" title="how"></a>how</h3><pre><code class="python"># “外连接”
-pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;outer&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key1</th>
-<th>data1</th>
-<th>key2</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>sfd</td>
-<td>b</td>
-<td>6.0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>fdsf</td>
-<td>b</td>
-<td>6.0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>b</td>
-<td>23</td>
-<td>b</td>
-<td>6.0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>we</td>
-<td>a</td>
-<td>0.0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3253</td>
-<td>a</td>
-<td>0.0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>234</td>
-<td>a</td>
-<td>0.0</td>
-</tr>
-<tr>
-<td>6</td>
-<td>c</td>
-<td>24</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>d</td>
-<td>6.0</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python"># 左连接
-pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;left&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key1</th>
-<th>data1</th>
-<th>key2</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>sfd</td>
-<td>b</td>
-<td>6.0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>fdsf</td>
-<td>b</td>
-<td>6.0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>a</td>
-<td>we</td>
-<td>a</td>
-<td>0.0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>c</td>
-<td>24</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3253</td>
-<td>a</td>
-<td>0.0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>234</td>
-<td>a</td>
-<td>0.0</td>
-</tr>
-<tr>
-<td>6</td>
-<td>b</td>
-<td>23</td>
-<td>b</td>
-<td>6.0</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python"># 右连接
-pd.merge(df_obj1, df_obj2, left_on=&#39;key1&#39;, right_on=&#39;key2&#39;, how=&#39;right&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key1</th>
-<th>data1</th>
-<th>key2</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>sfd</td>
-<td>b</td>
-<td>6</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>fdsf</td>
-<td>b</td>
-<td>6</td>
-</tr>
-<tr>
-<td>2</td>
-<td>b</td>
-<td>23</td>
-<td>b</td>
-<td>6</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>we</td>
-<td>a</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3253</td>
-<td>a</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>234</td>
-<td>a</td>
-<td>0</td>
-</tr>
-<tr>
-<td>6</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>d</td>
-<td>6</td>
-</tr>
-</tbody>
-</table>
-<h3 id="处理重复列名-suffixes"><a href="#处理重复列名-suffixes" class="headerlink" title="处理重复列名 suffixes"></a>处理重复列名 suffixes</h3><pre><code class="python"># 处理重复列名
-df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
-                        &#39;data&#39; : np.random.randint(0,10,7)})
-df_obj2 = pd.DataFrame({&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;],
-                        &#39;data&#39; : np.random.randint(0,10,3)})
-
-pd.merge(df_obj1, df_obj2, on=&#39;key&#39;, suffixes=(&#39;_left&#39;, &#39;_right&#39;))
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key</th>
-<th>data_left</th>
-<th>data_right</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>9</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>b</td>
-<td>6</td>
-<td>1</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>7</td>
-<td>1</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>3</td>
-<td>1</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>4</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python"># 按索引连接
-df_obj3 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
-                        &#39;data1&#39; : np.random.randint(0,10,7)})
-df_obj4 = pd.DataFrame({&#39;data2&#39; : np.random.randint(0,10,3)}, index=[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;])
-</code></pre>
-<pre><code class="python">print(df_obj3)
-print(df_obj4)
-</code></pre>
-<pre><code>  key  data1
-0   b      7
-1   b      4
-2   a      1
-3   c      9
-4   a      2
-5   a      9
-6   b      7
-   data2
-a      9
-b      4
-d      0
-</code></pre><pre><code class="python">pd.merge(df_obj3, df_obj4, left_on=&#39;key&#39;, right_index=True)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key</th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>7</td>
-<td>4</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>4</td>
-<td>4</td>
-</tr>
-<tr>
-<td>6</td>
-<td>b</td>
-<td>7</td>
-<td>4</td>
-</tr>
-<tr>
-<td>2</td>
-<td>a</td>
-<td>1</td>
-<td>9</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>2</td>
-<td>9</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>9</td>
-<td>9</td>
-</tr>
-</tbody>
-</table>
-<h3 id="按索引连接-right-index"><a href="#按索引连接-right-index" class="headerlink" title="按索引连接 right_index"></a>按索引连接 right_index</h3><pre><code class="python"># 按索引连接
-df_obj1 = pd.DataFrame({&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;],
-                        &#39;data1&#39; : np.random.randint(0,10,7)})
-df_obj2 = pd.DataFrame({&#39;data2&#39; : np.random.randint(0,10,3)}, index=[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;])
-</code></pre>
-<pre><code class="python">print(df_obj1)
-print(df_obj2)
-</code></pre>
-<pre><code>  key  data1
-0   b      0
-1   b      2
-2   a      7
-3   c      3
-4   a      1
-5   a      1
-6   b      6
-   data2
-a      2
-b      1
-d      1
-</code></pre><pre><code class="python">pd.merge(df_obj1, df_obj2, left_on=&#39;key&#39;, right_index=True)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>key</th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>b</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>b</td>
-<td>2</td>
-<td>1</td>
-</tr>
-<tr>
-<td>6</td>
-<td>b</td>
-<td>6</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>a</td>
-<td>7</td>
-<td>2</td>
-</tr>
-<tr>
-<td>4</td>
-<td>a</td>
-<td>1</td>
-<td>2</td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td>1</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<h2 id="四、数据合并"><a href="#四、数据合并" class="headerlink" title="四、数据合并"></a>四、数据合并</h2><ul>
-<li>数据合并 concat</li>
-<li>按索引连接===right_index</li>
-</ul>
-<pre><code class="python">import numpy as np
-import pandas as pd
-</code></pre>
-<h3 id="numpy-的-concat"><a href="#numpy-的-concat" class="headerlink" title="numpy 的 concat"></a>numpy 的 concat</h3><pre><code class="python">arr1 = np.random.randint(0, 10, (3, 4))
-arr2 = np.random.randint(0, 10, (3, 4))
-
-print (arr1)
-print (arr2)
-</code></pre>
-<pre><code>[[6 0 3 2]
- [5 7 9 8]
- [5 8 0 3]]
-[[6 5 7 9]
- [0 1 0 0]
- [1 1 1 7]]
-</code></pre><pre><code class="python">np.concatenate([arr1, arr2])
-</code></pre>
-<pre><code>array([[6, 0, 3, 2],
-       [5, 7, 9, 8],
-       [5, 8, 0, 3],
-       [6, 5, 7, 9],
-       [0, 1, 0, 0],
-       [1, 1, 1, 7]])
-</code></pre><pre><code class="python">np.concatenate([arr1, arr2], axis=1)
-</code></pre>
-<pre><code>array([[6, 0, 3, 2, 6, 5, 7, 9],
-       [5, 7, 9, 8, 0, 1, 0, 0],
-       [5, 8, 0, 3, 1, 1, 1, 7]])
-</code></pre><h3 id="series-上的-concat"><a href="#series-上的-concat" class="headerlink" title="series 上的 concat"></a>series 上的 concat</h3><pre><code class="python"># index 没有重复的情况
-ser_obj1 = pd.Series(np.random.randint(0, 10, 5), index=range(0,5))
-ser_obj2 = pd.Series(np.random.randint(0, 10, 4), index=range(5,9))
-ser_obj3 = pd.Series(np.random.randint(0, 10, 3), index=range(9,12))
-</code></pre>
-<pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3])
-</code></pre>
-<pre><code>0     0
-1     4
-2     5
-3     1
-4     9
-5     7
-6     8
-7     5
-8     0
-9     5
-10    9
-11    0
-dtype: int32
-</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=1)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>0.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>1</td>
-<td>4.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>2</td>
-<td>5.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>3</td>
-<td>1.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>4</td>
-<td>9.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>5</td>
-<td>NaN</td>
-<td>7.0</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>6</td>
-<td>NaN</td>
-<td>8.0</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NaN</td>
-<td>5.0</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>8</td>
-<td>NaN</td>
-<td>0.0</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>9</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>5.0</td>
-</tr>
-<tr>
-<td>10</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>9.0</td>
-</tr>
-<tr>
-<td>11</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>0.0</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python"># index 有重复的情况
-ser_obj1 = pd.Series(np.random.randint(0, 10, 5), index=range(5))
-ser_obj2 = pd.Series(np.random.randint(0, 10, 4), index=range(4))
-ser_obj3 = pd.Series(np.random.randint(0, 10, 3), index=range(3))
-
-print (ser_obj1)
-print (ser_obj2)
-print (ser_obj3)
-</code></pre>
-<pre><code>0    5
-1    3
-2    0
-3    8
-4    3
-dtype: int32
-0    5
-1    3
-2    2
-3    1
-dtype: int32
-0    5
-1    8
-2    6
-dtype: int32
-</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3])
-</code></pre>
-<pre><code>0    5
-1    3
-2    0
-3    8
-4    3
-0    5
-1    3
-2    2
-3    1
-0    5
-1    8
-2    6
-dtype: int32
-</code></pre><pre><code class="python">pd.concat([ser_obj1, ser_obj2, ser_obj3], axis=1, join=&#39;inner&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>5</td>
-<td>5</td>
-<td>5</td>
-</tr>
-<tr>
-<td>1</td>
-<td>3</td>
-<td>3</td>
-<td>8</td>
-</tr>
-<tr>
-<td>2</td>
-<td>0</td>
-<td>2</td>
-<td>6</td>
-</tr>
-</tbody>
-</table>
-<h3 id="dataframe-上的-concat"><a href="#dataframe-上的-concat" class="headerlink" title="dataframe 上的 concat"></a>dataframe 上的 concat</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randint(0, 10, (3, 2)), index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;],
-                       columns=[&#39;A&#39;, &#39;B&#39;])
-df_obj2 = pd.DataFrame(np.random.randint(0, 10, (2, 2)), index=[&#39;a&#39;, &#39;b&#39;],
-                       columns=[&#39;C&#39;, &#39;D&#39;])
-print (df_obj1)
-print (df_obj2)
-</code></pre>
-<pre><code>   A  B
-a  4  3
-b  8  1
-c  6  3
-   C  D
-a  1  3
-b  8  2
-</code></pre><pre><code class="python">pd.concat([df_obj1, df_obj2])
-</code></pre>
-<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
-of pandas will change to not sort by default.
-
-To accept the future behavior, pass &#39;sort=False&#39;.
-
-To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
-
-  &quot;&quot;&quot;Entry point for launching an IPython kernel.
-</code></pre><table>
-<thead>
-<tr>
-<th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>a</td>
-<td>4.0</td>
-<td>3.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>b</td>
-<td>8.0</td>
-<td>1.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>c</td>
-<td>6.0</td>
-<td>3.0</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>a</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>1.0</td>
-<td>3.0</td>
-</tr>
-<tr>
-<td>b</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>8.0</td>
-<td>2.0</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python">pd.concat([df_obj1, df_obj2], axis=1)
-</code></pre>
-<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:1: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
-of pandas will change to not sort by default.
-
-To accept the future behavior, pass &#39;sort=False&#39;.
-
-To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
-
-  &quot;&quot;&quot;Entry point for launching an IPython kernel.
-</code></pre><table>
-<thead>
-<tr>
-<th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>a</td>
-<td>4</td>
-<td>3</td>
-<td>1.0</td>
-<td>3.0</td>
-</tr>
-<tr>
-<td>b</td>
-<td>8</td>
-<td>1</td>
-<td>8.0</td>
-<td>2.0</td>
-</tr>
-<tr>
-<td>c</td>
-<td>6</td>
-<td>3</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-</tbody>
-</table>
-<h2 id="五、数据重构"><a href="#五、数据重构" class="headerlink" title="五、数据重构"></a>五、数据重构</h2><pre><code class="python">import numpy as np
-import pandas as pd
-</code></pre>
-<h3 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h3><pre><code class="python">df_obj = pd.DataFrame(np.random.randint(0,10, (5,2)), columns=[&#39;data1&#39;, &#39;data2&#39;])
-df_obj
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>0</td>
-<td>4</td>
-</tr>
-<tr>
-<td>1</td>
-<td>6</td>
-<td>2</td>
-</tr>
-<tr>
-<td>2</td>
-<td>9</td>
-<td>8</td>
-</tr>
-<tr>
-<td>3</td>
-<td>7</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>3</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python">stacked = df_obj.stack()
-print (stacked)
-</code></pre>
-<pre><code>0  data1    0
-   data2    4
-1  data1    6
-   data2    2
-2  data1    9
-   data2    8
-3  data1    7
-   data2    0
-4  data1    3
-   data2    1
-dtype: int32
-</code></pre><pre><code class="python">print (type(stacked))
-print (type(stacked.index))
-</code></pre>
-<pre><code>&lt;class &#39;pandas.core.series.Series&#39;&gt;
-&lt;class &#39;pandas.core.indexes.multi.MultiIndex&#39;&gt;
-</code></pre><h3 id="unstack"><a href="#unstack" class="headerlink" title="unstack"></a>unstack</h3><pre><code class="python"># 默认操作内层索引
-stacked.unstack()
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>0</td>
-<td>4</td>
-</tr>
-<tr>
-<td>1</td>
-<td>6</td>
-<td>2</td>
-</tr>
-<tr>
-<td>2</td>
-<td>9</td>
-<td>8</td>
-</tr>
-<tr>
-<td>3</td>
-<td>7</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>3</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python"># 通过level指定操作索引的级别
-stacked.unstack(level=0)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>data1</td>
-<td>0</td>
-<td>6</td>
-<td>9</td>
-<td>7</td>
-<td>3</td>
-</tr>
-<tr>
-<td>data2</td>
-<td>4</td>
-<td>2</td>
-<td>8</td>
-<td>0</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<h2 id="六、数据转换"><a href="#六、数据转换" class="headerlink" title="六、数据转换"></a>六、数据转换</h2><pre><code class="python">import numpy as np
-import pandas as pd
-</code></pre>
-<h3 id="重复数据-duplicates-函数"><a href="#重复数据-duplicates-函数" class="headerlink" title="重复数据 duplicates 函数"></a>重复数据 duplicates 函数</h3><pre><code class="python">df_obj = pd.DataFrame({&#39;data1&#39; : [&#39;a&#39;] * 4 + [&#39;b&#39;] * 4,
-                       &#39;data2&#39; : np.random.randint(0, 4, 8)})
-df_obj
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>a</td>
-<td>3</td>
-</tr>
-<tr>
-<td>1</td>
-<td>a</td>
-<td>2</td>
-</tr>
-<tr>
-<td>2</td>
-<td>a</td>
-<td>2</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>1</td>
-</tr>
-<tr>
-<td>4</td>
-<td>b</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>b</td>
-<td>2</td>
-</tr>
-<tr>
-<td>6</td>
-<td>b</td>
-<td>2</td>
-</tr>
-<tr>
-<td>7</td>
-<td>b</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python">df_obj.duplicated()
-</code></pre>
-<pre><code>0    False
-1    False
-2     True
-3    False
-4    False
-5    False
-6     True
-7    False
-dtype: bool
-</code></pre><pre><code class="python">df_obj.drop_duplicates()
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>a</td>
-<td>3</td>
-</tr>
-<tr>
-<td>1</td>
-<td>a</td>
-<td>2</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>1</td>
-</tr>
-<tr>
-<td>4</td>
-<td>b</td>
-<td>0</td>
-</tr>
-<tr>
-<td>5</td>
-<td>b</td>
-<td>2</td>
-</tr>
-<tr>
-<td>7</td>
-<td>b</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="python">df_obj.drop_duplicates(&#39;data2&#39;)
-</code></pre>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>data1</th>
-<th>data2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>a</td>
-<td>3</td>
-</tr>
-<tr>
-<td>1</td>
-<td>a</td>
-<td>2</td>
-</tr>
-<tr>
-<td>3</td>
-<td>a</td>
-<td>1</td>
-</tr>
-<tr>
-<td>4</td>
-<td>b</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a>map 函数</h3><pre><code class="python">ser_obj = pd.Series(np.random.randint(0,10,10))
-ser_obj
-</code></pre>
-<pre><code>0    1
-1    9
-2    1
-3    2
-4    7
-5    2
-6    4
-7    5
-8    4
-9    6
-dtype: int32
-</code></pre><pre><code class="python">ser_obj.map(lambda x : x ** 2)
-</code></pre>
-<pre><code>0     1
-1    81
-2     1
-3     4
-4    49
-5     4
-6    16
-7    25
-8    16
-9    36
-dtype: int64
-</code></pre><h3 id="数据替换-repalce"><a href="#数据替换-repalce" class="headerlink" title="数据替换 repalce"></a>数据替换 repalce</h3><pre><code class="python"># 替换单个值
-ser_obj.replace(0, -100)
-</code></pre>
-<pre><code>0    1
-1    9
-2    1
-3    2
-4    7
-5    2
-6    4
-7    5
-8    4
-9    6
-dtype: int32
-</code></pre><pre><code class="python"># 替换多个值
-ser_obj.replace([0, 2], -100)
-</code></pre>
-<pre><code>0      1
-1      9
-2      1
-3   -100
-4      7
-5   -100
-6      4
-7      5
-8      4
-9      6
-dtype: int32
-</code></pre><pre><code class="python"># 替换多个值
-ser_obj.replace([0, 2], [-100, -200])
-</code></pre>
-<pre><code>0      1
-1      9
-2      1
-3   -200
-4      7
-5   -200
-6      4
-7      5
-8      4
-9      6
-dtype: int64
-</code></pre><pre><code class="python">ser_obj.map(lambda x : x ** 2)
-
-#### 3. 数据替换repalce
-
-# 替换单个值
-ser_obj.replace(0, -100)
-
-# 替换多个值
-ser_obj.replace([0, 2], -100)
-
-# 替换多个值
-ser_obj.replace([0, 2], [-100, -200])
-</code></pre>
-<pre><code>0      1
-1      9
-2      1
-3   -200
-4      7
-5   -200
-6      4
-7      5
-8      4
-9      6
-dtype: int64
-</code></pre>]]></content>
-      <categories>
-        <category>DataAnalysis</category>
-      </categories>
-      <tags>
-        <tag>DataAnalysis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>读取本地数据</title>
+    <title>数据的本地读取</title>
     <url>/blog/lb8ugs/</url>
-    <content><![CDATA[<p>##</p>
-<h2 id="一、TXT-文件操作"><a href="#一、TXT-文件操作" class="headerlink" title="一、TXT 文件操作"></a>一、TXT 文件操作</h2><h3 id="读取全部内容"><a href="#读取全部内容" class="headerlink" title="读取全部内容"></a>读取全部内容</h3><pre><code class="python">import numpy as np
+    <content><![CDATA[<h2 id="一、TXT-文件操作"><a href="#一、TXT-文件操作" class="headerlink" title="一、TXT 文件操作"></a>一、TXT 文件操作</h2><h3 id="读取全部内容"><a href="#读取全部内容" class="headerlink" title="读取全部内容"></a>读取全部内容</h3><pre><code class="python">import numpy as np
 import pandas as pd
 </code></pre>
 <pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
@@ -13695,12 +12818,9 @@ SyntaxError: invalid syntax
       <categories>
         <category>DataAnalysis</category>
       </categories>
-      <tags>
-        <tag>DataAnalysis</tag>
-      </tags>
   </entry>
   <entry>
-    <title>pandas-索引</title>
+    <title>Pandas使用——各种索引</title>
     <url>/blog/nfqdqf/</url>
     <content><![CDATA[<h2 id="一、基本索引"><a href="#一、基本索引" class="headerlink" title="一、基本索引"></a>一、基本索引</h2><pre><code class="python">import pandas as pd
 import numpy as np
@@ -15946,12 +15066,9 @@ print(df_data.head())
       <categories>
         <category>DataAnalysis</category>
       </categories>
-      <tags>
-        <tag>pandas</tag>
-      </tags>
   </entry>
   <entry>
-    <title>Pandas-分组聚合</title>
+    <title>Pandas使用——分组聚合</title>
     <url>/blog/oq4xcx/</url>
     <content><![CDATA[<h2 id="一、分组"><a href="#一、分组" class="headerlink" title="一、分组"></a>一、分组</h2><h3 id="GroupBy-对象"><a href="#GroupBy-对象" class="headerlink" title="GroupBy 对象"></a>GroupBy 对象</h3><blockquote>
 <p>· groupedby 函数中的参数：</p>
@@ -17866,9 +16983,6 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
       <categories>
         <category>DataAnalysis</category>
       </categories>
-      <tags>
-        <tag>pandas</tag>
-      </tags>
   </entry>
   <entry>
     <title>[转]操作系统核心知识点</title>
