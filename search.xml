@@ -51,6 +51,85 @@
       </categories>
   </entry>
   <entry>
+    <title>存储过程</title>
+    <url>/blog/adiki8/</url>
+    <content><![CDATA[<p>存储过程（Stored Procedure）是 SQL 语句和控制语句的预编译集合，以一个名称存储并作为一个单元处理。<br>其效率比函数更高。增强 SQL 语句的功能和灵活性。减少网络流量。<br>客户端重启，存储过程不会失效。定界符只对客户端有效，客户端重启，定界符失效。</p>
+<blockquote>
+<p>数据库系统有三层结构：客户端、DBMS、服务端。我们的各种请求都是通过客户端发送给 DBMS，DBMS 将 SQL 语句编译成二进制,然后执行，接着缓存在 DBMS 中（再次执行时效率提高），接着发送给数据库服务端，然后服务端再返回数据给 DBMS，DBMS 再返回给客户端显示。<br>而存储过程，是将某些常用的请求，在 DBMS 中编译好二进制存储在 DBMS 中，以后再发送同样请求，就免去了编译的开销。</p>
+</blockquote>
+<p>模块化编程，可以提高速度。但是可移植性不好。</p>
+<h2 id="创建存储过程"><a href="#创建存储过程" class="headerlink" title="创建存储过程"></a>创建存储过程</h2><p>创建之前必须先选择(USE)数据库。</p>
+<pre><code class="sql">CREATE
+[DEFINER = {user|CURRENT_USER}]
+PROCEDURE  sp_name([proc_parameter[,...]])
+[characteristic ...] routine_body
+
+proc_parameter:
+[IN|OUT|INOUT] param_name type
+</code></pre>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><ul>
+<li>IN，表示该参数的值必须在调用存储过程时指定</li>
+<li>OUT，表示该参数的值可以被存储过程改变，并且可以被返回</li>
+<li>INOUT，表示该参数的调用时指定，并且可以被改变和返回</li>
+</ul>
+<p>可以这样理解，IN 就是要传入的，值必须在调用时指定，不能返回（值传递），OUT 是返回的（指针传递）。INOUT 传入之后被返回的。</p>
+<h3 id="过程体"><a href="#过程体" class="headerlink" title="过程体"></a>过程体</h3><ul>
+<li>过程体由合法的 SQL 语句构成</li>
+<li>过程体是绝大部分 SQL 语句</li>
+<li>复合结构（超过两个 SQL 语句）使用 BEGIN…END</li>
+<li>复合结构可以包含声明，循环，控制结构</li>
+</ul>
+<h2 id="调用存储过程"><a href="#调用存储过程" class="headerlink" title="调用存储过程"></a>调用存储过程</h2><pre><code class="sql">CALL sp_name[()]
+</code></pre>
+<p>如果存储过程没有参数，则调用的时候可以不加括号。</p>
+<h2 id="删除存储过程"><a href="#删除存储过程" class="headerlink" title="删除存储过程"></a>删除存储过程</h2><p>用 DROP PROCDURE sp_name;</p>
+<hr>
+<p>我们应该已经发现了，所有 CREATE 创建的东西，都需要用 DROP 来删除。包括：<br>数据库、表、视图、触发器、函数、存储过程</p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><pre><code class="sql">delimiter //
+CREATE PROCEDURE
+  removeuserbyid(IN u_id INT UNSIGNED)
+begin
+  DELETE
+  FROM   users
+  WHERE  id = u_id;END//
+  -- 调用
+  CALL removeuserbyid(1)//
+</code></pre>
+<p>注意参数的名字不能和字段名相同。</p>
+<pre><code class="sql">CREATE PROCEDURE
+  remove2(IN p_id      INT signed,
+          OUT usernums INT UNSIGNED)
+begin
+  DELETE
+  FROM   users
+  WHERE  id=p_id;
+
+  SELECT count(id)
+  FROM   users
+  INTO   usernums;
+
+end//
+-- 调用
+CALL remove2(2,@nums)//
+-- 查看变量nums的值
+SELECT @nums//
+</code></pre>
+<p>返回值存储在变量@nums 中。</p>
+<h2 id="修改存储过程"><a href="#修改存储过程" class="headerlink" title="修改存储过程"></a>修改存储过程</h2><pre><code class="sql">ALTER PROCEDURE sp_name[characteristic ...]
+COMMENT &#39;string&#39;
+|{COUNTAINS SQL|NO SQL|READS SQL DATA|MODIFIES SQL DATA}
+|SQL SECURITY{DEFINER|INVOKER}|
+</code></pre>
+<h2 id="与函数对比"><a href="#与函数对比" class="headerlink" title="与函数对比"></a>与函数对比</h2><p>存储过程实现的功能更复杂一些；而函数的针对性更强。<br>时间经常用存储过程对表作操作。<br>存储过程可以用多个返回值。<br>存储过程独立出现。<br>函数出现在其他 SQL 语句内部。</p>
+]]></content>
+      <categories>
+        <category>Language</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数据库操作</title>
     <url>/blog/afuf5u/</url>
     <content><![CDATA[<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><pre><code class="sql">CREATE {DATABASE|SCHEMA} [IF NOT EXISTS] db_name [DEFAULT] CHARCTER SET [=] charset_name;
@@ -2936,41 +3015,6 @@ SELECT sex
       </categories>
   </entry>
   <entry>
-    <title>AfterEffects</title>
-    <url>/blog/ikze6c/</url>
-    <content><![CDATA[<h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><ul>
-<li>帧</li>
-<li>关键帧：开头、结尾中间的计算机会帮助</li>
-<li>FPS：帧数率===飞车掉帧</li>
-<li>视频格式：了解一些常见的格式的各自特点</li>
-<li>比特率：也适影响到了视频的因素</li>
-<li>格式转换：常用的格式转换软件===格式工厂，魔音工厂</li>
-</ul>
-<h2 id="菜单栏"><a href="#菜单栏" class="headerlink" title="菜单栏"></a>菜单栏</h2><ul>
-<li>文件</li>
-<li>编辑栏</li>
-</ul>
-<h2 id="大作业设计"><a href="#大作业设计" class="headerlink" title="大作业设计"></a>大作业设计</h2><h3 id="bgm"><a href="#bgm" class="headerlink" title="bgm"></a>bgm</h3><p>next to you</p>
-<h3 id="片段设计"><a href="#片段设计" class="headerlink" title="片段设计"></a>片段设计</h3><blockquote>
-<p>片段 1：</p>
-</blockquote>
-<p>千与千寻<br>龙猫<br>天空之城<br>ps：每个片段之间的过渡添加一些过渡元素<br>过渡要有一点蒙太奇的感觉、比如张口，下一个片段也要有这个就好<br>站在一起淋雨作为尾巴</p>
-<blockquote>
-<p>片段 2：</p>
-</blockquote>
-<p>电子相册展示放映</p>
-<blockquote>
-<p>片段 3：</p>
-</blockquote>
-<p>宫崎骏画像<br>开头开车的时候，加一段字幕：有种诗情画意<br>就是标题，主题<br>致敬：那些年的感动<br>和车子一起向左走动</p>
-<p>片头开车 女孩拿桶子 趴在龙猫身上说话 祈祷种子 一段电子相册 一起飞 黄色龙猫奔跑 电子相册 等车 黄色龙猫跑 树上唱歌</p>
-<p>车子 🚗===小女孩拿桶子===龙猫的大嘴===车站见面龙猫===一起种树===抱起来飞===一起唱歌</p>
-]]></content>
-      <categories>
-        <category>PostProduction</category>
-      </categories>
-  </entry>
-  <entry>
     <title>206.反转链表</title>
     <url>/blog/ipiwza/</url>
     <content><![CDATA[<pre><code class="java">/**
@@ -3683,103 +3727,6 @@ private String logType
 ]]></content>
       <categories>
         <category>软件工程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>JavaWeb大作业要求</title>
-    <url>/blog/mpib4g/</url>
-    <content><![CDATA[<h2 id="一、大作业架构要求"><a href="#一、大作业架构要求" class="headerlink" title="一、大作业架构要求"></a>一、大作业架构要求</h2><p>基于 JSP 技术完成一个 WEB 管理系统的开发。系统内容按以下要求完成</p>
-<h3 id="1-网站目录管理"><a href="#1-网站目录管理" class="headerlink" title="1.网站目录管理"></a>1.网站目录管理</h3><p>建立一个完整的总文件夹，所有系统内容都要包含在建立的这个文件夹内，系统各类元素文件在总文件夹中以子文件夹形式分类清楚。（如图片都放在子文件夹 image 里，html 页都放在 pages 子文件夹内，数据库文件放在 DB 文件夹内）</p>
-<h3 id="2-系统前台设计（JSP-设计）"><a href="#2-系统前台设计（JSP-设计）" class="headerlink" title="2.系统前台设计（JSP 设计）"></a>2.系统前台设计（JSP 设计）</h3><p>a)页面设计美观，使用方便。</p>
-<p>b)如所选题目要求功能较少，需要自己扩充其它功能。</p>
-<p>c)使用 MVC 模式：即 JavaBean+JSP+Servlet 技术。</p>
-<h3 id="3-系统后台管理："><a href="#3-系统后台管理：" class="headerlink" title="3.系统后台管理："></a>3.系统后台管理：</h3><p>普通用户的主要功能模块：登录与注册等。</p>
-<p>管理员的主要功能模块：用户信息的管理（添加、删除、修改、查询）。</p>
-<h3 id="4-数据库设计"><a href="#4-数据库设计" class="headerlink" title="4.数据库设计"></a>4.数据库设计</h3><p>用 MySql 创建后台数据库，并完善数据库的结构和数据。数据库至少包含：用户信息表、相关业务数据表等。</p>
-<h2 id="二、大作业实验报告要求"><a href="#二、大作业实验报告要求" class="headerlink" title="二、大作业实验报告要求"></a>二、大作业实验报告要求</h2><p>附带一份课程设计报告，也放在总文件夹中。</p>
-<p>(1) 设计报告参照以下提纲书写：</p>
-<pre><code>i.    需求分析。
-ii.    数据库结构设计。
-iii.程序结构框图。
-iv.    程序功能说明。
-v.    系统实现界面。
-vi.    总结及体会。
-</code></pre><p>(2) 设计报告按照以下格式打印：</p>
-<pre><code>a)    打印用纸：A4
-b)    页面设置：上：3.5cm,下:2.5 cm,左:3.0 cm,右:2.4 cm,页眉：2.5 cm，页脚：1.8 cm，行间距：1.25倍行距。
-c)    字体、字号：
-   大标题：黑体、三号；
-   小标题：黑体、四号；
-   正文部分：宋体、小四；
-</code></pre><p>(3) 作业提交要求</p>
-<pre><code>a)    作品（1组1份）保存到文件夹以压缩文件的形式上交，文件命名：作品名+班级1+学号1+姓名1+班级2+学号2+姓名2...，上交后应自备一份备份，以备教师手中的作品因故无法正常读取时补交。
-b)    提交网页设计报告电子版（1组1份），文件命名：报告++班级1+学号1+姓名1+班级2+学号2+姓名2...，上交后应自备一份备份，以备教师手中的作品因故无法正常读取时补交。
-c)    做好自己作品的著作权保护，如果发现抄袭或者雷同现象，一律评为不及格。
-d)    作品演示之前提交设计报告电子版和作品以班级为单位，由课代表收齐，发送至课代表或U盘拷贝给任课老师，时间预计在教学的17-18周。设计报告纸质版（以班级为单位，由课代表收齐，统一交到学院楼402），纸质版的提交时间根据学校开学情况再行通知。
-</code></pre><h2 id="三、展示要求"><a href="#三、展示要求" class="headerlink" title="三、展示要求"></a>三、展示要求</h2><h3 id="演示时间安排"><a href="#演示时间安排" class="headerlink" title="演示时间安排"></a>演示时间安排</h3><pre><code>演示时间另行通知，预计17-18周上课时间。
-</code></pre><h3 id="汇报要求"><a href="#汇报要求" class="headerlink" title="汇报要求"></a>汇报要求</h3><pre><code>a)    6月4日前，确定分组情况并上报课代表汇总。
-b)    演示时间：10分钟/组，包括6分钟展示，4分钟答疑。
-c)    材料准备：打印评分表（1人1份）、填写完成的设计报告（1组1份）（见下页），同一小组一并装订，汇报前上交。
-d)    汇报顺序：随机抽取。组长首先介绍分工，然后各成员分别介绍各自工作。
-</code></pre><h3 id="任务安排"><a href="#任务安排" class="headerlink" title="任务安排"></a>任务安排</h3><pre><code>(1)    项目分组完成（每组1-3人）。每人承担项目的一部分任务，如：总体设计、数据库设计、代码实现、美工、文档等。每组设一位组长，组长负责总体设计和最终代码的整合。负责数据库、美工、文档的同学也要完成项目中部分简单功能模块的代码。（分组项目，培养团队合作的精神、锻炼与他人沟通的能力。）
-(2)    提交电子版完整的设计报告和源程序。
-(3)    设计分三阶段
-    第一阶段: 明确系统功能需求，设计数据库
-    第二阶段: 系统功能模块分析并用JSP实现相应页面
-    第三阶段: 整理文档和调试程序，演示答辩。答辩时需要演示项目作品功能，叙述小组分工和每个人的工作量。回答老师提出的问题。答辩，或队员协助演示作品的功能。答辩6分钟，老师提问4分钟。最后老师从作品功能完善性、交互界面美观性、文档规范性、答辩是否流畅等几个方面给出小组答辩成绩。个人最终成绩=小组成绩*0.4+个人得分*0.6。
-</code></pre><h2 id="四、评分表"><a href="#四、评分表" class="headerlink" title="四、评分表"></a>四、评分表</h2><table>
-<thead>
-<tr>
-<th>姓名</th>
-<th>内容</th>
-<th>分值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>一、主题与内容（20 分）</td>
-<td>1.主题鲜明，题材合适，内容能很好为主题服务</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>2.页面具有较强的个人设计创意,色彩搭配鲜明,内容布局合理</td>
-<td></td>
-</tr>
-<tr>
-<td>二、常规技术(50 分)</td>
-<td>1.页面布局合理，页面内容清晰明了，在页面中，插入文字、图片、表格、表单、超级链接、多媒体等各种对象，网页中部分页面可应用行为或者网页特效</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>2.表单、数据库操作技术</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>3.Jsp、Servlet 技术</td>
-<td></td>
-</tr>
-<tr>
-<td>三、其他技术(10 分)</td>
-<td>1.有特色的结束，如有自己制作的动画、JS 脚本特效等</td>
-<td></td>
-</tr>
-<tr>
-<td>四、作业设计报告(20 分)</td>
-<td>1.项目文档内容详细完整、结构清晰、提交文件名正确</td>
-</tr>
-</tbody>
-</table>
-<p>打印说明:</p>
-<ol>
-<li>小组成员每人单独打印一份，在第一列表头中填写姓名；</li>
-<li>作业答辩时，将评分表装订在作业设计报告前面。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Web</category>
       </categories>
   </entry>
   <entry>
@@ -7183,122 +7130,6 @@ public class Deque&lt;E&gt; {
         <tag>spider</tag>
         <tag>scrapy</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>利用WireShark捕获并分析以太网报文结构</title>
-    <url>/blog/bw80k6/</url>
-    <content><![CDATA[<blockquote>
-<p>自主学习网络协议分析工具 WireShark。利用 WireShark 捕获并分析以太网报文结构。</p>
-</blockquote>
-<h2 id="WireShark-使用"><a href="#WireShark-使用" class="headerlink" title="WireShark 使用"></a>WireShark 使用</h2><h3 id="ping-命令"><a href="#ping-命令" class="headerlink" title="ping 命令"></a>ping 命令</h3><blockquote>
-<p>先使用 ping 命令找到需要抓包的网站的 ip 地址</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603431313609-3186fd0e-5e79-4e06-b8b8-20019fe29a14.png#align=left&amp;display=inline&amp;height=161&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=322&amp;originWidth=780&amp;size=51052&amp;status=done&amp;style=shadow&amp;width=390" alt="image.png"></p>
-<h3 id="WireShark-使用及面板功能区域"><a href="#WireShark-使用及面板功能区域" class="headerlink" title="WireShark 使用及面板功能区域"></a>WireShark 使用及面板功能区域</h3><p>进入软件，若成功适配电脑网卡，则出现如下类似接口列表<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434019601-cc879af3-8784-4ada-83dc-642d64e02981.png#align=left&amp;display=inline&amp;height=329&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1038&amp;originWidth=1920&amp;size=115692&amp;status=done&amp;style=shadow&amp;width=608" alt="image.png"><br>直接双击上图中 WLAN 行即可抓包，也可以如下设置网卡启动抓包<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434096441-73c67d75-4e36-4e76-ae3c-0a8b8976da28.png#align=left&amp;display=inline&amp;height=301&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=911&amp;originWidth=1920&amp;size=114148&amp;status=done&amp;style=shadow&amp;width=634" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603431676018-f4988b52-5aef-4d92-8b9b-15109a08adab.png#align=left&amp;display=inline&amp;height=345&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1033&amp;originWidth=1920&amp;size=207427&amp;status=done&amp;style=shadow&amp;width=641" alt="image.png"></p>
-<h3 id="1-区域-显示过滤器"><a href="#1-区域-显示过滤器" class="headerlink" title="1 区域-显示过滤器"></a>1 区域-显示过滤器</h3><blockquote>
-<p>为过滤 ip 地址区域。相关表达式语法有</p>
-</blockquote>
-<ol>
-<li>协议过滤。比如 TCP，只显示 TCP 协议。</li>
-<li>IP 过滤。比如 ip.src == 192.168.1.102,显示源地址为 192.168.1.102，</li>
-</ol>
-<p>ip.dst == 192.168.1.102, 目标地址为 192.168.1.102。</p>
-<ol start="3">
-<li>端口过滤。   tcp.port ==80,   端口为 80 的</li>
-</ol>
-<p>tcp.srcport == 80,只显示 TCP 协议的愿端口为 80 的。</p>
-<ol start="4">
-<li>Http 模式过滤。http.request.method==”GET”,   只显示 HTTP GET 方法的。</li>
-<li>逻辑运算符为 AND/ OR</li>
-</ol>
-<h3 id="2-区域-获取的数据包"><a href="#2-区域-获取的数据包" class="headerlink" title="2 区域-获取的数据包"></a>2 区域-获取的数据包</h3><blockquote>
-<p>为封包列表(Packet List Pane)</p>
-</blockquote>
-<h3 id="3-区域-单个数据包各层详细内容"><a href="#3-区域-单个数据包各层详细内容" class="headerlink" title="3 区域-单个数据包各层详细内容"></a>3 区域-单个数据包各层详细内容</h3><blockquote>
-<p>为封包详细信息 (Packet Details Pane)</p>
-</blockquote>
-<ol>
-<li>Frame:物理层的数据帧概况。</li>
-</ol>
-<pre><code class="http">Frame 165: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}, id 0 //165号帧，对方发送74字节，实际收到74字节
-    Interface id: 0 (\Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}) //接口id为0
-        Interface name: \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}
-        Interface description: WLAN
-    Encapsulation type: Ethernet (1) //封装类型
-    Arrival Time: Oct 23, 2020 13:37:43.372763000 中国标准时间//捕获日期和时间（中国标准时间）
-    [Time shift for this packet: 0.000000000 seconds]
-    Epoch Time: 1603431463.372763000 seconds
-    [Time delta from previous captured frame: 0.008472000 seconds]//与前一包时间间隔
-    [Time delta from previous displayed frame: 0.000000000 seconds]
-    [Time since reference or first frame: 36.349570000 seconds]//此包与第一帧的时间间隔
-    Frame Number: 165//帧序号
-    Frame Length: 74 bytes (592 bits)//帧长度
-    Capture Length: 74 bytes (592 bits)//捕获字节长度
-    [Frame is marked: False]//是否做了标记
-    [Frame is ignored: False]//是否被忽略
-    [Protocols in frame: eth:ethertype:ip:icmp:data]//帧内封装的协议层次结构
-    [Coloring Rule Name: ICMP]//着色标记的协议名称
-    [Coloring Rule String: icmp || icmpv6]//着色规则显示的字符串
-</code></pre>
-<ol start="2">
-<li>Ethernet II:数据链路层以太网帧头部信息。</li>
-</ol>
-<pre><code class="http">Ethernet II, Src: IntelCor_fb:33:94 (0c:54:15:fb:33:94), Dst: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)
-    Destination: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)//目的MAC地址
-    Source: IntelCor_fb:33:94 (0c:54:15:fb:33:94)//源MAC地址（就是我电脑的MAC地址）
-    Type: IPv4 (0x0800)//0x0800表示使用IP协议
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603432754493-20843464-3bbb-4c01-9ceb-e781759a583d.png#align=left&amp;display=inline&amp;height=280&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=559&amp;originWidth=1920&amp;size=110051&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"></p>
-<ol start="3">
-<li>Internet Protocol Version 4:互联网层 IP 包头部信息。</li>
-</ol>
-<pre><code class="http">Internet Protocol Version 4, Src: 192.168.43.36, Dst: 39.156.66.18
-    0100 .... = Version: 4//互联网协议IPv4
-    .... 0101 = Header Length: 20 bytes (5)//IP包头部长度
-    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)//差分服务字段
-    Total Length: 60//IP包的总长度
-    Identification: 0xdf8c (57228)//标志字段
-    Flags: 0x0000//标记字段
-    Fragment offset: 0//分的偏移量
-    Time to live: 128//生存期TTL
-    Protocol: ICMP (1)//此包内封装的上层协议为TCP
-    Header checksum: 0x05ba [validation disabled]//头部数据的校验和
-    [Header checksum status: Unverified]
-    Source: 192.168.43.36//来源IP地址
-    Destination: 39.156.66.18//目标IP地址
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433033837-c88714a1-eaa1-45cb-b836-5672e4515eee.png#align=left&amp;display=inline&amp;height=189&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=640&amp;size=84901&amp;status=done&amp;style=shadow&amp;width=320" alt="image.png"></p>
-<ol start="4">
-<li>Transmission Control Protocol:传输层 T 的数据段头部信息，此处是 TCP。</li>
-</ol>
-<pre><code class="http">Transmission Control Protocol, Src Port: 80 (80), Dst Port: 50362 (50362), Seq: 1025, Ack: 447, Len: 714
-Source Port: 80 (80) //源端口号
-Destination Port: 50362 (50362) //目标端口号
-Sequence number: 1025 (relative sequence number) //序列号（相对序列号）
-[Next sequence number: 1739 (relative sequence number)] //下一个序列号
-Acknowledgment number: 447    (relative ack number) //确认序列号
-Header Length: 20 bytes  //头部长度
-.... 0000 0001 1000 = Flags: 0x018 (PSH, ACK) //TCP标记长度
-Window size value: 5896  //流量控制的窗口大小
-Checksum: 0x915b [validation disabled] //TCP数据段的校验和
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433149527-0125377e-b64b-4e32-9eb0-e122d0c111cb.png#align=left&amp;display=inline&amp;height=190&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=379&amp;originWidth=579&amp;size=89043&amp;status=done&amp;style=shadow&amp;width=289.5" alt="image.png"></p>
-<ol start="5">
-<li><p>Hypertext Transfer Protocol:应用层的信息，此处是 HTTP 协议。</p>
-</li>
-<li><p>Data（312 bytes）：数据。</p>
-</li>
-</ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434354567-45e84cc7-63a9-4136-adde-85c377345e92.png#align=left&amp;display=inline&amp;height=147&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=347&amp;originWidth=1920&amp;size=49744&amp;status=done&amp;style=shadow&amp;width=813" alt="image.png"></p>
-<h3 id="分析-网站的请求与响应-MAC-报文结构"><a href="#分析-网站的请求与响应-MAC-报文结构" class="headerlink" title="分析-网站的请求与响应 MAC 报文结构"></a>分析-网站的请求与响应 MAC 报文结构</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603435802395-644285c3-35d8-4f12-928c-84b6af135fb0.png#align=left&amp;display=inline&amp;height=515&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1030&amp;originWidth=1920&amp;size=292782&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br>在登陆超星的过程中，数据传输所用到的协议等信息都在下图所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603435903948-4774be26-9c6c-407d-ab7a-07496dff6e99.png#align=left&amp;display=inline&amp;height=339&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=677&amp;originWidth=1920&amp;size=150647&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603436181846-0df06ab5-bc9d-476b-bd86-bf7a2ec2e5cd.png#align=left&amp;display=inline&amp;height=120&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=239&amp;originWidth=1919&amp;size=69455&amp;status=done&amp;style=none&amp;width=959.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603436511302-2cbd6278-74d8-4e2c-8800-44a3dae1aec0.png#align=left&amp;display=inline&amp;height=441&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=882&amp;originWidth=1920&amp;size=222060&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>这 14 个字节对应以太网 MAC 帧的前 14 个字节：前六个字节是目的地址，接下来六个字节是源地址，接下来两个字节是类型字段(用来标志上一层使用的是什么协议，以便把收到的 MAC 帧的数据交给上一层的这个协议。0x8000 代表上层使用的是 IP 数据报)，后面是数据部分。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603436551673-e3ffc81b-d102-4397-9449-ffd65de1cc0e.png#align=left&amp;display=inline&amp;height=174&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=347&amp;originWidth=785&amp;size=38179&amp;status=done&amp;style=shadow&amp;width=392.5" alt="image.png"><br>wireshark 把 8 字节的前序和 4 字节的 FCS 都给过滤掉了，所以捕获到的帧里看不到这两部分。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><a href="https://zhuanlan.zhihu.com/p/82498482" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82498482</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/264942536" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/264942536</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机系统</category>
-      </categories>
   </entry>
   <entry>
     <title>JAVA-基础知识</title>
@@ -11205,216 +11036,6 @@ public class HelloWordServlet extends HttpServlet {
       </categories>
   </entry>
   <entry>
-    <title>Animate使用</title>
-    <url>/blog/vh02ai/</url>
-    <content><![CDATA[<h2 id="一、基本功能"><a href="#一、基本功能" class="headerlink" title="一、基本功能"></a>一、基本功能</h2><ul>
-<li>铅笔工具：属性面板和工具栏下方公共栏都有修改属性设置，笔触颜色， 模式（伸直平滑墨水） 样式下拉菜单中选斑马线测试</li>
-<li>线条工具：shift 划线，水平垂直 45 度角     端点</li>
-<li>矩形工具：形状，笔触和填充两种颜色  Shift 正方形   接合</li>
-<li>基本矩形工具：图元，跟形状重合不会破坏，形状之间融合</li>
-<li>椭圆工具：不要笔触颜色   不要填充颜色</li>
-<li>基本椭圆工具：直接在图上拖动修改   圆环   扇形</li>
-<li>多角星形工具：多边形，星形（属性-工具设置-选项-样式-星形）</li>
-<li>选择工具</li>
-</ul>
-<pre><code>选择功能：单击填充选填充，双击填充选边框+填充，双击边框选连通边框
-移动功能：选择，按着鼠标移动
-复制功能：选择，ALT+按着鼠标移动可复制
-变形功能：鼠标放在边框上当光标变了，按着鼠标拖动可以做变形
-</code></pre><blockquote>
-<p>月亮和叶子制作</p>
-</blockquote>
-<pre><code>画笔工具（刷子工具）： 有边框无填充矩形，用刷子工具测试刷子模式（画笔模式）。
-画笔工具（艺术画笔工具）：可点击画笔库按钮打开预设，双击某种画笔，添加到属性面板的样式下拉列表
-颜料桶工具：修改填充颜色   空隙大小
-墨水瓶工具：修改笔触颜色 改宽度和样式，细边粗边斑马
-滴管工具：选择边框，修改笔触颜色，选择填充，修改填充颜色，并同时转换成墨水瓶或颜料桶工具
-任意变形工具：有点像PS的自由变换  导入外部文件并打散（CTRL+B）做变形
-渐变变形工具：气球制作（填充颜色选渐变，用颜色调板变换颜色，用颜料桶工具填充）
-部分选择工具：红心制作（只有填充没有边框的正圆-复制正圆两只圆叠加心的半成品-部分选择工具移动下面锚点成心形）
-文字工具：七彩文字（颜料桶工具填充为线性渐变）   透视文字（任意变形工具 扭曲）
-                  波浪文字（任意变形工具 封套）
-3D旋转平移工具：两种工具只对影片剪辑元件起作用（插入讲元件，花元件，对齐面板排列）
-</code></pre><blockquote>
-<p>时间轴，普通帧，关键帧，空白关键帧</p>
-</blockquote>
-<blockquote>
-<p>逐帧动画</p>
-</blockquote>
-<pre><code>导入文件名连续的多张图片，文件-导入-导入到舞台-此文件看起来是图像序列的组成部分，是否导入序列中的所有图像？是-在时间轴上查看，生成若干关键帧，每帧一幅图像，CTRL-Enter测试影片，1帧频2关键帧后插入普通帧放慢速度（选择关键帧-插入-时间轴-普通帧）
-小球跳跃，从屏幕左边跳到右边，再跳回来（插入关键帧，每个关键帧中小球改变位置，时间轴上选择所有帧，按着Alt键拖动可复制，对复制帧鼠标右键选翻转帧）
-Connecting制作
-</code></pre><h2 id="二、补间形状动画"><a href="#二、补间形状动画" class="headerlink" title="二、补间形状动画"></a>二、补间形状动画</h2><ol>
-<li>小球移动   第一帧画圆-选择时间轴上的帧-鼠标右键-创建补间形状-时间轴上选第 25 帧创建关键帧，这个关键帧跟前面距离它最近的关键帧一样，把小球移动到右边- CTRL-Enter 测试影片</li>
-<li>蓝色方形变红色圆</li>
-<li>“3 变色文字”实现时注意，文字必须打散为形状，才能做补间形状动画</li>
-<li>“4 形状提示“ 同一图中两个不同动画是通过创建图层，不同图层上不同动画；形状提示的添加方法：修改-形状-添加形状提示</li>
-</ol>
-<h2 id="三、传统补间动画"><a href="#三、传统补间动画" class="headerlink" title="三、传统补间动画"></a>三、传统补间动画</h2><pre><code>传统补间动画-小球为例子
-画圆-帧-鼠标右键-创建传统补间-注意圆已经被转换为图形元件-30帧处创建关键帧-圆移动到右边-测试影片-在库中找到自动建立的图形元件，双击修改为径向渐变填充-选择第一帧点击-修改帧属性中的旋转为顺时针，测试影片。-选择第二个关键帧中的圆，在属性中选择色彩效果-样式中的各种选项-测试效果  
-6-1 动作动画-放大
-导入图-帧-鼠标右键-创建传统补间-30帧处创建关键帧-放大第二个关键帧中图片元件-选择第一帧-帧属性中缓动设置为-100
-补间形状和传统补间的区别
-6-2 动作动画-小人跑步
-设置舞台颜色-制作路图层-制作小人影片剪辑动画-生成小人走路图层-设置两个关键帧中小人属性
-读ppt13-ppt17对图形元件和影片剪辑元件属性设置的不同
-引导动画-小球抛物线
-要创建运动引导动画，至少需要两个图层：一个是被引导图层，用于存放运动的对象，必须是传统补间动画；另一个是引导层，用于绘制作为对象运动路径的辅助线。使用鼠标右键单击，在弹出的快捷菜单中，选择【添加传统运动引导层】选项，即可添加一个传统运动引导层。
-创建一个传统补间动画-小球从频幕左边走到右边-在图层左边空白处鼠标右键单击，在弹出的快捷菜单中，选择【添加传统运动引导层】选项，即可添加一个传统运动引导层。用直线工具画直线，小球自动吸附到线上-用选择工具把直线变成抛物线-测试
-遮罩动画
-遮罩动画是Flash的一种基本动画方式，制作遮罩动画至少需要2个图层，即遮罩层和被遮罩层。在时间轴上，位于上层的图层是遮罩层，这个遮罩层中的对象就像一个窗口一样，透过它的填充区域可以看到位于其下方的被遮罩层中的区域。而任何的非填充区域都是不透明的，被遮罩层在此区域中的图像将不可见。
-导入women1照片-建立新图层-画椭圆遮住女孩头部-图层左边空白处鼠标右键单击，在弹出的快捷菜单中，选择【遮罩层】，看效果。
-补间形状动画
-    改变的形状
-    单纯位置的移动
-传统补间动画
-    多个属性可以改变：旋转、放大、透明……
-
-引导层
-    eg：旋转的字
-遮罩动画
-    eg：闪光灯文字效果
-
-影片剪辑动画===how？
-滤镜===实现灰色地带
-帧的种类与差异
-切割字幕：线条工具/铅笔
-从库那里打开文件，直接拖动，可以保留被拖动的东西属性
-魔戒：
-向下滚动的文字==不同时间掉下===该百年属性，图形原件，各个掉下的文字改成不同的帧数
-</code></pre><h2 id="四、部件动画"><a href="#四、部件动画" class="headerlink" title="四、部件动画"></a>四、部件动画</h2><pre><code>补间动画
-
-补间动画（CS4开始）是基于对象的，传统补间是基于帧的
-
-生成补间动画方法：
-    ①选择对象，右击，选创建补间动画；
-    ②选择帧，右击选创建补间动画，系统自动生成补间范围，容纳一秒所需帧
-
-创建补间动画后，帧色彩是浅蓝色，与传统补间补间形状比（淡紫色 绿色）
-（生成一个新图层，创建传统补间，查看颜色）
-
-补间对象可以是元件（图形元件、影片剪辑、按钮）、文本（演示传统补间如何做文字运动，自动把文本转换为图形元件，而补间动画直接对文本做补间）
-
-编辑补间动画范围：
-补间动画可以方便调整帧数  传统补间不能像补间动画范围那样拉伸或改变大小，只能分别选择这些帧并插入或删除才能拉伸或缩短动画
-    注意：在时间轴上，第一帧最后一帧边缘按着鼠标拖动，帧们按比例压缩或者增长；如果按着shift键拖动，可保持原来关键帧之间的距离，尾部自动生成普通帧
-延长动画持续时间，可以将范围左侧边缘或右侧边缘拖动到期望的帧上。
-    “基于整体范围的选择”（时间轴右上角下拉菜单）勾选时，鼠标拖过希望选择的帧的同时按下ctrl键可以在动画范围内选择一定范围内的帧，（ctrl+鼠标拖动可以同时选多个图层多个帧），选择后拖动可以移动关键帧到图层的新位置，按着Alt的同时拖动是复制帧
-
-    选择帧后鼠标右键，拆分动画，产生两个补间范围
-    eg：
-
-
-关键帧和属性关键帧？？？
-不同，关键帧只时间轴上某一帧中元件实例首次出现在舞台上；属性关键帧是flash cs4增加的，指在补间动画中为特定时间或某一帧某个属性定义的一个值
-添加属性关键帧：
-    1）手动添加：播放头放在要添加帧的位置，右击-插入关键帧-            
-    2）自动添加:播放头放在要添加帧的位置，属性改变
-
-编辑运动路径
-      创建/修改运动路径：可以用选择工具移动路径（包括对象）、路径变形、用部分选择工具修改路径，可用选择工具重新定位路径也可以用任意变形工具缩放处理路径，还可以菜单修改-变形更多范围处理路径
-      将播放头定位在路径中间位置，修改对象位置，会自动改变路径
-      创建复炸路径：新建一个铅笔图层，铅笔工具绘制图在该图层，ctrl+X，选择时间轴内的动画范围或舞台上的对象ctrl+v粘贴，就可以生成路径，
-      Ctrl+shift+V不改变原图形位置复制
-    注意：路径不能闭合，比如地球绕太阳旋转的题，用补间动画实现时，园必须有缝隙，小球才能在缝隙处开始
-
-Eg：
-1）飞机头跟着路径走。
-2）海底海豚
-    Ø 影片剪辑动画尾巴的摆动：新建元件（影片剪辑），再导入三张海豚图片（改变相关的帧）生成海豚摆尾巴的一个小影片剪辑
-    Ø 学会导入影片所需要的剪辑动画①同时打开fla文件，库当中导入②文件选项导入到舞台
-    Ø 还要勾选“调整到路径”
-补间动画使用并保存为预设动画
-传统补间不行，只能是补间动画才行
-动画预设使用：选择动画预设中的相关预设，鼠标右键“在当前位置结束”  
-自己创建预设：方形从左到右，创建补间动画，在动画预设工具中选左下第一个生成预设命令，或者右上弹出菜单中选“保存”，即可在自定义预设中定义自己的预设
-    另外，再同样生成传统补间，同样保存，会出现不能创建对话框。
-    如果画形状（如圆），可直接应用动画预设，但是，注意别只选择元的心或者轮廓，这样，会保留没选择部分为一个图层，选择部分自动生成新图层
-
-
-位置与颜色效果动画：
-         1）打开素材，延长帧到117
-           2）新建图层2，第11帧F6插入关键帧，库中拖动P00元件，到舞台底部，并创建补间动画
-           3）14帧处右击，插入属性关键帧-全部，向上移动P00，到下面细条一半进入----快速上移
-           4）25帧插入属性关键帧，Poo上移一点，到细条全显示--慢速上移
-           5）新建图层3 ，33帧处插入关键帧，元件“按钮1” 拖入放在上端和大字上端齐平，选按钮1，属性面板中设亮度为80%,创建补间动画
-           6）41帧处插入属性关键帧，向下拖动对象到顶端比上面的细线低不少，亮度设为0%
-           7) 46帧F6，向上拖动图到最终位置，图像的下端与下面的细条的上端齐平
-           8）选择补间范围，在“动画预设”面板创建并存储新的动画预设
-           9）新建图层，36帧处插入关键帧，元件“按钮2” 拖入放在上端和大字上端齐平，将刚创建的动画预设应用到元件上
-           10）依次创建新图层，拖入按钮3,4，应用动画预设
-
-运动及运动引导动画  
-                    1)打开素材文件，把Symboll0拖入场景，转换为影片剪辑运动动画第一帧窗机补间动画，新建图层，绘制曲线，ctrl+X，回到图层一，ctrl+shift+V原位粘贴
-                   2）生成图层3，错后几帧建立关键帧，拖入Symbol0，还是创建补间动画，绘制曲线，复制粘贴
-                   3）生成图层4，重复2）
-                   4）回到场景，图层一背景，图层2放入运动动画，按Alt拖动复制若干，调整位置，使得播放时有更多花瓣飞出
-摄像头动画
-创建：时间轴下方/左边工具里面
-在控制台修改属性，补间动画，传统补间
-还可以左右移动摄像机
-</code></pre><h2 id="五、按钮"><a href="#五、按钮" class="headerlink" title="五、按钮"></a>五、按钮</h2><pre><code>三种元件
-    图形
-    影片剪辑
-    按钮
-
-按钮
-    （使用和指针使用有关）
-    四种状态：
-  弹起状态
-  指针点击状态
-  按下状态
-  滑过状态
-    ps：2热区、点击状态
-
-⚪的制作
-    四个图层
-    选择===变形===
-    Ctrl+x 制作外环===在制作成影片剪辑原件（用补间动画制作）
-    加在一起===都选择===对齐命令
-    加入音乐
-
-史努比的实现
-    抠图===魔棒……
-    扩大热区
-游动的鱼
-    影片剪辑
-    隐形动画
-
-动作脚本（a来显示）
-    窗口===动画===写代码
-    ①小球停止
-    ②星球环绕：第二帧跳到第一帧
-    创建：
-  ①动作里面的
-  ②代码片段里面
-  新建一个图层，用其他人的按钮代码片段
-
-经典交互程序
-    四个商店
-
-声音
-  选择第一帧，拖动过来
-  同步：不要选择“事件”，选择“开始”，“数据流”只在选择的的帧出声音
-  拖动音乐进来之后：插入普通帧不要关键帧
-文本（歌词）
-    三种类型：
-    ①静态文本：从头到尾不变
-    ②动态文本
-    ③输入文本：交互
-
-    按F7（第一个F7之后插入F6），在文本（歌词）图层中，
-
-
-不同场景按钮：
-    三个按钮，响应进入另一个场景，插入场景===用到代码片段
-    代码实现
-</code></pre>]]></content>
-      <categories>
-        <category>PostProduction</category>
-      </categories>
-  </entry>
-  <entry>
     <title>入门机器学习scikit-learn</title>
     <url>/blog/wgv3ak/</url>
     <content><![CDATA[<h2 id="一、机器学习的一些概念"><a href="#一、机器学习的一些概念" class="headerlink" title="一、机器学习的一些概念"></a>一、机器学习的一些概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
@@ -12042,6 +11663,161 @@ export default {
 ]]></content>
       <categories>
         <category>Mobile</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>利用WireShark捕获并分析以太网报文结构</title>
+    <url>/blog/bw80k6/</url>
+    <content><![CDATA[<blockquote>
+<p>学习网络协议分析工具 WireShark，利用 WireShark 捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。<br>文章更新内容说明：无线上网和有线上网的 MAC 地址是不一样的<br>【查看本地地址的截图是在家里的查看，wireshark 的使用是在学校】</p>
+</blockquote>
+<h2 id="查看信息"><a href="#查看信息" class="headerlink" title="查看信息"></a>查看信息</h2><h3 id="查看本地的-mac-地址"><a href="#查看本地的-mac-地址" class="headerlink" title="查看本地的 mac 地址"></a>查看本地的 mac 地址</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612839562082-cbc1fcf8-a520-4820-bafc-e26f07ba1177.png#align=left&amp;display=inline&amp;height=248&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=496&amp;originWidth=1920&amp;size=78833&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612839610832-5568023d-da16-41af-b95e-1787acadf747.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=804&amp;originWidth=1335&amp;size=109239&amp;status=done&amp;style=shadow&amp;width=667.5" alt="image.png"></p>
+<h3 id="ping-命令"><a href="#ping-命令" class="headerlink" title="ping 命令"></a>ping 命令</h3><blockquote>
+<p>先使用 ping 命令找到需要抓包的网站的 ip 地址</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612845955475-12f08386-5ec4-4b3f-8cbf-56059d79677c.png#align=left&amp;display=inline&amp;height=162&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=323&amp;originWidth=828&amp;size=51064&amp;status=done&amp;style=shadow&amp;width=414" alt="image.png"></p>
+<h2 id="WireShark-使用"><a href="#WireShark-使用" class="headerlink" title="WireShark 使用"></a>WireShark 使用</h2><h3 id="WireShark-使用及面板功能区域"><a href="#WireShark-使用及面板功能区域" class="headerlink" title="WireShark 使用及面板功能区域"></a>WireShark 使用及面板功能区域</h3><p>进入软件，若成功适配电脑网卡，则出现如下类似接口列表<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434019601-cc879af3-8784-4ada-83dc-642d64e02981.png#align=left&amp;display=inline&amp;height=329&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1038&amp;originWidth=1920&amp;size=115692&amp;status=done&amp;style=shadow&amp;width=608" alt="image.png"><br>直接双击上图中 WLAN 行即可抓包，也可以如下设置网卡启动抓包<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434096441-73c67d75-4e36-4e76-ae3c-0a8b8976da28.png#align=left&amp;display=inline&amp;height=301&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=911&amp;originWidth=1920&amp;size=114148&amp;status=done&amp;style=shadow&amp;width=634" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603431676018-f4988b52-5aef-4d92-8b9b-15109a08adab.png#align=left&amp;display=inline&amp;height=345&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1033&amp;originWidth=1920&amp;size=207427&amp;status=done&amp;style=shadow&amp;width=641" alt="image.png"></p>
+<h3 id="1-区域-显示过滤器"><a href="#1-区域-显示过滤器" class="headerlink" title="1 区域-显示过滤器"></a>1 区域-显示过滤器</h3><blockquote>
+<p>为过滤 ip 地址区域。相关表达式语法有</p>
+</blockquote>
+<ol>
+<li>协议过滤。比如 TCP，只显示 TCP 协议。</li>
+<li>IP 过滤。比如 ip.src == 192.168.1.102,显示源地址为 192.168.1.102，</li>
+</ol>
+<p>ip.dst == 192.168.1.102, 目标地址为 192.168.1.102。</p>
+<ol start="3">
+<li>端口过滤。   tcp.port ==80,   端口为 80 的</li>
+</ol>
+<p>tcp.srcport == 80,只显示 TCP 协议的愿端口为 80 的。</p>
+<ol start="4">
+<li>Http 模式过滤。http.request.method==”GET”,   只显示 HTTP GET 方法的。</li>
+<li>逻辑运算符为 AND/ OR</li>
+</ol>
+<h3 id="2-区域-获取的数据包"><a href="#2-区域-获取的数据包" class="headerlink" title="2 区域-获取的数据包"></a>2 区域-获取的数据包</h3><blockquote>
+<p>封包列表(Packet List Pane)</p>
+</blockquote>
+<h3 id="3-区域-单个数据包各层详细内容"><a href="#3-区域-单个数据包各层详细内容" class="headerlink" title="3 区域-单个数据包各层详细内容"></a>3 区域-单个数据包各层详细内容</h3><blockquote>
+<p>选定的封包详细信息 (Packet Details Pane)</p>
+</blockquote>
+<ol>
+<li>Frame:物理层的数据帧概况。</li>
+</ol>
+<pre><code class="http">Frame 165: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}, id 0 //165号帧，对方发送74字节，实际收到74字节
+    Interface id: 0 (\Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}) //接口id为0
+        Interface name: \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}
+        Interface description: WLAN
+    Encapsulation type: Ethernet (1) //封装类型
+    Arrival Time: Oct 23, 2020 13:37:43.372763000 中国标准时间//捕获日期和时间（中国标准时间）
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1603431463.372763000 seconds
+    [Time delta from previous captured frame: 0.008472000 seconds]//与前一包时间间隔
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 36.349570000 seconds]//此包与第一帧的时间间隔
+    Frame Number: 165//帧序号
+    Frame Length: 74 bytes (592 bits)//帧长度
+    Capture Length: 74 bytes (592 bits)//捕获字节长度
+    [Frame is marked: False]//是否做了标记
+    [Frame is ignored: False]//是否被忽略
+    [Protocols in frame: eth:ethertype:ip:icmp:data]//帧内封装的协议层次结构
+    [Coloring Rule Name: ICMP]//着色标记的协议名称
+    [Coloring Rule String: icmp || icmpv6]//着色规则显示的字符串
+</code></pre>
+<ol start="2">
+<li>Ethernet II:数据链路层以太网帧头部信息。</li>
+</ol>
+<pre><code class="http">Ethernet II, Src: IntelCor_fb:33:94 (0c:54:15:fb:33:94), Dst: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)
+    Destination: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)//目的MAC地址
+    Source: IntelCor_fb:33:94 (0c:54:15:fb:33:94)//源MAC地址（就是我电脑的MAC地址）
+    Type: IPv4 (0x0800)//0x0800表示使用IP协议
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603432754493-20843464-3bbb-4c01-9ceb-e781759a583d.png#align=left&amp;display=inline&amp;height=280&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=559&amp;originWidth=1920&amp;size=110051&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"></p>
+<ol start="3">
+<li>Internet Protocol Version 4:互联网层 IP 包头部信息。</li>
+</ol>
+<pre><code class="http">Internet Protocol Version 4, Src: 192.168.43.36, Dst: 39.156.66.18
+    0100 .... = Version: 4//互联网协议IPv4
+    .... 0101 = Header Length: 20 bytes (5)//IP包头部长度
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)//差分服务字段
+    Total Length: 60//IP包的总长度
+    Identification: 0xdf8c (57228)//标志字段
+    Flags: 0x0000//标记字段
+    Fragment offset: 0//分的偏移量
+    Time to live: 128//生存期TTL
+    Protocol: ICMP (1)//此包内封装的上层协议为TCP
+    Header checksum: 0x05ba [validation disabled]//头部数据的校验和
+    [Header checksum status: Unverified]
+    Source: 192.168.43.36//来源IP地址
+    Destination: 39.156.66.18//目标IP地址
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433033837-c88714a1-eaa1-45cb-b836-5672e4515eee.png#align=left&amp;display=inline&amp;height=189&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=640&amp;size=84901&amp;status=done&amp;style=shadow&amp;width=320" alt="image.png"></p>
+<ol start="4">
+<li>Transmission Control Protocol:传输层 T 的数据段头部信息，此处是 TCP。</li>
+</ol>
+<pre><code class="http">Transmission Control Protocol, Src Port: 80 (80), Dst Port: 50362 (50362), Seq: 1025, Ack: 447, Len: 714
+Source Port: 80 (80) //源端口号
+Destination Port: 50362 (50362) //目标端口号
+Sequence number: 1025 (relative sequence number) //序列号（相对序列号）
+[Next sequence number: 1739 (relative sequence number)] //下一个序列号
+Acknowledgment number: 447    (relative ack number) //确认序列号
+Header Length: 20 bytes  //头部长度
+.... 0000 0001 1000 = Flags: 0x018 (PSH, ACK) //TCP标记长度
+Window size value: 5896  //流量控制的窗口大小
+Checksum: 0x915b [validation disabled] //TCP数据段的校验和
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433149527-0125377e-b64b-4e32-9eb0-e122d0c111cb.png#align=left&amp;display=inline&amp;height=190&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=379&amp;originWidth=579&amp;size=89043&amp;status=done&amp;style=shadow&amp;width=289.5" alt="image.png"></p>
+<ol start="5">
+<li><p>Hypertext Transfer Protocol:应用层的信息，此处是 HTTP 协议。</p>
+</li>
+<li><p>Data（312 bytes）：数据。</p>
+</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434354567-45e84cc7-63a9-4136-adde-85c377345e92.png#align=left&amp;display=inline&amp;height=147&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=347&amp;originWidth=1920&amp;size=49744&amp;status=done&amp;style=shadow&amp;width=813" alt="image.png"></p>
+<h2 id="超星网登录案例分析"><a href="#超星网登录案例分析" class="headerlink" title="超星网登录案例分析"></a>超星网登录案例分析</h2><h3 id="网站请求和响应"><a href="#网站请求和响应" class="headerlink" title="网站请求和响应"></a>网站请求和响应</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849248230-2f38b355-ee1f-4ee1-8b8a-291e64f4e1bd.png#align=left&amp;display=inline&amp;height=356&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=711&amp;originWidth=1920&amp;size=230540&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<h3 id="发送请求相应协议"><a href="#发送请求相应协议" class="headerlink" title="发送请求相应协议"></a>发送请求相应协议</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849740094-cbdefdda-f504-43f3-9e41-ac8dc8029fd3.png#align=left&amp;display=inline&amp;height=440&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=880&amp;originWidth=1920&amp;size=208371&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<h3 id="收到响应相应协议"><a href="#收到响应相应协议" class="headerlink" title="收到响应相应协议"></a>收到响应相应协议</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849811431-437bd72d-ac54-4c28-b731-9e128b6b998f.png#align=left&amp;display=inline&amp;height=441&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=881&amp;originWidth=1918&amp;size=151717&amp;status=done&amp;style=stroke&amp;width=959" alt="image.png"></p>
+<blockquote>
+<p>接下来的 7 个小节内容来具体对数据报头做出分析 ❗</p>
+</blockquote>
+<h3 id="Hypertext-Transfer-Protocol"><a href="#Hypertext-Transfer-Protocol" class="headerlink" title="Hypertext Transfer Protocol"></a>Hypertext Transfer Protocol</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849851243-b18b3e15-f21e-4998-bcfe-45c0b92aabde.png#align=left&amp;display=inline&amp;height=339&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=678&amp;originWidth=1920&amp;size=99636&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"></p>
+<blockquote>
+<p>HTTP 协议定义了客户端和服务器之间交互的消息内容和步骤，大家按照固定的步骤和格式进行通信<br>根据 URL 可以定位请求资源的位置，但是对于这个资源可能还有多种处理方法，比如是请求资源还是要删除指定资源？</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851558692-ed870a9e-f619-4235-bb98-85d22557340f.png#align=left&amp;display=inline&amp;height=493&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=985&amp;originWidth=1920&amp;size=489577&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>这个时候<strong>浏览器</strong>将需要请求的信息，按照 HTTP 协议约定的格式，封装成为 HTTP 请求报文<br>HTTP 主要请求方法为 GET 和 POST<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851687862-c1a44f57-065b-4547-93bb-4ae9b1f9cb95.png#align=left&amp;display=inline&amp;height=190&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=379&amp;originWidth=693&amp;size=117900&amp;status=done&amp;style=shadow&amp;width=346.5" alt="image.png"></p>
+<blockquote>
+<p>请求报文和响应报文的具体形式参考课本</p>
+</blockquote>
+<h3 id="Line-based-text-data"><a href="#Line-based-text-data" class="headerlink" title="Line-based text data"></a>Line-based text data</h3><p>这里面内容就是请求成功所返回的 Html 代码<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851995920-233bc149-948d-43e1-a549-fc2887c23163.png#align=left&amp;display=inline&amp;height=353&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=706&amp;originWidth=1920&amp;size=159705&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<h3 id="Transmission-Control-Protocol"><a href="#Transmission-Control-Protocol" class="headerlink" title="Transmission Control Protocol"></a>Transmission Control Protocol</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852359910-50409417-8113-4600-bbb6-6d0e02db4894.png#align=left&amp;display=inline&amp;height=356&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=712&amp;originWidth=1920&amp;size=104306&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>这个数据报传输使用的可靠的 TCP 协议，而不是 UDP，所以会有相应的滑动窗口、流量控制等等相关机制，还有三次握手，四次挥手……<br>（插个眼，日后再复习一下……）<br><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1612852762215-ba49fa51-55e0-440d-afa7-b567540e39a2.gif#align=left&amp;display=inline&amp;height=151&amp;margin=%5Bobject%20Object%5D&amp;name=huaji-779c5947261d2633.gif&amp;originHeight=151&amp;originWidth=218&amp;size=163714&amp;status=done&amp;style=none&amp;width=218" alt="huaji-779c5947261d2633.gif"><br>（插眼专用图/滑稽）</p>
+<h3 id="Internet-Protocol-Version-4"><a href="#Internet-Protocol-Version-4" class="headerlink" title="Internet Protocol Version 4"></a>Internet Protocol Version 4</h3><p>好了，接下来到了 IP 层，需要给上面来的数据报加上 IP 头部，IP 数据报结构如下：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853140617-ff243167-abb7-4c65-b5c3-b0bbaa77b5aa.png#align=left&amp;display=inline&amp;height=237&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=474&amp;originWidth=892&amp;size=244750&amp;status=done&amp;style=stroke&amp;width=446" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853444183-7fa048ef-3e75-4586-82a7-ac9cc58c3630.png#align=left&amp;display=inline&amp;height=203&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=405&amp;originWidth=1920&amp;size=105587&amp;status=done&amp;style=stroke&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852425531-82ec984f-ac3b-4f8a-a06e-0c48080815f6.png#align=left&amp;display=inline&amp;height=353&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=706&amp;originWidth=1920&amp;size=107520&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>比如说<code>45</code>这个字节这具体表现是 ip 数据报的第一行和第二行的具体信息，IP 版本为 IPv4，报头长度为二十个字节，往后的各个字段都是这样一一对应的关系，具体还要加强对那张 ip 数据报结构图的理解，要了然于胸。</p>
+<h3 id="Ethernet-II-Src"><a href="#Ethernet-II-Src" class="headerlink" title="Ethernet II, Src"></a>Ethernet II, Src</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853924295-ea6fe64c-bc90-4e49-ad4e-5ff212448fdc.png#align=left&amp;display=inline&amp;height=214&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=428&amp;originWidth=904&amp;size=226429&amp;status=done&amp;style=stroke&amp;width=452" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612850191706-18807d7d-16b5-44fa-a436-5c2b7c4ed5ed.png#align=left&amp;display=inline&amp;height=321&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=641&amp;originWidth=1920&amp;size=151109&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<blockquote>
+<p>图中三个方框的 14 个字节对应以太网 MAC 帧的前 14 个字节：前 6 个字节是目的地址，接下来的 6 个字节是源地址，最后两个字节是类型字段(用来标志上一层使用的是什么协议，以便把收到的 MAC 帧的数据交给上一层的这个协议。0x8000 代表上层使用的是 IP 数据报)，后面是数据部分。<br>另外：wireshark 把 8 字节的前序（前同步码）和 4 字节的 FCS（帧开始界定符）都给过滤掉了，所以捕获到的帧里看不到这两部分。</p>
+</blockquote>
+<h3 id="Frame-75"><a href="#Frame-75" class="headerlink" title="Frame 75"></a>Frame 75</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852486656-87756b19-ff3d-4833-9af9-d2006a401068.png#align=left&amp;display=inline&amp;height=353&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=706&amp;originWidth=1920&amp;size=135359&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<ul>
+<li>对方发送 5520 字节，实际收到 5520 字节</li>
+<li>第一行表示接口位 0 号</li>
+</ul>
+<h3 id="总体数据表示"><a href="#总体数据表示" class="headerlink" title="总体数据表示"></a>总体数据表示</h3><p>其实在计算机看来，网络中的数据传输就是传输下面的这些字节</p>
+<blockquote>
+<p>一个字节由八个位组成，而位就是我们通常所说的二进制中的 0 或 1</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852578885-9519d1d0-a72d-409b-a480-f8554b87fd0d.png#align=left&amp;display=inline&amp;height=299&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=598&amp;originWidth=1918&amp;size=138039&amp;status=done&amp;style=stroke&amp;width=959" alt="image.png"></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><h3 id="Wireshark-抓不到-HTTPS-数据包"><a href="#Wireshark-抓不到-HTTPS-数据包" class="headerlink" title="Wireshark 抓不到 HTTPS 数据包"></a>Wireshark 抓不到 HTTPS 数据包</h3><blockquote>
+<p>有些时候 HTTP 包也抓不到抑或是抓的不全，用如下方式解决即可。</p>
+</blockquote>
+<p>在 C 盘根目录下创建如下目录和文件，.log 就是后缀不要 txt<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612847971131-6c3c2084-c6d8-41ae-8a82-8a4df65748b8.png#align=left&amp;display=inline&amp;height=112&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=224&amp;originWidth=811&amp;size=14570&amp;status=done&amp;style=shadow&amp;width=405.5" alt="image.png"><br>添加环境变量<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612848066208-6f22250b-e74d-4156-aa31-c5de17d2e812.png#align=left&amp;display=inline&amp;height=236&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=471&amp;originWidth=968&amp;size=35366&amp;status=done&amp;style=none&amp;width=484" alt="image.png"><br>进入 wireshark 软件<br><code>编辑 `</code>首选项 <code></code>Protocols`<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612848155164-ace1e002-1971-4910-8d04-cf9c388eb5cd.png#align=left&amp;display=inline&amp;height=496&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=992&amp;originWidth=1362&amp;size=89975&amp;status=done&amp;style=none&amp;width=681" alt="image.png"></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://www.cnblogs.com/linyfeng/p/9496126.html" target="_blank" rel="noopener">wireshark 抓包新手使用教程</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/82498482" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82498482</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/264942536" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/264942536</a></li>
+<li><a href="https://blog.csdn.net/zam183/article/details/103783785" target="_blank" rel="noopener">https://blog.csdn.net/zam183/article/details/103783785</a></li>
+<li>TODO: <a href="https://www.cnblogs.com/zhaopei/p/12152139.html#autoid-2-6" target="_blank" rel="noopener">Wireshark 抓包，带你快速入门</a></li>
+<li>TODO: <a href="https://www.cnblogs.com/noteless/p/10256470.html#21" target="_blank" rel="noopener">网络是如何连接的？网络发展简介（四）</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机系统</category>
       </categories>
   </entry>
   <entry>

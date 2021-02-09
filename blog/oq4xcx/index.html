@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>Pandas-分组聚合 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="Pandas分组聚合">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Pandas-分组聚合 | 尼采般地抒情">
+  <meta property="og:url" content="https://www.wztlink1013.com/blog/oq4xcx/">
+  <meta property="og:site_name" content="Pandas-分组聚合">
+  <meta property="og:description" content="Pandas分组聚合">
+  <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- 百度站长 -->
+  <meta name="baidu-site-verification" content="code-hbkXZNJYtE" />
+  <!-- 谷歌站长 -->
+  <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
+  <!-- 解决语雀图片不显示 -->
+  <meta name="referrer" content="no-referrer" />
+  <!-- 搜狗站长 -->
+  <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
+  <link href="https://www.wztlink1013.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://www.wztlink1013.com/blog/kt0kvc/" title="Data-数据可视化综述" />
+  <link rel="next" href="https://www.wztlink1013.com/blog/nfqdqf/" title="pandas-索引" />
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
+  <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
+  <link rel="stylesheet" href="/public/css/style.css?v=20191101">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+  <!-- 引入valine所需js -->
+  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz", "eLj5sRf1iOMf8SL8me8IJtdM");</script>
+</head>
+
+
+<body>
+  <div class="rainbow">
+    
+  </div>
+  
+  <div class="container">
+  <!-- TODO: 搜索栏 -->
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="icon" aria-hidden="true" title="点击进入 Google 搜索">&#x2708;</i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <!-- TODO: 文章最顶部的导航 -->
+      <div class="bread">
+        <a href="/">尼采般地抒情</a> »
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+
+      </div>
+      <!-- TODO: 头像+文章大标题 -->
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">Pandas-分组聚合</h1>
+        <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
+      </div>
+      <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
+      <div class="post-info">
+        <span>作者: <a href="/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 08:28:49</time>
+          <span class="aria-readonly">本文发布时间为2020年02月10日08时28分49秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: 
+<a class="article-tag-link" href="/blog/tags/pandas/">pandas</a>
+</span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/oq4xcx"
+                      data-disqus-identifier="blog/oq4xcx"
+                      id="changyan_count_unit"></a></span>
+        <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
+        <!-- TODO: valine文章计数 -->
+        <span id="/blog/oq4xcx/" class="leancloud_visitors" data-flag-title="Pandas-分组聚合">
+          <em class="post-meta-item-text">阅读量: </em>
+          <i class="leancloud-visitors-count">loading</i>
+        </span>
+      </div>
+      <!-- TODO: 防爬虫不注明出处+文章内容 -->
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://www.wztlink1013.com/blog/oq4xcx/">https://www.wztlink1013.com/blog/oq4xcx/</a>，<a href="https://www.wztlink1013.com/blog/oq4xcx/#comments">参与评论</a></p>
+          <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
+        </div>
+        <h2 id="一、分组"><a href="#一、分组" class="headerlink" title="一、分组"></a>一、分组</h2><h3 id="GroupBy-对象"><a href="#GroupBy-对象" class="headerlink" title="GroupBy 对象"></a>GroupBy 对象</h3><blockquote>
+<p>· groupedby 函数中的参数：</p>
+</blockquote>
+<pre><code>as_index的作用：控制聚合输出是否以组标签为索引值，默认为True，就是分层次的索引，若为False多加一列默认索引索引，相当于非其他数据排序好了。
+但是这两组标签索引值不同有什么作用呢？=== 作用就是，根据的一列是否为索引列。
+sort_values的作用：对选定的一列数值数据从上往下从小到大进行排序（如果传值没成功===设置本体覆盖，传值覆盖）
+</code></pre><pre><code class="python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.pyplot
+%matplotlib inline
+</code></pre>
+<pre><code class="python">dict_obj = {&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
+                      &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
+            &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,
+                      &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
+            &#39;data1&#39;: np.random.randn(8),
+            &#39;data2&#39;: np.random.randn(8)}
+df_obj = pd.DataFrame(dict_obj)
+print (df_obj)
+</code></pre>
+<pre><code>  key1   key2     data1     data2
+0    a    one -0.147612 -0.348087
+1    b    one -0.992986  0.902458
+2    a    two  0.547541 -0.310040
+3    b  three  0.458871 -1.895392
+4    a    two  1.224041  0.220150
+5    b    two -0.200124 -1.562237
+6    a    one  1.539144 -0.758716
+7    a  three  0.385845  0.074309
+</code></pre><pre><code class="python">&#39;&#39;&#39;1. dataframe根据key2进行分组&#39;&#39;&#39;
+print(df_obj.groupby(&#39;key2&#39;)[&#39;key1&#39;].count())
+
+print (type(df_obj.groupby(&#39;key1&#39;)))
+#没有可视化的输出
+</code></pre>
+<pre><code>key2
+one      3
+three    2
+two      3
+Name: key1, dtype: int64
+&lt;class &#39;pandas.core.groupby.generic.DataFrameGroupBy&#39;&gt;
+</code></pre><pre><code class="python">&#39;&#39;&#39;2. 指定列根据key1进行分组&#39;&#39;&#39;
+print (type(df_obj[&#39;data1&#39;].groupby(df_obj[&#39;key1&#39;])))
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.groupby.generic.SeriesGroupBy&#39;&gt;
+</code></pre><pre><code class="python"># 分组运算
+grouped1 = df_obj.groupby(&#39;key1&#39;,as_index=False)
+print (grouped1.mean())
+
+grouped2 = df_obj[&#39;data1&#39;].groupby(df_obj[&#39;key1&#39;])#指定某一列的数据在该索引下进行分组并且加以聚合
+print (grouped2.mean())
+</code></pre>
+<pre><code>  key1     data1     data2
+0    a  0.709792 -0.224477
+1    b -0.244746 -0.851723
+key1
+a    0.709792
+b   -0.244746
+Name: data1, dtype: float64
+</code></pre><pre><code class="python">&#39;&#39;&#39;3. 按自定义key分组，列表&#39;&#39;&#39;
+self_def_key = [1, 1, 2, 2, 2, 1, 1, 1]
+df_obj.groupby(self_def_key).mean()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.116853</td>
+<td>-0.338455</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.743484</td>
+<td>-0.661761</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>-0.147612</td>
+<td>-0.348087</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>-0.992986</td>
+<td>0.902458</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>0.547541</td>
+<td>-0.310040</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>0.458871</td>
+<td>-1.895392</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>1.224041</td>
+<td>0.220150</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>-0.200124</td>
+<td>-1.562237</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>1.539144</td>
+<td>-0.758716</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>0.385845</td>
+<td>0.074309</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">&#39;&#39;&#39;4. 按多个列多层分组 = = = 通过列表&#39;&#39;&#39;
+grouped2 = df_obj.groupby([&#39;key1&#39;, &#39;key2&#39;],as_index=False)
+print (grouped2.mean())
+print(&#39;--------比较asindex的差异-------&#39;)
+grouped2 = df_obj.groupby([&#39;key1&#39;, &#39;key2&#39;],as_index=True)
+print (grouped2.mean())
+</code></pre>
+<pre><code>  key1   key2     data1     data2
+0    a    one  0.695766 -0.553401
+1    a  three  0.385845  0.074309
+2    a    two  0.885791 -0.044945
+3    b    one -0.992986  0.902458
+4    b  three  0.458871 -1.895392
+5    b    two -0.200124 -1.562237
+--------比较asindex的差异-------
+               data1     data2
+key1 key2
+a    one    0.695766 -0.553401
+     three  0.385845  0.074309
+     two    0.885791 -0.044945
+b    one   -0.992986  0.902458
+     three  0.458871 -1.895392
+     two   -0.200124 -1.562237
+</code></pre><pre><code class="python"># 多层分组按key的顺序进行===和上面的asindex作用一样，把所选取的列数据当成索引，这才是区别之处
+grouped3 = df_obj.groupby([&#39;key2&#39;, &#39;key1&#39;])
+print (grouped3.mean())
+print (&#39;=============================================&#39;)
+&#39;&#39;&#39;PS：如果想按照列进行分组聚合运算 === unstack===也可以通过转置&#39;&#39;&#39;
+print (grouped3.mean().unstack())
+</code></pre>
+<pre><code>               data1     data2
+key2  key1
+one   a     0.695766 -0.553401
+      b    -0.992986  0.902458
+three a     0.385845  0.074309
+      b     0.458871 -1.895392
+two   a     0.885791 -0.044945
+      b    -0.200124 -1.562237
+=============================================
+          data1               data2
+key1          a         b         a         b
+key2
+one    0.695766 -0.992986 -0.553401  0.902458
+three  0.385845  0.458871  0.074309 -1.895392
+two    0.885791 -0.200124 -0.044945 -1.562237
+</code></pre><h3 id="GroupBy-对象遍历迭代"><a href="#GroupBy-对象遍历迭代" class="headerlink" title="GroupBy 对象遍历迭代"></a>GroupBy 对象遍历迭代</h3><pre><code class="python">grouped1
+</code></pre>
+<pre><code>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x000001AF5B5F9088&gt;
+</code></pre><pre><code class="python"># 单层分组
+print(grouped1.head(5))
+print(&quot;------------------------------------分割线------------------------------------------&quot;)
+for group_name, group_data in grouped1:
+    print (group_name)
+    print (group_data[&#39;data1&#39;])
+</code></pre>
+<pre><code>  key1   key2     data1     data2
+0    a    one -0.147612 -0.348087
+1    b    one -0.992986  0.902458
+2    a    two  0.547541 -0.310040
+3    b  three  0.458871 -1.895392
+4    a    two  1.224041  0.220150
+5    b    two -0.200124 -1.562237
+6    a    one  1.539144 -0.758716
+7    a  three  0.385845  0.074309
+------------------------------------分割线------------------------------------------
+a
+0   -0.147612
+2    0.547541
+4    1.224041
+6    1.539144
+7    0.385845
+Name: data1, dtype: float64
+b
+1   -0.992986
+3    0.458871
+5   -0.200124
+Name: data1, dtype: float64
+</code></pre><pre><code class="python"># 多层分组
+for group_name, group_data in grouped2:
+    print (group_name)
+    print (group_data)
+</code></pre>
+<pre><code>(&#39;a&#39;, &#39;one&#39;)
+  key1 key2     data1     data2
+0    a  one -0.147612 -0.348087
+6    a  one  1.539144 -0.758716
+(&#39;a&#39;, &#39;three&#39;)
+  key1   key2     data1     data2
+7    a  three  0.385845  0.074309
+(&#39;a&#39;, &#39;two&#39;)
+  key1 key2     data1    data2
+2    a  two  0.547541 -0.31004
+4    a  two  1.224041  0.22015
+(&#39;b&#39;, &#39;one&#39;)
+  key1 key2     data1     data2
+1    b  one -0.992986  0.902458
+(&#39;b&#39;, &#39;three&#39;)
+  key1   key2     data1     data2
+3    b  three  0.458871 -1.895392
+(&#39;b&#39;, &#39;two&#39;)
+  key1 key2     data1     data2
+5    b  two -0.200124 -1.562237
+</code></pre><pre><code class="python"># GroupBy对象转换list
+print(grouped1.mean())
+list(grouped1)
+</code></pre>
+<pre><code>  key1     data1     data2
+0    a  0.709792 -0.224477
+1    b -0.244746 -0.851723
+
+
+
+
+
+[(&#39;a&#39;,   key1   key2     data1     data2
+  0    a    one -0.147612 -0.348087
+  2    a    two  0.547541 -0.310040
+  4    a    two  1.224041  0.220150
+  6    a    one  1.539144 -0.758716
+  7    a  three  0.385845  0.074309), (&#39;b&#39;,   key1   key2     data1     data2
+  1    b    one -0.992986  0.902458
+  3    b  three  0.458871 -1.895392
+  5    b    two -0.200124 -1.562237)]
+</code></pre><pre><code class="python"># GroupBy对象转换dict
+dict(list(grouped1))
+</code></pre>
+<pre><code>{&#39;a&#39;:   key1   key2     data1     data2
+ 0    a    one -0.147612 -0.348087
+ 2    a    two  0.547541 -0.310040
+ 4    a    two  1.224041  0.220150
+ 6    a    one  1.539144 -0.758716
+ 7    a  three  0.385845  0.074309, &#39;b&#39;:   key1   key2     data1     data2
+ 1    b    one -0.992986  0.902458
+ 3    b  three  0.458871 -1.895392
+ 5    b    two -0.200124 -1.562237}
+</code></pre><pre><code class="python"># 按列分组
+print (df_obj.dtypes)
+
+# 按数据类型分组
+df_obj.groupby(df_obj.dtypes, axis=1).size()
+df_obj.groupby(df_obj.dtypes, axis=1).sum()
+</code></pre>
+<pre><code>key1      object
+key2      object
+data1    float64
+data2    float64
+dtype: object
+</code></pre><h3 id="其他分组方法"><a href="#其他分组方法" class="headerlink" title="其他分组方法"></a>其他分组方法</h3><ol>
+<li>其实列表也是分组的一种方式<br>===用到列表时候，一般都是多层索引了</li>
+</ol>
+<pre><code class="python">df_obj2 = pd.DataFrame(np.random.randint(1, 10, (5,5)),
+                       columns=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;],
+                       index=[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
+df_obj2.ix[1, 1:4] = np.NaN
+df_obj2
+</code></pre>
+<pre><code>C:\Users\wztli\Anaconda3\lib\site-packages\ipykernel_launcher.py:4: FutureWarning:
+.ix is deprecated. Please use
+.loc for label based indexing or
+.iloc for positional indexing
+
+See the documentation here:
+http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#ix-indexer-is-deprecated
+  after removing the cwd from sys.path.
+</code></pre><table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>e</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>4</td>
+<td>2.0</td>
+<td>6.0</td>
+<td>5.0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>B</td>
+<td>5</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>6</td>
+</tr>
+<tr>
+<td>C</td>
+<td>2</td>
+<td>3.0</td>
+<td>8.0</td>
+<td>6.0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>D</td>
+<td>9</td>
+<td>5.0</td>
+<td>6.0</td>
+<td>5.0</td>
+<td>9</td>
+</tr>
+<tr>
+<td>E</td>
+<td>4</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>2.0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>通过字典分组</li>
+</ol>
+<pre><code class="python"># 通过字典分组
+mapping_dict = {&#39;A&#39;:&#39;python&#39;, &#39;B&#39;:&#39;python&#39;, &#39;C&#39;:&#39;java&#39;, &#39;D&#39;:&#39;C&#39;, &#39;E&#39;:&#39;java&#39;}
+#df_obj2.groupby(mapping_dict, axis=1).size()
+#df_obj2.groupby(mapping_dict, axis=1).count() # 非NaN的个数
+print(df_obj2.groupby(mapping_dict, axis=0).sum())
+</code></pre>
+<pre><code>        a    b     c    d   e
+C       9  5.0   6.0  5.0   9
+java    6  4.0  14.0  8.0   4
+python  9  2.0   6.0  5.0  15
+</code></pre><ol start="2">
+<li>通过函数分组</li>
+</ol>
+<pre><code class="python"># 通过函数分组
+df_obj3 = pd.DataFrame(np.random.randint(1, 10, (5,5)),
+                       columns=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;],
+                       index=[&#39;AA&#39;, &#39;BBB&#39;, &#39;CC&#39;, &#39;D&#39;, &#39;EE&#39;])
+#df_obj3
+
+def group_key(idx):
+    &quot;&quot;&quot;
+        idx 为列索引或行索引
+    &quot;&quot;&quot;
+    #return idx
+    return len(idx)
+
+df_obj3.groupby(group_key).size()
+
+# 以上自定义函数等价于
+#df_obj3.groupby(len).size()
+</code></pre>
+<pre><code>1    1
+2    3
+3    1
+dtype: int64
+</code></pre><ol start="3">
+<li>通过层级索引级别分组</li>
+</ol>
+<pre><code class="python"># 通过索引级别分组
+columns = pd.MultiIndex.from_arrays([[&#39;Python&#39;, &#39;Java&#39;, &#39;Python&#39;, &#39;Java&#39;, &#39;Python&#39;],
+                                     [&#39;A&#39;, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;B&#39;]], names=[&#39;language&#39;, &#39;index&#39;])
+df_obj4 = pd.DataFrame(np.random.randint(1, 10, (5, 5)), columns=columns)
+df_obj4
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>language</th>
+<th>Python</th>
+<th>Java</th>
+<th>Python</th>
+<th>Java</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>B</td>
+</tr>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2</td>
+<td>9</td>
+<td>3</td>
+<td>1</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 根据language进行分组
+df_obj4.groupby(level=&#39;language&#39;, axis=1).sum()
+df_obj4.groupby(level=&#39;index&#39;, axis=1).sum()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>10</td>
+<td>12</td>
+<td>8</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>7</td>
+<td>5</td>
+</tr>
+<tr>
+<td>3</td>
+<td>11</td>
+<td>12</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5</td>
+<td>11</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二、聚合"><a href="#二、聚合" class="headerlink" title="二、聚合"></a>二、聚合</h2><pre><code class="python">dict_obj = {&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
+                      &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
+            &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,
+                      &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
+            &#39;data1&#39;: np.random.randint(1,10, 8),
+            &#39;data2&#39;: np.random.randint(1,10, 8)}
+df_obj5 = pd.DataFrame(dict_obj)
+print (df_obj5)
+</code></pre>
+<pre><code>  key1   key2  data1  data2
+0    a    one      9      4
+1    b    one      6      7
+2    a    two      9      4
+3    b  three      9      6
+4    a    two      6      2
+5    b    two      3      3
+6    a    one      1      1
+7    a  three      2      6
+</code></pre><h3 id="内置的聚合函数"><a href="#内置的聚合函数" class="headerlink" title="内置的聚合函数"></a>内置的聚合函数</h3><pre><code class="python">df_obj5
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>9</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>9</td>
+<td>6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 内置的聚合函数
+#print (df_obj5.groupby(&#39;key1&#39;).sum())
+#print (df_obj5.groupby(&#39;key1&#39;).max())
+#print (df_obj5.groupby(&#39;key1&#39;).min())
+print (df_obj5.groupby(&#39;key1&#39;).mean())
+#print (df_obj5.groupby(&#39;key1&#39;).size())
+#print (df_obj5.groupby(&#39;key1&#39;).count())
+#print (df_obj5.groupby(&#39;key1&#39;).describe())
+&#39;&#39;&#39;
+count：分组中非NA的值
+std：标准差
+var：方差
+median：非NA中的中位数
+mean：非NA的平均值
+25%||50%||75%是什么意思==不造？
+&#39;&#39;&#39;
+</code></pre>
+<pre><code>      data1     data2
+key1
+a       5.4  3.400000
+b       6.0  5.333333
+
+
+
+
+
+&#39;\ncount：分组中非NA的值\nstd：标准差\nvar：方差\nmedian：非NA中的中位数\nmean：非NA的平均值\n25%||50%||75%是什么意思==不造？\n&#39;
+</code></pre><h3 id="自定义聚合函数"><a href="#自定义聚合函数" class="headerlink" title="自定义聚合函数"></a>自定义聚合函数</h3><pre><code class="python"># 自定义聚合函数
+def peak_range(df):
+    &quot;&quot;&quot;
+        返回数值范围
+    &quot;&quot;&quot;
+    #print type(df) #参数为索引所对应的记录
+    return df.max() - df.min()
+
+print (df_obj5.groupby(&#39;key1&#39;).agg(peak_range))
+#print df_obj.groupby(&#39;key1&#39;).agg(lambda df : df.max() - df.min())
+#默认列名就是函数名。
+</code></pre>
+<pre><code>      data1  data2
+key1
+a         8      5
+b         6      4
+</code></pre><ol start="3">
+<li>同时应用多个聚合函数：agg</li>
+</ol>
+<pre><code class="python"># 同时应用多个聚合函数：agg
+print (df_obj.groupby(&#39;key1&#39;).agg([&#39;mean&#39;, &#39;std&#39;, &#39;count&#39;]))
+</code></pre>
+<pre><code>         data1                     data2
+          mean       std count      mean       std count
+key1
+a     0.709792  0.674293     5 -0.224477  0.385674     5
+b    -0.244746  0.726957     3 -0.851723  1.528271     3
+</code></pre><pre><code class="python">print (df_obj.groupby(&#39;key1&#39;).agg([&#39;mean&#39;, &#39;std&#39;, &#39;count&#39;, (&#39;range&#39;, peak_range)])) # 通过元组提供新的列名
+</code></pre>
+<pre><code>         data1                               data2
+          mean       std count     range      mean       std count     range
+key1
+a     0.709792  0.674293     5  1.686756 -0.224477  0.385674     5  0.978865
+b    -0.244746  0.726957     3  1.451857 -0.851723  1.528271     3  2.797850
+</code></pre><pre><code class="python"># 每列作用不同的聚合函数
+dict_mapping = {&#39;data1&#39;:&#39;mean&#39;,
+                &#39;data2&#39;:&#39;sum&#39;}
+print (df_obj.groupby(&#39;key1&#39;).agg(dict_mapping))
+</code></pre>
+<pre><code>         data1     data2
+key1
+a     0.709792 -1.122384
+b    -0.244746 -2.555170
+</code></pre><pre><code class="python">dict_mapping = {&#39;data1&#39;:[&#39;mean&#39;,&#39;max&#39;],
+                &#39;data2&#39;:&#39;sum&#39;}
+print (df_obj.groupby(&#39;key1&#39;).agg(dict_mapping))
+</code></pre>
+<pre><code>         data1               data2
+          mean       max       sum
+key1
+a     0.709792  1.539144 -1.122384
+b    -0.244746  0.458871 -2.555170
+</code></pre><h2 id="三、分组运算"><a href="#三、分组运算" class="headerlink" title="三、分组运算"></a>三、分组运算</h2><pre><code class="python">import pandas as pd
+import numpy as np
+</code></pre>
+<h3 id="分组和对齐"><a href="#分组和对齐" class="headerlink" title="分组和对齐"></a>分组和对齐</h3><pre><code class="python">s1 = pd.Series(range(10, 20), index = range(10))
+s2 = pd.Series(range(20, 25), index = range(5))
+print (&#39;s1: &#39; )
+print (s1)
+print(&#39;===========================&#39;)
+print (&#39;s2: &#39;)
+print (s2)
+</code></pre>
+<pre><code>s1:
+0    10
+1    11
+2    12
+3    13
+4    14
+5    15
+6    16
+7    17
+8    18
+9    19
+dtype: int64
+===========================
+s2:
+0    20
+1    21
+2    22
+3    23
+4    24
+dtype: int64
+</code></pre><pre><code class="python"># Series 对齐运算
+s1 + s2
+print(s1+s2)
+</code></pre>
+<pre><code>0    30.0
+1    32.0
+2    34.0
+3    36.0
+4    38.0
+5     NaN
+6     NaN
+7     NaN
+8     NaN
+9     NaN
+dtype: float64
+</code></pre><pre><code class="python">df1 = pd.DataFrame(np.ones((2,2)), columns = [&#39;a&#39;, &#39;b&#39;])
+df2 = pd.DataFrame(np.ones((3,3)), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])
+
+print (&#39;df1: &#39;)
+print (df1)
+print (&#39;=================&#39;)
+print (&#39;df2: &#39;)
+print (df2)
+</code></pre>
+<pre><code>df1:
+     a    b
+0  1.0  1.0
+1  1.0  1.0
+=================
+df2:
+     a    b    c
+0  1.0  1.0  1.0
+1  1.0  1.0  1.0
+2  1.0  1.0  1.0
+</code></pre><pre><code class="python"># DataFrame对齐操作
+print(df1 + df2)
+</code></pre>
+<pre><code>     a    b   c
+0  2.0  2.0 NaN
+1  2.0  2.0 NaN
+2  NaN  NaN NaN
+</code></pre><p>① 常用运算函数</p>
+<pre><code class="python">
+# 填充未对齐的数据进行运算
+print(s1.add(s2, fill_value = -1))
+</code></pre>
+<pre><code>0    30.0
+1    32.0
+2    34.0
+3    36.0
+4    38.0
+5    14.0
+6    15.0
+7    16.0
+8    17.0
+9    18.0
+dtype: float64
+</code></pre><pre><code class="python">df1.sub(df2, fill_value = 2.)
+#sub函数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 填充NaN
+s3 = s1 + s2
+print (s3)
+</code></pre>
+<pre><code>0    30.0
+1    32.0
+2    34.0
+3    36.0
+4    38.0
+5     NaN
+6     NaN
+7     NaN
+8     NaN
+9     NaN
+dtype: float64
+</code></pre><pre><code class="python">s3_filled = s3.fillna(-1)
+print (s3)
+</code></pre>
+<pre><code>0    30.0
+1    32.0
+2    34.0
+3    36.0
+4    38.0
+5     NaN
+6     NaN
+7     NaN
+8     NaN
+9     NaN
+dtype: float64
+</code></pre><pre><code class="python">df3 = df1 + df2
+print (df3)
+</code></pre>
+<pre><code>     a    b   c
+0  2.0  2.0 NaN
+1  2.0  2.0 NaN
+2  NaN  NaN NaN
+</code></pre><pre><code class="python">df3.fillna(100, inplace = True)
+print (df3)
+</code></pre>
+<pre><code>       a      b      c
+0    2.0    2.0  100.0
+1    2.0    2.0  100.0
+2  100.0  100.0  100.0
+</code></pre><h3 id="统计计算-VS-聚合运算"><a href="#统计计算-VS-聚合运算" class="headerlink" title="统计计算 VS 聚合运算"></a>统计计算 VS 聚合运算</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+print(df_obj1)
+</code></pre>
+<pre><code>          a         b         c         d
+0 -0.542708  0.201376  1.111431  1.784324
+1  0.583422  0.231096 -2.801967  0.568497
+2 -0.577329 -1.668581 -0.842126  1.803080
+3 -0.128431 -1.769619  2.089983  0.209761
+4  0.493981 -1.571405  0.690019 -0.215292
+</code></pre><pre><code class="python">print(df_obj1.sum(axis=1))
+print(&#39;=====================================&#39;)
+print(df_obj1.max())
+print(&#39;=====================================&#39;)
+print(df_obj1.min(axis=1))
+</code></pre>
+<pre><code>0    2.554423
+1   -1.418952
+2   -1.284956
+3    0.401694
+4   -0.602698
+dtype: float64
+=====================================
+a    0.583422
+b    0.231096
+c    2.089983
+d    1.803080
+dtype: float64
+=====================================
+0   -0.542708
+1   -2.801967
+2   -1.668581
+3   -1.769619
+4   -1.571405
+dtype: float64
+</code></pre><h3 id="数据分组运算"><a href="#数据分组运算" class="headerlink" title="数据分组运算"></a>数据分组运算</h3><pre><code class="python"># 分组运算后保持shape
+dict_obj = {&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
+                      &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
+            &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,
+                      &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
+            &#39;data1&#39;: np.random.randint(1, 10, 8),
+            &#39;data2&#39;: np.random.randint(1, 10, 8)}
+df_obj = pd.DataFrame(dict_obj)
+df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># 按key1分组后，计算data1，data2的统计信息======并附加到原始表格中
+k1_sum = df_obj.groupby(&#39;key1&#39;).sum().add_prefix(&#39;sum_&#39;)
+print(k1_sum)
+print(&#39;================================&#39;)
+print(df_obj)
+</code></pre>
+<pre><code>      sum_data1  sum_data2
+key1
+a            22         15
+b            18          8
+================================
+  key1   key2  data1  data2
+0    a    one      4      3
+1    b    one      4      4
+2    a    two      9      6
+3    b  three      8      2
+4    a    two      3      3
+5    b    two      6      2
+6    a    one      4      1
+7    a  three      2      2
+</code></pre><ol>
+<li>merge 方法</li>
+</ol>
+<pre><code class="python"># 方法1，使用merge
+pd.merge(df_obj, k1_sum, left_on=&#39;key1&#39;, right_index=True)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+<th>sum_data1</th>
+<th>sum_data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>3</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>6</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>1</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>2</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>4</td>
+<td>4</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>8</td>
+<td>2</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+<td>18</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>transform 方法</li>
+</ol>
+<pre><code class="python"># 方法2，使用transform
+k1_sum_tf = df_obj.groupby(&#39;key1&#39;).transform(np.sum).add_prefix(&#39;sum_&#39;)
+df_obj[k1_sum_tf.columns] = k1_sum_tf
+df_obj
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key1</th>
+<th>key2</th>
+<th>data1</th>
+<th>data2</th>
+<th>sum_key2</th>
+<th>sum_data1</th>
+<th>sum_data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>3</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>one</td>
+<td>4</td>
+<td>4</td>
+<td>onethreetwo</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td>two</td>
+<td>9</td>
+<td>6</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td>three</td>
+<td>8</td>
+<td>2</td>
+<td>onethreetwo</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td>two</td>
+<td>3</td>
+<td>3</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>5</td>
+<td>b</td>
+<td>two</td>
+<td>6</td>
+<td>2</td>
+<td>onethreetwo</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>one</td>
+<td>4</td>
+<td>1</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td>7</td>
+<td>a</td>
+<td>three</td>
+<td>2</td>
+<td>2</td>
+<td>onetwotwoonethree</td>
+<td>22</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>自定义函数</li>
+</ol>
+<pre><code class="python"># 自定义函数传入transform
+def diff_mean(s):
+    &quot;&quot;&quot;
+        返回数据与均值的差值
+    &quot;&quot;&quot;
+    return s - s.mean()
+
+df_obj.groupby(&#39;key1&#39;).transform(diff_mean)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>data1</th>
+<th>data2</th>
+<th>sum_data1</th>
+<th>sum_data2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-0.4</td>
+<td>0.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-2.0</td>
+<td>1.333333</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4.6</td>
+<td>3.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2.0</td>
+<td>-0.666667</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-1.4</td>
+<td>0.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.0</td>
+<td>-0.666667</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>-0.4</td>
+<td>-2.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>-2.4</td>
+<td>-1.000000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python">dataset_path = &#39;./data/starcraft.csv&#39;
+df_data = pd.read_csv(dataset_path, usecols=[&#39;LeagueIndex&#39;, &#39;Age&#39;, &#39;HoursPerWeek&#39;,
+                                             &#39;TotalHours&#39;, &#39;APM&#39;])
+</code></pre>
+<ul>
+<li>apply</li>
+</ul>
+<pre><code class="python">def top_n(df, n=3, column=&#39;APM&#39;):
+    &quot;&quot;&quot;
+        返回每个分组按 column 的 top n 数据
+    &quot;&quot;&quot;
+    return df.sort_values(by=column, ascending=False)[:n]
+
+df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>LeagueIndex</th>
+<th>Age</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+<th>APM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>2214</td>
+<td>1</td>
+<td>20.0</td>
+<td>12.0</td>
+<td>730.0</td>
+<td>172.9530</td>
+</tr>
+<tr>
+<td></td>
+<td>2246</td>
+<td>1</td>
+<td>27.0</td>
+<td>8.0</td>
+<td>250.0</td>
+<td>141.6282</td>
+</tr>
+<tr>
+<td></td>
+<td>1753</td>
+<td>1</td>
+<td>20.0</td>
+<td>28.0</td>
+<td>100.0</td>
+<td>139.6362</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3062</td>
+<td>2</td>
+<td>20.0</td>
+<td>6.0</td>
+<td>100.0</td>
+<td>179.6250</td>
+</tr>
+<tr>
+<td></td>
+<td>3229</td>
+<td>2</td>
+<td>16.0</td>
+<td>24.0</td>
+<td>110.0</td>
+<td>156.7380</td>
+</tr>
+<tr>
+<td></td>
+<td>1520</td>
+<td>2</td>
+<td>29.0</td>
+<td>6.0</td>
+<td>250.0</td>
+<td>151.6470</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1557</td>
+<td>3</td>
+<td>22.0</td>
+<td>6.0</td>
+<td>200.0</td>
+<td>226.6554</td>
+</tr>
+<tr>
+<td></td>
+<td>484</td>
+<td>3</td>
+<td>19.0</td>
+<td>42.0</td>
+<td>450.0</td>
+<td>220.0692</td>
+</tr>
+<tr>
+<td></td>
+<td>2883</td>
+<td>3</td>
+<td>16.0</td>
+<td>8.0</td>
+<td>800.0</td>
+<td>208.9500</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2688</td>
+<td>4</td>
+<td>26.0</td>
+<td>24.0</td>
+<td>990.0</td>
+<td>249.0210</td>
+</tr>
+<tr>
+<td></td>
+<td>1759</td>
+<td>4</td>
+<td>16.0</td>
+<td>6.0</td>
+<td>75.0</td>
+<td>229.9122</td>
+</tr>
+<tr>
+<td></td>
+<td>2637</td>
+<td>4</td>
+<td>23.0</td>
+<td>24.0</td>
+<td>650.0</td>
+<td>227.2272</td>
+</tr>
+<tr>
+<td>5</td>
+<td>3277</td>
+<td>5</td>
+<td>18.0</td>
+<td>16.0</td>
+<td>950.0</td>
+<td>372.6426</td>
+</tr>
+<tr>
+<td></td>
+<td>93</td>
+<td>5</td>
+<td>17.0</td>
+<td>36.0</td>
+<td>720.0</td>
+<td>335.4990</td>
+</tr>
+<tr>
+<td></td>
+<td>202</td>
+<td>5</td>
+<td>37.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>327.7218</td>
+</tr>
+<tr>
+<td>6</td>
+<td>734</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>730.0</td>
+<td>389.8314</td>
+</tr>
+<tr>
+<td></td>
+<td>2746</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>4000.0</td>
+<td>350.4114</td>
+</tr>
+<tr>
+<td></td>
+<td>1810</td>
+<td>6</td>
+<td>21.0</td>
+<td>14.0</td>
+<td>730.0</td>
+<td>323.2506</td>
+</tr>
+<tr>
+<td>7</td>
+<td>3127</td>
+<td>7</td>
+<td>23.0</td>
+<td>42.0</td>
+<td>2000.0</td>
+<td>298.7952</td>
+</tr>
+<tr>
+<td></td>
+<td>104</td>
+<td>7</td>
+<td>21.0</td>
+<td>24.0</td>
+<td>1000.0</td>
+<td>286.4538</td>
+</tr>
+<tr>
+<td></td>
+<td>1654</td>
+<td>7</td>
+<td>18.0</td>
+<td>98.0</td>
+<td>700.0</td>
+<td>236.0316</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3393</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>375.8664</td>
+</tr>
+<tr>
+<td></td>
+<td>3373</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>364.8504</td>
+</tr>
+<tr>
+<td></td>
+<td>3372</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>355.3518</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="python"># apply函数接收的参数会传入自定义的函数中
+df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>LeagueIndex</th>
+<th>Age</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+<th>APM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>3146</td>
+<td>1</td>
+<td>40.0</td>
+<td>12.0</td>
+<td>150.0</td>
+<td>38.5590</td>
+</tr>
+<tr>
+<td></td>
+<td>3040</td>
+<td>1</td>
+<td>39.0</td>
+<td>10.0</td>
+<td>500.0</td>
+<td>29.8764</td>
+</tr>
+<tr>
+<td>2</td>
+<td>920</td>
+<td>2</td>
+<td>43.0</td>
+<td>10.0</td>
+<td>730.0</td>
+<td>86.0586</td>
+</tr>
+<tr>
+<td></td>
+<td>2437</td>
+<td>2</td>
+<td>41.0</td>
+<td>4.0</td>
+<td>200.0</td>
+<td>54.2166</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1258</td>
+<td>3</td>
+<td>41.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>77.6472</td>
+</tr>
+<tr>
+<td></td>
+<td>2972</td>
+<td>3</td>
+<td>40.0</td>
+<td>10.0</td>
+<td>500.0</td>
+<td>60.5970</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1696</td>
+<td>4</td>
+<td>44.0</td>
+<td>6.0</td>
+<td>500.0</td>
+<td>89.5266</td>
+</tr>
+<tr>
+<td></td>
+<td>1729</td>
+<td>4</td>
+<td>39.0</td>
+<td>8.0</td>
+<td>500.0</td>
+<td>86.7246</td>
+</tr>
+<tr>
+<td>5</td>
+<td>202</td>
+<td>5</td>
+<td>37.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>327.7218</td>
+</tr>
+<tr>
+<td></td>
+<td>2745</td>
+<td>5</td>
+<td>37.0</td>
+<td>18.0</td>
+<td>1000.0</td>
+<td>123.4098</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3069</td>
+<td>6</td>
+<td>31.0</td>
+<td>8.0</td>
+<td>800.0</td>
+<td>133.1790</td>
+</tr>
+<tr>
+<td></td>
+<td>2706</td>
+<td>6</td>
+<td>31.0</td>
+<td>8.0</td>
+<td>700.0</td>
+<td>66.9918</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2813</td>
+<td>7</td>
+<td>26.0</td>
+<td>36.0</td>
+<td>1300.0</td>
+<td>188.5512</td>
+</tr>
+<tr>
+<td></td>
+<td>1992</td>
+<td>7</td>
+<td>26.0</td>
+<td>24.0</td>
+<td>1000.0</td>
+<td>219.6690</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3340</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>189.7404</td>
+</tr>
+<tr>
+<td></td>
+<td>3341</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>287.8128</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>禁止分组 group_keys=False</li>
+</ul>
+<pre><code class="python">df_data.groupby(&#39;LeagueIndex&#39;, group_keys=False).apply(top_n)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>LeagueIndex</th>
+<th>Age</th>
+<th>HoursPerWeek</th>
+<th>TotalHours</th>
+<th>APM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2214</td>
+<td>1</td>
+<td>20.0</td>
+<td>12.0</td>
+<td>730.0</td>
+<td>172.9530</td>
+</tr>
+<tr>
+<td>2246</td>
+<td>1</td>
+<td>27.0</td>
+<td>8.0</td>
+<td>250.0</td>
+<td>141.6282</td>
+</tr>
+<tr>
+<td>1753</td>
+<td>1</td>
+<td>20.0</td>
+<td>28.0</td>
+<td>100.0</td>
+<td>139.6362</td>
+</tr>
+<tr>
+<td>3062</td>
+<td>2</td>
+<td>20.0</td>
+<td>6.0</td>
+<td>100.0</td>
+<td>179.6250</td>
+</tr>
+<tr>
+<td>3229</td>
+<td>2</td>
+<td>16.0</td>
+<td>24.0</td>
+<td>110.0</td>
+<td>156.7380</td>
+</tr>
+<tr>
+<td>1520</td>
+<td>2</td>
+<td>29.0</td>
+<td>6.0</td>
+<td>250.0</td>
+<td>151.6470</td>
+</tr>
+<tr>
+<td>1557</td>
+<td>3</td>
+<td>22.0</td>
+<td>6.0</td>
+<td>200.0</td>
+<td>226.6554</td>
+</tr>
+<tr>
+<td>484</td>
+<td>3</td>
+<td>19.0</td>
+<td>42.0</td>
+<td>450.0</td>
+<td>220.0692</td>
+</tr>
+<tr>
+<td>2883</td>
+<td>3</td>
+<td>16.0</td>
+<td>8.0</td>
+<td>800.0</td>
+<td>208.9500</td>
+</tr>
+<tr>
+<td>2688</td>
+<td>4</td>
+<td>26.0</td>
+<td>24.0</td>
+<td>990.0</td>
+<td>249.0210</td>
+</tr>
+<tr>
+<td>1759</td>
+<td>4</td>
+<td>16.0</td>
+<td>6.0</td>
+<td>75.0</td>
+<td>229.9122</td>
+</tr>
+<tr>
+<td>2637</td>
+<td>4</td>
+<td>23.0</td>
+<td>24.0</td>
+<td>650.0</td>
+<td>227.2272</td>
+</tr>
+<tr>
+<td>3277</td>
+<td>5</td>
+<td>18.0</td>
+<td>16.0</td>
+<td>950.0</td>
+<td>372.6426</td>
+</tr>
+<tr>
+<td>93</td>
+<td>5</td>
+<td>17.0</td>
+<td>36.0</td>
+<td>720.0</td>
+<td>335.4990</td>
+</tr>
+<tr>
+<td>202</td>
+<td>5</td>
+<td>37.0</td>
+<td>14.0</td>
+<td>800.0</td>
+<td>327.7218</td>
+</tr>
+<tr>
+<td>734</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>730.0</td>
+<td>389.8314</td>
+</tr>
+<tr>
+<td>2746</td>
+<td>6</td>
+<td>16.0</td>
+<td>28.0</td>
+<td>4000.0</td>
+<td>350.4114</td>
+</tr>
+<tr>
+<td>1810</td>
+<td>6</td>
+<td>21.0</td>
+<td>14.0</td>
+<td>730.0</td>
+<td>323.2506</td>
+</tr>
+<tr>
+<td>3127</td>
+<td>7</td>
+<td>23.0</td>
+<td>42.0</td>
+<td>2000.0</td>
+<td>298.7952</td>
+</tr>
+<tr>
+<td>104</td>
+<td>7</td>
+<td>21.0</td>
+<td>24.0</td>
+<td>1000.0</td>
+<td>286.4538</td>
+</tr>
+<tr>
+<td>1654</td>
+<td>7</td>
+<td>18.0</td>
+<td>98.0</td>
+<td>700.0</td>
+<td>236.0316</td>
+</tr>
+<tr>
+<td>3393</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>375.8664</td>
+</tr>
+<tr>
+<td>3373</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>364.8504</td>
+</tr>
+<tr>
+<td>3372</td>
+<td>8</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>355.3518</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+    </div>
+    <!-- FIXME: 不知道用哪了 -->
+    
+    <!-- TODO: 最下面的小格子 -->
+    <!-- <div class="follow-wechat"><img src="/blogimgs/follow.jpg"></div> -->
+
+<div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<!-- <a href="/about/#support" class="supportme">赏</a> -->
+	<ul>
+		<li>作者:  <a href="/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-02-10 08:28:49</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/pandas/">pandas</a>
+</li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/oq4xcx.md" download target="_blank">Pandas-分组聚合.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
+		<li>最后编辑时间: 2021-02-09 08:59:36</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="icon">&#x25c8;</i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/oq4xcx/" target="_blank" aria-hidden="true"><i class="icon">&#xe622;</i></a>；
+			网站部署：<a href="https://github.com/wztlink1013/website" target="_blank" aria-hidden="true"><i class="icon">&#xe616;</i></a>
+		</li>
+	</ul>
+	<a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" /></a>
+</div>
+
+
+    <!-- FIXME: 不知道用哪了 -->
+    <!-- TODO:  下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <!-- TODO: 上一篇文章/下一篇文章 -->
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/kt0kvc/" class="post-prev">
+      <i class="icon" tabindex="0" aria-hidden="true">&#x261c;</i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>Data-数据可视化综述</b>
+      
+    </a>
+  
+  
+    <a href="/blog/nfqdqf/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>pandas-索引</b>
+      <i class="icon" tabindex="0" aria-hidden="true">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/kt0kvc/" class="prev" title="Data-数据可视化综述">
+    <i class="icon">&#xe600;</i>
+    
+    <b>Data-数据可视化综述</b>
+    
+  </a>
+  
+  
+  <a href="/blog/nfqdqf/" class="next" title="pandas-索引">
+    <i class="icon">&#x261e;</i>
+    <b>pandas-索引</b>
+  </a>
+  
+</div>
+
+  </div>
+</div>
+
+<!-- TODO: 侧边栏 -->
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+  <!-- TODO: 上面的 -->
+  <div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <!-- <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div> -->
+        </div>
+    </span>
+
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+  </div>
+  <!-- TODO: 下面的 -->
+	<div class="func-btns">
+
+    <!-- TODO: 友情链接 -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <!-- TODO: 订阅 -->
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<!-- TODO: 评论+相关文章+友情链接 -->
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/oq4xcx"
+	   data-disqus-identifier="blog/oq4xcx" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		
+    <div id="tcomment"></div>
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.2.0/dist/twikoo.all.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.4/js/twikoo/v0.5.0/twikoo.all.min.js"></script> -->
+    <script>
+    twikoo.init({ 
+        envId: 'website-wikoo-4g46k8do98867542', 
+        el: '#tcomment'
+        // path: 'window.location.pathname.replace(\'blog\',\'message\')'
+    })
+    </script>
+
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2020-05-29 »</font> </span>
+				<a href="/blog/delag2/">UTC-GMT-GST</a>
+				<span class="aria-readonly">发表时间为2020年05月29日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/kt0kvc/">Data-数据可视化综述</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>GitHub 笔记源码jupyter notebookhttps://github.com/wztl...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/nfqdqf/">pandas-索引</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-02-10 »</font> </span>
+				<a href="/blog/li8bkt/">pandas-基本知识</a>
+				<span class="aria-readonly">发表时间为2020年02月10日</span>
+				<div class="relative-box">
+          
+          <span class="aria-readonly">文章概要 </span>一、Pandas 数据结构import pandas as pdSeries通过 list 构建 S...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://www.ruanyifeng.com/home.html" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://xaoxuu.com" target="_blank">xaoxuu</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.barretlee.com/" target="_blank">Barret李靖</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.cnblogs.com/mjios" target="_blank">小码哥MJ</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.sgyzyun.club/" target="_blank">洛尘曦</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.ccyh.xyz" target="_blank">Liam's Blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://xiamuyourenzhang.cn/" target="_blank">夏目友人帐</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://sitoi.cn/" target="_blank">Sitoi</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.cnblogs.com/zhanjiahui/" target="_blank">小圆</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://blog.webpro.ltd/" target="_blank">Bill’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://liuyib.github.io/" target="_blank">liuyib</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://crainyday.gitee.io" target="_blank">CRainyDay</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://hewanyue.com" target="_blank">没有人</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://yc9064.gitee.io/" target="_blank">Marco</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.hcode.top" target="_blank">Hcode</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://zzsnn.github.io/" target="_blank">折纸少年</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="http://zhifou.run" target="_blank">Darren</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://cndrew.cn/" target="_blank">Uncle_drew</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://cungudafa.top" target="_blank">cungudafa</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="http://hudiskoray.iicp.net:4000/" target="_blank">Jerry Huang</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://blog.lhkstudio.me/" target="_blank">Linhk1606</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://modao233.gitee.io/" target="_blank">modao’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.jsonformatting.com/" target="_blank">json format</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/" target="_blank">🧙‍♂️</a>
+	<span>&copy;2019-2021 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small></span>
+	本站 <a href="/">尼采般地抒情</a> <a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://travellings.now.sh/' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai"><img src='https://union.zhaodao.ai/icon.black.svg' width="20" height="20"></a>
+</div>
+
+		</div>
+	</div>
+</div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+</div>
+<!-- TODO: 回到顶部 -->
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<!-- <a class="wechart icon">&#xe60d;<span><img src="/blogimgs/wechart.png" title="扫码添加小胡子哥微信"/> </span></a> -->
+	<!-- <a class="hash-to-comments icon" title="显示目录">&#xe618;</a> -->
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+	<span class="func-item">
+		<a class="func-nav icon">&#xe618;</a>
+		<!-- <div class="toc">
+			<i class="left-arrow-toc"></i><i class="left-arrow-clone-toc"></i>
+			<a href="javascript:void(0);" onclick="return false;">显示目录</a>
+		</div> -->
+	</span>
+
+
+	<a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song icon">&#xe61a;</a>
+	<!-- <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei icon">&#xe619;</a> -->
+  
+
+
+	<!-- <span class="func-item">
+        <a class="func-font icon">&#xe604;</a>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+        </div>
+    </span> -->
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+</body>
+
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<script src="/public/js/aplayer.js"></script>
+<script src="/public/js/main.js?v=20191101"></script>
+
+
+</html>
