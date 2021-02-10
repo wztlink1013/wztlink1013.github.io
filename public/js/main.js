@@ -928,14 +928,13 @@ $(window).on("load", function () {
   // }
     // 百度统计
   setTimeout(function () {
-    // var _hmt = _hmt || [];
-    // (function() {
-    //   var hm = document.createElement("script");
-    //   hm.src = "//hm.baidu.com/hm.js?63827dcd82b61c5a5548efc20df96345";
-    //   var s = document.getElementsByTagName("script")[0]; 
-    //   s.parentNode.insertBefore(hm, s);
-    // })();
-
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
     // 百度收录，自动推送
     // (function () {
     //   var bp = document.createElement('script');
