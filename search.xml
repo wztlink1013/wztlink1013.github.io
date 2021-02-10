@@ -5951,6 +5951,94 @@ Require stack:
       </tags>
   </entry>
   <entry>
+    <title>栈设计</title>
+    <url>/blog/yxy6mv/</url>
+    <content><![CDATA[<h2 id="栈的设计"><a href="#栈的设计" class="headerlink" title="栈的设计"></a>栈的设计</h2><h3 id="栈的特点"><a href="#栈的特点" class="headerlink" title="栈的特点"></a>栈的特点</h3><p>栈的最重要特点就是其元素的<strong>后进先出，先进后出</strong>。</p>
+<h3 id="栈的接口设计"><a href="#栈的接口设计" class="headerlink" title="栈的接口设计"></a>栈的接口设计</h3><p>栈可以<strong>直接继承</strong>之前所学的 ArrayList 亦或是 List 接口。<br>这过程中需要注意，最好不要直接继承，因为如果直接继承，会将接口里面的其他方法也继承下来，会导致栈的对外接口不合理，解决办法就是在<strong>类设计内部 new 一个 private List 对象</strong>来设计栈。</p>
+<pre><code class="java">int size(); // 元素的数量
+boolean isEmpty(); // 栈是否为空
+void push(E element); // 入栈
+E pop(); // 出栈
+E top(); // 获取栈顶元素
+void clear(); // 清空栈
+</code></pre>
+<pre><code class="java">package com.wztlink1013.ds.stack;
+
+import com.wztlink1013.ds.stack.list.ArrayList;
+import com.wztlink1013.ds.stack.list.List;
+
+public class Stack&lt;E&gt; {
+    private List&lt;E&gt; list = new ArrayList&lt;&gt;();
+
+    public void clear() {
+        list.clear();
+    }
+
+    public int size() {
+        return list.size();
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    public void push(E element) {
+        list.add(element);
+    }
+
+    public E pop() {
+        return list.remove(list.size() - 1);
+    }
+
+    public E top() {
+        return list.get(list.size() - 1);
+    }
+}
+</code></pre>
+<h2 id="栈的应用"><a href="#栈的应用" class="headerlink" title="栈的应用"></a>栈的应用</h2><p><strong>浏览器的前进和后退</strong>的功能。<br>假如有网页 a、b、c、d，依次点击 abc 三个网页，然后回退至 b 网页，这个时候，就相当于在 1 栈中有 ab 两个网页（且 b 为栈顶元素），c 暂时放到 2 栈中，此时依然可以使用回退前进功能，但是现在在 b 页面上在新输入 d 网页并进入，此时 2 栈被清空，d 为 1 栈的栈顶元素，在此时的 d 页面内，不能使用浏览器的前进功能，只能使用后退功能。</p>
+<p>##</p>
+]]></content>
+      <categories>
+        <category>DataStructure</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++随机字符串生成函数</title>
+    <url>/blog/zeszpb/</url>
+    <content><![CDATA[<pre><code class="cpp">//C++ 随机字符串生成函数
+#include&lt;iostream&gt;
+#include&lt;ctime&gt;
+using namespace std;
+
+const int LEN_NAME=4;
+
+char *rand_str(char *str,const int len)
+{
+    int i;
+    for(i=0;i&lt;len;++i)
+        str[i]=&#39;A&#39;+rand()%26;
+    str[++i]=&#39;\0&#39;;
+    return str;
+}
+
+void main()
+{
+    srand(time(NULL));
+    int i;
+    char name[LEN_NAME+1];
+
+    for(i=0;i&lt;20;++i)
+    {
+        cout&lt;&lt;rand_str(name,LEN_NAME)&lt;&lt;endl;
+    }
+}
+</code></pre>
+]]></content>
+      <categories>
+        <category>Language</category>
+      </categories>
+  </entry>
+  <entry>
     <title>sdnu-dboj-成绩管理-Movie</title>
     <url>/blog/zhdy1x/</url>
     <content><![CDATA[<blockquote>
@@ -9935,150 +10023,6 @@ ${question.code}
       </categories>
   </entry>
   <entry>
-    <title>DOS/CMD/Windows/提高开发效率</title>
-    <url>/blog/nvlr2g/</url>
-    <content><![CDATA[<h2 id="一、快捷键"><a href="#一、快捷键" class="headerlink" title="一、快捷键"></a>一、快捷键</h2><blockquote>
-<p>很多软件的快捷键使用相通，在不确定的情况下，先试试其他软件的快捷键的使用方法</p>
-</blockquote>
-<h3 id="Windows-快捷键"><a href="#Windows-快捷键" class="headerlink" title="Windows 快捷键"></a>Windows 快捷键</h3><blockquote>
-<p><strong>HP 惠普笔记本</strong></p>
-</blockquote>
-<pre><code class="powershell">Win+E                  打开文件管器
-Win+D                  显示桌面
-Win+L                  锁计算机
-Win+V：                                打开剪贴板
-Win+PgUp：                            在桌面选定左上角软件/文件
-Win+PgDown：                        在桌面选定右下角软件/文件
-Win+G                                    录频选项
-Win+alt+G                            直接录频
-
-alt+F4                关闭当前程序
-
-ctrl+shift+Esc/ctrl+alt+delete：任务管理器
-ctrl+F                文本或网页中查找（退出一般按ESC）
-ctrl+A                选中所有文本
-</code></pre>
-<h3 id="Eclipse-快捷键"><a href="#Eclipse-快捷键" class="headerlink" title="Eclipse 快捷键"></a>Eclipse 快捷键</h3><blockquote>
-<p>ctrl+shift+L：eclipse 所有快捷键<br><code>//</code>注释：<code>ctrl+shift+c</code>（添加和注释都是这样）或者<code>ctrl+/</code> &gt; <code>/**/</code>注释：添加<code>ctrl+shift+/</code>   取消<code>ctrl+shift+\</code></p>
-</blockquote>
-<pre><code>Alt+方向键：                    将当前行向上或者向下移动
-ctrl+m：                            编辑窗口最大化（反复两次按即取消）
-ctrl+.及ctrl+1：            下一个错误及快速修改
-Control+O:                         快速概要,迅速的跳到一个方法或者属性，只需要输入名字的头几个字母。
-
-shift+home/end：                选中一行
-ctrl+pgup/pgdn：                切换页面（浏览器打开的页面/编辑器的多窗口）
-</code></pre><h3 id="VScode-快捷键"><a href="#VScode-快捷键" class="headerlink" title="VScode 快捷键"></a>VScode 快捷键</h3><pre><code>ctrl+shift+c                直接进入博客根目录下的CMD模式
-</code></pre><h3 id="Pycharm-JetBrains-快捷键"><a href="#Pycharm-JetBrains-快捷键" class="headerlink" title="Pycharm/JetBrains 快捷键"></a>Pycharm/JetBrains 快捷键</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666000-0fb595f1-51e4-4e71-8547-96aa0b938148.png#align=left&amp;display=inline&amp;height=397&amp;margin=%5Bobject%20Object%5D&amp;originHeight=397&amp;originWidth=769&amp;size=0&amp;status=done&amp;style=none&amp;width=769" alt></p>
-<pre><code>Ctrl+F5（左上角）：（return &quot;project&quot;）重新debug该文件
-F9：（resume program）一个断点接着一个断点走，不按行走（eg：有循环会随着i一步一步走完）
-F8：（step over） 一行一行走代码
-F7：（step into） 进入函数内部
-Alt+shift+F7：（step into mycode）遇到自己函数  进去
-shift+F8：（step out）跳出，进入函数后，跳出来
-Alt+F10：（show execution point）指针显示当前断点旁边
-**Show Python Prompt**按键,交互式调试命令
-</code></pre><h2 id="二、CMD-之常用命令"><a href="#二、CMD-之常用命令" class="headerlink" title="二、CMD 之常用命令"></a>二、CMD 之常用命令</h2><blockquote>
-<ul>
-<li>使用 help 命令，查看所有的 dos 命令</li>
-<li>找到命令之后，使用 <code>命令+ /?</code>来查看该命令下的其他属性</li>
-<li>DOS 不区分大小写</li>
-</ul>
-</blockquote>
-<h3 id="磁盘-文件夹相关"><a href="#磁盘-文件夹相关" class="headerlink" title="磁盘/文件夹相关"></a>磁盘/文件夹相关</h3><ul>
-<li><code>d:</code> <code>e:</code> 进入不同的盘</li>
-<li><code>cd:</code> 进入指定文件夹。注意：只在<strong>该磁盘</strong>才有效</li>
-<li><code>dir</code> 查看当前目录下的所有文件，使用 dir /?来查看其它用法</li>
-<li>创建和删除目录<ul>
-<li>md 目录名（文件夹） //创建目录</li>
-<li>rd   目录名（文件夹） //删除目录</li>
-</ul>
-</li>
-<li>cd .. 返回上一级文件夹</li>
-<li><p>复制文件:把一个文件移动（就是剪切+复制）到另一个地方。甚至可以改后缀</p>
-<blockquote>
-<p>move 路径\文件名 路径\文件名</p>
-</blockquote>
-</li>
-<li><p>删除文件</p>
-<blockquote>
-<p>//这个是专门删除文件的，不能删除文件夹<br>del 文件名</p>
-</blockquote>
-</li>
-<li><p><strong>生成文件树</strong></p>
-<blockquote>
-<p>tree /f &gt;tree.txt</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h3><ul>
-<li><code>ipconfig</code> 查看本机 ip</li>
-<li><code>cls</code> 清除屏幕</li>
-<li>ping<blockquote>
-<p>//用来测试网络是否畅通<br>ping ip(主机名)</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><pre><code>复制内容：右键弹出快捷菜单，选择“标记(K)”，然后选中所需复制的内容，然后右键即可
-
-粘贴内容：右键弹出快捷菜单，选择“粘贴(P)”
-</code></pre><ul>
-<li>在文件夹空白处按住 Shift，然后右键弹出快捷菜单，可以看到“在此处打开命令行窗口”</li>
-<li>tab 补齐功能！！！</li>
-<li>文件及目录名中不能包含下列任何字符：\ / : * ? “ &lt; &gt; |</li>
-</ul>
-<h2 id="三、CMD-之默认非-utf-8-编码"><a href="#三、CMD-之默认非-utf-8-编码" class="headerlink" title="三、CMD 之默认非 utf-8 编码"></a>三、CMD 之默认非 utf-8 编码</h2><p>运行 java 程序时候，如果代码中有中文，会出现中文报错乱码情况/</p>
-<h3 id="治标方法"><a href="#治标方法" class="headerlink" title="治标方法"></a>治标方法</h3><p><code>CMD</code> 中输入 <code>chcp 65001</code> 进入 utf-8 模式下的的控制台，再运行程序</p>
-<h3 id="治本方法"><a href="#治本方法" class="headerlink" title="治本方法"></a>治本方法</h3><p><a href="https://blog.csdn.net/gulang03/article/details/81771343" target="_blank" rel="noopener">博文 1</a>  <a href="https://blog.csdn.net/runAndRun/article/details/103072938?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">博文 2</a>注意：自己已经再注册表中增加了一行 tuf-8 编码数据，以后要留意、<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666566-625a520c-ff9d-4eea-8fba-3a8c4f8f696e.png#align=left&amp;display=inline&amp;height=24&amp;margin=%5Bobject%20Object%5D&amp;originHeight=24&amp;originWidth=660&amp;size=0&amp;status=done&amp;style=none&amp;width=660" alt></p>
-<h2 id="四、CMD-之运行-JAVA"><a href="#四、CMD-之运行-JAVA" class="headerlink" title="四、CMD 之运行 JAVA"></a>四、CMD 之运行 JAVA</h2><h3 id="CMD-运行-java-程序"><a href="#CMD-运行-java-程序" class="headerlink" title="CMD 运行 java 程序"></a>CMD 运行 java 程序</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666652-cb97d69b-664c-4506-a24f-1dc5b8220a02.png#align=left&amp;display=inline&amp;height=940&amp;margin=%5Bobject%20Object%5D&amp;originHeight=940&amp;originWidth=902&amp;size=0&amp;status=done&amp;style=none&amp;width=902" alt></p>
-<h3 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h3><blockquote>
-<p>main 主函数可以看成一个普通的方法，也可以传递实参来调用普通方法<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666759-75d2a062-c52d-4c49-acce-7310a0280f24.png#align=left&amp;display=inline&amp;height=214&amp;margin=%5Bobject%20Object%5D&amp;originHeight=214&amp;originWidth=1070&amp;size=0&amp;status=done&amp;style=none&amp;width=1070" alt></p>
-</blockquote>
-<hr>
-<blockquote>
-<p>向 main 方法传递字符串<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666878-98ce351e-4485-4381-bcfe-4b9121226fc9.png#align=left&amp;display=inline&amp;height=778&amp;margin=%5Bobject%20Object%5D&amp;originHeight=778&amp;originWidth=1098&amp;size=0&amp;status=done&amp;style=none&amp;width=1098" alt></p>
-</blockquote>
-<h3 id="CMD-下运行-Java-中文乱码"><a href="#CMD-下运行-Java-中文乱码" class="headerlink" title="CMD 下运行 Java 中文乱码"></a>CMD 下运行 Java 中文乱码</h3><p><code>javac -encoding utf-8 test.java</code></p>
-<p>还是上面的问题，DOS 默认使用的编码是 GBK,这里需要再编译的时候制定使用的编码</p>
-<h2 id="五、笔记本触摸板"><a href="#五、笔记本触摸板" class="headerlink" title="五、笔记本触摸板"></a>五、笔记本触摸板</h2><h3 id="笔记本触摸屏使用"><a href="#笔记本触摸屏使用" class="headerlink" title="笔记本触摸屏使用"></a>笔记本触摸屏使用</h3><ul>
-<li><strong>单指</strong>：“确定键”<br>点击===相当于左键确定<br>先点击 不放拖动 ===拖拽</li>
-<li><strong>双指</strong>：“右键、滑动、拉伸旋转键”<br>点击=相当于右键（鼠标）<br>先点击   不放左右拖动上下拖动=滑页功能<br>等比例拉伸或者旋转</li>
-<li><strong>三指</strong>：“页面切换键”<br>点击=查找<br>先点击   不放   上下拖动=多页面模式、纯桌面模式切换<br>先点击   不放   左右拖动===页面切换类似 alt+tab</li>
-<li><strong>四指</strong>：“设置键”<br>点击===设置/操作中心</li>
-</ul>
-<h3 id="实现手写输入功能"><a href="#实现手写输入功能" class="headerlink" title="实现手写输入功能"></a>实现手写输入功能</h3><ul>
-<li>第一步：安装 SoftStylus 手写软件</li>
-</ul>
-<p>本身没有预装 SoftStylus 手写软件的，首先登录 HP 官方网站，查询并下载手写软件，然后安装手写软件。如果已预装手写软件，建议运行 Software Setup 软件，将手写软件升级到最新版本，以提高手写识别成功率。</p>
-<ul>
-<li>第二步：设置手写识别速度</li>
-</ul>
-<p>运行手写软件，点击设置图标进入“参数”界面，然后可根据需要配置识别速度。如果是初次使用手写功能，刚开始建议将识别速度降低，一旦习惯了使用手写功能，应该将识别速度调为最快，这样在 QQ 聊天或编辑文档时，以应对较快的手写输入连写。</p>
-<ul>
-<li>第三步：设置各种热键</li>
-</ul>
-<p>此外，替换选项可设置在主窗口上显示最多可选择字符，这个应该根据笔记本屏幕大小而定，例如 14 英寸屏幕可设置为 7，而 12 英寸屏幕应该设为 4，最后建议开启“汉字预览”功能，切换到“热键”选项页，然后可根据需要自定义各种热键。</p>
-<ul>
-<li>第四步：设置手写窗口外观</li>
-</ul>
-<p>如果经常使用手写功能，建议切换到“一般”选项页，勾寻操作系统起动时运行 SoftStylus”复选框，最后切换到“外观”选项页，并调节窗口透明度、画笔宽度和墨色。如果是 QQ 聊天，建议将画笔宽度调细一点，且墨色应该设为黑色。</p>
-<ul>
-<li>第五步：使用手写进行聊天</li>
-</ul>
-<p>设置完毕后，单击“确认”按钮，当你在 QQ 聊天或编辑文档时，如想使用手写输入，只需按下前面设置的快捷键，即可马上弹出手写输入界面。<br>这个时候，就可以用手指在触摸板上比划，文字就会显示在界面里，最后出现在聊天窗口中，很方便。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>W<a href="https://www.jianshu.com/p/7bd7574d94c8" target="_blank" rel="noopener">indows 常用快捷键与快捷指令</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Environment</category>
-      </categories>
-      <tags>
-        <tag>CMD</tag>
-        <tag>OS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>链表JAVA设计</title>
     <url>/blog/nkn2os/</url>
     <content><![CDATA[<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>链表是一种数据结构，和<strong>数组同级</strong>。之前的 ArrayList 数据结构，其实现原理是数组，而 LinkedList 的实现原理就是链表了。链表在进行循环遍历时效率不高，但是插入和删除时优势明显。<br>单向链表是一种线性表，实际上是由<strong>节点（Node）</strong>组成的，一个链表拥有不定数量的节点。其数据在<strong>内存中存储是不连续的</strong>，它存储的数据分散在内存中，每个结点只能也只有它能知道下一个结点的存储位置。由 N 各节点（Node）组成单向链表，每一个 Node 记录本 Node 的数据及下一个 Node。向外暴露的只有一个头节点（Head），<strong>我们对链表的所有操作，都是直接或者间接地通过其头节点来进行的。</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194076184-195f3044-1083-4244-9eeb-d86c96a37e6f.png#align=left&amp;display=inline&amp;height=98&amp;margin=%5Bobject%20Object%5D&amp;originHeight=98&amp;originWidth=491&amp;size=0&amp;status=done&amp;style=shadow&amp;width=491" alt><br>上图中最左边的节点即为头结点（Head），但是添加节点的顺序是从右向左的，添加的新节点会被作为新节点。最先添加的节点对下一节点的引用可以为空。引用是引用下一个节点而非下一个节点的对象。因为有着不断的引用，所以<strong>头节点就可以操作所有节点</strong>了。<br>下图描述了单向链表存储情况。存储是分散的，每一个节点只要记录下一节点，就把所有数据串了起来，形成了一个单向链表。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194105521-d31f8e78-7f2a-4c60-8838-57e15707e27b.png#align=left&amp;display=inline&amp;height=219&amp;margin=%5Bobject%20Object%5D&amp;originHeight=219&amp;originWidth=195&amp;size=0&amp;status=done&amp;style=shadow&amp;width=195" alt><br>节点（Node）是由一个需要储存的对象及对下一个节点的引用组成的。也就是说，节点拥有两个成员：储存的对象、对下一个节点的引用。下面图是具体的说明：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194124335-fc6fc00c-35fb-44e1-a01c-de4b8b5531af.png#align=left&amp;display=inline&amp;height=207&amp;margin=%5Bobject%20Object%5D&amp;originHeight=207&amp;originWidth=370&amp;size=0&amp;status=done&amp;style=shadow&amp;width=370" alt></p>
@@ -10531,6 +10475,150 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; {
       <categories>
         <category>DataStructure</category>
       </categories>
+  </entry>
+  <entry>
+    <title>DOS/CMD/Windows/提高开发效率</title>
+    <url>/blog/nvlr2g/</url>
+    <content><![CDATA[<h2 id="一、快捷键"><a href="#一、快捷键" class="headerlink" title="一、快捷键"></a>一、快捷键</h2><blockquote>
+<p>很多软件的快捷键使用相通，在不确定的情况下，先试试其他软件的快捷键的使用方法</p>
+</blockquote>
+<h3 id="Windows-快捷键"><a href="#Windows-快捷键" class="headerlink" title="Windows 快捷键"></a>Windows 快捷键</h3><blockquote>
+<p><strong>HP 惠普笔记本</strong></p>
+</blockquote>
+<pre><code class="powershell">Win+E                  打开文件管器
+Win+D                  显示桌面
+Win+L                  锁计算机
+Win+V：                                打开剪贴板
+Win+PgUp：                            在桌面选定左上角软件/文件
+Win+PgDown：                        在桌面选定右下角软件/文件
+Win+G                                    录频选项
+Win+alt+G                            直接录频
+
+alt+F4                关闭当前程序
+
+ctrl+shift+Esc/ctrl+alt+delete：任务管理器
+ctrl+F                文本或网页中查找（退出一般按ESC）
+ctrl+A                选中所有文本
+</code></pre>
+<h3 id="Eclipse-快捷键"><a href="#Eclipse-快捷键" class="headerlink" title="Eclipse 快捷键"></a>Eclipse 快捷键</h3><blockquote>
+<p>ctrl+shift+L：eclipse 所有快捷键<br><code>//</code>注释：<code>ctrl+shift+c</code>（添加和注释都是这样）或者<code>ctrl+/</code> &gt; <code>/**/</code>注释：添加<code>ctrl+shift+/</code>   取消<code>ctrl+shift+\</code></p>
+</blockquote>
+<pre><code>Alt+方向键：                    将当前行向上或者向下移动
+ctrl+m：                            编辑窗口最大化（反复两次按即取消）
+ctrl+.及ctrl+1：            下一个错误及快速修改
+Control+O:                         快速概要,迅速的跳到一个方法或者属性，只需要输入名字的头几个字母。
+
+shift+home/end：                选中一行
+ctrl+pgup/pgdn：                切换页面（浏览器打开的页面/编辑器的多窗口）
+</code></pre><h3 id="VScode-快捷键"><a href="#VScode-快捷键" class="headerlink" title="VScode 快捷键"></a>VScode 快捷键</h3><pre><code>ctrl+shift+c                直接进入博客根目录下的CMD模式
+</code></pre><h3 id="Pycharm-JetBrains-快捷键"><a href="#Pycharm-JetBrains-快捷键" class="headerlink" title="Pycharm/JetBrains 快捷键"></a>Pycharm/JetBrains 快捷键</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666000-0fb595f1-51e4-4e71-8547-96aa0b938148.png#align=left&amp;display=inline&amp;height=397&amp;margin=%5Bobject%20Object%5D&amp;originHeight=397&amp;originWidth=769&amp;size=0&amp;status=done&amp;style=none&amp;width=769" alt></p>
+<pre><code>Ctrl+F5（左上角）：（return &quot;project&quot;）重新debug该文件
+F9：（resume program）一个断点接着一个断点走，不按行走（eg：有循环会随着i一步一步走完）
+F8：（step over） 一行一行走代码
+F7：（step into） 进入函数内部
+Alt+shift+F7：（step into mycode）遇到自己函数  进去
+shift+F8：（step out）跳出，进入函数后，跳出来
+Alt+F10：（show execution point）指针显示当前断点旁边
+**Show Python Prompt**按键,交互式调试命令
+</code></pre><h2 id="二、CMD-之常用命令"><a href="#二、CMD-之常用命令" class="headerlink" title="二、CMD 之常用命令"></a>二、CMD 之常用命令</h2><blockquote>
+<ul>
+<li>使用 help 命令，查看所有的 dos 命令</li>
+<li>找到命令之后，使用 <code>命令+ /?</code>来查看该命令下的其他属性</li>
+<li>DOS 不区分大小写</li>
+</ul>
+</blockquote>
+<h3 id="磁盘-文件夹相关"><a href="#磁盘-文件夹相关" class="headerlink" title="磁盘/文件夹相关"></a>磁盘/文件夹相关</h3><ul>
+<li><code>d:</code> <code>e:</code> 进入不同的盘</li>
+<li><code>cd:</code> 进入指定文件夹。注意：只在<strong>该磁盘</strong>才有效</li>
+<li><code>dir</code> 查看当前目录下的所有文件，使用 dir /?来查看其它用法</li>
+<li>创建和删除目录<ul>
+<li>md 目录名（文件夹） //创建目录</li>
+<li>rd   目录名（文件夹） //删除目录</li>
+</ul>
+</li>
+<li>cd .. 返回上一级文件夹</li>
+<li><p>复制文件:把一个文件移动（就是剪切+复制）到另一个地方。甚至可以改后缀</p>
+<blockquote>
+<p>move 路径\文件名 路径\文件名</p>
+</blockquote>
+</li>
+<li><p>删除文件</p>
+<blockquote>
+<p>//这个是专门删除文件的，不能删除文件夹<br>del 文件名</p>
+</blockquote>
+</li>
+<li><p><strong>生成文件树</strong></p>
+<blockquote>
+<p>tree /f &gt;tree.txt</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h3><ul>
+<li><code>ipconfig</code> 查看本机 ip</li>
+<li><code>cls</code> 清除屏幕</li>
+<li>ping<blockquote>
+<p>//用来测试网络是否畅通<br>ping ip(主机名)</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><pre><code>复制内容：右键弹出快捷菜单，选择“标记(K)”，然后选中所需复制的内容，然后右键即可
+
+粘贴内容：右键弹出快捷菜单，选择“粘贴(P)”
+</code></pre><ul>
+<li>在文件夹空白处按住 Shift，然后右键弹出快捷菜单，可以看到“在此处打开命令行窗口”</li>
+<li>tab 补齐功能！！！</li>
+<li>文件及目录名中不能包含下列任何字符：\ / : * ? “ &lt; &gt; |</li>
+</ul>
+<h2 id="三、CMD-之默认非-utf-8-编码"><a href="#三、CMD-之默认非-utf-8-编码" class="headerlink" title="三、CMD 之默认非 utf-8 编码"></a>三、CMD 之默认非 utf-8 编码</h2><p>运行 java 程序时候，如果代码中有中文，会出现中文报错乱码情况/</p>
+<h3 id="治标方法"><a href="#治标方法" class="headerlink" title="治标方法"></a>治标方法</h3><p><code>CMD</code> 中输入 <code>chcp 65001</code> 进入 utf-8 模式下的的控制台，再运行程序</p>
+<h3 id="治本方法"><a href="#治本方法" class="headerlink" title="治本方法"></a>治本方法</h3><p><a href="https://blog.csdn.net/gulang03/article/details/81771343" target="_blank" rel="noopener">博文 1</a>  <a href="https://blog.csdn.net/runAndRun/article/details/103072938?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">博文 2</a>注意：自己已经再注册表中增加了一行 tuf-8 编码数据，以后要留意、<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666566-625a520c-ff9d-4eea-8fba-3a8c4f8f696e.png#align=left&amp;display=inline&amp;height=24&amp;margin=%5Bobject%20Object%5D&amp;originHeight=24&amp;originWidth=660&amp;size=0&amp;status=done&amp;style=none&amp;width=660" alt></p>
+<h2 id="四、CMD-之运行-JAVA"><a href="#四、CMD-之运行-JAVA" class="headerlink" title="四、CMD 之运行 JAVA"></a>四、CMD 之运行 JAVA</h2><h3 id="CMD-运行-java-程序"><a href="#CMD-运行-java-程序" class="headerlink" title="CMD 运行 java 程序"></a>CMD 运行 java 程序</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666652-cb97d69b-664c-4506-a24f-1dc5b8220a02.png#align=left&amp;display=inline&amp;height=940&amp;margin=%5Bobject%20Object%5D&amp;originHeight=940&amp;originWidth=902&amp;size=0&amp;status=done&amp;style=none&amp;width=902" alt></p>
+<h3 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h3><blockquote>
+<p>main 主函数可以看成一个普通的方法，也可以传递实参来调用普通方法<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666759-75d2a062-c52d-4c49-acce-7310a0280f24.png#align=left&amp;display=inline&amp;height=214&amp;margin=%5Bobject%20Object%5D&amp;originHeight=214&amp;originWidth=1070&amp;size=0&amp;status=done&amp;style=none&amp;width=1070" alt></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>向 main 方法传递字符串<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685666878-98ce351e-4485-4381-bcfe-4b9121226fc9.png#align=left&amp;display=inline&amp;height=778&amp;margin=%5Bobject%20Object%5D&amp;originHeight=778&amp;originWidth=1098&amp;size=0&amp;status=done&amp;style=none&amp;width=1098" alt></p>
+</blockquote>
+<h3 id="CMD-下运行-Java-中文乱码"><a href="#CMD-下运行-Java-中文乱码" class="headerlink" title="CMD 下运行 Java 中文乱码"></a>CMD 下运行 Java 中文乱码</h3><p><code>javac -encoding utf-8 test.java</code></p>
+<p>还是上面的问题，DOS 默认使用的编码是 GBK,这里需要再编译的时候制定使用的编码</p>
+<h2 id="五、笔记本触摸板"><a href="#五、笔记本触摸板" class="headerlink" title="五、笔记本触摸板"></a>五、笔记本触摸板</h2><h3 id="笔记本触摸屏使用"><a href="#笔记本触摸屏使用" class="headerlink" title="笔记本触摸屏使用"></a>笔记本触摸屏使用</h3><ul>
+<li><strong>单指</strong>：“确定键”<br>点击===相当于左键确定<br>先点击 不放拖动 ===拖拽</li>
+<li><strong>双指</strong>：“右键、滑动、拉伸旋转键”<br>点击=相当于右键（鼠标）<br>先点击   不放左右拖动上下拖动=滑页功能<br>等比例拉伸或者旋转</li>
+<li><strong>三指</strong>：“页面切换键”<br>点击=查找<br>先点击   不放   上下拖动=多页面模式、纯桌面模式切换<br>先点击   不放   左右拖动===页面切换类似 alt+tab</li>
+<li><strong>四指</strong>：“设置键”<br>点击===设置/操作中心</li>
+</ul>
+<h3 id="实现手写输入功能"><a href="#实现手写输入功能" class="headerlink" title="实现手写输入功能"></a>实现手写输入功能</h3><ul>
+<li>第一步：安装 SoftStylus 手写软件</li>
+</ul>
+<p>本身没有预装 SoftStylus 手写软件的，首先登录 HP 官方网站，查询并下载手写软件，然后安装手写软件。如果已预装手写软件，建议运行 Software Setup 软件，将手写软件升级到最新版本，以提高手写识别成功率。</p>
+<ul>
+<li>第二步：设置手写识别速度</li>
+</ul>
+<p>运行手写软件，点击设置图标进入“参数”界面，然后可根据需要配置识别速度。如果是初次使用手写功能，刚开始建议将识别速度降低，一旦习惯了使用手写功能，应该将识别速度调为最快，这样在 QQ 聊天或编辑文档时，以应对较快的手写输入连写。</p>
+<ul>
+<li>第三步：设置各种热键</li>
+</ul>
+<p>此外，替换选项可设置在主窗口上显示最多可选择字符，这个应该根据笔记本屏幕大小而定，例如 14 英寸屏幕可设置为 7，而 12 英寸屏幕应该设为 4，最后建议开启“汉字预览”功能，切换到“热键”选项页，然后可根据需要自定义各种热键。</p>
+<ul>
+<li>第四步：设置手写窗口外观</li>
+</ul>
+<p>如果经常使用手写功能，建议切换到“一般”选项页，勾寻操作系统起动时运行 SoftStylus”复选框，最后切换到“外观”选项页，并调节窗口透明度、画笔宽度和墨色。如果是 QQ 聊天，建议将画笔宽度调细一点，且墨色应该设为黑色。</p>
+<ul>
+<li>第五步：使用手写进行聊天</li>
+</ul>
+<p>设置完毕后，单击“确认”按钮，当你在 QQ 聊天或编辑文档时，如想使用手写输入，只需按下前面设置的快捷键，即可马上弹出手写输入界面。<br>这个时候，就可以用手指在触摸板上比划，文字就会显示在界面里，最后出现在聊天窗口中，很方便。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>W<a href="https://www.jianshu.com/p/7bd7574d94c8" target="_blank" rel="noopener">indows 常用快捷键与快捷指令</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Environment</category>
+      </categories>
+      <tags>
+        <tag>CMD</tag>
+        <tag>OS</tag>
+      </tags>
   </entry>
   <entry>
     <title>计算机组成原理知识点回顾</title>
@@ -12264,91 +12352,249 @@ print(best_knn.predict(X_test))
       </tags>
   </entry>
   <entry>
-    <title>栈设计</title>
-    <url>/blog/yxy6mv/</url>
-    <content><![CDATA[<h2 id="栈的设计"><a href="#栈的设计" class="headerlink" title="栈的设计"></a>栈的设计</h2><h3 id="栈的特点"><a href="#栈的特点" class="headerlink" title="栈的特点"></a>栈的特点</h3><p>栈的最重要特点就是其元素的<strong>后进先出，先进后出</strong>。</p>
-<h3 id="栈的接口设计"><a href="#栈的接口设计" class="headerlink" title="栈的接口设计"></a>栈的接口设计</h3><p>栈可以<strong>直接继承</strong>之前所学的 ArrayList 亦或是 List 接口。<br>这过程中需要注意，最好不要直接继承，因为如果直接继承，会将接口里面的其他方法也继承下来，会导致栈的对外接口不合理，解决办法就是在<strong>类设计内部 new 一个 private List 对象</strong>来设计栈。</p>
-<pre><code class="java">int size(); // 元素的数量
-boolean isEmpty(); // 栈是否为空
-void push(E element); // 入栈
-E pop(); // 出栈
-E top(); // 获取栈顶元素
-void clear(); // 清空栈
+    <title>[转]uni-app相关知识</title>
+    <url>/blog/ytoag7/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>本文转载自：<a href="https://ask.dcloud.net.cn/article/35657" target="_blank" rel="noopener">白话 uni-app </a></li>
+<li>添加部分细节自己写的内容</li>
+</ul>
+</blockquote>
+<h2 id="uni-app-相对传统的变化"><a href="#uni-app-相对传统的变化" class="headerlink" title="uni-app 相对传统的变化"></a>uni-app 相对传统的变化</h2><h3 id="网络模型的变化"><a href="#网络模型的变化" class="headerlink" title="网络模型的变化"></a>网络模型的变化</h3><p>之前学习的<code>javaweb</code>形式的是“相互嵌套”类型的，<code>jsp</code>代码里面可以有<code>html</code>代码。</p>
+<p>以前网页大多是 b/s，服务端代码混合在页面里；<br>现在是 c/s，前后端分离，通过 js api(类似 ajax 的<code>uni.request</code>)获取 json 数据，把数据绑定在界面上渲染。</p>
+<h3 id="文件类型变化"><a href="#文件类型变化" class="headerlink" title="文件类型变化"></a>文件类型变化</h3><p>.vue 文件通过编译，编译 js 文件</p>
+<h3 id="代码架构大变动"><a href="#代码架构大变动" class="headerlink" title="代码架构大变动"></a>代码架构大变动</h3><p>以前的 HTML 代码节点，有 html 大节点，还有 script 和 style 两个小结点</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
-<pre><code class="java">package com.wztlink1013.ds.stack;
+<p>现在 template 是一级节点，用于写<strong>tag 组件</strong>，script 和 style 是并列的一级节点，也就是有 3 个一级节点</p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    注意必须有一个view，且只能有一个根view。所有内容写在这个view下面。
+  &lt;/view&gt;
+&lt;/template&gt;
 
-import com.wztlink1013.ds.stack.list.ArrayList;
-import com.wztlink1013.ds.stack.list.List;
+&lt;script&gt;
+export default {};
+&lt;/script&gt;
 
-public class Stack&lt;E&gt; {
-    private List&lt;E&gt; list = new ArrayList&lt;&gt;();
-
-    public void clear() {
-        list.clear();
+&lt;style&gt;&lt;/style&gt;
+</code></pre>
+<ul>
+<li><a href="https://cn.vuejs.org/v2/guide/single-file-components.html" target="_blank" rel="noopener">Vue 单文件组件</a></li>
+</ul>
+<p>###</p>
+<h3 id="组件-标签的变化"><a href="#组件-标签的变化" class="headerlink" title="组件/标签的变化"></a>组件/标签的变化</h3><p>下为 html 标签和 uni-app 内置组件的映射表：<br>（其实老的 HTML 标签也可以在 uni-app 里使用，uni-app 编译器会在编译时把老标签转为新标签，比如把 div 编译成 view。但不推荐这种用法，调试 H5 端时容易混乱。）</p>
+<ul>
+<li>div 改成 <a href="https://uniapp.dcloud.io/component/view" target="_blank" rel="noopener">view</a></li>
+<li>span、font 改成 <a href="https://uniapp.dcloud.io/component/text" target="_blank" rel="noopener">text</a></li>
+<li>a 改成 <a href="https://uniapp.dcloud.io/component/navigator" target="_blank" rel="noopener">navigator</a></li>
+<li>img 改成 <a href="https://uniapp.dcloud.io/component/image" target="_blank" rel="noopener">image</a></li>
+<li><a href="https://uniapp.dcloud.io/component/input" target="_blank" rel="noopener">input</a> 还在，但 type 属性改成了 confirmtype</li>
+<li><a href="https://uniapp.dcloud.io/component/form" target="_blank" rel="noopener">form</a>、<a href="https://uniapp.dcloud.io/component/button" target="_blank" rel="noopener">button</a>、<a href="https://uniapp.dcloud.io/component/checkbox" target="_blank" rel="noopener">checkbox</a>、<a href="https://uniapp.dcloud.io/component/radio" target="_blank" rel="noopener">radio</a>、<a href="https://uniapp.dcloud.io/component/label" target="_blank" rel="noopener">label</a>、<a href="https://uniapp.dcloud.io/component/textarea" target="_blank" rel="noopener">textarea</a>、<a href="https://uniapp.dcloud.io/component/canvas" target="_blank" rel="noopener">canvas</a>、<a href="https://uniapp.dcloud.io/component/video" target="_blank" rel="noopener">video</a> 这些还在。</li>
+<li>select 改成 <a href="https://uniapp.dcloud.io/component/picker" target="_blank" rel="noopener">picker</a></li>
+<li>iframe 改成 <a href="https://uniapp.dcloud.io/component/web-view" target="_blank" rel="noopener">web-view</a></li>
+<li>ul、li 没有了，都用 view 替代</li>
+<li>audio 不再推荐使用，改成 api 方式，<a href="https://uniapp.dcloud.io/api/media/background-audio-manager?id=getbackgroundaudiomanager" target="_blank" rel="noopener">背景音频 api 文档</a></li>
+</ul>
+<p><strong>除了改动外，新增了一批手机端常用的新组件</strong><br>**</p>
+<ul>
+<li>scroll-view <a href="https://uniapp.dcloud.io/component/scroll-view" target="_blank" rel="noopener">可区域滚动视图容器</a></li>
+<li>swiper <a href="https://uniapp.dcloud.io/component/swiper" target="_blank" rel="noopener">可滑动区域视图容器</a></li>
+<li>icon <a href="https://uniapp.dcloud.io/component/icon" target="_blank" rel="noopener">图标</a></li>
+<li>rich-text <a href="https://uniapp.dcloud.io/component/rich-text" target="_blank" rel="noopener">富文本（不可执行 js，但可渲染各种文字格式和图片）</a></li>
+<li>progress <a href="https://uniapp.dcloud.io/component/progress" target="_blank" rel="noopener">进度条</a></li>
+<li>slider <a href="https://uniapp.dcloud.io/component/slider" target="_blank" rel="noopener">滑块指示器</a></li>
+<li>switch <a href="https://uniapp.dcloud.io/component/switch" target="_blank" rel="noopener">开关选择器</a></li>
+<li>camera <a href="https://uniapp.dcloud.io/component/camera" target="_blank" rel="noopener">相机</a></li>
+<li>live-player <a href="https://uniapp.dcloud.io/component/live-player" target="_blank" rel="noopener">直播</a></li>
+<li>map <a href="https://uniapp.dcloud.io/component/map" target="_blank" rel="noopener">地图</a></li>
+<li>cover-view <a href="https://uniapp.dcloud.io/component/cover-view?id=cover-view" target="_blank" rel="noopener">可覆盖原生组件的视图容器</a><br>cover-view 需要多强调几句，uni-app 的非 h5 端的 video、map、canvas、textarea 是原生组件，层级高于其他组件。如需覆盖原生组件，则需要使用 cover-view 组件。详见<a href="https://uniapp.dcloud.net.cn/component/native-component" target="_blank" rel="noopener">层级介绍</a></li>
+</ul>
+<p>除了内置组件，还有很多开源的扩展组件，把常用操作都进行封装，DCloud 建立了插件市场收录这些扩展组件，详见<a href="https://ext.dcloud.net.cn/" target="_blank" rel="noopener">插件市场</a></p>
+<p>**</p>
+<h3 id="工程结构和页面管理"><a href="#工程结构和页面管理" class="headerlink" title="工程结构和页面管理"></a>工程结构和页面管理</h3><p>uni-app 的工程结构有单独的要求，<a href="https://uniapp.dcloud.io/frame?id=%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" target="_blank" rel="noopener">详见</a></p>
+<p>每个可显示的页面，都必须在 <a href="https://uniapp.dcloud.io/collocation/pages" target="_blank" rel="noopener">pages.json</a> 中注册。如果你开发过小程序，那么 pages.json 类似 app.json。如果你熟悉 vue，这里没有 vue 的路由，都是在 pages.json 里管理。</p>
+<p>原来工程的首页一般是 index.html 或 default.html，是在 web server 里配的。而 uni-app 的首页，是在 pages.json 里配的，page 节点下第一个页面就是首页。一般在/pages/xx 的目录下。</p>
+<p>app 和小程序中，为了提升体验，页面提供了原生的导航栏和底部 tabbar，注意这些配置是在 pages.json 中做，而不是在 vue 页面里创建，但点击事件的监听在显示的 vue 页面中做。</p>
+<p>如果你熟悉小程序开发的话，对比变化如下：</p>
+<ul>
+<li>原来 app.json 被一拆为二。页面管理，被挪入了 uni-app 的 pages.json；非页面管理，挪入了 manifest.json</li>
+<li>原来的 app.js 和 app.wxss 被合并到了 app.vue 中</li>
+</ul>
+<h2 id="文件导入方式变化"><a href="#文件导入方式变化" class="headerlink" title="文件导入方式变化"></a>文件导入方式变化</h2><h3 id="js-引入方式"><a href="#js-引入方式" class="headerlink" title="js 引入方式"></a>js 引入方式</h3><p>以前通过<code>script `</code>src <code>、</code> link <code></code>href <code>引入外部的 js 和 css；
+现在是**es6**的写法，</code>import`引入外部的 js 模块(注意不是文件)或 css<br>以前</p>
+<pre><code class="javascript">&lt;script src=&quot;js/jquery-1.10.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;css/bootstrap.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
+</code></pre>
+<p>现在</p>
+<blockquote>
+<p>js 要 require 进来，变成了对象。</p>
+</blockquote>
+<p>在 hello uni-app 项目的 common 目录有一个工具类<code>util.js</code>，可以在 hello uni-app 中搜索这个例子查看。</p>
+<pre><code class="javascript">&lt;script&gt;
+  var util = require(&#39;../../../common/util.js&#39;); //require这个js模块 var
+  formatedPlayTime = util.formatTime(playTime); //调用js模块的方法
+&lt;/script&gt;
+</code></pre>
+<p>而在这个<code>util.js</code>里，要把之前的 function 封装为对象的方法<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604048264989-b4591bb0-e4bc-4581-aae5-bf7615f268b4.png#align=left&amp;display=inline&amp;height=231&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=606&amp;originWidth=1331&amp;size=70716&amp;status=done&amp;style=shadow&amp;width=508" alt="image.png"><br>当然还有一些高级的用法</p>
+<pre><code class="javascript">var dateUtils = require(&quot;../../../common/util.js&quot;).dateUtils; //直接使用js模块的属性。在hello uni-app有示例
+import * as echarts from &quot;/components/echarts/echarts.simple.min.js&quot;; //将js导入并重命名为echarts，然后使用echarts.来继续执行方法。
+</code></pre>
+<h3 id="CSS-引入方式"><a href="#CSS-引入方式" class="headerlink" title="CSS 引入方式"></a>CSS 引入方式</h3><pre><code class="css">&lt;style&gt;
+    @import &quot;./common/uni.css&quot;;
+    .uni-hello-text{
+        color:#7A7E83;
     }
-
-    public int size() {
-        return list.size();
-    }
-
-    public boolean isEmpty() {
-        return list.isEmpty();
-    }
-
-    public void push(E element) {
-        list.add(element);
-    }
-
-    public E pop() {
-        return list.remove(list.size() - 1);
-    }
-
-    public E top() {
-        return list.get(list.size() - 1);
-    }
+&lt;/style&gt;
+</code></pre>
+<p><strong>改全局样式：</strong>在根目录下的 app.vue 里写入，每个页面都会加载 app.vue 里的样式。</p>
+<h3 id="组件导入"><a href="#组件导入" class="headerlink" title="组件导入"></a>组件导入</h3><p>类似 hexo 博客主题设计一样，能以组件的形式模块化导入。<br>如下是导入一个角标的组件库，在页面上显示一个 abc 并且右上角有个数字角标 1，<a href="http://ext.dcloud.net.cn/plugin?id=21" target="_blank" rel="noopener">详见</a></p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    &lt;uni-badge text=&quot;abc&quot; :inverted=&quot;true&quot;&gt;&lt;/uni-badge
+    &gt;&lt;!--3.使用组件--&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import uniBadge from &quot;../../../components/uni-badge.vue&quot;; //1.导入组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
+export default {
+  data() {
+    return {};
+  },
+  components: {
+    uniBadge, //2.注册组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
+  },
+};
+&lt;/script&gt;
+</code></pre>
+<p>如需要全局导入 vue 组件，即每个页面都可以直接使用而不用引用和注册的话，在项目根目录下的 main.js 里处理。如下是 hello uni-app 里的例子。</p>
+<pre><code class="javascript">//main.js
+import pageHead from &quot;./components/page-head.vue&quot;; //导入
+Vue.component(&quot;page-head&quot;, pageHead); //注册。注册后在每个vue的page页面里可以直接使用&lt;page-head&gt;&lt;/page-head&gt;组件。
+</code></pre>
+<p>上述的组件使用方式属于传统 vue 的概念。uni-app 2.7 以后推出了更简单的组件使用技术<a href="https://uniapp.dcloud.net.cn/collocation/pages?id=easycom" target="_blank" rel="noopener">easycom</a>，无需引用和注册组件，直接在 template 区域使用组件即可。</p>
+<h2 id="js-的变化"><a href="#js-的变化" class="headerlink" title="js 的变化"></a>js 的变化</h2><p>js 的变化，分为<strong>运行环境变化</strong>、<strong>数据绑定模式变化</strong>、<strong>api 变化</strong>3 部分。</p>
+<h3 id="运行环境从浏览器变成-v8-引擎"><a href="#运行环境从浏览器变成-v8-引擎" class="headerlink" title="运行环境从浏览器变成 v8 引擎"></a>运行环境从浏览器变成 v8 引擎</h3><p>标准 js 语法和 api 都支持，比如 if、for、settimeout、indexOf 等。</p>
+<p>但<strong>浏览器专用的</strong>window、document、navigator、location 对象，包括 cookie 等存储，<strong>只有在浏览器中才有</strong>，app 和小程序都不支持。</p>
+<blockquote>
+<p>可能有些人以为 js 等于浏览器里的 js。其实 js 是 ECMAScript 组织管理的，浏览器中的 js 是 w3c 组织基于 js 规范补充了 window、document、navigator、location 等专用对象。</p>
+</blockquote>
+<p>在 uni-app 的各个端中，除了 h5 端，其他端的 js 都运行在一个独立的 v8 引擎下，不是在浏览器中，所以浏览器的对象无法使用。如果你做过小程序开发，对此应当很了解。<br><strong>这意味着依赖 document 的很多 HTML 的库，比如 jqurey 无法使用。</strong><br>当然 app 和小程序支持 web-view 组件，里面可以加载标准 HTML，这种页面仍然支持浏览器专用对象 window、document、navigator、location。</p>
+<h3 id="以前的-dom-操作，改成-vue-的-MVVM-模式"><a href="#以前的-dom-操作，改成-vue-的-MVVM-模式" class="headerlink" title="以前的 dom 操作，改成 vue 的 MVVM 模式"></a>以前的 dom 操作，改成 vue 的 MVVM 模式</h3><p>现在前端趋势是去 dom 化，改用<strong>mvvm 模式，</strong>更简洁的写法，大幅减少代码行数，同时差量渲染性能更好。<br>uni-app 使用 vue 的数据绑定方式解决 js 和 dom 界面交互的问题。<br>如果你想改变某个 dom 元素的显示内容，比如一个 view 的显示文字：<br><strong>以前</strong>是给 view 设 id，然后 js 里通过选择器获取 dom 元素，进一步通过 js 进行赋值操作，修改 dom 元素的属性或值。<br>如下演示了一段代码，页面中有个显示的文字区和一个按钮，点击按钮后会修改文字区的值</p>
+<pre><code class="html">&lt;html&gt;
+  &lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+        document.getElementById(&quot;spana&quot;).innerText = &quot;456&quot;;
+      });
+      function changetextvalue() {
+        document.getElementById(&quot;spana&quot;).innerText = &quot;789&quot;;
+      }
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;span id=&quot;spana&quot;&gt;123&lt;/span&gt;
+    &lt;button type=&quot;button&quot; onclick=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>现在的做法，是<strong>vue 的绑定模式</strong>，给这个<strong>dom 元素绑定一个 js 变量</strong>，在 script 中修改 js 变量的值，dom 会自动变化，页面会自动更新渲染</p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    &lt;text&gt;{{ textvalue }}&lt;/text
+    &gt;&lt;!-- 这里演示了组件值的绑定 --&gt;
+    &lt;button :type=&quot;buttontype&quot; @click=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button
+    &gt;&lt;!-- 这里演示了属性和事件的绑定 --&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  data() {
+    return {
+      textvalue: &quot;123&quot;,
+      buttontype: &quot;primary&quot;,
+    };
+  },
+  onLoad() {
+    this.textvalue = &quot;456&quot;; //这里修改textvalue的值，其实123都来不及显示就变成了456
+  },
+  methods: {
+    changetextvalue() {
+      this.textvalue = &quot;789&quot;; //这里修改textvalue的值，页面自动刷新为789
+    },
+  },
+};
+&lt;/script&gt;
+</code></pre>
+<p>注意上述代码中的 <code>export default {}</code> 里的 <code>data(): {return { }}</code>。<br>在 vue 的设计中，这里存放着页面中需要绑定的数据，写在 data 里，才能被界面正确的绑定和渲染。<br>注意：uni-app 的 vue 页面是 vue 的单文件组件规范，按照 vue 的定义只接受 function，必须用 return 包起来。<br>如果你学过小程序的数据绑定，但不了解 vue，要注意：</p>
+<ul>
+<li>小程序的数据绑定参考了 vue，但自己修改了一些。在 uni-app 中只支持标准的 vue，不支持小程序的数据绑定语法</li>
+<li>小程序里的 setData 在 uni-app 里并不存在，因为 vue 是自动双向数据绑定的。直接通过赋值方式修改数据，如果数据绑定到界面上，界面会自动更新渲染</li>
+</ul>
+<p>从上述示例，还可看出事件的写法变化。</p>
+<ul>
+<li>以前，元素的事件是用 onxxx=””，里面写一段 js 或引用 function 的 name，比如上述代码中的<code>onclick=&quot;changetextvalue()&quot;</code></li>
+<li>现在，需要在 js 的<code>export default {}</code> 里的 <code>methods: {}</code> 里写一个方法，然后在组件中使用<code>@click=&quot;changetextvalue()&quot;</code></li>
+</ul>
+<p>在 js 中，与 data 和 methods 平级的，如上述示例代码中的<code>onload()</code>，称为生命周期。在普通 vue 页面里的生命周期叫页面生命周期。在项目根目录的 app.vue 文件中的生命周期叫应用生命周期。<br>除了<code>onload</code>，还有<code>onready</code>等很多生命周期，具体见<a href="https://uniapp.dcloud.io/collocation/frame/lifecycle" target="_blank" rel="noopener">uni-app 的生命周期</a><br>在高级用法里，<strong>vue 支持给组件设 ref（引用标记）</strong>，这类似于之前 html 中给一个 dom 元素设 id，然后在 js 中也可以用<code>this.$refs.xxx</code>来获取。如下：</p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;view&gt;
+    &lt;view ref=&quot;testview&quot;&gt;11111&lt;/view&gt;
+    &lt;button @click=&quot;getTest&quot;&gt;获取test节点&lt;/button&gt;
+  &lt;/view&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  methods: {
+    getTest() {
+      console.log(this.$refs.testview);
+    },
+  },
+};
+&lt;/script&gt;
+</code></pre>
+<h3 id="js-api-的变化"><a href="#js-api-的变化" class="headerlink" title="js api 的变化"></a>js api 的变化</h3><p>因为 uni-app 的 api 是<strong>参考小程序</strong>的，所以<strong>和浏览器的 js api</strong>有很多不同，如</p>
+<ol>
+<li>alert,confirm 改成 <a href="https://uniapp.dcloud.io/api/ui/prompt?id=showmodal" target="_blank" rel="noopener">uni.showmodel</a></li>
+<li>ajax 改成 <a href="https://uniapp.dcloud.io/api/request/request" target="_blank" rel="noopener">uni.request</a></li>
+<li>cookie、session 没有了，local.storage 改成 <a href="https://uniapp.dcloud.io/api/storage/storage?id=setstorage" target="_blank" rel="noopener">uni.storage</a></li>
+</ol>
+<p>uni-app 的 js api 还有很多，但基本就是小程序的 api，把 wx.xxx 改为 uni.xxx 即可。<a href="https://uniapp.dcloud.io/api/README" target="_blank" rel="noopener">详见</a><br>uni-app 在不同的端，支持条件编译，无限制的使用各端独有的 api，<a href="https://uniapp.dcloud.io/platform" target="_blank" rel="noopener">详见条件编译</a></p>
+<h2 id="css-的变化"><a href="#css-的变化" class="headerlink" title="css 的变化"></a>css 的变化</h2><p><strong>标准的 css 基本都是支持的。</strong></p>
+<h3 id="选择器方面"><a href="#选择器方面" class="headerlink" title="选择器方面"></a>选择器方面</h3><blockquote>
+<p>有 2 个变化：</p>
+</blockquote>
+<ol>
+<li>*选择器不支持；</li>
+<li>元素选择器里没有 body，改为了 page。微信小程序即是如此。</li>
+</ol>
+<pre><code class="css">page {
 }
 </code></pre>
-<h2 id="栈的应用"><a href="#栈的应用" class="headerlink" title="栈的应用"></a>栈的应用</h2><p><strong>浏览器的前进和后退</strong>的功能。<br>假如有网页 a、b、c、d，依次点击 abc 三个网页，然后回退至 b 网页，这个时候，就相当于在 1 栈中有 ab 两个网页（且 b 为栈顶元素），c 暂时放到 2 栈中，此时依然可以使用回退前进功能，但是现在在 b 页面上在新输入 d 网页并进入，此时 2 栈被清空，d 为 1 栈的栈顶元素，在此时的 d 页面内，不能使用浏览器的前进功能，只能使用后退功能。</p>
-<p>##</p>
+<ul>
+<li><strong>单位方面：</strong>px 无法动态适应不同宽度的屏幕，rem 无法用于 nvue/weex。如果想使用根据屏幕宽度自适应的单位，推荐使用 rpx，全端支持。 <a href="https://uniapp.dcloud.io/frame?id=%e5%b0%ba%e5%af%b8%e5%8d%95%e4%bd%8d" target="_blank" rel="noopener">尺寸单位文档</a></li>
+<li><strong>布局方面：</strong>uni-app 推荐使用 flex 布局，这个布局思路和传统流式布局有点区别。但 flex 的特色在于，不管是什么技术都支持这种排版，web、小程序/快应用、weex/rn、原生的 iOS、Android 开发，全都支持 flex。它是通吃所有端的新一代布局方案。相关教程请自行百度学习。</li>
+</ul>
+<h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>uni-app 的 vue 文件里支持所有 web 排版方式，不管是流式还是 flex。但 nvue 里，只支持 flex，因为它在 app 端是使用原生排版引擎渲染的。<br><strong>注意 css 里背景图和字体文件，尽量不要大于 40k，因为会影响性能。在小程序端，如果要大于 40k，需放到服务器侧远程引用或 base64 后引入，不能放到本地作为独立文件引用。</strong></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://uniapp.dcloud.net.cn/" target="_blank" rel="noopener">https://uniapp.dcloud.net.cn/</a></li>
+<li><a href="https://cn.vuejs.org/index.html" target="_blank" rel="noopener">https://cn.vuejs.org/index.html</a></li>
+<li>官方教程：<a href="https://ke.qq.com/course/343370" target="_blank" rel="noopener">uni-app 跨平台框架官方教程</a></li>
+<li><a href="https://ask.dcloud.net.cn/article/35657" target="_blank" rel="noopener">白话 uni-app </a></li>
+<li>微信官方文档：<a href="https://developers.weixin.qq.com/doc/" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/</a></li>
+</ul>
 ]]></content>
       <categories>
-        <category>DataStructure</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++随机字符串生成函数</title>
-    <url>/blog/zeszpb/</url>
-    <content><![CDATA[<pre><code class="cpp">//C++ 随机字符串生成函数
-#include&lt;iostream&gt;
-#include&lt;ctime&gt;
-using namespace std;
-
-const int LEN_NAME=4;
-
-char *rand_str(char *str,const int len)
-{
-    int i;
-    for(i=0;i&lt;len;++i)
-        str[i]=&#39;A&#39;+rand()%26;
-    str[++i]=&#39;\0&#39;;
-    return str;
-}
-
-void main()
-{
-    srand(time(NULL));
-    int i;
-    char name[LEN_NAME+1];
-
-    for(i=0;i&lt;20;++i)
-    {
-        cout&lt;&lt;rand_str(name,LEN_NAME)&lt;&lt;endl;
-    }
-}
-</code></pre>
-]]></content>
-      <categories>
-        <category>Language</category>
+        <category>Mobile</category>
       </categories>
   </entry>
   <entry>
@@ -12904,252 +13150,6 @@ SyntaxError: invalid syntax
 ]]></content>
       <categories>
         <category>DataAnalysis</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>[转]uni-app相关知识</title>
-    <url>/blog/ytoag7/</url>
-    <content><![CDATA[<blockquote>
-<ul>
-<li>本文转载自：<a href="https://ask.dcloud.net.cn/article/35657" target="_blank" rel="noopener">白话 uni-app </a></li>
-<li>添加部分细节自己写的内容</li>
-</ul>
-</blockquote>
-<h2 id="uni-app-相对传统的变化"><a href="#uni-app-相对传统的变化" class="headerlink" title="uni-app 相对传统的变化"></a>uni-app 相对传统的变化</h2><h3 id="网络模型的变化"><a href="#网络模型的变化" class="headerlink" title="网络模型的变化"></a>网络模型的变化</h3><p>之前学习的<code>javaweb</code>形式的是“相互嵌套”类型的，<code>jsp</code>代码里面可以有<code>html</code>代码。</p>
-<p>以前网页大多是 b/s，服务端代码混合在页面里；<br>现在是 c/s，前后端分离，通过 js api(类似 ajax 的<code>uni.request</code>)获取 json 数据，把数据绑定在界面上渲染。</p>
-<h3 id="文件类型变化"><a href="#文件类型变化" class="headerlink" title="文件类型变化"></a>文件类型变化</h3><p>.vue 文件通过编译，编译 js 文件</p>
-<h3 id="代码架构大变动"><a href="#代码架构大变动" class="headerlink" title="代码架构大变动"></a>代码架构大变动</h3><p>以前的 HTML 代码节点，有 html 大节点，还有 script 和 style 两个小结点</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot; /&gt;
-    &lt;title&gt;&lt;/title&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-    &lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>现在 template 是一级节点，用于写<strong>tag 组件</strong>，script 和 style 是并列的一级节点，也就是有 3 个一级节点</p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    注意必须有一个view，且只能有一个根view。所有内容写在这个view下面。
-  &lt;/view&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-export default {};
-&lt;/script&gt;
-
-&lt;style&gt;&lt;/style&gt;
-</code></pre>
-<ul>
-<li><a href="https://cn.vuejs.org/v2/guide/single-file-components.html" target="_blank" rel="noopener">Vue 单文件组件</a></li>
-</ul>
-<p>###</p>
-<h3 id="组件-标签的变化"><a href="#组件-标签的变化" class="headerlink" title="组件/标签的变化"></a>组件/标签的变化</h3><p>下为 html 标签和 uni-app 内置组件的映射表：<br>（其实老的 HTML 标签也可以在 uni-app 里使用，uni-app 编译器会在编译时把老标签转为新标签，比如把 div 编译成 view。但不推荐这种用法，调试 H5 端时容易混乱。）</p>
-<ul>
-<li>div 改成 <a href="https://uniapp.dcloud.io/component/view" target="_blank" rel="noopener">view</a></li>
-<li>span、font 改成 <a href="https://uniapp.dcloud.io/component/text" target="_blank" rel="noopener">text</a></li>
-<li>a 改成 <a href="https://uniapp.dcloud.io/component/navigator" target="_blank" rel="noopener">navigator</a></li>
-<li>img 改成 <a href="https://uniapp.dcloud.io/component/image" target="_blank" rel="noopener">image</a></li>
-<li><a href="https://uniapp.dcloud.io/component/input" target="_blank" rel="noopener">input</a> 还在，但 type 属性改成了 confirmtype</li>
-<li><a href="https://uniapp.dcloud.io/component/form" target="_blank" rel="noopener">form</a>、<a href="https://uniapp.dcloud.io/component/button" target="_blank" rel="noopener">button</a>、<a href="https://uniapp.dcloud.io/component/checkbox" target="_blank" rel="noopener">checkbox</a>、<a href="https://uniapp.dcloud.io/component/radio" target="_blank" rel="noopener">radio</a>、<a href="https://uniapp.dcloud.io/component/label" target="_blank" rel="noopener">label</a>、<a href="https://uniapp.dcloud.io/component/textarea" target="_blank" rel="noopener">textarea</a>、<a href="https://uniapp.dcloud.io/component/canvas" target="_blank" rel="noopener">canvas</a>、<a href="https://uniapp.dcloud.io/component/video" target="_blank" rel="noopener">video</a> 这些还在。</li>
-<li>select 改成 <a href="https://uniapp.dcloud.io/component/picker" target="_blank" rel="noopener">picker</a></li>
-<li>iframe 改成 <a href="https://uniapp.dcloud.io/component/web-view" target="_blank" rel="noopener">web-view</a></li>
-<li>ul、li 没有了，都用 view 替代</li>
-<li>audio 不再推荐使用，改成 api 方式，<a href="https://uniapp.dcloud.io/api/media/background-audio-manager?id=getbackgroundaudiomanager" target="_blank" rel="noopener">背景音频 api 文档</a></li>
-</ul>
-<p><strong>除了改动外，新增了一批手机端常用的新组件</strong><br>**</p>
-<ul>
-<li>scroll-view <a href="https://uniapp.dcloud.io/component/scroll-view" target="_blank" rel="noopener">可区域滚动视图容器</a></li>
-<li>swiper <a href="https://uniapp.dcloud.io/component/swiper" target="_blank" rel="noopener">可滑动区域视图容器</a></li>
-<li>icon <a href="https://uniapp.dcloud.io/component/icon" target="_blank" rel="noopener">图标</a></li>
-<li>rich-text <a href="https://uniapp.dcloud.io/component/rich-text" target="_blank" rel="noopener">富文本（不可执行 js，但可渲染各种文字格式和图片）</a></li>
-<li>progress <a href="https://uniapp.dcloud.io/component/progress" target="_blank" rel="noopener">进度条</a></li>
-<li>slider <a href="https://uniapp.dcloud.io/component/slider" target="_blank" rel="noopener">滑块指示器</a></li>
-<li>switch <a href="https://uniapp.dcloud.io/component/switch" target="_blank" rel="noopener">开关选择器</a></li>
-<li>camera <a href="https://uniapp.dcloud.io/component/camera" target="_blank" rel="noopener">相机</a></li>
-<li>live-player <a href="https://uniapp.dcloud.io/component/live-player" target="_blank" rel="noopener">直播</a></li>
-<li>map <a href="https://uniapp.dcloud.io/component/map" target="_blank" rel="noopener">地图</a></li>
-<li>cover-view <a href="https://uniapp.dcloud.io/component/cover-view?id=cover-view" target="_blank" rel="noopener">可覆盖原生组件的视图容器</a><br>cover-view 需要多强调几句，uni-app 的非 h5 端的 video、map、canvas、textarea 是原生组件，层级高于其他组件。如需覆盖原生组件，则需要使用 cover-view 组件。详见<a href="https://uniapp.dcloud.net.cn/component/native-component" target="_blank" rel="noopener">层级介绍</a></li>
-</ul>
-<p>除了内置组件，还有很多开源的扩展组件，把常用操作都进行封装，DCloud 建立了插件市场收录这些扩展组件，详见<a href="https://ext.dcloud.net.cn/" target="_blank" rel="noopener">插件市场</a></p>
-<p>**</p>
-<h3 id="工程结构和页面管理"><a href="#工程结构和页面管理" class="headerlink" title="工程结构和页面管理"></a>工程结构和页面管理</h3><p>uni-app 的工程结构有单独的要求，<a href="https://uniapp.dcloud.io/frame?id=%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" target="_blank" rel="noopener">详见</a></p>
-<p>每个可显示的页面，都必须在 <a href="https://uniapp.dcloud.io/collocation/pages" target="_blank" rel="noopener">pages.json</a> 中注册。如果你开发过小程序，那么 pages.json 类似 app.json。如果你熟悉 vue，这里没有 vue 的路由，都是在 pages.json 里管理。</p>
-<p>原来工程的首页一般是 index.html 或 default.html，是在 web server 里配的。而 uni-app 的首页，是在 pages.json 里配的，page 节点下第一个页面就是首页。一般在/pages/xx 的目录下。</p>
-<p>app 和小程序中，为了提升体验，页面提供了原生的导航栏和底部 tabbar，注意这些配置是在 pages.json 中做，而不是在 vue 页面里创建，但点击事件的监听在显示的 vue 页面中做。</p>
-<p>如果你熟悉小程序开发的话，对比变化如下：</p>
-<ul>
-<li>原来 app.json 被一拆为二。页面管理，被挪入了 uni-app 的 pages.json；非页面管理，挪入了 manifest.json</li>
-<li>原来的 app.js 和 app.wxss 被合并到了 app.vue 中</li>
-</ul>
-<h2 id="文件导入方式变化"><a href="#文件导入方式变化" class="headerlink" title="文件导入方式变化"></a>文件导入方式变化</h2><h3 id="js-引入方式"><a href="#js-引入方式" class="headerlink" title="js 引入方式"></a>js 引入方式</h3><p>以前通过<code>script `</code>src <code>、</code> link <code></code>href <code>引入外部的 js 和 css；
-现在是**es6**的写法，</code>import`引入外部的 js 模块(注意不是文件)或 css<br>以前</p>
-<pre><code class="javascript">&lt;script src=&quot;js/jquery-1.10.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-&lt;link href=&quot;css/bootstrap.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
-</code></pre>
-<p>现在</p>
-<blockquote>
-<p>js 要 require 进来，变成了对象。</p>
-</blockquote>
-<p>在 hello uni-app 项目的 common 目录有一个工具类<code>util.js</code>，可以在 hello uni-app 中搜索这个例子查看。</p>
-<pre><code class="javascript">&lt;script&gt;
-  var util = require(&#39;../../../common/util.js&#39;); //require这个js模块 var
-  formatedPlayTime = util.formatTime(playTime); //调用js模块的方法
-&lt;/script&gt;
-</code></pre>
-<p>而在这个<code>util.js</code>里，要把之前的 function 封装为对象的方法<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604048264989-b4591bb0-e4bc-4581-aae5-bf7615f268b4.png#align=left&amp;display=inline&amp;height=231&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=606&amp;originWidth=1331&amp;size=70716&amp;status=done&amp;style=shadow&amp;width=508" alt="image.png"><br>当然还有一些高级的用法</p>
-<pre><code class="javascript">var dateUtils = require(&quot;../../../common/util.js&quot;).dateUtils; //直接使用js模块的属性。在hello uni-app有示例
-import * as echarts from &quot;/components/echarts/echarts.simple.min.js&quot;; //将js导入并重命名为echarts，然后使用echarts.来继续执行方法。
-</code></pre>
-<h3 id="CSS-引入方式"><a href="#CSS-引入方式" class="headerlink" title="CSS 引入方式"></a>CSS 引入方式</h3><pre><code class="css">&lt;style&gt;
-    @import &quot;./common/uni.css&quot;;
-    .uni-hello-text{
-        color:#7A7E83;
-    }
-&lt;/style&gt;
-</code></pre>
-<p><strong>改全局样式：</strong>在根目录下的 app.vue 里写入，每个页面都会加载 app.vue 里的样式。</p>
-<h3 id="组件导入"><a href="#组件导入" class="headerlink" title="组件导入"></a>组件导入</h3><p>类似 hexo 博客主题设计一样，能以组件的形式模块化导入。<br>如下是导入一个角标的组件库，在页面上显示一个 abc 并且右上角有个数字角标 1，<a href="http://ext.dcloud.net.cn/plugin?id=21" target="_blank" rel="noopener">详见</a></p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    &lt;uni-badge text=&quot;abc&quot; :inverted=&quot;true&quot;&gt;&lt;/uni-badge
-    &gt;&lt;!--3.使用组件--&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
-&lt;script&gt;
-import uniBadge from &quot;../../../components/uni-badge.vue&quot;; //1.导入组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
-export default {
-  data() {
-    return {};
-  },
-  components: {
-    uniBadge, //2.注册组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
-  },
-};
-&lt;/script&gt;
-</code></pre>
-<p>如需要全局导入 vue 组件，即每个页面都可以直接使用而不用引用和注册的话，在项目根目录下的 main.js 里处理。如下是 hello uni-app 里的例子。</p>
-<pre><code class="javascript">//main.js
-import pageHead from &quot;./components/page-head.vue&quot;; //导入
-Vue.component(&quot;page-head&quot;, pageHead); //注册。注册后在每个vue的page页面里可以直接使用&lt;page-head&gt;&lt;/page-head&gt;组件。
-</code></pre>
-<p>上述的组件使用方式属于传统 vue 的概念。uni-app 2.7 以后推出了更简单的组件使用技术<a href="https://uniapp.dcloud.net.cn/collocation/pages?id=easycom" target="_blank" rel="noopener">easycom</a>，无需引用和注册组件，直接在 template 区域使用组件即可。</p>
-<h2 id="js-的变化"><a href="#js-的变化" class="headerlink" title="js 的变化"></a>js 的变化</h2><p>js 的变化，分为<strong>运行环境变化</strong>、<strong>数据绑定模式变化</strong>、<strong>api 变化</strong>3 部分。</p>
-<h3 id="运行环境从浏览器变成-v8-引擎"><a href="#运行环境从浏览器变成-v8-引擎" class="headerlink" title="运行环境从浏览器变成 v8 引擎"></a>运行环境从浏览器变成 v8 引擎</h3><p>标准 js 语法和 api 都支持，比如 if、for、settimeout、indexOf 等。</p>
-<p>但<strong>浏览器专用的</strong>window、document、navigator、location 对象，包括 cookie 等存储，<strong>只有在浏览器中才有</strong>，app 和小程序都不支持。</p>
-<blockquote>
-<p>可能有些人以为 js 等于浏览器里的 js。其实 js 是 ECMAScript 组织管理的，浏览器中的 js 是 w3c 组织基于 js 规范补充了 window、document、navigator、location 等专用对象。</p>
-</blockquote>
-<p>在 uni-app 的各个端中，除了 h5 端，其他端的 js 都运行在一个独立的 v8 引擎下，不是在浏览器中，所以浏览器的对象无法使用。如果你做过小程序开发，对此应当很了解。<br><strong>这意味着依赖 document 的很多 HTML 的库，比如 jqurey 无法使用。</strong><br>当然 app 和小程序支持 web-view 组件，里面可以加载标准 HTML，这种页面仍然支持浏览器专用对象 window、document、navigator、location。</p>
-<h3 id="以前的-dom-操作，改成-vue-的-MVVM-模式"><a href="#以前的-dom-操作，改成-vue-的-MVVM-模式" class="headerlink" title="以前的 dom 操作，改成 vue 的 MVVM 模式"></a>以前的 dom 操作，改成 vue 的 MVVM 模式</h3><p>现在前端趋势是去 dom 化，改用<strong>mvvm 模式，</strong>更简洁的写法，大幅减少代码行数，同时差量渲染性能更好。<br>uni-app 使用 vue 的数据绑定方式解决 js 和 dom 界面交互的问题。<br>如果你想改变某个 dom 元素的显示内容，比如一个 view 的显示文字：<br><strong>以前</strong>是给 view 设 id，然后 js 里通过选择器获取 dom 元素，进一步通过 js 进行赋值操作，修改 dom 元素的属性或值。<br>如下演示了一段代码，页面中有个显示的文字区和一个按钮，点击按钮后会修改文字区的值</p>
-<pre><code class="html">&lt;html&gt;
-  &lt;head&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;
-      document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
-        document.getElementById(&quot;spana&quot;).innerText = &quot;456&quot;;
-      });
-      function changetextvalue() {
-        document.getElementById(&quot;spana&quot;).innerText = &quot;789&quot;;
-      }
-    &lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;span id=&quot;spana&quot;&gt;123&lt;/span&gt;
-    &lt;button type=&quot;button&quot; onclick=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>现在的做法，是<strong>vue 的绑定模式</strong>，给这个<strong>dom 元素绑定一个 js 变量</strong>，在 script 中修改 js 变量的值，dom 会自动变化，页面会自动更新渲染</p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    &lt;text&gt;{{ textvalue }}&lt;/text
-    &gt;&lt;!-- 这里演示了组件值的绑定 --&gt;
-    &lt;button :type=&quot;buttontype&quot; @click=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button
-    &gt;&lt;!-- 这里演示了属性和事件的绑定 --&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
-&lt;script&gt;
-export default {
-  data() {
-    return {
-      textvalue: &quot;123&quot;,
-      buttontype: &quot;primary&quot;,
-    };
-  },
-  onLoad() {
-    this.textvalue = &quot;456&quot;; //这里修改textvalue的值，其实123都来不及显示就变成了456
-  },
-  methods: {
-    changetextvalue() {
-      this.textvalue = &quot;789&quot;; //这里修改textvalue的值，页面自动刷新为789
-    },
-  },
-};
-&lt;/script&gt;
-</code></pre>
-<p>注意上述代码中的 <code>export default {}</code> 里的 <code>data(): {return { }}</code>。<br>在 vue 的设计中，这里存放着页面中需要绑定的数据，写在 data 里，才能被界面正确的绑定和渲染。<br>注意：uni-app 的 vue 页面是 vue 的单文件组件规范，按照 vue 的定义只接受 function，必须用 return 包起来。<br>如果你学过小程序的数据绑定，但不了解 vue，要注意：</p>
-<ul>
-<li>小程序的数据绑定参考了 vue，但自己修改了一些。在 uni-app 中只支持标准的 vue，不支持小程序的数据绑定语法</li>
-<li>小程序里的 setData 在 uni-app 里并不存在，因为 vue 是自动双向数据绑定的。直接通过赋值方式修改数据，如果数据绑定到界面上，界面会自动更新渲染</li>
-</ul>
-<p>从上述示例，还可看出事件的写法变化。</p>
-<ul>
-<li>以前，元素的事件是用 onxxx=””，里面写一段 js 或引用 function 的 name，比如上述代码中的<code>onclick=&quot;changetextvalue()&quot;</code></li>
-<li>现在，需要在 js 的<code>export default {}</code> 里的 <code>methods: {}</code> 里写一个方法，然后在组件中使用<code>@click=&quot;changetextvalue()&quot;</code></li>
-</ul>
-<p>在 js 中，与 data 和 methods 平级的，如上述示例代码中的<code>onload()</code>，称为生命周期。在普通 vue 页面里的生命周期叫页面生命周期。在项目根目录的 app.vue 文件中的生命周期叫应用生命周期。<br>除了<code>onload</code>，还有<code>onready</code>等很多生命周期，具体见<a href="https://uniapp.dcloud.io/collocation/frame/lifecycle" target="_blank" rel="noopener">uni-app 的生命周期</a><br>在高级用法里，<strong>vue 支持给组件设 ref（引用标记）</strong>，这类似于之前 html 中给一个 dom 元素设 id，然后在 js 中也可以用<code>this.$refs.xxx</code>来获取。如下：</p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    &lt;view ref=&quot;testview&quot;&gt;11111&lt;/view&gt;
-    &lt;button @click=&quot;getTest&quot;&gt;获取test节点&lt;/button&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
-&lt;script&gt;
-export default {
-  methods: {
-    getTest() {
-      console.log(this.$refs.testview);
-    },
-  },
-};
-&lt;/script&gt;
-</code></pre>
-<h3 id="js-api-的变化"><a href="#js-api-的变化" class="headerlink" title="js api 的变化"></a>js api 的变化</h3><p>因为 uni-app 的 api 是<strong>参考小程序</strong>的，所以<strong>和浏览器的 js api</strong>有很多不同，如</p>
-<ol>
-<li>alert,confirm 改成 <a href="https://uniapp.dcloud.io/api/ui/prompt?id=showmodal" target="_blank" rel="noopener">uni.showmodel</a></li>
-<li>ajax 改成 <a href="https://uniapp.dcloud.io/api/request/request" target="_blank" rel="noopener">uni.request</a></li>
-<li>cookie、session 没有了，local.storage 改成 <a href="https://uniapp.dcloud.io/api/storage/storage?id=setstorage" target="_blank" rel="noopener">uni.storage</a></li>
-</ol>
-<p>uni-app 的 js api 还有很多，但基本就是小程序的 api，把 wx.xxx 改为 uni.xxx 即可。<a href="https://uniapp.dcloud.io/api/README" target="_blank" rel="noopener">详见</a><br>uni-app 在不同的端，支持条件编译，无限制的使用各端独有的 api，<a href="https://uniapp.dcloud.io/platform" target="_blank" rel="noopener">详见条件编译</a></p>
-<h2 id="css-的变化"><a href="#css-的变化" class="headerlink" title="css 的变化"></a>css 的变化</h2><p><strong>标准的 css 基本都是支持的。</strong></p>
-<h3 id="选择器方面"><a href="#选择器方面" class="headerlink" title="选择器方面"></a>选择器方面</h3><blockquote>
-<p>有 2 个变化：</p>
-</blockquote>
-<ol>
-<li>*选择器不支持；</li>
-<li>元素选择器里没有 body，改为了 page。微信小程序即是如此。</li>
-</ol>
-<pre><code class="css">page {
-}
-</code></pre>
-<ul>
-<li><strong>单位方面：</strong>px 无法动态适应不同宽度的屏幕，rem 无法用于 nvue/weex。如果想使用根据屏幕宽度自适应的单位，推荐使用 rpx，全端支持。 <a href="https://uniapp.dcloud.io/frame?id=%e5%b0%ba%e5%af%b8%e5%8d%95%e4%bd%8d" target="_blank" rel="noopener">尺寸单位文档</a></li>
-<li><strong>布局方面：</strong>uni-app 推荐使用 flex 布局，这个布局思路和传统流式布局有点区别。但 flex 的特色在于，不管是什么技术都支持这种排版，web、小程序/快应用、weex/rn、原生的 iOS、Android 开发，全都支持 flex。它是通吃所有端的新一代布局方案。相关教程请自行百度学习。</li>
-</ul>
-<h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>uni-app 的 vue 文件里支持所有 web 排版方式，不管是流式还是 flex。但 nvue 里，只支持 flex，因为它在 app 端是使用原生排版引擎渲染的。<br><strong>注意 css 里背景图和字体文件，尽量不要大于 40k，因为会影响性能。在小程序端，如果要大于 40k，需放到服务器侧远程引用或 base64 后引入，不能放到本地作为独立文件引用。</strong></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://uniapp.dcloud.net.cn/" target="_blank" rel="noopener">https://uniapp.dcloud.net.cn/</a></li>
-<li><a href="https://cn.vuejs.org/index.html" target="_blank" rel="noopener">https://cn.vuejs.org/index.html</a></li>
-<li>官方教程：<a href="https://ke.qq.com/course/343370" target="_blank" rel="noopener">uni-app 跨平台框架官方教程</a></li>
-<li><a href="https://ask.dcloud.net.cn/article/35657" target="_blank" rel="noopener">白话 uni-app </a></li>
-<li>微信官方文档：<a href="https://developers.weixin.qq.com/doc/" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Mobile</category>
       </categories>
   </entry>
   <entry>
