@@ -722,8 +722,7 @@ var decoration = {
     if (window.console && window.console.log && !window.consoled) {
       window.consoled = true;
       // var url = "//" + window.location.host;
-      // console.log("\n\n\n\n\n\n\n\n\n\n%c", "background:url('" + url + "/blogimgs/avatar150.png'); background-repeat:no-repeat; font-size:0; line-height:30px; padding-top:150px;padding-left:150px;");
-      console.log("\n欢迎来到尼采般地抒情博客，热爱生活，热爱技术。%c\n\n联系方式: https://wztlink1013.com/about/", "color:red");
+      console.log("\n欢迎来到尼采般地抒情博客，热爱生活，热爱技术。%c\n\n联系方式: https://www.wztlink1013.com/about/", "color:red");
     }
   },
   // FIXME: 鼠标移动添加效果
@@ -1143,7 +1142,7 @@ $(function () {
 
     var $img = $("<img>")
       .addClass("larry size-" + sizeName)
-      .attr("src", "/blogimgs/avatar150.png")
+      .attr("src", "https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png")
       .attr({
         "tabindex": "0",
         "aria-hidden": "true"
