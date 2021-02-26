@@ -1,10 +1,7 @@
 var weiboName = "@尼采般地抒情";
 var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
 
-// TODO: 【域名的@和www】
-if (window.location.hostname === 'wztlink1013.com') {
-  window.location.href = location.url.replace('wztlink1013.com', 'www.wztlink1013.com');
-}
+
 
 // TODO: 【定义寻找变量】
 var params = {};
