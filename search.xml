@@ -5599,24 +5599,28 @@ mysqldump -uroot -p world &gt;d:\config\world.sql**
   <entry>
     <title>GitHub Actions+语雀+serverless云函数实现hexo自动化部署</title>
     <url>/blog/vyeuk3/</url>
-    <content><![CDATA[<h2 id="一、整体思路"><a href="#一、整体思路" class="headerlink" title="一、整体思路"></a>一、整体思路</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg#align=left&amp;display=inline&amp;height=368&amp;margin=%5Bobject%20Object%5D&amp;name=yuque_diagram.jpg&amp;originHeight=368&amp;originWidth=2062&amp;size=71238&amp;status=done&amp;style=shadow&amp;width=2062" alt="yuque_diagram.jpg"><br>利用语雀插件同步语雀云端的文章到博客源码 source/_posts/blog 文件夹下，利用 GitHub Actions 自动化部署将 GitHub 私有仓库的博客文件编译成静态博客文件并部署到静态博客仓库下，但是这样并不能解决语雀一发布文章就触发 GitHub 源码仓库的 GitHub Actions，所以需要中间 TencentCloud 云函数/Aliyun 云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发 GitHub 私有的源码仓库下的 GitHub Actions 达到编译静态博客的效果。</p>
+    <content><![CDATA[<h2 id="一、整体思路"><a href="#一、整体思路" class="headerlink" title="一、整体思路"></a>一、整体思路</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg#align=left&amp;display=inline&amp;height=368&amp;margin=%5Bobject%20Object%5D&amp;name=yuque_diagram.jpg&amp;originHeight=368&amp;originWidth=2062&amp;size=71238&amp;status=done&amp;style=stroke&amp;width=2062" alt="yuque_diagram.jpg"><br>利用<code>npm</code>插件<code>yuque-hexo</code>将语雀云端的文章同步到博客源码<code>source/_posts/blog</code>文件夹下，再利用<code>GitHub Actions</code>自动化部署将 GitHub 私有仓库（<code>website</code>）的博客源文件编译成静态博客文件并部署 push 到静态博客仓库（<code>wztlink1013.github.io</code>）下。<br>但是这样并不能解决语雀一发布文章就触发 GitHub 源码仓库的<code>GitHub Actions</code>，所以需要中间<code>TencentCloud</code>云函数/<code>Aliyun</code>云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发 GitHub 私有的源码仓库下的<code>GitHub Actions</code>达到编译静态博客的效果。</p>
 <h2 id="二、网站源文件配置"><a href="#二、网站源文件配置" class="headerlink" title="二、网站源文件配置"></a>二、网站源文件配置</h2><h3 id="yuque-hexo-插件"><a href="#yuque-hexo-插件" class="headerlink" title="yuque-hexo 插件"></a>yuque-hexo 插件</h3><blockquote>
-<p>在博客源码当中下载语雀插件</p>
+<p>【1】在开发环境当中下载语雀插件（全局安装）</p>
 </blockquote>
-<pre><code class="bash">npm i --save-dev yuque-hexo
+<pre><code class="bash">npm i -g yuque-hexo
 </code></pre>
 <blockquote>
-<p>相关 hexo 命令</p>
+<p>【2】相关 hexo 命令</p>
 </blockquote>
 <pre><code class="bash">yuque-hexo clean # 清缓存删除yuque文件夹 删除yuque.json文件
 yuque-hexo sync # 从云端拉取到本地
 DEBUG=yuque-hexo.* yuque-hexo sync # Debug
 </code></pre>
 <blockquote>
-<p>特别需要注意的是：环境变量的传入</p>
+<p>【3】特别需要注意的是：开发环境语雀 Token 变量的传入</p>
 </blockquote>
-<p>语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 YUQUE_TOKEN，如果是本地使用建议使用环境变量，也可以是终端的方式输入，详见<a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">官方仓库</a>。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png#align=left&amp;display=inline&amp;height=145&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=290&amp;originWidth=968&amp;size=24274&amp;status=done&amp;style=shadow&amp;width=484" alt="image.png"><br>更详细使用参考官方<a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">官方仓库</a>。</p>
-<p>最后的配置样式</p>
+<p>语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 <code>YUQUE_TOKEN</code>，如果是本地使用建议使用环境变量，也可以是终端的方式输入。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png#align=left&amp;display=inline&amp;height=145&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=290&amp;originWidth=968&amp;size=24274&amp;status=done&amp;style=shadow&amp;width=484" alt="image.png"><br>如果是在<code>GitHub Actions</code>里面的环境执行<code>yuque-hexo sync</code>命令的时候，通过如下命令传入语雀的<code>token</code></p>
+<pre><code class="yaml">YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo sync
+</code></pre>
+<blockquote>
+<p>【4】最后的配置样式</p>
+</blockquote>
 <pre><code class="json">  &quot;yuqueConfig&quot;: {
     &quot;baseUrl&quot;: &quot;https://www.yuque.com/api/v2&quot;,
     &quot;login&quot;: &quot;nicaibandishuqing&quot;,
@@ -5632,22 +5636,16 @@ DEBUG=yuque-hexo.* yuque-hexo sync # Debug
     &quot;clean&quot;: &quot;hexo clean&quot;,
     &quot;build&quot;: &quot;hexo generate&quot;,
     &quot;server&quot;: &quot;hexo server&quot;,
-    &quot;deploy&quot;: &quot;hexo deploy&quot;,
-    &quot;clean:yuque&quot;: &quot;yuque-hexo clean&quot;,
-    &quot;publish&quot;: &quot;npm run clean &amp;&amp; npm run deploy&quot;,
-    &quot;dev&quot;: &quot;hexo s&quot;,
-    &quot;sync&quot;: &quot;DEBUG=yuque-hexo.* yuque-hexo sync&quot;,
-    &quot;reset&quot;: &quot;npm run clean:yuque &amp;&amp; npm run sync&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;yuque-hexo&quot;: &quot;^1.6.5&quot;
+    &quot;deploy&quot;: &quot;hexo deploy&quot;
   }
 </code></pre>
+<p>更详细使用参考官方<a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">官方仓库</a>。</p>
 <h3 id="配置-GitHub-Actions-文件"><a href="#配置-GitHub-Actions-文件" class="headerlink" title="配置 GitHub Actions 文件"></a>配置 GitHub Actions 文件</h3><p>在博客源文件夹下新建如下 GitHub Actions 文件<br><code>.github/workflows/main.yml</code></p>
 <blockquote>
 <p>文件内容配置如下</p>
 </blockquote>
-<pre><code class="yaml">name: website to wztlink1013.github.io CI/CD
+<pre><code class="yaml"># workflow name
+name: website to wztlink1013.github.io CI/CD
 
 on: [repository_dispatch, watch]
 
@@ -5681,14 +5679,17 @@ jobs:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
         run: |
           npm install hexo-cli -g
-          npm install yuque-hexo -g
+          npm i -g yuque-hexo-haisawa
+          npm i -g npm-wzutao
           npm install
 
       - name: generate articles
         run: |
           hexo clean
-          yuque-hexo clean
-          YUQUE_TOKEN=**************** yuque-hexo sync
+          yuque-hexo-haisawa clean
+          npm-wzutao clean
+          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo-haisawa sync
+          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} npm-wzutao sync
           hexo generate
 
       - name: push wztlink1013.github.io repository
@@ -5704,7 +5705,7 @@ jobs:
           git push --force --quiet &quot;https://${Github_Token}@${Github_Pages}&quot; master:master
 </code></pre>
 <blockquote>
-<p>有个尚未清楚并解决的问题：语雀 Token 的值，通过 GitHub 仓库密匙的方式传不进去，只能以“裸露的方式传进去”</p>
+<p><del>有个尚未清楚并解决的问题：语雀 Token 的值，通过 GitHub 仓库密匙的方式传不进去，只能以“裸露的方式传进去”</del><br>已解决：通过在仓库设置 secret，再用<code>$</code>方式引入即可。</p>
 </blockquote>
 <h2 id="三、Serverless-云函数配置"><a href="#三、Serverless-云函数配置" class="headerlink" title="三、Serverless 云函数配置"></a>三、Serverless 云函数配置</h2><h3 id="python2-7-的配置"><a href="#python2-7-的配置" class="headerlink" title="python2.7 的配置"></a>python2.7 的配置</h3><pre><code class="python"># -*- coding: utf8 -*-
 import requests
