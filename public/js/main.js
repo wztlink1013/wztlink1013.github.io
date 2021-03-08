@@ -1,9 +1,6 @@
-var weiboName = "@尼采般地抒情";
-var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
+// var weiboName = "@尼采般地抒情";
+// var fromBaidu = /^http(s)?:\/\/(\w+?\.)?baidu.com/.test(document.referrer);
 
-
-
-// TODO: 【定义寻找变量】
 var params = {};
 ~ function () {
   var search = location.href.split('?')[1];
@@ -16,7 +13,7 @@ var params = {};
   }
 }();
 
-// TODO: 【分享HTML模块】
+// 外链分享页面为卡片
 if (params['share']) {
   $('html').addClass('shareMode');
   $('<p style="color:#555;text-align:right; font-size:14px;" id="authorAppend">文 / 尼采般地抒情</p>').prependTo('.post-content');
@@ -25,37 +22,10 @@ if (params['share']) {
   $('#authorAppend').remove();
 }
 
-// TODO: 【判断来访者的url来源+浏览器】
-$(function () {
-  var text = '';
-  var m = navigator.appVersion.match(/MSIE (\d+)/i);
-  m = m && m[1];
-  if (fromBaidu) {
-    // text = "您还在使用百度搜索，珍爱生命，请远离百度！<a href='javascript:void(0);' class='close'>关闭</a>";
-  }
-  if (m && m < 10) {
-    text = "更好的阅读体验，请使用最新版的 Chrome / Edge 浏览器。<a href='javascript:void(0);' class='close'>关闭</a>";
-  }
-  if (text && !$('html').attr('loaded')) {
-    $(".rainbow").addClass('notice').html(text).hide().fadeIn();
-  }
-});
-
-// TODO: 【判断https】
-
-// if (window.location.protocol == 'https:') {
-//   $("img").each(function () {
-//     var src = $(this).attr('src');
-//     if (/ww1.sinaimg.cn/.test(src)) {
-//       $(this).attr('src', src.replace('ww1.', 'www.'));
-//     }
-//   });
-// }
-
-// TODO: 【Notifications API 的通知接口用于向用户配置和显示桌面通知。】
+// TODO: Notifications API 的通知接口用于向用户配置和显示桌面通知
 function notify(notice) {
   if (!("Notification" in window)) {
-    // window.console && console.warn("浏览器不支持提醒");
+    window.console && console.warn("浏览器不支持提醒");
   } else if (Notification.permission === "granted") {
     var notification = new Notification(notice.title, notice);
   } else if (Notification.permission !== 'denied') {
@@ -65,7 +35,6 @@ function notify(notice) {
       }
     });
   }
-
   if (notification) {
     notification.onclick = function () {
       if (notice.url) {
@@ -79,14 +48,7 @@ function notify(notice) {
   }
 }
 
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2013 Klaus Hartl
- * Released under the MIT license
- */
-// TODO: 【jQuery知识】
+// TODO: jQuery Cookie Plugin v1.4.1
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD
@@ -180,7 +142,6 @@ function notify(notice) {
     return !$.cookie(key);
   };
 }));
-
 var log = function (msg) {
   console && console.log && console.log(msg);
 };
@@ -226,8 +187,9 @@ var isMobile = {
   }
 };
 
-// TODO: 【主要代码1】
+// TODO: 【主要：初始化代码】
 var operation = {
+  // 初始化代码
   init: function () {
     var $this = this;
     this.forceShowLazyloadImages();
@@ -246,7 +208,7 @@ var operation = {
     // });
     this.initSearch();
   },
-  // FIXME: 懒加载，图片可以换
+  // 初始化懒加载图片
   forceShowLazyloadImages: function() {
     if (this._forceShowImageTimer) clearTimeout(this._forceShowImageTimer);
     this._forceShowImageTimer = setTimeout(() => {
@@ -260,7 +222,7 @@ var operation = {
       });
     }, 10E3);
   },
-  // FIXME: 音乐
+  // 初始化音乐
   runMusic: function () {
     var $box = $('.post-content .music');
     if (!params['share'] && !isMobile.any() && $box.size() && window.NM) {
@@ -279,7 +241,7 @@ var operation = {
       });
     }
   },
-  // FIXME: 搜索
+  // 初始化搜索
   initSearch: function() {
     if ($('.local-search').size() && !isMobile.any()) {
       $.getScript('/public/js/search.js', function() {
@@ -288,7 +250,7 @@ var operation = {
     }
   },
 
-  // FIXME: 微信里面的提示
+  // 初始化微信提示
   wechat: function () {
     var isWeiXin = /MicroMessenger/i.test(navigator.userAgent);
     var $ctt = $(".article .post-content");
@@ -428,7 +390,7 @@ var operation = {
       }, 800);
     }, 3000);
   },
-  // FIXME: 提示tips？
+  // FIXME: 提示快捷键信息
   tips: function () {
     var htmlStr = [
       '<div class="arrow-tips">',
@@ -582,9 +544,9 @@ var operation = {
   // FIXME: 分享微博、豆瓣、twitter
   share: function (title) {
     var local = location.href,
-      title = $(".post-title").text() && ("文章《" + weiboName + " " + $(".post-title").text() + "》");
+      title = $(".post-title").text() && ("文章《" + "@尼采般地抒情" + " " + $(".post-title").text() + "》");
 
-    if (!title) title += "好站分享 " + weiboName + " ";
+    if (!title) title += "好站分享 " + "@尼采般地抒情" + " ";
     try{
       title += $("meta[property='og:description']").attr("content").slice(0, 95);
     } catch (e){}
@@ -667,7 +629,7 @@ var operation = {
   }
 };
 
-// TODO: 【主要代码2】
+// TODO: 【主要：】
 var decoration = {
   init: function () {
     this.initNav();
@@ -908,7 +870,7 @@ $(function () {
 
 window.alert = function () {};
 
-// TODO: 【加载微博、百度统计、百度收录、360收录、谷歌分析】
+// TODO: 【加载百度统计、谷歌分析】
 $(window).on("load", function () {
 
   // var $wb = $("#followMeOnWeibo");
@@ -949,20 +911,20 @@ $(window).on("load", function () {
     //   document.write('<script src="' + src + '" id="sozz"><\/script>');
     //   })();
     // 谷歌分析
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    // (function (i, s, o, g, r, a, m) {
+    //   i['GoogleAnalyticsObject'] = r;
+    //   i[r] = i[r] || function () {
+    //     (i[r].q = i[r].q || []).push(arguments)
+    //   }, i[r].l = 1 * new Date();
+    //   a = s.createElement(o),
+    //     m = s.getElementsByTagName(o)[0];
+    //   a.async = 1;
+    //   a.src = g;
+    //   m.parentNode.insertBefore(a, m)
+    // })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-158896181-1', 'auto');
-    ga('send', 'pageview');
+    // ga('create', 'UA-158896181-1', 'auto');
+    // ga('send', 'pageview');
   }, 2000);
 });
 
@@ -1196,7 +1158,7 @@ $(function () {
 })();
 
 
-// TODO: 【卜算子计数热度===用了之后网页加载很慢！！】
+// TODO: 【卜算子计数热度>卡顿】
 $(function () {
   var bszTag = {
     bszs: ["site_pv", "page_pv", "site_uv"],
