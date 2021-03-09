@@ -8,8 +8,459 @@
     <script xmlns="http://www.w3.org/1999/xhtml" src="/public/js/rss.js"></script>
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     <description><![CDATA[什么都无法舍弃，什么也改变不了]]></description>
-    <pubDate>Mon Mar 08 2021 11:35:11 GMT+0000 (Coordinated Universal Time)</pubDate>
+    <pubDate>Tue Mar 09 2021 09:03:06 GMT+0000 (Coordinated Universal Time)</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title><![CDATA[JAVA当中栈和队列常用方法]]></title>
+      <link>https://www.wztlink1013.com/blog/oylyeh/</link>
+      <guid>https://www.wztlink1013.com/blog/oylyeh/</guid>
+      <pubDate>Tue Mar 09 2021 08:34:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[JAVA当中栈和队列常用方法]]>
+      
+      </description>
+      <content:encoded><![CDATA[<blockquote>
+<p>Java 里有一个叫做 Stack 的类，却没有叫做 Queue 的类（它是个接口名字）。当需要使用栈时，Java 已不推荐使用 Stack，而是推荐使用更高效的 ArrayDeque；<br>既然 Queue 只是一个接口，当需要使用队列时也就首选 ArrayDeque 了（次选是 LinkedList）。</p>
+</blockquote>
+<h2 id="队列常用方法"><a href="#队列常用方法" class="headerlink" title="队列常用方法"></a>队列常用方法</h2><blockquote>
+<p>初始化</p>
+</blockquote>
+<pre><code class="java">import java.util.LinkedList;
+import java.util.Queue;
+
+Queue&lt;Integer&gt; queue_input = new LinkedList&lt;&gt;();
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Queue Method</th>
+<th>Equivalent Deque Method</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>add(e)</td>
+<td>addLast(e)</td>
+<td>向队尾插入元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>offer(e)</td>
+<td>offerLast(e)</td>
+<td>向队尾插入元素，失败则返回 false，offer(E e)操作是专为容量受限的队列实现而设计的，在大多数实现中，插入操作不会失败</td>
+</tr>
+<tr>
+<td>remove()</td>
+<td>removeFirst()</td>
+<td>获取并删除队首元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>poll()</td>
+<td>pollFirst()</td>
+<td>获取并删除队首元素，失败则返回 null</td>
+</tr>
+<tr>
+<td>element()</td>
+<td>getFirst()</td>
+<td>获取但不删除队首元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>peek()</td>
+<td>peekFirst()</td>
+<td>获取但不删除队首元素，失败则返回 null</td>
+</tr>
+</tbody>
+</table>
+<h2 id="栈常用方法"><a href="#栈常用方法" class="headerlink" title="栈常用方法"></a>栈常用方法</h2><table>
+<thead>
+<tr>
+<th>Stack Method</th>
+<th>Equivalent Deque Method</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>push(e)</td>
+<td>addFirst(e)</td>
+<td>向栈顶插入元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>无</td>
+<td>offerFirst(e)</td>
+<td>向栈顶插入元素，失败则返回 false</td>
+</tr>
+<tr>
+<td>pop()</td>
+<td>removeFirst()</td>
+<td>获取并删除栈顶元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>无</td>
+<td>pollFirst()</td>
+<td>获取并删除栈顶元素，失败则返回 null</td>
+</tr>
+<tr>
+<td>peek()</td>
+<td>peekFirst()</td>
+<td>获取但不删除栈顶元素，失败则抛出异常</td>
+</tr>
+<tr>
+<td>无</td>
+<td>peekFirst()</td>
+<td>获取但不删除栈顶元素，失败则返回 null</td>
+</tr>
+</tbody>
+</table>
+<h2 id="关于-ArrayDeque"><a href="#关于-ArrayDeque" class="headerlink" title="关于 ArrayDeque"></a>关于 ArrayDeque</h2><blockquote>
+<p>ArrayDeque 和 LinkedList 是 Deque 的两个通用实现，由于官方更推荐使用 AarryDeque 用作栈和队列，<br>从名字可以看出 ArrayDeque 底层通过数组实现，为了满足可以同时在数组两端插入或删除元素的需求，该数组还必须是循环的，即循环数组（circular array），也就是说数组的任何一点都可能被看作起点或者终点。ArrayDeque 是非线程安全的（not thread-safe），当多个线程同时使用的时候，需要程序员手动同步；另外，该容器不允许放入 null 元素。</p>
+</blockquote>
+<pre><code class="java">import java.util.*;
+
+public class ArrayDequeStack {
+    public static void main(String[] args) {
+        ArrayDeque stack = new ArrayDeque();
+        // 依次将三个元素push入“栈”，先进后出
+        stack.push(&quot;疯狂Java讲义&quot;);
+        stack.push(&quot;轻量级Java EE企业应用实战&quot;);
+        stack.push(&quot;疯狂Android讲义&quot;);
+        System.out.println(stack); // [疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
+        System.out.println(stack.peek()); // 疯狂Android讲义
+        System.out.println(stack); // [疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
+        System.out.println(stack.pop()); // 疯狂Android讲义
+        System.out.println(stack);//[轻量级Java EE企业应用实战, 疯狂Java讲义]
+
+        // 当做队列来使用,先进先出
+        ArrayDeque queue = new ArrayDeque();
+        queue.offer(&quot;疯狂Java讲义&quot;);
+        queue.offer(&quot;轻量级JavaEE企业应用实践&quot;);
+        queue.offer(&quot;疯狂Android讲义&quot;);
+        System.out.println(queue); //[疯狂Java讲义, 轻量级JavaEE企业应用实践, 疯狂Android讲义]
+        // 访问队列头部元素，但不将其poll出队列
+        System.out.println(queue.peek());
+        System.out.println(queue);
+        // poll出第一个元素
+        System.out.println(queue.poll());
+        System.out.println(queue);// [轻量级JavaEE企业应用实践, 疯狂Android讲义]
+    }
+}
+</code></pre>
+<pre><code>[疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
+疯狂Android讲义
+[疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
+疯狂Android讲义
+[轻量级Java EE企业应用实战, 疯狂Java讲义]
+[疯狂Java讲义, 轻量级JavaEE企业应用实践, 疯狂Android讲义]
+疯狂Java讲义
+[疯狂Java讲义, 轻量级JavaEE企业应用实践, 疯狂Android讲义]
+疯狂Java讲义
+[轻量级JavaEE企业应用实践, 疯狂Android讲义]
+</code></pre><p>例子参考：<a href="https://www.cnblogs.com/jiqing9006/p/6107491.html" target="_blank" rel="noopener">https://www.cnblogs.com/jiqing9006/p/6107491.html</a></p>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/oylyeh/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[P225P232. 队列和栈的相互实现]]></title>
+      <link>https://www.wztlink1013.com/blog/le21wf/</link>
+      <guid>https://www.wztlink1013.com/blog/le21wf/</guid>
+      <pubDate>Tue Mar 09 2021 08:30:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[P225P232. 队列和栈的相互实现]]>
+      
+      </description>
+      <content:encoded><![CDATA[<blockquote>
+<p>简单实现一下，熟悉一下写题目，这几天找找状态……<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1615278756585-fb0d9f38-8031-472f-9a19-8545be93a548.gif#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=huaji-6f8ff8999ff5ed9a.gif&amp;originHeight=100&amp;originWidth=100&amp;size=12637&amp;status=done&amp;style=none&amp;width=100" alt="huaji-6f8ff8999ff5ed9a.gif"></p>
+</blockquote>
+<h2 id="P232-栈实现队列"><a href="#P232-栈实现队列" class="headerlink" title="P232. 栈实现队列"></a>P232. 栈实现队列</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+
+// P232.用栈实现队列
+// P232.implement-queue-using-stacks
+//请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：
+//
+// 实现 MyQueue 类：
+//
+//
+// void push(int x) 将元素 x 推到队列的末尾
+// int pop() 从队列的开头移除并返回元素
+// int peek() 返回队列开头的元素
+// boolean empty() 如果队列为空，返回 true ；否则，返回 false
+//
+//
+//
+//
+// 说明：
+//
+//
+// 你只能使用标准的栈操作 —— 也就是只有 push to top, peek/pop from top, size, 和 is empty 操作是合法的。
+//
+// 你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。
+//
+//
+//
+//
+// 进阶：
+//
+//
+// 你能否实现每个操作均摊时间复杂度为 O(1) 的队列？换句话说，执行 n 个操作的总时间复杂度为 O(n) ，即使其中一个操作可能花费较长时间。
+//
+//
+//
+//
+// 示例：
+//
+//
+//输入：
+//[&quot;MyQueue&quot;, &quot;push&quot;, &quot;push&quot;, &quot;peek&quot;, &quot;pop&quot;, &quot;empty&quot;]
+//[[], [1], [2], [], [], []]
+//输出：
+//[null, null, null, 1, 1, false]
+//
+//解释：
+//MyQueue myQueue = new MyQueue();
+//myQueue.push(1); // queue is: [1]
+//myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+//myQueue.peek(); // return 1
+//myQueue.pop(); // return 1, queue is [2]
+//myQueue.empty(); // return false
+//
+//
+//
+//
+//
+//
+//
+// 提示：
+//
+//
+// 1 &lt;= x &lt;= 9
+// 最多调用 100 次 push、pop、peek 和 empty
+// 假设所有操作都是有效的 （例如，一个空的队列不会调用 pop 或者 peek 操作）
+//
+// Related Topics 栈 设计
+// 👍 361 👎 0
+
+import java.util.Stack;
+
+public class P232ImplementQueueUsingStacks{
+    public void main(String[] args) {
+        MyQueue myQueue = new MyQueue();
+        //本地调试需要将MyQueue类和主函数加上静态static修饰字
+        //具体解释：https://www.cnblogs.com/dolphin0520/p/3799052.html
+        myQueue.push(1); // queue is: [1]
+        myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+        myQueue.pop();
+        myQueue.peek();
+//        myQueue.peek(); // return 1
+//        myQueue.pop(); // return 1, queue is [2]
+//        myQueue.empty(); // return false
+//        System.out.println(myQueue);
+    }
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MyQueue {
+    Stack&lt;Integer&gt; stack_input = new Stack&lt;&gt;();
+    Stack&lt;Integer&gt; stack_output = new Stack&lt;&gt;();
+    /** Initialize your data structure here. */
+    public MyQueue() {
+//        Stack&lt;Integer&gt; stack_input = new Stack&lt;&gt;();
+//        Stack&lt;Integer&gt; stack_output = new Stack&lt;&gt;();
+    }
+
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+        stack_input.push(x);
+        int temp = stack_input.size();
+        if (stack_output.size() == 0) {
+            for (int i=0; i&lt;temp; i++){
+                stack_output.push(stack_input.pop());
+            }
+        }
+    }
+
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+        int temp = stack_input.size();
+        if (stack_output.size() == 0) {
+            for (int i=0; i&lt;temp; i++){
+                stack_output.push(stack_input.pop());
+            }
+        }
+        return stack_output.pop();
+    }
+
+    /** Get the front element. */
+    public int peek() {
+        int temp = stack_input.size();
+        if (stack_output.size() == 0) {
+            for (int i=0; i&lt;temp; i++){
+                stack_output.push(stack_input.pop());
+            }
+        }
+        return stack_output.peek();
+    }
+
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+        if (stack_input.size() == 0 &amp;&amp; stack_output.size() == 0) {
+            return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+
+}
+</code></pre>
+<h2 id="P225-队列实现栈"><a href="#P225-队列实现栈" class="headerlink" title="P225. 队列实现栈"></a>P225. 队列实现栈</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+
+// P225.用队列实现栈
+// P225.implement-stack-using-queues
+//请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通队列的全部四种操作（push、top、pop 和 empty）。
+//
+// 实现 MyStack 类：
+//
+//
+// void push(int x) 将元素 x 压入栈顶。
+// int pop() 移除并返回栈顶元素。
+// int top() 返回栈顶元素。
+// boolean empty() 如果栈是空的，返回 true ；否则，返回 false 。
+//
+//
+//
+//
+// 注意：
+//
+//
+// 你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作。
+// 你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。
+//
+//
+//
+//
+// 示例：
+//
+//
+//输入：
+//[&quot;MyStack&quot;, &quot;push&quot;, &quot;push&quot;, &quot;top&quot;, &quot;pop&quot;, &quot;empty&quot;]
+//[[], [1], [2], [], [], []]
+//输出：
+//[null, null, null, 2, 2, false]
+//
+//解释：
+//MyStack myStack = new MyStack();
+//myStack.push(1);
+//myStack.push(2);
+//myStack.top(); // 返回 2
+//myStack.pop(); // 返回 2
+//myStack.empty(); // 返回 False
+//
+//
+//
+//
+// 提示：
+//
+//
+// 1 &lt;= x &lt;= 9
+// 最多调用100 次 push、pop、top 和 empty
+// 每次调用 pop 和 top 都保证栈不为空
+//
+//
+//
+//
+// 进阶：你能否实现每种操作的均摊时间复杂度为 O(1) 的栈？换句话说，执行 n 个操作的总时间复杂度 O(n) ，尽管其中某个操作可能需要比其他操作更长的
+//时间。你可以使用两个以上的队列。
+// Related Topics 栈 设计
+// 👍 291 👎 0
+
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class P225ImplementStackUsingQueues{
+    public void main(String[] args) {
+//        Solution solution = new P225ImplementStackUsingQueues().new Solution();
+
+    }
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MyStack {
+    Queue&lt;Integer&gt; queue_input = new LinkedList&lt;&gt;();
+    Queue&lt;Integer&gt; queue_output = new LinkedList&lt;&gt;();
+    /** Initialize your data structure here. */
+    public MyStack() {
+
+    }
+
+    /** Push element x onto stack. */
+    public void push(int x) {
+        queue_input.add(x);
+    }
+
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+        int temp_2 = queue_input.size();
+        for (int i=0; i&lt;temp_2; i++) {
+            queue_output.add(queue_input.remove());
+        }
+        int temp_3 = queue_output.size();
+        for (int i=0; i&lt;temp_3-1; i++) {
+            queue_input.add(queue_output.remove());
+        }
+        return queue_output.remove();
+    }
+
+    /** Get the top element. */
+    public int top() {
+        int top = 0;
+        int temp_4 = queue_input.size();
+        for (int i=0; i&lt;temp_4; i++) {
+            queue_output.add(queue_input.remove());
+        }
+        int temp_5 = queue_output.size();
+        for (int i=0; i&lt;temp_5; i++) {
+            if (i == temp_5-1) {
+                top = queue_output.element();
+            }
+            queue_input.add(queue_output.remove());
+        }
+        return top;
+    }
+
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+        if (queue_input.size() == 0 &amp;&amp; queue_output.size() == 0) {
+            return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+
+}
+</code></pre>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/le21wf/#comments</comments>
+    </item>
     
     <item>
       <title><![CDATA[RSA公钥密码算法]]></title>
@@ -3025,141 +3476,6 @@ Get serverName &amp; IPAddress：baidu.com/39.156.69.79
 Surplus memory of JVM: 124194640B
 </code></pre>]]></content:encoded>
       <comments>https://www.wztlink1013.com/blog/qlrcf6/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[C++随机字符串生成函数]]></title>
-      <link>https://www.wztlink1013.com/blog/zeszpb/</link>
-      <guid>https://www.wztlink1013.com/blog/zeszpb/</guid>
-      <pubDate>Thu Oct 22 2020 15:11:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[C++随机字符串生成函数]]>
-      
-      </description>
-      <content:encoded><![CDATA[<pre><code class="cpp">//C++ 随机字符串生成函数
-#include&lt;iostream&gt;
-#include&lt;ctime&gt;
-using namespace std;
-
-const int LEN_NAME=4;
-
-char *rand_str(char *str,const int len)
-{
-    int i;
-    for(i=0;i&lt;len;++i)
-        str[i]=&#39;A&#39;+rand()%26;
-    str[++i]=&#39;\0&#39;;
-    return str;
-}
-
-void main()
-{
-    srand(time(NULL));
-    int i;
-    char name[LEN_NAME+1];
-
-    for(i=0;i&lt;20;++i)
-    {
-        cout&lt;&lt;rand_str(name,LEN_NAME)&lt;&lt;endl;
-    }
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/zeszpb/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[JAVA-正则表达式]]></title>
-      <link>https://www.wztlink1013.com/blog/xm1a2g/</link>
-      <guid>https://www.wztlink1013.com/blog/xm1a2g/</guid>
-      <pubDate>Thu Oct 22 2020 11:45:47 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[JAVA-正则表达式]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="常见匹配符号"><a href="#常见匹配符号" class="headerlink" title="常见匹配符号"></a>常见匹配符号</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">正则表达式</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>.</code></td>
-<td style="text-align:center">匹配所有单个字符，除了换行符（Linux 中换行是 <code>\n</code>，Windows 中换行是 <code>\r\n</code>）</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>^regex</code></td>
-<td style="text-align:center">正则必须匹配字符串开头</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>regex$</code></td>
-<td style="text-align:center">正则必须匹配字符串结尾</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>[abc]</code></td>
-<td style="text-align:center">复选集定义，匹配字母 a 或 b 或 c</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>[abc][vz]</code></td>
-<td style="text-align:center">复选集定义，匹配字母 a 或 b 或 c，后面跟着 v 或 z</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>[^abc]</code></td>
-<td style="text-align:center">当插入符 <code>^</code> 在中括号中以第一个字符开始显示，则表示否定模式。此模式匹配所有字符，除了 a 或 b 或 c</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>[a-d1-7]</code></td>
-<td style="text-align:center">范围匹配，匹配字母 a 到 d 和数字从 1 到 7 之间，但不匹配 d1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>XZ</code></td>
-<td style="text-align:center">匹配 X 后直接跟着 Z</td>
-</tr>
-<tr>
-<td style="text-align:center">X&#124;Z</td>
-<td style="text-align:center">匹配 X 或 Z</td>
-</tr>
-</tbody>
-</table>
-<h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">正则表达式</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>\d</code></td>
-<td style="text-align:center">匹配一个数字，是 <code>[0-9]</code> 的简写</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>\D</code></td>
-<td style="text-align:center">匹配一个非数字，是 <code>[^0-9]</code> 的简写</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>\s</code></td>
-<td style="text-align:center">匹配一个空格，是 <code>[ \t\n\x0b\r\f]</code> 的简写</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>\S</code></td>
-<td style="text-align:center">匹配一个非空格</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>\w</code></td>
-<td style="text-align:center">匹配一个单词字符（大小写字母、数字、下划线），是 <code>[a-zA-Z_0-9]</code> 的简写</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>\W</code></td>
-<td style="text-align:center">匹配一个非单词字符（除了大小写字母、数字、下划线之外的字符），等同于 <code>[^\w]</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h2><p>| 正则表达式 | 描述 | 举例 |<br>| <code>*</code> | 匹配 &gt;=0 个，是 <code>{0,}</code> 的简写 | <code>X*</code> 表示匹配零个或多个字母 X，<code>.*</code> 表示匹配任何字符串 |<br>| :—: | :—: | :—: |<br>| <code>+</code> | 匹配 &gt;=1 个，是 <code>{1,}</code> 的简写 | <code>X+</code> 表示匹配一个或多个字母 X |<br>| <code>?</code> | 匹配 1 个或 0 个，是 <code>{0,1}</code> 的简写 | <code>X?</code> 表示匹配 0 个或 1 个字母 X |<br>| <code>{X}</code> | 只匹配 X 个字符 | <code>\d{3}</code> 表示匹配 3 个数字，<code>.{10}</code> 表示匹配任何长度是 10 的字符串 |<br>| <code>{X,Y}</code> | 匹配 &gt;=X 且 &lt;=Y 个 | <code>\d{1,4}</code> 表示匹配至少 1 个最多 4 个数字 |<br>| <code>*?</code> | 如果 <code>?</code> 是限定符 <code>*</code> 或 <code>+</code> 或 <code>?</code> 或 <code>{}</code> 后面的第一个字符，那么表示<strong>非贪婪模式</strong>（尽可能少的匹配字符），而不是默认的<strong>贪婪模式</strong> | |</p>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/xm1a2g/#comments</comments>
     </item>
     
   </channel>
