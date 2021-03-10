@@ -3202,6 +3202,121 @@ return newHead; //返回新的“倒置”头节点
       </categories>
   </entry>
   <entry>
+    <title>数据可视化</title>
+    <url>/blog/kt0kvc/</url>
+    <content><![CDATA[<h2 id="一、GitHub-Juper-NoteBook-笔记"><a href="#一、GitHub-Juper-NoteBook-笔记" class="headerlink" title="一、GitHub Juper NoteBook 笔记"></a>一、GitHub Juper NoteBook 笔记</h2><ul>
+<li><a href="https://github.com/wztlink1013/data-analysis-mining" target="_blank" rel="noopener">https://github.com/wztlink1013/data-analysis-mining</a></li>
+</ul>
+<h2 id="二、零碎总结"><a href="#二、零碎总结" class="headerlink" title="二、零碎总结"></a>二、零碎总结</h2><h3 id="matplotlib-调整子图间距，调整整体空白"><a href="#matplotlib-调整子图间距，调整整体空白" class="headerlink" title="matplotlib 调整子图间距，调整整体空白"></a>matplotlib 调整子图间距，调整整体空白</h3><pre><code class="python">fig.tight_layout() #调整整体空白
+plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
+</code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://mp.weixin.qq.com/s/DaQL6bqr0wu5iYt-cVkz6g" target="_blank" rel="noopener">Matplotlib 可视化最有价值的 50 个图表</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>DataAnalysis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>全排列问题</title>
+    <url>/blog/kgaymi/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>给定 n 个有序元素的集合，列出其可能出现的排列。</p>
+<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><h2 id="代码思路"><a href="#代码思路" class="headerlink" title="代码思路"></a>代码思路</h2><ul>
+<li>利用动态数组数据结构</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.al._递归法_;
+import java.util.ArrayList;
+
+/**
+ * 全排列问题
+ * */
+
+public class Permuting {
+    static ArrayList&lt;Integer&gt; x  = new ArrayList&lt;Integer&gt;();
+    static int N;
+    static int cnt = 0;
+    static int t;
+
+    public static void main(String args[]) {
+        int n = 10;
+        Times.test(&quot;当n = &quot; + n + &quot;时候的耗费时间&quot;, new Times.Task() {
+            public void execute() {
+                PermutingCaller(n);
+            }
+        });
+    }
+    private static void PermutingCaller(int n) {
+        N = n;
+        for (int i = 0; i &lt; n; ++i)
+            x.add(i + 1);
+        Permuting(0);
+    }
+    private static void Permuting(int i) {
+        if (i &lt; N - 1) {
+            for (int j = i; j &lt; N; j++) {
+                t = x.get(i);
+                x.set(i, x.get(j));
+                x.set(j, t);
+                Permuting(i + 1);
+                t = x.get(i);
+                x.set(i, x.get(j));
+                x.set(j, t);
+            }
+        }
+        else
+            OutputOnePermutation();
+    }
+    private static void OutputOnePermutation()
+    {
+        System.out.print(++cnt + &quot; : &quot;);
+        for (int x : x)
+            System.out.print(x + &quot; &quot;);
+        System.out.println();
+    }
+}
+</code></pre>
+<blockquote>
+<p>n:10</p>
+</blockquote>
+<blockquote>
+<p>n</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Algorithm</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>P203. 移除链表元素</title>
+    <url>/blog/kgpm3x/</url>
+    <content><![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</code></pre>
+<h2 id="203-移除链表元素"><a href="#203-移除链表元素" class="headerlink" title="203. 移除链表元素"></a>203. 移除链表元素</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195857807-2e8c8296-2d79-4e36-b304-f02c4dee52b3.png#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=200&amp;originWidth=729&amp;size=15034&amp;status=done&amp;style=shadow&amp;width=364.5" alt="image.png"></p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        // 将整个链表想象成head+子链表
+        if (head == null)
+            return null;
+        // 先处理子链表
+        head.next = removeElements(head.next, val);
+        // 再处理头结点
+        return head.val == val ? head.next : head;
+    }
+}
+</code></pre>
+]]></content>
+      <categories>
+        <category>DataStructure</category>
+      </categories>
+  </entry>
+  <entry>
     <title>0-1背包问题</title>
     <url>/blog/kb5sse/</url>
     <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。</p>
@@ -3341,121 +3456,6 @@ int main()
 ]]></content>
       <categories>
         <category>Algorithm</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>全排列问题</title>
-    <url>/blog/kgaymi/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>给定 n 个有序元素的集合，列出其可能出现的排列。</p>
-<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><h2 id="代码思路"><a href="#代码思路" class="headerlink" title="代码思路"></a>代码思路</h2><ul>
-<li>利用动态数组数据结构</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.al._递归法_;
-import java.util.ArrayList;
-
-/**
- * 全排列问题
- * */
-
-public class Permuting {
-    static ArrayList&lt;Integer&gt; x  = new ArrayList&lt;Integer&gt;();
-    static int N;
-    static int cnt = 0;
-    static int t;
-
-    public static void main(String args[]) {
-        int n = 10;
-        Times.test(&quot;当n = &quot; + n + &quot;时候的耗费时间&quot;, new Times.Task() {
-            public void execute() {
-                PermutingCaller(n);
-            }
-        });
-    }
-    private static void PermutingCaller(int n) {
-        N = n;
-        for (int i = 0; i &lt; n; ++i)
-            x.add(i + 1);
-        Permuting(0);
-    }
-    private static void Permuting(int i) {
-        if (i &lt; N - 1) {
-            for (int j = i; j &lt; N; j++) {
-                t = x.get(i);
-                x.set(i, x.get(j));
-                x.set(j, t);
-                Permuting(i + 1);
-                t = x.get(i);
-                x.set(i, x.get(j));
-                x.set(j, t);
-            }
-        }
-        else
-            OutputOnePermutation();
-    }
-    private static void OutputOnePermutation()
-    {
-        System.out.print(++cnt + &quot; : &quot;);
-        for (int x : x)
-            System.out.print(x + &quot; &quot;);
-        System.out.println();
-    }
-}
-</code></pre>
-<blockquote>
-<p>n:10</p>
-</blockquote>
-<blockquote>
-<p>n</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Algorithm</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>P203. 移除链表元素</title>
-    <url>/blog/kgpm3x/</url>
-    <content><![CDATA[<pre><code class="java">/**
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-</code></pre>
-<h2 id="203-移除链表元素"><a href="#203-移除链表元素" class="headerlink" title="203. 移除链表元素"></a>203. 移除链表元素</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195857807-2e8c8296-2d79-4e36-b304-f02c4dee52b3.png#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=200&amp;originWidth=729&amp;size=15034&amp;status=done&amp;style=shadow&amp;width=364.5" alt="image.png"></p>
-<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
-    public ListNode removeElements(ListNode head, int val) {
-        // 将整个链表想象成head+子链表
-        if (head == null)
-            return null;
-        // 先处理子链表
-        head.next = removeElements(head.next, val);
-        // 再处理头结点
-        return head.val == val ? head.next : head;
-    }
-}
-</code></pre>
-]]></content>
-      <categories>
-        <category>DataStructure</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>数据可视化</title>
-    <url>/blog/kt0kvc/</url>
-    <content><![CDATA[<h2 id="一、GitHub-Juper-NoteBook-笔记"><a href="#一、GitHub-Juper-NoteBook-笔记" class="headerlink" title="一、GitHub Juper NoteBook 笔记"></a>一、GitHub Juper NoteBook 笔记</h2><ul>
-<li><a href="https://github.com/wztlink1013/data-analysis-mining" target="_blank" rel="noopener">https://github.com/wztlink1013/data-analysis-mining</a></li>
-</ul>
-<h2 id="二、零碎总结"><a href="#二、零碎总结" class="headerlink" title="二、零碎总结"></a>二、零碎总结</h2><h3 id="matplotlib-调整子图间距，调整整体空白"><a href="#matplotlib-调整子图间距，调整整体空白" class="headerlink" title="matplotlib 调整子图间距，调整整体空白"></a>matplotlib 调整子图间距，调整整体空白</h3><pre><code class="python">fig.tight_layout() #调整整体空白
-plt.subplots_adjust(wspace =0, hspace =0) #调整子图间距
-</code></pre>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://mp.weixin.qq.com/s/DaQL6bqr0wu5iYt-cVkz6g" target="_blank" rel="noopener">Matplotlib 可视化最有价值的 50 个图表</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>DataAnalysis</category>
       </categories>
   </entry>
   <entry>
