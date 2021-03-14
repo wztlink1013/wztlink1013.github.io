@@ -23,30 +23,30 @@ if (params['share']) {
 }
 
 // TODO: Notifications API 的通知接口用于向用户配置和显示桌面通知
-function notify(notice) {
-  if (!("Notification" in window)) {
-    window.console && console.warn("浏览器不支持提醒");
-  } else if (Notification.permission === "granted") {
-    var notification = new Notification(notice.title, notice);
-  } else if (Notification.permission !== 'denied') {
-    Notification.requestPermission(function (permission) {
-      if (permission === "granted") {
-        var notification = new Notification(notice.title, notice);
-      }
-    });
-  }
-  if (notification) {
-    notification.onclick = function () {
-      if (notice.url) {
-        window.open(notice.url);
-      } else {
-        $('.chatroom-fold .chatroom-info').trigger('click');
-        window.focus();
-      }
-      notification.close();
-    }
-  }
-}
+// function notify(notice) {
+//   if (!("Notification" in window)) {
+//     window.console && console.warn("浏览器不支持提醒");
+//   } else if (Notification.permission === "granted") {
+//     var notification = new Notification(notice.title, notice);
+//   } else if (Notification.permission !== 'denied') {
+//     Notification.requestPermission(function (permission) {
+//       if (permission === "granted") {
+//         var notification = new Notification(notice.title, notice);
+//       }
+//     });
+//   }
+//   if (notification) {
+//     notification.onclick = function () {
+//       if (notice.url) {
+//         window.open(notice.url);
+//       } else {
+//         $('.chatroom-fold .chatroom-info').trigger('click');
+//         window.focus();
+//       }
+//       notification.close();
+//     }
+//   }
+// }
 
 // TODO: jQuery Cookie Plugin v1.4.1
 (function (factory) {
