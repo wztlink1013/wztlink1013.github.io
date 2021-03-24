@@ -8,7 +8,7 @@
     <script xmlns="http://www.w3.org/1999/xhtml" src="/public/js/rss.js"></script>
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     <description><![CDATA[尼采般地抒情个人网站，本科CS，大学期间开始撰写技术博客、个人生活随笔，这个兴趣爱好会一直延续下去……坚信什么都不舍弃，什么也改变不了！]]></description>
-    <pubDate>Wed Mar 24 2021 11:35:43 GMT+0000 (Coordinated Universal Time)</pubDate>
+    <pubDate>Wed Mar 24 2021 11:57:44 GMT+0000 (Coordinated Universal Time)</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -35,13 +35,408 @@ git config --global --unset https.proxy
     </item>
     
     <item>
+      <title><![CDATA[C++链表设计]]></title>
+      <link>https://www.wztlink1013.com/blog/gu92gu/</link>
+      <guid>https://www.wztlink1013.com/blog/gu92gu/</guid>
+      <pubDate>Tue Mar 23 2021 03:37:03 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<h2 id="实验报告要求"><a href="#实验报告要求" class="headerlink" title="实验报告要求"></a>实验报告要求</h2><blockquote>
+<p>1、建立一个顺序表，输入 n 个元素并输出；<br>2、查找线性表中的最大元素并输]]>
+      </description>
+      <content:encoded><![CDATA[<h2 id="实验报告要求"><a href="#实验报告要求" class="headerlink" title="实验报告要求"></a>实验报告要求</h2><blockquote>
+<p>1、建立一个顺序表，输入 n 个元素并输出；<br>2、查找线性表中的最大元素并输出；<br>3、在线性表的第 i 个元素前插入一个正整数 x；<br>4、删除线性表中的第 j 个元素；<br>5、将线性表中的元素按升序排列；<br>*6、将线性表中的元素就地逆序（只允许用一个暂存单元）；</p>
+</blockquote>
+<h2 id="概念理解"><a href="#概念理解" class="headerlink" title="概念理解"></a>概念理解</h2><h3 id="链表数据结构"><a href="#链表数据结构" class="headerlink" title="链表数据结构"></a>链表数据结构</h3><p>链表是一种数据结构，和<strong>数组同级</strong>。之前 JAVA 里面的 ArrayList 数据结构，其实现原理是数组，而 JAVA 的 LinkedList 的实现原理就是链表了。链表在进行循环遍历时效率不高，但是插入和删除时优势明显，其实 C/C++抑或是 JAVA 这些数据结构都一样——地址……引用……</p>
+<p>单向链表是一种线性表，实际上是由<strong>节点（Node）</strong>组成的，一个链表拥有不定数量的节点。其数据在<strong>内存中存储是不连续的</strong>，它存储的数据分散在内存中，每个结点只能也只有它能知道下一个结点的存储位置。由 N 各节点（Node）组成单向链表，每一个 Node 记录本 Node 的数据及下一个 Node。向外暴露的只有一个头节点（Head），<strong>我们对链表的所有操作，都是直接或者间接地通过其头节点来进行的。</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194076184-195f3044-1083-4244-9eeb-d86c96a37e6f.png#align=left&amp;display=inline&amp;height=98&amp;margin=%5Bobject%20Object%5D&amp;originHeight=98&amp;originWidth=491&amp;size=0&amp;status=done&amp;style=shadow&amp;width=491" alt><br>上图中最左边的节点即为头结点（Head），但是添加节点的顺序是从右向左的，添加的新节点会被作为新节点。最先添加的节点对下一节点的引用可以为空。引用是引用下一个节点而非下一个节点的对象。因为有着不断的引用，所以<strong>头节点就可以操作所有节点</strong>了。<br>下图描述了单向链表存储情况。存储是分散的，每一个节点只要记录下一节点，就把所有数据串了起来，形成了一个单向链表。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194105521-d31f8e78-7f2a-4c60-8838-57e15707e27b.png#align=left&amp;display=inline&amp;height=219&amp;margin=%5Bobject%20Object%5D&amp;originHeight=219&amp;originWidth=195&amp;size=0&amp;status=done&amp;style=stroke&amp;width=195" alt><br>节点（Node）是由一个需要储存的对象及对下一个节点的引用组成的。也就是说，节点拥有两个成员：储存的对象、对下一个节点的引用。下面图是具体的说明：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194124335-fc6fc00c-35fb-44e1-a01c-de4b8b5531af.png#align=left&amp;display=inline&amp;height=207&amp;margin=%5Bobject%20Object%5D&amp;originHeight=207&amp;originWidth=370&amp;size=0&amp;status=done&amp;style=stroke&amp;width=370" alt></p>
+<h3 id="首元节点、头节点、头指针"><a href="#首元节点、头节点、头指针" class="headerlink" title="首元节点、头节点、头指针"></a>首元节点、头节点、头指针</h3><blockquote>
+<p>一些概念</p>
+</blockquote>
+<ul>
+<li>首元结点：第一个有元素的结点</li>
+<li>头结点：一般不放元素，“L”</li>
+<li>头指针：指向链表的第一个结点，有头结点则为头结点的指针，反之，指向首元结点的指针<blockquote>
+<p>参考资料：<a href="https://www.jianshu.com/p/73d56c3d228c" target="_blank" rel="noopener">https://www.jianshu.com/p/73d56c3d228c</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="关于链表的指向"><a href="#关于链表的指向" class="headerlink" title="关于链表的指向"></a>关于链表的指向</h3><blockquote>
+<p>【1】何为指向？</p>
+</blockquote>
+<p>个人觉得链表的相关问题及操作就是理解链表的<strong>“指向”</strong>这么个概念，先明确以下几点</p>
+<ul>
+<li>每个节点的<strong>next</strong>用来存放<strong>下一个节点的“地址”</strong></li>
+<li><strong>每个节点的自身就是地址</strong>，相当于 C 语言中数组的数组名就是本数组的地址</li>
+</ul>
+<blockquote>
+<p>【2】谁指向谁？</p>
+</blockquote>
+<p><strong>总结：</strong><br><strong>做题用我的下面总结的方法，绝对好用</strong><br><strong><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1616501415627-ee5d1008-a07d-4acb-821b-e227b5cb7ad8.jpeg#align=left&amp;display=inline&amp;height=59&amp;margin=%5Bobject%20Object%5D&amp;name=huaji1558a846ddf2e12b.jpeg&amp;originHeight=59&amp;originWidth=55&amp;size=703&amp;status=done&amp;style=stroke&amp;width=55" alt="huaji1558a846ddf2e12b.jpeg"></strong></p>
+<ul>
+<li><strong>读的时候：从左往右读，一般左边是某某的 next 域，右边是具体的结点</strong></li>
+<li><strong>画的时候：在图中表示为等号左边指向等号右边</strong></li>
+</ul>
+<p><strong><br>比如：① <code>node.next = prev.next;</code> ②<code>prev.next = node</code><br>①“node 的 next 指向 prev 的下一个结点”<br>（用指针的概念通俗地说，其实就是 prev 的下一个结点的地址由 prev 的指针域里面赋值给了 node 的 next 指针域里面）<br>②“prev 的 next 指向 node 这个结点”<br>（还可以这么说：将 node 赋值给 prev 的 next，也就是说 prev 的下一个结点是 node）
+</strong></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003706-ad779a14-1678-4d0c-86f2-b147752bd252.png#align=left&amp;display=inline&amp;height=204&amp;margin=%5Bobject%20Object%5D&amp;originHeight=594&amp;originWidth=955&amp;size=0&amp;status=done&amp;style=stroke&amp;width=328" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003751-ffeee4d8-9662-416e-8f46-5cf5edf03114.png#align=left&amp;display=inline&amp;height=250&amp;margin=%5Bobject%20Object%5D&amp;originHeight=725&amp;originWidth=938&amp;size=0&amp;status=done&amp;style=stroke&amp;width=324" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003658-46b3e7db-e6dc-4d13-baea-e7e44075e8bc.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;originHeight=626&amp;originWidth=975&amp;size=0&amp;status=done&amp;style=stroke&amp;width=344" alt></p>
+<blockquote>
+<p>【3】指向错位？</p>
+</blockquote>
+<p><strong>关注第一个元素节点是不是 head，因为有的链表不声明头节点（head），直接就是第一个结点就是元素结点</strong></p>
+<h3 id="关于-p-L-的理解"><a href="#关于-p-L-的理解" class="headerlink" title="关于 p=L 的理解"></a>关于 p=L 的理解</h3><p>写代码的时候，还经常遇到下面的情况<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616501697301-b63e6312-d8f9-4130-8d25-2d3becd75038.png#align=left&amp;display=inline&amp;height=53&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=106&amp;originWidth=466&amp;size=9439&amp;status=done&amp;style=none&amp;width=233" alt="image.png"><br>p、L 就是指向结点的指针类型，将 L 的值赋给 p，也就是 p、L 指向同一个结点。具体理解可以用下面一个例子来说明：<br>下面图片这个函数就是在一个单链表中，功能就是指定 i 位置插入 e 值。下图箭头处如果 TraverseList 返回的是 p 那么得出的链表结果就是从插入的那个元素往后这样一个部分链表，返回的是 L 就是想要的结果，p 的功能有点类似在 L 的中间做了手脚……<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616501856348-955542eb-258d-473f-b003-c53881275937.png#align=left&amp;display=inline&amp;height=331&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=662&amp;originWidth=740&amp;size=62693&amp;status=done&amp;style=none&amp;width=370" alt="image.png"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="实验报告代码"><a href="#实验报告代码" class="headerlink" title="实验报告代码"></a>实验报告代码</h3><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef struct LNode {
+    int data;
+    struct LNode *next;
+}Lnode, *LinkList;
+
+LinkList L;
+
+void InitList(LinkList &amp;L) {
+    L = new LNode;
+    L-&gt;next = NULL;
+}
+
+void CreateList_H(LinkList &amp;L) {
+    InitList(L);
+    int n;
+    cout &lt;&lt; &quot;请输入要使用前插法插入的元素个数：&quot;;
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++){
+        LNode *p = new LNode;
+        cin &gt;&gt; p-&gt;data;
+        p-&gt;next = L-&gt;next;
+        L-&gt;next = p;
+    }
+}
+void TraverseList(LinkList &amp;L){
+    LNode *p = new LNode;
+    p = L-&gt;next;
+    cout &lt;&lt; &quot;此链表打印的结果为：&quot;&lt;&lt;&quot;\n&quot;;
+    while (p != NULL){
+        cout &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+}
+void GetElem(LinkList &amp;L) {
+    int n;
+    cout &lt;&lt; &quot;请输入要查询的链表中第i个数：&quot;;
+    cin &gt;&gt; n;
+    LNode *p = new LNode;
+    p = L;
+    for (int i = 0; i &lt; n;i++){
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; &quot;查询的结果为：&quot; &lt;&lt; p-&gt;data&lt;&lt;&quot;\n&quot;;
+}
+void ListInsert(LinkList &amp;L){
+    LNode *p = new LNode;
+    p = L;
+    int n;
+    int e;
+    cout &lt;&lt; &quot;请分别输入要在第n个位置插入的e值：&quot;;
+    cin &gt;&gt; n&gt;&gt; e ;
+    for (int i = 0; i &lt; n;i++) {
+        if (n == i+1){
+            LNode *temp = new LNode;
+            temp-&gt;data = e;
+            temp-&gt;next = p-&gt;next;
+            p-&gt;next = temp;
+            break;
+        }
+        p = p-&gt;next;
+    }
+    TraverseList(L); // 直接返回L就可以了，之前返回p是不可以的！！！唉，大意了~
+}
+void ListDelete(LinkList &amp;L){
+    cout &lt;&lt; &quot;请输入要删除的第j个位置的j值：&quot;;
+    LNode *p = new LNode;
+    p = L;
+    int j;
+    cin &gt;&gt; j;
+    for (int i = 0; i &lt; j;i++) {
+        if (j == i+1) {
+            p-&gt;next = p-&gt;next-&gt;next;
+            break;
+        }
+        p = p-&gt;next;
+    }
+    TraverseList(L);
+}
+void ReverseList(LinkList &amp;L) {
+    LNode *p = L-&gt;next;
+    L-&gt;next = NULL;
+    while(p)
+    {
+        LNode *q = p-&gt;next;
+        p-&gt;next = L-&gt;next;
+        L-&gt;next = p;
+        p = q;
+    }
+    cout &lt;&lt; &quot;通过逆置之后……&quot;;
+    TraverseList(L);
+}
+
+int main() {
+    LNode *test = new LNode;
+    CreateList_H(test);//1
+    TraverseList(test);//1
+    GetElem(test);//2
+    ListInsert(test);//3
+    ListDelete(test);//4
+    ReverseList(test);//5
+}
+</code></pre>
+<h3 id="尾插法的理解"><a href="#尾插法的理解" class="headerlink" title="尾插法的理解"></a>尾插法的理解</h3><ul>
+<li><a href="https://blog.csdn.net/sinat_41721615/article/details/105031104" target="_blank" rel="noopener">https://blog.csdn.net/sinat_41721615/article/details/105031104</a></li>
+<li><a href="https://zhidao.baidu.com/question/944472157933268532.html" target="_blank" rel="noopener">https://zhidao.baidu.com/question/944472157933268532.html</a></li>
+</ul>
+<h3 id="整体实现代码"><a href="#整体实现代码" class="headerlink" title="整体实现代码"></a>整体实现代码</h3><pre><code class="cpp">#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;iomanip&gt;
+#include&lt;stdlib.h&gt;
+using namespace std;
+
+
+typedef struct LNode {
+    int data; //结点的数据域
+    struct LNode *next; //结点的指针域
+}LNode, *LinkList; //LinkList为指向结构体LNode的指针类型
+
+bool InitList_L(LinkList &amp;L)//构造一个空的单链表L//结构体指针类型变量做为函数的形式参数
+{
+    L=new LNode;     //生成新结点作为头结点，用头指针L指向头结点//变量名 = new 类型
+    if(!L)
+      return false;  //生成结点失败
+    L-&gt;next=NULL;   //头结点的指针域置空
+    return true;
+}
+
+void CreateList_H(LinkList &amp;L)//前插法创建单链表
+{
+    //输入n个元素的值，建立到头结点的单链表L
+    int n;
+    LinkList s; //定义一个所建立的结构体指针变量
+    L=new LNode; //生成新结点作为头结点，用头指针L指向头结点
+    L-&gt;next=NULL; //先建立一个带头结点的空链表
+    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt; endl;
+    cin&gt;&gt;n;
+    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
+    cout &lt;&lt;&quot;前插法创建单链表...&quot; &lt;&lt;endl;
+    while(n--)
+    {
+        s=new LNode; //生成新结点s
+        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
+        s-&gt;next=L-&gt;next;
+        L-&gt;next=s; //将新结点s插入到头结点之后
+    }
+}
+
+void CreateList_R(LinkList &amp;L)//尾插法创建单链表
+{
+    //输入n个元素的值，建立带表头结点的单链表L
+    int n;
+    LinkList s, r;
+    L=new LNode;
+    L-&gt;next=NULL; //先建立一个带头结点的空链表
+    r=L; //尾指针r指向头结点
+    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt;endl;
+    cin&gt;&gt;n;
+    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
+    cout &lt;&lt;&quot;尾插法创建单链表...&quot; &lt;&lt;endl;
+    while(n--)
+    {
+        s=new LNode;//生成新结点
+        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
+        s-&gt;next=NULL;
+        r-&gt;next=s;//将新结点s插入尾结点*r之后
+        r=s;//r指向新的尾结点s
+    }
+}
+
+bool GetElem_L(LinkList L, int i, int &amp;e)//单链表的取值
+{
+    //在带头结点的单链表L中查找第i个元素
+    //用e记录L中第i个数据元素的值
+    int j;
+    LinkList p;
+    p=L-&gt;next;//p指向首元结点
+    j=1; //j为计数器
+    while (j&lt;i &amp;&amp; p) //顺链域向后扫描，直到p指向第i个元素或p为空
+    {
+        p=p-&gt;next; //p指向下一个结点    类似结点的自加
+        j++; //计数器j相应加1
+    }
+    if (!p || j&gt;i)
+        return false; //i值不合法i＞n或i&lt;=0
+    e=p-&gt;data; //取第i个结点的数据域
+    return true;
+}
+
+bool LocateElem_L(LinkList L, int e) //按值查找
+{
+    //在带头结点的单链表L中查找值为e的元素
+    LinkList p;
+    p=L-&gt;next;
+    while (p &amp;&amp; p-&gt;data!=e)//顺链域向后扫描，直到p为空或p所指结点的数据域等于e
+        p=p-&gt;next; //p指向下一个结点
+    if(!p)
+        return false; //查找失败p为NULL
+    return true;
+}
+
+bool ListInsert_L(LinkList &amp;L, int i, int e)//单链表的插入
+{
+    //在带头结点的单链表L中第i个位置插入值为e的新结点
+    int j;
+    LinkList p, s;
+    p=L;
+    j=0;
+    while (p&amp;&amp;j&lt;i-1) //查找第i-1个结点，p指向该结点
+    {
+        p=p-&gt;next;
+        j++;
+    }
+    if (!p || j&gt;i-1)//i＞n+1或者i＜1
+        return false;
+    s=new LNode;     //生成新结点
+    s-&gt;data=e;       //将新结点的数据域置为e
+    s-&gt;next=p-&gt;next; //将新结点的指针域指向结点ai
+    p-&gt;next=s;       //将结点p的指针域指向结点s
+    return true;
+}
+
+bool ListDelete_L(LinkList &amp;L, int i) //单链表的删除
+{
+    //在带头结点的单链表L中，删除第i个位置
+    LinkList p, q;
+    int j;
+    p=L;
+    j=0;
+    while((p-&gt;next)&amp;&amp;(j&lt;i-1)) //查找第i-1个结点，p指向该结点
+    {
+        p=p-&gt;next;
+        j++;
+    }
+    if (!(p-&gt;next)||(j&gt;i-1))//当i&gt;n或i&lt;1时，删除位置不合理
+        return false;
+    q=p-&gt;next;        //临时保存被删结点的地址以备释放空间
+    p-&gt;next=q-&gt;next; //改变删除结点前驱结点的指针域
+    delete q;        //释放被删除结点的空间
+    return true;
+}
+
+void Listprint_L(LinkList L) //单链表的输出
+{
+    LinkList p;
+    p=L-&gt;next;
+    while (p)
+    {
+        cout&lt;&lt;p-&gt;data&lt;&lt;&quot;\t&quot;;
+        p=p-&gt;next;
+    }
+    cout&lt;&lt;endl;
+}
+
+int main()
+{
+    int i,x,e,choose;
+    LinkList L;
+    cout &lt;&lt; &quot;1. 初始化\n&quot;;
+    cout &lt;&lt; &quot;2. 创建单链表（前插法）\n&quot;;
+    cout &lt;&lt; &quot;3. 创建单链表（尾插法）\n&quot;;
+    cout &lt;&lt; &quot;4. 取值\n&quot;;
+    cout &lt;&lt; &quot;5. 查找\n&quot;;
+    cout &lt;&lt; &quot;6. 插入\n&quot;;
+    cout &lt;&lt; &quot;7. 删除\n&quot;;
+    cout &lt;&lt; &quot;8. 输出\n&quot;;
+    cout &lt;&lt; &quot;0. 退出\n&quot;;
+    choose=-1;
+    while (choose!=0)
+    {
+        cout&lt;&lt;&quot;请输入数字选择:&quot;;
+        cin&gt;&gt;choose;
+        switch (choose)
+        {
+        case 1: //初始化一个空的单链表
+            if (InitList_L(L))
+                cout &lt;&lt; &quot;初始化一个空的单链表!\n&quot;;
+            break;
+        case 2: //创建单链表（前插法）
+            CreateList_H(L);
+            cout &lt;&lt; &quot;前插法创建单链表输出结果:\n&quot;;
+            Listprint_L(L);
+            break;
+        case 3: //创建单链表（尾插法）
+            CreateList_R(L);
+            cout &lt;&lt; &quot;尾插法创建单链表输出结果:\n&quot;;
+            Listprint_L(L);
+            break;
+        case 4: //单链表的按序号取值
+            cout &lt;&lt; &quot;请输入一个位置i用来取值:&quot;;
+            cin &gt;&gt; i;
+            if (GetElem_L(L,i,e))
+            {
+                cout &lt;&lt; &quot;查找成功\n&quot;;
+                cout &lt;&lt; &quot;第&quot; &lt;&lt; i &lt;&lt; &quot;个元素是：&quot;&lt;&lt;e&lt;&lt; endl;
+            }
+            else
+                cout &lt;&lt; &quot;查找失败\n\n&quot;;
+            break;
+        case 5: //单链表的按值查找
+            cout&lt;&lt;&quot;请输入所要查找元素x:&quot;;
+            cin&gt;&gt;x;
+            if (LocateElem_L(L,x))
+                cout &lt;&lt; &quot;查找成功\n&quot;;
+            else
+                cout &lt;&lt; &quot;查找失败! &quot; &lt;&lt;endl;
+            break;
+        case 6: //单链表的插入
+            cout &lt;&lt; &quot;请输入插入的位置和元素（用空格隔开）:&quot;;
+            cin &gt;&gt; i;
+            cin &gt;&gt; x;
+            if (ListInsert_L(L, i, x))
+                cout &lt;&lt; &quot;插入成功.\n\n&quot;;
+            else
+                cout &lt;&lt; &quot;插入失败!\n\n&quot;;
+            break;
+        case 7: //单链表的删除
+            cout&lt;&lt;&quot;请输入所要删除的元素位置i:&quot;;
+            cin&gt;&gt;i;
+            if (ListDelete_L(L, i))
+                cout&lt;&lt;&quot;删除成功!\n&quot;;
+            else
+                cout&lt;&lt;&quot;删除失败!\n&quot;;
+            break;
+        case 8: //单链表的输出
+            cout &lt;&lt; &quot;当前单链表的数据元素分别为:\n&quot;;
+            Listprint_L(L);
+            cout &lt;&lt; endl;
+            break;
+        }
+    }
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://shangdixinxi.com/detail-1507915.html" target="_blank" rel="noopener">链表 p-&gt;next=q-&gt;next,q-&gt;next=p,q=p;的一些解释</a></li>
+<li><a href="https://blog.csdn.net/weixin_44135282/article/details/90348885" target="_blank" rel="noopener">p-&gt;next=q 与 q=p-&gt;next 区分</a></li>
+</ul>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/gu92gu/#comments</comments>
+    </item>
+    
+    <item>
       <title><![CDATA[JAVA当中栈和队列常用方法]]></title>
       <link>https://www.wztlink1013.com/blog/oylyeh/</link>
       <guid>https://www.wztlink1013.com/blog/oylyeh/</guid>
-      <pubDate>Tue Mar 09 2021 08:34:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <pubDate>Tue Mar 09 2021 00:39:27 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[JAVA当中栈和队列常用方法]]>
-      
+      <![CDATA[<blockquote>
+<p>Java 里有一个叫做 Stack 的类，却没有叫做 Queue 的类（它是个接口名字）。当需要使用栈时，Java 已不推荐使用 Stack，而是推荐使用更高效的 ArrayDeque；<br>既然 Queue 只是一个接口，当需要使用队列时也就首]]>
       </description>
       <content:encoded><![CDATA[<blockquote>
 <p>Java 里有一个叫做 Stack 的类，却没有叫做 Queue 的类（它是个接口名字）。当需要使用栈时，Java 已不推荐使用 Stack，而是推荐使用更高效的 ArrayDeque；<br>既然 Queue 只是一个接口，当需要使用队列时也就首选 ArrayDeque 了（次选是 LinkedList）。</p>
@@ -188,10 +583,10 @@ public class ArrayDequeStack {
       <title><![CDATA[P225P232. 队列和栈的相互实现]]></title>
       <link>https://www.wztlink1013.com/blog/le21wf/</link>
       <guid>https://www.wztlink1013.com/blog/le21wf/</guid>
-      <pubDate>Tue Mar 09 2021 08:30:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <pubDate>Tue Mar 09 2021 00:28:47 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[P225P232. 队列和栈的相互实现]]>
-      
+      <![CDATA[<blockquote>
+<p>简单实现一下，熟悉一下写题目，这几天找找状态……<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1615278756585-fb0d9f38-8031-472f-9a19-8545b]]>
       </description>
       <content:encoded><![CDATA[<blockquote>
 <p>简单实现一下，熟悉一下写题目，这几天找找状态……<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1615278756585-fb0d9f38-8031-472f-9a19-8545be93a548.gif#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=huaji-6f8ff8999ff5ed9a.gif&amp;originHeight=100&amp;originWidth=100&amp;size=12637&amp;status=done&amp;style=none&amp;width=100" alt="huaji-6f8ff8999ff5ed9a.gif"></p>
@@ -2347,10 +2742,9 @@ background-position : position || position
       <title><![CDATA[P674. 最长连续递增序列]]></title>
       <link>https://www.wztlink1013.com/blog/guaorh/</link>
       <guid>https://www.wztlink1013.com/blog/guaorh/</guid>
-      <pubDate>Sun Jan 24 2021 03:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <pubDate>Sat Jan 23 2021 19:25:02 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[P674. 最长连续递增序列]]>
-      
+      <![CDATA[<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode]]>
       </description>
       <content:encoded><![CDATA[<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
 
@@ -2939,10 +3333,9 @@ class Solution {
       <title><![CDATA[P150.逆波兰表达式求值]]></title>
       <link>https://www.wztlink1013.com/blog/ewoap5/</link>
       <guid>https://www.wztlink1013.com/blog/ewoap5/</guid>
-      <pubDate>Thu Dec 03 2020 12:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <pubDate>Thu Dec 03 2020 05:25:52 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[P150.逆波兰表达式求值]]>
-      
+      <![CDATA[<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理<]]>
       </description>
       <content:encoded><![CDATA[<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理</p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
@@ -3132,10 +3525,11 @@ Error: Process completed with exit code 2.
       <title><![CDATA[P224.基本计算器]]></title>
       <link>https://www.wztlink1013.com/blog/ckr31m/</link>
       <guid>https://www.wztlink1013.com/blog/ckr31m/</guid>
-      <pubDate>Tue Dec 01 2020 11:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <pubDate>Wed Dec 02 2020 00:10:09 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[P224.基本计算器]]>
-      
+      <![CDATA[<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>用栈来作为临时存取非括号的求和数。对字符串进行逐个遍历，然后对遇到的每个字符串进行判断</p>
+<ul>
+<li>数字：将其]]>
       </description>
       <content:encoded><![CDATA[<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>用栈来作为临时存取非括号的求和数。对字符串进行逐个遍历，然后对遇到的每个字符串进行判断</p>
 <ul>
@@ -3238,88 +3632,14 @@ class Solution {
     </item>
     
     <item>
-      <title><![CDATA[.gitignore文件使用总结]]></title>
-      <link>https://www.wztlink1013.com/blog/hgxgvd/</link>
-      <guid>https://www.wztlink1013.com/blog/hgxgvd/</guid>
-      <pubDate>Fri Nov 27 2020 09:11:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[在Git项目将要提交到github仓库的时候，有些时候我们想要将指定文件不push，例如含有敏感信息类似token的文件，或者.class、.xml、等文件]]>
-      
-      </description>
-      <content:encoded><![CDATA[<blockquote>
-<p>这篇文章是根据博客园用户<a href="https://home.cnblogs.com/u/kevingrace/" target="_blank" rel="noopener">散尽浮华</a>整理来的，原文请看：<a href="https://www.cnblogs.com/kevingrace/p/5690241.html" target="_blank" rel="noopener">https://www.cnblogs.com/kevingrace/p/5690241.html</a></p>
-</blockquote>
-<p>在 Git 项目将要提交到 github 仓库的时候，有些时候我们想要将指定文件不 push，例如含有敏感信息类似 token 的文件，或者.class、.xml、等文件</p>
-<h2 id="忽略指定文件的-push-的三种方式"><a href="#忽略指定文件的-push-的三种方式" class="headerlink" title="忽略指定文件的 push 的三种方式"></a>忽略指定文件的 push 的三种方式</h2><ul>
-<li>方式一：在 Git 项目中定义.gitignore 文件</li>
-<li>方式二：在 Git 项目的设置中指定排除文件</li>
-<li>方式三：定义 Git 全局的 .gitignore 文件</li>
-</ul>
-<h2 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h2><pre><code>#               表示此为注释,将被Git忽略
-*.a             表示忽略所有 .a 结尾的文件
-!lib.a          表示但lib.a除外
-/TODO           表示仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
-build/          表示忽略 build/目录下的所有文件，过滤整个build文件夹；
-doc/*.txt       表示会忽略doc/notes.txt但不包括 doc/server/arch.txt
-
-bin/:           表示忽略当前路径下的bin文件夹，该文件夹下的所有内容都会被忽略，不忽略 bin 文件
-/bin:           表示忽略根目录下的bin文件
-/*.c:           表示忽略cat.c，不忽略 build/cat.c
-debug/*.obj:    表示忽略debug/io.obj，不忽略 debug/common/io.obj和tools/debug/io.obj
-**/foo:         表示忽略/foo,a/foo,a/b/foo等
-a/**/b:         表示忽略a/b, a/x/b,a/x/y/b等
-!/bin/run.sh    表示不忽略bin目录下的run.sh文件
-*.log:          表示忽略所有 .log 文件
-config.php:     表示忽略当前路径的 config.php 文件
-
-/mtk/           表示过滤整个文件夹
-*.zip           表示过滤所有.zip文件
-/mtk/do.c       表示过滤某个具体文件
-
-被过滤掉的文件就不会出现在git仓库中（gitlab或github）了，当然本地库中还有，只是push的时候不会上传。
-
-需要注意的是，gitignore还可以指定要将哪些文件添加到版本管理中，如下：
-!*.zip
-!/mtk/one.txt
-
-唯一的区别就是规则开头多了一个感叹号，Git会将满足这类规则的文件添加到版本管理中。为什么要有两种规则呢？
-想象一个场景：假如我们只需要管理/mtk/目录中的one.txt文件，这个目录中的其他文件都不需要管理，那么.gitignore规则应写为：：
-/mtk/*
-!/mtk/one.txt
-
-假设我们只有过滤规则，而没有添加规则，那么我们就需要把/mtk/目录下除了one.txt以外的所有文件都写出来！
-注意上面的/mtk/*不能写为/mtk/，否则父目录被前面的规则排除掉了，one.txt文件虽然加了!过滤规则，也不会生效！
-
-----------------------------------------------------------------------------------
-还有一些规则如下：
-fd1/*
-说明：忽略目录 fd1 下的全部内容；注意，不管是根目录下的 /fd1/ 目录，还是某个子目录 /child/fd1/ 目录，都会被忽略；
-
-/fd1/*
-说明：忽略根目录下的 /fd1/ 目录的全部内容；
-
-/*
-!.gitignore
-!/fw/
-/fw/*
-!/fw/bin/
-!/fw/sf/
-说明：忽略全部内容，但是不忽略 .gitignore 文件、根目录下的 /fw/bin/ 和 /fw/sf/ 目录；注意要先对bin/的父目录使用!规则，使其不被排除。
-</code></pre><h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li>文章主要参考：<a href="https://www.cnblogs.com/kevingrace/p/5690241.html" target="_blank" rel="noopener">https://www.cnblogs.com/kevingrace/p/5690241.html</a></li>
-</ul>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/hgxgvd/#comments</comments>
-    </item>
-    
-    <item>
       <title><![CDATA[sdnu-dboj-成绩管理-Movie]]></title>
       <link>https://www.wztlink1013.com/blog/zhdy1x/</link>
       <guid>https://www.wztlink1013.com/blog/zhdy1x/</guid>
-      <pubDate>Thu Nov 19 2020 06:23:23 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <pubDate>Tue Dec 01 2020 23:46:53 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[几乎都是SELECT语句训练]]>
-      
+      <![CDATA[<blockquote>
+<p>题目入口：<a href="http://db.itoi.sd.cn/problem/set" target="_blank" rel="noopener">http://db.itoi.sd.cn/problem/set</a></p>
+</bl]]>
       </description>
       <content:encoded><![CDATA[<blockquote>
 <p>题目入口：<a href="http://db.itoi.sd.cn/problem/set" target="_blank" rel="noopener">http://db.itoi.sd.cn/problem/set</a></p>
@@ -3606,747 +3926,271 @@ where mID in (
     </item>
     
     <item>
-      <title><![CDATA[贪心算法-Huffman算法]]></title>
-      <link>https://www.wztlink1013.com/blog/ggu8v9/</link>
-      <guid>https://www.wztlink1013.com/blog/ggu8v9/</guid>
-      <pubDate>Sat Nov 14 2020 06:24:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <title><![CDATA[P509. 斐波那契数]]></title>
+      <link>https://www.wztlink1013.com/blog/pmd7dz/</link>
+      <guid>https://www.wztlink1013.com/blog/pmd7dz/</guid>
+      <pubDate>Mon Nov 30 2020 02:22:36 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[贪心算法-Huffman算法]]>
-      
+      <![CDATA[<h3 id="509-斐波那契数"><a href="#509-斐波那契数" class="headerlink" title="509. 斐波那契数"></a>509. 斐波那契数</h3><pre><code class="java">class Solution {
+  ]]>
       </description>
-      <content:encoded><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。</p>
-<p>比如：给出一串字母 <code>Huffman Coding</code>   ，按照计算机处理形式，会根据 ascll 码将这串字符编码，具体形式（十进制）就是 104 117 102 102 109 97 110 32 67 111 100 105 110 103，然后转换成二进制，最后会得到需要 97 个比特来存储。</p>
-<h2 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h2><p>算法角度来讲对上述问题 ascll 编码方式是浪费空间的，优化方向是改变编码方式，根据字母出现的频率来“按需分配”进制位。</p>
-<p>给出下面所给出的字母，以及出现的频率，来得到哈夫曼编码<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340774734-5ec5e8f1-0fae-47ff-8ded-dccf9611a3ad.png#align=left&amp;display=inline&amp;height=45&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=89&amp;originWidth=411&amp;size=4276&amp;status=done&amp;style=shadow&amp;width=205.5" alt="image.png"><br>先提出将频率小的依次加入。d 和 h 组合权值为 9(或者说 A 只是称呼方便)，然后将这个 9“替换 d 和 h”代入整个序列，在进行插入树操作，</p>
-<blockquote>
-<p>过程中，遵循数字大的在左数字小的在右原则（互换也没关系，只不过换的是二进制的 0 和 1）</p>
-</blockquote>
-<p>在进行到 E 的时候，此时的队列应该为 120 107 42 37，所以此时需要重新调整队列，然后进行到结束。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340899720-d8867a90-d01c-4bf6-8ec7-ca0e812a99dd.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=443&amp;originWidth=376&amp;size=24239&amp;status=done&amp;style=shadow&amp;width=188" alt="image.png"><br>最后的编码结果为：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605341313840-61587c86-135d-4ba0-96aa-844868de1d56.png#align=left&amp;display=inline&amp;height=101&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=201&amp;originWidth=165&amp;size=4405&amp;status=done&amp;style=shadow&amp;width=82.5" alt="image.png"></p>
-<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-namespace NS_HuffmanCoding {
-using namespace std;
-void BuildHuffmanTree();
-void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars);
-void Finalization();
-struct HFMNode {
-  char Ch; int Freq;
-  HFMNode* Left, * Right;
-  HFMNode(char pCh, int pFreq, HFMNode* pLeft, HFMNode* pRight)
-    : Ch(pCh), Freq(pFreq), Left(pLeft), Right(pRight) {}
-  HFMNode(char pCh, int pFreq)
-    : HFMNode(pCh, pFreq, NULL, NULL) {}
-};
-void MinHeapify(vector&lt;HFMNode*&gt;&amp; H);
-void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node);
-void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i);
-void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i);
-HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H);
-void DeleteANode(HFMNode* node);
-void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars);
-void Output();
-static vector&lt;HFMNode*&gt; Q;
-void HuffmanCodingCaller(vector&lt;pair&lt;char, int&gt;&gt; chars)
-{
-  ShowInput(chars);
-  Initialization(chars);
-  BuildHuffmanTree();
-  Output();
-  Finalization();
-}
-void BuildHuffmanTree()
-{
-  char C = &#39;A&#39;;
-  while (Q.size() &gt; 1)
-  {
-    HFMNode* x = ExtractMin(Q);
-    HFMNode* y = ExtractMin(Q);
-    HFMNode* z = new HFMNode(C++, x-&gt;Freq + y-&gt;Freq, x, y);
-    InsertH(Q, z);
-  }
-}
-HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H)
-{
-  swap(H.front(), H.back());
-  HFMNode* p = H.back();
-  H.pop_back();
-  if (!H.empty())
-    SiftDown(H, 0);
-  return p;
-}
-void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i)
-{
-    while ((i = (i &lt;&lt; 1) + 1) &lt; H.size()) {
-        if ((i + 1 &lt; H.size()) &amp;&amp; (H[i + 1]-&gt;Freq &lt; H[i]-&gt;Freq))
-            i = i + 1;
-        if (H[(i - 1) &gt;&gt; 1]-&gt;Freq &gt; H[i]-&gt;Freq)
-            swap(H[(i - 1) &gt;&gt; 1], H[i]);
-        else break;
-    }
-}
-void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node)
-{
-  H.push_back(node);
-  SiftUp(H, H.size() - 1);
-}
-void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i)
-{
-  while (i &gt; 0 &amp;&amp; H[i]-&gt;Freq &lt; H[(i - 1) &gt;&gt; 1]-&gt;Freq) {
-    swap(H[i], H[(i - 1) &gt;&gt; 1]);
-    i = (i - 1) &gt;&gt; 1;
-  }
-}
-void MinHeapify(vector&lt;HFMNode*&gt;&amp; H)
-{
-  for (int i = (H.size() &gt;&gt; 1) - 1; i &gt;= 0; i--) {
-    SiftDown(H, i);
-  }
-}
-
-void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars)
-{
-  Q.clear();
-  for (auto ch : chars)
-    Q.push_back(new HFMNode(ch.first, ch.second));
-  MinHeapify(Q);
-}
-void Finalization()
-{
-  DeleteANode(Q[0]);
-}
-void DeleteANode(HFMNode* node)
-{
-  if (node-&gt;Left)
-  {
-    DeleteANode(node-&gt;Left);
-    DeleteANode(node-&gt;Right);
-  }
-  delete node;
-}
-void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars)
-{
-  printf(&quot;Huffman coding input: \n&quot;);
-  for (auto c : chars)
-    printf(&quot;%c,%d; &quot;, c.first, c.second);
-  printf(&quot;\n&quot;);
-}
-static vector&lt;char&gt; coding;
-static vector&lt;pair&lt;char, vector&lt;char&gt;&gt;&gt; codingList;
-void GetHuffmanCoding(HFMNode* node)
-{
-  if (node-&gt;Left)
-  {
-    coding.push_back(&#39;0&#39;);
-    GetHuffmanCoding(node-&gt;Left);
-    coding.pop_back();
-    coding.push_back(&#39;1&#39;);
-    GetHuffmanCoding(node-&gt;Right);
-    coding.pop_back();
-  }
-  else
-  {
-    codingList.push_back(pair&lt;char,
-      vector&lt;char&gt;&gt;(node-&gt;Ch, coding));
-  }
-}
-void Output()
-{
-  printf(&quot;Huffman coding:\n&quot;);
-  coding.clear();
-  codingList.clear();
-  GetHuffmanCoding(Q[0]);
-  sort(codingList.begin(), codingList.end());
-  for (auto c1 : codingList)
-  {
-    printf(&quot;  %c: &quot;, c1.first);
-    for (auto c2 : c1.second)
-      printf(&quot;%c&quot;, c2);
-    printf(&quot;\n&quot;);
-  }
-  printf(&quot;\n&quot;);
-}
-} //namespace NS_HuffmanCoding
-using namespace NS_HuffmanCoding;
-void TestHuffmanCoding()
-{
-  vector&lt;vector&lt;pair&lt;char, int&gt;&gt;&gt; charLists = {
-      //Introduction to Algorithms
-     {
-        { {&#39;a&#39;,40}, {&#39;b&#39;,13}, {&#39;c&#39;,12},
-          {&#39;d&#39;,16}, {&#39;e&#39;,9}, {&#39;f&#39;,5} },
-     },
-     //ÑÏÎµÃô
-     {
-        { {&#39;a&#39;,5}, {&#39;b&#39;,29}, {&#39;c&#39;,7}, {&#39;d&#39;,8},
-          {&#39;e&#39;,14}, {&#39;f&#39;,23}, {&#39;g&#39;,3}, {&#39;h&#39;,11} },
-     },
-  };
-  int n = charLists.size();
-  for (int i = 0; i &lt; n; i++)
-  {
-    HuffmanCodingCaller(charLists[i]);
-  }
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ggu8v9/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[C++匿名函数]]></title>
-      <link>https://www.wztlink1013.com/blog/uq89oe/</link>
-      <guid>https://www.wztlink1013.com/blog/uq89oe/</guid>
-      <pubDate>Sat Nov 14 2020 03:26:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[C++匿名函数]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h3 id="常用形式"><a href="#常用形式" class="headerlink" title="常用形式"></a>常用形式</h3><pre><code class="cpp">[](int x, int y) -&gt; int { int z = x + y; return z; } //这样显示指定返回类型:
-
-[](int x, int y) { return x + y; } // 隐式返回类型
-[](int&amp; x) { ++x; }   // 没有return语句 -&gt; lambda 函数的返回类型是&#39;void&#39;
-[]() { ++global_x; }  // 没有参数,仅访问某个全局变量
-[]{ ++global_x; }     // 与上一个相同,省略了()
-</code></pre>
-<h3 id="小例子"><a href="#小例子" class="headerlink" title="小例子"></a>小例子</h3><pre><code class="cpp">#include &lt;iostream&gt;
-
-int main() {
-    // lambda表达式
-    auto multiply = [](int a, int b) -&gt; int { return a * b; };
-    // 匿名函数调用
-    auto result = multiply(2, 4);
-    std::cout &lt;&lt; result &lt;&lt; std::endl;
-    return 0;
-}
-</code></pre>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
-<p>一些进一步用法<a href="https://www.cnblogs.com/pzhfei/archive/2013/01/14/lambda_expression.html" target="_blank" rel="noopener">https://www.cnblogs.com/pzhfei/archive/2013/01/14/lambda_expression.html</a></p>
-</blockquote>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/uq89oe/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[贪心算法-Kruskal 算法]]></title>
-      <link>https://www.wztlink1013.com/blog/ghf568/</link>
-      <guid>https://www.wztlink1013.com/blog/ghf568/</guid>
-      <pubDate>Sat Nov 14 2020 00:45:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[贪心算法-Kruskal 算法]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><p><strong>连通图</strong></p>
-<blockquote>
-<p>在<a href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" target="_blank" rel="noopener">图论</a>中，连通图基于连通的概念。在一个<a href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" target="_blank" rel="noopener">无向图</a> G 中，若从<a href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" target="_blank" rel="noopener">顶点</a>i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。如果 G 是<a href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" target="_blank" rel="noopener">有向图</a>，那么连接 i 和 j 的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的<a href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" target="_blank" rel="noopener">连通性</a>是图的基本性质。</p>
-</blockquote>
-<p><strong>生成树</strong></p>
-<blockquote>
-<p>包含图的全部顶点，边数最少的连通子图</p>
-</blockquote>
-<p><strong>最小生成树</strong></p>
-<blockquote>
-<p>总权值最小的生成树</p>
-</blockquote>
-<p>常见问题（该算法）就是求最小生成树。<br><strong>并查集</strong></p>
-<blockquote>
-<p>是一个数据结构，功能有查找 a 和 b 是否为同一组；将 a 和 b 合并为同一组。</p>
-</blockquote>
-<h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</p>
-<p>比如有如下这么一个图：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png#align=left&amp;display=inline&amp;height=95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=189&amp;originWidth=438&amp;size=10882&amp;status=done&amp;style=shadow&amp;width=219" alt="image.png"><br>单独分析 ①② 边和 ③④ 边情况下，两个不在一个集合里面，<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png#align=left&amp;display=inline&amp;height=96&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=192&amp;originWidth=769&amp;size=21600&amp;status=done&amp;style=shadow&amp;width=384.5" alt="image.png"><br>不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为 3 的时候，此时就需要将左右两个集合合并了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png#align=left&amp;display=inline&amp;height=101&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=202&amp;originWidth=748&amp;size=22229&amp;status=done&amp;style=shadow&amp;width=374" alt="image.png"><br>最后的结果样式就为如下<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png#align=left&amp;display=inline&amp;height=146&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=292&amp;originWidth=780&amp;size=31319&amp;status=done&amp;style=shadow&amp;width=390" alt="image.png"></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-namespace NS_KruskalMST {
-using namespace std;
-void KruskalMST();
-int FindSet(int u);
-void UnionSets(int u, int v);
-void Initialization();
-void GenEdges();
-void MakeSets();
-void Output(int v0);
-#define INF INT_MAX
-static int n;
-static vector&lt;vector&lt;int&gt;&gt; WMatrix;
-static vector&lt;pair&lt;pair&lt;int, int&gt;, int&gt;&gt; Edges;
-//Node struct for the disjoint set
-struct DJSNode {
-    int Parent; int Rank;
-    DJSNode(int p) : Parent(p), Rank(0) {}
-};
-static vector&lt;DJSNode&gt; DisjointSet;
-static vector&lt;pair&lt;int, int&gt;&gt; MST;
-//The adjacency list for MST
-static vector&lt;vector&lt;int&gt;&gt; MSTList;
-static vector&lt;int&gt; Prev;
-void KruskalMSTCaller(int an,
-    vector&lt;vector&lt;int&gt;&gt; &amp;wMatrix, int v0)
-{
-    n = an;
-    WMatrix = wMatrix;
-    Initialization();
-    KruskalMST();
-    Output(v0);
-}
-void KruskalMST()
-{
-    for (auto &amp;e: Edges)
-    {
-        int u = e.first.first;
-        int v = e.first.second;
-        int setU = FindSet(u);
-        int setV = FindSet(v);
-        if (setU != setV)
-        {
-            MST.push_back(e.first);
-            if (MST.size() == n - 1)
-                break;
-            UnionSets(setU, setV);
+      <content:encoded><![CDATA[<h3 id="509-斐波那契数"><a href="#509-斐波那契数" class="headerlink" title="509. 斐波那契数"></a>509. 斐波那契数</h3><pre><code class="java">class Solution {
+    // TODO: for循环实现
+    public int fib(int N) {
+        if (N &lt;= 1) return N;
+        int first = 0;
+        int second = 1;
+        for (int i = 0; i &lt; N - 1; i++) {
+            int sum = first + second;
+            first = second;
+            second = sum;
         }
+        return second;
     }
+//    // TODO: 递归实现O(2^n)
+//    public int fib1(int n) {
+//        if (n &lt;= 1) return n;
+//        return fib1(n - 1) + fib1(n - 2);
+//    }
+//    // TODO: 首尾实现
+//    public int fib3(int n) {
+//        if (n &lt;= 1) return n;
+//        int first = 0;
+//        int second = 1;
+//        while (n-- &gt; 1) {
+//            second += first;
+//            first = second - first;
+//        }
+//        return second;
+//    }
 }
-int FindSet(int u)
-{
-    while (u != DisjointSet[u].Parent)
-        u = DisjointSet[u].Parent;
-        //For path compression:
-        //DisjointSet[u].Parent =
-        //    FindSet(DisjointSet[u].Parent);
-    return u;
+</code></pre>
+<h3 id="509-斐波那契数-1"><a href="#509-斐波那契数-1" class="headerlink" title="509. 斐波那契数"></a>509. 斐波那契数</h3><pre><code class="java">// 递归：O(2^n)
+public static int fib1(int n) {
+    if (n &lt;= 1) return n;
+    return fib1(n - 1) + fib1(n - 2);
 }
-void UnionSets(int u, int v)
-{
-    if (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)
-        DisjointSet[v].Parent = u;
-    else
-        DisjointSet[u].Parent = v;
-    if (DisjointSet[u].Rank == DisjointSet[v].Rank)
-        DisjointSet[u].Rank++;
-}
-void Initialization()
-{
-    GenEdges();
-    sort(Edges.begin(), Edges.end(),
-        [](pair&lt;pair&lt;int, int&gt;, int&gt;a,
-            pair&lt;pair&lt;int, int&gt;, int&gt;b)
-        {return a.second &lt; b.second; });
-    MakeSets();
-    MST.clear();
-}
-void GenEdges()
-{
-    Edges.clear();
-    //Traverse the upper triangle of WMatrix
-    for (int i = 0; i &lt; n - 1; i++)
-    {
-        for (int j = i + 1; j &lt; n; j++)
-            if (WMatrix[i][j] != INF)
-                Edges.push_back({ {i, j},
-                    WMatrix[i][j] });
+
+// for循环：O(n)
+public static int fib2(int n) {
+    if (n &lt;= 1) return n;
+    int first = 0;
+    int second = 1;
+    for (int i = 0; i &lt; n - 1; i++) {
+        int sum = first + second;
+        first = second;
+        second = sum;
     }
+    return second;
 }
-void MakeSets()
-{
-    DisjointSet.clear();
-    for (int i = 0; i &lt; n; i++)
-        DisjointSet.push_back(DJSNode(i));
-}
-void OutputWMatrix()
-{
-    printf(&quot;n = %d\n&quot;, n);
-    printf(&quot;The weight matrix:\n&quot;);
-    printf(&quot;%3c&quot;, &#39; &#39;);
-    for (int j = 0; j &lt; n; j++)
-        printf(&quot;%3d&quot;, j + 1);
-    printf(&quot;\n&quot;);
-    for (int i = 0; i &lt; n; i++)
-    {
-        printf(&quot;%3d&quot;, i + 1);
-        for (auto j : WMatrix[i])
-            if (j &lt; INF)
-                printf(&quot;%3d&quot;, j);
-            else
-                printf(&quot;%3c&quot;, &#39;*&#39;);
-        printf(&quot;\n&quot;);
+// 首尾法
+public static int fib3(int n) {
+    if (n &lt;= 1) return n;
+
+    int first = 0;
+    int second = 1;
+    while (n-- &gt; 1) {
+        second += first;
+        first = second - first;
     }
+    return second;
 }
-void OutputPath(int u)
-{
-    if (Prev[u] == -1)
-        printf(&quot;%d&quot;, u + 1);
-    else
-    {
-        OutputPath(Prev[u]);
-        printf(&quot;-%d&quot;, u + 1);
-    }
-}
-void GenMSTList()
-{
-    MSTList.clear();
-    MSTList.resize(n);
-    for (auto &amp;e: MST)
-    {
-        MSTList[e.first].push_back(e.second);
-        MSTList[e.second].push_back(e.first);
-    }
-}
-void GenPrev(int v)
-{
-    for (auto &amp;u : MSTList[v])
-        if (u != -1)
-        {
-            Prev[u] = v;
-            auto w = find(MSTList[u].begin(),
-                MSTList[u].end(), v);
-            MSTList[u][w - MSTList[u].begin()] = -1;
-            GenPrev(u);
-        }
-}
-void Output(int v0)
-{
-    printf(&quot;Kruskal&#39;s MST algorithm\n&quot;);
-    OutputWMatrix();
-    int wSum = 0;
-    for (int i = 0; i &lt; n - 1; i++)
-        wSum += WMatrix[MST[i].first][MST[i].second];
-    GenMSTList();
-    Prev.clear();
-    Prev.resize(n);
-    Prev[v0] = -1;
-    GenPrev(v0);
-    printf(&quot;The MST edges:\n&quot;);
-    printf(&quot;Edge Weight\n&quot;);
-    for (auto &amp;e : MST)
-        printf(&quot; %d-%d  %d\n&quot;, e.first + 1, e.second + 1,
-            WMatrix[e.first][e.second]);
-    printf(&quot;Total MST weight: %d\n&quot;, wSum);
-    printf(&quot;The MST paths from vertex %d:\n&quot;, v0 + 1);
-    for (int u = 0; u &lt; n; u++)
-        if (u != v0)
-        {
-            printf(&quot;%3d: &quot;, u + 1);
-            OutputPath(u);
-            printf(&quot;\n&quot;);
-        }
-    printf(&quot;\n&quot;);
-}
-} //namespace NS_KruskalMST
-using namespace NS_KruskalMST;
-void TestKruskalMST(int v0 = 0)
-{
-    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; w = {
-        //https://www.geeksforgeeks.org/
-        //prims-minimum-spanning-tree-mst-greedy-algo-5/
-        {
-            {   0,  2,INF,  6,INF },
-            {   2,  0,  3,  8,  5 },
-            { INF,  3,  0,INF,  7 },
-            {   6,  8,INF,  0,  9 },
-            { INF,  5,  7,  9,  0 }
-        },
-        // Dijkstra&#39;s algorithm on Wikipedia
-        {
-            {   0,  7,  9,INF,INF, 14 },
-            {   7,  0, 10, 15,INF,INF },
-            {   9, 10,  0, 11,INF,  2 },
-            { INF, 15, 11,  0,  6,INF },
-            { INF,INF,INF,  6,  0,  9 },
-            {  14,INF,  2,INF,  9,  0 },
-        },
-        //https://www.geeksforgeeks.org/
-        //kruskals-minimum-spanning-tree-using-stl-in-c/
-        {
-            {   0,  4,INF,INF,INF,INF,INF,  8,INF },
-            {   4,  0,  8,INF,INF,INF,INF, 11,INF },
-            { INF,  8,  0,  7,INF,  4,INF,INF,  2 },
-            { INF,INF,  7,  0,  9, 14,INF,INF,INF },
-            { INF,INF,INF,  9,  0, 10,INF,INF,INF },
-            { INF,INF,  4, 14, 10,  0,  2,INF,INF },
-            { INF,INF,INF,INF,INF,  2,  0,  1,  6 },
-            {   8, 11,INF,INF,INF,INF,  1,  0,  7 },
-            { INF,INF,  2,INF,INF,INF,  6,  7,  0 },
-        },
-    };
-    int k = w.size();
-    for (int i = 0; i &lt; k; i++)
-    {
-      if (v0 &gt; w[i].size() - 1)
-        v0 = w[i].size() - 1;
-      KruskalMSTCaller(w[i].size(), w[i], v0);
-    }
+// 特征方程解法：O（1）
+public static int fib4(int n) {
+    double c = Math.sqrt(5);
+    return (int) (Math.pow((1+c) / 2, n) - Math.pow((1-c) / 2, c));
 }
 </code></pre>
 ]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ghf568/#comments</comments>
+      <comments>https://www.wztlink1013.com/blog/pmd7dz/#comments</comments>
     </item>
     
     <item>
-      <title><![CDATA[搭建Windows子系统Linux]]></title>
-      <link>https://www.wztlink1013.com/blog/xnh83z/</link>
-      <guid>https://www.wztlink1013.com/blog/xnh83z/</guid>
-      <pubDate>Mon Nov 09 2020 09:39:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <title><![CDATA[P729. 我的日程安排表 I]]></title>
+      <link>https://www.wztlink1013.com/blog/rwfqhp/</link>
+      <guid>https://www.wztlink1013.com/blog/rwfqhp/</guid>
+      <pubDate>Mon Nov 30 2020 02:22:33 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[搭建Windows子系统Linux]]>
-      
+      <![CDATA[<h3 id="729-我的日程安排表-I"><a href="#729-我的日程安排表-I" class="headerlink" title="729. 我的日程安排表 I"></a>729. 我的日程安排表 I</h3><pre><code class="java">cla]]>
       </description>
-      <content:encoded><![CDATA[<h2 id="Windows-子系统-Linux"><a href="#Windows-子系统-Linux" class="headerlink" title="Windows 子系统 Linux"></a>Windows 子系统 Linux</h2><h3 id="子系统-Linux-下载安装"><a href="#子系统-Linux-下载安装" class="headerlink" title="子系统 Linux 下载安装"></a>子系统 Linux 下载安装</h3><p>在 windows 里面搜索 <code>windows功能</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913834448-30d164c9-e0a6-47f8-baac-03c5d6648186.png#align=left&amp;display=inline&amp;height=517&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1033&amp;originWidth=1176&amp;size=659449&amp;status=done&amp;style=shadow&amp;width=588" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913865729-b20b3a35-ab49-48c9-be97-9f3c56d6d7a6.png#align=left&amp;display=inline&amp;height=295&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=590&amp;originWidth=623&amp;size=61833&amp;status=done&amp;style=shadow&amp;width=311.5" alt="image.png"><br>然后已知下一步操作即可，该过程中会有重启的过程。<br>之后重启之后在应用商店下载 Ubuntu 系统，如下。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604913776014-38c5ce17-996d-4827-8c49-bb047b2f7d3c.png#align=left&amp;display=inline&amp;height=339&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=948&amp;originWidth=1200&amp;size=183352&amp;status=done&amp;style=shadow&amp;width=429" alt="image.png"><br>然后启动的时候，会有让自己输入用户名和密码的情况。输入确认就好了（<strong>输入密码的时候，终端内不会显示光标以及输入的字符！但是会有密码验证</strong>）</p>
-<h3 id="子系统-Linux-文件目录"><a href="#子系统-Linux-文件目录" class="headerlink" title="子系统 Linux 文件目录"></a>子系统 Linux 文件目录</h3><p><code>C:\Users\wztli\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\wztlink1013</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914117863-4fc253c2-1978-44b1-94c6-48e82a3ddf3a.png#align=left&amp;display=inline&amp;height=111&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=221&amp;originWidth=1468&amp;size=28524&amp;status=done&amp;style=shadow&amp;width=734" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914176405-056c5008-8168-40f8-a599-0e7951cad309.png#align=left&amp;display=inline&amp;height=293&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=585&amp;originWidth=1406&amp;size=115194&amp;status=done&amp;style=shadow&amp;width=703" alt="image.png"></p>
-<h3 id="Linux-访问-Windows-文件"><a href="#Linux-访问-Windows-文件" class="headerlink" title="Linux 访问 Windows 文件"></a>Linux 访问 Windows 文件</h3><p>如下图中 1 所示，访问时，需要先将 Windows 磁盘挂载到/mnt 下面，然后就可以访问了。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604914600884-f758bc8f-668d-4354-be9f-f9be774cfff1.png#align=left&amp;display=inline&amp;height=189&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=1122&amp;size=63616&amp;status=done&amp;style=shadow&amp;width=561" alt="image.png"></p>
+      <content:encoded><![CDATA[<h3 id="729-我的日程安排表-I"><a href="#729-我的日程安排表-I" class="headerlink" title="729. 我的日程安排表 I"></a>729. 我的日程安排表 I</h3><pre><code class="java">class MyCalendar {
+
+    int [] month = new int[30];
+    public MyCalendar() {
+
+
+    }
+
+    public boolean book(int start, int end) {
+        boolean p = true;
+
+
+        if (month[start] == 1) {
+            p = false;
+        }
+
+        else {
+            while (p) {
+                int i = start;
+                month[i] = 1;
+                if (month[i+1] == 1) {
+                    return p = false;
+                }
+                i = i+1;
+            }
+        }
+        return p;
+    }
+
+}
+
+</code></pre>
 ]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/xnh83z/#comments</comments>
+      <comments>https://www.wztlink1013.com/blog/rwfqhp/#comments</comments>
     </item>
     
     <item>
-      <title><![CDATA[[转]uni-app相关知识]]></title>
-      <link>https://www.wztlink1013.com/blog/ytoag7/</link>
-      <guid>https://www.wztlink1013.com/blog/ytoag7/</guid>
-      <pubDate>Fri Nov 06 2020 09:23:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <title><![CDATA[P876. 链表的中间结点]]></title>
+      <link>https://www.wztlink1013.com/blog/serpsb/</link>
+      <guid>https://www.wztlink1013.com/blog/serpsb/</guid>
+      <pubDate>Mon Nov 30 2020 02:01:33 GMT+0000 (Coordinated Universal Time)</pubDate>
       <description>
-      <![CDATA[uni-app简单api调用]]>
-      
+      <![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</]]>
       </description>
-      <content:encoded><![CDATA[<blockquote>
-<ul>
-<li>本文转载自：<a href="https://ask.dcloud.net.cn/article/35657" target="_blank" rel="noopener">白话 uni-app </a></li>
-<li>添加部分细节自己写的内容</li>
-</ul>
-</blockquote>
-<h2 id="uni-app-相对传统的变化"><a href="#uni-app-相对传统的变化" class="headerlink" title="uni-app 相对传统的变化"></a>uni-app 相对传统的变化</h2><h3 id="网络模型的变化"><a href="#网络模型的变化" class="headerlink" title="网络模型的变化"></a>网络模型的变化</h3><p>之前学习的<code>javaweb</code>形式的是“相互嵌套”类型的，<code>jsp</code>代码里面可以有<code>html</code>代码。</p>
-<p>以前网页大多是 b/s，服务端代码混合在页面里；<br>现在是 c/s，前后端分离，通过 js api(类似 ajax 的<code>uni.request</code>)获取 json 数据，把数据绑定在界面上渲染。</p>
-<h3 id="文件类型变化"><a href="#文件类型变化" class="headerlink" title="文件类型变化"></a>文件类型变化</h3><p>.vue 文件通过编译，编译 js 文件</p>
-<h3 id="代码架构大变动"><a href="#代码架构大变动" class="headerlink" title="代码架构大变动"></a>代码架构大变动</h3><p>以前的 HTML 代码节点，有 html 大节点，还有 script 和 style 两个小结点</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot; /&gt;
-    &lt;title&gt;&lt;/title&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-    &lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;/body&gt;
-&lt;/html&gt;
+      <content:encoded><![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
 </code></pre>
-<p>现在 template 是一级节点，用于写<strong>tag 组件</strong>，script 和 style 是并列的一级节点，也就是有 3 个一级节点</p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    注意必须有一个view，且只能有一个根view。所有内容写在这个view下面。
-  &lt;/view&gt;
-&lt;/template&gt;
+<h2 id="876-链表的中间结点"><a href="#876-链表的中间结点" class="headerlink" title="876. 链表的中间结点"></a>876. 链表的中间结点</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195941092-8cd11b96-c174-425e-ab68-a7015110092e.png#align=left&amp;display=inline&amp;height=208&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=415&amp;originWidth=717&amp;size=49665&amp;status=done&amp;style=shadow&amp;width=358.5" alt="image.png"></p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
+    public ListNode middleNode(ListNode head) {
+        if (head.next == null) return head;
+        if (head.next.next == null) return head.next;
 
-&lt;script&gt;
-export default {};
-&lt;/script&gt;
-
-&lt;style&gt;&lt;/style&gt;
-</code></pre>
-<ul>
-<li><a href="https://cn.vuejs.org/v2/guide/single-file-components.html" target="_blank" rel="noopener">Vue 单文件组件</a></li>
-</ul>
-<p>###</p>
-<h3 id="组件-标签的变化"><a href="#组件-标签的变化" class="headerlink" title="组件/标签的变化"></a>组件/标签的变化</h3><p>下为 html 标签和 uni-app 内置组件的映射表：<br>（其实老的 HTML 标签也可以在 uni-app 里使用，uni-app 编译器会在编译时把老标签转为新标签，比如把 div 编译成 view。但不推荐这种用法，调试 H5 端时容易混乱。）</p>
-<ul>
-<li>div 改成 <a href="https://uniapp.dcloud.io/component/view" target="_blank" rel="noopener">view</a></li>
-<li>span、font 改成 <a href="https://uniapp.dcloud.io/component/text" target="_blank" rel="noopener">text</a></li>
-<li>a 改成 <a href="https://uniapp.dcloud.io/component/navigator" target="_blank" rel="noopener">navigator</a></li>
-<li>img 改成 <a href="https://uniapp.dcloud.io/component/image" target="_blank" rel="noopener">image</a></li>
-<li><a href="https://uniapp.dcloud.io/component/input" target="_blank" rel="noopener">input</a> 还在，但 type 属性改成了 confirmtype</li>
-<li><a href="https://uniapp.dcloud.io/component/form" target="_blank" rel="noopener">form</a>、<a href="https://uniapp.dcloud.io/component/button" target="_blank" rel="noopener">button</a>、<a href="https://uniapp.dcloud.io/component/checkbox" target="_blank" rel="noopener">checkbox</a>、<a href="https://uniapp.dcloud.io/component/radio" target="_blank" rel="noopener">radio</a>、<a href="https://uniapp.dcloud.io/component/label" target="_blank" rel="noopener">label</a>、<a href="https://uniapp.dcloud.io/component/textarea" target="_blank" rel="noopener">textarea</a>、<a href="https://uniapp.dcloud.io/component/canvas" target="_blank" rel="noopener">canvas</a>、<a href="https://uniapp.dcloud.io/component/video" target="_blank" rel="noopener">video</a> 这些还在。</li>
-<li>select 改成 <a href="https://uniapp.dcloud.io/component/picker" target="_blank" rel="noopener">picker</a></li>
-<li>iframe 改成 <a href="https://uniapp.dcloud.io/component/web-view" target="_blank" rel="noopener">web-view</a></li>
-<li>ul、li 没有了，都用 view 替代</li>
-<li>audio 不再推荐使用，改成 api 方式，<a href="https://uniapp.dcloud.io/api/media/background-audio-manager?id=getbackgroundaudiomanager" target="_blank" rel="noopener">背景音频 api 文档</a></li>
-</ul>
-<p><strong>除了改动外，新增了一批手机端常用的新组件</strong><br>**</p>
-<ul>
-<li>scroll-view <a href="https://uniapp.dcloud.io/component/scroll-view" target="_blank" rel="noopener">可区域滚动视图容器</a></li>
-<li>swiper <a href="https://uniapp.dcloud.io/component/swiper" target="_blank" rel="noopener">可滑动区域视图容器</a></li>
-<li>icon <a href="https://uniapp.dcloud.io/component/icon" target="_blank" rel="noopener">图标</a></li>
-<li>rich-text <a href="https://uniapp.dcloud.io/component/rich-text" target="_blank" rel="noopener">富文本（不可执行 js，但可渲染各种文字格式和图片）</a></li>
-<li>progress <a href="https://uniapp.dcloud.io/component/progress" target="_blank" rel="noopener">进度条</a></li>
-<li>slider <a href="https://uniapp.dcloud.io/component/slider" target="_blank" rel="noopener">滑块指示器</a></li>
-<li>switch <a href="https://uniapp.dcloud.io/component/switch" target="_blank" rel="noopener">开关选择器</a></li>
-<li>camera <a href="https://uniapp.dcloud.io/component/camera" target="_blank" rel="noopener">相机</a></li>
-<li>live-player <a href="https://uniapp.dcloud.io/component/live-player" target="_blank" rel="noopener">直播</a></li>
-<li>map <a href="https://uniapp.dcloud.io/component/map" target="_blank" rel="noopener">地图</a></li>
-<li>cover-view <a href="https://uniapp.dcloud.io/component/cover-view?id=cover-view" target="_blank" rel="noopener">可覆盖原生组件的视图容器</a><br>cover-view 需要多强调几句，uni-app 的非 h5 端的 video、map、canvas、textarea 是原生组件，层级高于其他组件。如需覆盖原生组件，则需要使用 cover-view 组件。详见<a href="https://uniapp.dcloud.net.cn/component/native-component" target="_blank" rel="noopener">层级介绍</a></li>
-</ul>
-<p>除了内置组件，还有很多开源的扩展组件，把常用操作都进行封装，DCloud 建立了插件市场收录这些扩展组件，详见<a href="https://ext.dcloud.net.cn/" target="_blank" rel="noopener">插件市场</a></p>
-<p>**</p>
-<h3 id="工程结构和页面管理"><a href="#工程结构和页面管理" class="headerlink" title="工程结构和页面管理"></a>工程结构和页面管理</h3><p>uni-app 的工程结构有单独的要求，<a href="https://uniapp.dcloud.io/frame?id=%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" target="_blank" rel="noopener">详见</a></p>
-<p>每个可显示的页面，都必须在 <a href="https://uniapp.dcloud.io/collocation/pages" target="_blank" rel="noopener">pages.json</a> 中注册。如果你开发过小程序，那么 pages.json 类似 app.json。如果你熟悉 vue，这里没有 vue 的路由，都是在 pages.json 里管理。</p>
-<p>原来工程的首页一般是 index.html 或 default.html，是在 web server 里配的。而 uni-app 的首页，是在 pages.json 里配的，page 节点下第一个页面就是首页。一般在/pages/xx 的目录下。</p>
-<p>app 和小程序中，为了提升体验，页面提供了原生的导航栏和底部 tabbar，注意这些配置是在 pages.json 中做，而不是在 vue 页面里创建，但点击事件的监听在显示的 vue 页面中做。</p>
-<p>如果你熟悉小程序开发的话，对比变化如下：</p>
-<ul>
-<li>原来 app.json 被一拆为二。页面管理，被挪入了 uni-app 的 pages.json；非页面管理，挪入了 manifest.json</li>
-<li>原来的 app.js 和 app.wxss 被合并到了 app.vue 中</li>
-</ul>
-<h2 id="文件导入方式变化"><a href="#文件导入方式变化" class="headerlink" title="文件导入方式变化"></a>文件导入方式变化</h2><h3 id="js-引入方式"><a href="#js-引入方式" class="headerlink" title="js 引入方式"></a>js 引入方式</h3><p>以前通过<code>script `</code>src <code>、</code> link <code></code>href <code>引入外部的 js 和 css；
-现在是**es6**的写法，</code>import`引入外部的 js 模块(注意不是文件)或 css<br>以前</p>
-<pre><code class="javascript">&lt;script src=&quot;js/jquery-1.10.2.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-&lt;link href=&quot;css/bootstrap.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
-</code></pre>
-<p>现在</p>
-<blockquote>
-<p>js 要 require 进来，变成了对象。</p>
-</blockquote>
-<p>在 hello uni-app 项目的 common 目录有一个工具类<code>util.js</code>，可以在 hello uni-app 中搜索这个例子查看。</p>
-<pre><code class="javascript">&lt;script&gt;
-  var util = require(&#39;../../../common/util.js&#39;); //require这个js模块 var
-  formatedPlayTime = util.formatTime(playTime); //调用js模块的方法
-&lt;/script&gt;
-</code></pre>
-<p>而在这个<code>util.js</code>里，要把之前的 function 封装为对象的方法<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1604048264989-b4591bb0-e4bc-4581-aae5-bf7615f268b4.png#align=left&amp;display=inline&amp;height=231&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=606&amp;originWidth=1331&amp;size=70716&amp;status=done&amp;style=shadow&amp;width=508" alt="image.png"><br>当然还有一些高级的用法</p>
-<pre><code class="javascript">var dateUtils = require(&quot;../../../common/util.js&quot;).dateUtils; //直接使用js模块的属性。在hello uni-app有示例
-import * as echarts from &quot;/components/echarts/echarts.simple.min.js&quot;; //将js导入并重命名为echarts，然后使用echarts.来继续执行方法。
-</code></pre>
-<h3 id="CSS-引入方式"><a href="#CSS-引入方式" class="headerlink" title="CSS 引入方式"></a>CSS 引入方式</h3><pre><code class="css">&lt;style&gt;
-    @import &quot;./common/uni.css&quot;;
-    .uni-hello-text{
-        color:#7A7E83;
+        ListNode slow = head.next;
+        ListNode fast = head.next.next;
+        while (fast != null &amp;&amp; fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == null) return slow;
+        }
+        return slow;
     }
-&lt;/style&gt;
-</code></pre>
-<p><strong>改全局样式：</strong>在根目录下的 app.vue 里写入，每个页面都会加载 app.vue 里的样式。</p>
-<h3 id="组件导入"><a href="#组件导入" class="headerlink" title="组件导入"></a>组件导入</h3><p>类似 hexo 博客主题设计一样，能以组件的形式模块化导入。<br>如下是导入一个角标的组件库，在页面上显示一个 abc 并且右上角有个数字角标 1，<a href="http://ext.dcloud.net.cn/plugin?id=21" target="_blank" rel="noopener">详见</a></p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    &lt;uni-badge text=&quot;abc&quot; :inverted=&quot;true&quot;&gt;&lt;/uni-badge
-    &gt;&lt;!--3.使用组件--&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
-&lt;script&gt;
-import uniBadge from &quot;../../../components/uni-badge.vue&quot;; //1.导入组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
-export default {
-  data() {
-    return {};
-  },
-  components: {
-    uniBadge, //2.注册组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）
-  },
-};
-&lt;/script&gt;
-</code></pre>
-<p>如需要全局导入 vue 组件，即每个页面都可以直接使用而不用引用和注册的话，在项目根目录下的 main.js 里处理。如下是 hello uni-app 里的例子。</p>
-<pre><code class="javascript">//main.js
-import pageHead from &quot;./components/page-head.vue&quot;; //导入
-Vue.component(&quot;page-head&quot;, pageHead); //注册。注册后在每个vue的page页面里可以直接使用&lt;page-head&gt;&lt;/page-head&gt;组件。
-</code></pre>
-<p>上述的组件使用方式属于传统 vue 的概念。uni-app 2.7 以后推出了更简单的组件使用技术<a href="https://uniapp.dcloud.net.cn/collocation/pages?id=easycom" target="_blank" rel="noopener">easycom</a>，无需引用和注册组件，直接在 template 区域使用组件即可。</p>
-<h2 id="js-的变化"><a href="#js-的变化" class="headerlink" title="js 的变化"></a>js 的变化</h2><p>js 的变化，分为<strong>运行环境变化</strong>、<strong>数据绑定模式变化</strong>、<strong>api 变化</strong>3 部分。</p>
-<h3 id="运行环境从浏览器变成-v8-引擎"><a href="#运行环境从浏览器变成-v8-引擎" class="headerlink" title="运行环境从浏览器变成 v8 引擎"></a>运行环境从浏览器变成 v8 引擎</h3><p>标准 js 语法和 api 都支持，比如 if、for、settimeout、indexOf 等。</p>
-<p>但<strong>浏览器专用的</strong>window、document、navigator、location 对象，包括 cookie 等存储，<strong>只有在浏览器中才有</strong>，app 和小程序都不支持。</p>
-<blockquote>
-<p>可能有些人以为 js 等于浏览器里的 js。其实 js 是 ECMAScript 组织管理的，浏览器中的 js 是 w3c 组织基于 js 规范补充了 window、document、navigator、location 等专用对象。</p>
-</blockquote>
-<p>在 uni-app 的各个端中，除了 h5 端，其他端的 js 都运行在一个独立的 v8 引擎下，不是在浏览器中，所以浏览器的对象无法使用。如果你做过小程序开发，对此应当很了解。<br><strong>这意味着依赖 document 的很多 HTML 的库，比如 jqurey 无法使用。</strong><br>当然 app 和小程序支持 web-view 组件，里面可以加载标准 HTML，这种页面仍然支持浏览器专用对象 window、document、navigator、location。</p>
-<h3 id="以前的-dom-操作，改成-vue-的-MVVM-模式"><a href="#以前的-dom-操作，改成-vue-的-MVVM-模式" class="headerlink" title="以前的 dom 操作，改成 vue 的 MVVM 模式"></a>以前的 dom 操作，改成 vue 的 MVVM 模式</h3><p>现在前端趋势是去 dom 化，改用<strong>mvvm 模式，</strong>更简洁的写法，大幅减少代码行数，同时差量渲染性能更好。<br>uni-app 使用 vue 的数据绑定方式解决 js 和 dom 界面交互的问题。<br>如果你想改变某个 dom 元素的显示内容，比如一个 view 的显示文字：<br><strong>以前</strong>是给 view 设 id，然后 js 里通过选择器获取 dom 元素，进一步通过 js 进行赋值操作，修改 dom 元素的属性或值。<br>如下演示了一段代码，页面中有个显示的文字区和一个按钮，点击按钮后会修改文字区的值</p>
-<pre><code class="html">&lt;html&gt;
-  &lt;head&gt;
-    &lt;script type=&quot;text/javascript&quot;&gt;
-      document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
-        document.getElementById(&quot;spana&quot;).innerText = &quot;456&quot;;
-      });
-      function changetextvalue() {
-        document.getElementById(&quot;spana&quot;).innerText = &quot;789&quot;;
-      }
-    &lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;span id=&quot;spana&quot;&gt;123&lt;/span&gt;
-    &lt;button type=&quot;button&quot; onclick=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>现在的做法，是<strong>vue 的绑定模式</strong>，给这个<strong>dom 元素绑定一个 js 变量</strong>，在 script 中修改 js 变量的值，dom 会自动变化，页面会自动更新渲染</p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    &lt;text&gt;{{ textvalue }}&lt;/text
-    &gt;&lt;!-- 这里演示了组件值的绑定 --&gt;
-    &lt;button :type=&quot;buttontype&quot; @click=&quot;changetextvalue()&quot;&gt;修改为789&lt;/button
-    &gt;&lt;!-- 这里演示了属性和事件的绑定 --&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
-&lt;script&gt;
-export default {
-  data() {
-    return {
-      textvalue: &quot;123&quot;,
-      buttontype: &quot;primary&quot;,
-    };
-  },
-  onLoad() {
-    this.textvalue = &quot;456&quot;; //这里修改textvalue的值，其实123都来不及显示就变成了456
-  },
-  methods: {
-    changetextvalue() {
-      this.textvalue = &quot;789&quot;; //这里修改textvalue的值，页面自动刷新为789
-    },
-  },
-};
-&lt;/script&gt;
-</code></pre>
-<p>注意上述代码中的 <code>export default {}</code> 里的 <code>data(): {return { }}</code>。<br>在 vue 的设计中，这里存放着页面中需要绑定的数据，写在 data 里，才能被界面正确的绑定和渲染。<br>注意：uni-app 的 vue 页面是 vue 的单文件组件规范，按照 vue 的定义只接受 function，必须用 return 包起来。<br>如果你学过小程序的数据绑定，但不了解 vue，要注意：</p>
-<ul>
-<li>小程序的数据绑定参考了 vue，但自己修改了一些。在 uni-app 中只支持标准的 vue，不支持小程序的数据绑定语法</li>
-<li>小程序里的 setData 在 uni-app 里并不存在，因为 vue 是自动双向数据绑定的。直接通过赋值方式修改数据，如果数据绑定到界面上，界面会自动更新渲染</li>
-</ul>
-<p>从上述示例，还可看出事件的写法变化。</p>
-<ul>
-<li>以前，元素的事件是用 onxxx=””，里面写一段 js 或引用 function 的 name，比如上述代码中的<code>onclick=&quot;changetextvalue()&quot;</code></li>
-<li>现在，需要在 js 的<code>export default {}</code> 里的 <code>methods: {}</code> 里写一个方法，然后在组件中使用<code>@click=&quot;changetextvalue()&quot;</code></li>
-</ul>
-<p>在 js 中，与 data 和 methods 平级的，如上述示例代码中的<code>onload()</code>，称为生命周期。在普通 vue 页面里的生命周期叫页面生命周期。在项目根目录的 app.vue 文件中的生命周期叫应用生命周期。<br>除了<code>onload</code>，还有<code>onready</code>等很多生命周期，具体见<a href="https://uniapp.dcloud.io/collocation/frame/lifecycle" target="_blank" rel="noopener">uni-app 的生命周期</a><br>在高级用法里，<strong>vue 支持给组件设 ref（引用标记）</strong>，这类似于之前 html 中给一个 dom 元素设 id，然后在 js 中也可以用<code>this.$refs.xxx</code>来获取。如下：</p>
-<pre><code class="vue">&lt;template&gt;
-  &lt;view&gt;
-    &lt;view ref=&quot;testview&quot;&gt;11111&lt;/view&gt;
-    &lt;button @click=&quot;getTest&quot;&gt;获取test节点&lt;/button&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
-&lt;script&gt;
-export default {
-  methods: {
-    getTest() {
-      console.log(this.$refs.testview);
-    },
-  },
-};
-&lt;/script&gt;
-</code></pre>
-<h3 id="js-api-的变化"><a href="#js-api-的变化" class="headerlink" title="js api 的变化"></a>js api 的变化</h3><p>因为 uni-app 的 api 是<strong>参考小程序</strong>的，所以<strong>和浏览器的 js api</strong>有很多不同，如</p>
-<ol>
-<li>alert,confirm 改成 <a href="https://uniapp.dcloud.io/api/ui/prompt?id=showmodal" target="_blank" rel="noopener">uni.showmodel</a></li>
-<li>ajax 改成 <a href="https://uniapp.dcloud.io/api/request/request" target="_blank" rel="noopener">uni.request</a></li>
-<li>cookie、session 没有了，local.storage 改成 <a href="https://uniapp.dcloud.io/api/storage/storage?id=setstorage" target="_blank" rel="noopener">uni.storage</a></li>
-</ol>
-<p>uni-app 的 js api 还有很多，但基本就是小程序的 api，把 wx.xxx 改为 uni.xxx 即可。<a href="https://uniapp.dcloud.io/api/README" target="_blank" rel="noopener">详见</a><br>uni-app 在不同的端，支持条件编译，无限制的使用各端独有的 api，<a href="https://uniapp.dcloud.io/platform" target="_blank" rel="noopener">详见条件编译</a></p>
-<h2 id="css-的变化"><a href="#css-的变化" class="headerlink" title="css 的变化"></a>css 的变化</h2><p><strong>标准的 css 基本都是支持的。</strong></p>
-<h3 id="选择器方面"><a href="#选择器方面" class="headerlink" title="选择器方面"></a>选择器方面</h3><blockquote>
-<p>有 2 个变化：</p>
-</blockquote>
-<ol>
-<li>*选择器不支持；</li>
-<li>元素选择器里没有 body，改为了 page。微信小程序即是如此。</li>
-</ol>
-<pre><code class="css">page {
 }
 </code></pre>
-<ul>
-<li><strong>单位方面：</strong>px 无法动态适应不同宽度的屏幕，rem 无法用于 nvue/weex。如果想使用根据屏幕宽度自适应的单位，推荐使用 rpx，全端支持。 <a href="https://uniapp.dcloud.io/frame?id=%e5%b0%ba%e5%af%b8%e5%8d%95%e4%bd%8d" target="_blank" rel="noopener">尺寸单位文档</a></li>
-<li><strong>布局方面：</strong>uni-app 推荐使用 flex 布局，这个布局思路和传统流式布局有点区别。但 flex 的特色在于，不管是什么技术都支持这种排版，web、小程序/快应用、weex/rn、原生的 iOS、Android 开发，全都支持 flex。它是通吃所有端的新一代布局方案。相关教程请自行百度学习。</li>
-</ul>
-<h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>uni-app 的 vue 文件里支持所有 web 排版方式，不管是流式还是 flex。但 nvue 里，只支持 flex，因为它在 app 端是使用原生排版引擎渲染的。<br><strong>注意 css 里背景图和字体文件，尽量不要大于 40k，因为会影响性能。在小程序端，如果要大于 40k，需放到服务器侧远程引用或 base64 后引入，不能放到本地作为独立文件引用。</strong></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://uniapp.dcloud.net.cn/" target="_blank" rel="noopener">https://uniapp.dcloud.net.cn/</a></li>
-<li><a href="https://cn.vuejs.org/index.html" target="_blank" rel="noopener">https://cn.vuejs.org/index.html</a></li>
-<li>官方教程：<a href="https://ke.qq.com/course/343370" target="_blank" rel="noopener">uni-app 跨平台框架官方教程</a></li>
-<li><a href="https://ask.dcloud.net.cn/article/35657" target="_blank" rel="noopener">白话 uni-app </a></li>
-<li>微信官方文档：<a href="https://developers.weixin.qq.com/doc/" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/</a></li>
-</ul>
 ]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ytoag7/#comments</comments>
+      <comments>https://www.wztlink1013.com/blog/serpsb/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[P83. 删除排序链表中的重复元素]]></title>
+      <link>https://www.wztlink1013.com/blog/lg67md/</link>
+      <guid>https://www.wztlink1013.com/blog/lg67md/</guid>
+      <pubDate>Mon Nov 30 2020 02:01:31 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</]]>
+      </description>
+      <content:encoded><![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</code></pre>
+<h2 id="83-删除排序链表中的重复元素"><a href="#83-删除排序链表中的重复元素" class="headerlink" title="83. 删除排序链表中的重复元素"></a>83. 删除排序链表中的重复元素</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195897467-fdb33dfe-a1c0-4963-b76a-2c978f565801.png#align=left&amp;display=inline&amp;height=177&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=354&amp;originWidth=727&amp;size=22776&amp;status=done&amp;style=shadow&amp;width=363.5" alt="image.png"></p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        // TODO: 快慢指针
+        if (head == null) return head;
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null){
+            if (slow.val != fast.val) {
+                slow.next = fast;
+                slow = fast;
+            }
+            fast = fast.next;
+        }
+        slow.next = null;
+        return head;
+    }
+}
+// TODO: 单指针下一步
+//class Solution {
+//    public ListNode deleteDuplicates(ListNode head) {
+//        ListNode cur = head;
+//        while(cur != null &amp;&amp; cur.next != null) {
+//            if(cur.val == cur.next.val) {
+//                cur.next = cur.next.next;
+//            } else {
+//                cur = cur.next;
+//            }
+//        }
+//        return head;
+//    }
+//}
+</code></pre>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/lg67md/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[P203. 移除链表元素]]></title>
+      <link>https://www.wztlink1013.com/blog/kgpm3x/</link>
+      <guid>https://www.wztlink1013.com/blog/kgpm3x/</guid>
+      <pubDate>Mon Nov 30 2020 02:01:26 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</]]>
+      </description>
+      <content:encoded><![CDATA[<pre><code class="java">/**
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+</code></pre>
+<h2 id="203-移除链表元素"><a href="#203-移除链表元素" class="headerlink" title="203. 移除链表元素"></a>203. 移除链表元素</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603195857807-2e8c8296-2d79-4e36-b304-f02c4dee52b3.png#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=200&amp;originWidth=729&amp;size=15034&amp;status=done&amp;style=shadow&amp;width=364.5" alt="image.png"></p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="java">class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        // 将整个链表想象成head+子链表
+        if (head == null)
+            return null;
+        // 先处理子链表
+        head.next = removeElements(head.next, val);
+        // 再处理头结点
+        return head.val == val ? head.next : head;
+    }
+}
+</code></pre>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/kgpm3x/#comments</comments>
     </item>
     
   </channel>
