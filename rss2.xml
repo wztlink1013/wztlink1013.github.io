@@ -8,7 +8,7 @@
     <script xmlns="http://www.w3.org/1999/xhtml" src="/public/js/rss.js"></script>
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     <description><![CDATA[尼采般地抒情个人网站，本科CS，大学期间开始撰写技术博客、个人生活随笔，这个兴趣爱好会一直延续下去……坚信什么都不舍弃，什么也改变不了！]]></description>
-    <pubDate>Wed Mar 24 2021 08:54:04 GMT+0000 (Coordinated Universal Time)</pubDate>
+    <pubDate>Wed Mar 24 2021 10:02:32 GMT+0000 (Coordinated Universal Time)</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -32,499 +32,6 @@ git config --global --unset https.proxy
 </code></pre>
 ]]></content:encoded>
       <comments>https://www.wztlink1013.com/blog/tttk33/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[JAVA当中栈和队列常用方法]]></title>
-      <link>https://www.wztlink1013.com/blog/oylyeh/</link>
-      <guid>https://www.wztlink1013.com/blog/oylyeh/</guid>
-      <pubDate>Tue Mar 09 2021 08:34:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[JAVA当中栈和队列常用方法]]>
-      
-      </description>
-      <content:encoded><![CDATA[<blockquote>
-<p>Java 里有一个叫做 Stack 的类，却没有叫做 Queue 的类（它是个接口名字）。当需要使用栈时，Java 已不推荐使用 Stack，而是推荐使用更高效的 ArrayDeque；<br>既然 Queue 只是一个接口，当需要使用队列时也就首选 ArrayDeque 了（次选是 LinkedList）。</p>
-</blockquote>
-<h2 id="队列常用方法"><a href="#队列常用方法" class="headerlink" title="队列常用方法"></a>队列常用方法</h2><blockquote>
-<p>初始化</p>
-</blockquote>
-<pre><code class="java">import java.util.LinkedList;
-import java.util.Queue;
-
-Queue&lt;Integer&gt; queue_input = new LinkedList&lt;&gt;();
-</code></pre>
-<table>
-<thead>
-<tr>
-<th>Queue Method</th>
-<th>Equivalent Deque Method</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>add(e)</td>
-<td>addLast(e)</td>
-<td>向队尾插入元素，失败则抛出异常</td>
-</tr>
-<tr>
-<td>offer(e)</td>
-<td>offerLast(e)</td>
-<td>向队尾插入元素，失败则返回 false，offer(E e)操作是专为容量受限的队列实现而设计的，在大多数实现中，插入操作不会失败</td>
-</tr>
-<tr>
-<td>remove()</td>
-<td>removeFirst()</td>
-<td>获取并删除队首元素，失败则抛出异常</td>
-</tr>
-<tr>
-<td>poll()</td>
-<td>pollFirst()</td>
-<td>获取并删除队首元素，失败则返回 null</td>
-</tr>
-<tr>
-<td>element()</td>
-<td>getFirst()</td>
-<td>获取但不删除队首元素，失败则抛出异常</td>
-</tr>
-<tr>
-<td>peek()</td>
-<td>peekFirst()</td>
-<td>获取但不删除队首元素，失败则返回 null</td>
-</tr>
-</tbody>
-</table>
-<h2 id="栈常用方法"><a href="#栈常用方法" class="headerlink" title="栈常用方法"></a>栈常用方法</h2><table>
-<thead>
-<tr>
-<th>Stack Method</th>
-<th>Equivalent Deque Method</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>push(e)</td>
-<td>addFirst(e)</td>
-<td>向栈顶插入元素，失败则抛出异常</td>
-</tr>
-<tr>
-<td>无</td>
-<td>offerFirst(e)</td>
-<td>向栈顶插入元素，失败则返回 false</td>
-</tr>
-<tr>
-<td>pop()</td>
-<td>removeFirst()</td>
-<td>获取并删除栈顶元素，失败则抛出异常</td>
-</tr>
-<tr>
-<td>无</td>
-<td>pollFirst()</td>
-<td>获取并删除栈顶元素，失败则返回 null</td>
-</tr>
-<tr>
-<td>peek()</td>
-<td>peekFirst()</td>
-<td>获取但不删除栈顶元素，失败则抛出异常</td>
-</tr>
-<tr>
-<td>无</td>
-<td>peekFirst()</td>
-<td>获取但不删除栈顶元素，失败则返回 null</td>
-</tr>
-</tbody>
-</table>
-<h2 id="关于-ArrayDeque"><a href="#关于-ArrayDeque" class="headerlink" title="关于 ArrayDeque"></a>关于 ArrayDeque</h2><blockquote>
-<p>ArrayDeque 和 LinkedList 是 Deque 的两个通用实现，由于官方更推荐使用 AarryDeque 用作栈和队列，<br>从名字可以看出 ArrayDeque 底层通过数组实现，为了满足可以同时在数组两端插入或删除元素的需求，该数组还必须是循环的，即循环数组（circular array），也就是说数组的任何一点都可能被看作起点或者终点。ArrayDeque 是非线程安全的（not thread-safe），当多个线程同时使用的时候，需要程序员手动同步；另外，该容器不允许放入 null 元素。</p>
-</blockquote>
-<pre><code class="java">import java.util.*;
-
-public class ArrayDequeStack {
-    public static void main(String[] args) {
-        ArrayDeque stack = new ArrayDeque();
-        // 依次将三个元素push入“栈”，先进后出
-        stack.push(&quot;疯狂Java讲义&quot;);
-        stack.push(&quot;轻量级Java EE企业应用实战&quot;);
-        stack.push(&quot;疯狂Android讲义&quot;);
-        System.out.println(stack); // [疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
-        System.out.println(stack.peek()); // 疯狂Android讲义
-        System.out.println(stack); // [疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
-        System.out.println(stack.pop()); // 疯狂Android讲义
-        System.out.println(stack);//[轻量级Java EE企业应用实战, 疯狂Java讲义]
-
-        // 当做队列来使用,先进先出
-        ArrayDeque queue = new ArrayDeque();
-        queue.offer(&quot;疯狂Java讲义&quot;);
-        queue.offer(&quot;轻量级JavaEE企业应用实践&quot;);
-        queue.offer(&quot;疯狂Android讲义&quot;);
-        System.out.println(queue); //[疯狂Java讲义, 轻量级JavaEE企业应用实践, 疯狂Android讲义]
-        // 访问队列头部元素，但不将其poll出队列
-        System.out.println(queue.peek());
-        System.out.println(queue);
-        // poll出第一个元素
-        System.out.println(queue.poll());
-        System.out.println(queue);// [轻量级JavaEE企业应用实践, 疯狂Android讲义]
-    }
-}
-</code></pre>
-<pre><code>[疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
-疯狂Android讲义
-[疯狂Android讲义, 轻量级Java EE企业应用实战, 疯狂Java讲义]
-疯狂Android讲义
-[轻量级Java EE企业应用实战, 疯狂Java讲义]
-[疯狂Java讲义, 轻量级JavaEE企业应用实践, 疯狂Android讲义]
-疯狂Java讲义
-[疯狂Java讲义, 轻量级JavaEE企业应用实践, 疯狂Android讲义]
-疯狂Java讲义
-[轻量级JavaEE企业应用实践, 疯狂Android讲义]
-</code></pre><p>例子参考：<a href="https://www.cnblogs.com/jiqing9006/p/6107491.html" target="_blank" rel="noopener">https://www.cnblogs.com/jiqing9006/p/6107491.html</a></p>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/oylyeh/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[P225P232. 队列和栈的相互实现]]></title>
-      <link>https://www.wztlink1013.com/blog/le21wf/</link>
-      <guid>https://www.wztlink1013.com/blog/le21wf/</guid>
-      <pubDate>Tue Mar 09 2021 08:30:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[P225P232. 队列和栈的相互实现]]>
-      
-      </description>
-      <content:encoded><![CDATA[<blockquote>
-<p>简单实现一下，熟悉一下写题目，这几天找找状态……<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1615278756585-fb0d9f38-8031-472f-9a19-8545be93a548.gif#align=left&amp;display=inline&amp;height=100&amp;margin=%5Bobject%20Object%5D&amp;name=huaji-6f8ff8999ff5ed9a.gif&amp;originHeight=100&amp;originWidth=100&amp;size=12637&amp;status=done&amp;style=none&amp;width=100" alt="huaji-6f8ff8999ff5ed9a.gif"></p>
-</blockquote>
-<h2 id="P232-栈实现队列"><a href="#P232-栈实现队列" class="headerlink" title="P232. 栈实现队列"></a>P232. 栈实现队列</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
-
-// P232.用栈实现队列
-// P232.implement-queue-using-stacks
-//请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：
-//
-// 实现 MyQueue 类：
-//
-//
-// void push(int x) 将元素 x 推到队列的末尾
-// int pop() 从队列的开头移除并返回元素
-// int peek() 返回队列开头的元素
-// boolean empty() 如果队列为空，返回 true ；否则，返回 false
-//
-//
-//
-//
-// 说明：
-//
-//
-// 你只能使用标准的栈操作 —— 也就是只有 push to top, peek/pop from top, size, 和 is empty 操作是合法的。
-//
-// 你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。
-//
-//
-//
-//
-// 进阶：
-//
-//
-// 你能否实现每个操作均摊时间复杂度为 O(1) 的队列？换句话说，执行 n 个操作的总时间复杂度为 O(n) ，即使其中一个操作可能花费较长时间。
-//
-//
-//
-//
-// 示例：
-//
-//
-//输入：
-//[&quot;MyQueue&quot;, &quot;push&quot;, &quot;push&quot;, &quot;peek&quot;, &quot;pop&quot;, &quot;empty&quot;]
-//[[], [1], [2], [], [], []]
-//输出：
-//[null, null, null, 1, 1, false]
-//
-//解释：
-//MyQueue myQueue = new MyQueue();
-//myQueue.push(1); // queue is: [1]
-//myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
-//myQueue.peek(); // return 1
-//myQueue.pop(); // return 1, queue is [2]
-//myQueue.empty(); // return false
-//
-//
-//
-//
-//
-//
-//
-// 提示：
-//
-//
-// 1 &lt;= x &lt;= 9
-// 最多调用 100 次 push、pop、peek 和 empty
-// 假设所有操作都是有效的 （例如，一个空的队列不会调用 pop 或者 peek 操作）
-//
-// Related Topics 栈 设计
-// 👍 361 👎 0
-
-import java.util.Stack;
-
-public class P232ImplementQueueUsingStacks{
-    public void main(String[] args) {
-        MyQueue myQueue = new MyQueue();
-        //本地调试需要将MyQueue类和主函数加上静态static修饰字
-        //具体解释：https://www.cnblogs.com/dolphin0520/p/3799052.html
-        myQueue.push(1); // queue is: [1]
-        myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
-        myQueue.pop();
-        myQueue.peek();
-//        myQueue.peek(); // return 1
-//        myQueue.pop(); // return 1, queue is [2]
-//        myQueue.empty(); // return false
-//        System.out.println(myQueue);
-    }
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class MyQueue {
-    Stack&lt;Integer&gt; stack_input = new Stack&lt;&gt;();
-    Stack&lt;Integer&gt; stack_output = new Stack&lt;&gt;();
-    /** Initialize your data structure here. */
-    public MyQueue() {
-//        Stack&lt;Integer&gt; stack_input = new Stack&lt;&gt;();
-//        Stack&lt;Integer&gt; stack_output = new Stack&lt;&gt;();
-    }
-
-    /** Push element x to the back of queue. */
-    public void push(int x) {
-        stack_input.push(x);
-        int temp = stack_input.size();
-        if (stack_output.size() == 0) {
-            for (int i=0; i&lt;temp; i++){
-                stack_output.push(stack_input.pop());
-            }
-        }
-    }
-
-    /** Removes the element from in front of queue and returns that element. */
-    public int pop() {
-        int temp = stack_input.size();
-        if (stack_output.size() == 0) {
-            for (int i=0; i&lt;temp; i++){
-                stack_output.push(stack_input.pop());
-            }
-        }
-        return stack_output.pop();
-    }
-
-    /** Get the front element. */
-    public int peek() {
-        int temp = stack_input.size();
-        if (stack_output.size() == 0) {
-            for (int i=0; i&lt;temp; i++){
-                stack_output.push(stack_input.pop());
-            }
-        }
-        return stack_output.peek();
-    }
-
-    /** Returns whether the queue is empty. */
-    public boolean empty() {
-        if (stack_input.size() == 0 &amp;&amp; stack_output.size() == 0) {
-            return true;
-        }
-        return false;
-    }
-}
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * MyQueue obj = new MyQueue();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.peek();
- * boolean param_4 = obj.empty();
- */
-//leetcode submit region end(Prohibit modification and deletion)
-
-}
-</code></pre>
-<h2 id="P225-队列实现栈"><a href="#P225-队列实现栈" class="headerlink" title="P225. 队列实现栈"></a>P225. 队列实现栈</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
-
-// P225.用队列实现栈
-// P225.implement-stack-using-queues
-//请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通队列的全部四种操作（push、top、pop 和 empty）。
-//
-// 实现 MyStack 类：
-//
-//
-// void push(int x) 将元素 x 压入栈顶。
-// int pop() 移除并返回栈顶元素。
-// int top() 返回栈顶元素。
-// boolean empty() 如果栈是空的，返回 true ；否则，返回 false 。
-//
-//
-//
-//
-// 注意：
-//
-//
-// 你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作。
-// 你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。
-//
-//
-//
-//
-// 示例：
-//
-//
-//输入：
-//[&quot;MyStack&quot;, &quot;push&quot;, &quot;push&quot;, &quot;top&quot;, &quot;pop&quot;, &quot;empty&quot;]
-//[[], [1], [2], [], [], []]
-//输出：
-//[null, null, null, 2, 2, false]
-//
-//解释：
-//MyStack myStack = new MyStack();
-//myStack.push(1);
-//myStack.push(2);
-//myStack.top(); // 返回 2
-//myStack.pop(); // 返回 2
-//myStack.empty(); // 返回 False
-//
-//
-//
-//
-// 提示：
-//
-//
-// 1 &lt;= x &lt;= 9
-// 最多调用100 次 push、pop、top 和 empty
-// 每次调用 pop 和 top 都保证栈不为空
-//
-//
-//
-//
-// 进阶：你能否实现每种操作的均摊时间复杂度为 O(1) 的栈？换句话说，执行 n 个操作的总时间复杂度 O(n) ，尽管其中某个操作可能需要比其他操作更长的
-//时间。你可以使用两个以上的队列。
-// Related Topics 栈 设计
-// 👍 291 👎 0
-
-
-import java.util.LinkedList;
-import java.util.Queue;
-
-public class P225ImplementStackUsingQueues{
-    public void main(String[] args) {
-//        Solution solution = new P225ImplementStackUsingQueues().new Solution();
-
-    }
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class MyStack {
-    Queue&lt;Integer&gt; queue_input = new LinkedList&lt;&gt;();
-    Queue&lt;Integer&gt; queue_output = new LinkedList&lt;&gt;();
-    /** Initialize your data structure here. */
-    public MyStack() {
-
-    }
-
-    /** Push element x onto stack. */
-    public void push(int x) {
-        queue_input.add(x);
-    }
-
-    /** Removes the element on top of the stack and returns that element. */
-    public int pop() {
-        int temp_2 = queue_input.size();
-        for (int i=0; i&lt;temp_2; i++) {
-            queue_output.add(queue_input.remove());
-        }
-        int temp_3 = queue_output.size();
-        for (int i=0; i&lt;temp_3-1; i++) {
-            queue_input.add(queue_output.remove());
-        }
-        return queue_output.remove();
-    }
-
-    /** Get the top element. */
-    public int top() {
-        int top = 0;
-        int temp_4 = queue_input.size();
-        for (int i=0; i&lt;temp_4; i++) {
-            queue_output.add(queue_input.remove());
-        }
-        int temp_5 = queue_output.size();
-        for (int i=0; i&lt;temp_5; i++) {
-            if (i == temp_5-1) {
-                top = queue_output.element();
-            }
-            queue_input.add(queue_output.remove());
-        }
-        return top;
-    }
-
-    /** Returns whether the stack is empty. */
-    public boolean empty() {
-        if (queue_input.size() == 0 &amp;&amp; queue_output.size() == 0) {
-            return true;
-        }
-        return false;
-    }
-}
-
-/**
- * Your MyStack object will be instantiated and called as such:
- * MyStack obj = new MyStack();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.top();
- * boolean param_4 = obj.empty();
- */
-//leetcode submit region end(Prohibit modification and deletion)
-
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/le21wf/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[RSA公钥密码算法]]></title>
-      <link>https://www.wztlink1013.com/blog/ccd10c/</link>
-      <guid>https://www.wztlink1013.com/blog/ccd10c/</guid>
-      <pubDate>Wed Feb 10 2021 07:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[RSA公钥密码算法]]>
-      
-      </description>
-      <content:encoded><![CDATA[<blockquote>
-<p>最近利用自己曾经写过的一篇文章『<a href="https://www.wztlink1013.com/blog/bw80k6/">https://www.wztlink1013.com/blog/bw80k6/</a>』（利用一次抓包来复习学习过的计网知识）</p>
-</blockquote>
-<p>在分析 HTTPS 和 HTTP 这两个协议之间的区别的时候，我感觉 HTTPS 的 SSL(Secure Sockets Layer 安全套接字协议)证书很类似之前老师讲过的 RSA 算法，做此篇文章复习下 RSA 算法和加深 HTTPS 的理解。</p>
-<p>在密码学当中，由对称密钥和非对称密钥之分。</p>
-<h2 id="对称密钥"><a href="#对称密钥" class="headerlink" title="对称密钥"></a>对称密钥</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612943343546-b8330998-9019-40a1-9759-12b459d5379b.png#align=left&amp;display=inline&amp;height=345&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=690&amp;originWidth=982&amp;size=266245&amp;status=done&amp;style=stroke&amp;width=491" alt="image.png"><br>用一个简单的凯撒密码例子来讲解一下对称密钥：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612943823633-5283daed-a125-46fd-a785-93851daf5269.png#align=left&amp;display=inline&amp;height=325&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=650&amp;originWidth=957&amp;size=205858&amp;status=done&amp;style=stroke&amp;width=478.5" alt="image.png"><br>上图是凯撒密码的定义，先说一下怎么用：</p>
-<p>假如张三和李四两个人之间需要传输一段密码 apple，他们之间共同约定使用密钥-3（再上图表示就为 e 字母编程 b 字母了，以此类推），而这个算法是基于<a href="https://zh.wikipedia.org/wiki/%E6%A8%A1%E9%99%A4" target="_blank" rel="noopener">mod 运算</a>（在这里看成是一种加密/解密机制）的。</p>
-<p>张三利用 mod 运算加密机制（mod 运算）将 apple 转换位 xmmfb<br>李四利用 mod 运算解密机制（mod 运算）将 xmmfb 转换位 apple</p>
-<blockquote>
-<p>a 为什么到 x：（0-3）mod26 可以看成（23-26）mod26=23，所以 a 往后退三位还是 x</p>
-</blockquote>
-<p>上述例子的加密机制和解密机制算法一样（mod 运算），实际上也可以不一样，不做详述。但是可以说名对称加密的密钥都一样，该例子中表现为-3</p>
-<h2 id="RSA-公钥密码算法"><a href="#RSA-公钥密码算法" class="headerlink" title="RSA 公钥密码算法"></a>RSA 公钥密码算法</h2><p>RSA 公钥密码算法是非对称加密。</p>
-<p>先说一下和上面的对称密钥的不同，很简单，不同之处就是对称密钥只有一个密钥，而非对称密钥有两个（我觉得严谨来说可以有多个，但在这里先局限地说有两个），而且一个叫公钥，一个叫密钥。</p>
-<p>还是上面的张三李四例子，就相当于张三这次用公钥来加密 apple 这个单词，加密成一段密文，这段密文<strong>只能由密钥来解密</strong>，即便是你有了公钥，也不能将其解密。</p>
-<p>然后来抛出几个问题来分析之：</p>
-<blockquote>
-<p>【Q1】公钥和密钥怎么来规定呢？我要是一个网络攻击者，我利用公钥来推理出密钥，那我岂不是直接解密了？！</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612945567958-1cd39a87-ba61-4dd8-955e-1a4fc130378d.png#align=left&amp;display=inline&amp;height=290&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=579&amp;originWidth=474&amp;size=117414&amp;status=done&amp;style=stroke&amp;width=237" alt="image.png"><br>具体的相关 mod 运算在此不做详述</p>
-<blockquote>
-<p>【Q2】算法可靠与否</p>
-</blockquote>
-<p>为了保证严谨，同时也证明了这种算法的</p>
-<ul>
-<li>可行性，所计算出来的算法复杂度最高是 4 次方，对计算机而言，可计算</li>
-<li>不可攻破，在学界，大数因子分解不可行，或者说，如今的科技还不能轻易的破解</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612945767363-ee62dad7-357d-42d3-a932-78cc10d29866.png#align=left&amp;display=inline&amp;height=337&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=674&amp;originWidth=985&amp;size=269673&amp;status=done&amp;style=stroke&amp;width=492.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612945781929-bea0946c-3f24-472d-a4d4-3c40abd83ee3.png#align=left&amp;display=inline&amp;height=244&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=487&amp;originWidth=987&amp;size=177512&amp;status=done&amp;style=stroke&amp;width=493.5" alt="image.png"></p>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ccd10c/#comments</comments>
     </item>
     
     <item>
@@ -2344,94 +1851,6 @@ background-position : position || position
     </item>
     
     <item>
-      <title><![CDATA[P674. 最长连续递增序列]]></title>
-      <link>https://www.wztlink1013.com/blog/guaorh/</link>
-      <guid>https://www.wztlink1013.com/blog/guaorh/</guid>
-      <pubDate>Sun Jan 24 2021 03:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[P674. 最长连续递增序列]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
-
-// P674.最长连续递增序列
-// P674.longest-continuous-increasing-subsequence
-//给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
-//
-// 连续递增的子序列 可以由两个下标 l 和 r（l &lt; r）确定，如果对于每个 l &lt;= i &lt; r，都有 nums[i] &lt; nums[i + 1] ，那
-//么子序列 [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] 就是连续递增子序列。
-//
-//
-//
-// 示例 1：
-//
-//
-//输入：nums = [1,3,5,4,7]
-//输出：3
-//解释：最长连续递增序列是 [1,3,5], 长度为3。
-//尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为 5 和 7 在原数组里被 4 隔开。
-//
-//
-// 示例 2：
-//
-//
-//输入：nums = [2,2,2,2,2]
-//输出：1
-//解释：最长连续递增序列是 [2], 长度为1。
-//
-//
-//
-//
-// 提示：
-//
-//
-// 0 &lt;= nums.length &lt;= 104
-// -109 &lt;= nums[i] &lt;= 109
-//
-// Related Topics 数组
-// 👍 147 👎 0
-
-public class P674LongestContinuousIncreasingSubsequence{
-    public static void main(String[] args) {
-        Solution solution = new P674LongestContinuousIncreasingSubsequence().new Solution();
-        int [] nums = {1,3,5,7};
-        int result = solution.findLengthOfLCIS(nums);
-        System.out.println(result);
-    }
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int findLengthOfLCIS(int[] nums) {
-        if (nums.length == 0) { return 0; }
-        int result = 1;
-        int count = 1;
-        for (int i=0; i&lt;nums.length-1; i++) {
-            if (nums[i] &lt; nums[i+1] ) {
-                count++;
-                if (result &lt; count) {result = count;}
-            } else {
-                if (result &lt; count) {result = count;}
-                count = 1;
-            }
-        }
-        return result;
-    }
-}
-//leetcode submit region end(Prohibit modification and deletion)
-
-}
-</code></pre>
-<h2 id="细节注意"><a href="#细节注意" class="headerlink" title="细节注意"></a>细节注意</h2><ul>
-<li>56 行 count++</li>
-<li>将 57 和 59 行代码删去，改为如下表达式赋值</li>
-</ul>
-<pre><code class="java">result = count &gt; result ? count : result;
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/guaorh/#comments</comments>
-    </item>
-    
-    <item>
       <title><![CDATA[软件工程知识小结]]></title>
       <link>https://www.wztlink1013.com/blog/sc6tzq/</link>
       <guid>https://www.wztlink1013.com/blog/sc6tzq/</guid>
@@ -2936,141 +2355,6 @@ class Solution {
     </item>
     
     <item>
-      <title><![CDATA[P150.逆波兰表达式求值]]></title>
-      <link>https://www.wztlink1013.com/blog/ewoap5/</link>
-      <guid>https://www.wztlink1013.com/blog/ewoap5/</guid>
-      <pubDate>Thu Dec 03 2020 12:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[P150.逆波兰表达式求值]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
-
-// P150.逆波兰表达式求值
-// P150.evaluate-reverse-polish-notation
-//根据 逆波兰表示法，求表达式的值。
-//
-// 有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
-//
-//
-//
-// 说明：
-//
-//
-// 整数除法只保留整数部分。
-// 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。
-//
-//
-//
-//
-// 示例 1：
-//
-// 输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]
-//输出: 9
-//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
-//
-//
-// 示例 2：
-//
-// 输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;]
-//输出: 6
-//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
-//
-//
-// 示例 3：
-//
-// 输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]
-//输出: 22
-//解释:
-//该算式转化为常见的中缀算术表达式为：
-//  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
-//= ((10 * (6 / (12 * -11))) + 17) + 5
-//= ((10 * (6 / -132)) + 17) + 5
-//= ((10 * 0) + 17) + 5
-//= (0 + 17) + 5
-//= 17 + 5
-//= 22
-//
-//
-//
-// 逆波兰表达式：
-//
-// 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。
-//
-//
-// 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。
-// 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。
-//
-//
-// 逆波兰表达式主要有以下两个优点：
-//
-//
-// 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。
-// 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。
-//
-// Related Topics 栈
-// 👍 213 👎 0
-
-
-import java.util.Stack;
-
-public class P150EvaluateReversePolishNotation{
-    public static void main(String[] args) {
-        Solution solution = new P150EvaluateReversePolishNotation().new Solution();
-        String[] tokens_1 = {&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;};
-        int temp = solution.evalRPN(tokens_1);
-        System.out.println(temp);
-
-    }
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int evalRPN(String[] tokens) {
-        Stack&lt;String&gt; stack = new Stack&lt;&gt;();
-
-        String temp = &quot;0&quot;;
-        stack.push(temp);
-
-        for (String token : tokens) {
-            int sum = 0;
-            if (token.equals(&quot;+&quot;)) {
-                sum += Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop());
-                String str = String.valueOf(sum);
-                stack.push(str);
-            } else if (token.equals(&quot;-&quot;)) {
-                int i = Integer.parseInt(stack.pop());
-                int j = Integer.parseInt(stack.pop());
-                sum += j-i;
-                String str = String.valueOf(sum);
-                stack.push(str);
-            } else if (token.equals(&quot;*&quot;)) {
-                sum += Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop());
-                String str = String.valueOf(sum);
-                stack.push(str);
-            } else if (token.equals(&quot;/&quot;)) {
-                int i = Integer.parseInt(stack.pop());
-                int j = Integer.parseInt(stack.pop());
-                sum += j / i;
-                String str = String.valueOf(sum);
-                stack.push(str);
-            } else {
-                stack.push(token);
-            }
-        }
-        int result = Integer.parseInt(stack.pop());
-        return result;
-    }
-}
-//leetcode submit region end(Prohibit modification and deletion)
-
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ewoap5/#comments</comments>
-    </item>
-    
-    <item>
       <title><![CDATA[hexo-部署出错at formatNunjucksError]]></title>
       <link>https://www.wztlink1013.com/blog/gw1d4z/</link>
       <guid>https://www.wztlink1013.com/blog/gw1d4z/</guid>
@@ -3126,115 +2410,6 @@ Error: Process completed with exit code 2.
 </blockquote>
 ]]></content:encoded>
       <comments>https://www.wztlink1013.com/blog/iwvugw/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[P224.基本计算器]]></title>
-      <link>https://www.wztlink1013.com/blog/ckr31m/</link>
-      <guid>https://www.wztlink1013.com/blog/ckr31m/</guid>
-      <pubDate>Tue Dec 01 2020 11:21:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[P224.基本计算器]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="问题思路"><a href="#问题思路" class="headerlink" title="问题思路"></a>问题思路</h2><p>用栈来作为临时存取非括号的求和数。对字符串进行逐个遍历，然后对遇到的每个字符串进行判断</p>
-<ul>
-<li>数字：将其求和到 sum 当中</li>
-<li>（：将上述 sum 和符号压入栈内</li>
-<li>）：将栈内的元素取出与现有 sum 求和</li>
-<li>+：直接走</li>
-<li>-：直接走不过给下一个计算数提前加负号</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
-
-// P224.基本计算器
-//实现一个基本的计算器来计算一个简单的字符串表达式的值。
-//
-// 字符串表达式可以包含左括号 ( ，右括号 )，加号 + ，减号 -，非负整数和空格 。
-//
-// 示例 1:
-//
-// 输入: &quot;1 + 1&quot;
-//输出: 2
-//
-//
-// 示例 2:
-//
-// 输入: &quot; 2-1 + 2 &quot;
-//输出: 3
-//
-// 示例 3:
-//
-// 输入: &quot;(1+(4+5+2)-3)+(6+8)&quot;
-//输出: 23
-//
-// 说明：
-//
-//
-// 你可以假设所给定的表达式都是有效的。
-// 请不要使用内置的库函数 eval。
-//
-// Related Topics 栈 数学
-// 👍 309 👎 0
-
-import java.util.Stack;
-
-public class P224BasicCalculator{
-    public static void main(String[] args) {
-        Solution solution = new P224BasicCalculator().new Solution();
-        int key_1 = solution.calculate(&quot;7896979&quot;);
-        int key_2 = solution.calculate(&quot;(23-2)-33+1111&quot;);
-        System.out.println(key_1);
-        System.out.println(key_2);
-    }
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int calculate(String s) {
-        Stack&lt;Integer&gt; stack_1 = new Stack&lt;Integer&gt;();
-        int sum = 0;
-        int sign = 1;
-        int num = 0;
-
-        for (int i=0;i&lt;s.length();i++) {
-            char ch = s.charAt(i);
-            if (Character.isDigit(ch)) {
-                num = 10 * num + (int) (ch - &#39;0&#39;);
-            } else if (ch == &#39;+&#39;) {
-                num = num * sign;
-                sum = sum + num;
-                sign = 1;
-                num = 0;
-            } else if (ch == &#39;-&#39;) {
-                num = num * sign;
-                sum = sum + num;
-                sign = -1;
-                num = 0;
-            } else if (ch == &#39;(&#39;) {
-                stack_1.push(sum);
-                stack_1.push(sign);
-                sum = 0;
-                num = 0;
-                sign = 1;
-            } else if (ch == &#39;)&#39;) {
-                num = num * sign;
-                sum = sum + num;
-                sum = stack_1.pop() * sum;
-                sum = sum + stack_1.pop();
-                num = 0;
-                sign = 1;
-            }
-
-        }
-        sum = sum + sign * num;
-        return sum;
-    }}
-//leetcode submit region end(Prohibit modification and deletion)
-
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ckr31m/#comments</comments>
     </item>
     
     <item>
@@ -3313,488 +2488,6 @@ fd1/*
     </item>
     
     <item>
-      <title><![CDATA[sdnu-dboj-成绩管理-Movie]]></title>
-      <link>https://www.wztlink1013.com/blog/zhdy1x/</link>
-      <guid>https://www.wztlink1013.com/blog/zhdy1x/</guid>
-      <pubDate>Thu Nov 19 2020 06:23:23 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[几乎都是SELECT语句训练]]>
-      
-      </description>
-      <content:encoded><![CDATA[<blockquote>
-<p>题目入口：<a href="http://db.itoi.sd.cn/problem/set" target="_blank" rel="noopener">http://db.itoi.sd.cn/problem/set</a></p>
-</blockquote>
-<h2 id="成绩管理相关题目"><a href="#成绩管理相关题目" class="headerlink" title="成绩管理相关题目"></a>成绩管理相关题目</h2><h3 id="Student-表"><a href="#Student-表" class="headerlink" title="Student 表"></a>Student 表</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1600849205116-d4263820-8bbb-4d01-b97b-a0363f4498e7.png#align=left&amp;display=inline&amp;height=216&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=432&amp;originWidth=722&amp;size=41200&amp;status=done&amp;style=shadow&amp;width=361" alt="image.png"></p>
-<h3 id="Course-表"><a href="#Course-表" class="headerlink" title="Course 表"></a>Course 表</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1600849217512-41be815b-8bc4-4b6a-82c2-cbb4d335c9b9.png#align=left&amp;display=inline&amp;height=256&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=511&amp;originWidth=632&amp;size=38392&amp;status=done&amp;style=shadow&amp;width=316" alt="image.png"></p>
-<h3 id="SC-表"><a href="#SC-表" class="headerlink" title="SC 表"></a>SC 表</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1600849229639-8d5cd91f-d87e-49e9-a1cd-9c563b64723f.png#align=left&amp;display=inline&amp;height=262&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=523&amp;originWidth=492&amp;size=32976&amp;status=done&amp;style=shadow&amp;width=246" alt="image.png"></p>
-<h3 id="初始化-SQL-语句"><a href="#初始化-SQL-语句" class="headerlink" title="初始化 SQL 语句"></a>初始化 SQL 语句</h3><pre><code class="sql">SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
-/*学生表*/
-CREATE TABLE Student
-(
-    Sno  INT(9) PRIMARY KEY,
-    Sname VARCHAR(10),
-    Ssex  CHAR(2),
-    Sage  TINYINT(3),
-    Sdept VARCHAR(20)
-);
-INSERT INTO Student
-VALUES (201215121, &#39;李勇&#39;, &#39;男&#39;, 20, &#39;CS&#39;),
-     (201215122, &#39;刘晨&#39;, &#39;女&#39;, 19, &#39;CS&#39;),
-    (201215123, &#39;王敏&#39;, &#39;女&#39;, 18, &#39;MA&#39;),
-    (201215125, &#39;张立&#39;, &#39;男&#39;, 19, &#39;IS&#39;),
-    (201215133, &#39;张三&#39;, &#39;男&#39;, 21, &#39;TE&#39;),
-     (201215137, &#39;赵四&#39;, &#39;男&#39;, 23, &#39;TE&#39;),
-     (201215139, &#39;田二&#39;, &#39;女&#39;, 24, &#39;CS&#39;),
-     (201215140, &#39;李四&#39;, &#39;男&#39;, 21, &#39;CS&#39;),
-     (201215141, &#39;郑五&#39;, &#39;女&#39;, 22, &#39;IS&#39;);
-
-/*课程表*/
-CREATE TABLE Course
-(
-    Cno      INT(4) PRIMARY KEY,
-    Cname     VARCHAR(40),
-    Cpno      INT(4),
-    Ccredit     TINYINT(3),
-    FOREIGN     KEY (Cpno) REFERENCES Course (Cno)
-);
-INSERT INTO Course
-VALUES    (1, &#39;数据库&#39;, 5, 4),
-        (2, &#39;数学&#39;, NULL, 2),
-    (3, &#39;信息系统&#39;, 1, 4),
-     (4, &#39;操作系统&#39;, 6, 3),
-     (5, &#39;数据结构&#39;, 7, 4),
-     (6, &#39;数据处理&#39;, NULL, 2),
-     (7, &#39;PASCAL语言&#39;, 6, 4);
-
-/*选课表*/
-CREATE TABLE SC
-(
-    Sno  INT(9),
-    Cno  INT(4),
-    Grade SMALLINT(3),
-    PRIMARY KEY (Sno, Cno),
-/* 主码由两个属性构成，必须作为表级完整性进行定义*/
-    FOREIGN KEY (Sno) REFERENCES Student (Sno),
-/* 表级完整性约束条件，Sno是外码，被参照表是Student */
-    FOREIGN KEY (Cno) REFERENCES Course (Cno)
-/* 表级完整性约束条件， Cno是外码，被参照表是Course*/
-);
-INSERT INTO SC
-VALUES (201215121, 1, 92),
-            (201215121, 2, 85),
-            (201215121, 3, 88),
-            (201215122, 2, 90),
-      (201215122, 3, 80),
-            (201215122, 6, 59),
-         (201215123, 1, 84),
-         (201215125, 1, 60),
-         (201215125, 3, 90),
-         (201215133, 4, 87),
-         (201215137, 2, 79),
-         (201215139, 2, 80),
-         (201215140, 2, 81);
-
-SET FOREIGN_KEY_CHECKS = 1;
-</code></pre>
-<h3 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h3><pre><code class="sql">0
-select Sno, Sname
-        from Student
-1
-select Sname, Sno, Sdept
-        from Student
-2
-select Sname, Sno, Sdept
-        from Student
-3
-select distinct Sno
-        from SC
-4
-select distinct Sname
-        from Student
-        where Sdept=&#39;CS&#39;
-5
-select Sname, Sage
-    from Student
-    where Sage&lt;20
-6
-select Sno
-    from SC
-    where Grade&lt;60
-7
-select Sname, Sdept, Sage
-    from Student
-    where Sage&gt;=20 and Sage&lt;=23
-8
-select Sname, Sdept, Sage
-    from Student
-    where Sage&lt;20 or Sage&gt;23
-9
-select Sname, Ssex
-    from Student
-    where Sdept=&#39;CS&#39; or Sdept=&#39;MA&#39; or Sdept=&#39;IS&#39;
-10
-select Sname, Ssex
-    from Student
-    where Sdept not in (&#39;CS&#39;, &#39;MA&#39;, &#39;IS&#39;)
-11
-select Sname, Sno, Ssex
-    from Student
-    where Sname like &#39;刘_&#39;
-12
-select Sname, Sno
-    from Student
-    where Sname like &#39;_立&#39;
-13
-select Sname, Sno, Ssex
-    from Student
-    where Sname not like &#39;刘_&#39;
-14
-select Sno, Cno
-    from SC
-    where Grade is not null
-15
-select Sname
-    from Student
-    where Sdept=&#39;CS&#39; and Sage&lt;20
-16
-select Sno, Grade
-    from SC
-    where Cno=&#39;3&#39;
-    order by Grade desc
-17
-select *
-    from Student
-    order by Sdept asc, Sage desc
-18
-select count(Sno) as &#39;COUNT&#39;
-    from Student
-19
-select count(Sno) as COUNT
-        from (
-        select Sno
-                from SC
-                group by sno) as test
-20
-select avg(Grade) as AVG
-    from SC
-    where Cno=&#39;1&#39;
-21
-select max(Grade) as MAX
-    from SC
-    where Cno=&#39;1&#39;
-22
-select SUM(Ccredit) as SUM
-        from Course, SC
-        where Course.Cno=SC.Cno
-        and Sno=&#39;201215121&#39;
-23
-select Cno, count(Grade) as COUNT
-        from SC
-        group by Cno
-24
-select Sno
-        from(
-        select Sno, count(Grade) as COUNT
-                from SC
-                group by Sno
-            )as test
-        where COUNT&gt;2
-25
-select Sno, AVG(Grade) as AVG
-        from SC
-        group by Sno
-        having AVG(Grade)&gt;=88
-26
-select Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade
-    from Student inner join SC
-    on Student.Sno=SC.Sno
-27
-SELECT x.Cno, y.Cpno
-        FROM Course x, Course y
-        WHERE x.Cpno = y.Cno
-28
-select Student.Sno, Student.Sname
-        from Student, SC
-        where Student.Sno=SC.Sno
-                and SC.Cno=&#39;2&#39;
-                and SC.Grade&gt;80
-29
-select test.Sno, test.Sname, Course.Cname, test.Grade
-    from Course join
-        (select SC.Sno, SC.Cno, Student.Sname, SC.Grade
-            from Student join SC
-                on Student.Sno=SC.Sno)as test
-        on Course.Cno=test.Cno
-</code></pre>
-<h2 id="Movie-相关题目"><a href="#Movie-相关题目" class="headerlink" title="Movie 相关题目"></a>Movie 相关题目</h2><pre><code class="sql">30
-select title
-        from movie
-        where director=&#39;Steven Spielberg&#39;
-31
-select year
-        from movie
-        where mID in (
-                select mID
-                from rating
-                where stars=&#39;4&#39; or stars=&#39;5&#39;
-                )
-        order by year asc
-32
-select title
-        from movie
-        where mID not in (
-                select mID
-                    from rating)
-33
-select name
-        from reviewer
-        where rID in (
-                select rID
-                        from rating
-                        where ratingDate is null)
-34
-select reviewer.name, test.title, test.stars, test.ratingDate
-from reviewer join (
-    select movie.title, rating.rID, rating.stars, rating.ratingDate
-    from movie join rating
-    on movie.mID=rating.mID
-    ) as test
-on reviewer.rID=test.rID
-order by reviewer.name, test.title, test.stars
-35
-
-37
-select movie.title, rating_2.stars_avg as stars
-from movie join (
-    select mID, AVG(stars) as stars_avg
-    from rating
-    group by mID) as rating_2
-on movie.mID=rating_2.mID
-order by stars desc, title
-38
-select name
-from reviewer
-where rID in(
-    select rID
-    from rating
-    group by rID
-    having COUNT(rID)&gt;=3)
-39
-select name
-from reviewer
-where rID in (
-select distinct rID
-from rating
-where mID in (
-    select mID
-    from movie
-    where title=&#39;Gone with the Wind&#39;))
- 40
- select temp.name as name, movie.title as title, temp.stars as stars
-    from movie join (
-        select rating.stars, reviewer.name, rating.mID
-        from rating join reviewer
-        on rating.rID=reviewer.rID) as temp
-    on movie.mID=temp.mID
-    where movie.director=temp.name
-
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/zhdy1x/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[贪心算法-Huffman算法]]></title>
-      <link>https://www.wztlink1013.com/blog/ggu8v9/</link>
-      <guid>https://www.wztlink1013.com/blog/ggu8v9/</guid>
-      <pubDate>Sat Nov 14 2020 06:24:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[贪心算法-Huffman算法]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。</p>
-<p>比如：给出一串字母 <code>Huffman Coding</code>   ，按照计算机处理形式，会根据 ascll 码将这串字符编码，具体形式（十进制）就是 104 117 102 102 109 97 110 32 67 111 100 105 110 103，然后转换成二进制，最后会得到需要 97 个比特来存储。</p>
-<h2 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h2><p>算法角度来讲对上述问题 ascll 编码方式是浪费空间的，优化方向是改变编码方式，根据字母出现的频率来“按需分配”进制位。</p>
-<p>给出下面所给出的字母，以及出现的频率，来得到哈夫曼编码<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340774734-5ec5e8f1-0fae-47ff-8ded-dccf9611a3ad.png#align=left&amp;display=inline&amp;height=45&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=89&amp;originWidth=411&amp;size=4276&amp;status=done&amp;style=shadow&amp;width=205.5" alt="image.png"><br>先提出将频率小的依次加入。d 和 h 组合权值为 9(或者说 A 只是称呼方便)，然后将这个 9“替换 d 和 h”代入整个序列，在进行插入树操作，</p>
-<blockquote>
-<p>过程中，遵循数字大的在左数字小的在右原则（互换也没关系，只不过换的是二进制的 0 和 1）</p>
-</blockquote>
-<p>在进行到 E 的时候，此时的队列应该为 120 107 42 37，所以此时需要重新调整队列，然后进行到结束。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340899720-d8867a90-d01c-4bf6-8ec7-ca0e812a99dd.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=443&amp;originWidth=376&amp;size=24239&amp;status=done&amp;style=shadow&amp;width=188" alt="image.png"><br>最后的编码结果为：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605341313840-61587c86-135d-4ba0-96aa-844868de1d56.png#align=left&amp;display=inline&amp;height=101&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=201&amp;originWidth=165&amp;size=4405&amp;status=done&amp;style=shadow&amp;width=82.5" alt="image.png"></p>
-<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-namespace NS_HuffmanCoding {
-using namespace std;
-void BuildHuffmanTree();
-void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars);
-void Finalization();
-struct HFMNode {
-  char Ch; int Freq;
-  HFMNode* Left, * Right;
-  HFMNode(char pCh, int pFreq, HFMNode* pLeft, HFMNode* pRight)
-    : Ch(pCh), Freq(pFreq), Left(pLeft), Right(pRight) {}
-  HFMNode(char pCh, int pFreq)
-    : HFMNode(pCh, pFreq, NULL, NULL) {}
-};
-void MinHeapify(vector&lt;HFMNode*&gt;&amp; H);
-void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node);
-void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i);
-void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i);
-HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H);
-void DeleteANode(HFMNode* node);
-void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars);
-void Output();
-static vector&lt;HFMNode*&gt; Q;
-void HuffmanCodingCaller(vector&lt;pair&lt;char, int&gt;&gt; chars)
-{
-  ShowInput(chars);
-  Initialization(chars);
-  BuildHuffmanTree();
-  Output();
-  Finalization();
-}
-void BuildHuffmanTree()
-{
-  char C = &#39;A&#39;;
-  while (Q.size() &gt; 1)
-  {
-    HFMNode* x = ExtractMin(Q);
-    HFMNode* y = ExtractMin(Q);
-    HFMNode* z = new HFMNode(C++, x-&gt;Freq + y-&gt;Freq, x, y);
-    InsertH(Q, z);
-  }
-}
-HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H)
-{
-  swap(H.front(), H.back());
-  HFMNode* p = H.back();
-  H.pop_back();
-  if (!H.empty())
-    SiftDown(H, 0);
-  return p;
-}
-void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i)
-{
-    while ((i = (i &lt;&lt; 1) + 1) &lt; H.size()) {
-        if ((i + 1 &lt; H.size()) &amp;&amp; (H[i + 1]-&gt;Freq &lt; H[i]-&gt;Freq))
-            i = i + 1;
-        if (H[(i - 1) &gt;&gt; 1]-&gt;Freq &gt; H[i]-&gt;Freq)
-            swap(H[(i - 1) &gt;&gt; 1], H[i]);
-        else break;
-    }
-}
-void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node)
-{
-  H.push_back(node);
-  SiftUp(H, H.size() - 1);
-}
-void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i)
-{
-  while (i &gt; 0 &amp;&amp; H[i]-&gt;Freq &lt; H[(i - 1) &gt;&gt; 1]-&gt;Freq) {
-    swap(H[i], H[(i - 1) &gt;&gt; 1]);
-    i = (i - 1) &gt;&gt; 1;
-  }
-}
-void MinHeapify(vector&lt;HFMNode*&gt;&amp; H)
-{
-  for (int i = (H.size() &gt;&gt; 1) - 1; i &gt;= 0; i--) {
-    SiftDown(H, i);
-  }
-}
-
-void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars)
-{
-  Q.clear();
-  for (auto ch : chars)
-    Q.push_back(new HFMNode(ch.first, ch.second));
-  MinHeapify(Q);
-}
-void Finalization()
-{
-  DeleteANode(Q[0]);
-}
-void DeleteANode(HFMNode* node)
-{
-  if (node-&gt;Left)
-  {
-    DeleteANode(node-&gt;Left);
-    DeleteANode(node-&gt;Right);
-  }
-  delete node;
-}
-void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars)
-{
-  printf(&quot;Huffman coding input: \n&quot;);
-  for (auto c : chars)
-    printf(&quot;%c,%d; &quot;, c.first, c.second);
-  printf(&quot;\n&quot;);
-}
-static vector&lt;char&gt; coding;
-static vector&lt;pair&lt;char, vector&lt;char&gt;&gt;&gt; codingList;
-void GetHuffmanCoding(HFMNode* node)
-{
-  if (node-&gt;Left)
-  {
-    coding.push_back(&#39;0&#39;);
-    GetHuffmanCoding(node-&gt;Left);
-    coding.pop_back();
-    coding.push_back(&#39;1&#39;);
-    GetHuffmanCoding(node-&gt;Right);
-    coding.pop_back();
-  }
-  else
-  {
-    codingList.push_back(pair&lt;char,
-      vector&lt;char&gt;&gt;(node-&gt;Ch, coding));
-  }
-}
-void Output()
-{
-  printf(&quot;Huffman coding:\n&quot;);
-  coding.clear();
-  codingList.clear();
-  GetHuffmanCoding(Q[0]);
-  sort(codingList.begin(), codingList.end());
-  for (auto c1 : codingList)
-  {
-    printf(&quot;  %c: &quot;, c1.first);
-    for (auto c2 : c1.second)
-      printf(&quot;%c&quot;, c2);
-    printf(&quot;\n&quot;);
-  }
-  printf(&quot;\n&quot;);
-}
-} //namespace NS_HuffmanCoding
-using namespace NS_HuffmanCoding;
-void TestHuffmanCoding()
-{
-  vector&lt;vector&lt;pair&lt;char, int&gt;&gt;&gt; charLists = {
-      //Introduction to Algorithms
-     {
-        { {&#39;a&#39;,40}, {&#39;b&#39;,13}, {&#39;c&#39;,12},
-          {&#39;d&#39;,16}, {&#39;e&#39;,9}, {&#39;f&#39;,5} },
-     },
-     //ÑÏÎµÃô
-     {
-        { {&#39;a&#39;,5}, {&#39;b&#39;,29}, {&#39;c&#39;,7}, {&#39;d&#39;,8},
-          {&#39;e&#39;,14}, {&#39;f&#39;,23}, {&#39;g&#39;,3}, {&#39;h&#39;,11} },
-     },
-  };
-  int n = charLists.size();
-  for (int i = 0; i &lt; n; i++)
-  {
-    HuffmanCodingCaller(charLists[i]);
-  }
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ggu8v9/#comments</comments>
-    </item>
-    
-    <item>
       <title><![CDATA[C++匿名函数]]></title>
       <link>https://www.wztlink1013.com/blog/uq89oe/</link>
       <guid>https://www.wztlink1013.com/blog/uq89oe/</guid>
@@ -3826,260 +2519,6 @@ int main() {
 </blockquote>
 ]]></content:encoded>
       <comments>https://www.wztlink1013.com/blog/uq89oe/#comments</comments>
-    </item>
-    
-    <item>
-      <title><![CDATA[贪心算法-Kruskal 算法]]></title>
-      <link>https://www.wztlink1013.com/blog/ghf568/</link>
-      <guid>https://www.wztlink1013.com/blog/ghf568/</guid>
-      <pubDate>Sat Nov 14 2020 00:45:00 GMT+0000 (Coordinated Universal Time)</pubDate>
-      <description>
-      <![CDATA[贪心算法-Kruskal 算法]]>
-      
-      </description>
-      <content:encoded><![CDATA[<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><p><strong>连通图</strong></p>
-<blockquote>
-<p>在<a href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" target="_blank" rel="noopener">图论</a>中，连通图基于连通的概念。在一个<a href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" target="_blank" rel="noopener">无向图</a> G 中，若从<a href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" target="_blank" rel="noopener">顶点</a>i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。如果 G 是<a href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" target="_blank" rel="noopener">有向图</a>，那么连接 i 和 j 的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的<a href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" target="_blank" rel="noopener">连通性</a>是图的基本性质。</p>
-</blockquote>
-<p><strong>生成树</strong></p>
-<blockquote>
-<p>包含图的全部顶点，边数最少的连通子图</p>
-</blockquote>
-<p><strong>最小生成树</strong></p>
-<blockquote>
-<p>总权值最小的生成树</p>
-</blockquote>
-<p>常见问题（该算法）就是求最小生成树。<br><strong>并查集</strong></p>
-<blockquote>
-<p>是一个数据结构，功能有查找 a 和 b 是否为同一组；将 a 和 b 合并为同一组。</p>
-</blockquote>
-<h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</p>
-<p>比如有如下这么一个图：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png#align=left&amp;display=inline&amp;height=95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=189&amp;originWidth=438&amp;size=10882&amp;status=done&amp;style=shadow&amp;width=219" alt="image.png"><br>单独分析 ①② 边和 ③④ 边情况下，两个不在一个集合里面，<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png#align=left&amp;display=inline&amp;height=96&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=192&amp;originWidth=769&amp;size=21600&amp;status=done&amp;style=shadow&amp;width=384.5" alt="image.png"><br>不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为 3 的时候，此时就需要将左右两个集合合并了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png#align=left&amp;display=inline&amp;height=101&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=202&amp;originWidth=748&amp;size=22229&amp;status=done&amp;style=shadow&amp;width=374" alt="image.png"><br>最后的结果样式就为如下<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png#align=left&amp;display=inline&amp;height=146&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=292&amp;originWidth=780&amp;size=31319&amp;status=done&amp;style=shadow&amp;width=390" alt="image.png"></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-namespace NS_KruskalMST {
-using namespace std;
-void KruskalMST();
-int FindSet(int u);
-void UnionSets(int u, int v);
-void Initialization();
-void GenEdges();
-void MakeSets();
-void Output(int v0);
-#define INF INT_MAX
-static int n;
-static vector&lt;vector&lt;int&gt;&gt; WMatrix;
-static vector&lt;pair&lt;pair&lt;int, int&gt;, int&gt;&gt; Edges;
-//Node struct for the disjoint set
-struct DJSNode {
-    int Parent; int Rank;
-    DJSNode(int p) : Parent(p), Rank(0) {}
-};
-static vector&lt;DJSNode&gt; DisjointSet;
-static vector&lt;pair&lt;int, int&gt;&gt; MST;
-//The adjacency list for MST
-static vector&lt;vector&lt;int&gt;&gt; MSTList;
-static vector&lt;int&gt; Prev;
-void KruskalMSTCaller(int an,
-    vector&lt;vector&lt;int&gt;&gt; &amp;wMatrix, int v0)
-{
-    n = an;
-    WMatrix = wMatrix;
-    Initialization();
-    KruskalMST();
-    Output(v0);
-}
-void KruskalMST()
-{
-    for (auto &amp;e: Edges)
-    {
-        int u = e.first.first;
-        int v = e.first.second;
-        int setU = FindSet(u);
-        int setV = FindSet(v);
-        if (setU != setV)
-        {
-            MST.push_back(e.first);
-            if (MST.size() == n - 1)
-                break;
-            UnionSets(setU, setV);
-        }
-    }
-}
-int FindSet(int u)
-{
-    while (u != DisjointSet[u].Parent)
-        u = DisjointSet[u].Parent;
-        //For path compression:
-        //DisjointSet[u].Parent =
-        //    FindSet(DisjointSet[u].Parent);
-    return u;
-}
-void UnionSets(int u, int v)
-{
-    if (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)
-        DisjointSet[v].Parent = u;
-    else
-        DisjointSet[u].Parent = v;
-    if (DisjointSet[u].Rank == DisjointSet[v].Rank)
-        DisjointSet[u].Rank++;
-}
-void Initialization()
-{
-    GenEdges();
-    sort(Edges.begin(), Edges.end(),
-        [](pair&lt;pair&lt;int, int&gt;, int&gt;a,
-            pair&lt;pair&lt;int, int&gt;, int&gt;b)
-        {return a.second &lt; b.second; });
-    MakeSets();
-    MST.clear();
-}
-void GenEdges()
-{
-    Edges.clear();
-    //Traverse the upper triangle of WMatrix
-    for (int i = 0; i &lt; n - 1; i++)
-    {
-        for (int j = i + 1; j &lt; n; j++)
-            if (WMatrix[i][j] != INF)
-                Edges.push_back({ {i, j},
-                    WMatrix[i][j] });
-    }
-}
-void MakeSets()
-{
-    DisjointSet.clear();
-    for (int i = 0; i &lt; n; i++)
-        DisjointSet.push_back(DJSNode(i));
-}
-void OutputWMatrix()
-{
-    printf(&quot;n = %d\n&quot;, n);
-    printf(&quot;The weight matrix:\n&quot;);
-    printf(&quot;%3c&quot;, &#39; &#39;);
-    for (int j = 0; j &lt; n; j++)
-        printf(&quot;%3d&quot;, j + 1);
-    printf(&quot;\n&quot;);
-    for (int i = 0; i &lt; n; i++)
-    {
-        printf(&quot;%3d&quot;, i + 1);
-        for (auto j : WMatrix[i])
-            if (j &lt; INF)
-                printf(&quot;%3d&quot;, j);
-            else
-                printf(&quot;%3c&quot;, &#39;*&#39;);
-        printf(&quot;\n&quot;);
-    }
-}
-void OutputPath(int u)
-{
-    if (Prev[u] == -1)
-        printf(&quot;%d&quot;, u + 1);
-    else
-    {
-        OutputPath(Prev[u]);
-        printf(&quot;-%d&quot;, u + 1);
-    }
-}
-void GenMSTList()
-{
-    MSTList.clear();
-    MSTList.resize(n);
-    for (auto &amp;e: MST)
-    {
-        MSTList[e.first].push_back(e.second);
-        MSTList[e.second].push_back(e.first);
-    }
-}
-void GenPrev(int v)
-{
-    for (auto &amp;u : MSTList[v])
-        if (u != -1)
-        {
-            Prev[u] = v;
-            auto w = find(MSTList[u].begin(),
-                MSTList[u].end(), v);
-            MSTList[u][w - MSTList[u].begin()] = -1;
-            GenPrev(u);
-        }
-}
-void Output(int v0)
-{
-    printf(&quot;Kruskal&#39;s MST algorithm\n&quot;);
-    OutputWMatrix();
-    int wSum = 0;
-    for (int i = 0; i &lt; n - 1; i++)
-        wSum += WMatrix[MST[i].first][MST[i].second];
-    GenMSTList();
-    Prev.clear();
-    Prev.resize(n);
-    Prev[v0] = -1;
-    GenPrev(v0);
-    printf(&quot;The MST edges:\n&quot;);
-    printf(&quot;Edge Weight\n&quot;);
-    for (auto &amp;e : MST)
-        printf(&quot; %d-%d  %d\n&quot;, e.first + 1, e.second + 1,
-            WMatrix[e.first][e.second]);
-    printf(&quot;Total MST weight: %d\n&quot;, wSum);
-    printf(&quot;The MST paths from vertex %d:\n&quot;, v0 + 1);
-    for (int u = 0; u &lt; n; u++)
-        if (u != v0)
-        {
-            printf(&quot;%3d: &quot;, u + 1);
-            OutputPath(u);
-            printf(&quot;\n&quot;);
-        }
-    printf(&quot;\n&quot;);
-}
-} //namespace NS_KruskalMST
-using namespace NS_KruskalMST;
-void TestKruskalMST(int v0 = 0)
-{
-    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; w = {
-        //https://www.geeksforgeeks.org/
-        //prims-minimum-spanning-tree-mst-greedy-algo-5/
-        {
-            {   0,  2,INF,  6,INF },
-            {   2,  0,  3,  8,  5 },
-            { INF,  3,  0,INF,  7 },
-            {   6,  8,INF,  0,  9 },
-            { INF,  5,  7,  9,  0 }
-        },
-        // Dijkstra&#39;s algorithm on Wikipedia
-        {
-            {   0,  7,  9,INF,INF, 14 },
-            {   7,  0, 10, 15,INF,INF },
-            {   9, 10,  0, 11,INF,  2 },
-            { INF, 15, 11,  0,  6,INF },
-            { INF,INF,INF,  6,  0,  9 },
-            {  14,INF,  2,INF,  9,  0 },
-        },
-        //https://www.geeksforgeeks.org/
-        //kruskals-minimum-spanning-tree-using-stl-in-c/
-        {
-            {   0,  4,INF,INF,INF,INF,INF,  8,INF },
-            {   4,  0,  8,INF,INF,INF,INF, 11,INF },
-            { INF,  8,  0,  7,INF,  4,INF,INF,  2 },
-            { INF,INF,  7,  0,  9, 14,INF,INF,INF },
-            { INF,INF,INF,  9,  0, 10,INF,INF,INF },
-            { INF,INF,  4, 14, 10,  0,  2,INF,INF },
-            { INF,INF,INF,INF,INF,  2,  0,  1,  6 },
-            {   8, 11,INF,INF,INF,INF,  1,  0,  7 },
-            { INF,INF,  2,INF,INF,INF,  6,  7,  0 },
-        },
-    };
-    int k = w.size();
-    for (int i = 0; i &lt; k; i++)
-    {
-      if (v0 &gt; w[i].size() - 1)
-        v0 = w[i].size() - 1;
-      KruskalMSTCaller(w[i].size(), w[i], v0);
-    }
-}
-</code></pre>
-]]></content:encoded>
-      <comments>https://www.wztlink1013.com/blog/ghf568/#comments</comments>
     </item>
     
     <item>
@@ -4347,6 +2786,712 @@ export default {
 </ul>
 ]]></content:encoded>
       <comments>https://www.wztlink1013.com/blog/ytoag7/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[js-Cannot set property 'innerHTML' of null]]></title>
+      <link>https://www.wztlink1013.com/blog/fg4az5/</link>
+      <guid>https://www.wztlink1013.com/blog/fg4az5/</guid>
+      <pubDate>Tue Oct 27 2020 06:42:22 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<h2 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h2><pre><code class="javascript">Cannot set property &#39;innerHTML&]]>
+      </description>
+      <content:encoded><![CDATA[<h2 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h2><pre><code class="javascript">Cannot set property &#39;innerHTML&#39; of null
+</code></pre>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>如果 js 放在头部时，此时浏览器渲染未进入 dom 节点，因为提示为空，或者找不到。<br>所以把 js 代码放到最后或调用的对象后面就行了。id 元素在 script 脚本之后，不能引用，类似在使用变量之前对其进行定义一样。</p>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/fg4az5/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[npm- ERR! Unexpected end of JSON input while parsing]]></title>
+      <link>https://www.wztlink1013.com/blog/gcwu9h/</link>
+      <guid>https://www.wztlink1013.com/blog/gcwu9h/</guid>
+      <pubDate>Tue Oct 27 2020 06:07:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<h2 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h2><pre><code class="bash">npm WARN deprecated circular-json@0.5.9: ]]>
+      </description>
+      <content:encoded><![CDATA[<h2 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h2><pre><code class="bash">npm WARN deprecated circular-json@0.5.9: CircularJSON is in maintenance only, flatted is its successor.
+npm ERR! Unexpected end of JSON input while parsing near &#39;...:&quot;~0.0.0&quot;,&quot;webpack-de&#39;
+
+npm ERR! A complete log of this run can be found in:
+npm ERR! C:\文件路径\npm-cache_logs\2018-12-13T10_24_02_151Z-debug.log
+Package install failed, see above.
+</code></pre>
+<p>（具体的报错信息和这个类似）<br>升级 hexo5.0 过程中，npm i –save 出错，各种插件都不能很好的下载。</p>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>在 node 安装目录下配置的 node_cache 目录里面 <code>D:\Develop\nodejs</code><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603808754530-64316710-95b9-4e13-98dd-efda5197f782.png#align=left&amp;display=inline&amp;height=167&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=487&amp;originWidth=1128&amp;size=62358&amp;status=done&amp;style=shadow&amp;width=387" alt="image.png"><br>系统盘的 AppData/roaming 的文件夹并没有一个 npm 的缓存目录，安装 node 的时候将<code>D:\Develop\nodejs</code> 放到系统环境变量的 Path 路径了。</p>
+<p>所以只需要一下两条命令即可</p>
+<pre><code class="bash">npm cache clean --force
+
+npm install
+</code></pre>
+<p>**</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://stackoverflow.com/questions/53759929/npm-err-unexpected-end-of-json-input-while-parsing" target="_blank" rel="noopener">stackoverflow-npm ERR! Unexpected end of JSON input while parsing</a></li>
+<li><a href="https://www.ruanyifeng.com/blog/2016/01/npm-install.html" target="_blank" rel="noopener">阮一峰-npm 模块安装机制简介</a></li>
+</ul>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/gcwu9h/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[CPP-LINK : fatal error LNK1561: 必须定义入口点]]></title>
+      <link>https://www.wztlink1013.com/blog/oyvpk4/</link>
+      <guid>https://www.wztlink1013.com/blog/oyvpk4/</guid>
+      <pubDate>Sun Oct 25 2020 02:10:13 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><pre><code class="cpp">LINK : fatal error LNK1561: 必须定义入口点
+</code]]>
+      </description>
+      <content:encoded><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><pre><code class="cpp">LINK : fatal error LNK1561: 必须定义入口点
+</code></pre>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p>每个应用程序(文件格式为 exe)都应该有个启动点，这个点就是 main 函数。缺少就会出现 link error 。</p>
+<p>解决方法</p>
+<ol>
+<li>添加含有 main 函数的 CPP 文件</li>
+<li>右击属性，在常规项中修改配置类型，将应用程序修改为库，动静态库</li>
+</ol>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/oyvpk4/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[IDEA-控制台输出中文乱码问题]]></title>
+      <link>https://www.wztlink1013.com/blog/lkgrkx/</link>
+      <guid>https://www.wztlink1013.com/blog/lkgrkx/</guid>
+      <pubDate>Sat Oct 24 2020 23:55:16 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在 java 实现 ping/tracert 两个命令时候，输出到控制台里面中文乱码。</p>
+<h2 id="问题分析">]]>
+      </description>
+      <content:encoded><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在 java 实现 ping/tracert 两个命令时候，输出到控制台里面中文乱码。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>应该是调用了终端，而 windows 的终端默认是 GBK 的编码，所以要对其更改管用的 utf-8 编码，改为 GBK 编码。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603613519544-dc851d0f-e0c0-4a0a-9a2d-0043285b3db0.png#align=left&amp;display=inline&amp;height=441&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=881&amp;originWidth=706&amp;size=74813&amp;status=done&amp;style=shadow&amp;width=353" alt="image.png"></p>
+<h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><h3 id="编码更改"><a href="#编码更改" class="headerlink" title="编码更改"></a>编码更改</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603613302488-7bd6d045-81c3-470c-a57c-05a020588fcd.png#align=left&amp;display=inline&amp;height=511&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1022&amp;originWidth=1449&amp;size=141645&amp;status=done&amp;style=shadow&amp;width=724.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603613687953-21f1bbc9-b0bc-4db4-a935-3fcf6275909f.png#align=left&amp;display=inline&amp;height=185&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=369&amp;originWidth=1920&amp;size=135691&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603613719305-ac9dc39b-2c6a-4350-9f31-49d48dbedfe5.png#align=left&amp;display=inline&amp;height=110&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=220&amp;originWidth=764&amp;size=24151&amp;status=done&amp;style=none&amp;width=382" alt="image.png"></p>
+<ul>
+<li><code>Reload</code> 表示使用新编码重新加载，新编码不会保存到文件中</li>
+<li><code>Convert</code> 表示使用新编码进行转换，新编码会保存到文件中</li>
+<li>含有中文的代码文件，<code>Convert</code> 之后可能会使中文变成乱码，所以在转换成请做好备份，不然可能出现转换过程变成乱码，无法还原</li>
+</ul>
+<h3 id="BOM-问题"><a href="#BOM-问题" class="headerlink" title="BOM 问题"></a>BOM 问题</h3><blockquote>
+<p>BOM：byte-order mark 字节顺序标记<br><a href="https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%85%83%E7%B5%84%E9%A0%86%E5%BA%8F%E8%A8%98%E8%99%9F" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%85%83%E7%B5%84%E9%A0%86%E5%BA%8F%E8%A8%98%E8%99%9F</a></p>
+</blockquote>
+<p>可能会出现的问题有：</p>
+<blockquote>
+<p>编译报错：<code>找不到符号</code>、<code>未结束的字符串文字</code> 或者是 提示 <code>非法字符</code></p>
+</blockquote>
+<p>解决办法：有上述百科可知，UTF-8 编码分有 BOM 和无 BOM 两种分类。IDEA 打开 Eclipse 项目，会提示出现上述编译问题，因为<strong>Eclipse 默认是有 BOM 的文件编译</strong>，而<strong>IDEA 只能编译无 BOM 的文件编译</strong>，所以解决办法就是对项目进行<strong>BOM 去除</strong>操作。</p>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/lkgrkx/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[利用WireShark捕获并分析以太网报文结构]]></title>
+      <link>https://www.wztlink1013.com/blog/bw80k6/</link>
+      <guid>https://www.wztlink1013.com/blog/bw80k6/</guid>
+      <pubDate>Fri Oct 23 2020 01:25:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[数据链路层——利用WireShark捕获并分析以太网报文结构]]>
+      
+      </description>
+      <content:encoded><![CDATA[<blockquote>
+<p>学习网络协议分析工具 WireShark，利用 WireShark 捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。<br>文章更新内容说明：无线上网和有线上网的 MAC 地址是不一样的<br>【查看本地地址的截图是在家里的查看，wireshark 的使用是在学校】</p>
+</blockquote>
+<h2 id="查看信息"><a href="#查看信息" class="headerlink" title="查看信息"></a>查看信息</h2><h3 id="查看本地的-mac-地址"><a href="#查看本地的-mac-地址" class="headerlink" title="查看本地的 mac 地址"></a>查看本地的 mac 地址</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612839562082-cbc1fcf8-a520-4820-bafc-e26f07ba1177.png#align=left&amp;display=inline&amp;height=248&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=496&amp;originWidth=1920&amp;size=78833&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612839610832-5568023d-da16-41af-b95e-1787acadf747.png#align=left&amp;display=inline&amp;height=402&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=804&amp;originWidth=1335&amp;size=109239&amp;status=done&amp;style=shadow&amp;width=667.5" alt="image.png"></p>
+<h3 id="ping-命令"><a href="#ping-命令" class="headerlink" title="ping 命令"></a>ping 命令</h3><blockquote>
+<p>先使用 ping 命令找到需要抓包的网站的 ip 地址</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612845955475-12f08386-5ec4-4b3f-8cbf-56059d79677c.png#align=left&amp;display=inline&amp;height=162&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=323&amp;originWidth=828&amp;size=51064&amp;status=done&amp;style=shadow&amp;width=414" alt="image.png"></p>
+<h2 id="WireShark-使用"><a href="#WireShark-使用" class="headerlink" title="WireShark 使用"></a>WireShark 使用</h2><h3 id="WireShark-使用及面板功能区域"><a href="#WireShark-使用及面板功能区域" class="headerlink" title="WireShark 使用及面板功能区域"></a>WireShark 使用及面板功能区域</h3><p>进入软件，若成功适配电脑网卡，则出现如下类似接口列表<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434019601-cc879af3-8784-4ada-83dc-642d64e02981.png#align=left&amp;display=inline&amp;height=329&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1038&amp;originWidth=1920&amp;size=115692&amp;status=done&amp;style=shadow&amp;width=608" alt="image.png"><br>直接双击上图中 WLAN 行即可抓包，也可以如下设置网卡启动抓包<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434096441-73c67d75-4e36-4e76-ae3c-0a8b8976da28.png#align=left&amp;display=inline&amp;height=301&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=911&amp;originWidth=1920&amp;size=114148&amp;status=done&amp;style=shadow&amp;width=634" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603431676018-f4988b52-5aef-4d92-8b9b-15109a08adab.png#align=left&amp;display=inline&amp;height=345&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1033&amp;originWidth=1920&amp;size=207427&amp;status=done&amp;style=shadow&amp;width=641" alt="image.png"></p>
+<h3 id="1-区域-显示过滤器"><a href="#1-区域-显示过滤器" class="headerlink" title="1 区域-显示过滤器"></a>1 区域-显示过滤器</h3><blockquote>
+<p>为过滤 ip 地址区域。相关表达式语法有</p>
+</blockquote>
+<ol>
+<li>协议过滤。比如 TCP，只显示 TCP 协议。</li>
+<li>IP 过滤。比如 ip.src == 192.168.1.102,显示源地址为 192.168.1.102，</li>
+</ol>
+<p>ip.dst == 192.168.1.102, 目标地址为 192.168.1.102。</p>
+<ol start="3">
+<li>端口过滤。   tcp.port ==80,   端口为 80 的</li>
+</ol>
+<p>tcp.srcport == 80,只显示 TCP 协议的愿端口为 80 的。</p>
+<ol start="4">
+<li>Http 模式过滤。http.request.method==”GET”,   只显示 HTTP GET 方法的。</li>
+<li>逻辑运算符为 AND/ OR</li>
+</ol>
+<h3 id="2-区域-获取的数据包"><a href="#2-区域-获取的数据包" class="headerlink" title="2 区域-获取的数据包"></a>2 区域-获取的数据包</h3><blockquote>
+<p>封包列表(Packet List Pane)</p>
+</blockquote>
+<h3 id="3-区域-单个数据包各层详细内容"><a href="#3-区域-单个数据包各层详细内容" class="headerlink" title="3 区域-单个数据包各层详细内容"></a>3 区域-单个数据包各层详细内容</h3><blockquote>
+<p>选定的封包详细信息 (Packet Details Pane)</p>
+</blockquote>
+<ol>
+<li>Frame:物理层的数据帧概况。</li>
+</ol>
+<pre><code class="http">Frame 165: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}, id 0 //165号帧，对方发送74字节，实际收到74字节
+    Interface id: 0 (\Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}) //接口id为0
+        Interface name: \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}
+        Interface description: WLAN
+    Encapsulation type: Ethernet (1) //封装类型
+    Arrival Time: Oct 23, 2020 13:37:43.372763000 中国标准时间//捕获日期和时间（中国标准时间）
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1603431463.372763000 seconds
+    [Time delta from previous captured frame: 0.008472000 seconds]//与前一包时间间隔
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 36.349570000 seconds]//此包与第一帧的时间间隔
+    Frame Number: 165//帧序号
+    Frame Length: 74 bytes (592 bits)//帧长度
+    Capture Length: 74 bytes (592 bits)//捕获字节长度
+    [Frame is marked: False]//是否做了标记
+    [Frame is ignored: False]//是否被忽略
+    [Protocols in frame: eth:ethertype:ip:icmp:data]//帧内封装的协议层次结构
+    [Coloring Rule Name: ICMP]//着色标记的协议名称
+    [Coloring Rule String: icmp || icmpv6]//着色规则显示的字符串
+</code></pre>
+<ol start="2">
+<li>Ethernet II:数据链路层以太网帧头部信息。</li>
+</ol>
+<pre><code class="http">Ethernet II, Src: IntelCor_fb:33:94 (0c:54:15:fb:33:94), Dst: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)
+    Destination: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)//目的MAC地址
+    Source: IntelCor_fb:33:94 (0c:54:15:fb:33:94)//源MAC地址（就是我电脑的MAC地址）
+    Type: IPv4 (0x0800)//0x0800表示使用IP协议
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603432754493-20843464-3bbb-4c01-9ceb-e781759a583d.png#align=left&amp;display=inline&amp;height=280&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=559&amp;originWidth=1920&amp;size=110051&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"></p>
+<ol start="3">
+<li>Internet Protocol Version 4:互联网层 IP 包头部信息。</li>
+</ol>
+<pre><code class="http">Internet Protocol Version 4, Src: 192.168.43.36, Dst: 39.156.66.18
+    0100 .... = Version: 4//互联网协议IPv4
+    .... 0101 = Header Length: 20 bytes (5)//IP包头部长度
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)//差分服务字段
+    Total Length: 60//IP包的总长度
+    Identification: 0xdf8c (57228)//标志字段
+    Flags: 0x0000//标记字段
+    Fragment offset: 0//分的偏移量
+    Time to live: 128//生存期TTL
+    Protocol: ICMP (1)//此包内封装的上层协议为TCP
+    Header checksum: 0x05ba [validation disabled]//头部数据的校验和
+    [Header checksum status: Unverified]
+    Source: 192.168.43.36//来源IP地址
+    Destination: 39.156.66.18//目标IP地址
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433033837-c88714a1-eaa1-45cb-b836-5672e4515eee.png#align=left&amp;display=inline&amp;height=189&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=640&amp;size=84901&amp;status=done&amp;style=shadow&amp;width=320" alt="image.png"></p>
+<ol start="4">
+<li>Transmission Control Protocol:传输层 T 的数据段头部信息，此处是 TCP。</li>
+</ol>
+<pre><code class="http">Transmission Control Protocol, Src Port: 80 (80), Dst Port: 50362 (50362), Seq: 1025, Ack: 447, Len: 714
+Source Port: 80 (80) //源端口号
+Destination Port: 50362 (50362) //目标端口号
+Sequence number: 1025 (relative sequence number) //序列号（相对序列号）
+[Next sequence number: 1739 (relative sequence number)] //下一个序列号
+Acknowledgment number: 447    (relative ack number) //确认序列号
+Header Length: 20 bytes  //头部长度
+.... 0000 0001 1000 = Flags: 0x018 (PSH, ACK) //TCP标记长度
+Window size value: 5896  //流量控制的窗口大小
+Checksum: 0x915b [validation disabled] //TCP数据段的校验和
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433149527-0125377e-b64b-4e32-9eb0-e122d0c111cb.png#align=left&amp;display=inline&amp;height=190&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=379&amp;originWidth=579&amp;size=89043&amp;status=done&amp;style=shadow&amp;width=289.5" alt="image.png"></p>
+<ol start="5">
+<li><p>Hypertext Transfer Protocol:应用层的信息，此处是 HTTP 协议。</p>
+</li>
+<li><p>Data（312 bytes）：数据。</p>
+</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434354567-45e84cc7-63a9-4136-adde-85c377345e92.png#align=left&amp;display=inline&amp;height=147&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=347&amp;originWidth=1920&amp;size=49744&amp;status=done&amp;style=shadow&amp;width=813" alt="image.png"></p>
+<h2 id="超星网登录案例分析"><a href="#超星网登录案例分析" class="headerlink" title="超星网登录案例分析"></a>超星网登录案例分析</h2><h3 id="网站请求和响应"><a href="#网站请求和响应" class="headerlink" title="网站请求和响应"></a>网站请求和响应</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849248230-2f38b355-ee1f-4ee1-8b8a-291e64f4e1bd.png#align=left&amp;display=inline&amp;height=356&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=711&amp;originWidth=1920&amp;size=230540&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<h3 id="发送请求相应协议"><a href="#发送请求相应协议" class="headerlink" title="发送请求相应协议"></a>发送请求相应协议</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849740094-cbdefdda-f504-43f3-9e41-ac8dc8029fd3.png#align=left&amp;display=inline&amp;height=440&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=880&amp;originWidth=1920&amp;size=208371&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<h3 id="收到响应相应协议"><a href="#收到响应相应协议" class="headerlink" title="收到响应相应协议"></a>收到响应相应协议</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849811431-437bd72d-ac54-4c28-b731-9e128b6b998f.png#align=left&amp;display=inline&amp;height=441&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=881&amp;originWidth=1918&amp;size=151717&amp;status=done&amp;style=stroke&amp;width=959" alt="image.png"></p>
+<blockquote>
+<p>接下来的 7 个小节内容来具体对数据报头做出分析 ❗</p>
+</blockquote>
+<h3 id="Hypertext-Transfer-Protocol"><a href="#Hypertext-Transfer-Protocol" class="headerlink" title="Hypertext Transfer Protocol"></a>Hypertext Transfer Protocol</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849851243-b18b3e15-f21e-4998-bcfe-45c0b92aabde.png#align=left&amp;display=inline&amp;height=339&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=678&amp;originWidth=1920&amp;size=99636&amp;status=done&amp;style=shadow&amp;width=960" alt="image.png"></p>
+<blockquote>
+<p>HTTP 协议定义了客户端和服务器之间交互的消息内容和步骤，大家按照固定的步骤和格式进行通信<br>根据 URL 可以定位请求资源的位置，但是对于这个资源可能还有多种处理方法，比如是请求资源还是要删除指定资源？</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851558692-ed870a9e-f619-4235-bb98-85d22557340f.png#align=left&amp;display=inline&amp;height=493&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=985&amp;originWidth=1920&amp;size=489577&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>这个时候<strong>浏览器</strong>将需要请求的信息，按照 HTTP 协议约定的格式，封装成为 HTTP 请求报文<br>HTTP 主要请求方法为 GET 和 POST<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851687862-c1a44f57-065b-4547-93bb-4ae9b1f9cb95.png#align=left&amp;display=inline&amp;height=190&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=379&amp;originWidth=693&amp;size=117900&amp;status=done&amp;style=shadow&amp;width=346.5" alt="image.png"></p>
+<blockquote>
+<p>请求报文和响应报文的具体形式参考课本</p>
+</blockquote>
+<h3 id="Line-based-text-data"><a href="#Line-based-text-data" class="headerlink" title="Line-based text data"></a>Line-based text data</h3><p>这里面内容就是请求成功所返回的 Html 代码<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851995920-233bc149-948d-43e1-a549-fc2887c23163.png#align=left&amp;display=inline&amp;height=353&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=706&amp;originWidth=1920&amp;size=159705&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<h3 id="Transmission-Control-Protocol"><a href="#Transmission-Control-Protocol" class="headerlink" title="Transmission Control Protocol"></a>Transmission Control Protocol</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852359910-50409417-8113-4600-bbb6-6d0e02db4894.png#align=left&amp;display=inline&amp;height=356&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=712&amp;originWidth=1920&amp;size=104306&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>这个数据报传输使用的可靠的 TCP 协议，而不是 UDP，所以会有相应的滑动窗口、流量控制等等相关机制，还有三次握手，四次挥手……<br>（插个眼，日后再复习一下……）<br><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1612852762215-ba49fa51-55e0-440d-afa7-b567540e39a2.gif#align=left&amp;display=inline&amp;height=151&amp;margin=%5Bobject%20Object%5D&amp;name=huaji-779c5947261d2633.gif&amp;originHeight=151&amp;originWidth=218&amp;size=163714&amp;status=done&amp;style=none&amp;width=218" alt="huaji-779c5947261d2633.gif"><br>（插眼专用图/滑稽）</p>
+<h3 id="Internet-Protocol-Version-4"><a href="#Internet-Protocol-Version-4" class="headerlink" title="Internet Protocol Version 4"></a>Internet Protocol Version 4</h3><p>好了，接下来到了 IP 层，需要给上面来的数据报加上 IP 头部，IP 数据报结构如下：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853140617-ff243167-abb7-4c65-b5c3-b0bbaa77b5aa.png#align=left&amp;display=inline&amp;height=237&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=474&amp;originWidth=892&amp;size=244750&amp;status=done&amp;style=stroke&amp;width=446" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853444183-7fa048ef-3e75-4586-82a7-ac9cc58c3630.png#align=left&amp;display=inline&amp;height=203&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=405&amp;originWidth=1920&amp;size=105587&amp;status=done&amp;style=stroke&amp;width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852425531-82ec984f-ac3b-4f8a-a06e-0c48080815f6.png#align=left&amp;display=inline&amp;height=353&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=706&amp;originWidth=1920&amp;size=107520&amp;status=done&amp;style=none&amp;width=960" alt="image.png"><br>比如说<code>45</code>这个字节这具体表现是 ip 数据报的第一行和第二行的具体信息，IP 版本为 IPv4，报头长度为二十个字节，往后的各个字段都是这样一一对应的关系，具体还要加强对那张 ip 数据报结构图的理解，要了然于胸。</p>
+<h3 id="Ethernet-II-Src"><a href="#Ethernet-II-Src" class="headerlink" title="Ethernet II, Src"></a>Ethernet II, Src</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853924295-ea6fe64c-bc90-4e49-ad4e-5ff212448fdc.png#align=left&amp;display=inline&amp;height=214&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=428&amp;originWidth=904&amp;size=226429&amp;status=done&amp;style=stroke&amp;width=452" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612850191706-18807d7d-16b5-44fa-a436-5c2b7c4ed5ed.png#align=left&amp;display=inline&amp;height=321&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=641&amp;originWidth=1920&amp;size=151109&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<blockquote>
+<p>图中三个方框的 14 个字节对应以太网 MAC 帧的前 14 个字节：前 6 个字节是目的地址，接下来的 6 个字节是源地址，最后两个字节是类型字段(用来标志上一层使用的是什么协议，以便把收到的 MAC 帧的数据交给上一层的这个协议。0x8000 代表上层使用的是 IP 数据报)，后面是数据部分。<br>另外：wireshark 把 8 字节的前序（前同步码）和 4 字节的 FCS（帧开始界定符）都给过滤掉了，所以捕获到的帧里看不到这两部分。</p>
+</blockquote>
+<h3 id="Frame-75"><a href="#Frame-75" class="headerlink" title="Frame 75"></a>Frame 75</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852486656-87756b19-ff3d-4833-9af9-d2006a401068.png#align=left&amp;display=inline&amp;height=353&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=706&amp;originWidth=1920&amp;size=135359&amp;status=done&amp;style=none&amp;width=960" alt="image.png"></p>
+<ul>
+<li>对方发送 5520 字节，实际收到 5520 字节</li>
+<li>第一行表示接口位 0 号</li>
+</ul>
+<h3 id="总体数据表示"><a href="#总体数据表示" class="headerlink" title="总体数据表示"></a>总体数据表示</h3><p>其实在计算机看来，网络中的数据传输就是传输下面的这些字节</p>
+<blockquote>
+<p>一个字节由八个位组成，而位就是我们通常所说的二进制中的 0 或 1</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852578885-9519d1d0-a72d-409b-a480-f8554b87fd0d.png#align=left&amp;display=inline&amp;height=299&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=598&amp;originWidth=1918&amp;size=138039&amp;status=done&amp;style=stroke&amp;width=959" alt="image.png"></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><h3 id="Wireshark-抓不到-HTTPS-数据包"><a href="#Wireshark-抓不到-HTTPS-数据包" class="headerlink" title="Wireshark 抓不到 HTTPS 数据包"></a>Wireshark 抓不到 HTTPS 数据包</h3><blockquote>
+<p>有些时候 HTTP 包也抓不到抑或是抓的不全，用如下方式解决即可。</p>
+</blockquote>
+<p>在 C 盘根目录下创建如下目录和文件，.log 就是后缀不要 txt<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612847971131-6c3c2084-c6d8-41ae-8a82-8a4df65748b8.png#align=left&amp;display=inline&amp;height=112&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=224&amp;originWidth=811&amp;size=14570&amp;status=done&amp;style=shadow&amp;width=405.5" alt="image.png"><br>添加环境变量<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612848066208-6f22250b-e74d-4156-aa31-c5de17d2e812.png#align=left&amp;display=inline&amp;height=236&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=471&amp;originWidth=968&amp;size=35366&amp;status=done&amp;style=none&amp;width=484" alt="image.png"><br>进入 wireshark 软件<br><code>编辑 `</code>首选项 <code></code>Protocols`<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612848155164-ace1e002-1971-4910-8d04-cf9c388eb5cd.png#align=left&amp;display=inline&amp;height=496&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=992&amp;originWidth=1362&amp;size=89975&amp;status=done&amp;style=none&amp;width=681" alt="image.png"></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://www.cnblogs.com/linyfeng/p/9496126.html" target="_blank" rel="noopener">wireshark 抓包新手使用教程</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/82498482" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/82498482</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/264942536" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/264942536</a></li>
+<li><a href="https://blog.csdn.net/zam183/article/details/103783785" target="_blank" rel="noopener">https://blog.csdn.net/zam183/article/details/103783785</a></li>
+<li>TODO: <a href="https://www.cnblogs.com/zhaopei/p/12152139.html#autoid-2-6" target="_blank" rel="noopener">Wireshark 抓包，带你快速入门</a></li>
+<li>TODO: <a href="https://www.cnblogs.com/noteless/p/10256470.html#21" target="_blank" rel="noopener">网络是如何连接的？网络发展简介（四）</a></li>
+</ul>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/bw80k6/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[ping、traceroute命令编程实现]]></title>
+      <link>https://www.wztlink1013.com/blog/qlrcf6/</link>
+      <guid>https://www.wztlink1013.com/blog/qlrcf6/</guid>
+      <pubDate>Fri Oct 23 2020 00:25:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[网络层——ping、traceroute命令编程实现]]>
+      
+      </description>
+      <content:encoded><![CDATA[<h2 id="ping-和-tracert"><a href="#ping-和-tracert" class="headerlink" title="ping 和 tracert"></a>ping 和 tracert</h2><h3 id="ping-和-tracert-命令"><a href="#ping-和-tracert-命令" class="headerlink" title="ping 和 tracert 命令"></a>ping 和 tracert 命令</h3><p><strong>ping</strong>命令一般用来测试两台机器或者机器和服务器之间网络是否连通。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603437323252-a3bf1470-c4ae-450a-b0fd-4d83281aab46.png#align=left&amp;display=inline&amp;height=156&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=311&amp;originWidth=1439&amp;size=57273&amp;status=done&amp;style=shadow&amp;width=719.5" alt="image.png"><br><strong>tracert</strong>命令显示数据报到达目标主机途中所经过的路径（路由器），并且显示到达每个节点（路由器）的花费时间，显示的信息比 ping 出来的信息要多，要详细。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603437358485-aef50645-6ff9-4395-bbae-0bfe22ce3dc1.png#align=left&amp;display=inline&amp;height=269&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=538&amp;originWidth=1436&amp;size=63435&amp;status=done&amp;style=shadow&amp;width=718" alt="image.png"></p>
+<h3 id="编程实现"><a href="#编程实现" class="headerlink" title="编程实现"></a>编程实现</h3><h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><pre><code class="java">import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import java.util.Scanner;
+
+public class CommandUtil {
+
+    String tracert = &quot;tracert -h 10 &quot;; //模拟tracert命令
+    String ping = &quot;ping&quot;;//模拟 ping 命令
+    String routePrint = &quot;route print -4&quot;;//模拟route print命令
+
+    public static void main(String args[]){
+
+        String input = null;
+
+        @SuppressWarnings(&quot;resource&quot;)
+        Scanner scanner = new Scanner(System.in);
+        //利用while循环接收输入的命令行参数
+        while(true){
+
+            System.out.println(&quot;Please input destination server IP address ：\n&quot;);
+
+            input = scanner.next();
+
+            CommandUtil host = new CommandUtil();
+
+            host.tracert = host.tracert + &quot; &quot; + input;
+
+            host.ping = host.ping + &quot; &quot; + input;
+
+            try {
+
+                host.command(host.routePrint);
+
+            } catch (IOException exception) {
+
+                exception.printStackTrace();
+            }
+
+            try {
+
+                host.command(host.tracert) ;
+
+            } catch (IOException exception) {
+
+                exception.printStackTrace();
+            }
+
+            try {
+
+                host.command(host.ping);
+
+            } catch (IOException exception) {
+
+                exception.printStackTrace();
+            }
+
+            InetAddress ipAddress;
+
+            try {
+
+                ipAddress = InetAddress.getByName(input);
+
+                System.out.println(&quot;IP address : &quot;+ipAddress);
+
+            } catch (UnknownHostException exception) {
+
+                exception.printStackTrace();
+            }
+
+            URL url;
+
+            try {
+                url = new URL(&quot;http&quot;,input,80,&quot;index.html&quot;);
+
+                System.out.println();//输出服务器地址
+
+                System.out.println(&quot;Get the Server-Name# : &quot;+url.getHost());
+
+                System.out.println();//输出首页文件
+
+                System.out.println(&quot;Get the default file# : &quot;+url.getFile());
+
+                System.out.println();//输出首页协议和端口
+
+                System.out.println(&quot;Get the protocol# : &quot;+url.getProtocol()+&quot; &quot;+url.getPort());
+
+                System.out.println();
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+            }
+
+            System.out.println();
+
+            try {
+
+                System.out.println(&quot;Get serverName &amp; IPAddress：&quot;+InetAddress.getByName(input));
+
+            } catch (UnknownHostException e) {
+
+                e.printStackTrace();
+            }
+
+            long freeMemory = Runtime.getRuntime().freeMemory();
+
+            System.out.println(&quot;Surplus memory of JVM: &quot;+freeMemory+&quot;B&quot;);
+
+        }
+    }
+    //模拟 tracert 命令
+
+    StringBuffer commandResult = null;
+
+    private void command(String tracerCommand) throws IOException{
+        //第一步：创建进程(是接口不必初始化)
+
+        //1.通过Runtime类的getRuntime().exec()传入需要运行的命令参数
+
+        System.out.println();
+
+        System.out.println(InetAddress.getByName(&quot;localhost&quot;)+&quot; is tracking the destination server...&quot;);
+
+        Process process = Runtime.getRuntime().exec(tracerCommand);
+
+        readResult(process.getInputStream());
+
+        process.destroy();
+    }
+    //第二步：通过输入流来将命令执行结果输出到控制台
+
+    private void readResult(InputStream inputStream) throws IOException{
+
+        commandResult = new StringBuffer();  //初始化命令行
+
+        String commandInfo = null; //定义用于接收命令行执行结果的字符串
+
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(inputStream));
+
+        while ( (commandInfo = bufferedReader.readLine()) != null)  {
+
+            System.out.println(commandInfo);
+        }
+        bufferedReader.close();
+    }
+}
+</code></pre>
+<h4 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h4><pre><code>D:\Java\jdk1.8.0_181\bin\java.exe &quot;-javaagent:D:\JetBrains\IntelliJ IDEA 2020.1.3\lib\idea_rt.jar=39614:D:\JetBrains\IntelliJ IDEA 2020.1.3\bin&quot; -Dfile.encoding=GBK -classpath D:\Java\jdk1.8.0_181\jre\lib\charsets.jar;D:\Java\jdk1.8.0_181\jre\lib\deploy.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\access-bridge-64.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\cldrdata.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\dnsns.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\jaccess.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\jfxrt.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\localedata.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\nashorn.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunec.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunjce_provider.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunmscapi.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\sunpkcs11.jar;D:\Java\jdk1.8.0_181\jre\lib\ext\zipfs.jar;D:\Java\jdk1.8.0_181\jre\lib\javaws.jar;D:\Java\jdk1.8.0_181\jre\lib\jce.jar;D:\Java\jdk1.8.0_181\jre\lib\jfr.jar;D:\Java\jdk1.8.0_181\jre\lib\jfxswt.jar;D:\Java\jdk1.8.0_181\jre\lib\jsse.jar;D:\Java\jdk1.8.0_181\jre\lib\management-agent.jar;D:\Java\jdk1.8.0_181\jre\lib\plugin.jar;D:\Java\jdk1.8.0_181\jre\lib\resources.jar;D:\Java\jdk1.8.0_181\jre\lib\rt.jar;D:\project-java\jiwang\out\production\jiwang CommandUtil
+Please input destination server IP address ：
+
+baidu.com
+
+localhost/127.0.0.1 is tracking the destination server...
+===========================================================================
+接口列表
+  6...b4 b6 86 df cc 9d ......Realtek PCIe GbE Family Controller
+ 11...0c 54 15 fb 33 95 ......Microsoft Wi-Fi Direct Virtual Adapter
+ 14...0e 54 15 fb 33 94 ......Microsoft Wi-Fi Direct Virtual Adapter #2
+ 16...0c 54 15 fb 33 94 ......Intel(R) Dual Band Wireless-AC 3168
+ 17...0c 54 15 fb 33 98 ......Bluetooth Device (Personal Area Network)
+  1...........................Software Loopback Interface 1
+===========================================================================
+
+IPv4 路由表
+===========================================================================
+活动路由:
+网络目标        网络掩码          网关       接口   跃点数
+          0.0.0.0          0.0.0.0      192.168.2.1    192.168.2.132     35
+        127.0.0.0        255.0.0.0            在链路上         127.0.0.1    331
+        127.0.0.1  255.255.255.255            在链路上         127.0.0.1    331
+  127.255.255.255  255.255.255.255            在链路上         127.0.0.1    331
+      192.168.2.0    255.255.255.0            在链路上     192.168.2.132    291
+    192.168.2.132  255.255.255.255            在链路上     192.168.2.132    291
+    192.168.2.255  255.255.255.255            在链路上     192.168.2.132    291
+        224.0.0.0        240.0.0.0            在链路上         127.0.0.1    331
+        224.0.0.0        240.0.0.0            在链路上     192.168.2.132    291
+  255.255.255.255  255.255.255.255            在链路上         127.0.0.1    331
+  255.255.255.255  255.255.255.255            在链路上     192.168.2.132    291
+===========================================================================
+永久路由:
+  无
+
+localhost/127.0.0.1 is tracking the destination server...
+
+通过最多 10 个跃点跟踪
+到 baidu.com [39.156.69.79] 的路由:
+
+  1     1 ms     1 ms     1 ms  RM2100.lan [192.168.2.1]
+  2     *        *        *     请求超时。
+  3     *        *        *     请求超时。
+  4     4 ms     3 ms     3 ms  192.168.100.253
+  5     4 ms     5 ms    10 ms  192.168.100.114
+  6     3 ms     3 ms     3 ms  192.168.100.118
+  7     *        *        *     请求超时。
+  8     *        *        *     请求超时。
+  9     *        *        *     请求超时。
+ 10     *        *        *     请求超时。
+
+跟踪完成。
+
+localhost/127.0.0.1 is tracking the destination server...
+
+正在 Ping baidu.com [39.156.69.79] 具有 32 字节的数据:
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+来自 39.156.69.79 的回复: 字节=32 时间=20ms TTL=48
+
+39.156.69.79 的 Ping 统计信息:
+    数据包: 已发送 = 4，已接收 = 4，丢失 = 0 (0% 丢失)，
+往返行程的估计时间(以毫秒为单位):
+    最短 = 20ms，最长 = 20ms，平均 = 20ms
+IP address : baidu.com/39.156.69.79
+
+Get the Server-Name# : baidu.com
+
+Get the default file# : index.html
+
+Get the protocol# : http 80
+
+
+Get serverName &amp; IPAddress：baidu.com/39.156.69.79
+Surplus memory of JVM: 124194640B
+</code></pre>]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/qlrcf6/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[C++随机字符串生成函数]]></title>
+      <link>https://www.wztlink1013.com/blog/zeszpb/</link>
+      <guid>https://www.wztlink1013.com/blog/zeszpb/</guid>
+      <pubDate>Thu Oct 22 2020 15:11:00 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[C++随机字符串生成函数]]>
+      
+      </description>
+      <content:encoded><![CDATA[<pre><code class="cpp">//C++ 随机字符串生成函数
+#include&lt;iostream&gt;
+#include&lt;ctime&gt;
+using namespace std;
+
+const int LEN_NAME=4;
+
+char *rand_str(char *str,const int len)
+{
+    int i;
+    for(i=0;i&lt;len;++i)
+        str[i]=&#39;A&#39;+rand()%26;
+    str[++i]=&#39;\0&#39;;
+    return str;
+}
+
+void main()
+{
+    srand(time(NULL));
+    int i;
+    char name[LEN_NAME+1];
+
+    for(i=0;i&lt;20;++i)
+    {
+        cout&lt;&lt;rand_str(name,LEN_NAME)&lt;&lt;endl;
+    }
+}
+</code></pre>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/zeszpb/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[JAVA-正则表达式]]></title>
+      <link>https://www.wztlink1013.com/blog/xm1a2g/</link>
+      <guid>https://www.wztlink1013.com/blog/xm1a2g/</guid>
+      <pubDate>Mon Oct 19 2020 19:11:10 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<hr>
+<p>title: JAVA-正则表达式<br>categories: [Language]<br>date: 2020-10-22 19:45:47</p>
+<h2 id="description-JAVA-正则表达式"><a href="#description-J]]>
+      </description>
+      <content:encoded><![CDATA[<hr>
+<p>title: JAVA-正则表达式<br>categories: [Language]<br>date: 2020-10-22 19:45:47</p>
+<h2 id="description-JAVA-正则表达式"><a href="#description-JAVA-正则表达式" class="headerlink" title="description: JAVA-正则表达式"></a>description: JAVA-正则表达式</h2><h2 id="常见匹配符号"><a href="#常见匹配符号" class="headerlink" title="常见匹配符号"></a>常见匹配符号</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">正则表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>.</code></td>
+<td style="text-align:center">匹配所有单个字符，除了换行符（Linux 中换行是 <code>\n</code>，Windows 中换行是 <code>\r\n</code>）</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>^regex</code></td>
+<td style="text-align:center">正则必须匹配字符串开头</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>regex$</code></td>
+<td style="text-align:center">正则必须匹配字符串结尾</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[abc]</code></td>
+<td style="text-align:center">复选集定义，匹配字母 a 或 b 或 c</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[abc][vz]</code></td>
+<td style="text-align:center">复选集定义，匹配字母 a 或 b 或 c，后面跟着 v 或 z</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[^abc]</code></td>
+<td style="text-align:center">当插入符 <code>^</code> 在中括号中以第一个字符开始显示，则表示否定模式。此模式匹配所有字符，除了 a 或 b 或 c</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>[a-d1-7]</code></td>
+<td style="text-align:center">范围匹配，匹配字母 a 到 d 和数字从 1 到 7 之间，但不匹配 d1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>XZ</code></td>
+<td style="text-align:center">匹配 X 后直接跟着 Z</td>
+</tr>
+<tr>
+<td style="text-align:center">X</td>
+<td style="text-align:center">Z</td>
+<td>匹配 X 或 Z</td>
+</tr>
+</tbody>
+</table>
+<h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">正则表达式</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>\d</code></td>
+<td style="text-align:center">匹配一个数字，是 <code>[0-9]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\D</code></td>
+<td style="text-align:center">匹配一个非数字，是 <code>[^0-9]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\s</code></td>
+<td style="text-align:center">匹配一个空格，是 <code>[ \t\n\x0b\r\f]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\S</code></td>
+<td style="text-align:center">匹配一个非空格</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\w</code></td>
+<td style="text-align:center">匹配一个单词字符（大小写字母、数字、下划线），是 <code>[a-zA-Z_0-9]</code> 的简写</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\W</code></td>
+<td style="text-align:center">匹配一个非单词字符（除了大小写字母、数字、下划线之外的字符），等同于 <code>[^\w]</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h2><p>| 正则表达式 | 描述 | 举例 |<br>| <code>*</code> | 匹配 &gt;=0 个，是 <code>{0,}</code> 的简写 | <code>X*</code> 表示匹配零个或多个字母 X，<code>.*</code> 表示匹配任何字符串 |<br>| :—: | :—: | :—: |<br>| <code>+</code> | 匹配 &gt;=1 个，是 <code>{1,}</code> 的简写 | <code>X+</code> 表示匹配一个或多个字母 X |<br>| <code>?</code> | 匹配 1 个或 0 个，是 <code>{0,1}</code> 的简写 | <code>X?</code> 表示匹配 0 个或 1 个字母 X |<br>| <code>{X}</code> | 只匹配 X 个字符 | <code>\d{3}</code> 表示匹配 3 个数字，<code>.{10}</code> 表示匹配任何长度是 10 的字符串 |<br>| <code>{X,Y}</code> | 匹配 &gt;=X 且 &lt;=Y 个 | <code>\d{1,4}</code> 表示匹配至少 1 个最多 4 个数字 |<br>| <code>*?</code> | 如果 <code>?</code> 是限定符 <code>*</code> 或 <code>+</code> 或 <code>?</code> 或 <code>{}</code> 后面的第一个字符，那么表示<strong>非贪婪模式</strong>（尽可能少的匹配字符），而不是默认的<strong>贪婪模式</strong> | |</p>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/xm1a2g/#comments</comments>
+    </item>
+    
+    <item>
+      <title><![CDATA[yuque-未拉取成功]]></title>
+      <link>https://www.wztlink1013.com/blog/wsmygb/</link>
+      <guid>https://www.wztlink1013.com/blog/wsmygb/</guid>
+      <pubDate>Sat Oct 17 2020 01:19:19 GMT+0000 (Coordinated Universal Time)</pubDate>
+      <description>
+      <![CDATA[<h2 id="一、报错信息"><a href="#一、报错信息" class="headerlink" title="一、报错信息"></a>一、报错信息</h2><pre><code class="bash">$ yuque-hexo sync
+[INFO] clear pr]]>
+      </description>
+      <content:encoded><![CDATA[<h2 id="一、报错信息"><a href="#一、报错信息" class="headerlink" title="一、报错信息"></a>一、报错信息</h2><pre><code class="bash">$ yuque-hexo sync
+[INFO] clear previous directory.
+[INFO] remove yuque posts: D:\Blog\blog-wztlink1013-3.0\source\yuque
+Mon, 01 Jun 2020 04:02:22 GMT yuque-hexo deprecated TOKEN of yuque will be required while verion &gt;v1.6.0. at ..\..\Develop\nodejs\node_global\node_modules\yuque-hexo\lib\Downloader.js:39:19
+[INFO] reading from local file: D:\Blog\blog-wztlink1013-3.0\yuque.json
+[WARNING] Cannot find module &#39;D:\Blog\blog-wztlink1013-3.0\yuque.json&#39;
+Require stack:
+- D:\Develop\nodejs\node_global\node_modules\yuque-hexo\lib\Downloader.js
+- D:\Develop\nodejs\node_global\node_modules\yuque-hexo\command\sync.js
+- D:\Develop\nodejs\node_global\node_modules\yuque-hexo\node_modules\common-bin\lib\command.js
+- D:\Develop\nodejs\node_global\node_modules\yuque-hexo\node_modules\common-bin\index.js
+- D:\Develop\nodejs\node_global\node_modules\yuque-hexo\index.js
+- D:\Develop\nodejs\node_global\node_modules\yuque-hexo\bin\yuque-hexo.js
+⚠️  Error: fail to fetch article list, response: {&quot;status&quot;:401,&quot;message&quot;:&quot;Unauthorized&quot;}
+⚠️  Command Error, enable `DEBUG=common-bin` for detail
+</code></pre>
+<h2 id="二、分析并解决问题"><a href="#二、分析并解决问题" class="headerlink" title="二、分析并解决问题"></a>二、分析并解决问题</h2><p>认证出错，应该和下面三个原因有关</p>
+<ul>
+<li>客户端将其身份验证凭据发送到服务器，但是服务器由于某种原因拒绝了凭据。</li>
+<li>客户端无法在请求中提供任何身份验证凭据。</li>
+<li>客户端由于某种原因被禁止。某些应用程序用来限制来自特定 IP 地址的访问请求，因此，如果身份验证不是问题，则可能是服务器端禁止。401 Unauthorized Errors</li>
+</ul>
+<p>也就是身份没有被验证，首先检查用户元信息相关</p>
+<p>的确，配置都是没有问题的，然后去 issue 里面查看相关问题，了解到是语雀官方出于对知识库安全性的调整，需要使用第三方 API 访问知识库，需要传入环境变量 YUQUE_TOKEN。</p>
+<p>然后根据两种指导方式，传入参数即可</p>
+<ul>
+<li>设置全局的环境变量 YUQUE_TOKEN</li>
+<li>命令执行时传入环境变量<ul>
+<li>mac / linux: YUQUE_TOKEN=xxx yuque-hexo sync</li>
+<li>windows: set YUQUE_TOKEN=xxx &amp;&amp; yuque-hexo sync</li>
+</ul>
+</li>
+</ul>
+<p>传入之后会有一封邮件发过来，然后新开 git bash 窗口，重新键入命令即可</p>
+<p>成功之后是这个样子的</p>
+<pre><code class="bash">$ yuque-hexo sync
+[INFO] clear previous directory.
+[INFO] remove yuque posts: D:\Blog\blog-wztlink1013-3.0\source\_posts\yuque
+[INFO] reading from local file: D:\Blog\blog-wztlink1013-3.0\yuque.json
+[INFO] article amount: 2
+[INFO] download articles done!
+[INFO] writing to local file: D:\Blog\blog-wztlink1013-3.0\yuque.json
+[INFO] create posts directory (if it not exists): D:\Blog\blog-wztlink1013-3.0\source\_posts\yuque
+[INFO] generate post file: D:\Blog\blog-wztlink1013-3.0\source\_posts\yuque\hexo-test.md
+[INFO] generate post file: D:\Blog\blog-wztlink1013-3.0\source\_posts\yuque\语雀文章测试.md
+[INFO] yuque-hexo sync done!
+</code></pre>
+<h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><ul>
+<li><a href="https://airbrake.io/blog/http-errors/401-unauthorized-error" target="_blank" rel="noopener">https://airbrake.io/blog/http-errors/401 U-unauthorized E-error:What It Is and How to Fix It</a></li>
+<li><a href="https://www.yuguocong.cn/yuque/eg7hkp.html#Reference" target="_blank" rel="noopener">使用语雀编辑器写静态博客 https://www.yuguocong.cn/yuque/eg7hkp.html#Reference</a></li>
+<li><a href="https://blog.csdn.net/Caoyang_He/article/details/82181695?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase" target="_blank" rel="noopener">windows10 环境变量设置及理解环境变量</a></li>
+</ul>
+]]></content:encoded>
+      <comments>https://www.wztlink1013.com/blog/wsmygb/#comments</comments>
     </item>
     
   </channel>
