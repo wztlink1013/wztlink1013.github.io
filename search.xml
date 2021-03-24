@@ -1414,21 +1414,6 @@ toString日期输出：Sat May 23 15:03:25 CST 2020
       </categories>
   </entry>
   <entry>
-    <title>JAVA-泛型</title>
-    <url>/blog/ef1q5c/</url>
-    <content><![CDATA[<p>###</p>
-<p>类似 C++里面的模板</p>
-<ul>
-<li>定义的时候就是直接在后面加上<e>，比如： <code>public class ArrayList&lt;E&gt;</code></e></li>
-<li>使用就是 <code>private E[] array</code> ;</li>
-</ul>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>##</p>
-]]></content>
-      <categories>
-        <category>Language</category>
-      </categories>
-  </entry>
-  <entry>
     <title>MySQL命令</title>
     <url>/blog/emv1ek/</url>
     <content><![CDATA[<h2 id="登陆命令"><a href="#登陆命令" class="headerlink" title="登陆命令"></a>登陆命令</h2><pre><code class="sql">mysql -u用户名 -p密码
@@ -10729,6 +10714,395 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; {
       </categories>
   </entry>
   <entry>
+    <title>C++链表设计</title>
+    <url>/blog/nlhg88/</url>
+    <content><![CDATA[<hr>
+<p>title: C++链表设计<br>categories: DataStructure<br>date: 2020-09-04 15:23:23</p>
+<h2 id="description-“链表C-设计，以及做链表一些题的总结”"><a href="#description-“链表C-设计，以及做链表一些题的总结”" class="headerlink" title="description: “链表C++设计，以及做链表一些题的总结”"></a>description: “链表C++设计，以及做链表一些题的总结”</h2><h2 id="实验报告要求"><a href="#实验报告要求" class="headerlink" title="实验报告要求"></a>实验报告要求</h2><blockquote>
+<p>1、建立一个顺序表，输入 n 个元素并输出；<br>2、查找线性表中的最大元素并输出；<br>3、在线性表的第 i 个元素前插入一个正整数 x；<br>4、删除线性表中的第 j 个元素；<br>5、将线性表中的元素按升序排列；<br>*6、将线性表中的元素就地逆序（只允许用一个暂存单元）；</p>
+</blockquote>
+<h2 id="概念理解"><a href="#概念理解" class="headerlink" title="概念理解"></a>概念理解</h2><h3 id="链表数据结构"><a href="#链表数据结构" class="headerlink" title="链表数据结构"></a>链表数据结构</h3><p>链表是一种数据结构，和<strong>数组同级</strong>。之前 JAVA 里面的 ArrayList 数据结构，其实现原理是数组，而 JAVA 的 LinkedList 的实现原理就是链表了。链表在进行循环遍历时效率不高，但是插入和删除时优势明显，其实 C/C++抑或是 JAVA 这些数据结构都一样——地址……引用……</p>
+<p>单向链表是一种线性表，实际上是由<strong>节点（Node）</strong>组成的，一个链表拥有不定数量的节点。其数据在<strong>内存中存储是不连续的</strong>，它存储的数据分散在内存中，每个结点只能也只有它能知道下一个结点的存储位置。由 N 各节点（Node）组成单向链表，每一个 Node 记录本 Node 的数据及下一个 Node。向外暴露的只有一个头节点（Head），<strong>我们对链表的所有操作，都是直接或者间接地通过其头节点来进行的。</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194076184-195f3044-1083-4244-9eeb-d86c96a37e6f.png#align=left&amp;display=inline&amp;height=98&amp;margin=%5Bobject%20Object%5D&amp;originHeight=98&amp;originWidth=491&amp;size=0&amp;status=done&amp;style=shadow&amp;width=491" alt><br>上图中最左边的节点即为头结点（Head），但是添加节点的顺序是从右向左的，添加的新节点会被作为新节点。最先添加的节点对下一节点的引用可以为空。引用是引用下一个节点而非下一个节点的对象。因为有着不断的引用，所以<strong>头节点就可以操作所有节点</strong>了。<br>下图描述了单向链表存储情况。存储是分散的，每一个节点只要记录下一节点，就把所有数据串了起来，形成了一个单向链表。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194105521-d31f8e78-7f2a-4c60-8838-57e15707e27b.png#align=left&amp;display=inline&amp;height=219&amp;margin=%5Bobject%20Object%5D&amp;originHeight=219&amp;originWidth=195&amp;size=0&amp;status=done&amp;style=stroke&amp;width=195" alt><br>节点（Node）是由一个需要储存的对象及对下一个节点的引用组成的。也就是说，节点拥有两个成员：储存的对象、对下一个节点的引用。下面图是具体的说明：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194124335-fc6fc00c-35fb-44e1-a01c-de4b8b5531af.png#align=left&amp;display=inline&amp;height=207&amp;margin=%5Bobject%20Object%5D&amp;originHeight=207&amp;originWidth=370&amp;size=0&amp;status=done&amp;style=stroke&amp;width=370" alt></p>
+<h3 id="首元节点、头节点、头指针"><a href="#首元节点、头节点、头指针" class="headerlink" title="首元节点、头节点、头指针"></a>首元节点、头节点、头指针</h3><blockquote>
+<p>一些概念</p>
+</blockquote>
+<ul>
+<li>首元结点：第一个有元素的结点</li>
+<li>头结点：一般不放元素，“L”</li>
+<li>头指针：指向链表的第一个结点，有头结点则为头结点的指针，反之，指向首元结点的指针<blockquote>
+<p>参考资料：<a href="https://www.jianshu.com/p/73d56c3d228c" target="_blank" rel="noopener">https://www.jianshu.com/p/73d56c3d228c</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="关于链表的指向"><a href="#关于链表的指向" class="headerlink" title="关于链表的指向"></a>关于链表的指向</h3><blockquote>
+<p>【1】何为指向？</p>
+</blockquote>
+<p>个人觉得链表的相关问题及操作就是理解链表的<strong>“指向”</strong>这么个概念，先明确以下几点</p>
+<ul>
+<li>每个节点的<strong>next</strong>用来存放<strong>下一个节点的“地址”</strong></li>
+<li><strong>每个节点的自身就是地址</strong>，相当于 C 语言中数组的数组名就是本数组的地址</li>
+</ul>
+<blockquote>
+<p>【2】谁指向谁？</p>
+</blockquote>
+<p><strong>总结：</strong><br><strong>做题用我的下面总结的方法，绝对好用</strong><br><strong><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1616501415627-ee5d1008-a07d-4acb-821b-e227b5cb7ad8.jpeg#align=left&amp;display=inline&amp;height=59&amp;margin=%5Bobject%20Object%5D&amp;name=huaji1558a846ddf2e12b.jpeg&amp;originHeight=59&amp;originWidth=55&amp;size=703&amp;status=done&amp;style=stroke&amp;width=55" alt="huaji1558a846ddf2e12b.jpeg"></strong></p>
+<ul>
+<li><strong>读的时候：从左往右读，一般左边是某某的 next 域，右边是具体的结点</strong></li>
+<li><strong>画的时候：在图中表示为等号左边指向等号右边</strong></li>
+</ul>
+<p><strong><br>比如：① <code>node.next = prev.next;</code> ②<code>prev.next = node</code><br>①“node 的 next 指向 prev 的下一个结点”<br>（用指针的概念通俗地说，其实就是 prev 的下一个结点的地址由 prev 的指针域里面赋值给了 node 的 next 指针域里面）<br>②“prev 的 next 指向 node 这个结点”<br>（还可以这么说：将 node 赋值给 prev 的 next，也就是说 prev 的下一个结点是 node）
+</strong></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003706-ad779a14-1678-4d0c-86f2-b147752bd252.png#align=left&amp;display=inline&amp;height=204&amp;margin=%5Bobject%20Object%5D&amp;originHeight=594&amp;originWidth=955&amp;size=0&amp;status=done&amp;style=stroke&amp;width=328" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003751-ffeee4d8-9662-416e-8f46-5cf5edf03114.png#align=left&amp;display=inline&amp;height=250&amp;margin=%5Bobject%20Object%5D&amp;originHeight=725&amp;originWidth=938&amp;size=0&amp;status=done&amp;style=stroke&amp;width=324" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003658-46b3e7db-e6dc-4d13-baea-e7e44075e8bc.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;originHeight=626&amp;originWidth=975&amp;size=0&amp;status=done&amp;style=stroke&amp;width=344" alt></p>
+<blockquote>
+<p>【3】指向错位？</p>
+</blockquote>
+<p><strong>关注第一个元素节点是不是 head，因为有的链表不声明头节点（head），直接就是第一个结点就是元素结点</strong></p>
+<h3 id="关于-p-L-的理解"><a href="#关于-p-L-的理解" class="headerlink" title="关于 p=L 的理解"></a>关于 p=L 的理解</h3><p>写代码的时候，还经常遇到下面的情况<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616501697301-b63e6312-d8f9-4130-8d25-2d3becd75038.png#align=left&amp;display=inline&amp;height=53&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=106&amp;originWidth=466&amp;size=9439&amp;status=done&amp;style=none&amp;width=233" alt="image.png"><br>p、L 就是指向结点的指针类型，将 L 的值赋给 p，也就是 p、L 指向同一个结点。具体理解可以用下面一个例子来说明：<br>下面图片这个函数就是在一个单链表中，功能就是指定 i 位置插入 e 值。下图箭头处如果 TraverseList 返回的是 p 那么得出的链表结果就是从插入的那个元素往后这样一个部分链表，返回的是 L 就是想要的结果，p 的功能有点类似在 L 的中间做了手脚……<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616501856348-955542eb-258d-473f-b003-c53881275937.png#align=left&amp;display=inline&amp;height=331&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=662&amp;originWidth=740&amp;size=62693&amp;status=done&amp;style=none&amp;width=370" alt="image.png"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="实验报告代码"><a href="#实验报告代码" class="headerlink" title="实验报告代码"></a>实验报告代码</h3><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef struct LNode {
+    int data;
+    struct LNode *next;
+}Lnode, *LinkList;
+
+LinkList L;
+
+void InitList(LinkList &amp;L) {
+    L = new LNode;
+    L-&gt;next = NULL;
+}
+
+void CreateList_H(LinkList &amp;L) {
+    InitList(L);
+    int n;
+    cout &lt;&lt; &quot;请输入要使用前插法插入的元素个数：&quot;;
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++){
+        LNode *p = new LNode;
+        cin &gt;&gt; p-&gt;data;
+        p-&gt;next = L-&gt;next;
+        L-&gt;next = p;
+    }
+}
+void TraverseList(LinkList &amp;L){
+    LNode *p = new LNode;
+    p = L-&gt;next;
+    cout &lt;&lt; &quot;此链表打印的结果为：&quot;&lt;&lt;&quot;\n&quot;;
+    while (p != NULL){
+        cout &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+}
+void GetElem(LinkList &amp;L) {
+    int n;
+    cout &lt;&lt; &quot;请输入要查询的链表中第i个数：&quot;;
+    cin &gt;&gt; n;
+    LNode *p = new LNode;
+    p = L;
+    for (int i = 0; i &lt; n;i++){
+        p = p-&gt;next;
+    }
+    cout &lt;&lt; &quot;查询的结果为：&quot; &lt;&lt; p-&gt;data&lt;&lt;&quot;\n&quot;;
+}
+void ListInsert(LinkList &amp;L){
+    LNode *p = new LNode;
+    p = L;
+    int n;
+    int e;
+    cout &lt;&lt; &quot;请分别输入要在第n个位置插入的e值：&quot;;
+    cin &gt;&gt; n&gt;&gt; e ;
+    for (int i = 0; i &lt; n;i++) {
+        if (n == i+1){
+            LNode *temp = new LNode;
+            temp-&gt;data = e;
+            temp-&gt;next = p-&gt;next;
+            p-&gt;next = temp;
+            break;
+        }
+        p = p-&gt;next;
+    }
+    TraverseList(L); // 直接返回L就可以了，之前返回p是不可以的！！！唉，大意了~
+}
+void ListDelete(LinkList &amp;L){
+    cout &lt;&lt; &quot;请输入要删除的第j个位置的j值：&quot;;
+    LNode *p = new LNode;
+    p = L;
+    int j;
+    cin &gt;&gt; j;
+    for (int i = 0; i &lt; j;i++) {
+        if (j == i+1) {
+            p-&gt;next = p-&gt;next-&gt;next;
+            break;
+        }
+        p = p-&gt;next;
+    }
+    TraverseList(L);
+}
+void ReverseList(LinkList &amp;L) {
+    LNode *p = L-&gt;next;
+    L-&gt;next = NULL;
+    while(p)
+    {
+        LNode *q = p-&gt;next;
+        p-&gt;next = L-&gt;next;
+        L-&gt;next = p;
+        p = q;
+    }
+    cout &lt;&lt; &quot;通过逆置之后……&quot;;
+    TraverseList(L);
+}
+
+int main() {
+    LNode *test = new LNode;
+    CreateList_H(test);//1
+    TraverseList(test);//1
+    GetElem(test);//2
+    ListInsert(test);//3
+    ListDelete(test);//4
+    ReverseList(test);//5
+}
+</code></pre>
+<h3 id="尾插法的理解"><a href="#尾插法的理解" class="headerlink" title="尾插法的理解"></a>尾插法的理解</h3><ul>
+<li><a href="https://blog.csdn.net/sinat_41721615/article/details/105031104" target="_blank" rel="noopener">https://blog.csdn.net/sinat_41721615/article/details/105031104</a></li>
+<li><a href="https://zhidao.baidu.com/question/944472157933268532.html" target="_blank" rel="noopener">https://zhidao.baidu.com/question/944472157933268532.html</a></li>
+</ul>
+<h3 id="整体实现代码"><a href="#整体实现代码" class="headerlink" title="整体实现代码"></a>整体实现代码</h3><pre><code class="cpp">#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;iomanip&gt;
+#include&lt;stdlib.h&gt;
+using namespace std;
+
+
+typedef struct LNode {
+    int data; //结点的数据域
+    struct LNode *next; //结点的指针域
+}LNode, *LinkList; //LinkList为指向结构体LNode的指针类型
+
+bool InitList_L(LinkList &amp;L)//构造一个空的单链表L//结构体指针类型变量做为函数的形式参数
+{
+    L=new LNode;     //生成新结点作为头结点，用头指针L指向头结点//变量名 = new 类型
+    if(!L)
+      return false;  //生成结点失败
+    L-&gt;next=NULL;   //头结点的指针域置空
+    return true;
+}
+
+void CreateList_H(LinkList &amp;L)//前插法创建单链表
+{
+    //输入n个元素的值，建立到头结点的单链表L
+    int n;
+    LinkList s; //定义一个所建立的结构体指针变量
+    L=new LNode; //生成新结点作为头结点，用头指针L指向头结点
+    L-&gt;next=NULL; //先建立一个带头结点的空链表
+    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt; endl;
+    cin&gt;&gt;n;
+    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
+    cout &lt;&lt;&quot;前插法创建单链表...&quot; &lt;&lt;endl;
+    while(n--)
+    {
+        s=new LNode; //生成新结点s
+        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
+        s-&gt;next=L-&gt;next;
+        L-&gt;next=s; //将新结点s插入到头结点之后
+    }
+}
+
+void CreateList_R(LinkList &amp;L)//尾插法创建单链表
+{
+    //输入n个元素的值，建立带表头结点的单链表L
+    int n;
+    LinkList s, r;
+    L=new LNode;
+    L-&gt;next=NULL; //先建立一个带头结点的空链表
+    r=L; //尾指针r指向头结点
+    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt;endl;
+    cin&gt;&gt;n;
+    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
+    cout &lt;&lt;&quot;尾插法创建单链表...&quot; &lt;&lt;endl;
+    while(n--)
+    {
+        s=new LNode;//生成新结点
+        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
+        s-&gt;next=NULL;
+        r-&gt;next=s;//将新结点s插入尾结点*r之后
+        r=s;//r指向新的尾结点s
+    }
+}
+
+bool GetElem_L(LinkList L, int i, int &amp;e)//单链表的取值
+{
+    //在带头结点的单链表L中查找第i个元素
+    //用e记录L中第i个数据元素的值
+    int j;
+    LinkList p;
+    p=L-&gt;next;//p指向首元结点
+    j=1; //j为计数器
+    while (j&lt;i &amp;&amp; p) //顺链域向后扫描，直到p指向第i个元素或p为空
+    {
+        p=p-&gt;next; //p指向下一个结点    类似结点的自加
+        j++; //计数器j相应加1
+    }
+    if (!p || j&gt;i)
+        return false; //i值不合法i＞n或i&lt;=0
+    e=p-&gt;data; //取第i个结点的数据域
+    return true;
+}
+
+bool LocateElem_L(LinkList L, int e) //按值查找
+{
+    //在带头结点的单链表L中查找值为e的元素
+    LinkList p;
+    p=L-&gt;next;
+    while (p &amp;&amp; p-&gt;data!=e)//顺链域向后扫描，直到p为空或p所指结点的数据域等于e
+        p=p-&gt;next; //p指向下一个结点
+    if(!p)
+        return false; //查找失败p为NULL
+    return true;
+}
+
+bool ListInsert_L(LinkList &amp;L, int i, int e)//单链表的插入
+{
+    //在带头结点的单链表L中第i个位置插入值为e的新结点
+    int j;
+    LinkList p, s;
+    p=L;
+    j=0;
+    while (p&amp;&amp;j&lt;i-1) //查找第i-1个结点，p指向该结点
+    {
+        p=p-&gt;next;
+        j++;
+    }
+    if (!p || j&gt;i-1)//i＞n+1或者i＜1
+        return false;
+    s=new LNode;     //生成新结点
+    s-&gt;data=e;       //将新结点的数据域置为e
+    s-&gt;next=p-&gt;next; //将新结点的指针域指向结点ai
+    p-&gt;next=s;       //将结点p的指针域指向结点s
+    return true;
+}
+
+bool ListDelete_L(LinkList &amp;L, int i) //单链表的删除
+{
+    //在带头结点的单链表L中，删除第i个位置
+    LinkList p, q;
+    int j;
+    p=L;
+    j=0;
+    while((p-&gt;next)&amp;&amp;(j&lt;i-1)) //查找第i-1个结点，p指向该结点
+    {
+        p=p-&gt;next;
+        j++;
+    }
+    if (!(p-&gt;next)||(j&gt;i-1))//当i&gt;n或i&lt;1时，删除位置不合理
+        return false;
+    q=p-&gt;next;        //临时保存被删结点的地址以备释放空间
+    p-&gt;next=q-&gt;next; //改变删除结点前驱结点的指针域
+    delete q;        //释放被删除结点的空间
+    return true;
+}
+
+void Listprint_L(LinkList L) //单链表的输出
+{
+    LinkList p;
+    p=L-&gt;next;
+    while (p)
+    {
+        cout&lt;&lt;p-&gt;data&lt;&lt;&quot;\t&quot;;
+        p=p-&gt;next;
+    }
+    cout&lt;&lt;endl;
+}
+
+int main()
+{
+    int i,x,e,choose;
+    LinkList L;
+    cout &lt;&lt; &quot;1. 初始化\n&quot;;
+    cout &lt;&lt; &quot;2. 创建单链表（前插法）\n&quot;;
+    cout &lt;&lt; &quot;3. 创建单链表（尾插法）\n&quot;;
+    cout &lt;&lt; &quot;4. 取值\n&quot;;
+    cout &lt;&lt; &quot;5. 查找\n&quot;;
+    cout &lt;&lt; &quot;6. 插入\n&quot;;
+    cout &lt;&lt; &quot;7. 删除\n&quot;;
+    cout &lt;&lt; &quot;8. 输出\n&quot;;
+    cout &lt;&lt; &quot;0. 退出\n&quot;;
+    choose=-1;
+    while (choose!=0)
+    {
+        cout&lt;&lt;&quot;请输入数字选择:&quot;;
+        cin&gt;&gt;choose;
+        switch (choose)
+        {
+        case 1: //初始化一个空的单链表
+            if (InitList_L(L))
+                cout &lt;&lt; &quot;初始化一个空的单链表!\n&quot;;
+            break;
+        case 2: //创建单链表（前插法）
+            CreateList_H(L);
+            cout &lt;&lt; &quot;前插法创建单链表输出结果:\n&quot;;
+            Listprint_L(L);
+            break;
+        case 3: //创建单链表（尾插法）
+            CreateList_R(L);
+            cout &lt;&lt; &quot;尾插法创建单链表输出结果:\n&quot;;
+            Listprint_L(L);
+            break;
+        case 4: //单链表的按序号取值
+            cout &lt;&lt; &quot;请输入一个位置i用来取值:&quot;;
+            cin &gt;&gt; i;
+            if (GetElem_L(L,i,e))
+            {
+                cout &lt;&lt; &quot;查找成功\n&quot;;
+                cout &lt;&lt; &quot;第&quot; &lt;&lt; i &lt;&lt; &quot;个元素是：&quot;&lt;&lt;e&lt;&lt; endl;
+            }
+            else
+                cout &lt;&lt; &quot;查找失败\n\n&quot;;
+            break;
+        case 5: //单链表的按值查找
+            cout&lt;&lt;&quot;请输入所要查找元素x:&quot;;
+            cin&gt;&gt;x;
+            if (LocateElem_L(L,x))
+                cout &lt;&lt; &quot;查找成功\n&quot;;
+            else
+                cout &lt;&lt; &quot;查找失败! &quot; &lt;&lt;endl;
+            break;
+        case 6: //单链表的插入
+            cout &lt;&lt; &quot;请输入插入的位置和元素（用空格隔开）:&quot;;
+            cin &gt;&gt; i;
+            cin &gt;&gt; x;
+            if (ListInsert_L(L, i, x))
+                cout &lt;&lt; &quot;插入成功.\n\n&quot;;
+            else
+                cout &lt;&lt; &quot;插入失败!\n\n&quot;;
+            break;
+        case 7: //单链表的删除
+            cout&lt;&lt;&quot;请输入所要删除的元素位置i:&quot;;
+            cin&gt;&gt;i;
+            if (ListDelete_L(L, i))
+                cout&lt;&lt;&quot;删除成功!\n&quot;;
+            else
+                cout&lt;&lt;&quot;删除失败!\n&quot;;
+            break;
+        case 8: //单链表的输出
+            cout &lt;&lt; &quot;当前单链表的数据元素分别为:\n&quot;;
+            Listprint_L(L);
+            cout &lt;&lt; endl;
+            break;
+        }
+    }
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://shangdixinxi.com/detail-1507915.html" target="_blank" rel="noopener">链表 p-&gt;next=q-&gt;next,q-&gt;next=p,q=p;的一些解释</a></li>
+<li><a href="https://blog.csdn.net/weixin_44135282/article/details/90348885" target="_blank" rel="noopener">p-&gt;next=q 与 q=p-&gt;next 区分</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>DOS/CMD/Windows/提高开发效率</title>
     <url>/blog/nvlr2g/</url>
     <content><![CDATA[<h2 id="一、快捷键"><a href="#一、快捷键" class="headerlink" title="一、快捷键"></a>一、快捷键</h2><blockquote>
@@ -11131,395 +11505,6 @@ Alt+F10：（show execution point）指针显示当前断点旁边
       <tags>
         <tag>计组</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>C++链表设计</title>
-    <url>/blog/nlhg88/</url>
-    <content><![CDATA[<hr>
-<p>title: C++链表设计<br>categories: DataStructure<br>date: 2020-09-04 15:23:23</p>
-<h2 id="description-“链表C-设计，以及做链表一些题的总结”"><a href="#description-“链表C-设计，以及做链表一些题的总结”" class="headerlink" title="description: “链表C++设计，以及做链表一些题的总结”"></a>description: “链表C++设计，以及做链表一些题的总结”</h2><h2 id="实验报告要求"><a href="#实验报告要求" class="headerlink" title="实验报告要求"></a>实验报告要求</h2><blockquote>
-<p>1、建立一个顺序表，输入 n 个元素并输出；<br>2、查找线性表中的最大元素并输出；<br>3、在线性表的第 i 个元素前插入一个正整数 x；<br>4、删除线性表中的第 j 个元素；<br>5、将线性表中的元素按升序排列；<br>*6、将线性表中的元素就地逆序（只允许用一个暂存单元）；</p>
-</blockquote>
-<h2 id="概念理解"><a href="#概念理解" class="headerlink" title="概念理解"></a>概念理解</h2><h3 id="链表数据结构"><a href="#链表数据结构" class="headerlink" title="链表数据结构"></a>链表数据结构</h3><p>链表是一种数据结构，和<strong>数组同级</strong>。之前 JAVA 里面的 ArrayList 数据结构，其实现原理是数组，而 JAVA 的 LinkedList 的实现原理就是链表了。链表在进行循环遍历时效率不高，但是插入和删除时优势明显，其实 C/C++抑或是 JAVA 这些数据结构都一样——地址……引用……</p>
-<p>单向链表是一种线性表，实际上是由<strong>节点（Node）</strong>组成的，一个链表拥有不定数量的节点。其数据在<strong>内存中存储是不连续的</strong>，它存储的数据分散在内存中，每个结点只能也只有它能知道下一个结点的存储位置。由 N 各节点（Node）组成单向链表，每一个 Node 记录本 Node 的数据及下一个 Node。向外暴露的只有一个头节点（Head），<strong>我们对链表的所有操作，都是直接或者间接地通过其头节点来进行的。</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194076184-195f3044-1083-4244-9eeb-d86c96a37e6f.png#align=left&amp;display=inline&amp;height=98&amp;margin=%5Bobject%20Object%5D&amp;originHeight=98&amp;originWidth=491&amp;size=0&amp;status=done&amp;style=shadow&amp;width=491" alt><br>上图中最左边的节点即为头结点（Head），但是添加节点的顺序是从右向左的，添加的新节点会被作为新节点。最先添加的节点对下一节点的引用可以为空。引用是引用下一个节点而非下一个节点的对象。因为有着不断的引用，所以<strong>头节点就可以操作所有节点</strong>了。<br>下图描述了单向链表存储情况。存储是分散的，每一个节点只要记录下一节点，就把所有数据串了起来，形成了一个单向链表。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194105521-d31f8e78-7f2a-4c60-8838-57e15707e27b.png#align=left&amp;display=inline&amp;height=219&amp;margin=%5Bobject%20Object%5D&amp;originHeight=219&amp;originWidth=195&amp;size=0&amp;status=done&amp;style=stroke&amp;width=195" alt><br>节点（Node）是由一个需要储存的对象及对下一个节点的引用组成的。也就是说，节点拥有两个成员：储存的对象、对下一个节点的引用。下面图是具体的说明：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603194124335-fc6fc00c-35fb-44e1-a01c-de4b8b5531af.png#align=left&amp;display=inline&amp;height=207&amp;margin=%5Bobject%20Object%5D&amp;originHeight=207&amp;originWidth=370&amp;size=0&amp;status=done&amp;style=stroke&amp;width=370" alt></p>
-<h3 id="首元节点、头节点、头指针"><a href="#首元节点、头节点、头指针" class="headerlink" title="首元节点、头节点、头指针"></a>首元节点、头节点、头指针</h3><blockquote>
-<p>一些概念</p>
-</blockquote>
-<ul>
-<li>首元结点：第一个有元素的结点</li>
-<li>头结点：一般不放元素，“L”</li>
-<li>头指针：指向链表的第一个结点，有头结点则为头结点的指针，反之，指向首元结点的指针<blockquote>
-<p>参考资料：<a href="https://www.jianshu.com/p/73d56c3d228c" target="_blank" rel="noopener">https://www.jianshu.com/p/73d56c3d228c</a></p>
-</blockquote>
-</li>
-</ul>
-<h3 id="关于链表的指向"><a href="#关于链表的指向" class="headerlink" title="关于链表的指向"></a>关于链表的指向</h3><blockquote>
-<p>【1】何为指向？</p>
-</blockquote>
-<p>个人觉得链表的相关问题及操作就是理解链表的<strong>“指向”</strong>这么个概念，先明确以下几点</p>
-<ul>
-<li>每个节点的<strong>next</strong>用来存放<strong>下一个节点的“地址”</strong></li>
-<li><strong>每个节点的自身就是地址</strong>，相当于 C 语言中数组的数组名就是本数组的地址</li>
-</ul>
-<blockquote>
-<p>【2】谁指向谁？</p>
-</blockquote>
-<p><strong>总结：</strong><br><strong>做题用我的下面总结的方法，绝对好用</strong><br><strong><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1616501415627-ee5d1008-a07d-4acb-821b-e227b5cb7ad8.jpeg#align=left&amp;display=inline&amp;height=59&amp;margin=%5Bobject%20Object%5D&amp;name=huaji1558a846ddf2e12b.jpeg&amp;originHeight=59&amp;originWidth=55&amp;size=703&amp;status=done&amp;style=stroke&amp;width=55" alt="huaji1558a846ddf2e12b.jpeg"></strong></p>
-<ul>
-<li><strong>读的时候：从左往右读，一般左边是某某的 next 域，右边是具体的结点</strong></li>
-<li><strong>画的时候：在图中表示为等号左边指向等号右边</strong></li>
-</ul>
-<p><strong><br>比如：① <code>node.next = prev.next;</code> ②<code>prev.next = node</code><br>①“node 的 next 指向 prev 的下一个结点”<br>（用指针的概念通俗地说，其实就是 prev 的下一个结点的地址由 prev 的指针域里面赋值给了 node 的 next 指针域里面）<br>②“prev 的 next 指向 node 这个结点”<br>（还可以这么说：将 node 赋值给 prev 的 next，也就是说 prev 的下一个结点是 node）
-</strong></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003706-ad779a14-1678-4d0c-86f2-b147752bd252.png#align=left&amp;display=inline&amp;height=204&amp;margin=%5Bobject%20Object%5D&amp;originHeight=594&amp;originWidth=955&amp;size=0&amp;status=done&amp;style=stroke&amp;width=328" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003751-ffeee4d8-9662-416e-8f46-5cf5edf03114.png#align=left&amp;display=inline&amp;height=250&amp;margin=%5Bobject%20Object%5D&amp;originHeight=725&amp;originWidth=938&amp;size=0&amp;status=done&amp;style=stroke&amp;width=324" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1599309003658-46b3e7db-e6dc-4d13-baea-e7e44075e8bc.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;originHeight=626&amp;originWidth=975&amp;size=0&amp;status=done&amp;style=stroke&amp;width=344" alt></p>
-<blockquote>
-<p>【3】指向错位？</p>
-</blockquote>
-<p><strong>关注第一个元素节点是不是 head，因为有的链表不声明头节点（head），直接就是第一个结点就是元素结点</strong></p>
-<h3 id="关于-p-L-的理解"><a href="#关于-p-L-的理解" class="headerlink" title="关于 p=L 的理解"></a>关于 p=L 的理解</h3><p>写代码的时候，还经常遇到下面的情况<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616501697301-b63e6312-d8f9-4130-8d25-2d3becd75038.png#align=left&amp;display=inline&amp;height=53&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=106&amp;originWidth=466&amp;size=9439&amp;status=done&amp;style=none&amp;width=233" alt="image.png"><br>p、L 就是指向结点的指针类型，将 L 的值赋给 p，也就是 p、L 指向同一个结点。具体理解可以用下面一个例子来说明：<br>下面图片这个函数就是在一个单链表中，功能就是指定 i 位置插入 e 值。下图箭头处如果 TraverseList 返回的是 p 那么得出的链表结果就是从插入的那个元素往后这样一个部分链表，返回的是 L 就是想要的结果，p 的功能有点类似在 L 的中间做了手脚……<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616501856348-955542eb-258d-473f-b003-c53881275937.png#align=left&amp;display=inline&amp;height=331&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=662&amp;originWidth=740&amp;size=62693&amp;status=done&amp;style=none&amp;width=370" alt="image.png"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="实验报告代码"><a href="#实验报告代码" class="headerlink" title="实验报告代码"></a>实验报告代码</h3><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
-using namespace std;
-
-typedef struct LNode {
-    int data;
-    struct LNode *next;
-}Lnode, *LinkList;
-
-LinkList L;
-
-void InitList(LinkList &amp;L) {
-    L = new LNode;
-    L-&gt;next = NULL;
-}
-
-void CreateList_H(LinkList &amp;L) {
-    InitList(L);
-    int n;
-    cout &lt;&lt; &quot;请输入要使用前插法插入的元素个数：&quot;;
-    cin &gt;&gt; n;
-    for (int i = 0; i &lt; n; i++){
-        LNode *p = new LNode;
-        cin &gt;&gt; p-&gt;data;
-        p-&gt;next = L-&gt;next;
-        L-&gt;next = p;
-    }
-}
-void TraverseList(LinkList &amp;L){
-    LNode *p = new LNode;
-    p = L-&gt;next;
-    cout &lt;&lt; &quot;此链表打印的结果为：&quot;&lt;&lt;&quot;\n&quot;;
-    while (p != NULL){
-        cout &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;
-        p = p-&gt;next;
-    }
-    cout &lt;&lt; &quot;\n&quot;;
-}
-void GetElem(LinkList &amp;L) {
-    int n;
-    cout &lt;&lt; &quot;请输入要查询的链表中第i个数：&quot;;
-    cin &gt;&gt; n;
-    LNode *p = new LNode;
-    p = L;
-    for (int i = 0; i &lt; n;i++){
-        p = p-&gt;next;
-    }
-    cout &lt;&lt; &quot;查询的结果为：&quot; &lt;&lt; p-&gt;data&lt;&lt;&quot;\n&quot;;
-}
-void ListInsert(LinkList &amp;L){
-    LNode *p = new LNode;
-    p = L;
-    int n;
-    int e;
-    cout &lt;&lt; &quot;请分别输入要在第n个位置插入的e值：&quot;;
-    cin &gt;&gt; n&gt;&gt; e ;
-    for (int i = 0; i &lt; n;i++) {
-        if (n == i+1){
-            LNode *temp = new LNode;
-            temp-&gt;data = e;
-            temp-&gt;next = p-&gt;next;
-            p-&gt;next = temp;
-            break;
-        }
-        p = p-&gt;next;
-    }
-    TraverseList(L); // 直接返回L就可以了，之前返回p是不可以的！！！唉，大意了~
-}
-void ListDelete(LinkList &amp;L){
-    cout &lt;&lt; &quot;请输入要删除的第j个位置的j值：&quot;;
-    LNode *p = new LNode;
-    p = L;
-    int j;
-    cin &gt;&gt; j;
-    for (int i = 0; i &lt; j;i++) {
-        if (j == i+1) {
-            p-&gt;next = p-&gt;next-&gt;next;
-            break;
-        }
-        p = p-&gt;next;
-    }
-    TraverseList(L);
-}
-void ReverseList(LinkList &amp;L) {
-    LNode *p = L-&gt;next;
-    L-&gt;next = NULL;
-    while(p)
-    {
-        LNode *q = p-&gt;next;
-        p-&gt;next = L-&gt;next;
-        L-&gt;next = p;
-        p = q;
-    }
-    cout &lt;&lt; &quot;通过逆置之后……&quot;;
-    TraverseList(L);
-}
-
-int main() {
-    LNode *test = new LNode;
-    CreateList_H(test);//1
-    TraverseList(test);//1
-    GetElem(test);//2
-    ListInsert(test);//3
-    ListDelete(test);//4
-    ReverseList(test);//5
-}
-</code></pre>
-<h3 id="尾插法的理解"><a href="#尾插法的理解" class="headerlink" title="尾插法的理解"></a>尾插法的理解</h3><ul>
-<li><a href="https://blog.csdn.net/sinat_41721615/article/details/105031104" target="_blank" rel="noopener">https://blog.csdn.net/sinat_41721615/article/details/105031104</a></li>
-<li><a href="https://zhidao.baidu.com/question/944472157933268532.html" target="_blank" rel="noopener">https://zhidao.baidu.com/question/944472157933268532.html</a></li>
-</ul>
-<h3 id="整体实现代码"><a href="#整体实现代码" class="headerlink" title="整体实现代码"></a>整体实现代码</h3><pre><code class="cpp">#include&lt;iostream&gt;
-#include&lt;string&gt;
-#include&lt;iomanip&gt;
-#include&lt;stdlib.h&gt;
-using namespace std;
-
-
-typedef struct LNode {
-    int data; //结点的数据域
-    struct LNode *next; //结点的指针域
-}LNode, *LinkList; //LinkList为指向结构体LNode的指针类型
-
-bool InitList_L(LinkList &amp;L)//构造一个空的单链表L//结构体指针类型变量做为函数的形式参数
-{
-    L=new LNode;     //生成新结点作为头结点，用头指针L指向头结点//变量名 = new 类型
-    if(!L)
-      return false;  //生成结点失败
-    L-&gt;next=NULL;   //头结点的指针域置空
-    return true;
-}
-
-void CreateList_H(LinkList &amp;L)//前插法创建单链表
-{
-    //输入n个元素的值，建立到头结点的单链表L
-    int n;
-    LinkList s; //定义一个所建立的结构体指针变量
-    L=new LNode; //生成新结点作为头结点，用头指针L指向头结点
-    L-&gt;next=NULL; //先建立一个带头结点的空链表
-    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt; endl;
-    cin&gt;&gt;n;
-    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
-    cout &lt;&lt;&quot;前插法创建单链表...&quot; &lt;&lt;endl;
-    while(n--)
-    {
-        s=new LNode; //生成新结点s
-        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
-        s-&gt;next=L-&gt;next;
-        L-&gt;next=s; //将新结点s插入到头结点之后
-    }
-}
-
-void CreateList_R(LinkList &amp;L)//尾插法创建单链表
-{
-    //输入n个元素的值，建立带表头结点的单链表L
-    int n;
-    LinkList s, r;
-    L=new LNode;
-    L-&gt;next=NULL; //先建立一个带头结点的空链表
-    r=L; //尾指针r指向头结点
-    cout &lt;&lt;&quot;请输入元素个数n：&quot; &lt;&lt;endl;
-    cin&gt;&gt;n;
-    cout &lt;&lt;&quot;请依次输入n个元素：&quot; &lt;&lt;endl;
-    cout &lt;&lt;&quot;尾插法创建单链表...&quot; &lt;&lt;endl;
-    while(n--)
-    {
-        s=new LNode;//生成新结点
-        cin&gt;&gt;s-&gt;data; //输入元素值赋给新结点的数据域
-        s-&gt;next=NULL;
-        r-&gt;next=s;//将新结点s插入尾结点*r之后
-        r=s;//r指向新的尾结点s
-    }
-}
-
-bool GetElem_L(LinkList L, int i, int &amp;e)//单链表的取值
-{
-    //在带头结点的单链表L中查找第i个元素
-    //用e记录L中第i个数据元素的值
-    int j;
-    LinkList p;
-    p=L-&gt;next;//p指向首元结点
-    j=1; //j为计数器
-    while (j&lt;i &amp;&amp; p) //顺链域向后扫描，直到p指向第i个元素或p为空
-    {
-        p=p-&gt;next; //p指向下一个结点    类似结点的自加
-        j++; //计数器j相应加1
-    }
-    if (!p || j&gt;i)
-        return false; //i值不合法i＞n或i&lt;=0
-    e=p-&gt;data; //取第i个结点的数据域
-    return true;
-}
-
-bool LocateElem_L(LinkList L, int e) //按值查找
-{
-    //在带头结点的单链表L中查找值为e的元素
-    LinkList p;
-    p=L-&gt;next;
-    while (p &amp;&amp; p-&gt;data!=e)//顺链域向后扫描，直到p为空或p所指结点的数据域等于e
-        p=p-&gt;next; //p指向下一个结点
-    if(!p)
-        return false; //查找失败p为NULL
-    return true;
-}
-
-bool ListInsert_L(LinkList &amp;L, int i, int e)//单链表的插入
-{
-    //在带头结点的单链表L中第i个位置插入值为e的新结点
-    int j;
-    LinkList p, s;
-    p=L;
-    j=0;
-    while (p&amp;&amp;j&lt;i-1) //查找第i-1个结点，p指向该结点
-    {
-        p=p-&gt;next;
-        j++;
-    }
-    if (!p || j&gt;i-1)//i＞n+1或者i＜1
-        return false;
-    s=new LNode;     //生成新结点
-    s-&gt;data=e;       //将新结点的数据域置为e
-    s-&gt;next=p-&gt;next; //将新结点的指针域指向结点ai
-    p-&gt;next=s;       //将结点p的指针域指向结点s
-    return true;
-}
-
-bool ListDelete_L(LinkList &amp;L, int i) //单链表的删除
-{
-    //在带头结点的单链表L中，删除第i个位置
-    LinkList p, q;
-    int j;
-    p=L;
-    j=0;
-    while((p-&gt;next)&amp;&amp;(j&lt;i-1)) //查找第i-1个结点，p指向该结点
-    {
-        p=p-&gt;next;
-        j++;
-    }
-    if (!(p-&gt;next)||(j&gt;i-1))//当i&gt;n或i&lt;1时，删除位置不合理
-        return false;
-    q=p-&gt;next;        //临时保存被删结点的地址以备释放空间
-    p-&gt;next=q-&gt;next; //改变删除结点前驱结点的指针域
-    delete q;        //释放被删除结点的空间
-    return true;
-}
-
-void Listprint_L(LinkList L) //单链表的输出
-{
-    LinkList p;
-    p=L-&gt;next;
-    while (p)
-    {
-        cout&lt;&lt;p-&gt;data&lt;&lt;&quot;\t&quot;;
-        p=p-&gt;next;
-    }
-    cout&lt;&lt;endl;
-}
-
-int main()
-{
-    int i,x,e,choose;
-    LinkList L;
-    cout &lt;&lt; &quot;1. 初始化\n&quot;;
-    cout &lt;&lt; &quot;2. 创建单链表（前插法）\n&quot;;
-    cout &lt;&lt; &quot;3. 创建单链表（尾插法）\n&quot;;
-    cout &lt;&lt; &quot;4. 取值\n&quot;;
-    cout &lt;&lt; &quot;5. 查找\n&quot;;
-    cout &lt;&lt; &quot;6. 插入\n&quot;;
-    cout &lt;&lt; &quot;7. 删除\n&quot;;
-    cout &lt;&lt; &quot;8. 输出\n&quot;;
-    cout &lt;&lt; &quot;0. 退出\n&quot;;
-    choose=-1;
-    while (choose!=0)
-    {
-        cout&lt;&lt;&quot;请输入数字选择:&quot;;
-        cin&gt;&gt;choose;
-        switch (choose)
-        {
-        case 1: //初始化一个空的单链表
-            if (InitList_L(L))
-                cout &lt;&lt; &quot;初始化一个空的单链表!\n&quot;;
-            break;
-        case 2: //创建单链表（前插法）
-            CreateList_H(L);
-            cout &lt;&lt; &quot;前插法创建单链表输出结果:\n&quot;;
-            Listprint_L(L);
-            break;
-        case 3: //创建单链表（尾插法）
-            CreateList_R(L);
-            cout &lt;&lt; &quot;尾插法创建单链表输出结果:\n&quot;;
-            Listprint_L(L);
-            break;
-        case 4: //单链表的按序号取值
-            cout &lt;&lt; &quot;请输入一个位置i用来取值:&quot;;
-            cin &gt;&gt; i;
-            if (GetElem_L(L,i,e))
-            {
-                cout &lt;&lt; &quot;查找成功\n&quot;;
-                cout &lt;&lt; &quot;第&quot; &lt;&lt; i &lt;&lt; &quot;个元素是：&quot;&lt;&lt;e&lt;&lt; endl;
-            }
-            else
-                cout &lt;&lt; &quot;查找失败\n\n&quot;;
-            break;
-        case 5: //单链表的按值查找
-            cout&lt;&lt;&quot;请输入所要查找元素x:&quot;;
-            cin&gt;&gt;x;
-            if (LocateElem_L(L,x))
-                cout &lt;&lt; &quot;查找成功\n&quot;;
-            else
-                cout &lt;&lt; &quot;查找失败! &quot; &lt;&lt;endl;
-            break;
-        case 6: //单链表的插入
-            cout &lt;&lt; &quot;请输入插入的位置和元素（用空格隔开）:&quot;;
-            cin &gt;&gt; i;
-            cin &gt;&gt; x;
-            if (ListInsert_L(L, i, x))
-                cout &lt;&lt; &quot;插入成功.\n\n&quot;;
-            else
-                cout &lt;&lt; &quot;插入失败!\n\n&quot;;
-            break;
-        case 7: //单链表的删除
-            cout&lt;&lt;&quot;请输入所要删除的元素位置i:&quot;;
-            cin&gt;&gt;i;
-            if (ListDelete_L(L, i))
-                cout&lt;&lt;&quot;删除成功!\n&quot;;
-            else
-                cout&lt;&lt;&quot;删除失败!\n&quot;;
-            break;
-        case 8: //单链表的输出
-            cout &lt;&lt; &quot;当前单链表的数据元素分别为:\n&quot;;
-            Listprint_L(L);
-            cout &lt;&lt; endl;
-            break;
-        }
-    }
-    system(&quot;pause&quot;);
-    return 0;
-}
-</code></pre>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="http://shangdixinxi.com/detail-1507915.html" target="_blank" rel="noopener">链表 p-&gt;next=q-&gt;next,q-&gt;next=p,q=p;的一些解释</a></li>
-<li><a href="https://blog.csdn.net/weixin_44135282/article/details/90348885" target="_blank" rel="noopener">p-&gt;next=q 与 q=p-&gt;next 区分</a></li>
-</ul>
-]]></content>
   </entry>
   <entry>
     <title>CSS——定位</title>
