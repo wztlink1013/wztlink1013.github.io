@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>分治算法+归并排序 | 尼采般地抒情</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
+  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
+  <meta name="email" content="wztlink1013@163.com">
+  <meta name="description" content="分治算法+归并排序">
+  <meta name="keywords" content="吴祖涛,技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="分治算法+归并排序 | 尼采般地抒情">
+  <meta property="og:url" content="https://www.wztlink1013.com/blog/dsal/ab9fkt/">
+  <meta property="og:site_name" content="分治算法+归并排序">
+  <meta property="og:description" content="分治算法+归并排序">
+  <meta name="generator" content="https://hexo.io" />
+  <!-- 文档兼容模式的定义 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- 百度站长 -->
+  <meta name="baidu-site-verification" content="code-9Tb9dMy4Ja" /> 
+  <!-- 谷歌站长 -->
+  <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
+  <!-- 搜狗站长 -->
+  <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
+  <link href="https://www.wztlink1013.comhttps://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" rel="apple-touch-icon-precomposed">
+  <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
+  <link rel="prev" href="https://www.wztlink1013.com/blog/dsal/bvk4ok/" title="莱文斯坦距离(LD)问题" />
+  <link rel="next" href="https://www.wztlink1013.com/blog/bw80k6/" title="利用WireShark捕获并分析以太网报文结构" />
+  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
+  <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
+  <!-- 引入整体样式 -->
+  <link rel="stylesheet" href="/public/css/style.css?v=20210315">
+  <link rel="stylesheet" href="/public/css/font-awesome.min.css?v=20210315">
+  <!-- 引入highlight样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+  <!-- 引入valine所需js -->
+  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <!-- twikoo评论 -->
+  <script>AV.initialize("X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz", "eLj5sRf1iOMf8SL8me8IJtdM");</script>
+  <!-- 百度统计 -->
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <!-- 域名重定向 -->
+  <script>
+    if(window.location.host=="wztlink1013.com"){
+      window.location='https://www.wztlink1013.com/'
+    }
+  </script>
+  <!-- 解决语雀图片不显示 -->
+  <meta name="referrer" content="no-referrer" />
+    
+</head>
+
+
+<body>
+  <div class="rainbow">
+    
+  </div>
+  
+  <div class="container">
+  <!-- TODO: 搜索栏 -->
+  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
+  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
+  <i class="fa fa-search" aria-hidden="true" title="点击进入 Google 搜索"></i>
+  <div id="local-search-result" class="local-search-result-cls"></div>
+</span>
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <!-- TODO: 文章最顶部的导航 -->
+      <div class="bread">
+        <a href="/">尼采般地抒情</a> »
+        <a href="/blog/">博客</a> »
+        
+	<a class="category-link" href="/blog/categories/Algorithm/">Algorithm</a>
+
+
+      </div>
+      <!-- TODO: 头像+文章大标题 -->
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">分治算法+归并排序</h1>
+        <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
+      </div>
+      <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
+      <div class="post-info">
+        <span>作者: <a href="/">尼采般地抒情</a></span>
+        <span>
+          <time itemprop="timeCreated" aria-hidden="true">2020-10-23 15:22:00</time>
+          <span class="aria-readonly">本文发布时间为2020年10月23日15时22分00秒</span>
+        </span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/Algorithm/">Algorithm</a>
+
+</span>
+        <span tabindex="0" aria-hidden="true">标签: </span>
+        <span class="aria-readonly">下面是正文内容</span>
+        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="blog/dsal/ab9fkt"
+                      data-disqus-identifier="blog/dsal/ab9fkt"
+                      id="changyan_count_unit"></a></span>
+        <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
+        <!-- TODO: valine文章计数 -->
+        <span id="/blog/dsal/ab9fkt/" class="leancloud_visitors" data-flag-title="分治算法+归并排序">
+          <em class="post-meta-item-text">阅读量: </em>
+          <i class="leancloud-visitors-count">loading</i>
+        </span>
+      </div>
+      <!-- TODO: 防爬虫不注明出处+文章内容 -->
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
+          <p>原文地址：<a href="https://www.wztlink1013.com/blog/dsal/ab9fkt/">https://www.wztlink1013.com/blog/dsal/ab9fkt/</a>，<a href="https://www.wztlink1013.com/blog/dsal/ab9fkt/#comments">参与评论</a></p>
+          <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
+        </div>
+        <h2 id="分治算法"><a href="#分治算法" class="headerlink" title="分治算法"></a>分治算法</h2><p>此前学习的<strong>递归设计方法</strong>，是针对规模大的问题拆成规模小的问题，并且规模大的问题和规模小的问题的解决办法相同。</p>
+<p>分治算法与递归设计方法的不同之处就是，该规模较大的问题分解为多个不重叠的子问题，并将其称为<strong>“分而治之”</strong><br>**<br>分治的三个步骤：</p>
+<ol>
+<li>分解：将原问题分解为若干个规模较小、相互不重叠与原问题形式相同的子问题</li>
+<li>解决：<ol>
+<li>若子问题规模较小且易于解决时候直接解出</li>
+<li>否则递归地解决各个子问题</li>
+</ol>
+</li>
+<li>合并：将各个子问题的解个并未原问题的解</li>
+</ol>
+<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><ul>
+<li>分解：将排序数组分解为左右两个相等的不重叠的数组</li>
+<li>解决：递归</li>
+<li>合并：将两个已经有序的数组合并为一个有序的数组</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603617542157-07613fda-ebed-4924-bf6a-091c19b12fc7.png#align=left&amp;display=inline&amp;height=431&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=861&amp;originWidth=895&amp;size=74826&amp;status=done&amp;style=shadow&amp;width=447.5" alt="image.png"></p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3>
+      </div>
+    </div>
+    
+    <!-- TODO: 最下面的小格子 -->
+    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
+	<ul>
+		<li>作者:  <a href="/" itemprop="name">尼采般地抒情</a></li>
+		<li>发表日期:  2020-10-23 15:22:00</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/Algorithm/">Algorithm</a>
+
+</li>
+		<li>文章标签: </li>
+		
+		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/ab9fkt.md" download target="_blank">分治算法+归并排序.md</a></li> -->
+		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
+		<li>最后编辑时间: 2021-03-24 10:40:59</li>
+		<li>Feed 订阅: <a href="/rss2.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a></li>
+		<li style="opacity: 0.3; text-align: right;">
+			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/dsal/ab9fkt/edit/" target="_blank" aria-hidden="true"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>；
+			网站部署：<a href="https://github.com/wztlink1013/website" target="_blank" aria-hidden="true"><i class="fa fa-cloud" aria-hidden="true"></i></a>
+		</li>
+	</ul>
+	<a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" /></a>
+</div>
+
+
+
+    <!-- TODO:  下拉菜单栏-->
+<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
+<ul role="group" aria-labelledby="i1" aria-expanded="false">
+  <li><a href="/blog/">博客</a></li>
+  <li><a href="/message/">留言</a></li>
+  <li><a href="/demo/">实验室</a></li>
+  <li><a href="/friends/">友情链接</a></li>
+</ul>
+</em>
+  </div>
+  <!-- TODO: 上一篇文章/下一篇文章 -->
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/dsal/bvk4ok/" class="post-prev">
+      <i class="fa fa-arrow-left" tabindex="0" aria-hidden="true"></i>
+      <span class="aria-readonly">上一篇文章</span>
+      
+        <b>莱文斯坦距离(LD)问题</b>
+      
+    </a>
+  
+  
+    <a href="/blog/bw80k6/" class="post-next">
+      <span class="aria-readonly">下一篇文章</span>
+      <b>利用WireShark捕获并分析以太网报文结构</b>
+      <i class="fa fa-arrow-right" tabindex="0" aria-hidden="true"></i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
+  
+  <a href="/blog/dsal/bvk4ok/" class="prev" title="莱文斯坦距离(LD)问题">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    
+    <b>莱文斯坦距离(LD)问题</b>
+    
+  </a>
+  
+  
+  <a href="/blog/bw80k6/" class="next" title="利用WireShark捕获并分析以太网报文结构">
+    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    <b>利用WireShark捕获并分析以太网报文结构</b>
+  </a>
+  
+</div>
+
+  </div>
+</div>
+
+<!-- TODO: 侧边栏 -->
+<!-- TODO: 文章内部左隐藏侧边栏 -->
+<div class="sidebar" tabindex="0" aria-hidden="true">
+  <!-- TODO: 上面的 -->
+  <div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i><span>目录</span></i>
+        
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+
+    <span class="func-item">
+        <i class="func-font icon"><i class="fa fa-adjust" aria-hidden="true"></i><span>夜间</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon"><i class="fa fa-moon-o" aria-hidden="true"></i></i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon"><i class="fa fa-sun-o" aria-hidden="true"></i></i></a>
+          </div>
+        </div>
+    </span>
+
+    <span class="func-item">
+        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon"><i class="fa fa-weibo" aria-hidden="true"></i><span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
+          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i><span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+  </div>
+  <!-- TODO: 下面的 -->
+	<div class="func-btns">
+
+    <!-- TODO: 友情链接 -->
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon"><i class="fa fa-link" aria-hidden="true"></i><span>链接</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <!-- TODO: 订阅 -->
+    <span class="func-item">
+        <a href="/rss2.xml" target="_blank"><i class="func-rss icon"><i class="fa fa-rss-square" aria-hidden="true"></i><span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<!-- TODO: 评论+相关文章+友情链接 -->
+<div class="single-page-footer">
+<!-- TODO: 页脚评论+站点信息 -->
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-content">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="blog/dsal/ab9fkt"
+	   data-disqus-identifier="blog/dsal/ab9fkt" 
+		 tabindex="0" aria-hidden="true">评论内容</a>
+	<a href="javascript: void(0);" id="comments">相关文章</a>
+	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div tabindex="0">
+		
+    <div id="tcomment"></div>
+    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+    <script>
+    twikoo.init({ 
+        envId: 'website-wikoo-4g46k8do98867542', 
+        el: '#tcomment'
+        // path: 'window.location.pathname.replace(\'blog\',\'message\')'
+    })
+    </script>
+
+
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span><font aria-hidden="true">2021-02-10 »</font> </span>
+				<a href="/blog/dsal/ccd10c/">RSA公钥密码算法</a>
+				<span class="aria-readonly">发表时间为2021年02月10日</span>
+				<div class="relative-box">
+          <a href="/blog/dsal/ccd10c/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612943343546-b8330998-9019-40a1-9759-12b459d5379b.png#align=left&amp;display=inline&amp;height=345&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=690&amp;originWidth=982&amp;size=266245&amp;status=done&amp;style=stroke&amp;width=491" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612943343546-b8330998-9019-40a1-9759-12b459d5379b.png#align=left&amp;display=inline&amp;height=345&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=690&amp;originWidth=982&amp;size=266245&amp;status=done&amp;style=stroke&amp;width=491"/></a>
+          <span class="aria-readonly">文章概要 </span>最近利用自己曾经写过的一篇文章『https://www.wztlink1013.com/blog/b...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-11-14 »</font> </span>
+				<a href="/blog/dsal/ggu8v9/">贪心算法-Huffman算法</a>
+				<span class="aria-readonly">发表时间为2020年11月14日</span>
+				<div class="relative-box">
+          <a href="/blog/dsal/ggu8v9/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340774734-5ec5e8f1-0fae-47ff-8ded-dccf9611a3ad.png#align=left&amp;display=inline&amp;height=45&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=89&amp;originWidth=411&amp;size=4276&amp;status=done&amp;style=shadow&amp;width=205.5" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340774734-5ec5e8f1-0fae-47ff-8ded-dccf9611a3ad.png#align=left&amp;display=inline&amp;height=45&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=89&amp;originWidth=411&amp;size=4276&amp;status=done&amp;style=shadow&amp;width=205.5"/></a>
+          <span class="aria-readonly">文章概要 </span>问题描述压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。比如：给出一串字母 H...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-11-14 »</font> </span>
+				<a href="/blog/dsal/ghf568/">贪心算法-Kruskal 算法</a>
+				<span class="aria-readonly">发表时间为2020年11月14日</span>
+				<div class="relative-box">
+          <a href="/blog/dsal/ghf568/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png#align=left&amp;display=inline&amp;height=95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=189&amp;originWidth=438&amp;size=10882&amp;status=done&amp;style=shadow&amp;width=219" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png#align=left&amp;display=inline&amp;height=95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=189&amp;originWidth=438&amp;size=10882&amp;status=done&amp;style=shadow&amp;width=219"/></a>
+          <span class="aria-readonly">文章概要 </span>一些概念连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i 到顶点 j 有路径相...
+        </div>
+			</li>
+			
+			<li>
+				<span><font aria-hidden="true">2020-10-23 »</font> </span>
+				<a href="/blog/dsal/bvk4ok/">莱文斯坦距离(LD)问题</a>
+				<span class="aria-readonly">发表时间为2020年10月23日</span>
+				<div class="relative-box">
+          <a href="/blog/dsal/bvk4ok/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603615056984-36cbce7c-c55e-456a-bb90-eb18471167e0.png#align=left&amp;display=inline&amp;height=335&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=670&amp;originWidth=1026&amp;size=202356&amp;status=done&amp;style=shadow&amp;width=513" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603615056984-36cbce7c-c55e-456a-bb90-eb18471167e0.png#align=left&amp;display=inline&amp;height=335&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=670&amp;originWidth=1026&amp;size=202356&amp;status=done&amp;style=shadow&amp;width=513"/></a>
+          <span class="aria-readonly">文章概要 </span>问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符...
+        </div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+
+		<!-- TODO: entry_blog -->
+		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="http://www.ruanyifeng.com/home.html" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://xaoxuu.com" target="_blank">xaoxuu</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.cnblogs.com/mjios" target="_blank">小码哥MJ</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.sgyzyun.club/" target="_blank">洛尘曦</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.ccyh.xyz" target="_blank">Liam's Blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://xiamuyourenzhang.cn/" target="_blank">夏目友人帐</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://sitoi.cn/" target="_blank">Sitoi</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.cnblogs.com/zhanjiahui/" target="_blank">小圆</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://blog.webpro.ltd/" target="_blank">Bill’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://liuyib.github.io/" target="_blank">liuyib</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://crainyday.gitee.io" target="_blank">CRainyDay</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://hewanyue.com" target="_blank">没有人</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://yc9064.gitee.io/" target="_blank">Marco</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.hcode.top" target="_blank">Hcode</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://zzsnn.github.io/" target="_blank">折纸少年</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="http://zhifou.run" target="_blank">Darren</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://cndrew.cn/" target="_blank">Uncle_drew</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://cungudafa.top" target="_blank">cungudafa</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="http://hudiskoray.iicp.net:4000/" target="_blank">Jerry Huang</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://reqwey.vercel.app/" target="_blank">Linhk1606</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://modao233.gitee.io/" target="_blank">modao’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="https://www.jsonformatting.com/" target="_blank">json format</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
+			
+			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
+		</ul>
+	</div>
+</div>
+			<!-- TODO:  网站信息：网站最底下的信息-->
+
+<div class="website-info" aria-hidden="true">
+	<a class="page_editor" href="/" target="_blank">🧙‍♂️</a>
+	<a href='https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral' title="又拍云联盟" target='_blank'>
+		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210210101446.png' width='40' height='20'>
+	</a>
+	<span>&copy;2019-2021 
+		<small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small>
+	</span>本站 
+	<a href="/">尼采般地抒情</a> 
+	<a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
+	<a href='https://travellings.now.sh/' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai">
+		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210218094053.png' width="20" height="20">
+	</a>
+</div>
+
+		</div>
+	</div>
+</div>
+<!-- 引入highlight样式 -->
+<script src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+</div>
+<!-- TODO: 回到顶部 -->
+<div class="tools-wrapper" tabindex="0" aria-hidden="true">
+	<a class="gotop icon" href="#" title="回到顶部"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+	<a class="hash-to-comments icon" title="我要评论"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+	<span class="func-item">
+		<a class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i></a>
+	</span>
+	<a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song icon"><i class="fa fa-adjust" aria-hidden="true"></i></a>
+</div>
+<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
+
+
+</body>
+
+<script src="/public/js/jquery.js"></script>
+<script src="/public/js/socket.io.js"></script>
+<!-- <script src="/public/js/aplayer.js"></script> -->
+<script src="/public/js/main.js?v=20210308"></script>
+
+
+</html>
