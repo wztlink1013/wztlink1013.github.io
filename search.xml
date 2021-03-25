@@ -5584,150 +5584,6 @@ mysqldump -uroot -p world &gt;d:\config\world.sql**
       </categories>
   </entry>
   <entry>
-    <title>GitHub Actions+语雀+serverless云函数实现hexo自动化部署</title>
-    <url>/blog/vyeuk3/</url>
-    <content><![CDATA[<h2 id="一、整体思路"><a href="#一、整体思路" class="headerlink" title="一、整体思路"></a>一、整体思路</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg#align=left&amp;display=inline&amp;height=368&amp;margin=%5Bobject%20Object%5D&amp;name=yuque_diagram.jpg&amp;originHeight=368&amp;originWidth=2062&amp;size=71238&amp;status=done&amp;style=stroke&amp;width=2062" alt="yuque_diagram.jpg"><br>利用<code>npm</code>插件<code>yuque-hexo</code>将语雀云端的文章同步到博客源码<code>source/_posts/blog</code>文件夹下，再利用<code>GitHub Actions</code>自动化部署将 GitHub 私有仓库（<code>website</code>）的博客源文件编译成静态博客文件并部署 push 到静态博客仓库（<code>wztlink1013.github.io</code>）下。<br>但是这样并不能解决语雀一发布文章就触发 GitHub 源码仓库的<code>GitHub Actions</code>，所以需要中间<code>TencentCloud</code>云函数/<code>Aliyun</code>云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发 GitHub 私有的源码仓库下的<code>GitHub Actions</code>达到编译静态博客的效果。</p>
-<h2 id="二、网站源文件配置"><a href="#二、网站源文件配置" class="headerlink" title="二、网站源文件配置"></a>二、网站源文件配置</h2><h3 id="yuque-hexo-插件"><a href="#yuque-hexo-插件" class="headerlink" title="yuque-hexo 插件"></a>yuque-hexo 插件</h3><blockquote>
-<p>【1】在开发环境当中下载语雀插件（全局安装）</p>
-</blockquote>
-<pre><code class="bash">npm i -g yuque-hexo
-</code></pre>
-<blockquote>
-<p>【2】相关 hexo 命令</p>
-</blockquote>
-<pre><code class="bash">yuque-hexo clean # 清缓存删除yuque文件夹 删除yuque.json文件
-yuque-hexo sync # 从云端拉取到本地
-DEBUG=yuque-hexo.* yuque-hexo sync # Debug
-</code></pre>
-<blockquote>
-<p>【3】特别需要注意的是：开发环境语雀 Token 变量的传入</p>
-</blockquote>
-<p>语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 <code>YUQUE_TOKEN</code>，如果是本地使用建议使用环境变量，也可以是终端的方式输入。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png#align=left&amp;display=inline&amp;height=145&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=290&amp;originWidth=968&amp;size=24274&amp;status=done&amp;style=shadow&amp;width=484" alt="image.png"><br>如果是在<code>GitHub Actions</code>里面的环境执行<code>yuque-hexo sync</code>命令的时候，通过如下命令传入语雀的<code>token</code></p>
-<pre><code class="yaml">YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo sync
-</code></pre>
-<blockquote>
-<p>【4】最后的配置样式</p>
-</blockquote>
-<pre><code class="json">  &quot;yuqueConfig&quot;: {
-    &quot;baseUrl&quot;: &quot;https://www.yuque.com/api/v2&quot;,
-    &quot;login&quot;: &quot;nicaibandishuqing&quot;,
-    &quot;repo&quot;: &quot;blog&quot;,
-    &quot;postPath&quot;: &quot;src/_posts/blog&quot;,
-    &quot;cachePath&quot;: &quot;yuque.json&quot;,
-    &quot;mdNameFormat&quot;: &quot;slug&quot;,
-    &quot;onlyPublished&quot;: false,
-    &quot;onlyPublic&quot;: true,
-    &quot;adapter&quot;: &quot;markdown&quot;
-  },
-  &quot;scripts&quot;: {
-    &quot;clean&quot;: &quot;hexo clean&quot;,
-    &quot;build&quot;: &quot;hexo generate&quot;,
-    &quot;server&quot;: &quot;hexo server&quot;,
-    &quot;deploy&quot;: &quot;hexo deploy&quot;
-  }
-</code></pre>
-<p>更详细使用参考官方<a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">官方仓库</a>。</p>
-<h3 id="配置-GitHub-Actions-文件"><a href="#配置-GitHub-Actions-文件" class="headerlink" title="配置 GitHub Actions 文件"></a>配置 GitHub Actions 文件</h3><p>在博客源文件夹下新建如下 GitHub Actions 文件<br><code>.github/workflows/main.yml</code></p>
-<blockquote>
-<p>文件内容配置如下</p>
-</blockquote>
-<pre><code class="yaml"># workflow name
-name: website to wztlink1013.github.io CI/CD
-
-on: [repository_dispatch, watch]
-
-jobs:
-  Deploy-Pages:
-    name: website to wztlink1013.github.io
-    runs-on: ubuntu-latest
-
-    steps:
-      # check it to your workflow can access it
-      # from: https://github.com/actions/checkout
-      - name: Checkout Repository master branch
-        uses: actions/checkout@main
-      # from: https://github.com/actions/setup-node
-      - name: Setup Node.js 10.x
-        uses: actions/setup-node@main
-        with:
-          node-version: &quot;10.x&quot;
-
-      - name: add Git infomations
-        run: |
-          git config --global user.name &#39;wztlink1013&#39; 
-          git config --global user.email &#39;2550374815@qq.com&#39;
-
-      - name: submit commit infomations
-        run: |
-          git log --pretty=format:&quot;%s from Github Actions at `date +&quot;%Y-%m-%d %H:%M:%S&quot;`&quot; --date=short -n 1  &gt; commit-message.log
-
-      - name: npm istall hexo-cli、yuque-hexo、*
-        env:
-          YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
-        run: |
-          npm install hexo-cli -g
-          npm i -g yuque-hexo-haisawa
-          npm i -g npm-wzutao
-          npm install
-
-      - name: generate articles
-        run: |
-          hexo clean
-          yuque-hexo-haisawa clean
-          npm-wzutao clean
-          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo-haisawa sync
-          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} npm-wzutao sync
-          hexo generate
-
-      - name: push wztlink1013.github.io repository
-        env:
-          Github_Pages: github.com/wztlink1013/wztlink1013.github.io
-          Github_Token: ${{ secrets.token_GithubAPI }}
-        run: |
-          git clone https://${Github_Token}@${Github_Pages} .github_pages
-          mv .github_pages/.git/ ./build/
-          cd ./build/
-          git add .
-          git commit -F ../commit-message.log
-          git push --force --quiet &quot;https://${Github_Token}@${Github_Pages}&quot; master:master
-</code></pre>
-<blockquote>
-<p><del>有个尚未清楚并解决的问题：语雀 Token 的值，通过 GitHub 仓库密匙的方式传不进去，只能以“裸露的方式传进去”</del><br>已解决：通过在仓库设置 secret，再用<code>$</code>方式引入即可。</p>
-</blockquote>
-<h2 id="三、Serverless-云函数配置"><a href="#三、Serverless-云函数配置" class="headerlink" title="三、Serverless 云函数配置"></a>三、Serverless 云函数配置</h2><h3 id="python2-7-的配置"><a href="#python2-7-的配置" class="headerlink" title="python2.7 的配置"></a>python2.7 的配置</h3><pre><code class="python"># -*- coding: utf8 -*-
-import requests
-
-def main_handler(event, context):
-    r = requests.post(&quot;https://api.github.com/repos/wztlink1013/website/dispatches&quot;,
-    json={&#39;event_type&#39;: &quot;run-it&quot;},
-    headers = {&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
-              &#39;Content-Type&#39;: &#39;application/json&#39;,
-              &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
-              &#39;Authorization&#39;: &#39;token ***********&#39;})
-
-    if r.status_code == 204:
-        return &quot;This&#39;s OK!&quot;
-    else:
-        return r.status_code
-</code></pre>
-<h3 id="触发器的设置"><a href="#触发器的设置" class="headerlink" title="触发器的设置"></a>触发器的设置</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594789179624-938bb8c2-ac15-4ece-a5f1-001563e4f08b.png#align=left&amp;display=inline&amp;height=282&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=583&amp;originWidth=1250&amp;size=50598&amp;status=done&amp;style=none&amp;width=605" alt="image.png"></p>
-<h2 id="四、语雀云端的配置"><a href="#四、语雀云端的配置" class="headerlink" title="四、语雀云端的配置"></a>四、语雀云端的配置</h2><p>在所需要拉取的仓库中 webhook 中填入云函数所留下的那串网址，勾选所需要触发的选项即可。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1610002554569-c1487bca-1b0f-4334-86a9-7ac062cf5a44.png#align=left&amp;display=inline&amp;height=291&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=581&amp;originWidth=1084&amp;size=52514&amp;status=done&amp;style=shadow&amp;width=542" alt="image.png"></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">yuque-hexo 开发仓库</a></li>
-<li><a href="https://www.zhwei.cn/hexo-github-actions-yuque/" target="_blank" rel="noopener">Hexo：语雀云端写作，Github Actions 持续集成</a></li>
-<li><a href="https://segmentfault.com/a/1190000017797561" target="_blank" rel="noopener">Hexo 博客终极玩法：云端写作，自动部署</a></li>
-<li><a href="https://www.xiayinchang.top/post/b2362878.html" target="_blank" rel="noopener">阿里云云函数使用用户</a></li>
-<li><a href="https://bbs.pediy.com/thread-260866.htm" target="_blank" rel="noopener">[原创]自动同步语雀文档到你的 hexo 博客</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>serverless</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Navicat-1045报错</title>
     <url>/blog/wp9hok/</url>
     <content><![CDATA[<h2 id="一、报错信息"><a href="#一、报错信息" class="headerlink" title="一、报错信息"></a>一、报错信息</h2><pre><code>1045-Access denied for user root@localhost(using password:YES)
@@ -13158,7 +13014,22 @@ public class HelloWordServlet extends HttpServlet {
 <ul>
 <li>取地址符 <code>&amp;</code></li>
 <li>解引用运算符 <code>*</code><blockquote>
-<p>参考：<a href="https://blog.csdn.net/soonfly/article/details/51131141" target="_blank" rel="noopener">https://blog.csdn.net/soonfly/article/details/51131141</a></p>
+<p>参考：</p>
+<ul>
+<li><a href="https://blog.csdn.net/soonfly/article/details/51131141" target="_blank" rel="noopener">https://blog.csdn.net/soonfly/article/details/51131141</a><br>-</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+</blockquote>
+<ul>
+<li>有 3 个用途<blockquote>
+<ol>
+<li>乘号（Multiply）： 2*3 就是 6</li>
+<li>声明指针（Pointer Statement）： int a =5; int* ptr=&a;就是声明变量 a 是 5，把 a 的地址附到指针 ptr 上</li>
+<li>解引用 （Dereference）： <em>ptr 单独拿出来就是找出 ptr 指针指向的值，按照第二点的说法就是 5.<br>&amp;叫做取地址符号<br>• 一般指针只能接受一个内存地址而不能接受一个值<br>• int a =5; int</em> ptr=a;就是错误的，指针不能接受一个值<br>• int a =5; int* ptr=&a;才对，把 a 的地址给指针 ptr<br>指针理解的话你可以这么想。<br>你问我书在哪。我说在书架第一层。<br>你问我书在哪。我说在那个桌子上的纸条上写着位置。这样的话那个纸条就是指针。<br>纸条上写着，书在书架第一层，这就是地址，他并不是书的实体<br>真正的书在书架第一层，顺着地址去找吧</li>
+</ol>
 </blockquote>
 </li>
 </ul>
@@ -13207,6 +13078,11 @@ typedef struct LNode *LinkList;     //将struct LNode *重命名为LinkList
 <blockquote>
 <p><a href="https://www.cnblogs.com/mr-wid/archive/2013/01/22/2871105.html" target="_blank" rel="noopener">https://www.cnblogs.com/mr-wid/archive/2013/01/22/2871105.html</a></p>
 </blockquote>
+<h2 id="define"><a href="#define" class="headerlink" title="#define"></a>#define</h2><p>C 语言中，可以用 #define 定义一个标识符来表示一个常量。其特点是：定义的标识符不占内存，只是一个临时的符号，预编译后这个符号就不存在了。</p>
+<p>预编译又叫预处理。预编译不是编译，而是编译前的处理。这个操作是在正式编译之前由系统自动完成的。</p>
+<ul>
+<li><a href="http://c.biancheng.net/view/187.html" target="_blank" rel="noopener">http://c.biancheng.net/view/187.html</a></li>
+</ul>
 <h2 id="C-常用字符函数"><a href="#C-常用字符函数" class="headerlink" title="C 常用字符函数"></a>C 常用字符函数</h2><p>Printf()<br>Scanf()<br>Putchar()<br>Getchar()<br>Puts(str)<br>Gets(str)<br>Strcat(str1,str2)：连接字符串<br>复制函数：将 str2 复制给 str1<br>Strcpy(str1,str2)<br>在 C++里面会报错<br>解决 ①：将函数 strcpy 改成 strcpy_s,中间加一个参数——复制的长度</p>
 <p>Strncpy(str1,str2,n)：复制函数，将 str2 的前 n 个字符复制给 str1<br>Strlen(str)：检测 str 的字符串长度<br>Fopen(文件名，使用文件方式）<br>fclose（文件指针）</p>
 <h2 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h2><p>v I/O 流<br>scanf===cin&gt;&gt; &gt;&gt;endl;<br>Print===cout&lt;&lt; &lt;&lt;endl;<br>换行符：endl 和 “\n”<br>v 注释<br>/*  */<br>//<br>v const 定义常量<br>之前 C 语言里面用的是宏定义#define Π 3.1415927，但是宏定义有时候太“死板”</p>
@@ -13636,6 +13512,220 @@ typedef struct LNode *LinkList;     //将struct LNode *重命名为LinkList
 ]]></content>
       <categories>
         <category>Language</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>GitHub Actions+语雀+serverless云函数实现hexo自动化部署</title>
+    <url>/blog/vyeuk3/</url>
+    <content><![CDATA[<h2 id="一、整体思路"><a href="#一、整体思路" class="headerlink" title="一、整体思路"></a>一、整体思路</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg#align=left&amp;display=inline&amp;height=368&amp;margin=%5Bobject%20Object%5D&amp;name=yuque_diagram.jpg&amp;originHeight=368&amp;originWidth=2062&amp;size=71238&amp;status=done&amp;style=stroke&amp;width=2062" alt="yuque_diagram.jpg"><br>【1】利用<code>npm</code>插件<code>yuque-hexo</code>将语雀云端的文章同步到博客源码<code>source/_posts/blog</code>文件夹下。</p>
+<p>【2】再利用<code>GitHub Actions</code>自动化部署将 GitHub 私有仓库（<code>website</code>）的博客源文件编译成静态博客文件并部署 push 到静态博客仓库（<code>wztlink1013.github.io</code>）下。</p>
+<p>但是以上【1】【2】两种方式并不能解决语雀一发布文章就触发 GitHub 源码仓库的<code>GitHub Actions</code></p>
+<p>【3】所以需要中间<code>TencentCloud</code>云函数/<code>Aliyun</code>云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发 GitHub 私有的源码仓库下的<code>GitHub Actions</code>达到编译静态博客的效果。</p>
+<h2 id="二、网站源文件配置"><a href="#二、网站源文件配置" class="headerlink" title="二、网站源文件配置"></a>二、网站源文件配置</h2><blockquote>
+<p><a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">官方仓库</a></p>
+</blockquote>
+<h3 id="yuque-hexo-插件"><a href="#yuque-hexo-插件" class="headerlink" title="yuque-hexo 插件"></a>yuque-hexo 插件</h3><blockquote>
+<p>【1】在开发环境当中下载语雀插件（全局安装）</p>
+</blockquote>
+<pre><code class="bash">npm i -g yuque-hexo
+</code></pre>
+<blockquote>
+<p>【2】相关 hexo 命令</p>
+</blockquote>
+<pre><code class="bash">yuque-hexo clean # 清缓存删除yuque文件夹 删除yuque.json文件(更新之后的插件不删除yuque.json)
+yuque-hexo sync # 从云端拉取到本地
+DEBUG=yuque-hexo.* yuque-hexo sync # Debug
+</code></pre>
+<blockquote>
+<p>【3】特别需要注意的是：开发环境语雀 Token 变量的传入</p>
+</blockquote>
+<p>语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 <code>YUQUE_TOKEN</code>，如果是本地使用建议使用环境变量，也可以是终端的方式输入。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png#align=left&amp;display=inline&amp;height=145&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=290&amp;originWidth=968&amp;size=24274&amp;status=done&amp;style=shadow&amp;width=484" alt="image.png"><br>如果是在<code>GitHub Actions</code>里面的环境执行<code>yuque-hexo sync</code>命令的时候，通过如下命令传入语雀的<code>token</code></p>
+<pre><code class="yaml">YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo sync
+</code></pre>
+<blockquote>
+<p>【4】最后的配置样式</p>
+</blockquote>
+<pre><code class="json">  &quot;yuqueConfig&quot;: {
+    &quot;baseUrl&quot;: &quot;https://www.yuque.com/api/v2&quot;,
+    &quot;login&quot;: &quot;nicaibandishuqing&quot;,
+    &quot;repo&quot;: &quot;blog&quot;,
+    &quot;postPath&quot;: &quot;src/_posts/blog&quot;,
+    &quot;cachePath&quot;: &quot;yuque.json&quot;,
+    &quot;mdNameFormat&quot;: &quot;slug&quot;,
+    &quot;onlyPublished&quot;: false,
+    &quot;onlyPublic&quot;: true,
+    &quot;adapter&quot;: &quot;markdown&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;clean&quot;: &quot;hexo clean&quot;,
+    &quot;build&quot;: &quot;hexo generate&quot;,
+    &quot;server&quot;: &quot;hexo server&quot;,
+    &quot;deploy&quot;: &quot;hexo deploy&quot;
+  }
+</code></pre>
+<p>更详细使用参考官方<a href="https://github.com/x-cold/yuque-hexo" target="_blank" rel="noopener">官方仓库</a>。</p>
+<h3 id="配置-GitHub-Actions-文件"><a href="#配置-GitHub-Actions-文件" class="headerlink" title="配置 GitHub Actions 文件"></a>配置 GitHub Actions 文件</h3><p>在博客源文件夹下新建如下 GitHub Actions 文件<br><code>.github/workflows/main.yml</code></p>
+<blockquote>
+<p>文件内容配置如下</p>
+</blockquote>
+<pre><code class="yaml"># workflow name
+name: website to wztlink1013.github.io CI/CD
+
+on: [repository_dispatch, watch]
+
+jobs:
+  Deploy-Pages:
+    name: website to wztlink1013.github.io
+    runs-on: ubuntu-latest
+
+    steps:
+      # check it to your workflow can access it
+      # from: https://github.com/actions/checkout
+      - name: Checkout Repository master branch
+        uses: actions/checkout@main
+      # from: https://github.com/actions/setup-node
+      - name: Setup Node.js 10.x
+        uses: actions/setup-node@main
+        with:
+          node-version: &quot;10.x&quot;
+
+      - name: add Git infomations
+        run: |
+          git config --global user.name &#39;${{secrets.GIT_NAME}}&#39; 
+          git config --global user.email &#39;${{secrets.GIT_EMAIL}}&#39;
+
+      - name: submit commit infomations
+        run: |
+          git log --pretty=format:&quot;%s from Github Actions at `date +&quot;%Y-%m-%d %H:%M:%S&quot;`&quot; --date=short -n 1  &gt; commit-message.log
+
+      - name: npm istall hexo-cli、yuque-hexo、*
+        env:
+          YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
+        run: |
+          npm install hexo-cli -g
+          npm i -g yuque-hexo-haisawa
+          npm i -g yuque-hexo-w-dsal
+          npm i -g npm-wzutao
+          npm install
+
+      - name: generate articles
+        run: |
+          hexo clean
+          yuque-hexo-haisawa clean
+          yuque-hexo-w-dsal clean
+          npm-wzutao clean
+          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo-haisawa sync
+          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} npm-wzutao sync
+          YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo-w-dsal sync
+          cd ./src/_posts/
+          mv ./dsal/* ./blog/
+          cd ../../
+          hexo generate
+
+      - name: push wztlink1013.github.io repository
+        env:
+          Github_Pages: github.com/wztlink1013/wztlink1013.github.io
+          Github_Token: ${{ secrets.token_GithubAPI }}
+        run: |
+          git clone https://${Github_Token}@${Github_Pages} .github_pages
+          mv .github_pages/.git/ ./build/
+          cd ./build/
+          git add .
+          git commit -F ../commit-message.log
+          git push --force --quiet &quot;https://${Github_Token}@${Github_Pages}&quot; master:master
+</code></pre>
+<blockquote>
+<p><del>有个尚未清楚并解决的问题：语雀 Token 的值，通过 GitHub 仓库密匙的方式传不进去，只能以“裸露的方式传进去”</del><br>已解决：通过在仓库设置 secret，再用<code>$</code>方式引入即可。</p>
+</blockquote>
+<h2 id="三、Serverless-云函数配置"><a href="#三、Serverless-云函数配置" class="headerlink" title="三、Serverless 云函数配置"></a>三、Serverless 云函数配置</h2><h3 id="腾讯云-serverless"><a href="#腾讯云-serverless" class="headerlink" title="腾讯云 serverless"></a>腾讯云 serverless</h3><p><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;"></div></p>
+<ol>
+<li>python2.7的配置<br><code>`</code>python<h1 id="coding-utf8"><a href="#coding-utf8" class="headerlink" title="-- coding: utf8 --"></a>-<em>- coding: utf8 -</em>-</h1>import requests</li>
+</ol>
+<p>def main_handler(event, context):<br>r = requests.post(“<a href="https://api.github.com/repos/wztlink1013/website/dispatches&quot;" target="_blank" rel="noopener">https://api.github.com/repos/wztlink1013/website/dispatches&quot;</a>,<br>json={‘event_type’: “run-it”},<br>headers = {“User-Agent”:’curl/7.52.1’,<br>‘Content-Type’: ‘application/json’,<br>‘Accept’: ‘application/vnd.github.everest-preview+json’,<br>‘Authorization’: ‘token <strong><strong>***</strong></strong>‘})</p>
+<pre><code>if r.status_code == 204:
+    return &quot;This&#39;s OK!&quot;
+else:
+    return r.status_code
+</code></pre><pre><code>&lt;div style=&quot;background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;&quot;&gt;
+2. 触发器的设置&lt;/div&gt;
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/1484158/1594789179624-938bb8c2-ac15-4ece-a5f1-001563e4f08b.png#align=left&amp;display=inline&amp;height=282&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=583&amp;originWidth=1250&amp;size=50598&amp;status=done&amp;style=none&amp;width=605)
+
+### 阿里云serverless
+记录一下Hexo自动化部署过程中阿里云平台的原函数配置的python代码
+&lt;div style=&quot;background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;&quot;&gt;
+- python2.7&lt;/div&gt;
+```python
+# -*- coding: utf-8 -*-
+import logging
+import requests
+
+# To enable the initializer feature (https://help.aliyun.com/document_detail/158208.html)
+# please implement the initializer function as below：
+# def initializer(context):
+#   logger = logging.getLogger()
+#   logger.info(&#39;initializing&#39;)
+
+def handler(event, context):
+#   logger = logging.getLogger()
+#   logger.info(&#39;hello world&#39;)
+#   return &#39;hello world&#39;
+    r = requests.post(&quot;https://api.github.com/repos/wztlink1013/blog-source/dispatches&quot;,
+    json={&#39;event_type&#39;: &quot;run-it&quot;},
+    headers = {&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
+              &#39;Content-Type&#39;: &#39;application/json&#39;,
+              &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
+              &#39;Authorization&#39;: &#39;token f43964836a33dce4385bc303c8c20adc1bd52194&#39;})
+
+    if r.status_code == 204:
+        return &quot;This&#39;s OK!&quot;
+    else:
+        return r.status_code
+# # -*- coding: utf8 -*-
+# import requests
+
+# def main_handler(event, context):
+#     r = requests.post(&quot;https://api.github.com/repos/wztlink1013/blog-source/dispatches&quot;,
+#     json={&#39;event_type&#39;: &quot;run-it&quot;},
+#     headers = {&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
+#               &#39;Content-Type&#39;: &#39;application/json&#39;,
+#               &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
+#               &#39;Authorization&#39;: &#39;token 144a87bde62ff1cf30dc18880787917bc7865417&#39;})
+
+#     if r.status_code == 204:
+#         return &quot;This&#39;s OK!&quot;
+#     else:
+#         return r.status_code
+</code></pre><p><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;"></div></p>
+<ul>
+<li>python3<br><code>`</code>python<h1 id="coding-utf-8"><a href="#coding-utf-8" class="headerlink" title="-- coding: utf-8 --"></a>-<em>- coding: utf-8 -</em>-</h1></li>
+</ul>
+<p>import logging<br>import requests<br>OK = b’ok\n’</p>
+<p>def handler(environ, start_response):<br>status = ‘200 OK’<br>response_headers = [(‘Content-type’, ‘text/plain’)]<br>sync_yuque()<br>start_response(status, response_headers)<br>return [OK]</p>
+<p>def sync_yuque():<br>requests.post(“<a href="https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;" target="_blank" rel="noopener">https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;</a>,<br>json={‘event_type’: “run-it”},<br>headers={“User-Agent”:’curl/7.52.1’,<br>‘Content-Type’: ‘application/json’,<br>‘Accept’: ‘application/vnd.github.everest-preview+json’,<br>‘Authorization’: ‘token f43964836a33dce4385bc303c8c20adc1bd52194’})</p>
+<pre><code>&lt;div style=&quot;background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;&quot;&gt;
+- 触发器配置&lt;/div&gt;
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/1484158/1608448464729-f5e542f2-0a6e-4817-bd93-b8cf6f67b8fa.png#align=left&amp;display=inline&amp;height=95&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=190&amp;originWidth=1547&amp;size=28534&amp;status=done&amp;style=stroke&amp;width=773.5)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/1484158/1608448488925-30baf354-0b23-490c-8b05-4b054ca1b868.png#align=left&amp;display=inline&amp;height=399&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=798&amp;originWidth=1045&amp;size=52872&amp;status=done&amp;style=stroke&amp;width=522.5)
+
+### Vercel的serverless
+
+- [https://github.com/wztlink1013/yuque-github-api](https://github.com/wztlink1013/yuque-github-api)
+
+## 四、语雀云端的配置
+在所需要拉取的仓库中webhook中填入云函数所留下的那串网址，勾选所需要触发的选项即可。
+![image.png](https://cdn.nlark.com/yuque/0/2021/png/1484158/1610002554569-c1487bca-1b0f-4334-86a9-7ac062cf5a44.png#align=left&amp;display=inline&amp;height=291&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=581&amp;originWidth=1084&amp;size=52514&amp;status=done&amp;style=stroke&amp;width=542)
+
+## 参考
+
+- [yuque-hexo开发仓库](https://github.com/x-cold/yuque-hexo)
+- [Hexo：语雀云端写作，Github Actions持续集成](https://www.zhwei.cn/hexo-github-actions-yuque/)
+- [Hexo 博客终极玩法：云端写作，自动部署](https://segmentfault.com/a/1190000017797561)
+- [阿里云云函数使用用户](https://www.xiayinchang.top/post/b2362878.html)
+- [[原创]自动同步语雀文档到你的hexo博客](https://bbs.pediy.com/thread-260866.htm)
+- [https://github.com/Zfour/yuque_vercel_webhook_api](https://github.com/Zfour/yuque_vercel_webhook_api)
+</code></pre>]]></content>
+      <categories>
+        <category>Hexo</category>
       </categories>
   </entry>
   <entry>
