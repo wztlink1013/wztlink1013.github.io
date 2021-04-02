@@ -1,127 +1,189 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>pandas基本知识 | 尼采般地抒情</title>
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
-  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
-  <meta name="email" content="wztlink1013@163.com">
-  <meta name="description" content="Pandas数据结构、一些常用函数使用总结">
-  <meta name="keywords" content="吴祖涛,技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="pandas基本知识 | 尼采般地抒情">
-  <meta property="og:url" content="https://www.wztlink1013.com/blog/li8bkt/">
-  <meta property="og:site_name" content="pandas基本知识">
-  <meta property="og:description" content="Pandas数据结构、一些常用函数使用总结">
-  <meta name="generator" content="https://hexo.io" />
-  <!-- 文档兼容模式的定义 -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长 -->
-  <meta name="baidu-site-verification" content="code-9Tb9dMy4Ja" /> 
-  <!-- 谷歌站长 -->
-  <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- 搜狗站长 -->
-  <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
-  <link href="https://www.wztlink1013.comhttps://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" rel="apple-touch-icon-precomposed">
-  <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
-  <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
-  <link rel="prev" href="https://www.wztlink1013.com/blog/nfqdqf/" title="Pandas使用——各种索引" />
-  <link rel="next" href="https://www.wztlink1013.com/blog/mk2z96/" title="Numpy库使用总结" />
-  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
-  <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
-  <!-- 引入整体样式 -->
-  <link rel="stylesheet" href="/public/css/style.css?v=20210315">
-  <link rel="stylesheet" href="/public/css/font-awesome.min.css?v=20210315">
-  <!-- 引入highlight样式 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
-  <!-- 引入valine所需js -->
-  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <!-- twikoo评论 -->
-  <script>AV.initialize("X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz", "eLj5sRf1iOMf8SL8me8IJtdM");</script>
-  <!-- 百度统计 -->
-  <script>
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-  <!-- 域名重定向 -->
-  <script>
-    if(window.location.host=="wztlink1013.com"){
-      window.location='https://www.wztlink1013.com/'
-    }
-  </script>
-  <!-- 解决语雀图片不显示 -->
-  <meta name="referrer" content="no-referrer" />
+    <meta charset="UTF-8">
+    <title>pandas基本知识 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="Pandas数据结构、一些常用函数使用总结">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="pandas基本知识 | 尼采般地抒情">
+    <meta property="og:url" content="http://localhost:4000/blog/li8bkt/">
+    <meta property="og:site_name" content="pandas基本知识 | 尼采般地抒情">
+    <meta property="og:description" content="Pandas数据结构、一些常用函数使用总结">
+    <meta name="generator" content="https://hexo.io" />
+    <link rel="start" href="http://localhost:4000/blog/" title="尼采般地抒情" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入百度统计（第一个script标签） -->
+    <script src="https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b"></script>
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
     
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入预先加载的js脚本 -->
+    
+<script src="/public/js/advance.js"></script>
+
 </head>
-
-
 <body>
-  <div class="rainbow">
-    
-  </div>
-  
-  <div class="container">
-  <!-- TODO: 搜索栏 -->
-  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
-  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
-  <i class="fa fa-search" aria-hidden="true" title="点击进入 Google 搜索"></i>
-  <div id="local-search-result" class="local-search-result-cls"></div>
-</span>
-  <div class="article" itemscope itemtype="http://schema.org/Article">
-    <div class="post">
-      <!-- TODO: 文章最顶部的导航 -->
-      <div class="bread">
-        <a href="/">尼采般地抒情</a> »
-        <a href="/blog/">博客</a> »
-        
-	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+    <div class="bg-color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_search">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    侧边栏
+</div>
 
 
-      </div>
-      <!-- TODO: 头像+文章大标题 -->
-      <div class="post-title-wrapper">
-        <h1 class="post-title" itemprop="name">pandas基本知识</h1>
-        <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
-      </div>
-      <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
-      <div class="post-info">
-        <span>作者: <a href="/">尼采般地抒情</a></span>
-        <span>
-          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 08:18:03</time>
-          <span class="aria-readonly">本文发布时间为2020年02月10日08时18分03秒</span>
-        </span>
-        <span>分类: 
-	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
-
-</span>
-        <span tabindex="0" aria-hidden="true">标签: </span>
-        <span class="aria-readonly">下面是正文内容</span>
-        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
-                      class="ds-thread-count hash-to-comments disqus-comment-count"
-                      data-thread-key="blog/li8bkt"
-                      data-disqus-identifier="blog/li8bkt"
-                      id="changyan_count_unit"></a></span>
-        <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
-        <!-- TODO: valine文章计数 -->
-        <span id="/blog/li8bkt/" class="leancloud_visitors" data-flag-title="pandas基本知识">
-          <em class="post-meta-item-text">阅读量: </em>
-          <i class="leancloud-visitors-count">loading</i>
-        </span>
-      </div>
-      <!-- TODO: 防爬虫不注明出处+文章内容 -->
-      <div class="post-content" itemprop="articleBody">
-        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
-          <p>原文地址：<a href="https://www.wztlink1013.com/blog/li8bkt/">https://www.wztlink1013.com/blog/li8bkt/</a>，<a href="https://www.wztlink1013.com/blog/li8bkt/#comments">参与评论</a></p>
-          <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
+<div class="global_button">
+    <div class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" style="border-bottom: 0">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Pandas-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">一、Pandas 数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Series"><span class="toc-text">Series</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DataFrame"><span class="toc-text">DataFrame</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Index"><span class="toc-text">Index</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Pandas-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">二、Pandas 数据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E6%80%BB%E7%BB%93"><span class="toc-text">常用函数总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E5%BA%94%E7%94%A8"><span class="toc-text">匿名函数应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F"><span class="toc-text">排序</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-        <h2 id="一、Pandas-数据结构"><a href="#一、Pandas-数据结构" class="headerlink" title="一、Pandas 数据结构"></a>一、Pandas 数据结构</h2><pre><code class="python">import pandas as pd
+        <div class="search_close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+
+<div class="container">
+    <div class="ct_left">
+        <div class="component blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+    <!-- <div class="blogger_right">
+        <ul>
+            <li><i class="fa fa-github" aria-hidden="true"></i></li>
+            <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+            <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+        </ul>
+    </div> -->
+</div>
+
+        <div class="component board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            主题：hexo-theme-lyrics<hr>
+            作者:尼采般地抒情
+        </p>
+
+    </div>
+</div>
+        <div class="component links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a target="_blank" rel="noopener" href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+        <div class="component web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>141 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+        <span id="webinfo-runtime-count" publish_date="01/04/2020 21:34:09"></span>
+    </div>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>pandas基本知识</h1>
+    </div>
+    <div class="article_meta_other">
+        作者: <span><a href="/">尼采般地抒情</a></span>
+        时间：<time>2020-02-10 08:18:03</time>
+        分类：
+            
+                    <span>
+                        <a href="/categories/DataAnalysis">
+                            DataAnalysis
+                        </a>
+                    </span>
+                     
+        标签：
+             
+        文章访问量：<span id="twikoo_visitors">loading</span>
+        文章评论数：<span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="一、Pandas-数据结构"><a href="#一、Pandas-数据结构" class="headerlink" title="一、Pandas 数据结构"></a>一、Pandas 数据结构</h2><pre><code class="python">import pandas as pd
 </code></pre>
 <h3 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h3><blockquote>
 <ol>
@@ -139,7 +201,8 @@ print(ser_obj)
 3    16
 4    18
 dtype: int64
-</code></pre><pre><code class="python"># 获取数据
+</code></pre>
+<pre><code class="python"># 获取数据
 print (ser_obj.values)
 
 # 获取索引
@@ -156,12 +219,13 @@ RangeIndex(start=0, stop=5, step=1)
 1    12
 2    14
 dtype: int64
-</code></pre><blockquote>
+</code></pre>
+<blockquote>
 <ol start="2">
 <li>通过 dict 构建 Series</li>
 </ol>
 </blockquote>
-<pre><code class="python">year_data = {2001: 17.8, 2002: 20.1, 2003: 16.5,2004:324,2423:243}
+<pre><code class="python">year_data = &#123;2001: 17.8, 2002: 20.1, 2003: 16.5,2004:324,2423:243&#125;
 ser_obj2 = pd.Series(year_data)
 print (ser_obj2.head(2))
 print (ser_obj2.index)
@@ -177,7 +241,8 @@ Int64Index([2001, 2002, 2003, 2004, 2423], dtype=&#39;int64&#39;)
 2004    324.0
 2423    243.0
 dtype: float64
-</code></pre><pre><code class="python"># name属性【【【【【出问题了！！！】】】】】
+</code></pre>
+<pre><code class="python"># name属性【【【【【出问题了！！！】】】】】
 ser_obj2.name = &#39;钱&#39;
 ser_obj2.index.name = &#39;year&#39;
 print (ser_obj2.head())
@@ -189,7 +254,8 @@ print (ser_obj2.head())
 2004    324.0
 2423    243.0
 Name: 钱, dtype: float64
-</code></pre><h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><blockquote>
+</code></pre>
+<h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><blockquote>
 <ol>
 <li>通过 ndarray 构建 DataFrame</li>
 </ol>
@@ -220,18 +286,19 @@ print(df_obj.sort_values(by=&#39;a&#39;, ascending=False))
 4  0.438059  0.903001  0.007307  0.682037
 0  0.234965  0.922584  0.364475  0.526347
 2  0.212146  0.571487  0.594961  0.494907
-</code></pre><blockquote>
+</code></pre>
+<blockquote>
 <ol start="2">
 <li>通过 dict 构建 DataFrame</li>
 </ol>
 </blockquote>
 <pre><code class="python">#一个键值对就相当于一列！！但是具体到字典里面的值所用到的一些函数还是不能很清楚
-dict_data = {&#39;A&#39;: 1.,
+dict_data = &#123;&#39;A&#39;: 1.,
              &#39;B&#39;: pd.Timestamp(&#39;20161217&#39;),
              &#39;C&#39;: pd.Series(1, index=list(range(4)),dtype=&#39;float32&#39;),
              &#39;D&#39;: np.array([3] * 4,dtype=&#39;int32&#39;),
              &#39;E&#39; : pd.Categorical([&quot;Python&quot;,&quot;Java&quot;,&quot;C++&quot;,&quot;C#&quot;]),
-             &#39;F&#39; : &#39;ChinaHadoop&#39; }
+             &#39;F&#39; : &#39;ChinaHadoop&#39; &#125;
 df_obj2 = pd.DataFrame(dict_data)
 print (df_obj2.head())
 </code></pre>
@@ -240,7 +307,8 @@ print (df_obj2.head())
 1  1.0 2016-12-17  1.0  3    Java  ChinaHadoop
 2  1.0 2016-12-17  1.0  3     C++  ChinaHadoop
 3  1.0 2016-12-17  1.0  3      C#  ChinaHadoop
-</code></pre><pre><code class="python"># 增加列
+</code></pre>
+<pre><code class="python"># 增加列
 df_obj2[&#39;G&#39;] = df_obj2[&#39;D&#39;] + 4
 print (df_obj2.head())
 xxx = pd.DataFrame(df_obj2,columns=[&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;],index=[0,1,2,3,4])
@@ -257,7 +325,8 @@ print(xxx)
 2  1.0 2016-12-17  1.0  3.0     C++  ChinaHadoop  7.0 NaN
 3  1.0 2016-12-17  1.0  3.0      C#  ChinaHadoop  7.0 NaN
 4  NaN        NaT  NaN  NaN     NaN          NaN  NaN NaN
-</code></pre><h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><pre><code class="python">print (type(ser_obj.index))
+</code></pre>
+<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><pre><code class="python">print (type(ser_obj.index))
 print (type(df_obj2.index))
 
 print (df_obj2.index)
@@ -265,7 +334,8 @@ print (df_obj2.index)
 <pre><code>&lt;class &#39;pandas.core.indexes.range.RangeIndex&#39;&gt;
 &lt;class &#39;pandas.core.indexes.numeric.Int64Index&#39;&gt;
 Int64Index([0, 1, 2, 3], dtype=&#39;int64&#39;)
-</code></pre><pre><code class="python"># 索引对象不可变
+</code></pre>
+<pre><code class="python"># 索引对象不可变
 df_obj2.index[0] = 2
 </code></pre>
 <pre><code>---------------------------------------------------------------------------
@@ -286,19 +356,22 @@ TypeError                                 Traceback (most recent call last)
 
 
 TypeError: Index does not support mutable operations
-</code></pre><h2 id="二、Pandas-数据操作"><a href="#二、Pandas-数据操作" class="headerlink" title="二、Pandas 数据操作"></a>二、Pandas 数据操作</h2><h3 id="常用函数总结"><a href="#常用函数总结" class="headerlink" title="常用函数总结"></a>常用函数总结</h3><blockquote>
-<p>·shape   获取数据的尺寸</p>
+</code></pre>
+<h2 id="二、Pandas-数据操作"><a href="#二、Pandas-数据操作" class="headerlink" title="二、Pandas 数据操作"></a>二、Pandas 数据操作</h2><h3 id="常用函数总结"><a href="#常用函数总结" class="headerlink" title="常用函数总结"></a>常用函数总结</h3><blockquote>
+<p>·shape   获取数据的尺寸</p>
 </blockquote>
 <pre><code> 获得df的size：df.shape
  获得df中的行数：df.shape[0]
  获得df中的列数： df.shape[1]
  获得行索引信息：df.index
  获得列索引信息：df.colomns
-</code></pre><blockquote>
-<p>·values   获得 df 中的值===中文没用</p>
+</code></pre>
+<blockquote>
+<p>·values   获得 df 中的值===中文没用</p>
 </blockquote>
 <pre><code>df.values === 以列表的形式展现出来，去除了索引===dataframe类型数据转换成array类型
-</code></pre><blockquote>
+</code></pre>
+<blockquote>
 <p>·setindex 和 resetindex</p>
 </blockquote>
 <pre><code>reset_index可以还原索引，从新变为默认的整型索引
@@ -308,16 +381,19 @@ TypeError: Index does not support mutable operations
 set_index方法，设置单索引和复合索引抑或是添加索引。
     DataFrame.set_index(keys, drop=True, append=False, inplace=False, verify_integrity=False)
     append添加新索引，drop为False，inplace为True时，索引将会还原为列
-</code></pre><blockquote>
+</code></pre>
+<blockquote>
 <p>·iterrows（）遍历 DataFrame 中的数据</p>
 </blockquote>
 <pre><code>for index,row in df.iterrows():
-</code></pre><blockquote>
+</code></pre>
+<blockquote>
 <p>·split(sep,n,expand=false)</p>
 </blockquote>
 <pre><code>sep表示用于分割的字符；n表格分割成多少列；expand表示是否展开为数据款，True输出Series，False输出Dataframe。
 字段拆分：是指按照固定的字符，拆分已有字符串
-</code></pre><pre><code class="python">import pandas as pd
+</code></pre>
+<pre><code class="python">import pandas as pd
 import numpy as np
 </code></pre>
 <h3 id="匿名函数应用"><a href="#匿名函数应用" class="headerlink" title="匿名函数应用"></a>匿名函数应用</h3><pre><code class="python"># Numpy ufunc 函数
@@ -338,7 +414,8 @@ print (np.abs(df))
 2  0.349443  2.032110  0.075995  0.966725
 3  1.631192  1.051390  1.767981  0.366663
 4  0.786178  0.335846  0.797992  0.931216
-</code></pre><pre><code class="python"># 使用apply应用行或列数据
+</code></pre>
+<pre><code class="python"># 使用apply应用行或列数据
 f = lambda x : x.max()
 print (df.apply(f))
 </code></pre>
@@ -347,7 +424,8 @@ print (df.apply(f))
 2    0.075995
 3   -0.361348
 dtype: float64
-</code></pre><pre><code class="python"># 指定轴方向
+</code></pre>
+<pre><code class="python"># 指定轴方向
 print (df.apply(f, axis=1))
 </code></pre>
 <pre><code>0    0.624016
@@ -356,7 +434,8 @@ print (df.apply(f, axis=1))
 3   -0.366663
 4   -0.335846
 dtype: float64
-</code></pre><pre><code class="python"># 使用applymap应用到每个数据
+</code></pre>
+<pre><code class="python"># 使用applymap应用到每个数据
 f2 = lambda x : &#39;%.2f&#39; % x
 print (df.applymap(f2))
 </code></pre>
@@ -366,7 +445,8 @@ print (df.applymap(f2))
 2  -0.35  -2.03   0.08  -0.97
 3  -1.63  -1.05  -1.77  -0.37
 4  -0.79  -0.34  -0.80  -0.93
-</code></pre><h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><pre><code class="python">s4 = pd.Series(range(10, 15), index = np.random.randint(5, size=5))
+</code></pre>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><pre><code class="python">s4 = pd.Series(range(10, 15), index = np.random.randint(5, size=5))
 print (s4)
 </code></pre>
 <pre><code>4    10
@@ -375,7 +455,8 @@ print (s4)
 1    13
 1    14
 dtype: int64
-</code></pre><blockquote>
+</code></pre>
+<blockquote>
 <ol>
 <li>索引排序</li>
 </ol>
@@ -389,7 +470,8 @@ s4.sort_index()
 4    10
 4    12
 dtype: int64
-</code></pre><pre><code class="python">df4 = pd.DataFrame(np.random.randn(3, 4),
+</code></pre>
+<pre><code class="python">df4 = pd.DataFrame(np.random.randn(3, 4),
                    index=np.random.randint(3, size=3),
                    columns=np.random.randint(4, size=4))
 </code></pre>
@@ -405,8 +487,7 @@ dtype: int64
 <th>1</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>0.007031</td>
 <td>1.261990</td>
@@ -427,8 +508,7 @@ dtype: int64
 <td>0.167158</td>
 <td>-0.236129</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python">#df4.sort_index(ascending=False)
 df4.sort_index(axis=1)
 </code></pre>
@@ -442,8 +522,7 @@ df4.sort_index(axis=1)
 <th>3</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>1.261990</td>
 <td>0.176549</td>
@@ -464,8 +543,7 @@ df4.sort_index(axis=1)
 <td>-0.367051</td>
 <td>0.167158</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <blockquote>
 <ol start="2">
 <li>按值排序</li>
@@ -504,323 +582,209 @@ ValueError                                Traceback (most recent call last)
 
 ValueError: The column label &#39;1&#39; is not unique.
 </code></pre>
-      </div>
+
+</div>
+
+        <div class="component article_more">
+    <p>版权声明：署名-非商业性使用-禁止演绎 4.0 国际
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="http://localhost:4000/blog/li8bkt/">http://localhost:4000/blog/li8bkt/</a>
+    </p>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/nfqdqf/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Pandas使用——各种索引</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/mk2z96/">
+                    <b>Numpy库使用总结</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component comments" id="comments">
+    <div class="comments_title">
+        <h2>评论区</h2>
+        <!-- 转换评论按钮 -->
+        <div class="switch_comments">
+          <span>Twikoo</span>
+          <span id="switch_btn">转换</span>
+          <span>utterances</span>
+        </div>
     </div>
-    
-    <!-- TODO: 最下面的小格子 -->
-    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
-	<ul>
-		<li>作者:  <a href="/" itemprop="name">尼采般地抒情</a></li>
-		<li>发表日期:  2020-02-10 08:18:03</li>
-		<li>文章分类: 
-	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
-</li>
-		<li>文章标签: </li>
-		
-		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/li8bkt.md" download target="_blank">pandas基本知识.md</a></li> -->
-		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
-		<li>最后编辑时间: 2021-03-26 15:10:34</li>
-		<li>Feed 订阅: <a href="/rss2.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a></li>
-		<li style="opacity: 0.3; text-align: right;">
-			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/li8bkt/edit/" target="_blank" aria-hidden="true"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>；
-			网站部署：<a href="https://github.com/wztlink1013/website" target="_blank" aria-hidden="true"><i class="fa fa-cloud" aria-hidden="true"></i></a>
-		</li>
-	</ul>
-	<a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" /></a>
-</div>
-
-
-
-    <!-- TODO:  下拉菜单栏-->
-<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
-<ul role="group" aria-labelledby="i1" aria-expanded="false">
-  <li><a href="/blog/">博客</a></li>
-  <li><a href="/message/">留言</a></li>
-  <li><a href="/demo/">实验室</a></li>
-  <li><a href="/friends/">友情链接</a></li>
-</ul>
-</em>
-  </div>
-  <!-- TODO: 上一篇文章/下一篇文章 -->
-  <div class="post-relative">
-<div class="page-relative">
-  
-    <a href="/blog/nfqdqf/" class="post-prev">
-      <i class="fa fa-arrow-left" tabindex="0" aria-hidden="true"></i>
-      <span class="aria-readonly">上一篇文章</span>
-      
-        <b>Pandas使用——各种索引</b>
-      
-    </a>
-  
-  
-    <a href="/blog/mk2z96/" class="post-next">
-      <span class="aria-readonly">下一篇文章</span>
-      <b>Numpy库使用总结</b>
-      <i class="fa fa-arrow-right" tabindex="0" aria-hidden="true"></i>
-    </a>
-  
-</div>
-
-
-<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
-  
-  <a href="/blog/nfqdqf/" class="prev" title="Pandas使用——各种索引">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    
-    <b>Pandas使用——各种索引</b>
-    
-  </a>
-  
-  
-  <a href="/blog/mk2z96/" class="next" title="Numpy库使用总结">
-    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    <b>Numpy库使用总结</b>
-  </a>
-  
-</div>
-
-  </div>
-</div>
-
-<!-- TODO: 侧边栏 -->
-<!-- TODO: 文章内部左隐藏侧边栏 -->
-<div class="sidebar" tabindex="0" aria-hidden="true">
-  <!-- TODO: 上面的 -->
-  <div class="func-btns func-btns-up">
-    <span class="func-item">
-        <i class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i><span>目录</span></i>
+    <div class="comments_content">
+        <!-- utterances评论区 -->
+        <div id="utterances_comment" style="display: none;"></div>
         
-        <div>
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
-        </div>
-    </span>
 
-    <span class="func-item">
-        <i class="func-font icon"><i class="fa fa-adjust" aria-hidden="true"></i><span>夜间</span></i>
-        <div class="font-choose-box">
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <div class="font-choose bg-choose">
-            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon"><i class="fa fa-moon-o" aria-hidden="true"></i></i></a>
-            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon"><i class="fa fa-sun-o" aria-hidden="true"></i></i></a>
-          </div>
+        <!-- twikoo评论区 -->
+        <div id="twikoo_comment" style="display: block;">
+          <div id="tcomment"></div>
+          <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+          <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+          </script>
         </div>
-    </span>
 
-    <span class="func-item">
-        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon"><i class="fa fa-weibo" aria-hidden="true"></i><span>分享</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
-          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
-        </div>
-    </span>
-    <span class="func-item">
-        <i class="func-about icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i><span>关于</span></i>
-        <div>
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
-          <div id="followMeOnWeibo"></div>
-        </div>
-    </span>
-  </div>
-  <!-- TODO: 下面的 -->
-	<div class="func-btns">
 
-    <!-- TODO: 友情链接 -->
-    <span class="func-item">
-        <a href="/friends/" target="_blank"><i class="func-rss icon"><i class="fa fa-link" aria-hidden="true"></i><span>链接</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <a href="/friends/" target="_blank">友情链接</a>
-        </div>
-    </span>
-    <!-- TODO: 订阅 -->
-    <span class="func-item">
-        <a href="/rss2.xml" target="_blank"><i class="func-rss icon"><i class="fa fa-rss-square" aria-hidden="true"></i><span>订阅</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
-    </span>
-	</div>
+    </div>
+
+
 </div>
 
-<!-- TODO: 评论+相关文章+友情链接 -->
-<div class="single-page-footer">
-<!-- TODO: 页脚评论+站点信息 -->
-<div class="footer">
-	<div class="footer-wraper">
-		<div class="footer-content">
-			<div class="footer-nav">
-	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
-	   data-thread-key="blog/li8bkt"
-	   data-disqus-identifier="blog/li8bkt" 
-		 tabindex="0" aria-hidden="true">评论内容</a>
-	<a href="javascript: void(0);" id="comments">相关文章</a>
-	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component categories">
+    <h3>文章分类</h3>
+    <ul>
+        
+                <li>
+                    <a href='/categories/Hexo/'>Hexo</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Language/'>Language</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Algorithm/'>Algorithm</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataBase/'>DataBase</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Bug/'>Bug</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/MachingLearning/'>MachingLearning</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataStructure/'>DataStructure</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Environment/'>Environment</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Web/'>Web</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/PostProduction/'>PostProduction</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataAnalysis/'>DataAnalysis</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/VersionControlSystem/'>VersionControlSystem</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/SoftwareEngineering/'>SoftwareEngineering</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerNetwork/'>ComputerNetwork</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOrganization/'>ComputerOrganization</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/'>生活随笔</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOperatingSystem/'>ComputerOperatingSystem</a>
+                </li>
+            
+    </ul>
 </div>
-<div class="nav-detail">
-	<div tabindex="0">
-		
-    <div id="tcomment"></div>
-    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
-    <script>
-    twikoo.init({ 
-        envId: 'website-wikoo-4g46k8do98867542', 
-        el: '#tcomment'
-        // path: 'window.location.pathname.replace(\'blog\',\'message\')'
-    })
-    </script>
 
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul id="hot_articles_item"></ul>
+</div>
 
-	</div>
-	<div style="display:block;">
-		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
-		<div class="relative-wrapper">
-	<div class="relative-article">
-		
-		<ul>
-			<li>
-				<span><font aria-hidden="true">2020-05-29 »</font> </span>
-				<a href="/blog/delag2/">时间格式UTC、GMT、GST</a>
-				<span class="aria-readonly">发表时间为2020年05月29日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
         </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-12 »</font> </span>
-				<a href="/blog/zsvfxg/">爬虫框架和Scrapy使用</a>
-				<span class="aria-readonly">发表时间为2020年02月12日</span>
-				<div class="relative-box">
-          <a href="/blog/zsvfxg/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/webp/1484158/1598673193957-7a7456b0-3de1-4c77-b849-cc2572555ed5.webp#align=left&amp;display=inline&amp;height=281&amp;margin=%5Bobject%20Object%5D&amp;originHeight=541&amp;originWidth=801&amp;size=0&amp;status=done&amp;style=shadow&amp;width=416" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/webp/1484158/1598673193957-7a7456b0-3de1-4c77-b849-cc2572555ed5.webp#align=left&amp;display=inline&amp;height=281&amp;margin=%5Bobject%20Object%5D&amp;originHeight=541&amp;originWidth=801&amp;size=0&amp;status=done&amp;style=shadow&amp;width=416"/></a>
-          <span class="aria-readonly">文章概要 </span>一、爬虫基本架构url 管理模块就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环使用 pyt...
-        </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/kt0kvc/">数据可视化</a>
-				<span class="aria-readonly">发表时间为2020年02月10日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、GitHub Juper NoteBook 笔记https://github.com/wztli...
-        </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/oq4xcx/">Pandas使用——分组聚合</a>
-				<span class="aria-readonly">发表时间为2020年02月10日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、分组GroupBy 对象· groupedby 函数中的参数：as_index的作用：控制聚合输...
-        </div>
-			</li>
-			
-		</ul>
-	</div>
-</div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
 
-		<!-- TODO: entry_blog -->
-		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
-	</div>
-	<div class="friends-box">
-		<ul>
-			
-			<li><a href="http://www.ruanyifeng.com/home.html" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://xaoxuu.com" target="_blank">xaoxuu</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.cnblogs.com/mjios" target="_blank">小码哥MJ</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.sgyzyun.club/" target="_blank">洛尘曦</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.ccyh.xyz" target="_blank">Liam's Blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://xiamuyourenzhang.cn/" target="_blank">夏目友人帐</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://sitoi.cn/" target="_blank">Sitoi</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.cnblogs.com/zhanjiahui/" target="_blank">小圆</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://blog.webpro.ltd/" target="_blank">Bill’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://liuyib.github.io/" target="_blank">liuyib</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://crainyday.gitee.io" target="_blank">CRainyDay</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://hewanyue.com" target="_blank">没有人</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://yc9064.gitee.io/" target="_blank">Marco</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.hcode.top" target="_blank">Hcode</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://zzsnn.github.io/" target="_blank">折纸少年</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="http://zhifou.run" target="_blank">Darren</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://cndrew.cn/" target="_blank">Uncle_drew</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://cungudafa.top" target="_blank">cungudafa</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="http://hudiskoray.iicp.net:4000/" target="_blank">Jerry Huang</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://reqwey.vercel.app/" target="_blank">Linhk1606</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://modao233.gitee.io/" target="_blank">modao’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.jsonformatting.com/" target="_blank">json format</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
-		</ul>
-	</div>
+    </div>
+    <footer class="ct_footer">
+        <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
 </div>
-			<!-- TODO:  网站信息：网站最底下的信息-->
-
-<div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/" target="_blank">🧙‍♂️</a>
-	<a href='https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral' title="又拍云联盟" target='_blank'>
-		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210210101446.png' width='40' height='20'>
-	</a>
-	<span>&copy;2019-2021 
-		<small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small>
-	</span>本站 
-	<a href="/">尼采般地抒情</a> 
-	<a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
-	<a href='https://travellings.now.sh/' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai">
-		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210218094053.png' width="20" height="20">
-	</a>
+    </footer>
 </div>
-
-		</div>
-	</div>
-</div>
-<!-- 引入highlight样式 -->
-<script src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
-
-</div>
-<!-- TODO: 回到顶部 -->
-<div class="tools-wrapper" tabindex="0" aria-hidden="true">
-	<a class="gotop icon" href="#" title="回到顶部"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
-	<a class="hash-to-comments icon" title="我要评论"><i class="fa fa-commenting" aria-hidden="true"></i></a>
-	<span class="func-item">
-		<a class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i></a>
-	</span>
-	<a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song icon"><i class="fa fa-adjust" aria-hidden="true"></i></a>
-</div>
-<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
-
 
 </body>
 
-<script src="/public/js/jquery.js"></script>
-<script src="/public/js/socket.io.js"></script>
-<!-- <script src="/public/js/aplayer.js"></script> -->
-<script src="/public/js/main.js?v=20210308"></script>
+    
+<script src="/public/js/layout.js"></script>
 
+    
+<script src="/public/js/toc.js"></script>
 
+    
+<script src="/public/js/search.js"></script>
+
+    
+<script src="/public/js/go_top.js"></script>
+
+    
+<script src="/public/js/comments.js"></script>
+
+    
+<script src="/public/js/web_info.js"></script>
+
+ 
 </html>

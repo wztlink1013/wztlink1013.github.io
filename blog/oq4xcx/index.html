@@ -1,144 +1,207 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Pandas使用——分组聚合 | 尼采般地抒情</title>
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
-  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
-  <meta name="email" content="wztlink1013@163.com">
-  <meta name="description" content="Pandas分组聚合">
-  <meta name="keywords" content="吴祖涛,技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Pandas使用——分组聚合 | 尼采般地抒情">
-  <meta property="og:url" content="https://www.wztlink1013.com/blog/oq4xcx/">
-  <meta property="og:site_name" content="Pandas使用——分组聚合">
-  <meta property="og:description" content="Pandas分组聚合">
-  <meta name="generator" content="https://hexo.io" />
-  <!-- 文档兼容模式的定义 -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长 -->
-  <meta name="baidu-site-verification" content="code-9Tb9dMy4Ja" /> 
-  <!-- 谷歌站长 -->
-  <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- 搜狗站长 -->
-  <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
-  <link href="https://www.wztlink1013.comhttps://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" rel="apple-touch-icon-precomposed">
-  <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
-  <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
-  <link rel="prev" href="https://www.wztlink1013.com/blog/kt0kvc/" title="数据可视化" />
-  <link rel="next" href="https://www.wztlink1013.com/blog/nfqdqf/" title="Pandas使用——各种索引" />
-  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
-  <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
-  <!-- 引入整体样式 -->
-  <link rel="stylesheet" href="/public/css/style.css?v=20210315">
-  <link rel="stylesheet" href="/public/css/font-awesome.min.css?v=20210315">
-  <!-- 引入highlight样式 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
-  <!-- 引入valine所需js -->
-  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <!-- twikoo评论 -->
-  <script>AV.initialize("X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz", "eLj5sRf1iOMf8SL8me8IJtdM");</script>
-  <!-- 百度统计 -->
-  <script>
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-  <!-- 域名重定向 -->
-  <script>
-    if(window.location.host=="wztlink1013.com"){
-      window.location='https://www.wztlink1013.com/'
-    }
-  </script>
-  <!-- 解决语雀图片不显示 -->
-  <meta name="referrer" content="no-referrer" />
+    <meta charset="UTF-8">
+    <title>Pandas使用——分组聚合 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="Pandas分组聚合">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Pandas使用——分组聚合 | 尼采般地抒情">
+    <meta property="og:url" content="http://localhost:4000/blog/oq4xcx/">
+    <meta property="og:site_name" content="Pandas使用——分组聚合 | 尼采般地抒情">
+    <meta property="og:description" content="Pandas分组聚合">
+    <meta name="generator" content="https://hexo.io" />
+    <link rel="start" href="http://localhost:4000/blog/" title="尼采般地抒情" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入百度统计（第一个script标签） -->
+    <script src="https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b"></script>
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
     
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入预先加载的js脚本 -->
+    
+<script src="/public/js/advance.js"></script>
+
 </head>
-
-
 <body>
-  <div class="rainbow">
-    
-  </div>
-  
-  <div class="container">
-  <!-- TODO: 搜索栏 -->
-  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
-  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
-  <i class="fa fa-search" aria-hidden="true" title="点击进入 Google 搜索"></i>
-  <div id="local-search-result" class="local-search-result-cls"></div>
-</span>
-  <div class="article" itemscope itemtype="http://schema.org/Article">
-    <div class="post">
-      <!-- TODO: 文章最顶部的导航 -->
-      <div class="bread">
-        <a href="/">尼采般地抒情</a> »
-        <a href="/blog/">博客</a> »
-        
-	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
+    <div class="bg-color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_search">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    侧边栏
+</div>
 
 
-      </div>
-      <!-- TODO: 头像+文章大标题 -->
-      <div class="post-title-wrapper">
-        <h1 class="post-title" itemprop="name">Pandas使用——分组聚合</h1>
-        <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
-      </div>
-      <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
-      <div class="post-info">
-        <span>作者: <a href="/">尼采般地抒情</a></span>
-        <span>
-          <time itemprop="timeCreated" aria-hidden="true">2020-02-10 08:28:49</time>
-          <span class="aria-readonly">本文发布时间为2020年02月10日08时28分49秒</span>
-        </span>
-        <span>分类: 
-	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
-
-</span>
-        <span tabindex="0" aria-hidden="true">标签: </span>
-        <span class="aria-readonly">下面是正文内容</span>
-        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
-                      class="ds-thread-count hash-to-comments disqus-comment-count"
-                      data-thread-key="blog/oq4xcx"
-                      data-disqus-identifier="blog/oq4xcx"
-                      id="changyan_count_unit"></a></span>
-        <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
-        <!-- TODO: valine文章计数 -->
-        <span id="/blog/oq4xcx/" class="leancloud_visitors" data-flag-title="Pandas使用——分组聚合">
-          <em class="post-meta-item-text">阅读量: </em>
-          <i class="leancloud-visitors-count">loading</i>
-        </span>
-      </div>
-      <!-- TODO: 防爬虫不注明出处+文章内容 -->
-      <div class="post-content" itemprop="articleBody">
-        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
-          <p>原文地址：<a href="https://www.wztlink1013.com/blog/oq4xcx/">https://www.wztlink1013.com/blog/oq4xcx/</a>，<a href="https://www.wztlink1013.com/blog/oq4xcx/#comments">参与评论</a></p>
-          <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
+<div class="global_button">
+    <div class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" style="border-bottom: 0">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%86%E7%BB%84"><span class="toc-text">一、分组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GroupBy-%E5%AF%B9%E8%B1%A1"><span class="toc-text">GroupBy 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GroupBy-%E5%AF%B9%E8%B1%A1%E9%81%8D%E5%8E%86%E8%BF%AD%E4%BB%A3"><span class="toc-text">GroupBy 对象遍历迭代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%88%86%E7%BB%84%E6%96%B9%E6%B3%95"><span class="toc-text">其他分组方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%81%9A%E5%90%88"><span class="toc-text">二、聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E7%9A%84%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-text">内置的聚合函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-text">自定义聚合函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97"><span class="toc-text">三、分组运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E5%92%8C%E5%AF%B9%E9%BD%90"><span class="toc-text">分组和对齐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E8%AE%A1%E7%AE%97-VS-%E8%81%9A%E5%90%88%E8%BF%90%E7%AE%97"><span class="toc-text">统计计算 VS 聚合运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97"><span class="toc-text">数据分组运算</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-        <h2 id="一、分组"><a href="#一、分组" class="headerlink" title="一、分组"></a>一、分组</h2><h3 id="GroupBy-对象"><a href="#GroupBy-对象" class="headerlink" title="GroupBy 对象"></a>GroupBy 对象</h3><blockquote>
+        <div class="search_close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+
+<div class="container">
+    <div class="ct_left">
+        <div class="component blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+    <!-- <div class="blogger_right">
+        <ul>
+            <li><i class="fa fa-github" aria-hidden="true"></i></li>
+            <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+            <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+        </ul>
+    </div> -->
+</div>
+
+        <div class="component board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            主题：hexo-theme-lyrics<hr>
+            作者:尼采般地抒情
+        </p>
+
+    </div>
+</div>
+        <div class="component links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a target="_blank" rel="noopener" href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+        <div class="component web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>141 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+        <span id="webinfo-runtime-count" publish_date="01/04/2020 21:34:09"></span>
+    </div>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Pandas使用——分组聚合</h1>
+    </div>
+    <div class="article_meta_other">
+        作者: <span><a href="/">尼采般地抒情</a></span>
+        时间：<time>2020-02-10 08:28:49</time>
+        分类：
+            
+                    <span>
+                        <a href="/categories/DataAnalysis">
+                            DataAnalysis
+                        </a>
+                    </span>
+                     
+        标签：
+             
+        文章访问量：<span id="twikoo_visitors">loading</span>
+        文章评论数：<span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="一、分组"><a href="#一、分组" class="headerlink" title="一、分组"></a>一、分组</h2><h3 id="GroupBy-对象"><a href="#GroupBy-对象" class="headerlink" title="GroupBy 对象"></a>GroupBy 对象</h3><blockquote>
 <p>· groupedby 函数中的参数：</p>
 </blockquote>
 <pre><code>as_index的作用：控制聚合输出是否以组标签为索引值，默认为True，就是分层次的索引，若为False多加一列默认索引索引，相当于非其他数据排序好了。
 但是这两组标签索引值不同有什么作用呢？=== 作用就是，根据的一列是否为索引列。
 sort_values的作用：对选定的一列数值数据从上往下从小到大进行排序（如果传值没成功===设置本体覆盖，传值覆盖）
-</code></pre><pre><code class="python">import pandas as pd
+</code></pre>
+<pre><code class="python">import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pyplot
 %matplotlib inline
 </code></pre>
-<pre><code class="python">dict_obj = {&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
+<pre><code class="python">dict_obj = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
                       &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
             &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,
                       &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
             &#39;data1&#39;: np.random.randn(8),
-            &#39;data2&#39;: np.random.randn(8)}
+            &#39;data2&#39;: np.random.randn(8)&#125;
 df_obj = pd.DataFrame(dict_obj)
 print (df_obj)
 </code></pre>
@@ -151,7 +214,8 @@ print (df_obj)
 5    b    two -0.200124 -1.562237
 6    a    one  1.539144 -0.758716
 7    a  three  0.385845  0.074309
-</code></pre><pre><code class="python">&#39;&#39;&#39;1. dataframe根据key2进行分组&#39;&#39;&#39;
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;1. dataframe根据key2进行分组&#39;&#39;&#39;
 print(df_obj.groupby(&#39;key2&#39;)[&#39;key1&#39;].count())
 
 print (type(df_obj.groupby(&#39;key1&#39;)))
@@ -163,11 +227,13 @@ three    2
 two      3
 Name: key1, dtype: int64
 &lt;class &#39;pandas.core.groupby.generic.DataFrameGroupBy&#39;&gt;
-</code></pre><pre><code class="python">&#39;&#39;&#39;2. 指定列根据key1进行分组&#39;&#39;&#39;
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;2. 指定列根据key1进行分组&#39;&#39;&#39;
 print (type(df_obj[&#39;data1&#39;].groupby(df_obj[&#39;key1&#39;])))
 </code></pre>
 <pre><code>&lt;class &#39;pandas.core.groupby.generic.SeriesGroupBy&#39;&gt;
-</code></pre><pre><code class="python"># 分组运算
+</code></pre>
+<pre><code class="python"># 分组运算
 grouped1 = df_obj.groupby(&#39;key1&#39;,as_index=False)
 print (grouped1.mean())
 
@@ -181,7 +247,8 @@ key1
 a    0.709792
 b   -0.244746
 Name: data1, dtype: float64
-</code></pre><pre><code class="python">&#39;&#39;&#39;3. 按自定义key分组，列表&#39;&#39;&#39;
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;3. 按自定义key分组，列表&#39;&#39;&#39;
 self_def_key = [1, 1, 2, 2, 2, 1, 1, 1]
 df_obj.groupby(self_def_key).mean()
 </code></pre>
@@ -193,8 +260,7 @@ df_obj.groupby(self_def_key).mean()
 <th>data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>1</td>
 <td>0.116853</td>
 <td>-0.338455</td>
@@ -204,8 +270,7 @@ df_obj.groupby(self_def_key).mean()
 <td>0.743484</td>
 <td>-0.661761</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python">df_obj
 </code></pre>
 <table>
@@ -218,8 +283,7 @@ df_obj.groupby(self_def_key).mean()
 <th>data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>a</td>
 <td>one</td>
@@ -275,8 +339,7 @@ df_obj.groupby(self_def_key).mean()
 <td>0.385845</td>
 <td>0.074309</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python">&#39;&#39;&#39;4. 按多个列多层分组 = = = 通过列表&#39;&#39;&#39;
 grouped2 = df_obj.groupby([&#39;key1&#39;, &#39;key2&#39;],as_index=False)
 print (grouped2.mean())
@@ -300,7 +363,8 @@ a    one    0.695766 -0.553401
 b    one   -0.992986  0.902458
      three  0.458871 -1.895392
      two   -0.200124 -1.562237
-</code></pre><pre><code class="python"># 多层分组按key的顺序进行===和上面的asindex作用一样，把所选取的列数据当成索引，这才是区别之处
+</code></pre>
+<pre><code class="python"># 多层分组按key的顺序进行===和上面的asindex作用一样，把所选取的列数据当成索引，这才是区别之处
 grouped3 = df_obj.groupby([&#39;key2&#39;, &#39;key1&#39;])
 print (grouped3.mean())
 print (&#39;=============================================&#39;)
@@ -322,10 +386,12 @@ key2
 one    0.695766 -0.992986 -0.553401  0.902458
 three  0.385845  0.458871  0.074309 -1.895392
 two    0.885791 -0.200124 -0.044945 -1.562237
-</code></pre><h3 id="GroupBy-对象遍历迭代"><a href="#GroupBy-对象遍历迭代" class="headerlink" title="GroupBy 对象遍历迭代"></a>GroupBy 对象遍历迭代</h3><pre><code class="python">grouped1
+</code></pre>
+<h3 id="GroupBy-对象遍历迭代"><a href="#GroupBy-对象遍历迭代" class="headerlink" title="GroupBy 对象遍历迭代"></a>GroupBy 对象遍历迭代</h3><pre><code class="python">grouped1
 </code></pre>
 <pre><code>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x000001AF5B5F9088&gt;
-</code></pre><pre><code class="python"># 单层分组
+</code></pre>
+<pre><code class="python"># 单层分组
 print(grouped1.head(5))
 print(&quot;------------------------------------分割线------------------------------------------&quot;)
 for group_name, group_data in grouped1:
@@ -354,7 +420,8 @@ b
 3    0.458871
 5   -0.200124
 Name: data1, dtype: float64
-</code></pre><pre><code class="python"># 多层分组
+</code></pre>
+<pre><code class="python"># 多层分组
 for group_name, group_data in grouped2:
     print (group_name)
     print (group_data)
@@ -379,7 +446,8 @@ for group_name, group_data in grouped2:
 (&#39;b&#39;, &#39;two&#39;)
   key1 key2     data1     data2
 5    b  two -0.200124 -1.562237
-</code></pre><pre><code class="python"># GroupBy对象转换list
+</code></pre>
+<pre><code class="python"># GroupBy对象转换list
 print(grouped1.mean())
 list(grouped1)
 </code></pre>
@@ -400,10 +468,11 @@ list(grouped1)
   1    b    one -0.992986  0.902458
   3    b  three  0.458871 -1.895392
   5    b    two -0.200124 -1.562237)]
-</code></pre><pre><code class="python"># GroupBy对象转换dict
+</code></pre>
+<pre><code class="python"># GroupBy对象转换dict
 dict(list(grouped1))
 </code></pre>
-<pre><code>{&#39;a&#39;:   key1   key2     data1     data2
+<pre><code>&#123;&#39;a&#39;:   key1   key2     data1     data2
  0    a    one -0.147612 -0.348087
  2    a    two  0.547541 -0.310040
  4    a    two  1.224041  0.220150
@@ -411,8 +480,9 @@ dict(list(grouped1))
  7    a  three  0.385845  0.074309, &#39;b&#39;:   key1   key2     data1     data2
  1    b    one -0.992986  0.902458
  3    b  three  0.458871 -1.895392
- 5    b    two -0.200124 -1.562237}
-</code></pre><pre><code class="python"># 按列分组
+ 5    b    two -0.200124 -1.562237&#125;
+</code></pre>
+<pre><code class="python"># 按列分组
 print (df_obj.dtypes)
 
 # 按数据类型分组
@@ -424,7 +494,8 @@ key2      object
 data1    float64
 data2    float64
 dtype: object
-</code></pre><h3 id="其他分组方法"><a href="#其他分组方法" class="headerlink" title="其他分组方法"></a>其他分组方法</h3><ol>
+</code></pre>
+<h3 id="其他分组方法"><a href="#其他分组方法" class="headerlink" title="其他分组方法"></a>其他分组方法</h3><ol>
 <li>其实列表也是分组的一种方式<br>===用到列表时候，一般都是多层索引了</li>
 </ol>
 <pre><code class="python">df_obj2 = pd.DataFrame(np.random.randint(1, 10, (5,5)),
@@ -441,7 +512,8 @@ df_obj2
 See the documentation here:
 http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#ix-indexer-is-deprecated
   after removing the cwd from sys.path.
-</code></pre><table>
+</code></pre>
+<table>
 <thead>
 <tr>
 <th></th>
@@ -452,8 +524,7 @@ http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#ix-indexer-
 <th>e</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>A</td>
 <td>4</td>
 <td>2.0</td>
@@ -493,13 +564,12 @@ http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#ix-indexer-
 <td>2.0</td>
 <td>1</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ol>
 <li>通过字典分组</li>
 </ol>
 <pre><code class="python"># 通过字典分组
-mapping_dict = {&#39;A&#39;:&#39;python&#39;, &#39;B&#39;:&#39;python&#39;, &#39;C&#39;:&#39;java&#39;, &#39;D&#39;:&#39;C&#39;, &#39;E&#39;:&#39;java&#39;}
+mapping_dict = &#123;&#39;A&#39;:&#39;python&#39;, &#39;B&#39;:&#39;python&#39;, &#39;C&#39;:&#39;java&#39;, &#39;D&#39;:&#39;C&#39;, &#39;E&#39;:&#39;java&#39;&#125;
 #df_obj2.groupby(mapping_dict, axis=1).size()
 #df_obj2.groupby(mapping_dict, axis=1).count() # 非NaN的个数
 print(df_obj2.groupby(mapping_dict, axis=0).sum())
@@ -508,7 +578,8 @@ print(df_obj2.groupby(mapping_dict, axis=0).sum())
 C       9  5.0   6.0  5.0   9
 java    6  4.0  14.0  8.0   4
 python  9  2.0   6.0  5.0  15
-</code></pre><ol start="2">
+</code></pre>
+<ol start="2">
 <li>通过函数分组</li>
 </ol>
 <pre><code class="python"># 通过函数分组
@@ -533,7 +604,8 @@ df_obj3.groupby(group_key).size()
 2    3
 3    1
 dtype: int64
-</code></pre><ol start="3">
+</code></pre>
+<ol start="3">
 <li>通过层级索引级别分组</li>
 </ol>
 <pre><code class="python"># 通过索引级别分组
@@ -553,8 +625,7 @@ df_obj4
 <th>Python</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>index</td>
 <td>A</td>
 <td>A</td>
@@ -602,8 +673,7 @@ df_obj4
 <td>6</td>
 <td>6</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python"># 根据language进行分组
 df_obj4.groupby(level=&#39;language&#39;, axis=1).sum()
 df_obj4.groupby(level=&#39;index&#39;, axis=1).sum()
@@ -617,8 +687,7 @@ df_obj4.groupby(level=&#39;index&#39;, axis=1).sum()
 <th>C</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>10</td>
 <td>12</td>
@@ -648,14 +717,13 @@ df_obj4.groupby(level=&#39;index&#39;, axis=1).sum()
 <td>11</td>
 <td>6</td>
 </tr>
-</tbody>
-</table>
-<h2 id="二、聚合"><a href="#二、聚合" class="headerlink" title="二、聚合"></a>二、聚合</h2><pre><code class="python">dict_obj = {&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
+</tbody></table>
+<h2 id="二、聚合"><a href="#二、聚合" class="headerlink" title="二、聚合"></a>二、聚合</h2><pre><code class="python">dict_obj = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
                       &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
             &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,
                       &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
             &#39;data1&#39;: np.random.randint(1,10, 8),
-            &#39;data2&#39;: np.random.randint(1,10, 8)}
+            &#39;data2&#39;: np.random.randint(1,10, 8)&#125;
 df_obj5 = pd.DataFrame(dict_obj)
 print (df_obj5)
 </code></pre>
@@ -668,7 +736,8 @@ print (df_obj5)
 5    b    two      3      3
 6    a    one      1      1
 7    a  three      2      6
-</code></pre><h3 id="内置的聚合函数"><a href="#内置的聚合函数" class="headerlink" title="内置的聚合函数"></a>内置的聚合函数</h3><pre><code class="python">df_obj5
+</code></pre>
+<h3 id="内置的聚合函数"><a href="#内置的聚合函数" class="headerlink" title="内置的聚合函数"></a>内置的聚合函数</h3><pre><code class="python">df_obj5
 </code></pre>
 <table>
 <thead>
@@ -680,8 +749,7 @@ print (df_obj5)
 <th>data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>a</td>
 <td>one</td>
@@ -737,8 +805,7 @@ print (df_obj5)
 <td>2</td>
 <td>6</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python"># 内置的聚合函数
 #print (df_obj5.groupby(&#39;key1&#39;).sum())
 #print (df_obj5.groupby(&#39;key1&#39;).max())
@@ -766,7 +833,8 @@ b       6.0  5.333333
 
 
 &#39;\ncount：分组中非NA的值\nstd：标准差\nvar：方差\nmedian：非NA中的中位数\nmean：非NA的平均值\n25%||50%||75%是什么意思==不造？\n&#39;
-</code></pre><h3 id="自定义聚合函数"><a href="#自定义聚合函数" class="headerlink" title="自定义聚合函数"></a>自定义聚合函数</h3><pre><code class="python"># 自定义聚合函数
+</code></pre>
+<h3 id="自定义聚合函数"><a href="#自定义聚合函数" class="headerlink" title="自定义聚合函数"></a>自定义聚合函数</h3><pre><code class="python"># 自定义聚合函数
 def peak_range(df):
     &quot;&quot;&quot;
         返回数值范围
@@ -782,7 +850,8 @@ print (df_obj5.groupby(&#39;key1&#39;).agg(peak_range))
 key1
 a         8      5
 b         6      4
-</code></pre><ol start="3">
+</code></pre>
+<ol start="3">
 <li>同时应用多个聚合函数：agg</li>
 </ol>
 <pre><code class="python"># 同时应用多个聚合函数：agg
@@ -793,24 +862,27 @@ print (df_obj.groupby(&#39;key1&#39;).agg([&#39;mean&#39;, &#39;std&#39;, &#39;c
 key1
 a     0.709792  0.674293     5 -0.224477  0.385674     5
 b    -0.244746  0.726957     3 -0.851723  1.528271     3
-</code></pre><pre><code class="python">print (df_obj.groupby(&#39;key1&#39;).agg([&#39;mean&#39;, &#39;std&#39;, &#39;count&#39;, (&#39;range&#39;, peak_range)])) # 通过元组提供新的列名
+</code></pre>
+<pre><code class="python">print (df_obj.groupby(&#39;key1&#39;).agg([&#39;mean&#39;, &#39;std&#39;, &#39;count&#39;, (&#39;range&#39;, peak_range)])) # 通过元组提供新的列名
 </code></pre>
 <pre><code>         data1                               data2
           mean       std count     range      mean       std count     range
 key1
 a     0.709792  0.674293     5  1.686756 -0.224477  0.385674     5  0.978865
 b    -0.244746  0.726957     3  1.451857 -0.851723  1.528271     3  2.797850
-</code></pre><pre><code class="python"># 每列作用不同的聚合函数
-dict_mapping = {&#39;data1&#39;:&#39;mean&#39;,
-                &#39;data2&#39;:&#39;sum&#39;}
+</code></pre>
+<pre><code class="python"># 每列作用不同的聚合函数
+dict_mapping = &#123;&#39;data1&#39;:&#39;mean&#39;,
+                &#39;data2&#39;:&#39;sum&#39;&#125;
 print (df_obj.groupby(&#39;key1&#39;).agg(dict_mapping))
 </code></pre>
 <pre><code>         data1     data2
 key1
 a     0.709792 -1.122384
 b    -0.244746 -2.555170
-</code></pre><pre><code class="python">dict_mapping = {&#39;data1&#39;:[&#39;mean&#39;,&#39;max&#39;],
-                &#39;data2&#39;:&#39;sum&#39;}
+</code></pre>
+<pre><code class="python">dict_mapping = &#123;&#39;data1&#39;:[&#39;mean&#39;,&#39;max&#39;],
+                &#39;data2&#39;:&#39;sum&#39;&#125;
 print (df_obj.groupby(&#39;key1&#39;).agg(dict_mapping))
 </code></pre>
 <pre><code>         data1               data2
@@ -818,7 +890,8 @@ print (df_obj.groupby(&#39;key1&#39;).agg(dict_mapping))
 key1
 a     0.709792  1.539144 -1.122384
 b    -0.244746  0.458871 -2.555170
-</code></pre><h2 id="三、分组运算"><a href="#三、分组运算" class="headerlink" title="三、分组运算"></a>三、分组运算</h2><pre><code class="python">import pandas as pd
+</code></pre>
+<h2 id="三、分组运算"><a href="#三、分组运算" class="headerlink" title="三、分组运算"></a>三、分组运算</h2><pre><code class="python">import pandas as pd
 import numpy as np
 </code></pre>
 <h3 id="分组和对齐"><a href="#分组和对齐" class="headerlink" title="分组和对齐"></a>分组和对齐</h3><pre><code class="python">s1 = pd.Series(range(10, 20), index = range(10))
@@ -849,7 +922,8 @@ s2:
 3    23
 4    24
 dtype: int64
-</code></pre><pre><code class="python"># Series 对齐运算
+</code></pre>
+<pre><code class="python"># Series 对齐运算
 s1 + s2
 print(s1+s2)
 </code></pre>
@@ -864,7 +938,8 @@ print(s1+s2)
 8     NaN
 9     NaN
 dtype: float64
-</code></pre><pre><code class="python">df1 = pd.DataFrame(np.ones((2,2)), columns = [&#39;a&#39;, &#39;b&#39;])
+</code></pre>
+<pre><code class="python">df1 = pd.DataFrame(np.ones((2,2)), columns = [&#39;a&#39;, &#39;b&#39;])
 df2 = pd.DataFrame(np.ones((3,3)), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])
 
 print (&#39;df1: &#39;)
@@ -883,14 +958,16 @@ df2:
 0  1.0  1.0  1.0
 1  1.0  1.0  1.0
 2  1.0  1.0  1.0
-</code></pre><pre><code class="python"># DataFrame对齐操作
+</code></pre>
+<pre><code class="python"># DataFrame对齐操作
 print(df1 + df2)
 </code></pre>
 <pre><code>     a    b   c
 0  2.0  2.0 NaN
 1  2.0  2.0 NaN
 2  NaN  NaN NaN
-</code></pre><p>① 常用运算函数</p>
+</code></pre>
+<p>① 常用运算函数</p>
 <pre><code class="python">
 # 填充未对齐的数据进行运算
 print(s1.add(s2, fill_value = -1))
@@ -906,7 +983,8 @@ print(s1.add(s2, fill_value = -1))
 8    17.0
 9    18.0
 dtype: float64
-</code></pre><pre><code class="python">df1.sub(df2, fill_value = 2.)
+</code></pre>
+<pre><code class="python">df1.sub(df2, fill_value = 2.)
 #sub函数
 </code></pre>
 <table>
@@ -918,8 +996,7 @@ dtype: float64
 <th>c</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>0.0</td>
 <td>0.0</td>
@@ -937,8 +1014,7 @@ dtype: float64
 <td>1.0</td>
 <td>1.0</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python"># 填充NaN
 s3 = s1 + s2
 print (s3)
@@ -954,7 +1030,8 @@ print (s3)
 8     NaN
 9     NaN
 dtype: float64
-</code></pre><pre><code class="python">s3_filled = s3.fillna(-1)
+</code></pre>
+<pre><code class="python">s3_filled = s3.fillna(-1)
 print (s3)
 </code></pre>
 <pre><code>0    30.0
@@ -968,21 +1045,24 @@ print (s3)
 8     NaN
 9     NaN
 dtype: float64
-</code></pre><pre><code class="python">df3 = df1 + df2
+</code></pre>
+<pre><code class="python">df3 = df1 + df2
 print (df3)
 </code></pre>
 <pre><code>     a    b   c
 0  2.0  2.0 NaN
 1  2.0  2.0 NaN
 2  NaN  NaN NaN
-</code></pre><pre><code class="python">df3.fillna(100, inplace = True)
+</code></pre>
+<pre><code class="python">df3.fillna(100, inplace = True)
 print (df3)
 </code></pre>
 <pre><code>       a      b      c
 0    2.0    2.0  100.0
 1    2.0    2.0  100.0
 2  100.0  100.0  100.0
-</code></pre><h3 id="统计计算-VS-聚合运算"><a href="#统计计算-VS-聚合运算" class="headerlink" title="统计计算 VS 聚合运算"></a>统计计算 VS 聚合运算</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+</code></pre>
+<h3 id="统计计算-VS-聚合运算"><a href="#统计计算-VS-聚合运算" class="headerlink" title="统计计算 VS 聚合运算"></a>统计计算 VS 聚合运算</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
 print(df_obj1)
 </code></pre>
 <pre><code>          a         b         c         d
@@ -991,7 +1071,8 @@ print(df_obj1)
 2 -0.577329 -1.668581 -0.842126  1.803080
 3 -0.128431 -1.769619  2.089983  0.209761
 4  0.493981 -1.571405  0.690019 -0.215292
-</code></pre><pre><code class="python">print(df_obj1.sum(axis=1))
+</code></pre>
+<pre><code class="python">print(df_obj1.sum(axis=1))
 print(&#39;=====================================&#39;)
 print(df_obj1.max())
 print(&#39;=====================================&#39;)
@@ -1016,13 +1097,14 @@ dtype: float64
 3   -1.769619
 4   -1.571405
 dtype: float64
-</code></pre><h3 id="数据分组运算"><a href="#数据分组运算" class="headerlink" title="数据分组运算"></a>数据分组运算</h3><pre><code class="python"># 分组运算后保持shape
-dict_obj = {&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
+</code></pre>
+<h3 id="数据分组运算"><a href="#数据分组运算" class="headerlink" title="数据分组运算"></a>数据分组运算</h3><pre><code class="python"># 分组运算后保持shape
+dict_obj = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;,
                       &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
             &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,
                       &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
             &#39;data1&#39;: np.random.randint(1, 10, 8),
-            &#39;data2&#39;: np.random.randint(1, 10, 8)}
+            &#39;data2&#39;: np.random.randint(1, 10, 8)&#125;
 df_obj = pd.DataFrame(dict_obj)
 df_obj
 </code></pre>
@@ -1036,8 +1118,7 @@ df_obj
 <th>data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>a</td>
 <td>one</td>
@@ -1093,8 +1174,7 @@ df_obj
 <td>2</td>
 <td>2</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python"># 按key1分组后，计算data1，data2的统计信息======并附加到原始表格中
 k1_sum = df_obj.groupby(&#39;key1&#39;).sum().add_prefix(&#39;sum_&#39;)
 print(k1_sum)
@@ -1115,7 +1195,8 @@ b            18          8
 5    b    two      6      2
 6    a    one      4      1
 7    a  three      2      2
-</code></pre><ol>
+</code></pre>
+<ol>
 <li>merge 方法</li>
 </ol>
 <pre><code class="python"># 方法1，使用merge
@@ -1133,8 +1214,7 @@ pd.merge(df_obj, k1_sum, left_on=&#39;key1&#39;, right_index=True)
 <th>sum_data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>a</td>
 <td>one</td>
@@ -1206,8 +1286,7 @@ pd.merge(df_obj, k1_sum, left_on=&#39;key1&#39;, right_index=True)
 <td>18</td>
 <td>8</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ol start="2">
 <li>transform 方法</li>
 </ol>
@@ -1229,8 +1308,7 @@ df_obj
 <th>sum_data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>a</td>
 <td>one</td>
@@ -1310,8 +1388,7 @@ df_obj
 <td>22</td>
 <td>15</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ol start="3">
 <li>自定义函数</li>
 </ol>
@@ -1334,8 +1411,7 @@ df_obj.groupby(&#39;key1&#39;).transform(diff_mean)
 <th>sum_data2</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>0</td>
 <td>-0.4</td>
 <td>0.000000</td>
@@ -1391,8 +1467,7 @@ df_obj.groupby(&#39;key1&#39;).transform(diff_mean)
 <td>0</td>
 <td>0</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python">dataset_path = &#39;./data/starcraft.csv&#39;
 df_data = pd.read_csv(dataset_path, usecols=[&#39;LeagueIndex&#39;, &#39;Age&#39;, &#39;HoursPerWeek&#39;,
                                              &#39;TotalHours&#39;, &#39;APM&#39;])
@@ -1420,8 +1495,7 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n)
 <th>APM</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>LeagueIndex</td>
 <td></td>
 <td></td>
@@ -1646,8 +1720,7 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n)
 <td>NaN</td>
 <td>355.3518</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <pre><code class="python"># apply函数接收的参数会传入自定义的函数中
 df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
 </code></pre>
@@ -1663,8 +1736,7 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
 <th>APM</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>LeagueIndex</td>
 <td></td>
 <td></td>
@@ -1817,8 +1889,7 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
 <td>NaN</td>
 <td>287.8128</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <ul>
 <li>禁止分组 group_keys=False</li>
 </ul>
@@ -1835,8 +1906,7 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
 <th>APM</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>2214</td>
 <td>1</td>
 <td>20.0</td>
@@ -2028,326 +2098,210 @@ df_data.groupby(&#39;LeagueIndex&#39;).apply(top_n, n=2, column=&#39;Age&#39;)
 <td>NaN</td>
 <td>355.3518</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 
-      </div>
+</div>
+
+        <div class="component article_more">
+    <p>版权声明：署名-非商业性使用-禁止演绎 4.0 国际
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="http://localhost:4000/blog/oq4xcx/">http://localhost:4000/blog/oq4xcx/</a>
+    </p>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/kt0kvc/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>数据可视化</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/nfqdqf/">
+                    <b>Pandas使用——各种索引</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component comments" id="comments">
+    <div class="comments_title">
+        <h2>评论区</h2>
+        <!-- 转换评论按钮 -->
+        <div class="switch_comments">
+          <span>Twikoo</span>
+          <span id="switch_btn">转换</span>
+          <span>utterances</span>
+        </div>
     </div>
-    
-    <!-- TODO: 最下面的小格子 -->
-    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
-	<ul>
-		<li>作者:  <a href="/" itemprop="name">尼采般地抒情</a></li>
-		<li>发表日期:  2020-02-10 08:28:49</li>
-		<li>文章分类: 
-	<a class="category-link" href="/blog/categories/DataAnalysis/">DataAnalysis</a>
 
-</li>
-		<li>文章标签: </li>
-		
-		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/oq4xcx.md" download target="_blank">Pandas使用——分组聚合.md</a></li> -->
-		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
-		<li>最后编辑时间: 2021-03-26 15:10:34</li>
-		<li>Feed 订阅: <a href="/rss2.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a></li>
-		<li style="opacity: 0.3; text-align: right;">
-			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/oq4xcx/edit/" target="_blank" aria-hidden="true"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>；
-			网站部署：<a href="https://github.com/wztlink1013/website" target="_blank" aria-hidden="true"><i class="fa fa-cloud" aria-hidden="true"></i></a>
-		</li>
-	</ul>
-	<a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" /></a>
-</div>
-
-
-
-    <!-- TODO:  下拉菜单栏-->
-<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
-<ul role="group" aria-labelledby="i1" aria-expanded="false">
-  <li><a href="/blog/">博客</a></li>
-  <li><a href="/message/">留言</a></li>
-  <li><a href="/demo/">实验室</a></li>
-  <li><a href="/friends/">友情链接</a></li>
-</ul>
-</em>
-  </div>
-  <!-- TODO: 上一篇文章/下一篇文章 -->
-  <div class="post-relative">
-<div class="page-relative">
-  
-    <a href="/blog/kt0kvc/" class="post-prev">
-      <i class="fa fa-arrow-left" tabindex="0" aria-hidden="true"></i>
-      <span class="aria-readonly">上一篇文章</span>
-      
-        <b>数据可视化</b>
-      
-    </a>
-  
-  
-    <a href="/blog/nfqdqf/" class="post-next">
-      <span class="aria-readonly">下一篇文章</span>
-      <b>Pandas使用——各种索引</b>
-      <i class="fa fa-arrow-right" tabindex="0" aria-hidden="true"></i>
-    </a>
-  
-</div>
-
-
-<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
-  
-  <a href="/blog/kt0kvc/" class="prev" title="数据可视化">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    
-    <b>数据可视化</b>
-    
-  </a>
-  
-  
-  <a href="/blog/nfqdqf/" class="next" title="Pandas使用——各种索引">
-    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    <b>Pandas使用——各种索引</b>
-  </a>
-  
-</div>
-
-  </div>
-</div>
-
-<!-- TODO: 侧边栏 -->
-<!-- TODO: 文章内部左隐藏侧边栏 -->
-<div class="sidebar" tabindex="0" aria-hidden="true">
-  <!-- TODO: 上面的 -->
-  <div class="func-btns func-btns-up">
-    <span class="func-item">
-        <i class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i><span>目录</span></i>
+    <div class="comments_content">
+        <!-- utterances评论区 -->
+        <div id="utterances_comment" style="display: none;"></div>
         
-        <div>
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
-        </div>
-    </span>
 
-    <span class="func-item">
-        <i class="func-font icon"><i class="fa fa-adjust" aria-hidden="true"></i><span>夜间</span></i>
-        <div class="font-choose-box">
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <div class="font-choose bg-choose">
-            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon"><i class="fa fa-moon-o" aria-hidden="true"></i></i></a>
-            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon"><i class="fa fa-sun-o" aria-hidden="true"></i></i></a>
-          </div>
+        <!-- twikoo评论区 -->
+        <div id="twikoo_comment" style="display: block;">
+          <div id="tcomment"></div>
+          <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+          <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+          </script>
         </div>
-    </span>
 
-    <span class="func-item">
-        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon"><i class="fa fa-weibo" aria-hidden="true"></i><span>分享</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
-          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
-        </div>
-    </span>
-    <span class="func-item">
-        <i class="func-about icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i><span>关于</span></i>
-        <div>
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
-          <div id="followMeOnWeibo"></div>
-        </div>
-    </span>
-  </div>
-  <!-- TODO: 下面的 -->
-	<div class="func-btns">
 
-    <!-- TODO: 友情链接 -->
-    <span class="func-item">
-        <a href="/friends/" target="_blank"><i class="func-rss icon"><i class="fa fa-link" aria-hidden="true"></i><span>链接</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <a href="/friends/" target="_blank">友情链接</a>
-        </div>
-    </span>
-    <!-- TODO: 订阅 -->
-    <span class="func-item">
-        <a href="/rss2.xml" target="_blank"><i class="func-rss icon"><i class="fa fa-rss-square" aria-hidden="true"></i><span>订阅</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
-    </span>
-	</div>
+    </div>
+
+
 </div>
 
-<!-- TODO: 评论+相关文章+友情链接 -->
-<div class="single-page-footer">
-<!-- TODO: 页脚评论+站点信息 -->
-<div class="footer">
-	<div class="footer-wraper">
-		<div class="footer-content">
-			<div class="footer-nav">
-	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
-	   data-thread-key="blog/oq4xcx"
-	   data-disqus-identifier="blog/oq4xcx" 
-		 tabindex="0" aria-hidden="true">评论内容</a>
-	<a href="javascript: void(0);" id="comments">相关文章</a>
-	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component categories">
+    <h3>文章分类</h3>
+    <ul>
+        
+                <li>
+                    <a href='/categories/Hexo/'>Hexo</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Language/'>Language</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Algorithm/'>Algorithm</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataBase/'>DataBase</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Bug/'>Bug</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/MachingLearning/'>MachingLearning</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataStructure/'>DataStructure</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Environment/'>Environment</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Web/'>Web</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/PostProduction/'>PostProduction</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataAnalysis/'>DataAnalysis</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/VersionControlSystem/'>VersionControlSystem</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/SoftwareEngineering/'>SoftwareEngineering</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerNetwork/'>ComputerNetwork</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOrganization/'>ComputerOrganization</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/'>生活随笔</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOperatingSystem/'>ComputerOperatingSystem</a>
+                </li>
+            
+    </ul>
 </div>
-<div class="nav-detail">
-	<div tabindex="0">
-		
-    <div id="tcomment"></div>
-    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
-    <script>
-    twikoo.init({ 
-        envId: 'website-wikoo-4g46k8do98867542', 
-        el: '#tcomment'
-        // path: 'window.location.pathname.replace(\'blog\',\'message\')'
-    })
-    </script>
 
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul id="hot_articles_item"></ul>
+</div>
 
-	</div>
-	<div style="display:block;">
-		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
-		<div class="relative-wrapper">
-	<div class="relative-article">
-		
-		<ul>
-			<li>
-				<span><font aria-hidden="true">2020-05-29 »</font> </span>
-				<a href="/blog/delag2/">时间格式UTC、GMT、GST</a>
-				<span class="aria-readonly">发表时间为2020年05月29日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、三者区别与关系UTC：世界标准时间协调世界时（英：Coordinated Universal T...
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
         </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-12 »</font> </span>
-				<a href="/blog/zsvfxg/">爬虫框架和Scrapy使用</a>
-				<span class="aria-readonly">发表时间为2020年02月12日</span>
-				<div class="relative-box">
-          <a href="/blog/zsvfxg/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/webp/1484158/1598673193957-7a7456b0-3de1-4c77-b849-cc2572555ed5.webp#align=left&amp;display=inline&amp;height=281&amp;margin=%5Bobject%20Object%5D&amp;originHeight=541&amp;originWidth=801&amp;size=0&amp;status=done&amp;style=shadow&amp;width=416" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/webp/1484158/1598673193957-7a7456b0-3de1-4c77-b849-cc2572555ed5.webp#align=left&amp;display=inline&amp;height=281&amp;margin=%5Bobject%20Object%5D&amp;originHeight=541&amp;originWidth=801&amp;size=0&amp;status=done&amp;style=shadow&amp;width=416"/></a>
-          <span class="aria-readonly">文章概要 </span>一、爬虫基本架构url 管理模块就是管理自己爬取的的网页不要重复爬取，避免爬取进入死循环使用 pyt...
-        </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/kt0kvc/">数据可视化</a>
-				<span class="aria-readonly">发表时间为2020年02月10日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、GitHub Juper NoteBook 笔记https://github.com/wztli...
-        </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-02-10 »</font> </span>
-				<a href="/blog/nfqdqf/">Pandas使用——各种索引</a>
-				<span class="aria-readonly">发表时间为2020年02月10日</span>
-				<div class="relative-box">
-          
-          <span class="aria-readonly">文章概要 </span>一、基本索引import pandas as pdimport numpy as npSeries ...
-        </div>
-			</li>
-			
-		</ul>
-	</div>
-</div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
 
-		<!-- TODO: entry_blog -->
-		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
-	</div>
-	<div class="friends-box">
-		<ul>
-			
-			<li><a href="http://www.ruanyifeng.com/home.html" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://xaoxuu.com" target="_blank">xaoxuu</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.cnblogs.com/mjios" target="_blank">小码哥MJ</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.sgyzyun.club/" target="_blank">洛尘曦</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.ccyh.xyz" target="_blank">Liam's Blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://xiamuyourenzhang.cn/" target="_blank">夏目友人帐</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://sitoi.cn/" target="_blank">Sitoi</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.cnblogs.com/zhanjiahui/" target="_blank">小圆</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://blog.webpro.ltd/" target="_blank">Bill’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://liuyib.github.io/" target="_blank">liuyib</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://crainyday.gitee.io" target="_blank">CRainyDay</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://hewanyue.com" target="_blank">没有人</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://yc9064.gitee.io/" target="_blank">Marco</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.hcode.top" target="_blank">Hcode</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://zzsnn.github.io/" target="_blank">折纸少年</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="http://zhifou.run" target="_blank">Darren</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://cndrew.cn/" target="_blank">Uncle_drew</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://cungudafa.top" target="_blank">cungudafa</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="http://hudiskoray.iicp.net:4000/" target="_blank">Jerry Huang</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://reqwey.vercel.app/" target="_blank">Linhk1606</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://modao233.gitee.io/" target="_blank">modao’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.jsonformatting.com/" target="_blank">json format</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
-		</ul>
-	</div>
+    </div>
+    <footer class="ct_footer">
+        <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
 </div>
-			<!-- TODO:  网站信息：网站最底下的信息-->
-
-<div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/" target="_blank">🧙‍♂️</a>
-	<a href='https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral' title="又拍云联盟" target='_blank'>
-		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210210101446.png' width='40' height='20'>
-	</a>
-	<span>&copy;2019-2021 
-		<small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small>
-	</span>本站 
-	<a href="/">尼采般地抒情</a> 
-	<a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
-	<a href='https://travellings.now.sh/' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai">
-		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210218094053.png' width="20" height="20">
-	</a>
+    </footer>
 </div>
-
-		</div>
-	</div>
-</div>
-<!-- 引入highlight样式 -->
-<script src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
-
-</div>
-<!-- TODO: 回到顶部 -->
-<div class="tools-wrapper" tabindex="0" aria-hidden="true">
-	<a class="gotop icon" href="#" title="回到顶部"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
-	<a class="hash-to-comments icon" title="我要评论"><i class="fa fa-commenting" aria-hidden="true"></i></a>
-	<span class="func-item">
-		<a class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i></a>
-	</span>
-	<a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song icon"><i class="fa fa-adjust" aria-hidden="true"></i></a>
-</div>
-<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
-
 
 </body>
 
-<script src="/public/js/jquery.js"></script>
-<script src="/public/js/socket.io.js"></script>
-<!-- <script src="/public/js/aplayer.js"></script> -->
-<script src="/public/js/main.js?v=20210308"></script>
+    
+<script src="/public/js/layout.js"></script>
 
+    
+<script src="/public/js/toc.js"></script>
 
+    
+<script src="/public/js/search.js"></script>
+
+    
+<script src="/public/js/go_top.js"></script>
+
+    
+<script src="/public/js/comments.js"></script>
+
+    
+<script src="/public/js/web_info.js"></script>
+
+ 
 </html>

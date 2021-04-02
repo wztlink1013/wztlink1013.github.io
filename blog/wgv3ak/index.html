@@ -1,137 +1,209 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>机器学习scikit-learn库的使用 | 尼采般地抒情</title>
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=0">
-  <meta name="author" content="https://plus.google.com/112634278852964994392?hl=zh-cn">
-  <meta name="email" content="wztlink1013@163.com">
-  <meta name="description" content="机器学习基本概念、相关SOP、scikit-learn、主成分分析等">
-  <meta name="keywords" content="吴祖涛,技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="机器学习scikit-learn库的使用 | 尼采般地抒情">
-  <meta property="og:url" content="https://www.wztlink1013.com/blog/wgv3ak/">
-  <meta property="og:site_name" content="机器学习scikit-learn库的使用">
-  <meta property="og:description" content="机器学习基本概念、相关SOP、scikit-learn、主成分分析等">
-  <meta name="generator" content="https://hexo.io" />
-  <!-- 文档兼容模式的定义 -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- 百度站长 -->
-  <meta name="baidu-site-verification" content="code-9Tb9dMy4Ja" /> 
-  <!-- 谷歌站长 -->
-  <meta name="google-site-verification" content="5cP-Ez4F6-8EhRilN7RrxUlazy4hzH_SMFsPQUvaDes" />
-  <!-- 搜狗站长 -->
-  <meta name="sogou_site_verification" content="Sj61MtXjWW"/>
-  <link href="https://www.wztlink1013.comhttps://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" rel="apple-touch-icon-precomposed">
-  <link rel="shoticon" href="https://www.wztlink1013.com/favicon.ico" type="image/x-icon">
-  <link rel="alternate" type="application/rss+xml" href="https://www.wztlink1013.com/rss2.xml" title="尼采般地抒情" />
-  <link rel="prev" href="https://www.wztlink1013.com/blog/hy14ic/" title="Python-apply函数和入口函数" />
-  <link rel="next" href="https://www.wztlink1013.com/blog/pm7mpk/" title="VScode使用" />
-  <!-- 通知搜索引擎,文档的开始（rel="start"） -->
-  <link rel="start" href="https://www.wztlink1013.com/blog/" title="Blog blog" />
-  <!-- 引入整体样式 -->
-  <link rel="stylesheet" href="/public/css/style.css?v=20210315">
-  <link rel="stylesheet" href="/public/css/font-awesome.min.css?v=20210315">
-  <!-- 引入highlight样式 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
-  <!-- 引入valine所需js -->
-  <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <!-- twikoo评论 -->
-  <script>AV.initialize("X2vVvvzKTQiW2smqmeTSdaX7-gzGzoHsz", "eLj5sRf1iOMf8SL8me8IJtdM");</script>
-  <!-- 百度统计 -->
-  <script>
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-  <!-- 域名重定向 -->
-  <script>
-    if(window.location.host=="wztlink1013.com"){
-      window.location='https://www.wztlink1013.com/'
-    }
-  </script>
-  <!-- 解决语雀图片不显示 -->
-  <meta name="referrer" content="no-referrer" />
+    <meta charset="UTF-8">
+    <title>机器学习scikit-learn库的使用 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="机器学习基本概念、相关SOP、scikit-learn、主成分分析等">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="机器学习scikit-learn库的使用 | 尼采般地抒情">
+    <meta property="og:url" content="http://localhost:4000/blog/wgv3ak/">
+    <meta property="og:site_name" content="机器学习scikit-learn库的使用 | 尼采般地抒情">
+    <meta property="og:description" content="机器学习基本概念、相关SOP、scikit-learn、主成分分析等">
+    <meta name="generator" content="https://hexo.io" />
+    <link rel="start" href="http://localhost:4000/blog/" title="尼采般地抒情" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入百度统计（第一个script标签） -->
+    <script src="https://hm.baidu.com/hm.js?b819e86dad79c7cee0956aa7c5ba504b"></script>
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
     
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入预先加载的js脚本 -->
+    
+<script src="/public/js/advance.js"></script>
+
 </head>
-
-
 <body>
-  <div class="rainbow">
-    
-  </div>
-  
-  <div class="container">
-  <!-- TODO: 搜索栏 -->
-  <span class="local-search local-search-google local-search-plugin" style="position:absolute;right: 20px;top:30px;">
-  <input type="search" placeholder="站内搜索" id="local-search-input" class="local-search-input-cls" style="">
-  <i class="fa fa-search" aria-hidden="true" title="点击进入 Google 搜索"></i>
-  <div id="local-search-result" class="local-search-result-cls"></div>
-</span>
-  <div class="article" itemscope itemtype="http://schema.org/Article">
-    <div class="post">
-      <!-- TODO: 文章最顶部的导航 -->
-      <div class="bread">
-        <a href="/">尼采般地抒情</a> »
-        <a href="/blog/">博客</a> »
-        
-	<a class="category-link" href="/blog/categories/MachingLearning/">MachingLearning</a>
+    <div class="bg-color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-american-sign-language-interpreting" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_search">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    侧边栏
+</div>
 
 
-      </div>
-      <!-- TODO: 头像+文章大标题 -->
-      <div class="post-title-wrapper">
-        <h1 class="post-title" itemprop="name">机器学习scikit-learn库的使用</h1>
-        <a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情" /></a>
-      </div>
-      <!-- TODO: 大标题下面的一行 作者、时间、分类、标签、评论数、热度 -->
-      <div class="post-info">
-        <span>作者: <a href="/">尼采般地抒情</a></span>
-        <span>
-          <time itemprop="timeCreated" aria-hidden="true">2020-02-05 07:24:29</time>
-          <span class="aria-readonly">本文发布时间为2020年02月05日07时24分29秒</span>
-        </span>
-        <span>分类: 
-	<a class="category-link" href="/blog/categories/MachingLearning/">MachingLearning</a>
-
-</span>
-        <span tabindex="0" aria-hidden="true">标签: 
-<a class="article-tag-link" href="/blog/tags/scikit-learn/">scikit-learn</a>, <a class="article-tag-link" href="/blog/tags/sklearn/">sklearn</a>
-</span>
-        <span class="aria-readonly">下面是正文内容</span>
-        <span tabindex="0" aria-hidden="true">评论数: <a href="#comments"
-                      class="ds-thread-count hash-to-comments disqus-comment-count"
-                      data-thread-key="blog/wgv3ak"
-                      data-disqus-identifier="blog/wgv3ak"
-                      id="changyan_count_unit"></a></span>
-        <!-- <span tabindex="0" aria-hidden="true" id="busuanzi_container_site_pv">热度: <span id="busuanzi_value_page_pv"></span></span> -->
-        <!-- TODO: valine文章计数 -->
-        <span id="/blog/wgv3ak/" class="leancloud_visitors" data-flag-title="机器学习scikit-learn库的使用">
-          <em class="post-meta-item-text">阅读量: </em>
-          <i class="leancloud-visitors-count">loading</i>
-        </span>
-      </div>
-      <!-- TODO: 防爬虫不注明出处+文章内容 -->
-      <div class="post-content" itemprop="articleBody">
-        <div class="shit-spider" title="防爬虫不注明出处" tabindex="0" aria-hidden="true">
-          <p>原文地址：<a href="https://www.wztlink1013.com/blog/wgv3ak/">https://www.wztlink1013.com/blog/wgv3ak/</a>，<a href="https://www.wztlink1013.com/blog/wgv3ak/#comments">参与评论</a></p>
-          <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/gif/avatar_Jitter.gif" width="150">
+<div class="global_button">
+    <div class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" style="border-bottom: 0">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5"><span class="toc-text">一、机器学习的一些概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6%E5%9B%BE"><span class="toc-text">基本框架图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%98%B6%E6%AE%B5-%E6%AD%A5%E9%AA%A4"><span class="toc-text">二、机器学习的一些阶段&#x2F;步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sklearn-%E7%9B%B8%E5%85%B3%E6%8F%90%E5%8F%8A"><span class="toc-text">sklearn 相关提及</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sklearn-%E5%A4%84%E7%90%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E8%88%AC%E5%8C%96-sop"><span class="toc-text">sklearn 处理机器学习的一般化 sop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%EF%BC%9A%E5%B0%86%E7%89%B9%E5%BE%81%E9%99%8D%E7%BB%B4"><span class="toc-text">主成分分析：将特征降维</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%80%9A%E8%BF%87-scikit-learn-%E8%AE%A4%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="toc-text">三、通过 scikit-learn 认识机器学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E7%A4%BA%E4%BE%8B%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">加载示例数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E8%AE%AD%E7%BB%83%E9%9B%86%E4%B8%8A%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="toc-text">在训练集上训练模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%B5%8B%E8%AF%95%E9%9B%86%E4%B8%8A%E6%B5%8B%E8%AF%95%E6%A8%A1%E5%9E%8B"><span class="toc-text">在测试集上测试模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-text">保存模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81scikit-learn-%E5%85%A5%E9%97%A8"><span class="toc-text">四、scikit-learn 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">准备数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="toc-text">训练模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-text">交叉验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-        <h2 id="一、机器学习的一些概念"><a href="#一、机器学习的一些概念" class="headerlink" title="一、机器学习的一些概念"></a>一、机器学习的一些概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+        <div class="search_close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+
+<div class="container">
+    <div class="ct_left">
+        <div class="component blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+    <!-- <div class="blogger_right">
+        <ul>
+            <li><i class="fa fa-github" aria-hidden="true"></i></li>
+            <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+            <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+        </ul>
+    </div> -->
+</div>
+
+        <div class="component board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            主题：hexo-theme-lyrics<hr>
+            作者:尼采般地抒情
+        </p>
+
+    </div>
+</div>
+        <div class="component links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a target="_blank" rel="noopener" href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+        <div class="component web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>141 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+        <span id="webinfo-runtime-count" publish_date="01/04/2020 21:34:09"></span>
+    </div>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>机器学习scikit-learn库的使用</h1>
+    </div>
+    <div class="article_meta_other">
+        作者: <span><a href="/">尼采般地抒情</a></span>
+        时间：<time>2020-02-05 07:24:29</time>
+        分类：
+            
+                    <span>
+                        <a href="/categories/MachingLearning">
+                            MachingLearning
+                        </a>
+                    </span>
+                     
+        标签：
+            
+                    <span>
+                        <a href="/tags/sklearn">
+                            sklearn
+                        </a>
+                    </span>
+                    
+                    <span>
+                        <a href="/tags/scikit-learn">
+                            scikit-learn
+                        </a>
+                    </span>
+                     
+        文章访问量：<span id="twikoo_visitors">loading</span>
+        文章评论数：<span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="一、机器学习的一些概念"><a href="#一、机器学习的一些概念" class="headerlink" title="一、机器学习的一些概念"></a>一、机器学习的一些概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
 <li>特征：一组数据的多个属性</li>
 <li>标签：人为指定特征</li>
 <li>监督学习：就像分类（离散化的标签），回归（连续性的标签）、【“有标准答案”】</li>
 <li>无监督学习：就像聚类【“无标准答案”】</li>
 <li><strong>数据</strong>：是机器学习的命脉</li>
 </ul>
-<h3 id="基本框架图"><a href="#基本框架图" class="headerlink" title="基本框架图"></a>基本框架图</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130909-116e16a4-e86a-46e0-93fb-ac0263257056.png#align=left&amp;display=inline&amp;height=271&amp;margin=%5Bobject%20Object%5D&amp;originHeight=692&amp;originWidth=1157&amp;size=0&amp;status=done&amp;style=shadow&amp;width=453" alt><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686131288-431d8fe6-bf3f-4f3e-9986-9b282e9e2982.png#align=left&amp;display=inline&amp;height=356&amp;margin=%5Bobject%20Object%5D&amp;originHeight=651&amp;originWidth=869&amp;size=0&amp;status=done&amp;style=shadow&amp;width=475" alt></p>
-<h2 id="二、机器学习的一些阶段-步骤"><a href="#二、机器学习的一些阶段-步骤" class="headerlink" title="二、机器学习的一些阶段/步骤"></a>二、机器学习的一些阶段/步骤</h2><h3 id="sklearn-相关提及"><a href="#sklearn-相关提及" class="headerlink" title="sklearn 相关提及"></a>sklearn 相关提及</h3><p><a href="https://scikit-learn.org/stable/testimonials/testimonials.html" target="_blank" rel="noopener">官网 scikit-learn</a></p>
+<h3 id="基本框架图"><a href="#基本框架图" class="headerlink" title="基本框架图"></a>基本框架图</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130909-116e16a4-e86a-46e0-93fb-ac0263257056.png#align=left&display=inline&height=271&margin=%5Bobject%20Object%5D&originHeight=692&originWidth=1157&size=0&status=done&style=shadow&width=453"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686131288-431d8fe6-bf3f-4f3e-9986-9b282e9e2982.png#align=left&display=inline&height=356&margin=%5Bobject%20Object%5D&originHeight=651&originWidth=869&size=0&status=done&style=shadow&width=475"></p>
+<h2 id="二、机器学习的一些阶段-步骤"><a href="#二、机器学习的一些阶段-步骤" class="headerlink" title="二、机器学习的一些阶段/步骤"></a>二、机器学习的一些阶段/步骤</h2><h3 id="sklearn-相关提及"><a href="#sklearn-相关提及" class="headerlink" title="sklearn 相关提及"></a>sklearn 相关提及</h3><p><a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/testimonials/testimonials.html">官网 scikit-learn</a></p>
 <ol>
 <li>包含聚类、分类、回归等算法<br>eg：随机森林、k-means、SVM 等</li>
 <li>包含模型筛选、降维、预处理等算法</li>
@@ -139,13 +211,13 @@
 </ol>
 <h3 id="sklearn-处理机器学习的一般化-sop"><a href="#sklearn-处理机器学习的一般化-sop" class="headerlink" title="sklearn 处理机器学习的一般化 sop"></a>sklearn 处理机器学习的一般化 sop</h3><ol>
 <li><strong>准备数据集</strong><ul>
-<li><a href>数据分析</a>:（利用 np.reshape()成二维(n_samples,n_features)）</li>
+<li><a href="">数据分析</a>:（利用 np.reshape()成二维(n_samples,n_features)）</li>
 <li>划分数据集：train_test_split()</li>
 <li>特征工程：特征的提取、特征的归一化 nomalization</li>
 </ul>
 </li>
 <li><strong>选择模型</strong><ul>
-<li>根据不同场景选择合适的模型:<a href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html" target="_blank" rel="noopener">scikit-learn 的模型选择路线图</a></li>
+<li>根据不同场景选择合适的模型:<a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html">scikit-learn 的模型选择路线图</a></li>
 <li>分类、聚类、回归……</li>
 </ul>
 </li>
@@ -168,7 +240,7 @@
 <li>线代相关知识：特征值、特征向量、协方差向量</li>
 <li>PCA</li>
 </ul>
-<p><a href="http://q5e49p23n.bkt.clouddn.com/scikit_pca.html" target="_blank" rel="noopener">相关代码 html 页面</a></p>
+<p><a target="_blank" rel="noopener" href="http://q5e49p23n.bkt.clouddn.com/scikit_pca.html">相关代码 html 页面</a></p>
 <h2 id="三、通过-scikit-learn-认识机器学习"><a href="#三、通过-scikit-learn-认识机器学习" class="headerlink" title="三、通过 scikit-learn 认识机器学习"></a>三、通过 scikit-learn 认识机器学习</h2><h3 id="加载示例数据集"><a href="#加载示例数据集" class="headerlink" title="加载示例数据集"></a>加载示例数据集</h3><pre><code class="python">from sklearn import datasets
 iris = datasets.load_iris()#用sklearn自身配带的数据
 digits = datasets.load_digits()
@@ -382,7 +454,7 @@ X, y = make_classification(n_samples=300, n_features=2, n_redundant=0, n_informa
 plt.scatter(X[:,0], X[:,1], c=y)
 plt.show()
 </code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130636-3a18d8f2-51cb-4b04-8a0f-a40cf1d0b9b6.png#align=left&amp;display=inline&amp;height=248&amp;margin=%5Bobject%20Object%5D&amp;originHeight=248&amp;originWidth=384&amp;size=0&amp;status=done&amp;style=none&amp;width=384" alt></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130636-3a18d8f2-51cb-4b04-8a0f-a40cf1d0b9b6.png#align=left&display=inline&height=248&margin=%5Bobject%20Object%5D&originHeight=248&originWidth=384&size=0&status=done&style=none&width=384"></p>
 <pre><code class="python">from sklearn import svm
 
 # 注释掉以下这句表示不进行特征归一化
@@ -451,7 +523,7 @@ lr_model.fit(X_train, y_train)
 <pre><code class="python"># 返回参数
 lr_model.get_params()
 </code></pre>
-<pre><code class="python">{&#39;copy_X&#39;: True, &#39;fit_intercept&#39;: True, &#39;n_jobs&#39;: None, &#39;normalize&#39;: False}
+<pre><code class="python">&#123;&#39;copy_X&#39;: True, &#39;fit_intercept&#39;: True, &#39;n_jobs&#39;: None, &#39;normalize&#39;: False&#125;
 </code></pre>
 <pre><code class="python">lr_model.score(X_train, y_train)
 </code></pre>
@@ -486,7 +558,7 @@ plt.xlabel(&#39;K&#39;)
 plt.ylabel(&#39;Accuracy&#39;)
 plt.show()
 </code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130618-179a3dfa-9ffd-4f45-9cc2-d6f63e1ad2b9.png#align=left&amp;display=inline&amp;height=262&amp;margin=%5Bobject%20Object%5D&amp;originHeight=262&amp;originWidth=392&amp;size=0&amp;status=done&amp;style=none&amp;width=392" alt></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598686130618-179a3dfa-9ffd-4f45-9cc2-d6f63e1ad2b9.png#align=left&display=inline&height=262&margin=%5Bobject%20Object%5D&originHeight=262&originWidth=392&size=0&status=done&style=none&width=392"></p>
 <pre><code class="python"># 选择最优的K
 best_knn = KNeighborsClassifier(n_neighbors=5)
 best_knn.fit(X_train, y_train)
@@ -498,309 +570,212 @@ print(best_knn.predict(X_test))
  2 2 2 0 0 1 0 1 0 1 2 2 2]
 </code></pre>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://github.com/wztlink1013/scikit-learn" target="_blank" rel="noopener">scikit-learn 中文文档 github</a>文中链接为英文文档</li>
-<li><a href="https://blog.csdn.net/Little_Fire/article/details/81062447" target="_blank" rel="noopener">解释 iris 数据集</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wztlink1013/scikit-learn">scikit-learn 中文文档 github</a>文中链接为英文文档</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Little_Fire/article/details/81062447">解释 iris 数据集</a></li>
 </ul>
 
-      </div>
-    </div>
+</div>
+
+        <div class="component article_more">
+    <p>版权声明：署名-非商业性使用-禁止演绎 4.0 国际
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="http://localhost:4000/blog/wgv3ak/">http://localhost:4000/blog/wgv3ak/</a>
+    </p>
+</div>
+        <div class="prev_next component">
     
-    <!-- TODO: 最下面的小格子 -->
-    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage" tabindex="0" aria-hidden="true">
-	<ul>
-		<li>作者:  <a href="/" itemprop="name">尼采般地抒情</a></li>
-		<li>发表日期:  2020-02-05 07:24:29</li>
-		<li>文章分类: 
-	<a class="category-link" href="/blog/categories/MachingLearning/">MachingLearning</a>
-
-</li>
-		<li>文章标签: 
-<a class="article-tag-link" href="/blog/tags/scikit-learn/">scikit-learn</a>, <a class="article-tag-link" href="/blog/tags/sklearn/">sklearn</a>
-</li>
-		
-		<!-- <li>本文 Markdown 地址: <a href="/raw/posts/wgv3ak.md" download target="_blank">机器学习scikit-learn库的使用.md</a></li> -->
-		<li>版权声明: 署名-非商业性使用-禁止演绎 4.0 国际（<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a>）</li>
-		<li>最后编辑时间: 2021-03-26 15:10:32</li>
-		<li>Feed 订阅: <a href="/rss2.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a></li>
-		<li style="opacity: 0.3; text-align: right;">
-			编辑本文：<a href="https://www.yuque.com/nicaibandishuqing/blog/wgv3ak/edit/" target="_blank" aria-hidden="true"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>；
-			网站部署：<a href="https://github.com/wztlink1013/website" target="_blank" aria-hidden="true"><i class="fa fa-cloud" aria-hidden="true"></i></a>
-		</li>
-	</ul>
-	<a href="/"><img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" /></a>
-</div>
-
-
-
-    <!-- TODO:  下拉菜单栏-->
-<em  class="arrow-expend" tabindex="0" aria-hidden="0" aria-label="点击展开网页导航" aria-selected="true" aria-lable="网页导航" aria-expanded="false" id="i1">▾
-<ul role="group" aria-labelledby="i1" aria-expanded="false">
-  <li><a href="/blog/">博客</a></li>
-  <li><a href="/message/">留言</a></li>
-  <li><a href="/demo/">实验室</a></li>
-  <li><a href="/friends/">友情链接</a></li>
-</ul>
-</em>
-  </div>
-  <!-- TODO: 上一篇文章/下一篇文章 -->
-  <div class="post-relative">
-<div class="page-relative">
-  
-    <a href="/blog/hy14ic/" class="post-prev">
-      <i class="fa fa-arrow-left" tabindex="0" aria-hidden="true"></i>
-      <span class="aria-readonly">上一篇文章</span>
-      
-        <b>Python-apply函数和入口函数</b>
-      
-    </a>
-  
-  
-    <a href="/blog/pm7mpk/" class="post-next">
-      <span class="aria-readonly">下一篇文章</span>
-      <b>VScode使用</b>
-      <i class="fa fa-arrow-right" tabindex="0" aria-hidden="true"></i>
-    </a>
-  
-</div>
-
-
-<div class="page-relative-fixed" tabindex="0" aria-hidden="true">
-  
-  <a href="/blog/hy14ic/" class="prev" title="Python-apply函数和入口函数">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    
-    <b>Python-apply函数和入口函数</b>
-    
-  </a>
-  
-  
-  <a href="/blog/pm7mpk/" class="next" title="VScode使用">
-    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    <b>VScode使用</b>
-  </a>
-  
-</div>
-
-  </div>
-</div>
-
-<!-- TODO: 侧边栏 -->
-<!-- TODO: 文章内部左隐藏侧边栏 -->
-<div class="sidebar" tabindex="0" aria-hidden="true">
-  <!-- TODO: 上面的 -->
-  <div class="func-btns func-btns-up">
-    <span class="func-item">
-        <i class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i><span>目录</span></i>
-        
-        <div>
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
-        </div>
-    </span>
-
-    <span class="func-item">
-        <i class="func-font icon"><i class="fa fa-adjust" aria-hidden="true"></i><span>夜间</span></i>
-        <div class="font-choose-box">
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <div class="font-choose bg-choose">
-            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon"><i class="fa fa-moon-o" aria-hidden="true"></i></i></a>
-            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon"><i class="fa fa-sun-o" aria-hidden="true"></i></i></a>
-          </div>
-        </div>
-    </span>
-
-    <span class="func-item">
-        <a href="https://weibo.com/5341970683" target="_blank"><i class="func-fb icon"><i class="fa fa-weibo" aria-hidden="true"></i><span>分享</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <p class="seperator sharecanvas"><a href="javascript: void(0);">微博分享</a></p>
-          <p><a href="https://weibo.com/5341970683" target="_blank">微博关注</a></p>
-        </div>
-    </span>
-    <span class="func-item">
-        <i class="func-about icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i><span>关于</span></i>
-        <div>
-          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
-          <div id="followMeOnWeibo"></div>
-        </div>
-    </span>
-  </div>
-  <!-- TODO: 下面的 -->
-	<div class="func-btns">
-
-    <!-- TODO: 友情链接 -->
-    <span class="func-item">
-        <a href="/friends/" target="_blank"><i class="func-rss icon"><i class="fa fa-link" aria-hidden="true"></i><span>链接</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
-          <a href="/friends/" target="_blank">友情链接</a>
-        </div>
-    </span>
-    <!-- TODO: 订阅 -->
-    <span class="func-item">
-        <a href="/rss2.xml" target="_blank"><i class="func-rss icon"><i class="fa fa-rss-square" aria-hidden="true"></i><span>订阅</span></i></a>
-        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/rss2.xml" target="_blank">订阅我吧！</a></div>
-    </span>
-	</div>
-</div>
-
-<!-- TODO: 评论+相关文章+友情链接 -->
-<div class="single-page-footer">
-<!-- TODO: 页脚评论+站点信息 -->
-<div class="footer">
-	<div class="footer-wraper">
-		<div class="footer-content">
-			<div class="footer-nav">
-	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
-	   data-thread-key="blog/wgv3ak"
-	   data-disqus-identifier="blog/wgv3ak" 
-		 tabindex="0" aria-hidden="true">评论内容</a>
-	<a href="javascript: void(0);" id="comments">相关文章</a>
-	<a href="/friends/" tabindex="0" aria-hidden="true">友情链接</a>
-</div>
-<div class="nav-detail">
-	<div tabindex="0">
-		
-    <div id="tcomment"></div>
-    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
-    <script>
-    twikoo.init({ 
-        envId: 'website-wikoo-4g46k8do98867542', 
-        el: '#tcomment'
-        // path: 'window.location.pathname.replace(\'blog\',\'message\')'
-    })
-    </script>
-
-
-	</div>
-	<div style="display:block;">
-		<div class="relative-to-comment" tabindex="0" aria-hidden="true"><span>打开评论</span></div>
-		<div class="relative-wrapper">
-	<div class="relative-article">
-		
-		<ul>
-			<li>
-				<span><font aria-hidden="true">2020-08-30 »</font> </span>
-				<a href="/blog/mssoff/">对谷歌BERT模型的思考</a>
-				<span class="aria-readonly">发表时间为2020年08月30日</span>
-				<div class="relative-box">
           
-          <span class="aria-readonly">文章概要 </span>why？BERT 可以用来干什么？处理这种非结构化的数据以及之前学习到的情感分析BERT 可以用于问...
+            <span class="prev_next_left">
+                <a href="/blog/hy14ic/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Python-apply函数和入口函数</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/pm7mpk/">
+                    <b>VScode使用</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component comments" id="comments">
+    <div class="comments_title">
+        <h2>评论区</h2>
+        <!-- 转换评论按钮 -->
+        <div class="switch_comments">
+          <span>Twikoo</span>
+          <span id="switch_btn">转换</span>
+          <span>utterances</span>
         </div>
-			</li>
-			
-			<li>
-				<span><font aria-hidden="true">2020-03-23 »</font> </span>
-				<a href="/blog/apohu8/">ANN神经网络</a>
-				<span class="aria-readonly">发表时间为2020年03月23日</span>
-				<div class="relative-box">
-          <a href="/blog/apohu8/" class="relative-img-wrapper"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949882-81dbb96c-eafa-4294-aae3-242fd33fff2b.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=858&amp;size=0&amp;status=done&amp;style=none&amp;width=858" style="width:100%" data-original="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949882-81dbb96c-eafa-4294-aae3-242fd33fff2b.png#align=left&amp;display=inline&amp;height=324&amp;margin=%5Bobject%20Object%5D&amp;originHeight=324&amp;originWidth=858&amp;size=0&amp;status=done&amp;style=none&amp;width=858"/></a>
-          <span class="aria-readonly">文章概要 </span>一、基本结构神经网络基本结构 &gt; 何为深度学习？二、感知器和激活函数感知器激活函数（其中 w ...
+    </div>
+
+    <div class="comments_content">
+        <!-- utterances评论区 -->
+        <div id="utterances_comment" style="display: none;"></div>
+        
+
+        <!-- twikoo评论区 -->
+        <div id="twikoo_comment" style="display: block;">
+          <div id="tcomment"></div>
+          <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+          <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+          </script>
         </div>
-			</li>
-			
-		</ul>
-	</div>
-</div>
 
-		<!-- TODO: entry_blog -->
-		<a href="/blog/" class="relative-to-comment-wrapper" tabindex="0" aria-hidden="true"><div class="relative-to-comment">回到首页</div></a>
-	</div>
-	<div class="friends-box">
-		<ul>
-			
-			<li><a href="http://www.ruanyifeng.com/home.html" target="_blank">阮一峰</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://xaoxuu.com" target="_blank">xaoxuu</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.cnblogs.com/mjios" target="_blank">小码哥MJ</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.sgyzyun.club/" target="_blank">洛尘曦</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.ccyh.xyz" target="_blank">Liam's Blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://xiamuyourenzhang.cn/" target="_blank">夏目友人帐</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://sitoi.cn/" target="_blank">Sitoi</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.cnblogs.com/zhanjiahui/" target="_blank">小圆</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://blog.webpro.ltd/" target="_blank">Bill’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://liuyib.github.io/" target="_blank">liuyib</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://crainyday.gitee.io" target="_blank">CRainyDay</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://hewanyue.com" target="_blank">没有人</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://yc9064.gitee.io/" target="_blank">Marco</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.hcode.top" target="_blank">Hcode</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://zzsnn.github.io/" target="_blank">折纸少年</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="http://zhifou.run" target="_blank">Darren</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://cndrew.cn/" target="_blank">Uncle_drew</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://cungudafa.top" target="_blank">cungudafa</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="http://hudiskoray.iicp.net:4000/" target="_blank">Jerry Huang</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://reqwey.vercel.app/" target="_blank">Linhk1606</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://modao233.gitee.io/" target="_blank">modao’s blog</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="https://www.jsonformatting.com/" target="_blank">json format</a> <font aria-hidden="true">»</font> <span>网站网址</span></li>
-			
-			<li><a href="/friends/">更多列表 <font aria-hidden="true">»</font></a></li>
-		</ul>
-	</div>
-</div>
-			<!-- TODO:  网站信息：网站最底下的信息-->
 
-<div class="website-info" aria-hidden="true">
-	<a class="page_editor" href="/" target="_blank">🧙‍♂️</a>
-	<a href='https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral' title="又拍云联盟" target='_blank'>
-		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210210101446.png' width='40' height='20'>
-	</a>
-	<span>&copy;2019-2021 
-		<small><a href="http://www.miitbeian.gov.cn/" about="_blank">赣ICP备20002826号-1</a></small>
-	</span>本站 
-	<a href="/">尼采般地抒情</a> 
-	<a href="/about#contact">联系方式</a> | 总热度：<em id="busuanzi_value_site_pv"></em>
-	<a href='https://travellings.now.sh/' title="随机跳转到一个有意思的网站" target='_blank' class="zhidao_ai">
-		<img src='https://cdn.jsdelivr.net/gh/wztlink1013/cdn-article/article20201120/20210218094053.png' width="20" height="20">
-	</a>
-</div>
+    </div>
 
-		</div>
-	</div>
-</div>
-<!-- 引入highlight样式 -->
-<script src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
 
 </div>
-<!-- TODO: 回到顶部 -->
-<div class="tools-wrapper" tabindex="0" aria-hidden="true">
-	<a class="gotop icon" href="#" title="回到顶部"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
-	<a class="hash-to-comments icon" title="我要评论"><i class="fa fa-commenting" aria-hidden="true"></i></a>
-	<span class="func-item">
-		<a class="func-nav icon"><i class="fa fa-bars" aria-hidden="true"></i></a>
-	</span>
-	<a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song icon"><i class="fa fa-adjust" aria-hidden="true"></i></a>
-</div>
-<div class="fixerr" tabindex="0" aria-hidden="true">纠错模式</div>
 
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component categories">
+    <h3>文章分类</h3>
+    <ul>
+        
+                <li>
+                    <a href='/categories/Hexo/'>Hexo</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Language/'>Language</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Algorithm/'>Algorithm</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataBase/'>DataBase</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Bug/'>Bug</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/MachingLearning/'>MachingLearning</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataStructure/'>DataStructure</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Environment/'>Environment</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Web/'>Web</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/PostProduction/'>PostProduction</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataAnalysis/'>DataAnalysis</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/VersionControlSystem/'>VersionControlSystem</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/SoftwareEngineering/'>SoftwareEngineering</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerNetwork/'>ComputerNetwork</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOrganization/'>ComputerOrganization</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/'>生活随笔</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOperatingSystem/'>ComputerOperatingSystem</a>
+                </li>
+            
+    </ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul id="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+    <footer class="ct_footer">
+        <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
+</div>
+    </footer>
+</div>
 
 </body>
 
-<script src="/public/js/jquery.js"></script>
-<script src="/public/js/socket.io.js"></script>
-<!-- <script src="/public/js/aplayer.js"></script> -->
-<script src="/public/js/main.js?v=20210308"></script>
+    
+<script src="/public/js/layout.js"></script>
 
+    
+<script src="/public/js/toc.js"></script>
 
+    
+<script src="/public/js/search.js"></script>
+
+    
+<script src="/public/js/go_top.js"></script>
+
+    
+<script src="/public/js/comments.js"></script>
+
+    
+<script src="/public/js/web_info.js"></script>
+
+ 
 </html>
