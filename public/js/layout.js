@@ -93,7 +93,7 @@ arrow_right.addEventListener('click',function(){
 *****************************************************/
 
 var btn_app_sider = document.querySelector('#btn_app_sider');
-var btn_app_search = document.querySelector('#btn_app_search');
+var btn_app_right = document.querySelector('#btn_app_right');
 var app_side_glass = document.querySelector('#app_side_glass');
 var app_side_content = document.querySelector('#app_side_content');
 
@@ -105,7 +105,10 @@ app_side_glass.addEventListener('click',function(){
     app_side_glass.style.display = 'none';
     app_side_content.style.display = 'none';
 })
-
+btn_app_right.addEventListener('click',function(){
+    alert("本网站还在开发中，诸多功能还未完善，敬请期待~");
+    console.log("本网站还在开发中，诸多功能还未完善，敬请期待~");
+})
 /****************************************************
         响应式布局  560px（C档）   980px（B档）   1261px（A档）
 *****************************************************/
@@ -117,8 +120,6 @@ function deviceMediaQuery(media_width) {
         document.querySelector('.header_app').style.display = 'block';
         document.querySelector('.ct_left').style.display = 'none';
         document.querySelector('.ct_right').style.display = 'none';
-        // document.querySelector('.ct_center').style.display = 'block';
-        // document.querySelector('.ct_center').style.float = 'left';
         document.querySelector('.container').style.width = '95%';
         document.querySelector('.ct_center').style.width = '100%';
     } else {
