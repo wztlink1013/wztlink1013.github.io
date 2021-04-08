@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>综合实验2——约瑟夫环 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="categories: DataStructure问题描述设有 n 个人围坐在圆桌周围，现从某个位置 m(1≤m≤n)上的人开始报数，报数到 k 的人就站出来。下一个人，即原来的第 k+1 个位置上的人，又从 1 开始报数，再报数到 k 的人站出来。依次重复下去，直到全部的人都站出来为止。试设计一个">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="综合实验2——约瑟夫环 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/itu2g5/">
+    <meta property="og:site_name" content="综合实验2——约瑟夫环 | 尼采般地抒情">
+    <meta property="og:description" content="categories: DataStructure问题描述设有 n 个人围坐在圆桌周围，现从某个位置 m(1≤m≤n)上的人开始报数，报数到 k 的人就站出来。下一个人，即原来的第 k+1 个位置上的人，又从 1 开始报数，再报数到 k 的人站出来。依次重复下去，直到全部的人都站出来为止。试设计一个">
+    <meta name="generator" content="https://hexo.io" />
+    <link rel="start" href="https://www.wztlink1013.com/blog/" title="尼采般地抒情" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入jQuery快速开发 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- 引入预先加载的js脚本 -->
+    
+<script src="/public/js/advance.js"></script>
+
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            主题：hexo-theme-lyrics<hr>
+            作者:尼采般地抒情
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>133 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+        <span id="webinfo-runtime-count" publish_date="01/04/2020 21:34:09"></span>
+    </div>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul id="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+</div>
+
+
+<div class="global_button">
+    <div class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div class="global_button_item" style="border-bottom: 0">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%A6%81%E6%B1%82"><span class="toc-text">问题要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <div class="component clearfix blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            主题：hexo-theme-lyrics<hr>
+            作者:尼采般地抒情
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>133 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+        <span id="webinfo-runtime-count" publish_date="01/04/2020 21:34:09"></span>
+    </div>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>综合实验2——约瑟夫环</h1>
+    </div>
+    <div class="article_meta_other">
+        作者: <span><a href="/">尼采般地抒情</a></span>
+        时间：<time>2021-04-06 18:03:18</time>
+        分类：
+             
+        标签：
+             
+        文章访问量：<span id="twikoo_visitors">loading</span>
+        文章评论数：<span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id=""><a href="#" class="headerlink" title=""></a></h2><hr>
+<p>categories: DataStructure</p>
+<hr>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>设有 n 个人围坐在圆桌周围，现从某个位置 m(1≤m≤n)上的人开始报数，报数到 k 的人就站出来。下一个人，即原来的第 k+1 个位置上的人，又从 1 开始报数，再报数到 k 的人站出来。依次重复下去，直到全部的人都站出来为止。试设计一个程序求出这 n 个人的<strong>出列顺序</strong>。</p>
+<h2 id="问题要求"><a href="#问题要求" class="headerlink" title="问题要求"></a>问题要求</h2><ol>
+<li>构造一个具有 n 个结点的循环单链表，用于存储圆桌周围的人的编号，链表结点的 data 域存放桌子周围的人的编号。</li>
+<li>为保持程序的通用性,问题中的 n、m、k 可由用户从键盘输入.</li>
+<li>要求编写函数模拟约瑟夫问题的实现过程,并输出 n 个人的出列顺序。</li>
+</ol>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>这个问题和综合实验一的思路一样，都是利用循环单链表（所以理论上之前的狐狸逮兔子应该用顺序表，而我用了链表<img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1617761762269-2745323d-e497-4442-984b-fe31e817f25a.jpeg#align=left&display=inline&height=90&margin=%5Bobject%20Object%5D&name=huajif07e7f9f783b2e6.jpeg&originHeight=90&originWidth=62&size=1957&status=done&style=stroke&width=62" alt="huajif07e7f9f783b2e6.jpeg">）。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>写代码过程中，题目没看清楚，一开始以为是被选中的人还呆在环里面，就导致我的指针指了一下午的寂寞……<img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1617799608465-1b5ed521-81ea-4434-a2bb-3d104e6ea038.jpeg#align=left&display=inline&height=56&margin=%5Bobject%20Object%5D&name=huaji-336495ce81a39782.jpeg&originHeight=56&originWidth=52&size=3550&status=done&style=stroke&width=52" alt="huaji-336495ce81a39782.jpeg">，不说了，交实验报告去了……</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+/**
+ * 定义一个单链表
+ * */
+typedef struct LNode &#123;
+    int data;
+    struct LNode *next;
+&#125;Lnode, *LinkList;
+
+LinkList L;
+
+/**
+ * 初始化为循环链表
+ * */
+void InitList(LinkList &amp;L) &#123;
+    L = new LNode;
+    L-&gt;next = NULL;
+    L-&gt;data = 1;
+&#125;
+
+// 初始化循环链表的初始值
+void init_add(LinkList &amp;L, int n) &#123;
+    InitList(L);
+    LinkList p;
+    p = L;
+    for (int i = 2; i &lt;= n;i++) &#123;
+        LinkList p_temp;
+        InitList(p_temp);
+        p_temp-&gt;data = i;
+        if (i == n) &#123;
+            p_temp-&gt;next = L;
+            p-&gt;next = p_temp;
+        &#125; else &#123;
+            p_temp-&gt;next = p-&gt;next;
+            p-&gt;next = p_temp;
+            p = p-&gt;next;
+        &#125;
+    &#125;
+&#125;
+
+
+void joseph_ring(LinkList &amp;L, int n, int m, int k) &#123;
+    init_add(L, n);
+    LinkList p;
+    p = L;
+    for (int i = 0; i&lt; m; i++) &#123;
+        p = p-&gt;next;
+    &#125;
+    while(p-&gt;next != p) &#123;
+        for (int j = 1; j&lt; k; j++) &#123;
+            if (j == k-1) &#123;
+                cout&lt;&lt;p-&gt;next-&gt;data&lt;&lt;&quot;号出来&quot;&lt;&lt;&quot;\n&quot;;
+                p-&gt;next = p-&gt;next-&gt;next;
+                p = p-&gt;next;
+            &#125; else &#123;
+                p = p-&gt;next;
+            &#125;
+        &#125;
+    &#125;
+    cout&lt;&lt; p-&gt;data&lt;&lt;&quot;号出来&quot;&lt;&lt;&quot;\n&quot;;
+
+&#125;
+
+int main()
+&#123;
+    cout &lt;&lt; &quot;请依次输入人数n、报数位置m、报到指定值就站起来的k值&quot; &lt;&lt; &quot;\n&quot;;
+    int n, m, k;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+    LinkList p;
+    joseph_ring(p, n, m, k);
+&#125;
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617799834906-0f864898-c7cc-4667-93c5-7e6d6e047111.png#align=left&display=inline&height=744&margin=%5Bobject%20Object%5D&name=Snipaste_2021-04-07_20-39-47.png&originHeight=744&originWidth=1920&size=58094&status=done&style=none&width=1920" alt="Snipaste_2021-04-07_20-39-47.png"></p>
+
+</div>
+
+        <div class="component article_more">
+    <p>版权声明：署名-非商业性使用-禁止演绎 4.0 国际
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="https://www.wztlink1013.com/blog/itu2g5/">https://www.wztlink1013.com/blog/itu2g5/</a>
+    </p>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/bui5kv/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>JavaScript数组总结</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/bexxoi/">
+                    <b>综合实验1——狐狸逮兔子</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component clearfix comments" id="comments">
+    <div class="comments_title">
+        <h2>评论区</h2>
+        <!-- 转换评论按钮 -->
+        <div class="switch_comments">
+          <span>Twikoo</span>
+          <span id="switch_btn">转换</span>
+          <span>utterances</span>
+        </div>
+    </div>
+
+    <div class="comments_content">
+        <!-- utterances评论区 -->
+        <div id="utterances_comment" style="display: none;"></div>
+        
+
+        <!-- twikoo评论区 -->
+        <div id="twikoo_comment" style="display: block;">
+          <div id="tcomment"></div>
+          <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+          <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+          </script>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component clearfix categories">
+    <h3>文章分类</h3>
+    <ul>
+        
+                <li>
+                    <a href='/categories/Hexo/'>Hexo</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Algorithm/'>Algorithm</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataBase/'>DataBase</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Bug/'>Bug</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Language/'>Language</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/MachingLearning/'>MachingLearning</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataStructure/'>DataStructure</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Environment/'>Environment</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/PostProduction/'>PostProduction</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/DataAnalysis/'>DataAnalysis</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/VersionControlSystem/'>VersionControlSystem</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/SoftwareEngineering/'>SoftwareEngineering</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerNetwork/'>ComputerNetwork</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOrganization/'>ComputerOrganization</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/Web/'>Web</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/'>生活随笔</a>
+                </li>
+            
+                <li>
+                    <a href='/categories/ComputerOperatingSystem/'>ComputerOperatingSystem</a>
+                </li>
+            
+    </ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul id="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
+</div>
+</footer>
+
+</body>
+
+    
+<script src="/public/js/layout.js"></script>
+
+    
+<script src="/public/js/toc.js"></script>
+
+    
+<script src="/public/js/search.js"></script>
+
+    
+<script src="/public/js/go_top.js"></script>
+
+    
+<script src="/public/js/comments.js"></script>
+
+    
+<script src="/public/js/web_info.js"></script>
+
+ 
+</html>
