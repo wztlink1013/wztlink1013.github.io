@@ -31,7 +31,14 @@ window.addEventListener('scroll', function(){
 })
 
 // 点击回到顶部
-// TODO: 缓慢回到顶部
 go_top.addEventListener('click', function(){
-    document.documentElement.scrollTop = 0;
+    if (window.pageYOffset) {
+        window.pageYOffset = 0;
+    } else if (document.documentElement.scrollTop) {
+        document.documentElement.scrollTop = 0;
+    } else if (document.body.scrollTop) {
+        document.body.scrollTop = 0;
+    }
+    
 })
+// TODO: 缓慢回到顶部
