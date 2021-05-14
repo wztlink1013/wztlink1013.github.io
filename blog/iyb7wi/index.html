@@ -10,14 +10,14 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="这是加密文章！">
+    <meta name="description" content="​实验报告实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值要求：仅用一个栈实现（并且用原生单链表实现）测试用例：4+2*3-10/5交作业时间：5 月 14 日思路两个步骤：将给定的表达式转换为波兰表达式/逆波兰表达式对转换后的式子进行计算​学习遍历二叉树，利用前序/中序/后序">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
     <meta property="og:title" content="实验5——波兰/逆波兰表达式求值 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/iyb7wi/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="这是加密文章！">
+    <meta property="og:description" content="​实验报告实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值要求：仅用一个栈实现（并且用原生单链表实现）测试用例：4+2*3-10/5交作业时间：5 月 14 日思路两个步骤：将给定的表达式转换为波兰表达式/逆波兰表达式对转换后的式子进行计算​学习遍历二叉树，利用前序/中序/后序">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -132,7 +132,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A"><span class="toc-text">实验报告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81"><span class="toc-text">实验代码</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -205,8 +205,8 @@
                 </span>
                 
                 <span>
-                    <a href="/categories/树">
-                        树
+                    <a href="/categories/栈和队列">
+                        栈和队列
                     </a>
                 </span>
                  
@@ -216,7 +216,317 @@
     </div>
 </div>
         <div class="component article">
-    <p>这是加密文章！</p>
+    <p>​</p>
+<h2 id="实验报告"><a href="#实验报告" class="headerlink" title="实验报告"></a>实验报告</h2><p>实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值<br>要求：仅用一个栈实现（并且用原生单链表实现）<br>测试用例：4+2*3-10/5<br>交作业时间：5 月 14 日</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>两个步骤：</p>
+<ol>
+<li><strong>将给定的表达式转换为波兰表达式/逆波兰表达式</strong></li>
+<li><strong>对转换后的式子进行计算</strong></li>
+</ol>
+<p>​</p>
+<p>学习遍历二叉树，利用前序/中序/后序表达式的时候，经常有一个问题就是：<br>​</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 给出中缀表达式，【写出&amp;&amp;编程出】后序（逆波兰）表达式</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1620306330357-a83abeff-56a3-44f1-b837-82051f46e3b5.png#height=175&id=ZAX5A&margin=%5Bobject%20Object%5D&name=image.png&originHeight=754&originWidth=1023&originalType=binary&size=63695&status=done&style=none&width=237" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1620306352380-f6eef790-b72d-4e1d-9da1-6597ec5ae11d.png#height=176&id=zESCQ&margin=%5Bobject%20Object%5D&name=image.png&originHeight=610&originWidth=1021&originalType=binary&size=59737&status=done&style=none&width=294" alt="image.png"><br>上面的是课堂上在纸上的书写，那么如何将其用编程语言实现呢？思路应该是这样的：</p>
+<ul>
+<li><p>遍历表达式：对遍历的元素进行判断</p>
+</li>
+<li><p>是运算符？操作数？还是括号呢？对其相应的判断</p>
+<ul>
+<li>操作数</li>
+<li>运算符：+-*/</li>
+<li>括号</li>
+</ul>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  个位数/双位数……的字符处理</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox">  给出中缀表达式，【写出&amp;&amp;编程出】前序（波兰）表达式</p>
+</li>
+</ul>
+<p>如果写出了逆波兰表达式，转换为波兰表达式只需要将<code>（</code>变为<code>）</code>，同时遍历从后往前遍历即可</p>
+<p>最后的结果逆置</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 最后的计算，波兰和逆波兰不能写成一个函数，因为减数和被减数，除数和被除数的缘故</li>
+</ul>
+<h2 id="实验代码"><a href="#实验代码" class="headerlink" title="实验代码"></a>实验代码</h2><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+/**
+ * 波兰表达式/逆波兰表达式求解运算表达式
+ *
+ */
+
+
+/**
+ * 单链表的存储结构
+ */
+typedef struct LNode &#123;
+    string data; //数据域
+    struct LNode *next; //指针域
+&#125;Lnode, *LinkList; //LinkList为指向结构体LNode的指针类型
+
+/* 初始化链表 */
+void InitList(LinkList &amp;L) &#123;
+    L = new LNode;
+    L-&gt;next = NULL;
+&#125;
+
+/* 打印 */
+void TraverseList(LinkList &amp; L)&#123;
+        LNode *p = new LNode;
+        p = L-&gt;next;
+        // cout &lt;&lt; &quot;此中缀表达式链表打印的结果为：&quot;;
+        while (p != NULL)
+        &#123;
+            cout &lt;&lt; p-&gt;data;
+            p = p-&gt;next;
+        &#125;
+        cout &lt;&lt; &quot;\n&quot;;
+&#125;
+
+/* 逆置 */
+void ReverseList(LinkList &amp;L) &#123;
+    LNode *p = L-&gt;next;
+    L-&gt;next = NULL;
+    while(p)
+    &#123;
+        LNode *q = p-&gt;next;
+        p-&gt;next = L-&gt;next;
+        L-&gt;next = p;
+        p = q;
+    &#125;
+&#125;
+
+/**
+ * 初始化用户输入的链表
+ */
+void Center(LinkList &amp;L,string s) &#123;
+    InitList(L);
+    LinkList p = L;
+    string temp = &quot;&quot;;
+    for (int i = 0; i &lt; s.length();i++)&#123;
+        // 处理双位数字情况
+        if (isdigit(s[i])) &#123;
+            // 该字符为数字
+            temp = temp + s[i];
+            if (!isdigit(s[i+1])) &#123;
+                // 下一个不是数字，而是字符，将temp后插
+                LinkList node = new LNode;
+                node-&gt;data = temp;
+                node-&gt;next = NULL;
+                p-&gt;next = node;
+                p = node;
+                // 将temp重置
+                temp = &quot;&quot;;
+                continue;
+            &#125;
+            continue;
+        &#125;
+        // 后插到L尾巴上
+        LinkList node = new LNode;
+        node-&gt;data = s[i];
+        node-&gt;next = NULL;
+        p-&gt;next = node;
+        p = node;
+    &#125;
+&#125;
+
+
+/**
+ * 将表达式转换为波兰表达式/逆波兰表达式
+ * 第二个参数对逆波兰而言是左括号，第三个参数对逆波兰而言是右括号
+ * 对波兰而言反过来
+ */
+void Transition(LinkList &amp;L, string l, string r)&#123;
+    // 定义一个栈用来处理
+    stack&lt;string&gt; stack;
+    LinkList p = L-&gt;next;
+    LinkList result = new LNode;
+    InitList(result);
+    LinkList result_a = result;
+
+    while(p != NULL) &#123;
+        if (p-&gt;data == l) &#123;
+            stack.push(p-&gt;data);
+        &#125; else if(p-&gt;data == r) &#123;
+            while(stack.top() != l)&#123;
+                LinkList temp = new LNode;
+                temp-&gt;data = stack.top();
+                temp-&gt;next = NULL;
+                result_a-&gt;next = temp;
+                result_a = temp;
+                stack.pop();
+            &#125;
+            if (stack.top() == l)&#123;
+                stack.pop();
+            &#125;
+        &#125; else if(p-&gt;data == &quot;+&quot; || p-&gt;data == &quot;-&quot;) &#123;
+            if (stack.size() != 0) &#123;
+                if (stack.top() == &quot;*&quot; || stack.top() == &quot;/&quot;)&#123;
+                    for (int i = 0; i &lt; stack.size();i++) &#123;
+                        if (stack.top() == l) &#123;
+                            break;
+                        &#125;
+                        LinkList temp = new LNode;
+                        temp-&gt;data = stack.top();
+                        temp-&gt;next = NULL;
+                        result_a-&gt;next = temp;
+                        result_a = temp;
+                        stack.pop();
+                    &#125;
+                &#125;
+            &#125;
+            stack.push(p-&gt;data);
+        &#125; else if(p-&gt;data == &quot;*&quot; || p-&gt;data == &quot;/&quot;) &#123;
+            stack.push(p-&gt;data);
+        &#125; else &#123;
+            LinkList temp = new LNode;
+            temp-&gt;data = p-&gt;data;
+            temp-&gt;next = NULL;
+            result_a-&gt;next = temp;
+            result_a = temp;
+        &#125;
+        p = p-&gt;next;
+    &#125;
+    // TraverseList(result);
+    for (int i = 0; i &lt; stack.size();i++) &#123;
+        LinkList temp = new LNode;
+        temp-&gt;data = stack.top();
+        temp-&gt;next = NULL;
+        result_a-&gt;next = temp;
+        result_a = temp;
+        stack.pop();
+    &#125;
+    // 上一个操作总是不能清空栈的最后一个元素
+    LinkList temp = new LNode;
+    temp-&gt;data = stack.top();
+    temp-&gt;next = NULL;
+    result_a-&gt;next = temp;
+    result_a = temp;
+    stack.pop();
+
+    L = result;
+&#125;
+
+/**
+ * 计算
+ */
+
+void EvaulTree(LinkList &amp;L) &#123;
+    // 定义一个栈用来处理
+    stack&lt;string&gt; stack;
+    LinkList p = L-&gt;next;
+    while(p != NULL) &#123;
+        if (p-&gt;data == &quot;+&quot;)&#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(y + x));
+        &#125; else if(p-&gt;data == &quot;-&quot;) &#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(y - x));
+        &#125; else if(p-&gt;data == &quot;*&quot;) &#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(y * x));
+        &#125; else if(p-&gt;data == &quot;/&quot;) &#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(y / x));
+        &#125; else &#123;
+            stack.push(p-&gt;data);
+        &#125;
+        p = p-&gt;next;
+    &#125;
+    while (!stack.empty())&#123;
+        cout &lt;&lt; stoi(stack.top());
+        stack.pop();
+    &#125;
+&#125;
+
+void EvaulTree_polish(LinkList &amp;L) &#123;
+    // 定义一个栈用来处理
+    stack&lt;string&gt; stack;
+    LinkList p = L-&gt;next;
+    while(p != NULL) &#123;
+        if (p-&gt;data == &quot;+&quot;)&#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(x + y));
+        &#125; else if(p-&gt;data == &quot;-&quot;) &#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(x - y));
+        &#125; else if(p-&gt;data == &quot;*&quot;) &#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(x * y));
+        &#125; else if(p-&gt;data == &quot;/&quot;) &#123;
+            int x = stoi(stack.top());
+            stack.pop();
+            int y = stoi(stack.top());
+            stack.pop();
+            stack.push(to_string(x / y));
+        &#125; else &#123;
+            stack.push(p-&gt;data);
+        &#125;
+        p = p-&gt;next;
+    &#125;
+    while (!stack.empty())&#123;
+        cout &lt;&lt; stoi(stack.top());
+        stack.pop();
+    &#125;
+&#125;
+
+
+int main () &#123;
+    cout &lt;&lt; &quot;------------------------------------&quot;&lt;&lt;&quot;\n&quot;;
+    string s;
+    cout &lt;&lt; &quot;请输入运算表达式：&quot;&lt;&lt;&quot;\n&quot;;
+    cin &gt;&gt; s;
+    LinkList test_reversepolish = new LNode;
+    InitList(test_reversepolish);
+    LinkList test_polish = new LNode;
+    InitList(test_polish);
+
+    Center(test_reversepolish, s);
+    Center(test_polish, s);
+    cout &lt;&lt; &quot;------------------------------------&quot;&lt;&lt;&quot;\n&quot;;
+    // 波兰表达式
+    ReverseList(test_polish);
+    Transition(test_polish, &quot;)&quot;, &quot;(&quot;);
+    cout &lt;&lt; &quot;波兰表达式为：&quot;;
+    ReverseList(test_polish);
+    TraverseList(test_polish);
+    cout &lt;&lt; &quot;波兰表达式计算结果为：&quot;;
+    ReverseList(test_polish);
+    EvaulTree_polish(test_polish);
+    cout &lt;&lt; &quot;\n&quot;&lt;&lt;&quot;------------------------------------&quot;&lt;&lt;&quot;\n&quot;;
+
+    // 逆波兰表达式
+    Transition(test_reversepolish, &quot;(&quot;, &quot;)&quot;);
+    cout &lt;&lt; &quot;逆波兰表达式为：&quot;;
+    TraverseList(test_reversepolish);
+    cout &lt;&lt; &quot;逆波兰表达式计算结果为：&quot;;
+    EvaulTree(test_reversepolish);
+    cout &lt;&lt; &quot;\n&quot;&lt;&lt;&quot;------------------------------------&quot;&lt;&lt;&quot;\n&quot;;
+&#125;
+</code></pre>
 
 </div>
 
