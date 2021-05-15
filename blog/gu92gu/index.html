@@ -4,20 +4,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>C++各种链表设计及操作 | 尼采般地抒情</title>
+    <title>C++链表(单、循环、双向)设计及操作 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验报告要求1、创建一个带头结点的单链表（头指针为 head），且遍历此链表（输出链表中各结点的值）；">
+    <meta name="description" content="这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验要求1、创建一个带头结点的单链表（头指针为 head），且遍历此链表（输出链表中各结点的值）；2、">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="C++各种链表设计及操作 | 尼采般地抒情">
+    <meta property="og:title" content="C++链表(单、循环、双向)设计及操作 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/gu92gu/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验报告要求1、创建一个带头结点的单链表（头指针为 head），且遍历此链表（输出链表中各结点的值）；">
+    <meta property="og:description" content="这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验要求1、创建一个带头结点的单链表（头指针为 head），且遍历此链表（输出链表中各结点的值）；2、">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -90,7 +90,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>195 <span>篇</span>
+        <span>文章数目：</span>196 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -132,7 +132,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E8%A6%81%E6%B1%82"><span class="toc-text">实验报告要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E7%90%86%E8%A7%A3"><span class="toc-text">概念理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">链表数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8C%87%E5%90%91"><span class="toc-text">关于链表的指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-p-L-%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">关于 p&#x3D;L 的理解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E4%BB%A3%E7%A0%81"><span class="toc-text">各种代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E4%BB%A3%E7%A0%81"><span class="toc-text">实验报告代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E9%93%BE%E8%A1%A8%E5%90%84%E7%A7%8D%E6%93%8D%E4%BD%9C%E4%BB%A3%E7%A0%81%E6%80%BB%E7%BB%93"><span class="toc-text">单链表各种操作代码总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8%E4%BB%A3%E7%A0%81"><span class="toc-text">循环链表代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E4%BB%A3%E7%A0%81"><span class="toc-text">双向链表代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E8%A6%81%E6%B1%82"><span class="toc-text">实验要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E7%90%86%E8%A7%A3"><span class="toc-text">概念理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">链表数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8C%87%E5%90%91"><span class="toc-text">关于链表的指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-p-L-%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">关于 p&#x3D;L 的理解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E4%BB%A3%E7%A0%81"><span class="toc-text">各种代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A%E4%BB%A3%E7%A0%81"><span class="toc-text">实验报告代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E9%93%BE%E8%A1%A8%E5%90%84%E7%A7%8D%E6%93%8D%E4%BD%9C%E4%BB%A3%E7%A0%81%E6%80%BB%E7%BB%93"><span class="toc-text">单链表各种操作代码总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8%E4%BB%A3%E7%A0%81"><span class="toc-text">循环链表代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E4%BB%A3%E7%A0%81"><span class="toc-text">双向链表代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -173,7 +173,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>195 <span>篇</span>
+        <span>文章数目：</span>196 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -191,7 +191,7 @@
     <div class="ct_center">
         <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>C++各种链表设计及操作</h1>
+        <h1>C++链表(单、循环、双向)设计及操作</h1>
     </div>
     <div class="article_meta_other">
         <span>作者: <a href="/">尼采般地抒情</a></span>
@@ -218,7 +218,7 @@
         <div class="component article">
     <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）</div>
 
-<h2 id="实验报告要求"><a href="#实验报告要求" class="headerlink" title="实验报告要求"></a>实验报告要求</h2><blockquote>
+<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><blockquote>
 <p>1、创建一个带头结点的单链表（头指针为 head），且遍历此链表（输出链表中各结点的值）；<br>2、查找单链表中的第 i 个结点，并输出结点元素的值；</p>
 </blockquote>
 <blockquote>
@@ -362,7 +362,38 @@ int main() &#123;
     ReverseList(test);//5
 &#125;
 </code></pre>
-<h3 id="单链表各种操作代码总结"><a href="#单链表各种操作代码总结" class="headerlink" title="单链表各种操作代码总结"></a>单链表各种操作代码总结</h3><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+<h3 id="单链表各种操作代码总结"><a href="#单链表各种操作代码总结" class="headerlink" title="单链表各种操作代码总结"></a>单链表各种操作代码总结</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 单链表存储形式</li>
+</ul>
+<pre><code class="cpp">typedef struct LNode &#123;
+    int data; //数据域
+    struct LNode *next; //指针域
+&#125;Lnode, *LinkList; //LinkList为指向结构体LNode的指针类型
+</code></pre>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 初始化</li>
+<li><input checked="" disabled="" type="checkbox"> 创建：前插法</li>
+<li><input checked="" disabled="" type="checkbox"> 创建：后插法</li>
+<li><input checked="" disabled="" type="checkbox"> 取值</li>
+<li><input checked="" disabled="" type="checkbox"> 插值</li>
+<li><input checked="" disabled="" type="checkbox"> 删除</li>
+<li><input checked="" disabled="" type="checkbox"> 打印</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>逆置</strong></li>
+</ul>
+<p>逆置多用前插的思想</p>
+<pre><code class="cpp">void ReverseList(LinkList &amp;L) &#123;
+    LNode *p = L-&gt;next;
+    L-&gt;next = NULL;
+    while(p) &#123;
+        LinkList q = p-&gt;next;
+        p-&gt;next = L-&gt;next;
+        L-&gt;next = p;
+        p = q;
+    &#125;
+&#125;
+</code></pre>
+<p>所有操作如下</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
 using namespace std;
 
 /**
