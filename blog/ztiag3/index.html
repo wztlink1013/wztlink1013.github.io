@@ -10,14 +10,14 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="深度优先搜索算法（Depth-First-Search）遍历步骤从图中某个顶点 V0 出发，访问此顶点，然后依次从 V0 的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和 V0 有路径相通的顶点都被访问到。访问顶点 v；依次从 v 的未被访问的邻接点出发，对图进行深度优先遍历；直至图中和">
+    <meta name="description" content="用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。一、深度优先搜索算法（Depth-First-Search）算法说明访问步骤：访问顶点 v；依次从 v 的未被访问的邻">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
     <meta property="og:title" content="图的遍历——DFS、BFS | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/ztiag3/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="深度优先搜索算法（Depth-First-Search）遍历步骤从图中某个顶点 V0 出发，访问此顶点，然后依次从 V0 的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和 V0 有路径相通的顶点都被访问到。访问顶点 v；依次从 v 的未被访问的邻接点出发，对图进行深度优先遍历；直至图中和">
+    <meta property="og:description" content="用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。一、深度优先搜索算法（Depth-First-Search）算法说明访问步骤：访问顶点 v；依次从 v 的未被访问的邻">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -132,7 +132,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95%EF%BC%88Depth-First-Search%EF%BC%89"><span class="toc-text">深度优先搜索算法（Depth-First-Search）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%AD%A5%E9%AA%A4"><span class="toc-text">遍历步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95%EF%BC%88Breadth-First-Search%EF%BC%89"><span class="toc-text">广度优先搜索算法（Breadth-First-Search）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%AD%A5%E9%AA%A4-1"><span class="toc-text">遍历步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="toc-text">代码</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95%EF%BC%88Depth-First-Search%EF%BC%89"><span class="toc-text">一、深度优先搜索算法（Depth-First-Search）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%AF%B4%E6%98%8E"><span class="toc-text">算法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E7%9A%84-DFS-%E4%BB%A3%E7%A0%81"><span class="toc-text">邻接矩阵的 DFS 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E8%A1%A8%E7%9A%84-DFS-%E4%BB%A3%E7%A0%81"><span class="toc-text">邻接表的 DFS 代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95%EF%BC%88Breadth-First-Search%EF%BC%89"><span class="toc-text">二、广度优先搜索算法（Breadth-First-Search）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%AF%B4%E6%98%8E-1"><span class="toc-text">算法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E7%9A%84-BFS-%E4%BB%A3%E7%A0%81"><span class="toc-text">邻接矩阵的 BFS 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E8%A1%A8%E7%9A%84-BFS-%E4%BB%A3%E7%A0%81"><span class="toc-text">邻接表的 BFS 代码</span></a></li></ol></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -216,55 +216,237 @@
     </div>
 </div>
         <div class="component article">
-    <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621307069176-74d6900b-6edd-4e7a-b761-789df7a17cfe.png#align=left&display=inline&height=273&margin=%5Bobject%20Object%5D&name=image.png&originHeight=545&originWidth=1126&size=159926&status=done&style=stroke&width=563" alt="image.png"></p>
-<h2 id="深度优先搜索算法（Depth-First-Search）"><a href="#深度优先搜索算法（Depth-First-Search）" class="headerlink" title="深度优先搜索算法（Depth-First-Search）"></a>深度优先搜索算法（Depth-First-Search）</h2><h3 id="遍历步骤"><a href="#遍历步骤" class="headerlink" title="遍历步骤"></a>遍历步骤</h3><p>从图中某个顶点 V0 出发，访问此顶点，然后依次从 V0 的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和 V0 有路径相通的顶点都被访问到。</p>
+    <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621307069176-74d6900b-6edd-4e7a-b761-789df7a17cfe.png#height=273&id=W9sKH&margin=%5Bobject%20Object%5D&name=image.png&originHeight=545&originWidth=1126&originalType=binary&size=159926&status=done&style=stroke&width=563" alt="image.png"></p>
+<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。
+总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。</div>
+
+<h2 id="一、深度优先搜索算法（Depth-First-Search）"><a href="#一、深度优先搜索算法（Depth-First-Search）" class="headerlink" title="一、深度优先搜索算法（Depth-First-Search）"></a>一、深度优先搜索算法（Depth-First-Search）</h2><h3 id="算法说明"><a href="#算法说明" class="headerlink" title="算法说明"></a>算法说明</h3><p><strong>访问步骤：</strong></p>
+<blockquote>
 <ul>
 <li>访问顶点 v；</li>
 <li>依次从 v 的未被访问的邻接点出发，对图进行深度优先遍历；直至图中和 v 有路径相通的顶点都被访问；</li>
 <li>若此时图中尚有顶点未被访问，则从一个未被访问的顶点出发，重新进行深度优先遍历，直到图中所有顶点均被访问过为止。</li>
 </ul>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="cpp">//----任意图的DFS遍历----
-bool visited[MVNum];                                                    //访问标志数组，其初值为false
+</blockquote>
+<p><strong>核心代码就是利用递归，以及标志数组的设定，每次访问数组元素的那一行，对那行链表进行遍历，每遍历一个链表结点，就将“其”所在的那个数组元素“点亮”。如果标志数组里面的所有元素都被访问了，说明遍历完了</strong><br><strong>​</strong></p>
+<p><strong>深度优先搜索类似于树里面遍历算法当中的先序遍历。</strong></p>
+<h3 id="邻接矩阵的-DFS-代码"><a href="#邻接矩阵的-DFS-代码" class="headerlink" title="邻接矩阵的 DFS 代码"></a>邻接矩阵的 DFS 代码</h3><p>以这个无向图为例<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png#height=156&id=Xvwlk&margin=%5Bobject%20Object%5D&name=image.png&originHeight=311&originWidth=394&originalType=binary&size=45059&status=done&style=stroke&width=197" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329584016-32d023fe-dc14-4c0d-90e1-7afe6fcc9cd2.png#height=106&id=XY5Cd&margin=%5Bobject%20Object%5D&name=image.png&originHeight=212&originWidth=455&originalType=binary&size=9480&status=done&style=none&width=227.5" alt="image.png"></p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
 
-void DFS(Graph G, int v)
-&#123;//图G的储存类型待定，下面分类讨论
-    cout&lt;&lt;v;
-    visited[v] = true;                                                  //访问第v个顶点，并置访问标志数组相应分量值为true
-    for(int w = FirstAdjVex(G, v); w &gt;= 0; w = NextAdjVex(G, v, w))     //FirstAdjVex(G, v)表示v的第一个邻接点，NextAdjVex(G, v, w)表示v相对于w的下一个邻接点
-        if(!visited[w])                                                 //依次检查v的所有邻接点w，由于不同储存结构此处操作不同，下面函数再具体展开
-            DFS(G, w);                                                  //对v的尚未访问的邻接顶点w递归调用DFS
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int ArcType;
+
+/**
+ * 邻接矩阵存储形式
+ */
+typedef struct &#123;
+    /* data */
+    VerTexType vexs[MVNum]; //顶点表
+    ArcType arcs[MVNum][MVNum]; //邻接矩阵
+    int vexnum, arcnum; //图的当前顶点和边数
+&#125;AMGraph;
+
+/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */
+int LocateVex(AMGraph &amp;G, char v) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        if (v == G.vexs[i])&#123;
+            return i;
+        &#125;
+    &#125;
 &#125;
 
-void DFSTraverse(Gragh G)
-&#123;//图G的储存类型任意，对非连通图G做深度优先遍历
-    for(int v = 0; v &lt; G.vexnum; v++)                                   //访问标志数组初始化
-        visited[v] = false;
-    for(int v = 0; v &lt; G.vexnum; v++)                                   //循环调用DFS
-        if(!visited[v])
-            DFS(G, v);                                               //对尚未访问的顶点调用DFS
+/**
+ * 如果创建无向图
+ */
+void CreateUDN(AMGraph &amp;G) &#123;
+    // 采用邻接矩阵表示法，创建无向图G
+    cout &lt;&lt; &quot;请输入顶点数和边数：&quot; &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数
+    // 初始化顶点
+    for (int i = 0; i &lt; G.vexnum;i++)&#123;
+        cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i &lt;&lt; &quot;个顶点值&quot; &lt;&lt; endl;
+        cin &gt;&gt; G.vexs[i];
+    &#125;
+    // 初始化邻接矩阵的边的权值为最大值
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        for (int j = 0; j &lt; G.vexnum;j++) &#123;
+            G.arcs[i][j] = 0;
+        &#125;
+    &#125;
+    // 构造邻接矩阵
+    for (int k = 0; k &lt; G.arcnum;k++) &#123;
+        cout &lt;&lt; &quot;请输入每条边所依附的顶点：&quot; &lt;&lt; endl;
+        char v1, v2;
+        int w = 1; //一条边所依附的顶点和权值
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1);
+        int j = LocateVex(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    &#125;
 &#125;
+
+/**
+ * 打印输出图
+ */
+void Display(AMGraph &amp;G) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        for (int j = 0; j &lt; G.vexnum;j++) &#123;
+            cout &lt;&lt; G.arcs[i][j] &lt;&lt; &quot; &quot;;
+        &#125;
+        cout &lt;&lt; endl;
+    &#125;
+&#125;
+
+
 
 
 //----邻接矩阵的DFS遍历----
-bool visited[MVNum];                                                    //访问标志数组，其初值为false
 
-void DFS_AM(AMGragh G, int v)
-&#123;//图G为邻接矩阵类型，从第v个顶点出发深度优先搜索遍历图G
-    cout&lt;&lt;v;                                                            //访问第v个顶点，并置访问标志数组相应分量值为true
+//访问标志数组，其初值为false
+bool visited[MVNum];
+
+/**
+ * 图G为邻接矩阵类型，从第v个顶点出发深度优先搜索遍历图G
+ */
+void DFS_AM(AMGraph &amp;G, int v) &#123;
+    //访问第v个顶点，并置访问标志数组相应分量值为true
+    cout&lt;&lt;v;
     visited[v] = true;
-    for(int w = 0; w &lt; G.vexnum; w++)                                   //依次检查邻接矩阵v所在的行
-        if((G.arcs[v][w] != 0) &amp;&amp; (!visited[w]))                        //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到
-            DFS_AM(G, w);                                               //递归调用DFS_AM
+    //依次检查邻接矩阵v所在的行
+    for(int w = 0; w &lt; G.vexnum; w++)
+        //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到
+        if((G.arcs[v][w] != 0) &amp;&amp; (!visited[w]))
+            DFS_AM(G, w);    //递归调用DFS_AM
 &#125;
 
-void DFSTraverse(AMGragh G)
-&#123;//图G的储存类型任意，对非连通图G做深度优先遍历
-    for(int v = 0; v &lt; G.vexnum; v++)                                   //访问标志数组初始化
+/**
+ * 图G的储存类型任意，对非连通图G做深度优先遍历
+ */
+void DFSTraverse(AMGraph &amp;G) &#123;
+    //访问标志数组初始化
+    for(int v = 0; v &lt; G.vexnum; v++)
         visited[v] = false;
-    for(int v = 0; v &lt; G.vexnum; v++)                                   //循环调用DFS
+    //循环调用DFS
+    for(int v = 0; v &lt; G.vexnum; v++)
         if(!visited[v])
-            DFS_AM(G, v);                                               //对尚未访问的顶点调用DFS
+            DFS_AM(G, v); //对尚未访问的顶点调用DFS
 &#125;
+
+
+
+
+int main() &#123;
+    AMGraph test;
+    CreateUDN(test);
+    Display(test);
+    DFSTraverse(test);
+    return 0;
+&#125;
+</code></pre>
+<h3 id="邻接表的-DFS-代码"><a href="#邻接表的-DFS-代码" class="headerlink" title="邻接表的 DFS 代码"></a>邻接表的 DFS 代码</h3><p>举之前上课的一张 PPT 例子（元素插入为后插法）<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621333199678-46b6841b-415b-46e8-b0f6-0d0407284b15.png#height=413&id=HmOsr&margin=%5Bobject%20Object%5D&name=image.png&originHeight=826&originWidth=1108&originalType=binary&size=102467&status=done&style=none&width=554" alt="image.png"><br>结果<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621333246481-117ec0ea-ab95-43be-ac13-75712fdf1e2b.png#height=107&id=KjOYY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=214&originWidth=444&originalType=binary&size=26415&status=done&style=none&width=222" alt="image.png"></p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int OtherInfo;
+
+/**
+ * 邻接表存储
+ */
+
+/**
+ * 存储结构
+ */
+typedef struct ArcNode &#123;  //边结点
+    int adjvex;  //该边所指向的结点的位置
+    struct ArcNode *nextarc; //指向下一条边的指针
+    OtherInfo info;   //和边相关的其他信息
+&#125;ArcNode;
+
+typedef struct VNode &#123;   //顶点信息
+    VerTexType data;  //数据域，存放顶点vi的名称或其他有关信息
+    ArcNode *firstarc;  //指向第一条依附该顶点的边的指针
+&#125;VNode, AdjList[MVNum]; //AdjList表示邻接表的类型
+
+typedef struct &#123;
+    AdjList vertices;
+    int vexnum, arcnum; //图当前的顶点数和边数
+&#125;ALGragh; //邻接表（Adjacency List）
+
+
+/**
+ * 找到v顶点在图的顶点数组中的位置
+ */
+int LocateVex(ALGragh &amp;G, char v) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        if (v == G.vertices[i].data) &#123;
+            return i;
+        &#125;
+    &#125;
+&#125;
+
+/**
+ * 邻接表创建无向图
+ */
+void CreateUDG(ALGragh &amp;G) &#123;
+    cout &lt;&lt; &quot;请输入顶点数和边数：&quot; &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数
+    // 初始化顶点数组
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        cin &gt;&gt; G.vertices[i].data; // 初始化顶点数组里面的结点data
+        G.vertices[i].firstarc = NULL; // 初始化顶点数组里面的结点next域
+    &#125;
+    // 初始化所有的边
+    for (int k = 0; k &lt; G.arcnum;k++) &#123;
+        char v1, v2;
+        cout &lt;&lt; &quot;请输入每条边所依附的顶点：&quot; &lt;&lt; endl;
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1); // 找到v1在顶点数组的下标
+        int j = LocateVex(G, v2); // 找到v2在顶点数组的下标
+        // 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1
+        // 前插
+        ArcNode *p1 = new ArcNode;
+        p1-&gt;adjvex = j;
+        p1-&gt;nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = new ArcNode;
+        p2-&gt;adjvex = i;
+        p2-&gt;nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p1;
+    &#125;
+&#125;
+
+/**
+ * 打印输出图
+ */
+void Display(ALGragh &amp;G) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        cout &lt;&lt; &quot;结点&quot; &lt;&lt; i &lt;&lt; &quot;：&quot;;
+        // 复制选中的节点数组中的结点
+        VNode p;
+        p = G.vertices[i];
+        if (p.firstarc != NULL)&#123;
+            ArcNode *temp;
+            temp = G.vertices[i].firstarc;
+            while (temp != NULL) &#123;
+                cout &lt;&lt; temp-&gt;adjvex&lt;&lt;&quot; &quot;;
+                temp = temp-&gt;nextarc;
+            &#125;
+            cout &lt;&lt; &quot;\n&quot;;
+        &#125;
+    &#125;
+&#125;
+
 
 
 //----邻接表的DFS遍历----
@@ -294,73 +476,139 @@ void DFSTraverse(ALGragh G)
             DFS_AL(G, v);                                                  //对尚未访问的顶点调用DFS
 &#125;
 
+
+int main() &#123;
+    ALGragh test;
+    CreateUDG(test);
+    // Display(test);
+    DFSTraverse(test);
+&#125;
 </code></pre>
-<h2 id="广度优先搜索算法（Breadth-First-Search）"><a href="#广度优先搜索算法（Breadth-First-Search）" class="headerlink" title="广度优先搜索算法（Breadth-First-Search）"></a>广度优先搜索算法（Breadth-First-Search）</h2><h3 id="遍历步骤-1"><a href="#遍历步骤-1" class="headerlink" title="遍历步骤"></a>遍历步骤</h3><p>从某个顶点 V0 出发，并在访问此顶点之后依次访问 V0 的所有未被访问过的邻接点，之后按这些顶点被访问的先后次序依次访问它们的邻接点，直至图中所有和 V0 有路径相通的顶点都被访问到。<br>若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
-<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code class="cpp">//----任意图的BFS遍历----
-bool visited[MVNum];                                                    //访问标志数组，其初值为false
-int u;
-void BFS(Gragh G, int v)
-&#123;//按广度优先非递归遍历连通图G，图G的储存类型待定，下面分类讨论
-    cout&lt;&lt;v;
-    visited[v] = true;                                                  //访问第v个顶点，并置访问标志数组相应分量值为true
-    InitQueue(Q);                                                       //辅助队列初始化，置空
-    EnQueue(Q, v);                                                      //v进队
-   int u;
-    while(!QueueEmpty(Q))
-    &#123;
-        DeQueue(Q, u);                                                  //队头元素出队并置为u
-        for(int w = FirstAdjVex(G, u); w &gt;= 0; w = NextAdjVex(G, u, w))
-            if(!visited[w])                                             //w为u的尚未访问的邻接顶点
-            &#123;
-                cout&lt;&lt;w;
-                visited[w] = true;                                      //访问w，并置访问标志数组相应分量值为true
-                EnQueue(Q, w);                                          //w进队
-            &#125;
-    &#125;
-&#125;
+<h2 id="二、广度优先搜索算法（Breadth-First-Search）"><a href="#二、广度优先搜索算法（Breadth-First-Search）" class="headerlink" title="二、广度优先搜索算法（Breadth-First-Search）"></a>二、广度优先搜索算法（Breadth-First-Search）</h2><h3 id="算法说明-1"><a href="#算法说明-1" class="headerlink" title="算法说明"></a>算法说明</h3><p>从某个顶点 V0 出发，并在访问此顶点之后依次访问 V0 的所有未被访问过的邻接点，之后按这些顶点被访问的先后次序依次访问它们的邻接点，直至图中所有和 V0 有路径相通的顶点都被访问到。<br>若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
+<h3 id="邻接矩阵的-BFS-代码"><a href="#邻接矩阵的-BFS-代码" class="headerlink" title="邻接矩阵的 BFS 代码"></a>邻接矩阵的 BFS 代码</h3><p>还是这个例子<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png#height=156&id=bbWIn&margin=%5Bobject%20Object%5D&name=image.png&originHeight=311&originWidth=394&originalType=binary&size=45059&status=done&style=stroke&width=197" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621338913834-3f2453f3-c56d-4401-9e26-2de805587a04.png#height=125&id=hRiOt&margin=%5Bobject%20Object%5D&name=image.png&originHeight=250&originWidth=457&originalType=binary&size=12403&status=done&style=none&width=228.5" alt="image.png"></p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
 
-//----邻接矩阵的BFS遍历----
-void BFS_AM(AMGragh G, int v)
-&#123;//按广度优先非递归遍历连通图G
-    cout&lt;&lt;v;
-    visited[v] = true;                                                  //访问第v个顶点，并置访问标志数组相应分量值为true
-    InitQueue(Q);                                                       //辅助队列初始化，置空
-    EnQueue(Q, v);                                                      //v进队
-    while(!QueueEmpty(Q))
-    &#123;
-        u = DeQueue(Q);                                                 //队头元素出队并置为u
-        for(int w = 0; w &lt; G.vexnum; w++)
-            if((G.arcs[u][w] != 0) &amp;&amp; (!visited[w]))                    //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到                                            //w为u的尚未访问的邻接顶点
-            &#123;
-                cout&lt;&lt;w;
-                visited[w] = true;                                      //访问w，并置访问标志数组相应分量值为true
-                EnQueue(Q, w);                                          //w进队
-            &#125;
-    &#125;
-&#125;
+#define MVNum 100
+#define MaxInt 32767
 
-//----邻接表的BFS遍历----
-void BFS_AL(ALGragh G, int v)
-&#123;//按广度优先非递归遍历连通图G
-    cout&lt;&lt;v;
-    visited[v] = true;                                                  //访问第v个顶点，并置访问标志数组相应分量值为true
-    ArcNode *p;
-    InitQueue(Q);                                                       //辅助队列初始化，置空
-    EnQueue(Q, v);                                                      //v进队
-    while(!QueueEmpty(Q))
-    &#123;
-        u = DeQueue(Q);                                                 //队头元素出队并置为u
-        p = G.vertices[u].firstarc;                                     //p指向v的边链表的第一个边结点
-        while(p != NULL)
-        &#123;
-            int w = p-&gt;adjvex;                                          //w是v的邻接点
-            if(!visited[w])                                             //如果w未访问
-                EnQueue(Q, w);                                          //w入队
-            p = p-&gt;nextarc;                                             //p指向下一个结点
+typedef char VerTexType;
+typedef int ArcType;
+
+/**
+ * 邻接矩阵的bfs代码
+ */
+typedef struct &#123;
+    /* data */
+    VerTexType vexs[MVNum]; //顶点表
+    ArcType arcs[MVNum][MVNum]; //邻接矩阵
+    int vexnum, arcnum; //图的当前顶点和边数
+&#125;AMGraph;
+
+/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */
+int LocateVex(AMGraph &amp;G, char v) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        if (v == G.vexs[i])&#123;
+            return i;
         &#125;
     &#125;
 &#125;
+
+/**
+ * 创建无向网
+ * 如果创建无向图
+ */
+void CreateUDN(AMGraph &amp;G) &#123;
+    // 采用邻接矩阵表示法，创建无向图G
+    cout &lt;&lt; &quot;请输入顶点数和边数：&quot; &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数
+    // 初始化顶点
+    for (int i = 0; i &lt; G.vexnum;i++)&#123;
+        cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i &lt;&lt; &quot;个顶点值&quot; &lt;&lt; endl;
+        cin &gt;&gt; G.vexs[i];
+    &#125;
+    // 初始化邻接矩阵的边的权值为最大值
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        for (int j = 0; j &lt; G.vexnum;j++) &#123;
+            G.arcs[i][j] = 0;
+        &#125;
+    &#125;
+    // 构造邻接矩阵
+    for (int k = 0; k &lt; G.arcnum;k++) &#123;
+        cout &lt;&lt; &quot;请输入每条边所依附的顶点：&quot; &lt;&lt; endl;
+        char v1, v2;
+        int w = 1; //一条边所依附的顶点和权值
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1);
+        int j = LocateVex(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    &#125;
+&#125;
+
+/**
+ * 打印输出图
+ */
+void Display(AMGraph &amp;G) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        for (int j = 0; j &lt; G.vexnum;j++) &#123;
+            cout &lt;&lt; G.arcs[i][j] &lt;&lt; &quot; &quot;;
+        &#125;
+        cout &lt;&lt; endl;
+    &#125;
+&#125;
+
+
+
+
+//----邻接矩阵的BFS遍历----
+
+bool visited[MVNum];
+
+void BFS_AM(AMGraph G, int v)
+&#123;//按广度优先非递归遍历连通图G
+    cout&lt;&lt;v;
+    visited[v] = true; //访问第v个顶点，并置访问标志数组相应分量值为true
+    queue&lt;int&gt; Q;
+    Q.push(v);
+    while(!Q.empty())
+    &#123;
+        int u = Q.front(); //队头元素出队并置为u
+        Q.pop();
+        for(int w = 0; w &lt; G.vexnum; w++)
+            if((G.arcs[u][w] != 0) &amp;&amp; (!visited[w])) //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到                                            //w为u的尚未访问的邻接顶点
+            &#123;
+                cout&lt;&lt;w;
+                visited[w] = true; //访问w，并置访问标志数组相应分量值为true
+                Q.push(w); //w进队
+            &#125;
+    &#125;
+&#125;
+
+void BFSTraverse(AMGraph &amp;G) &#123;
+    //访问标志数组初始化
+    for(int v = 0; v &lt; G.vexnum; v++)
+        visited[v] = false;
+    //循环调用BFS
+    for(int v = 0; v &lt; G.vexnum; v++)
+        if(!visited[v])
+            BFS_AM(G, v); //对尚未访问的顶点调用BFS
+&#125;
+
+
+int main() &#123;
+    AMGraph test;
+    CreateUDN(test);
+    Display(test);
+    // DFSTraverse(test);
+    BFSTraverse(test);
+    return 0;
+&#125;
 </code></pre>
+<h3 id="邻接表的-BFS-代码"><a href="#邻接表的-BFS-代码" class="headerlink" title="邻接表的 BFS 代码"></a>邻接表的 BFS 代码</h3><p>还用和 DFS 一样的例子<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621339344717-55530db9-253b-451d-af57-b591ff17353e.png#height=311&id=I73u9&margin=%5Bobject%20Object%5D&name=image.png&originHeight=621&originWidth=834&originalType=binary&size=114652&status=done&style=none&width=417" alt="image.png"></p>
+<p>代码有点问题，调试 ing<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1621340205400-d534997e-4b20-4f0e-8db6-4a91e39c68b6.gif#id=Ivn4n&originHeight=134&originWidth=218&originalType=binary&status=done&style=stroke"></p>
 
 </div>
 
@@ -385,7 +633,7 @@ void BFS_AL(ALGragh G, int v)
           
             <span class="prev_next_right">
                 <a href="/blog/gqpli5/">
-                    <b>图的存储</b>
+                    <b>图的各种存储</b>
                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </a>
             </span>
