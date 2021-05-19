@@ -422,7 +422,7 @@ void CreateUDG(ALGragh &amp;G) &#123;
         ArcNode *p2 = new ArcNode;
         p2-&gt;adjvex = i;
         p2-&gt;nextarc = G.vertices[j].firstarc;
-        G.vertices[j].firstarc = p1;
+        G.vertices[j].firstarc = p2;
     &#125;
 &#125;
 
@@ -607,8 +607,186 @@ int main() &#123;
     return 0;
 &#125;
 </code></pre>
-<h3 id="邻接表的-BFS-代码"><a href="#邻接表的-BFS-代码" class="headerlink" title="邻接表的 BFS 代码"></a>邻接表的 BFS 代码</h3><p>还用和 DFS 一样的例子<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621339344717-55530db9-253b-451d-af57-b591ff17353e.png#align=left&display=inline&height=311&id=I73u9&margin=%5Bobject%20Object%5D&name=image.png&originHeight=621&originWidth=834&size=114652&status=done&style=none&width=417" alt="image.png"></p>
-<p>代码有点问题，调试 ing<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1621340205400-d534997e-4b20-4f0e-8db6-4a91e39c68b6.gif#align=left&display=inline&height=134&id=Ivn4n&margin=%5Bobject%20Object%5D&originHeight=134&originWidth=218&status=done&style=stroke&width=218"><br><a target="_blank" rel="noopener" href="https://github.com/wztlink1013/datastructure-algorithm/blob/master/src/com/wztlink1013/datastructure/cpp/graph/bfs_algragh.cpp">https://github.com/wztlink1013/datastructure-algorithm/blob/master/src/com/wztlink1013/datastructure/cpp/graph/bfs_algragh.cpp</a></p>
+<h3 id="邻接表的-BFS-代码"><a href="#邻接表的-BFS-代码" class="headerlink" title="邻接表的 BFS 代码"></a>邻接表的 BFS 代码</h3><p>还用和 DFS 一样的例子<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621339344717-55530db9-253b-451d-af57-b591ff17353e.png#align=left&display=inline&height=311&id=I73u9&margin=%5Bobject%20Object%5D&name=image.png&originHeight=621&originWidth=834&size=114652&status=done&style=none&width=417" alt="image.png"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621390194148-da12a2e4-1f85-491b-9e53-3848ac4e4a4c.png#align=left&display=inline&height=80&margin=%5Bobject%20Object%5D&name=image.png&originHeight=159&originWidth=334&size=6124&status=done&style=none&width=167" alt="image.png"></p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int OtherInfo;
+
+/**
+ * 邻接表的bfs代码
+ */
+
+/**
+ * 存储结构
+ */
+typedef struct ArcNode &#123;  //边结点
+    int adjvex;  //该边所指向的结点的位置
+    struct ArcNode *nextarc; //指向下一条边的指针
+    OtherInfo info;   //和边相关的其他信息
+&#125;ArcNode;
+
+typedef struct VNode &#123;   //顶点信息
+    VerTexType data;  //数据域，存放顶点vi的名称或其他有关信息
+    ArcNode *firstarc;  //指向第一条依附该顶点的边的指针
+&#125;VNode, AdjList[MVNum]; //AdjList表示邻接表的类型
+
+typedef struct &#123;
+    AdjList vertices;
+    int vexnum, arcnum; //图当前的顶点数和边数
+&#125;ALGraph; //邻接表（Adjacency List）
+
+
+/**
+ * 找到v顶点在图的顶点数组中的位置
+ */
+int LocateVex(ALGraph &amp;G, char v) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        if (v == G.vertices[i].data) &#123;
+            return i;
+        &#125;
+    &#125;
+&#125;
+
+/**
+ * 邻接表创建无向图
+ */
+void CreateUDG(ALGraph &amp;G) &#123;
+    cout &lt;&lt; &quot;请输入顶点数和边数：&quot; &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数
+    // 初始化顶点数组
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        cin &gt;&gt; G.vertices[i].data; // 初始化顶点数组里面的结点data
+        G.vertices[i].firstarc = NULL; // 初始化顶点数组里面的结点next域
+    &#125;
+    // 初始化所有的边
+    for (int k = 0; k &lt; G.arcnum;k++) &#123;
+        char v1, v2;
+        cout &lt;&lt; &quot;请输入每条边所依附的顶点：&quot; &lt;&lt; endl;
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1); // 找到v1在顶点数组的下标
+        int j = LocateVex(G, v2); // 找到v2在顶点数组的下标
+        // 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1
+        // 前插
+        ArcNode *p1 = new ArcNode;
+        p1-&gt;adjvex = j;
+        p1-&gt;nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = new ArcNode;
+        p2-&gt;adjvex = i;
+        p2-&gt;nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p2;
+    &#125;
+&#125;
+
+/**
+ * 打印输出图
+ */
+void Display(ALGraph &amp;G) &#123;
+    for (int i = 0; i &lt; G.vexnum;i++) &#123;
+        cout &lt;&lt; &quot;结点&quot; &lt;&lt; i &lt;&lt; &quot;：&quot;;
+        // 复制选中的节点数组中的结点
+        VNode p;
+        p = G.vertices[i];
+        if (p.firstarc != NULL)&#123;
+            ArcNode *temp;
+            temp = G.vertices[i].firstarc;
+            while (temp != NULL) &#123;
+                cout &lt;&lt; temp-&gt;adjvex&lt;&lt;&quot; &quot;;
+                temp = temp-&gt;nextarc;
+            &#125;
+            cout &lt;&lt; &quot;\n&quot;;
+        &#125;
+    &#125;
+&#125;
+
+
+
+//----邻接表的BFS遍历----
+
+bool visited[MVNum];
+
+int FirstAdjvex(ALGraph&amp; G, int u)
+&#123;
+    int w = G.vertices[u].firstarc-&gt;adjvex;
+    return w;
+&#125;
+int NextAdjVex(ALGraph&amp; G, int u, int w)
+&#123;
+    ArcNode *temp = G.vertices[u].firstarc;
+    while (temp-&gt;adjvex != w)
+    &#123;
+        temp = temp-&gt;nextarc;
+    &#125;
+    if (temp-&gt;nextarc)
+        return temp-&gt;nextarc-&gt;adjvex;
+    else
+        return -1;
+    delete temp;
+&#125;
+void BFS_AL(ALGraph&amp; G, int v)&#123;
+    cout &lt;&lt; v;
+    visited[v] = true;
+    queue&lt;int&gt; Q;
+    Q.push(v);
+    int u = v;
+    while (!Q.empty())&#123;
+        u = Q.front();
+        Q.pop();
+        for (int w = FirstAdjvex(G, u); w &gt;= 0; w = NextAdjVex(G, u, w))&#123;
+            if (!visited[w])&#123;
+                cout &lt;&lt;w;
+                visited[w] = true;
+                Q.push(w);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+void BFSTraverse(ALGraph &amp;G) &#123;
+    //访问标志数组初始化
+    for(int v = 0; v &lt; G.vexnum; v++)
+        visited[v] = false;
+    //循环调用BFS
+    for(int v = 0; v &lt; G.vexnum; v++)
+        if(!visited[v])
+            BFS_AL(G, v); //对尚未访问的顶点调用BFS
+&#125;
+
+int main() &#123;
+    ALGraph test;
+    CreateUDG(test);
+    Display(test);
+    BFSTraverse(test);
+&#125;
+</code></pre>
+<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">【插眼】为啥我写的一个函数不需要队列也可以？？？直接将顶点数组的一个元素后面接的链表遍历不就好了，然后再遍历标志数组元素值部位true的不就好了。。。为啥要压队列呀？
+莫不是哪里有隐藏的bug，插个眼！！！</div>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1621340205400-d534997e-4b20-4f0e-8db6-4a91e39c68b6.gif#align=left&display=inline&height=134&id=Ivn4n&margin=%5Bobject%20Object%5D&originHeight=134&originWidth=218&status=done&style=stroke&width=218"></p>
+<div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">【拔眼】这样是一种特殊情况，只适合图的各个结点是按照层次标号的，并且放入标志数组也是按照顺序放入的……</div>
+
+<pre><code class="cpp">void BFS_AL(ALGraph &amp;G, int v)
+&#123;//按广度优先非递归遍历连通图G
+    cout&lt;&lt;v;
+    visited[v] = true;    //访问第v个顶点，并置访问标志数组相应分量值为true
+    ArcNode *p;
+    p = G.vertices[v].firstarc;
+    if (p != NULL) &#123;
+        while(p != NULL) &#123;
+            if (!visited[p-&gt;adjvex])&#123;
+                cout &lt;&lt; p-&gt;adjvex;
+            &#125;
+            visited[p-&gt;adjvex] = true;
+            p = p-&gt;nextarc;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
 
 </div>
 
@@ -824,11 +1002,11 @@ int main() &#123;
             <ul style="display: none">
             
                             <li class="category-list-child">
-                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
+                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
                             </li>
                         
                             <li class="category-list-child">
-                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
+                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
                             </li>
                         
             </ul>
