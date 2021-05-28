@@ -876,11 +876,11 @@
     
     
     <entry>
-      <title>bootstrap框架</title>
-      <link href="blog/dd8ibp9ica8w/"/>
-      <url>blog/dd8ibp9ica8w/</url>
+      <title>布局之rem和响应式</title>
+      <link href="blog/rm1i2lgosgh2/"/>
+      <url>blog/rm1i2lgosgh2/</url>
       
-        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="rem"><a href="#rem" class="headerlink" title="rem"></a>rem</h2><h3 id="rem-单位"><a href="#rem-单位" class="headerlink" title="rem 单位"></a>rem 单位</h3><p>rem (root em)是一个相对单位，类似于 em，em 是父元素字体大小。</p><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">不同的是rem的基准是相对于html元素的字体大小。</div>比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。```css/* 根html 为 12px */html {   font-size: 12px;}/* 此时 div 的字体大小就是 24px */       div {    font-size: 2rem;}```rem的优势：父元素文字大小可能不一致， 但是整个页面只有一个html，可以很好来控制整个页面的元素大小。<h3 id="rem-适配方案"><a href="#rem-适配方案" class="headerlink" title="rem 适配方案"></a>rem 适配方案</h3><p>1.让一些不能等比自适应的元素，达到当设备尺寸发生改变的时候，等比例适配当前设备。 2.使用媒体查询根据不同设备按比例设置 html 的字体大小，然后页面元素使用 rem 做尺寸单位，当 html 字体大小变化元素尺寸也会发生变化，从而达到等比缩放的适配。<br>技术方案：<br>1.less+rem+媒体查询<br>2.lflexible.js+rem<br>总结：<br>两种方案现在都存在。<br>方案 2 更简单，现阶段大家无需了解里面的 js 代码。</p><h3 id="rem-适配方案-1"><a href="#rem-适配方案-1" class="headerlink" title="rem 适配方案 1"></a>rem 适配方案 1</h3><p>① 假设设计稿是 750px<br>② 假设我们把整个屏幕划分为 15 等份（划分标准不一可以是 20 份也可以是 10 等份）<br>③ 每一份作为 html 字体大小，这里就是 50px<br>④ 那么在 320px 设备的时候，字体大小为 320/15 就是 21.33px<br>⑤ 用我们页面元素的大小除以不同的 html 字体大小会发现他们比例还是相同的<br>⑥ 比如我们以 750 为标准设计稿<br>⑦ 一个 100_100 像素的页面元素在 750 屏幕下， 就是 100/ 50 转换为 rem 是 2rem_2rem 比例是 1 比 1<br>⑧320 屏幕下， html 字体大小为 21.33 则 2rem= 42.66px 此时宽和高都是 42.66 但是宽和高的比例还是 1 比 1<br>⑨ 但是已经能实现不同屏幕下 页面元素盒子等比例缩放的效果<br>总结：<br>① 最后的公式：页面元素的 rem 值 = 页面元素值（px） / （屏幕宽度 / 划分的份数）<br>② 屏幕宽度/划分的份数就是 htmlfont-size 的大小<br>③ 或者：页面元素的 rem 值 = 页面元素值（px） / html font-size 字体大小</p><h3 id="苏宁首页"><a href="#苏宁首页" class="headerlink" title="苏宁首页"></a>苏宁首页</h3><p>苏宁首页地址 ：<a href="m.suning.com">苏宁首页</a><br>1、 技术选型<br>方案：我们采取单独制作移动页面方案<br>技术：布局采取 rem 适配布局（less + rem + 媒体查询）<br>设计图： 本设计图采用 750px 设计尺寸<br>2、搭建文件结构<br><img src="https://cdn.nlark.com/yuque/0/2021/jpg/1484158/1615360325682-7e3f3397-a6e1-47eb-9774-d632ea98c710.jpg#align=left&display=inline&height=263&margin=%5Bobject%20Object%5D&originHeight=263&originWidth=466&status=done&style=stroke&width=466"><br>3、设置视口标签以及引入初始化样式</p><pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no,         initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0&quot;&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;css/normalize.css&quot;&gt;</code></pre><p>4、设置公共 common.less 文件</p><ul><li>新建 common.less 设置好最常见的屏幕尺寸，利用媒体查询设置不同的 html 字体大小，因为除了首页其他页面也需要</li><li>我们关心的尺寸有 320px、360px、375px、384px、400px、414px、424px、480px、540px、720px、750px</li><li>划分的份数我们定为 15 等份</li><li>因为我们 pc 端也可以打开我们苏宁移动端首页，我们默认 html 字体大小为 50px，注意这句话写到最上面</li></ul><h3 id="rem-适配方案-2"><a href="#rem-适配方案-2" class="headerlink" title="rem 适配方案 2"></a>rem 适配方案 2</h3><p>手机淘宝团队出的简洁高效 移动端适配库<br>我们再也不需要在写不同屏幕的媒体查询，因为里面 js 做了处理<br>它的原理是把当前设备划分为 10 等份，但是不同设备下，比例还是一致的。<br>我们要做的，就是确定好我们当前设备的 html 文字大小就可以了<br>比如当前设计稿是 750px， 那么我们只需要把 html 文字大小设置为 75px(750px / 10) 就可以<br>里面页面元素 rem 值： 页面元素的 px 值 / 75<br>剩余的，让 flexible.js 来去算<br>github 地址：<a href="https://link.jianshu.com/?t=https://github.com/amfe/lib-flexible">https://github.com/amfe/lib-flexible</a><br>总结：<br>因为 flexible 是默认将屏幕分为 10 等分<br>但是当屏幕大于 750 的时候希望不要再去重置 html 字体了<br>所以要自己通过媒体查询设置一下<br>并且要把权重提到最高<br>VSCode px 转换 rem 插件 cssrem<br>因为 cssrem 中 css 自动转化为 rem 是参照默认插件的 16 转换的所以需要自己配置<br><img src="https://cdn.nlark.com/yuque/0/2021/jpg/1484158/1615360325777-63efe343-7fb5-46ff-a976-757d50df3556.jpg#align=left&display=inline&height=536&margin=%5Bobject%20Object%5D&originHeight=536&originWidth=713&status=done&style=stroke&width=713"><img src="https://cdn.nlark.com/yuque/0/2021/jpg/1484158/1615360325891-a1820b7f-bdbf-47e8-b04b-723db8329cf8.jpg#align=left&display=inline&height=544&margin=%5Bobject%20Object%5D&originHeight=544&originWidth=566&status=done&style=stroke&width=566"></p><h2 id="响应式开发原理"><a href="#响应式开发原理" class="headerlink" title="响应式开发原理"></a>响应式开发原理</h2><h3 id="响应式开发原理-1"><a href="#响应式开发原理-1" class="headerlink" title="响应式开发原理"></a>响应式开发原理</h3><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">就是使用媒体查询针对不同宽度的设备进行布局和样式的设置，从而适配不同设备的目的</div>设备的划分情况<ul><li>小于 768 的为超小屏幕（手机）</li><li>768~992 之间的为小屏设备（平板）</li><li>992~1200 的中等屏幕（桌面显示器）</li><li>大于 1200 的宽屏设备（大桌面显示器）</li></ul><h3 id="响应式布局容器"><a href="#响应式布局容器" class="headerlink" title="响应式布局容器"></a>响应式布局容器</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">响应式需要一个父级做为布局容器，来配合子级元素来实现变化效果。原理就是在不同屏幕下，通过媒体查询来改变这个布局容器的大小，再改变里面子元素的排列方式和大小，从而实现不同屏幕下，看到不同的页面布局和样式变化。</div>父容器版心的尺寸划分<ul><li>超小屏幕（手机，小于 768px）：设置宽度为 100%</li><li>小屏幕（平板，大于等于 768px）：设置宽度为 750px</li><li>中等屏幕（桌面显示器，大于等于 992px）：宽度设置为 970px</li><li>大屏幕（大桌面显示器，大于等于 1200px）：宽度设置为 1170px</li></ul><p>但是我们也可以根据实际情况自己定义划分</p>]]></content>
       
       
       <categories>
@@ -897,11 +897,11 @@
     
     
     <entry>
-      <title>布局之rem和响应式</title>
-      <link href="blog/rm1i2lgosgh2/"/>
-      <url>blog/rm1i2lgosgh2/</url>
+      <title>bootstrap框架</title>
+      <link href="blog/dd8ibp9ica8w/"/>
+      <url>blog/dd8ibp9ica8w/</url>
       
-        <content type="html"><![CDATA[<h2 id="rem"><a href="#rem" class="headerlink" title="rem"></a>rem</h2><h3 id="rem-单位"><a href="#rem-单位" class="headerlink" title="rem 单位"></a>rem 单位</h3><p>rem (root em)是一个相对单位，类似于 em，em 是父元素字体大小。</p><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">不同的是rem的基准是相对于html元素的字体大小。</div>比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。```css/* 根html 为 12px */html {   font-size: 12px;}/* 此时 div 的字体大小就是 24px */       div {    font-size: 2rem;}```rem的优势：父元素文字大小可能不一致， 但是整个页面只有一个html，可以很好来控制整个页面的元素大小。<h3 id="rem-适配方案"><a href="#rem-适配方案" class="headerlink" title="rem 适配方案"></a>rem 适配方案</h3><p>1.让一些不能等比自适应的元素，达到当设备尺寸发生改变的时候，等比例适配当前设备。 2.使用媒体查询根据不同设备按比例设置 html 的字体大小，然后页面元素使用 rem 做尺寸单位，当 html 字体大小变化元素尺寸也会发生变化，从而达到等比缩放的适配。<br>技术方案：<br>1.less+rem+媒体查询<br>2.lflexible.js+rem<br>总结：<br>两种方案现在都存在。<br>方案 2 更简单，现阶段大家无需了解里面的 js 代码。</p><h3 id="rem-适配方案-1"><a href="#rem-适配方案-1" class="headerlink" title="rem 适配方案 1"></a>rem 适配方案 1</h3><p>① 假设设计稿是 750px<br>② 假设我们把整个屏幕划分为 15 等份（划分标准不一可以是 20 份也可以是 10 等份）<br>③ 每一份作为 html 字体大小，这里就是 50px<br>④ 那么在 320px 设备的时候，字体大小为 320/15 就是 21.33px<br>⑤ 用我们页面元素的大小除以不同的 html 字体大小会发现他们比例还是相同的<br>⑥ 比如我们以 750 为标准设计稿<br>⑦ 一个 100_100 像素的页面元素在 750 屏幕下， 就是 100/ 50 转换为 rem 是 2rem_2rem 比例是 1 比 1<br>⑧320 屏幕下， html 字体大小为 21.33 则 2rem= 42.66px 此时宽和高都是 42.66 但是宽和高的比例还是 1 比 1<br>⑨ 但是已经能实现不同屏幕下 页面元素盒子等比例缩放的效果<br>总结：<br>① 最后的公式：页面元素的 rem 值 = 页面元素值（px） / （屏幕宽度 / 划分的份数）<br>② 屏幕宽度/划分的份数就是 htmlfont-size 的大小<br>③ 或者：页面元素的 rem 值 = 页面元素值（px） / html font-size 字体大小</p><h3 id="苏宁首页"><a href="#苏宁首页" class="headerlink" title="苏宁首页"></a>苏宁首页</h3><p>苏宁首页地址 ：<a href="m.suning.com">苏宁首页</a><br>1、 技术选型<br>方案：我们采取单独制作移动页面方案<br>技术：布局采取 rem 适配布局（less + rem + 媒体查询）<br>设计图： 本设计图采用 750px 设计尺寸<br>2、搭建文件结构<br><img src="https://cdn.nlark.com/yuque/0/2021/jpg/1484158/1615360325682-7e3f3397-a6e1-47eb-9774-d632ea98c710.jpg#align=left&display=inline&height=263&margin=%5Bobject%20Object%5D&originHeight=263&originWidth=466&status=done&style=stroke&width=466"><br>3、设置视口标签以及引入初始化样式</p><pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, user-scalable=no,         initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0&quot;&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;css/normalize.css&quot;&gt;</code></pre><p>4、设置公共 common.less 文件</p><ul><li>新建 common.less 设置好最常见的屏幕尺寸，利用媒体查询设置不同的 html 字体大小，因为除了首页其他页面也需要</li><li>我们关心的尺寸有 320px、360px、375px、384px、400px、414px、424px、480px、540px、720px、750px</li><li>划分的份数我们定为 15 等份</li><li>因为我们 pc 端也可以打开我们苏宁移动端首页，我们默认 html 字体大小为 50px，注意这句话写到最上面</li></ul><h3 id="rem-适配方案-2"><a href="#rem-适配方案-2" class="headerlink" title="rem 适配方案 2"></a>rem 适配方案 2</h3><p>手机淘宝团队出的简洁高效 移动端适配库<br>我们再也不需要在写不同屏幕的媒体查询，因为里面 js 做了处理<br>它的原理是把当前设备划分为 10 等份，但是不同设备下，比例还是一致的。<br>我们要做的，就是确定好我们当前设备的 html 文字大小就可以了<br>比如当前设计稿是 750px， 那么我们只需要把 html 文字大小设置为 75px(750px / 10) 就可以<br>里面页面元素 rem 值： 页面元素的 px 值 / 75<br>剩余的，让 flexible.js 来去算<br>github 地址：<a href="https://link.jianshu.com/?t=https://github.com/amfe/lib-flexible">https://github.com/amfe/lib-flexible</a><br>总结：<br>因为 flexible 是默认将屏幕分为 10 等分<br>但是当屏幕大于 750 的时候希望不要再去重置 html 字体了<br>所以要自己通过媒体查询设置一下<br>并且要把权重提到最高<br>VSCode px 转换 rem 插件 cssrem<br>因为 cssrem 中 css 自动转化为 rem 是参照默认插件的 16 转换的所以需要自己配置<br><img src="https://cdn.nlark.com/yuque/0/2021/jpg/1484158/1615360325777-63efe343-7fb5-46ff-a976-757d50df3556.jpg#align=left&display=inline&height=536&margin=%5Bobject%20Object%5D&originHeight=536&originWidth=713&status=done&style=stroke&width=713"><img src="https://cdn.nlark.com/yuque/0/2021/jpg/1484158/1615360325891-a1820b7f-bdbf-47e8-b04b-723db8329cf8.jpg#align=left&display=inline&height=544&margin=%5Bobject%20Object%5D&originHeight=544&originWidth=566&status=done&style=stroke&width=566"></p><h2 id="响应式开发原理"><a href="#响应式开发原理" class="headerlink" title="响应式开发原理"></a>响应式开发原理</h2><h3 id="响应式开发原理-1"><a href="#响应式开发原理-1" class="headerlink" title="响应式开发原理"></a>响应式开发原理</h3><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">就是使用媒体查询针对不同宽度的设备进行布局和样式的设置，从而适配不同设备的目的</div>设备的划分情况<ul><li>小于 768 的为超小屏幕（手机）</li><li>768~992 之间的为小屏设备（平板）</li><li>992~1200 的中等屏幕（桌面显示器）</li><li>大于 1200 的宽屏设备（大桌面显示器）</li></ul><h3 id="响应式布局容器"><a href="#响应式布局容器" class="headerlink" title="响应式布局容器"></a>响应式布局容器</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">响应式需要一个父级做为布局容器，来配合子级元素来实现变化效果。原理就是在不同屏幕下，通过媒体查询来改变这个布局容器的大小，再改变里面子元素的排列方式和大小，从而实现不同屏幕下，看到不同的页面布局和样式变化。</div>父容器版心的尺寸划分<ul><li>超小屏幕（手机，小于 768px）：设置宽度为 100%</li><li>小屏幕（平板，大于等于 768px）：设置宽度为 750px</li><li>中等屏幕（桌面显示器，大于等于 992px）：宽度设置为 970px</li><li>大屏幕（大桌面显示器，大于等于 1200px）：宽度设置为 1170px</li></ul><p>但是我们也可以根据实际情况自己定义划分</p>]]></content>
+        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
       
       
       <categories>
@@ -960,6 +960,27 @@
     
     
     <entry>
+      <title>CSS3的2D效果</title>
+      <link href="blog/02_html5css3_day02/"/>
+      <url>blog/02_html5css3_day02/</url>
+      
+        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Language </category>
+          
+          <category> CSS </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CSS3的3D效果</title>
       <link href="blog/03_html5css3_day03/"/>
       <url>blog/03_html5css3_day03/</url>
@@ -984,27 +1005,6 @@
       <title>CSS/CSS3选择器总结</title>
       <link href="blog/01_html5css3_day01/"/>
       <url>blog/01_html5css3_day01/</url>
-      
-        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Language </category>
-          
-          <category> CSS </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>CSS3的2D效果</title>
-      <link href="blog/02_html5css3_day02/"/>
-      <url>blog/02_html5css3_day02/</url>
       
         <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
       
@@ -1106,10 +1106,10 @@
     
     <entry>
       <title>站点文章导航</title>
-      <link href="blog/guide_post_blog/"/>
-      <url>blog/guide_post_blog/</url>
+      <link href="blog/guide_post/"/>
+      <url>blog/guide_post/</url>
       
-        <content type="html"><![CDATA[<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1622192869413-b170ca0a-ff41-434d-bafb-5499b6b3636e.jpeg#clientId=u1fd0526c-da52-4&from=ui&height=308&id=ucc1528f2&margin=%5Bobject%20Object%5D&name=52853677_p0.jpg&originHeight=900&originWidth=1600&originalType=binary&size=903023&status=done&style=none&taskId=ub717e977-8ca5-48aa-b578-baf0ef60d0d&width=548.0208740234375" alt="52853677_p0.jpg"><br>​</p><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">建站初衷就是从大学伊始做一些文字记录，站点所有文章大类分两类：『技术』和『随笔』，具体的文章整理我是依据文章分类来划分的，下面内容会详述之。</div><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">✨欢迎交流！</div><h2 id="一、技术博客相关"><a href="#一、技术博客相关" class="headerlink" title="一、技术博客相关"></a>一、技术博客相关</h2><div style="background: #fffbe6;padding:10px;border: 1px solid #e0d1b1;border-radius:5px;margin-bottom:5px;">对技术的分类比较细，是因为想让自己的CS知识体系在不断的学习过程中不断完善精进。</div>| 分类 | 描述 || --- | --- || Algorithm | 『算法』及其相关刷题的总结 || Bug | 开发过程中遇到的各种需要记录的bug || ComputerNetwork | 『计算机网络』相关知识 || ComputerOperatingSystem | 『操作系统』相关知识 || ComputerOrganization | 『计算机组成原理』相关知识 || DataAnalysis | Python数据分析技术 || DataBase | 『数据库』相关知识 || DataStructure | 『数据结构』及其相关刷题的总结 || Environment | 开发环境的搭建+开发工具使用的总结 || Hexo | Hexo博客相关 || Language | 各种『编程语言』总结 || MachingLearning | 曾经的几篇机器学习文章 || PostProduction | 后期制作 || SoftwareEngineering | 『软件工程』相关知识 || VersionControlSystem | 版本控制系统（Git和GitHub使用） || Web | web相关知识（该分类太大，日后还会细分） |<h2 id="二、生活随笔相关"><a href="#二、生活随笔相关" class="headerlink" title="二、生活随笔相关"></a>二、生活随笔相关</h2><div style="background: #fffbe6;padding:10px;border: 1px solid #e0d1b1;border-radius:5px;margin-bottom:5px;">生活随笔的分类并没有上面技术博客那么细致，是因为我大多数是随心随性写随笔，不想太拘束于文本的框架。</div>| 分类 | 描述 || --- | --- || 一书一世界 | 对读过的书所做的一些文笔放在这 || 人生影视课 | 对观过的影视所做的一些文笔放在这 || 异世界 | 异世界的通感…… || 随笔 | 除了上面的具体分类，其他文章放在这 |<blockquote><p>另外，如果你想了解博主，可以前往『<a href="https://www.wztlink1013.com/about/">https://www.wztlink1013.com/about/</a>』页面查看~</p></blockquote>]]></content>
+        <content type="html"><![CDATA[<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1622192869413-b170ca0a-ff41-434d-bafb-5499b6b3636e.jpeg#clientId=u1fd0526c-da52-4&from=ui&height=308&id=ucc1528f2&margin=%5Bobject%20Object%5D&name=52853677_p0.jpg&originHeight=900&originWidth=1600&originalType=binary&size=903023&status=done&style=none&taskId=ub717e977-8ca5-48aa-b578-baf0ef60d0d&width=548.0208740234375" alt="52853677_p0.jpg"><br>​</p><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">建站初衷就是从大学伊始做一些文字记录，站点所有文章大类分两类：『技术』和『随笔』，具体的文章整理我是依据文章分类来划分的，下面内容会详述之。</div><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">✨欢迎交流！</div><h2 id="一、技术博客相关"><a href="#一、技术博客相关" class="headerlink" title="一、技术博客相关"></a>一、技术博客相关</h2><div style="background: #fffbe6;padding:10px;border: 1px solid #e0d1b1;border-radius:5px;margin-bottom:5px;">对技术的分类比较细，是因为想让自己的CS知识体系在不断的学习过程中不断完善精进。</div>​<table><thead><tr><th>分类</th><th>描述</th></tr></thead><tbody><tr><td>Algorithm</td><td>『算法』及其相关刷题的总结</td></tr><tr><td>Bug</td><td>开发过程中遇到的各种需要记录的 bug</td></tr><tr><td>ComputerNetwork</td><td>『计算机网络』相关知识</td></tr><tr><td>ComputerOperatingSystem</td><td>『操作系统』相关知识</td></tr><tr><td>ComputerOrganization</td><td>『计算机组成原理』相关知识</td></tr><tr><td>DataAnalysis</td><td>Python 数据分析技术</td></tr><tr><td>DataBase</td><td>『数据库』相关知识</td></tr><tr><td>DataStructure</td><td>『数据结构』及其相关刷题的总结</td></tr><tr><td>Environment</td><td>开发环境的搭建+开发工具使用的总结</td></tr><tr><td>Hexo</td><td>Hexo 博客相关</td></tr><tr><td>Language</td><td>各种『编程语言』总结</td></tr><tr><td>MachingLearning</td><td>曾经的几篇机器学习文章</td></tr><tr><td>PostProduction</td><td>后期制作</td></tr><tr><td>SoftwareEngineering</td><td>『软件工程』相关知识</td></tr><tr><td>VersionControlSystem</td><td>版本控制系统（Git 和 GitHub 使用）</td></tr><tr><td>Web</td><td>web 相关知识（该分类太大，日后还会细分）</td></tr></tbody></table><h2 id="二、生活随笔相关"><a href="#二、生活随笔相关" class="headerlink" title="二、生活随笔相关"></a>二、生活随笔相关</h2><div style="background: #fffbe6;padding:10px;border: 1px solid #e0d1b1;border-radius:5px;margin-bottom:5px;">生活随笔的分类并没有上面技术博客那么细致，是因为我大多数是随心随性写随笔，不想太拘束于文本的框架。</div>​<table><thead><tr><th>分类</th><th>描述</th></tr></thead><tbody><tr><td>一书一世界</td><td>对读过的书所做的一些文笔放在这</td></tr><tr><td>人生影视课</td><td>对观过的影视所做的一些文笔放在这</td></tr><tr><td>异世界</td><td>异世界的通感……</td></tr><tr><td>随笔</td><td>除了上面的具体分类，其他文章放在这</td></tr></tbody></table><blockquote><p>另外，如果你想了解博主，可以前往『<a href="https://www.wztlink1013.com/about/">https://www.wztlink1013.com/about/</a>』页面查看~</p></blockquote>]]></content>
       
       
       
@@ -3441,25 +3441,6 @@
     
     
     <entry>
-      <title>《世界上所有的夜晚》之那段难忘的谈吐</title>
-      <link href="essay/c47f3d9a749fd0229277f9e9604e69a2/"/>
-      <url>essay/c47f3d9a749fd0229277f9e9604e69a2/</url>
-      
-        <content type="html"><![CDATA[<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1622165460883-a7b33b3d-8426-46e7-ade7-e603c065322e.jpeg#clientId=u4bbbef4e-6f47-4&from=paste&height=199&id=uedac2836&margin=%5Bobject%20Object%5D&originHeight=397&originWidth=270&originalType=url&status=done&style=stroke&taskId=u3de869fe-b1e2-43ee-9cc8-80c74632e09&width=135"></p><p>每本书，总会有那么一段让你记忆难忘。最难忘的是和蒋百嫂酒后那段谈吐，夜半作者打算回旅馆却听见轰隆隆的响声，看见冰柜里的那具尸体之后，很是心酸感动，每个人都有属于自己的夜晚，心灵寄居在此，有的看似洒脱却也痛苦无奈<br>看完这本书，我才渐渐了解迟子建这个作家，不过非常抱歉，在此之前我一直以为迟子建是位男作家····作者真的是一个善于观察的生活记录者，很喜欢那样轻快的语言，迟子建是在我读书时期，让我喜欢上文学的人之一，高中那会，就喜欢屯在书店的书架后面看他写的书，看完之后，心情甚是愉悦~回忆啊<br>每个人都有属于自己的夜晚，每个人都有属于自己的回忆 :-）<br>​</p><hr><p>​</p><p>《世界上所有的夜晚》迟子建的一本比较短的小说，这部小说，也是在那期间第一本我一天之内看完的一本小说，很多时候，我总是想起煤矿镇的那个村庄的人，事实上，那都是我们身边的人，也是那本书我内心深深的感知，这世上有很多不幸的人，这世上不止一个夜晚，有无数个人人牵挂的夜晚，这世上又只有一个夜晚，那个独自存在的灵魂的夜晚……<br>​</p><hr><p>想想以前的一些悠闲经历，<br>上课偷偷式看小说<br>、备考期间，自我欺骗/麻痹式看小说<br>、上课老喜欢在全班同学都认真听讲而我坐在后排靠窗角落看小说<img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1622165717851-7436873d-a34b-48b7-a8fa-d32e45eb7e4b.jpeg#id=HxzJ4&originHeight=50&originWidth=51&originalType=binary&status=done&style=none"></p><p>然而现在，<br>快节奏的日常似乎霸占生活的全部<br>，身边有这么优秀的环境，我忘却了曾经的那一丝快感……</p><p>其实，生活本可以有一丝轻快，不用太过追求什么<br>​</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 一书一世界 </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>CSS引入和特性</title>
       <link href="blog/740ee349dcf540d24c44fd240dbbc87f/"/>
       <url>blog/740ee349dcf540d24c44fd240dbbc87f/</url>
@@ -3472,6 +3453,25 @@
           <category> Language </category>
           
           <category> CSS </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>《世界上所有的夜晚》之那段难忘的谈吐</title>
+      <link href="essay/c47f3d9a749fd0229277f9e9604e69a2/"/>
+      <url>essay/c47f3d9a749fd0229277f9e9604e69a2/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1622165460883-a7b33b3d-8426-46e7-ade7-e603c065322e.jpeg#clientId=u4bbbef4e-6f47-4&from=paste&height=199&id=uedac2836&margin=%5Bobject%20Object%5D&originHeight=397&originWidth=270&originalType=url&status=done&style=stroke&taskId=u3de869fe-b1e2-43ee-9cc8-80c74632e09&width=135"></p><p>每本书，总会有那么一段让你记忆难忘。最难忘的是和蒋百嫂酒后那段谈吐，夜半作者打算回旅馆却听见轰隆隆的响声，看见冰柜里的那具尸体之后，很是心酸感动，每个人都有属于自己的夜晚，心灵寄居在此，有的看似洒脱却也痛苦无奈<br>看完这本书，我才渐渐了解迟子建这个作家，不过非常抱歉，在此之前我一直以为迟子建是位男作家····作者真的是一个善于观察的生活记录者，很喜欢那样轻快的语言，迟子建是在我读书时期，让我喜欢上文学的人之一，高中那会，就喜欢屯在书店的书架后面看他写的书，看完之后，心情甚是愉悦~回忆啊<br>每个人都有属于自己的夜晚，每个人都有属于自己的回忆 :-）<br>​</p><hr><p>​</p><p>《世界上所有的夜晚》迟子建的一本比较短的小说，这部小说，也是在那期间第一本我一天之内看完的一本小说，很多时候，我总是想起煤矿镇的那个村庄的人，事实上，那都是我们身边的人，也是那本书我内心深深的感知，这世上有很多不幸的人，这世上不止一个夜晚，有无数个人人牵挂的夜晚，这世上又只有一个夜晚，那个独自存在的灵魂的夜晚……<br>​</p><hr><p>想想以前的一些悠闲经历，<br>上课偷偷式看小说<br>、备考期间，自我欺骗/麻痹式看小说<br>、上课老喜欢在全班同学都认真听讲而我坐在后排靠窗角落看小说<img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1622165717851-7436873d-a34b-48b7-a8fa-d32e45eb7e4b.jpeg#id=HxzJ4&originHeight=50&originWidth=51&originalType=binary&status=done&style=none"></p><p>然而现在，<br>快节奏的日常似乎霸占生活的全部<br>，身边有这么优秀的环境，我忘却了曾经的那一丝快感……</p><p>其实，生活本可以有一丝轻快，不用太过追求什么<br>​</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 一书一世界 </category>
           
       </categories>
       
