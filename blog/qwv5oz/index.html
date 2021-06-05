@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue学习笔记 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="一些函数this：应该就是创建的 Vue 这个对象， this.message = this.message.split(&amp;#39;&amp;#39;).reverse().join(&amp;#39;&amp;#39;)字符串函数split()，join()：拆开，组合component：定义组件data：必须是一个函数">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <!-- https://ogp.me/ -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Vue学习笔记 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/qwv5oz/">
+    <meta property="og:site_name" content="尼采般地抒情">
+    <meta property="og:description" content="一些函数this：应该就是创建的 Vue 这个对象， this.message = this.message.split(&amp;#39;&amp;#39;).reverse().join(&amp;#39;&amp;#39;)字符串函数split()，join()：拆开，组合component：定义组件data：必须是一个函数">
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入jQuery快速开发 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+     
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            作者:尼采般地抒情<hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>237 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0"><span class="toc-text">一些函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="toc-text">Vue 实例属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%80%BC%E3%80%81%E6%8C%87%E4%BB%A4"><span class="toc-text">插值、指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3"><span class="toc-text">数组相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <div class="component clearfix blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            作者:尼采般地抒情<hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>237 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Vue学习笔记</h1>
+    </div>
+    <div class="article_meta_other">
+        <span>作者: <a href="/">尼采般地抒情</a></span>
+        <time>时间：2021-01-03 19:36:34</time>
+        
+        <span>分类：</span>
+                <span>
+                    <a href="/categories/Web">
+                        Web
+                    </a>
+                </span>
+                
+                <span>
+                    <a href="/categories/Web/Vue">
+                        Vue
+                    </a>
+                </span>
+                 
+         
+        <span>文章访问量：</span><span id="twikoo_visitors">loading</span>
+        <span>文章评论数：</span><span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="一些函数"><a href="#一些函数" class="headerlink" title="一些函数"></a>一些函数</h2><ul>
+<li>this：应该就是创建的 Vue 这个对象， <code>this.message = this.message.split(&#39;&#39;).reverse().join(&#39;&#39;)</code></li>
+<li>字符串函数<ul>
+<li>split()，join()：拆开，组合</li>
+</ul>
+</li>
+<li>component：定义组件<ul>
+<li>data：必须是一个函数，data 选项必须是一个函数，不然</li>
+<li>props：声明为属性，再该组件的 template 下可以直接使用</li>
+<li>template：组件模板</li>
+<li>methods 等等 Vue 属性都有</li>
+</ul>
+</li>
+<li>Object.freeze()：会阻止其响应式更新，系统无法再追踪变化</li>
+<li>＄：用来区分 Vue 实例和变量，Vue 实例用＄， <code>vm.$el === document.getElementById(&#39;example&#39;)</code></li>
+<li>input 里面的 key：防止切换输入形式值不变的情况 <code>&lt;input placeholder=&quot;Enter your username&quot; key=&quot;username-input&quot;&gt;</code></li>
+</ul>
+<h2 id="Vue-实例属性"><a href="#Vue-实例属性" class="headerlink" title="Vue 实例属性"></a>Vue 实例属性</h2><ul>
+<li>el：绑定 dom</li>
+<li>data：数据域</li>
+<li>methods：定义方法</li>
+<li>生命周期相关函数，可以在不同阶段添加不同代码<ul>
+<li>created</li>
+<li>mounted</li>
+<li>updated</li>
+<li>destroyed 等</li>
+</ul>
+</li>
+<li>computed：计算属性</li>
+<li>watch：侦听器</li>
+</ul>
+<h2 id="插值、指令"><a href="#插值、指令" class="headerlink" title="插值、指令"></a>插值、指令</h2><ul>
+<li><p><code>&#123; &#123; </code> <code>&#125; &#125;</code> ：插值为文本</p>
+</li>
+<li><p>v-once：一次性插值</p>
+</li>
+<li><p>v-html：插入并显示为 html 代码</p>
+</li>
+<li><p><strong>v-bind：显示信息【简写：英文冒号:】</strong></p>
+</li>
+<li><p><code>v-on:click=&quot;函数触发&quot;</code> ：事件监听器【简写： <code>@</code> 符号】</p>
+<ul>
+<li>v-on:click=”greet”：其中 greet 是 Vue 实例中 methods 中的一个方法</li>
+<li>事件修饰符</li>
+<li>.stop</li>
+<li>.prevent</li>
+<li>.capture</li>
+<li>.self</li>
+<li>.once</li>
+<li>.passive</li>
+<li>＄ emit：子组件可以使用 $emit 触发父组件的自定义事件。</li>
+<li>vm.$emit( event, arg ) //触发当前实例上的事件</li>
+<li>vm.$on( event, fn );//监听 event 事件后运行 fn</li>
+</ul>
+</li>
+<li><p>v-if=”表达式”：</p>
+<blockquote>
+<p>v-else：搭配用的还可以有<br>v-else-if<br>v-if 优先级弱于 v-for</p>
+</blockquote>
+</li>
+<li><p>v-show：与 v-if 不同的是不管怎样都会被渲染</p>
+</li>
+<li><p>v-for=”num in nums”：循环</p>
+<blockquote>
+<p>支持第二个参数（即索引值）<br>也可以直接循环对象，可以将将对象的各个属性值全部打印出来<br>组件使用 v-for 的时候，key 值是必须的 1</p>
+</blockquote>
+</li>
+<li><p>v-model：表单输入和应用状态之间的双向绑定</p>
+</li>
+</ul>
+<h2 id="数组相关"><a href="#数组相关" class="headerlink" title="数组相关"></a>数组相关</h2><blockquote>
+<p>具体也可以参考 MDN 上的这几个函数介绍</p>
+</blockquote>
+<ul>
+<li><p>push()：对一个对象数组添加一个元素，注意形式 <code>app_test_list.items.push(&#123;text:&quot;用push添加元素&quot;&#125;);</code></p>
+</li>
+<li><p>pop()：</p>
+</li>
+<li><p>shift()</p>
+</li>
+<li><p>unshift()</p>
+</li>
+<li><p>splice()</p>
+</li>
+<li><p>sort()</p>
+</li>
+<li><p>reverse()</p>
+</li>
+<li><p>filter()</p>
+</li>
+<li><p>concat()</p>
+</li>
+<li><p>slice()</p>
+</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>属性值之间使用冒号</li>
+<li>只有赋值才是等号</li>
+<li>对象内的属性之间用逗号分隔开</li>
+</ul>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <p>博客内容遵循：
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="https://www.wztlink1013.com/blog/qwv5oz/">https://www.wztlink1013.com/blog/qwv5oz/</a>
+    </p>
+    <p class="article_more_btn">
+        编辑：<a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/javascript/qwv5oz/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        部署：<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        订阅：<a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+    </p>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/zt3hsu/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Web开发学习路线</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/sc6tzq/">
+                    <b>软件工程知识小结</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component clearfix comments" id="comments" style="display: block;">
+  <div class="comments_title">
+      <h2>评论区</h2>
+      
+      <!-- 转换评论按钮 -->
+      <div class="switch_comments">
+        <span>Twikoo</span>
+        <span id="switch_btn">转换</span>
+        <span>utterances</span>
+      </div>
+  </div>
+
+  <div class="comments_content">
+      <!-- utterances评论区 -->
+      <div id="utterances_comment" style="display: none;"></div>
+      <!-- twikoo评论区 -->
+      <div id="twikoo_comment" style="display: block;">
+        <div id="tcomment"></div>
+        <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+        <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+        </script>
+      </div>
+
+
+  </div>
+</div>
+
+
+        
+        
+    </div>
+    <div class="ct_right">
+        
+
+<div class="component clearfix categories">
+    <h3>『技术』文章分类</h3><ul class="cate_forder">
+    
+            <li class="cate_cell">
+            <a href="/categories/Algorithm">Algorithm</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95">分治算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/RSA%E7%AE%97%E6%B3%95">RSA算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95">穷举算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/Problems">Problems</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0">算法综述</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95">贪心算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95">动态规划算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95">其他算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95">递归算法</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Bug">Bug</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerNetwork">ComputerNetwork</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerOperatingSystem">ComputerOperatingSystem</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerOrganization">ComputerOrganization</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataAnalysis">DataAnalysis</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataBase">DataBase</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataStructure">DataStructure</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%95%B0%E7%BB%84">数组</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E4%B8%B2%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8">串和广义表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97">栈和队列</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E9%A1%BA%E5%BA%8F%E8%A1%A8">顺序表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E9%93%BE%E8%A1%A8">链表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%A0%91">树</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E5%9B%BE">图</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Environment">Environment</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Hexo">Hexo</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Language">Language</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Language/CSS">CSS</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/JAVA">JAVA</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/div%E5%8A%A0CSS%E5%B8%83%E5%B1%80">div加CSS布局</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/Python">Python</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/CPlusPlus">CPlusPlus</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/HTML">HTML</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/MachingLearning">MachingLearning</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/PostProduction">PostProduction</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/SoftwareEngineering">SoftwareEngineering</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/VersionControlSystem">VersionControlSystem</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Web">Web</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Web/BOM">BOM</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/JavaScript%E7%89%B9%E6%95%88">JavaScript特效</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/node">node</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/jQuery">jQuery</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/ECMAScript">ECMAScript</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/Vue">Vue</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/%E7%BD%91%E7%AB%99%E7%9B%B8%E5%85%B3">网站相关</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/Web%E5%85%B6%E4%BB%96">Web其他</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/DOM">DOM</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+</ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
+</div>
+</footer>
+
+</body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":true,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/remu.model.json"},"display":{"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-12},"mobile":{"show":true,"scale":1},"react":{"opacity":1},"log":false});</script>
+    
+        
+<script src="/public/js/main.js"></script>
+
+     
+</html>

@@ -1,0 +1,1100 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM-元素获取、事件知识 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="1.1. Web API 介绍API 的概念API（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，无需理解其内部工作机制细节，只需直接调用使用即可。举例">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <!-- https://ogp.me/ -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DOM-元素获取、事件知识 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/1_day01_webapis/">
+    <meta property="og:site_name" content="尼采般地抒情">
+    <meta property="og:description" content="1.1. Web API 介绍API 的概念API（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，无需理解其内部工作机制细节，只需直接调用使用即可。举例">
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入jQuery快速开发 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+     
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            作者:尼采般地抒情<hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>237 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Web-API-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.1. Web API 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-DOM-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.2. DOM 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%BB%E7%BB%93"><span class="toc-text">DOM 的核心总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0"><span class="toc-text">1.3. 获取元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementById-%E2%80%98%E2%80%99"><span class="toc-text">getElementById(‘’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementsByTagName-%E2%80%98%E2%80%99"><span class="toc-text">getElementsByTagName(‘’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementsByClassName-%E2%80%98%E2%80%99"><span class="toc-text">getElementsByClassName(‘’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#querySelector-%E2%80%98%E2%80%99"><span class="toc-text">querySelector(‘’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#querySelectorAll-%E2%80%98%E2%80%99"><span class="toc-text">querySelectorAll(‘’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96-body-html-%E5%AF%B9%E8%B1%A1"><span class="toc-text">获取 body&#x2F;html 对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E4%BA%8B%E4%BB%B6%EF%BC%88%E4%BD%8E%E9%98%B6%EF%BC%89"><span class="toc-text">1.4 事件（低阶）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6"><span class="toc-text">常见鼠标事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#addEventListener"><span class="toc-text">addEventListener()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#attachEvent"><span class="toc-text">attachEvent()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%BC%E5%AE%B9%E6%80%A7%E8%A7%A3%E5%86%B3%E6%B3%A8%E5%86%8C%E4%BA%8B%E4%BB%B6"><span class="toc-text">兼容性解决注册事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E7%BB%91%E4%BA%8B%E4%BB%B6"><span class="toc-text">解绑事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%E5%B8%B8%E7%94%A8%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6"><span class="toc-text">1.5 常用鼠标事件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E7%A6%81%E6%AD%A2%E9%80%89%E4%B8%AD%E6%96%87%E5%AD%97%E5%92%8C%E7%A6%81%E6%AD%A2%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95"><span class="toc-text">Demo：禁止选中文字和禁止右键菜单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1"><span class="toc-text">鼠标事件对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E5%9C%A8%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%9D%90%E6%A0%87"><span class="toc-text">Demo：获取鼠标在页面的坐标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E8%B7%9F%E9%9A%8F%E9%BC%A0%E6%A0%87%E7%9A%84%E5%A4%A9%E4%BD%BF"><span class="toc-text">Demo：跟随鼠标的天使</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mouseenter-%E5%92%8C-mouseover-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">mouseenter 和 mouseover 的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-%E5%B8%B8%E7%94%A8%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6"><span class="toc-text">1.6 常用键盘事件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1"><span class="toc-text">键盘事件对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E6%A8%A1%E6%8B%9F%E4%BA%AC%E4%B8%9C%E6%8C%89%E9%94%AE%E8%BE%93%E5%85%A5%E5%86%85%E5%AE%B9"><span class="toc-text">Demo：模拟京东按键输入内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E6%A8%A1%E6%8B%9F%E4%BA%AC%E4%B8%9C%E5%BF%AB%E9%80%92%E5%8D%95%E5%8F%B7%E6%9F%A5%E8%AF%A2"><span class="toc-text">Demo：模拟京东快递单号查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7-%E4%BA%8B%E4%BB%B6%EF%BC%88%E9%AB%98%E9%98%B6%EF%BC%89"><span class="toc-text">1.7 事件（高阶）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM-%E4%BA%8B%E4%BB%B6%E6%B5%81"><span class="toc-text">DOM 事件流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1"><span class="toc-text">事件对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1"><span class="toc-text">什么是事件对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">事件对象的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7%E5%A4%84%E7%90%86"><span class="toc-text">事件对象的兼容性处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95"><span class="toc-text">事件对象的属性和方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e-target-%E5%92%8C-this-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">e.target 和 this 的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E6%AD%A2%E9%BB%98%E8%AE%A4%E8%A1%8C%E4%B8%BA"><span class="toc-text">阻止默认行为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E6%AD%A2%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1"><span class="toc-text">阻止事件冒泡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98"><span class="toc-text">事件委托</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98"><span class="toc-text">什么是事件委托</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">事件委托的原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">事件委托的作用</span></a></li></ol></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <div class="component clearfix blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            作者:尼采般地抒情<hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>237 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>DOM-元素获取、事件知识</h1>
+    </div>
+    <div class="article_meta_other">
+        <span>作者: <a href="/">尼采般地抒情</a></span>
+        <time>时间：2021-02-05 01:45:57</time>
+        
+        <span>分类：</span>
+                <span>
+                    <a href="/categories/Web">
+                        Web
+                    </a>
+                </span>
+                
+                <span>
+                    <a href="/categories/Web/DOM">
+                        DOM
+                    </a>
+                </span>
+                 
+         
+        <span>文章访问量：</span><span id="twikoo_visitors">loading</span>
+        <span>文章评论数：</span><span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="1-1-Web-API-介绍"><a href="#1-1-Web-API-介绍" class="headerlink" title="1.1. Web API 介绍"></a>1.1. Web API 介绍</h2><blockquote>
+<p>API 的概念</p>
+</blockquote>
+<p>API（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，无需理解其内部工作机制细节，只需直接调用使用即可。</p>
+<blockquote>
+<p>举例解释什么是 API。<br>例如，<br>C 语言中有一个函数 fopen()可以打开硬盘上的文件，这个函数对于我们来说，就是一个 C 语言提供的打开文件的工具。<br>javascript 中有一个函数 alert()可以在页面弹一个提示框，这个函数就是 js 提供的一个弹框工具。<br>这些工具（函数）由编程语言提供，内部的实现已经封装好了，我们只要学会灵活的使用这些工具即可。</p>
+</blockquote>
+<blockquote>
+<p>Web API 的概念</p>
+</blockquote>
+<pre><code>Web API 是浏览器提供的一套操作浏览器功能和页面元素的 API ( BOM 和 DOM )。
+现阶段我们主要针对于浏览器讲解常用的 API , 主要针对浏览器做交互效果。比如我们想要浏览器弹出一个警示框， 直接使用 alert(‘弹出’)
+MDN 详细 API : [https://developer.mozilla.org/zh-CN/docs/Web/API](https://developer.mozilla.org/zh-CN/docs/Web/API)
+因为 Web API 很多，所以我们将这个阶段称为 Web APIs。
+此处的 Web API 特指浏览器提供的一系列API(很多函数或对象方法)，即操作网页的一系列工具。例如：操作html标签、操作页面地址的方法。
+</code></pre>
+<blockquote>
+<p>API 和 Web API 总结</p>
+</blockquote>
+<ol>
+<li>API 是为我们程序员提供的一个接口，帮助我们实现某种功能，我们会使用就可以了，不必纠结内部如何实现</li>
+<li>Web API 主要是针对于浏览器提供的接口，主要针对于浏览器做交互效果。</li>
+<li>Web API 一般都有输入和输出（函数的传参和返回值），Web API 很多都是方法（函数）</li>
+<li>学习 Web API 可以结合前面学习内置对象方法的思路学习</li>
+</ol>
+<h2 id="1-2-DOM-介绍"><a href="#1-2-DOM-介绍" class="headerlink" title="1.2. DOM 介绍"></a>1.2. DOM 介绍</h2><blockquote>
+<p>什么是 DOM</p>
+</blockquote>
+<pre><code>文档对象模型（Document Object Model，简称DOM），是 [W3C](https://baike.baidu.com/item/W3C) 组织推荐的处理[可扩展标记语言](https://baike.baidu.com/item/%E5%8F%AF%E6%89%A9%E5%B1%95%E7%BD%AE%E6%A0%87%E8%AF%AD%E8%A8%80)（html或者xhtml）的标准[编程接口](https://baike.baidu.com/item/%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3)。
+W3C 已经定义了一系列的 DOM 接口，通过这些 DOM 接口可以改变网页的内容、结构和样式。
+</code></pre>
+<blockquote>
+<p>DOM 是 W3C 组织制定的一套处理 html 和 xml 文档的规范，所有的浏览器都遵循了这套标准。<br>DOM 树</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518355527-feaa6f87-a675-4d45-9c14-49a4a16321ea.png#align=left&display=inline&height=301&margin=%5Bobject%20Object%5D&originHeight=301&originWidth=522&status=done&style=stroke&width=522"><br>DOM 树 又称为文档树模型，把文档映射成树形结构，通过节点对象对其处理，处理的结果可以加入到当前的页面。</p>
+<ul>
+<li>文档：一个页面就是一个文档，DOM 中使用 document 表示</li>
+<li>节点：网页中的所有内容，在文档树中都是节点（标签、属性、文本、注释等），使用 node 表示</li>
+<li>标签节点：网页中的所有标签，通常称为元素节点，又简称为“元素”，使用 element 表示</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518355605-3870ceae-bf8b-4e45-9efa-e370d9475fb2.png#align=left&display=inline&height=44&margin=%5Bobject%20Object%5D&originHeight=44&originWidth=296&status=done&style=stroke&width=296"></p>
+<h3 id="DOM-的核心总结"><a href="#DOM-的核心总结" class="headerlink" title="DOM 的核心总结"></a>DOM 的核心总结</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360102-30d98ad3-622a-4203-892b-ea1d45c8abc2.png#align=left&display=inline&height=111&margin=%5Bobject%20Object%5D&originHeight=111&originWidth=681&status=done&style=stroke&width=681"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360160-e52744e6-3f0a-48f8-ba6b-0440a3f898e5.png#align=left&display=inline&height=296&margin=%5Bobject%20Object%5D&originHeight=296&originWidth=799&status=done&style=stroke&width=799"><br>关于 dom 操作，我们主要针对于元素的操作。主要有创建、增、删、改、查、属性操作、事件操作。<br>【1】创建<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360222-db94e8d0-f9a7-459d-8a24-88b745237bd5.png#align=left&display=inline&height=115&margin=%5Bobject%20Object%5D&originHeight=115&originWidth=691&status=done&style=stroke&width=691"><br>【2】增<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360287-480d224a-a047-4ef5-8bba-92845d85b573.png#align=left&display=inline&height=85&margin=%5Bobject%20Object%5D&originHeight=85&originWidth=720&status=done&style=stroke&width=720"><br>【3】删<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360367-4e96254b-5fd8-4f7e-8fb3-29143718f08d.png#align=left&display=inline&height=49&margin=%5Bobject%20Object%5D&originHeight=49&originWidth=695&status=done&style=stroke&width=695"><br>【4】改<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360436-7e94f916-24d1-4e97-84fe-6fc6ba6d68fb.png#align=left&display=inline&height=191&margin=%5Bobject%20Object%5D&originHeight=191&originWidth=731&status=done&style=stroke&width=731"><br>【5】查<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360497-cfec4566-ac5b-46c6-995d-8db307167137.png#align=left&display=inline&height=181&margin=%5Bobject%20Object%5D&originHeight=181&originWidth=703&status=done&style=stroke&width=703"><br>【6】属性操作<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360564-6e2cf7dd-fa5e-48fe-bcdb-be69ea87065c.png#align=left&display=inline&height=157&margin=%5Bobject%20Object%5D&originHeight=157&originWidth=722&status=done&style=stroke&width=722"><br>【7】事件操作（重点）</p>
+<h2 id="1-3-获取元素"><a href="#1-3-获取元素" class="headerlink" title="1.3. 获取元素"></a>1.3. 获取元素</h2><h3 id="getElementById-‘’"><a href="#getElementById-‘’" class="headerlink" title="getElementById(‘’)"></a>getElementById(‘’)</h3><ul>
+<li>语法：document.getElementById(id)</li>
+<li>作用：根据 ID 获取元素对象</li>
+<li>参数：id 值，区分大小写的字符串</li>
+<li>返回值：元素对象 或 null</li>
+</ul>
+<p>**</p>
+<pre><code class="javascript">var test_id = document.getElementById(&quot;indexLogo&quot;);
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616048539813-60fc22f6-0d07-482c-aaae-0227b1f55206.png#align=left&display=inline&height=280&margin=%5Bobject%20Object%5D&name=image.png&originHeight=560&originWidth=916&size=53785&status=done&style=stroke&width=458" alt="image.png"></p>
+<h3 id="getElementsByTagName-‘’"><a href="#getElementsByTagName-‘’" class="headerlink" title="getElementsByTagName(‘’)"></a>getElementsByTagName(‘’)</h3><ul>
+<li>语法：document.getElementsByTagName(‘标签名’) 或者 element.getElementsByTagName(‘标签名’)</li>
+<li>作用：根据标签名获取元素对象</li>
+<li>参数：标签名</li>
+<li>返回值：元素对象集合（伪数组，数组元素是元素对象）**</li>
+</ul>
+<pre><code class="javascript">var test_tag = document.getElementsByTagName(&quot;p&quot;);
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616048909454-bdfb7dbc-18e4-4449-abc6-800e87b42380.png#align=left&display=inline&height=442&margin=%5Bobject%20Object%5D&name=image.png&originHeight=884&originWidth=1920&size=1760479&status=done&style=stroke&width=960" alt="image.png"></p>
+<ul>
+<li>getElementsByTagName()获取到是动态集合，即：当页面增加了标签，这个集合中也就增加了元素。</li>
+<li>由上面的图可以知道，得到的不是一个对象，而是一个对象集合，所以要操作具体的一个 p 就要遍历，然后再进行操作（抑或是对其当作节点再进行操作）</li>
+</ul>
+<h3 id="getElementsByClassName-‘’"><a href="#getElementsByClassName-‘’" class="headerlink" title="getElementsByClassName(‘’)"></a>getElementsByClassName(‘’)</h3><h3 id=""><a href="#" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049522946-8c892471-1b04-4b04-b56f-630420bdb654.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=880&originWidth=1920&size=312821&status=done&style=stroke&width=960" alt="image.png"></h3><h3 id="querySelector-‘’"><a href="#querySelector-‘’" class="headerlink" title="querySelector(‘’)"></a>querySelector(‘’)</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049685312-55929307-c68b-4e1d-b6b5-1845c0d5a878.png#align=left&display=inline&height=226&margin=%5Bobject%20Object%5D&name=image.png&originHeight=451&originWidth=1920&size=239671&status=done&style=stroke&width=960" alt="image.png"></p>
+<h3 id="querySelectorAll-‘’"><a href="#querySelectorAll-‘’" class="headerlink" title="querySelectorAll(‘’)"></a>querySelectorAll(‘’)</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049810063-ee5595dc-89bb-47cc-aa9a-c9446ed97d6f.png#align=left&display=inline&height=306&margin=%5Bobject%20Object%5D&name=image.png&originHeight=612&originWidth=1920&size=288375&status=done&style=stroke&width=960" alt="image.png"></p>
+<ul>
+<li>如果是选择器，需要加符号 <code>querySelectorAll(&#39;#box1&#39;)</code> **</li>
+</ul>
+<h3 id="获取-body-html-对象"><a href="#获取-body-html-对象" class="headerlink" title="获取 body/html 对象"></a>获取 body/html 对象</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616050005999-ac944be2-9612-41ac-89f7-9fa04c4d3912.png#align=left&display=inline&height=442&margin=%5Bobject%20Object%5D&name=image.png&originHeight=884&originWidth=1920&size=301673&status=done&style=stroke&width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518355850-2e015c88-50b7-400e-9593-c7e21a9068b5.png#align=left&display=inline&height=272&margin=%5Bobject%20Object%5D&originHeight=272&originWidth=748&status=done&style=none&width=748"></p>
+<h2 id="1-4-事件（低阶）"><a href="#1-4-事件（低阶）" class="headerlink" title="1.4 事件（低阶）"></a>1.4 事件（低阶）</h2><blockquote>
+<p>事件三要素</p>
+</blockquote>
+<ul>
+<li>Who(事件源)：触发事件的元素</li>
+<li>What(事件类型)： eg 绑定 click 点击事件</li>
+<li>How(事件处理程序)：事件触发后要执行的代码(函数赋值形式)，事件处理函数**</li>
+</ul>
+<h3 id="常见鼠标事件"><a href="#常见鼠标事件" class="headerlink" title="常见鼠标事件"></a>常见鼠标事件</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518355975-babb3ede-4626-4ccd-9507-eb4c35c58439.png#align=left&display=inline&height=318&margin=%5Bobject%20Object%5D&originHeight=318&originWidth=714&status=done&style=stroke&width=714"></p>
+<h3 id="addEventListener"><a href="#addEventListener" class="headerlink" title="addEventListener()"></a>addEventListener()</h3><blockquote>
+<p>事件监听（IE9 以后支持）</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360715-05c708e0-db51-4791-b3cc-14ca89b6d9bc.png#align=left&display=inline&height=61&margin=%5Bobject%20Object%5D&originHeight=61&originWidth=707&status=done&style=none&width=707"><br>eventTarget.addEventListener()方法将指定的监听器注册到 eventTarget（目标对象）上，当该对象触发指定的事件时，就会执行事件处理函数。</p>
+<ul>
+<li>type：监听事件类型 click……（不要加 on，要记得加引号）</li>
+<li>listener：监听函数（触发之后进行什么样的行为（函数））</li>
+<li>useCapture：默认 false</li>
+</ul>
+<pre><code class="javascript">var class_down = document.getElementsByClassName(&quot;entry-thumb&quot;);
+var over_img_back_index = class_down[0].getElementsByTagName(&quot;img&quot;);
+over_img_back_index[0].addEventListener(&quot;mouseover&quot;, function () &#123;
+  alert(&quot;鼠标经过左侧图片，触发至即将跳转到首页&quot;);
+  location.href = &quot;https://www.wztlink1013.com&quot;;
+&#125;);
+</code></pre>
+<h3 id="attachEvent"><a href="#attachEvent" class="headerlink" title="attachEvent()"></a>attachEvent()</h3><blockquote>
+<p>事件监听（IE678 支持）</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360822-32bdd41a-9d13-4b76-93db-3f503b39bba7.png#align=left&display=inline&height=52&margin=%5Bobject%20Object%5D&originHeight=52&originWidth=696&status=done&style=none&width=696"></p>
+<ul>
+<li>和 addEventListener()功能一样，不过这是老版本只带两个参数，而且第一个参数要加 on</li>
+</ul>
+<h3 id="兼容性解决注册事件"><a href="#兼容性解决注册事件" class="headerlink" title="兼容性解决注册事件"></a>兼容性解决注册事件</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360652-874303ea-a903-4f8c-93a0-a90c193c661b.png#align=left&display=inline&height=361&margin=%5Bobject%20Object%5D&originHeight=361&originWidth=867&status=done&style=stroke&width=867"><br>封装一个函数，函数中判断浏览器的类型：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360935-9054e419-704a-402e-969c-a572f0f322e0.png#align=left&display=inline&height=266&margin=%5Bobject%20Object%5D&originHeight=266&originWidth=643&status=done&style=none&width=643"></p>
+<h3 id="解绑事件"><a href="#解绑事件" class="headerlink" title="解绑事件"></a>解绑事件</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360992-53947cad-916b-4b2a-baf9-0587c30a33d9.png#align=left&display=inline&height=241&margin=%5Bobject%20Object%5D&originHeight=241&originWidth=737&status=done&style=stroke&width=737"></p>
+<pre><code class="html">&lt;div&gt;1&lt;/div&gt;
+&lt;div&gt;2&lt;/div&gt;
+&lt;div&gt;3&lt;/div&gt;
+&lt;script&gt;
+  var divs = document.querySelectorAll(&quot;div&quot;);
+  divs[0].onclick = function () &#123;
+    alert(11);
+    // 1. 传统方式删除事件
+    divs[0].onclick = null;
+  &#125;;
+  // 2. removeEventListener 删除事件
+  divs[1].addEventListener(&quot;click&quot;, fn); // 里面的fn 不需要调用加小括号
+  function fn() &#123;
+    alert(22);
+    divs[1].removeEventListener(&quot;click&quot;, fn);
+  &#125;
+  // 3. detachEvent
+  divs[2].attachEvent(&quot;onclick&quot;, fn1);
+  function fn1() &#123;
+    alert(33);
+    divs[2].detachEvent(&quot;onclick&quot;, fn1);
+  &#125;
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p>**删除事件兼容性解决方案 **</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361056-6ce22708-00af-43e8-943d-466fe8fcb053.png#align=left&display=inline&height=269&margin=%5Bobject%20Object%5D&originHeight=269&originWidth=713&status=done&style=none&width=713"></p>
+<h2 id="1-5-常用鼠标事件"><a href="#1-5-常用鼠标事件" class="headerlink" title="1.5 常用鼠标事件"></a>1.5 常用鼠标事件</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361860-3dea106f-9140-4836-8e7d-2f160b94435b.png#align=left&display=inline&height=305&margin=%5Bobject%20Object%5D&originHeight=305&originWidth=683&status=done&style=stroke&width=683"></p>
+<h3 id="Demo：禁止选中文字和禁止右键菜单"><a href="#Demo：禁止选中文字和禁止右键菜单" class="headerlink" title="Demo：禁止选中文字和禁止右键菜单"></a>Demo：禁止选中文字和禁止右键菜单</h3><blockquote>
+<p>【1】禁止鼠标选中</p>
+</blockquote>
+<ul>
+<li>selectstart 开始选中</li>
+</ul>
+<pre><code class="javascript">document.addEventListener(&quot;selectstart&quot;, function (e) &#123;
+  e.preventDefault();
+&#125;);
+</code></pre>
+<blockquote>
+<p>【2】禁止鼠标右键菜单</p>
+</blockquote>
+<ul>
+<li>contextmenu 主要控制应该合适显示上下文菜单，主要用于程序员取消默认的上下文菜单</li>
+</ul>
+<pre><code class="javascript">document.addEventListener(&quot;contextmenu&quot;, function (e) &#123;
+  e.preventDefault();
+&#125;);
+</code></pre>
+<h3 id="鼠标事件对象"><a href="#鼠标事件对象" class="headerlink" title="鼠标事件对象"></a>鼠标事件对象</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361978-034f2af6-14fa-4ddb-bd8b-2eabe289eb59.png#align=left&display=inline&height=308&margin=%5Bobject%20Object%5D&originHeight=308&originWidth=703&status=done&style=stroke&width=703"></p>
+<h3 id="Demo：获取鼠标在页面的坐标"><a href="#Demo：获取鼠标在页面的坐标" class="headerlink" title="Demo：获取鼠标在页面的坐标"></a>Demo：获取鼠标在页面的坐标</h3><pre><code class="html">&lt;script&gt;
+  // 鼠标事件对象 MouseEvent
+  document.addEventListener(&quot;click&quot;, function (e) &#123;
+    console.log(&quot;client 鼠标在可视区的x和y坐标&quot;);
+    console.log(e.clientX);
+    console.log(e.clientY);
+    console.log(&quot;---------------------&quot;);
+    console.log(&quot;page 鼠标在页面文档的x和y坐标&quot;);
+    console.log(e.pageX);
+    console.log(e.pageY);
+    console.log(&quot;---------------------&quot;);
+    console.log(&quot;screen 鼠标在电脑屏幕的x和y坐标&quot;);
+    console.log(e.screenX);
+    console.log(e.screenY);
+  &#125;);
+&lt;/script&gt;
+</code></pre>
+<h3 id="Demo：跟随鼠标的天使"><a href="#Demo：跟随鼠标的天使" class="headerlink" title="Demo：跟随鼠标的天使"></a>Demo：跟随鼠标的天使</h3><pre><code class="html">&lt;img src=&quot;images/angel.gif&quot; alt=&quot;&quot; /&gt;
+&lt;script&gt;
+  var pic = document.querySelector(&quot;img&quot;);
+  document.addEventListener(&quot;mousemove&quot;, function (e) &#123;
+    // 1. mousemove只要我们鼠标移动1px 就会触发这个事件
+    // 2.核心原理： 每次鼠标移动，我们都会获得最新的鼠标坐标，
+    // 把这个x和y坐标做为图片的top和left 值就可以移动图片
+    var x = e.pageX;
+    var y = e.pageY;
+    console.log(&quot;x坐标是&quot; + x, &quot;y坐标是&quot; + y);
+    //3 . 千万不要忘记给left 和top 添加px 单位
+    pic.style.left = x - 50 + &quot;px&quot;;
+    pic.style.top = y - 40 + &quot;px&quot;;
+  &#125;);
+&lt;/script&gt;
+</code></pre>
+<h3 id="mouseenter-和-mouseover-的区别"><a href="#mouseenter-和-mouseover-的区别" class="headerlink" title="mouseenter 和 mouseover 的区别"></a>mouseenter 和 mouseover 的区别</h3><ul>
+<li>当鼠标移动到元素上时就会触发 mouseenter 事件</li>
+<li>类似 mouseover，它们两者之间的差别是</li>
+<li>mouseover 鼠标经过自身盒子会触发，经过子盒子还会触发。mouseenter  只会经过自身盒子触发</li>
+<li>之所以这样，就是因为 mouseenter 不会冒泡</li>
+<li>跟 mouseenter 搭配鼠标离开 mouseleave  同样不会冒泡</li>
+</ul>
+<h2 id="1-6-常用键盘事件"><a href="#1-6-常用键盘事件" class="headerlink" title="1.6 常用键盘事件"></a>1.6 常用键盘事件</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518362322-f21797ca-1e8e-4702-a243-4e76a8458b7e.png#align=left&display=inline&height=143&margin=%5Bobject%20Object%5D&originHeight=143&originWidth=701&status=done&style=stroke&width=701"></p>
+<ul>
+<li>三个事件执行的顺序是：keydown-&gt;keypress-&gt;keyup</li>
+</ul>
+<pre><code class="html">&lt;script&gt;
+  // 常用的键盘事件
+  //1. keyup 按键弹起的时候触发
+  document.addEventListener(&quot;keyup&quot;, function () &#123;
+    console.log(&quot;我弹起了&quot;);
+  &#125;);
+  //3. keypress 按键按下的时候触发  不能识别功能键 比如 ctrl shift 左右箭头啊
+  document.addEventListener(&quot;keypress&quot;, function () &#123;
+    console.log(&quot;我按下了press&quot;);
+  &#125;);
+  //2. keydown 按键按下的时候触发  能识别功能键 比如 ctrl shift 左右箭头啊
+  document.addEventListener(&quot;keydown&quot;, function () &#123;
+    console.log(&quot;我按下了down&quot;);
+  &#125;);
+  // 4. 三个事件的执行顺序  keydown -- keypress -- keyup
+&lt;/script&gt;
+</code></pre>
+<h3 id="键盘事件对象"><a href="#键盘事件对象" class="headerlink" title="键盘事件对象"></a>键盘事件对象</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518362443-95c05d9c-6850-4cc3-a35e-c972b1723658.png#align=left&display=inline&height=78&margin=%5Bobject%20Object%5D&originHeight=78&originWidth=700&status=done&style=stroke&width=700"></p>
+<ul>
+<li>onkeydown 和 onkeyup 不区分字母大小写，onkeypress 区分字母大小写（使用更多的前面两个，能够识别所有键，包括功能键）</li>
+<li>keypress 不识别功能键，但是 keyCode 属性能够区分大小写，返回不同的 ASCII 值<blockquote>
+<p><strong>使用 keyCode 属性判断用户按下哪个键</strong></p>
+</blockquote>
+</li>
+</ul>
+<pre><code class="html">&lt;script&gt;
+  // 键盘事件对象中的keyCode属性可以得到相应键的ASCII码值
+  document.addEventListener(&quot;keyup&quot;, function (e) &#123;
+    console.log(&quot;up:&quot; + e.keyCode);
+    // 我们可以利用keycode返回的ASCII码值来判断用户按下了那个键
+    if (e.keyCode === 65) &#123;
+      alert(&quot;您按下的a键&quot;);
+    &#125; else &#123;
+      alert(&quot;您没有按下a键&quot;);
+    &#125;
+  &#125;);
+  document.addEventListener(&quot;keypress&quot;, function (e) &#123;
+    // console.log(e);
+    console.log(&quot;press:&quot; + e.keyCode);
+  &#125;);
+&lt;/script&gt;
+</code></pre>
+<h3 id="Demo：模拟京东按键输入内容"><a href="#Demo：模拟京东按键输入内容" class="headerlink" title="Demo：模拟京东按键输入内容"></a>Demo：模拟京东按键输入内容</h3><ul>
+<li>当我们按下 s 键， 光标就定位到搜索框（文本框获得焦点）。</li>
+<li>注意：触发获得焦点事件，可以使用 元素对象.focus()</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616211826182-452dfe9b-0c03-4fe3-845c-afc16697e3ee.png#align=left&display=inline&height=442&margin=%5Bobject%20Object%5D&name=image.png&originHeight=883&originWidth=1920&size=1657927&status=done&style=stroke&width=960" alt="image.png"></p>
+<h3 id="Demo：模拟京东快递单号查询"><a href="#Demo：模拟京东快递单号查询" class="headerlink" title="Demo：模拟京东快递单号查询"></a>Demo：模拟京东快递单号查询</h3><p>要求：当我们在文本框中输入内容时，文本框上面自动显示大字号的内容。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518362646-5b0c1da3-32dd-40b4-8b42-1bbb3065c01c.png#align=left&display=inline&height=259&margin=%5Bobject%20Object%5D&originHeight=259&originWidth=551&status=done&style=stroke&width=551"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518362734-9740cabb-bd4d-48ce-824d-001b5913b804.png#align=left&display=inline&height=288&margin=%5Bobject%20Object%5D&originHeight=288&originWidth=751&status=done&style=none&width=751"></p>
+<pre><code class="js">&lt;div class=&quot;search&quot;&gt;
+        &lt;div class=&quot;con&quot;&gt;123&lt;/div&gt;
+        &lt;input type=&quot;text&quot; placeholder=&quot;请输入您的快递单号&quot; class=&quot;jd&quot;&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        // 获取要操作的元素
+        var con = document.querySelector(&#39;.con&#39;);
+        var jd_input = document.querySelector(&#39;.jd&#39;);
+        // 给输入框注册keyup事件
+        jd_input.addEventListener(&#39;keyup&#39;, function() &#123;
+                // 判断输入框内容是否为空
+                if (this.value == &#39;&#39;) &#123;
+                    // 为空，隐藏放大提示盒子
+                    con.style.display = &#39;none&#39;;
+                &#125; else &#123;
+                    // 不为空，显示放大提示盒子，设置盒子的内容
+                    con.style.display = &#39;block&#39;;
+                    con.innerText = this.value;
+                &#125;
+            &#125;)
+        // 给输入框注册失去焦点事件，隐藏放大提示盒子
+        jd_input.addEventListener(&#39;blur&#39;, function() &#123;
+                con.style.display = &#39;none&#39;;
+            &#125;)
+        // 给输入框注册获得焦点事件
+        jd_input.addEventListener(&#39;focus&#39;, function() &#123;
+            // 判断输入框内容是否为空
+            if (this.value !== &#39;&#39;) &#123;
+                // 不为空则显示提示盒子
+                con.style.display = &#39;block&#39;;
+            &#125;
+        &#125;)
+    &lt;/script&gt;
+</code></pre>
+<h2 id="1-7-事件（高阶）"><a href="#1-7-事件（高阶）" class="headerlink" title="1.7 事件（高阶）"></a>1.7 事件（高阶）</h2><h3 id="DOM-事件流"><a href="#DOM-事件流" class="headerlink" title="DOM 事件流"></a>DOM 事件流</h3><pre><code>html中的标签都是相互嵌套的，我们可以将元素想象成一个盒子装一个盒子，document是最外面的大盒子。
+当你单击一个div时，同时你也单击了div的父元素，甚至整个页面。
+那么是先执行父元素的单击事件，还是先执行div的单击事件 ？？？
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361114-2ab6ad14-e27a-4626-88bd-abbc2badfc0b.png#align=left&display=inline&height=70&margin=%5Bobject%20Object%5D&originHeight=70&originWidth=696&status=done&style=stroke&width=696"></p>
+<blockquote>
+<p>比如：我们给页面中的一个 div 注册了单击事件，当你单击了 div 时，也就单击了 body，单击了 html，单击了 document。</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361173-9a6bf5d3-a273-4294-b849-0ebaf79da603.png#align=left&display=inline&height=196&margin=%5Bobject%20Object%5D&originHeight=196&originWidth=268&status=done&style=none&width=268"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361248-0ea0959b-c350-4780-9437-8561fe69f36d.png#align=left&display=inline&height=72&margin=%5Bobject%20Object%5D&originHeight=72&originWidth=751&status=done&style=none&width=751"></p>
+<pre><code>当时的2大浏览器霸主谁也不服谁！
+IE 提出从目标元素开始，然后一层一层向外接收事件并响应，也就是冒泡型事件流。
+Netscape（网景公司）提出从最外层开始，然后一层一层向内接收事件并响应，也就是捕获型事件流。
+江湖纷争，武林盟主也脑壳疼！！！
+最终，w3c 采用折中的方式，平息了战火，制定了统一的标准 —--— 先捕获再冒泡。
+现代浏览器都遵循了此标准，所以当事件发生时，会经历3个阶段。
+</code></pre>
+<p>DOM 事件流会经历 3 个阶段：</p>
+<ol>
+<li><p> 捕获阶段</p>
+</li>
+<li><p> 当前目标阶段</p>
+</li>
+<li><p>冒泡阶段</p>
+<pre><code> 我们向水里面扔一块石头，首先它会有一个下降的过程，这个过程就可以理解为从最顶层向事件发生的最具体元素（目标点）的捕获过程；之后会产生泡泡，会在最低点（ 最具体元素）之后漂浮到水面上，这个过程相当于事件冒泡。
+</code></pre>
+<p> <img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361302-fa0b37f5-a8ec-4898-82b6-e136cd291951.png#align=left&display=inline&height=271&margin=%5Bobject%20Object%5D&originHeight=271&originWidth=498&status=done&style=none&width=498"><br> <img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361362-b8b1f065-da6a-40c5-8782-b265699cdd49.png#align=left&display=inline&height=370&margin=%5Bobject%20Object%5D&originHeight=370&originWidth=757&status=done&style=none&width=757"><br> <strong>事件冒泡</strong></p>
+</li>
+</ol>
+<pre><code class="js">&lt;div class=&quot;father&quot;&gt;
+        &lt;div class=&quot;son&quot;&gt;son盒子&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        // onclick 和 attachEvent（ie） 在冒泡阶段触发
+        // 冒泡阶段 如果addEventListener 第三个参数是 false 或者 省略
+        // son -&gt; father -&gt;body -&gt; html -&gt; document
+        var son = document.querySelector(&#39;.son&#39;);
+        // 给son注册单击事件
+        son.addEventListener(&#39;click&#39;, function() &#123;
+            alert(&#39;son&#39;);
+        &#125;, false);
+        // 给father注册单击事件
+        var father = document.querySelector(&#39;.father&#39;);
+        father.addEventListener(&#39;click&#39;, function() &#123;
+            alert(&#39;father&#39;);
+        &#125;, false);
+        // 给document注册单击事件，省略第3个参数
+        document.addEventListener(&#39;click&#39;, function() &#123;
+            alert(&#39;document&#39;);
+        &#125;)
+    &lt;/script&gt;
+</code></pre>
+<p><strong>事件捕获</strong></p>
+<pre><code class="js">&lt;div class=&quot;father&quot;&gt;
+        &lt;div class=&quot;son&quot;&gt;son盒子&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        // 如果addEventListener() 第三个参数是 true 那么在捕获阶段触发
+        // document -&gt; html -&gt; body -&gt; father -&gt; son
+         var son = document.querySelector(&#39;.son&#39;);
+        // 给son注册单击事件，第3个参数为true
+         son.addEventListener(&#39;click&#39;, function() &#123;
+             alert(&#39;son&#39;);
+         &#125;, true);
+         var father = document.querySelector(&#39;.father&#39;);
+        // 给father注册单击事件，第3个参数为true
+         father.addEventListener(&#39;click&#39;, function() &#123;
+             alert(&#39;father&#39;);
+         &#125;, true);
+        // 给document注册单击事件，第3个参数为true
+        document.addEventListener(&#39;click&#39;, function() &#123;
+            alert(&#39;document&#39;);
+        &#125;, true)
+    &lt;/script&gt;
+</code></pre>
+<h3 id="事件对象"><a href="#事件对象" class="headerlink" title="事件对象"></a>事件对象</h3><h4 id="什么是事件对象"><a href="#什么是事件对象" class="headerlink" title="什么是事件对象"></a>什么是事件对象</h4><p>事件发生后，跟事件相关的一系列信息数据的集合都放到这个对象里面，这个对象就是事件对象。<br>比如：</p>
+<ol>
+<li>谁绑定了这个事件。</li>
+<li>鼠标触发事件的话，会得到鼠标的相关信息，如鼠标位置。</li>
+<li>键盘触发事件的话，会得到键盘的相关信息，如按了哪个键。</li>
+</ol>
+<h4 id="事件对象的使用"><a href="#事件对象的使用" class="headerlink" title="事件对象的使用"></a>事件对象的使用</h4><p>事件触发发生时就会产生事件对象，并且系统会以实参的形式传给事件处理函数。<br>所以，在事件处理函数中声明 1 个形参用来接收事件对象。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361420-28ca3202-57b2-48ab-83cb-620191320123.png#align=left&display=inline&height=259&margin=%5Bobject%20Object%5D&originHeight=259&originWidth=681&status=done&style=none&width=681"></p>
+<h4 id="事件对象的兼容性处理"><a href="#事件对象的兼容性处理" class="headerlink" title="事件对象的兼容性处理"></a>事件对象的兼容性处理</h4><p>事件对象本身的获取存在兼容问题：</p>
+<ol>
+<li>标准浏览器中是浏览器给方法传递的参数，只需要定义形参 e 就可以获取到。</li>
+<li>在 IE6~8 中，浏览器不会给方法传递参数，如果需要的话，需要到 window.event 中获取查找。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361484-fb99b58d-4733-4716-b625-a14e1cd02938.png#align=left&display=inline&height=71&margin=%5Bobject%20Object%5D&originHeight=71&originWidth=660&status=done&style=none&width=660"></p>
+<pre><code>只要“||”前面为false, 不管“||”后面是true 还是 false，都返回 “||” 后面的值。
+只要“||”前面为true, 不管“||”后面是true 还是 false，都返回 “||” 前面的值。
+</code></pre>
+<pre><code class="js">&lt;div&gt;123&lt;/div&gt;
+    &lt;script&gt;
+        var div = document.querySelector(&#39;div&#39;);
+        div.onclick = function(e) &#123;
+                // 事件对象
+                e = e || window.event;
+                console.log(e);
+        &#125;
+    &lt;/script&gt;
+</code></pre>
+<h4 id="事件对象的属性和方法"><a href="#事件对象的属性和方法" class="headerlink" title="事件对象的属性和方法"></a>事件对象的属性和方法</h4><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361541-14665361-d721-4083-8cb2-d2088c6dc0cc.png#align=left&display=inline&height=273&margin=%5Bobject%20Object%5D&originHeight=273&originWidth=698&status=done&style=none&width=698"></p>
+<h4 id="e-target-和-this-的区别"><a href="#e-target-和-this-的区别" class="headerlink" title="e.target 和 this 的区别"></a>e.target 和 this 的区别</h4><ul>
+<li>this 是事件绑定的元素（绑定这个事件处理函数的元素） 。</li>
+<li>e.target 是事件触发的元素。</li>
+</ul>
+<pre><code>常情况下terget 和 this是一致的，
+但有一种情况不同，那就是在事件冒泡时（父子元素有相同事件，单击子元素，父元素的事件处理函数也会被触发执行），
+    这时候this指向的是父元素，因为它是绑定事件的元素对象，
+    而target指向的是子元素，因为他是触发事件的那个具体元素对象。
+</code></pre>
+<pre><code class="js">&lt;div&gt;123&lt;/div&gt;
+    &lt;script&gt;
+        var div = document.querySelector(&#39;div&#39;);
+        div.addEventListener(&#39;click&#39;, function(e) &#123;
+            // e.target 和 this指向的都是div
+            console.log(e.target);
+            console.log(this);
+        &#125;);
+    &lt;/script&gt;
+</code></pre>
+<p>事件冒泡下的 e.target 和 this</p>
+<pre><code class="js">&lt;ul&gt;
+        &lt;li&gt;abc&lt;/li&gt;
+        &lt;li&gt;abc&lt;/li&gt;
+        &lt;li&gt;abc&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;script&gt;
+        var ul = document.querySelector(&#39;ul&#39;);
+        ul.addEventListener(&#39;click&#39;, function(e) &#123;
+              // 我们给ul 绑定了事件  那么this 就指向ul
+              console.log(this); // ul
+              // e.target 触发了事件的对象 我们点击的是li e.target 指向的就是li
+              console.log(e.target); // li
+        &#125;);
+    &lt;/script&gt;
+</code></pre>
+<h3 id="阻止默认行为"><a href="#阻止默认行为" class="headerlink" title="阻止默认行为"></a>阻止默认行为</h3><blockquote>
+<p>html 中一些标签有默认行为，例如 a 标签被单击后，默认会进行页面跳转。</p>
+</blockquote>
+<pre><code class="js">&lt;a href=&quot;http://www.baidu.com&quot;&gt;百度&lt;/a&gt;
+    &lt;script&gt;
+        // 2. 阻止默认行为 让链接不跳转
+        var a = document.querySelector(&#39;a&#39;);
+        a.addEventListener(&#39;click&#39;, function(e) &#123;
+             e.preventDefault(); //  dom 标准写法
+        &#125;);
+        // 3. 传统的注册方式
+        a.onclick = function(e) &#123;
+            // 普通浏览器 e.preventDefault();  方法
+            e.preventDefault();
+            // 低版本浏览器 ie678  returnValue  属性
+            e.returnValue = false;
+            // 我们可以利用return false 也能阻止默认行为 没有兼容性问题
+            return false;
+        &#125;
+    &lt;/script&gt;
+</code></pre>
+<h3 id="阻止事件冒泡"><a href="#阻止事件冒泡" class="headerlink" title="阻止事件冒泡"></a>阻止事件冒泡</h3><p>事件冒泡本身的特性，会带来的坏处，也会带来的好处。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361625-d482ad01-1332-4d91-b951-664b337c86f3.png#align=left&display=inline&height=182&margin=%5Bobject%20Object%5D&originHeight=182&originWidth=667&status=done&style=none&width=667"></p>
+<pre><code class="js">&lt;div class=&quot;father&quot;&gt;
+        &lt;div class=&quot;son&quot;&gt;son儿子&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        var son = document.querySelector(&#39;.son&#39;);
+        // 给son注册单击事件
+        son.addEventListener(&#39;click&#39;, function(e) &#123;
+            alert(&#39;son&#39;);
+            e.stopPropagation(); // stop 停止  Propagation 传播
+            window.event.cancelBubble = true; // 非标准 cancel 取消 bubble 泡泡
+        &#125;, false);
+        var father = document.querySelector(&#39;.father&#39;);
+        // 给father注册单击事件
+        father.addEventListener(&#39;click&#39;, function() &#123;
+            alert(&#39;father&#39;);
+        &#125;, false);
+        // 给document注册单击事件
+        document.addEventListener(&#39;click&#39;, function() &#123;
+            alert(&#39;document&#39;);
+        &#125;)
+    &lt;/script&gt;
+</code></pre>
+<p><strong>阻止事件冒泡的兼容性处理</strong><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361680-f20195f2-69b6-4d72-a6d5-6a5d08646b73.png#align=left&display=inline&height=167&margin=%5Bobject%20Object%5D&originHeight=167&originWidth=685&status=done&style=none&width=685"></p>
+<h3 id="事件委托"><a href="#事件委托" class="headerlink" title="事件委托"></a>事件委托</h3><p>事件冒泡本身的特性，会带来的坏处，也会带来的好处。</p>
+<h4 id="什么是事件委托"><a href="#什么是事件委托" class="headerlink" title="什么是事件委托"></a>什么是事件委托</h4><pre><code>把事情委托给别人，代为处理。
+</code></pre>
+<p>事件委托也称为事件代理，在 jQuery 里面称为事件委派。</p>
+<blockquote>
+<p>说白了就是，不给子元素注册事件，给父元素注册事件，把处理代码在父元素的事件中执行。</p>
+</blockquote>
+<p><strong>生活中的代理：</strong><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361736-9861e13e-f31a-4425-b062-883b21374fce.png#align=left&display=inline&height=159&margin=%5Bobject%20Object%5D&originHeight=159&originWidth=689&status=done&style=none&width=689"><br><strong>js 事件中的代理：</strong><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518361805-81024b8b-f5e4-488a-91fa-d8ffa16d04fa.png#align=left&display=inline&height=278&margin=%5Bobject%20Object%5D&originHeight=278&originWidth=698&status=done&style=none&width=698"></p>
+<h4 id="事件委托的原理"><a href="#事件委托的原理" class="headerlink" title="事件委托的原理"></a>事件委托的原理</h4><pre><code>给父元素注册事件，利用事件冒泡，当子元素的事件触发，会冒泡到父元素，然后去控制相应的子元素。
+</code></pre>
+<h4 id="事件委托的作用"><a href="#事件委托的作用" class="headerlink" title="事件委托的作用"></a>事件委托的作用</h4><ul>
+<li>我们只操作了一次 DOM ，提高了程序的性能。</li>
+<li>动态新创建的子元素，也拥有事件。</li>
+</ul>
+<pre><code class="js">&lt;ul&gt;
+        &lt;li&gt;知否知否，点我应有弹框在手！&lt;/li&gt;
+        &lt;li&gt;知否知否，点我应有弹框在手！&lt;/li&gt;
+        &lt;li&gt;知否知否，点我应有弹框在手！&lt;/li&gt;
+        &lt;li&gt;知否知否，点我应有弹框在手！&lt;/li&gt;
+        &lt;li&gt;知否知否，点我应有弹框在手！&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;script&gt;
+        // 事件委托的核心原理：给父节点添加侦听器， 利用事件冒泡影响每一个子节点
+        var ul = document.querySelector(&#39;ul&#39;);
+        ul.addEventListener(&#39;click&#39;, function(e) &#123;
+            // e.target 这个可以得到我们点击的对象
+            e.target.style.backgroundColor = &#39;pink&#39;;
+        &#125;)
+    &lt;/script&gt;
+</code></pre>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <p>博客内容遵循：
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="https://www.wztlink1013.com/blog/1_day01_webapis/">https://www.wztlink1013.com/blog/1_day01_webapis/</a>
+    </p>
+    <p class="article_more_btn">
+        编辑：<a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/javascript/1_day01_webapis/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        部署：<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        订阅：<a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+    </p>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/2_day02_webapis/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>DOM-元素属性、节点操作</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/fc3rdkwoum2b/">
+                    <b>JavaScript内置对象</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component clearfix comments" id="comments" style="display: block;">
+  <div class="comments_title">
+      <h2>评论区</h2>
+      
+      <!-- 转换评论按钮 -->
+      <div class="switch_comments">
+        <span>Twikoo</span>
+        <span id="switch_btn">转换</span>
+        <span>utterances</span>
+      </div>
+  </div>
+
+  <div class="comments_content">
+      <!-- utterances评论区 -->
+      <div id="utterances_comment" style="display: none;"></div>
+      <!-- twikoo评论区 -->
+      <div id="twikoo_comment" style="display: block;">
+        <div id="tcomment"></div>
+        <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+        <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+        </script>
+      </div>
+
+
+  </div>
+</div>
+
+
+        
+        
+    </div>
+    <div class="ct_right">
+        
+
+<div class="component clearfix categories">
+    <h3>『技术』文章分类</h3><ul class="cate_forder">
+    
+            <li class="cate_cell">
+            <a href="/categories/Algorithm">Algorithm</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95">分治算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/RSA%E7%AE%97%E6%B3%95">RSA算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95">穷举算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/Problems">Problems</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0">算法综述</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95">贪心算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95">动态规划算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95">其他算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95">递归算法</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Bug">Bug</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerNetwork">ComputerNetwork</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerOperatingSystem">ComputerOperatingSystem</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerOrganization">ComputerOrganization</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataAnalysis">DataAnalysis</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataBase">DataBase</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataStructure">DataStructure</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%95%B0%E7%BB%84">数组</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E4%B8%B2%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8">串和广义表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97">栈和队列</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E9%A1%BA%E5%BA%8F%E8%A1%A8">顺序表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E9%93%BE%E8%A1%A8">链表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%A0%91">树</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E5%9B%BE">图</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Environment">Environment</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Hexo">Hexo</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Language">Language</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Language/CSS">CSS</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/JAVA">JAVA</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/div%E5%8A%A0CSS%E5%B8%83%E5%B1%80">div加CSS布局</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/Python">Python</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/CPlusPlus">CPlusPlus</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/HTML">HTML</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/MachingLearning">MachingLearning</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/PostProduction">PostProduction</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/SoftwareEngineering">SoftwareEngineering</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/VersionControlSystem">VersionControlSystem</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Web">Web</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Web/BOM">BOM</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/JavaScript%E7%89%B9%E6%95%88">JavaScript特效</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/node">node</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/jQuery">jQuery</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/ECMAScript">ECMAScript</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/Vue">Vue</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/%E7%BD%91%E7%AB%99%E7%9B%B8%E5%85%B3">网站相关</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/Web%E5%85%B6%E4%BB%96">Web其他</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/DOM">DOM</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+</ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
+</div>
+</footer>
+
+</body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":true,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/remu.model.json"},"display":{"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-12},"mobile":{"show":true,"scale":1},"react":{"opacity":1},"log":false});</script>
+    
+        
+<script src="/public/js/main.js"></script>
+
+     
+</html>

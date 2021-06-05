@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Node.js学习笔记 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="Node.js就是模块化开发，有两方面组成：ECMAScriptNode 的模块 API模块化开发有两种前端网页使用 JavaScript 外链，使用 nodejs 加载模块化开发构建基本使用使用在命令行加上 node 文件名即可运行该 js 文件了，根据实际开发，一般都下载第三方模块 nodemo">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <!-- https://ogp.me/ -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Node.js学习笔记 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/node_note/">
+    <meta property="og:site_name" content="尼采般地抒情">
+    <meta property="og:description" content="Node.js就是模块化开发，有两方面组成：ECMAScriptNode 的模块 API模块化开发有两种前端网页使用 JavaScript 外链，使用 nodejs 加载模块化开发构建基本使用使用在命令行加上 node 文件名即可运行该 js 文件了，根据实际开发，一般都下载第三方模块 nodemo">
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.7.1/build/highlight.min.js"></script>
+    <!-- 引入CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    
+<link rel="stylesheet" href="/public/css/font-awesome.min.css">
+
+    <!-- 引入jQuery快速开发 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+     
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            作者:尼采般地抒情<hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>237 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%B9%8B%E5%AF%BC%E5%87%BA"><span class="toc-text">模块之导出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%B9%8B%E5%AF%BC%E5%85%A5"><span class="toc-text">模块之导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%B9%8B%E6%9F%A5%E6%89%BE%E8%A7%84%E5%88%99"><span class="toc-text">模块之查找规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%BC%8F-I-O"><span class="toc-text">异步式 I&#x2F;O</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="toc-text">事件式编程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9D%97"><span class="toc-text">系统模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1-global"><span class="toc-text">全局对象 global</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7-util-chalk-%E7%BE%8E%E5%8C%96"><span class="toc-text">常用工具 util+chalk 美化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fs-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">fs 文件操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#path-%E8%B7%AF%E5%BE%84%E6%93%8D%E4%BD%9C"><span class="toc-text">path 路径操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http"><span class="toc-text">http</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#url"><span class="toc-text">url</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97"><span class="toc-text">第三方模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nodemon"><span class="toc-text">nodemon</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nrm"><span class="toc-text">nrm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gulp"><span class="toc-text">gulp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Express"><span class="toc-text">Express</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <div class="component clearfix blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            此网站主题为本人手写主题，主题还在开发中……<hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            作者:尼采般地抒情<hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>237 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Node.js学习笔记</h1>
+    </div>
+    <div class="article_meta_other">
+        <span>作者: <a href="/">尼采般地抒情</a></span>
+        <time>时间：2021-04-02 01:38:31</time>
+        
+        <span>分类：</span>
+                <span>
+                    <a href="/categories/Web">
+                        Web
+                    </a>
+                </span>
+                
+                <span>
+                    <a href="/categories/Web/node">
+                        node
+                    </a>
+                </span>
+                 
+         
+        <span>文章访问量：</span><span id="twikoo_visitors">loading</span>
+        <span>文章评论数：</span><span id="twikoo_comments">loading</span>
+    </div>
+</div>
+        <div class="component article">
+    <blockquote>
+<p><strong>Node.js</strong>就是模块化开发，有两方面组成：</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>ECMAScript</li>
+<li>Node 的模块 API</li>
+</ol>
+<p><strong>模块化开发</strong>有两种</p>
+<ol>
+<li>前端网页使用 JavaScript 外链，</li>
+<li>使用 nodejs 加载模块化开发构建</li>
+</ol>
+</blockquote>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在命令行加上 node 文件名即可运行该 js 文件了，根据实际开发，一般都下载第三方模块 nodemon，所以一般命令都改为 nodemon 开头</p>
+<h3 id="模块之导出"><a href="#模块之导出" class="headerlink" title="模块之导出"></a>模块之导出</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">和es6的导入导出方式逻辑一样，知识形式不一样，导出有两种方式，第二种类似es6里面的“打包”导出</div>
+
+<blockquote>
+<p>【第一种方式】</p>
+</blockquote>
+<ul>
+<li>就是在模块里面定义好变量/方法，然后利用 <code>exports.let_1= let_1;</code> <code>exports.fun_1 = fun_1;</code>这种形式，一个个导出</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618149573945-ef63957a-3b93-4717-8b03-aed6e0f1fc8f.png#height=154&id=QliiX&margin=%5Bobject%20Object%5D&name=image.png&originHeight=307&originWidth=837&originalType=binary%E2%88%B6=1&size=18536&status=done&style=none&width=418.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618149585979-d1ff5498-d0e1-46ce-b115-ceeadf7f0df9.png#height=150&id=AsGvL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=300&originWidth=865&originalType=binary%E2%88%B6=1&size=23380&status=done&style=none&width=432.5" alt="image.png"></p>
+<blockquote>
+<p>【第二种方式】module.exports.version = version;</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618149597438-9300a103-0fd7-42df-9307-06079ef423c0.png#height=98&id=UAHtB&margin=%5Bobject%20Object%5D&name=image.png&originHeight=196&originWidth=844&originalType=binary%E2%88%B6=1&size=15904&status=done&style=none&width=422" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618149609536-ea32c674-9e2d-48fb-92bc-d2c7bf0d294c.png#height=220&id=bm9kI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=440&originWidth=931&originalType=binary%E2%88%B6=1&size=27252&status=done&style=none&width=465.5" alt="image.png"></p>
+<h3 id="模块之导入"><a href="#模块之导入" class="headerlink" title="模块之导入"></a>模块之导入</h3><p>const a = require(‘文件路径’);</p>
+<h3 id="模块之查找规则"><a href="#模块之查找规则" class="headerlink" title="模块之查找规则"></a>模块之查找规则</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618118075531-995293d3-ee92-4f22-a49c-cb5114639b20.png#height=204&id=IaKuE&margin=%5Bobject%20Object%5D&name=image.png&originHeight=408&originWidth=864&originalType=binary%E2%88%B6=1&size=43167&status=done&style=stroke&width=432" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618118082503-8414faae-297b-4cd7-a304-c80f7a635a35.png#height=216&id=SJfTf&margin=%5Bobject%20Object%5D&name=image.png&originHeight=432&originWidth=769&originalType=binary%E2%88%B6=1&size=35142&status=done&style=stroke&width=384.5" alt="image.png"></p>
+<h3 id="异步式-I-O"><a href="#异步式-I-O" class="headerlink" title="异步式 I/O"></a>异步式 I/O</h3><p>提高效率，防止阻塞这种情况</p>
+<h3 id="事件式编程"><a href="#事件式编程" class="headerlink" title="事件式编程"></a>事件式编程</h3><p>注意事件循环机制</p>
+<h2 id="系统模块"><a href="#系统模块" class="headerlink" title="系统模块"></a>系统模块</h2><h3 id="全局对象-global"><a href="#全局对象-global" class="headerlink" title="全局对象 global"></a>全局对象 global</h3><p>Node.js 和之前学过的浏览器对象区分之就是，浏览器中全局对象是 window，但是 Node.js 的全局对象是 global（也可以不写、省略）</p>
+<hr>
+<p>process 对象：<br>关于进程的一个对象，也是 global 的属性之一，是一个和操作系统的简单接口。重点了解 nextTick()函数，这个函数可以将事件循环设置一个任务，提高运行效率<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622768098753-4f933f75-ea23-41d9-80d3-c8dd46f2e123.png#height=41&id=jU6pu&margin=%5Bobject%20Object%5D&name=image.png&originHeight=82&originWidth=914&originalType=binary%E2%88%B6=1&size=24551&status=done&style=none&width=457" alt="image.png"></p>
+<hr>
+<p>console 对象：<br>log 在控制台中输出；error 输出错误信息；trace 输出错误信息调用栈（就是错在什么地方）</p>
+<hr>
+<ul>
+<li>setTimeout()     设置超时<strong>定时器</strong></li>
+<li>clearTimeout()   清除超时时定时器</li>
+<li>setInterval()       设置间歇<strong>定时器</strong></li>
+<li>clearInterval()   清除间歇定时器</li>
+</ul>
+<h3 id="常用工具-util-chalk-美化"><a href="#常用工具-util-chalk-美化" class="headerlink" title="常用工具 util+chalk 美化"></a>常用工具 util+chalk 美化</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> util.inherits</li>
+</ul>
+<p>不过感觉这个已经没有多大必要了，这个是实现原型间继承的相关封装，但是现在 ES6 已经有了 class 的概念了（虽然底层还是之前那套），这个工具用的不多</p>
+<hr>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> util.inspect</li>
+</ul>
+<p>目的就是将对象转换为字符串，比如将错误信息更加美观的展示在控制台，就可以自定义，但是可以直接用 chalk 模块在实现这个美化控制台输出的工作。</p>
+<pre><code class="javascript">&quot;use strict&quot;;
+
+const chalk = require(&quot;chalk&quot;);
+
+module.exports = &#123;
+  info(...args) &#123;
+    const prefix = chalk.green(&quot;[INFO]&quot;);
+    args.unshift(prefix);
+    console.log.apply(console, args);
+  &#125;,
+  warn(...args) &#123;
+    const prefix = chalk.yellow(&quot;[WARNING]&quot;);
+    args.unshift(prefix);
+    console.log.apply(console, args);
+  &#125;,
+  error(...args) &#123;
+    const prefix = chalk.red(&quot;[ERROR]&quot;);
+    args.unshift(prefix);
+    console.log.apply(console, args);
+  &#125;,
+&#125;;
+</code></pre>
+<pre><code class="javascript">out.info(
+  `Current yuque-hexo-lyrics version is $&#123;chalk.yellow(
+    pkg.version
+  )&#125;, and the latest version is $&#123;chalk.green(update.latest)&#125;. Please update!`
+);
+out.info(
+  &quot;View more detail: https://github.com/wztlink1013/yuque-hexo-lyrics#changelog&quot;
+);
+</code></pre>
+<hr>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622768731741-7021257f-2878-4ab3-91e2-e8335b26e89a.png#height=66&id=i7Qyl&margin=%5Bobject%20Object%5D&name=image.png&originHeight=131&originWidth=1023&originalType=binary%E2%88%B6=1&size=44439&status=done&style=none&width=511.5" alt="image.png"></p>
+<hr>
+<ul>
+<li><input disabled="" type="checkbox"> events 事件发射器</li>
+</ul>
+<h3 id="fs-文件操作"><a href="#fs-文件操作" class="headerlink" title="fs 文件操作"></a>fs 文件操作</h3><p>读取文件、写入文件、创建文件夹</p>
+<h3 id="path-路径操作"><a href="#path-路径操作" class="headerlink" title="path 路径操作"></a>path 路径操作</h3><p>一般都是路径字符串拼接 join</p>
+<p><code>__dirname</code>当前目录名</p>
+<h3 id="http"><a href="#http" class="headerlink" title="http"></a>http</h3><p>可以创建 web 服务器，原生，框架 Express 的使用优于此</p>
+<h3 id="url"><a href="#url" class="headerlink" title="url"></a>url</h3><h2 id="第三方模块"><a href="#第三方模块" class="headerlink" title="第三方模块"></a>第三方模块</h2><p>第三方模块的两种存在形式</p>
+<ol>
+<li>以 js 文件的形式存在，提供实现项目具体功能的 API 接口。===jQuery</li>
+<li>以命令行工具形式存在，辅助项目开发===下面的</li>
+</ol>
+<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">npm：第三方模块的管理工具===使用hexo过程中就是用的这个</div>
+
+<h3 id="nodemon"><a href="#nodemon" class="headerlink" title="nodemon"></a>nodemon</h3><p>npm install nodemon –g<br>作用就是，开发过程中，修改了文件，控制台命令行就会根据文件的修改自动运行<br>使用方法：将运行命令中的 node 换成 nodemon</p>
+<h3 id="nrm"><a href="#nrm" class="headerlink" title="nrm"></a>nrm</h3><p>用梯子解决吧</p>
+<p>npm 是国外的，有时候下载速度慢，可以使用国内的镜像源<br>npm install nrm –g</p>
+<p>查询可用下载地址列表 nrm ls<br>切换 npm 下载地址 nrm use 下载地址名称<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618114858407-e5ccfaf9-7265-4f9f-966d-a2a5b7644465.png#height=227&id=josRO&margin=%5Bobject%20Object%5D&name=image.png&originHeight=453&originWidth=1058&originalType=binary%E2%88%B6=1&size=71441&status=done&style=none&width=529" alt="image.png"><br>报错不能用了</p>
+<h3 id="gulp"><a href="#gulp" class="headerlink" title="gulp"></a>gulp</h3><p>基于 node 平台开发的前端构建工具，将机械化操作编写成任务，想要执行机械化操作时执行一个命令行命令任务就能自动执行了，用机器代替手工，提高开发效率。</p>
+<p>作用：</p>
+<ul>
+<li>项目上线，HTML、CSS、JS 文件压缩合并</li>
+<li>语法转换（es6、less …）</li>
+<li>公共文件抽离</li>
+<li>修改文件浏览器自动刷新</li>
+</ul>
+<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">使用，**由于之前的设置了node的系统环境变量**，所以现在不能下载到项目文件夹目录下了。全局安装gulp和glup的命令行工具glup-cli（下载不成功），和自己之前配置的环境出错了</div>
+
+<p>glup 本身提供的 api 函数很少，官网到目前更新只有下面几个，具体使用方法，使用的时候去查</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/gulpjs/gulp">https://github.com/gulpjs/gulp</a></li>
+<li><a target="_blank" rel="noopener" href="https://gulpjs.com/docs/en/getting-started/quick-start">https://gulpjs.com/docs/en/getting-started/quick-start</a>（不用梯子）</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1618116553456-e1d3daca-1c2e-45b4-9f78-bd1b5cb8bce7.png#height=372&id=ue44L&margin=%5Bobject%20Object%5D&name=image.png&originHeight=743&originWidth=490&originalType=binary%E2%88%B6=1&size=44893&status=done&style=stroke&width=245" alt="image.png"></p>
+<p>gulp 有很多插件，根据插件下载相应需要的功能插件</p>
+<ul>
+<li>gulp-htmlmin ：html 文件压缩</li>
+<li>gulp-csso ：压缩 css</li>
+<li>gulp-babel ：JavaScript 语法转化</li>
+<li>gulp-less: less 语法转化</li>
+<li>gulp-uglify ：压缩混淆 JavaScript</li>
+<li>gulp-file-include 公共文件包含</li>
+<li>browsersync 浏览器实时同步</li>
+</ul>
+<h3 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h3><p>Node.js 创建 web 服务器，一个创建 web 服务器的框架</p>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <p>博客内容遵循：
+        <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a>
+    </p>
+    <p>本文永久链接：
+        <a href="https://www.wztlink1013.com/blog/node_note/">https://www.wztlink1013.com/blog/node_note/</a>
+    </p>
+    <p class="article_more_btn">
+        编辑：<a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/javascript/node_note/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        部署：<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        订阅：<a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+    </p>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/aa9fsh/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>jQuery使用笔记</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/zsiw5e/">
+                    <b>预处理器stylus笔记</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component clearfix comments" id="comments" style="display: block;">
+  <div class="comments_title">
+      <h2>评论区</h2>
+      
+      <!-- 转换评论按钮 -->
+      <div class="switch_comments">
+        <span>Twikoo</span>
+        <span id="switch_btn">转换</span>
+        <span>utterances</span>
+      </div>
+  </div>
+
+  <div class="comments_content">
+      <!-- utterances评论区 -->
+      <div id="utterances_comment" style="display: none;"></div>
+      <!-- twikoo评论区 -->
+      <div id="twikoo_comment" style="display: block;">
+        <div id="tcomment"></div>
+        <script src="https://cdn.jsdelivr.net/npm/twikoo@1.3.0/dist/twikoo.all.min.js"></script>
+        <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+        </script>
+      </div>
+
+
+  </div>
+</div>
+
+
+        
+        
+    </div>
+    <div class="ct_right">
+        
+
+<div class="component clearfix categories">
+    <h3>『技术』文章分类</h3><ul class="cate_forder">
+    
+            <li class="cate_cell">
+            <a href="/categories/Algorithm">Algorithm</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95">分治算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/RSA%E7%AE%97%E6%B3%95">RSA算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95">穷举算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/Problems">Problems</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0">算法综述</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95">贪心算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95">动态规划算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95">其他算法</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Algorithm/%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95">递归算法</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Bug">Bug</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerNetwork">ComputerNetwork</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerOperatingSystem">ComputerOperatingSystem</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/ComputerOrganization">ComputerOrganization</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataAnalysis">DataAnalysis</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataBase">DataBase</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/DataStructure">DataStructure</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%95%B0%E7%BB%84">数组</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E4%B8%B2%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8">串和广义表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97">栈和队列</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E9%A1%BA%E5%BA%8F%E8%A1%A8">顺序表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E9%93%BE%E8%A1%A8">链表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%A0%91">树</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E5%9B%BE">图</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Environment">Environment</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Hexo">Hexo</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Language">Language</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Language/CSS">CSS</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/JAVA">JAVA</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/div%E5%8A%A0CSS%E5%B8%83%E5%B1%80">div加CSS布局</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/Python">Python</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/CPlusPlus">CPlusPlus</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Language/HTML">HTML</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/MachingLearning">MachingLearning</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/PostProduction">PostProduction</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/SoftwareEngineering">SoftwareEngineering</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/VersionControlSystem">VersionControlSystem</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Web">Web</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+                            <li class="category-list-child">
+                                <a href="/categories/Web/BOM">BOM</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/JavaScript%E7%89%B9%E6%95%88">JavaScript特效</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/node">node</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/jQuery">jQuery</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/ECMAScript">ECMAScript</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/Vue">Vue</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/%E7%BD%91%E7%AB%99%E7%9B%B8%E5%85%B3">网站相关</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/Web%E5%85%B6%E4%BB%96">Web其他</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/DOM">DOM</a>
+                            </li>
+                        
+            </ul>
+            </li>
+        
+</ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a href="/">赣ICP备20002826号-1</a></div>
+    <div><a href="/">尼采般地抒情</a></div>
+    <div><a href="/">联系方式</a></div>
+</div>
+</footer>
+
+</body>
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":true,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/remu.model.json"},"display":{"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-12},"mobile":{"show":true,"scale":1},"react":{"opacity":1},"log":false});</script>
+    
+        
+<script src="/public/js/main.js"></script>
+
+     
+</html>
