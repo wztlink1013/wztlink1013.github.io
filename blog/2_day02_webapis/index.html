@@ -4,20 +4,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>DOM-元素属性、节点操作 | 尼采般地抒情</title>
+    <title>DOM节点操作 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="操作元素内容/属性JavaScript 的 DOM 操作可以改变网页内容、结构和样式，我们可以利用 DOM 操作元素来改变元素里面的内容、属性等。（注意：这些操作都是通过元素对象的属性实现的）innerText 和 innerHTML获取内容时的区别：innerText 会去除空格和换行，而 inn">
+    <meta name="description" content="节点概述网页中的所有内容都是节点（标签、属性、文本、注释等），在 DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。一般地，节点至少拥有 nodeType（节点类型）、nodeN">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="DOM-元素属性、节点操作 | 尼采般地抒情">
+    <meta property="og:title" content="DOM节点操作 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/2_day02_webapis/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="操作元素内容/属性JavaScript 的 DOM 操作可以改变网页内容、结构和样式，我们可以利用 DOM 操作元素来改变元素里面的内容、属性等。（注意：这些操作都是通过元素对象的属性实现的）innerText 和 innerHTML获取内容时的区别：innerText 会去除空格和换行，而 inn">
+    <meta property="og:description" content="节点概述网页中的所有内容都是节点（标签、属性、文本、注释等），在 DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。一般地，节点至少拥有 nodeType（节点类型）、nodeN">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -90,7 +90,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>237 <span>篇</span>
+        <span>文章数目：</span>231 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -132,7 +132,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%85%83%E7%B4%A0%E5%86%85%E5%AE%B9-%E5%B1%9E%E6%80%A7"><span class="toc-text">操作元素内容&#x2F;属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#innerText-%E5%92%8C-innerHTML"><span class="toc-text">innerText 和 innerHTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7%E6%93%8D%E4%BD%9C"><span class="toc-text">改变元素属性操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-style"><span class="toc-text">element.style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-className"><span class="toc-text">element.className</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7"><span class="toc-text">自定义元素属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#element-getAttribute"><span class="toc-text">element.getAttribute()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-setAttribute-%E2%80%98%E2%80%99-%E2%80%99%E2%80%99"><span class="toc-text">element.setAttribute(‘’,’’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-removeAttribute-%E2%80%98%E2%80%99"><span class="toc-text">element.removeAttribute(‘’)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9Atab-%E6%A0%8F"><span class="toc-text">Demo：tab 栏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-dataset"><span class="toc-text">element.dataset</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-%E8%8A%82%E7%82%B9%E6%93%8D%E4%BD%9C"><span class="toc-text">1.6. 节点操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E6%A6%82%E8%BF%B0"><span class="toc-text">节点概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-parentNode"><span class="toc-text">node.parentNode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parentNode-childNodes"><span class="toc-text">parentNode.childNodes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parentNode-children"><span class="toc-text">parentNode.children</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-firstChild"><span class="toc-text">parent.firstChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-lastChild"><span class="toc-text">parent.lastChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-firstElementChild"><span class="toc-text">parent.firstElementChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-lastElementChild"><span class="toc-text">parent.lastElementChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%9C%AB%E8%8A%82%E7%82%B9%E5%85%BC%E5%AE%B9%E6%96%B9%E6%A1%88"><span class="toc-text">首末节点兼容方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TODO%EF%BC%9A%E5%85%84%E5%BC%9F%E8%8A%82%E7%82%B9"><span class="toc-text">TODO：兄弟节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#document-createElement"><span class="toc-text">document.createElement()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-appendChild"><span class="toc-text">node.appendChild()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-insertBefore"><span class="toc-text">node.insertBefore()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E7%AE%80%E5%8D%95%E7%89%88%E5%8F%91%E5%B8%83%E7%95%99%E8%A8%80"><span class="toc-text">Demo：简单版发布留言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-removeChild"><span class="toc-text">node.removeChild()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E5%88%A0%E9%99%A4%E7%95%99%E8%A8%80"><span class="toc-text">Demo：删除留言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-cloneNode"><span class="toc-text">node.cloneNode()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E8%A1%A8%E6%A0%BC"><span class="toc-text">Demo：动态生成表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%85%83%E7%B4%A0%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="toc-text">创建元素的三种方式对比</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E6%A6%82%E8%BF%B0"><span class="toc-text">节点概述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%B6%E8%8A%82%E7%82%B9"><span class="toc-text">父节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#node-parentNode"><span class="toc-text">node.parentNode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E8%8A%82%E7%82%B9"><span class="toc-text">子节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#parentNode-childNodes"><span class="toc-text">parentNode.childNodes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parentNode-children"><span class="toc-text">parentNode.children</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-firstChild"><span class="toc-text">parent.firstChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-lastChild"><span class="toc-text">parent.lastChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-firstElementChild"><span class="toc-text">parent.firstElementChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parent-lastElementChild"><span class="toc-text">parent.lastElementChild</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E6%9C%AB%E8%8A%82%E7%82%B9%E5%85%BC%E5%AE%B9%E6%96%B9%E6%A1%88"><span class="toc-text">首末节点兼容方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%84%E5%BC%9F%E8%8A%82%E7%82%B9"><span class="toc-text">兄弟节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BB%93%E7%82%B9"><span class="toc-text">创建结点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#document-createElement"><span class="toc-text">document.createElement()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-cloneNode"><span class="toc-text">node.cloneNode()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E8%A1%A8%E6%A0%BC"><span class="toc-text">Demo：动态生成表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%85%83%E7%B4%A0%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="toc-text">创建元素的三种方式对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E7%BB%93%E7%82%B9"><span class="toc-text">插入结点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#node-appendChild"><span class="toc-text">node.appendChild()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-insertBefore"><span class="toc-text">node.insertBefore()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E7%AE%80%E5%8D%95%E7%89%88%E5%8F%91%E5%B8%83%E7%95%99%E8%A8%80"><span class="toc-text">Demo：简单版发布留言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-text">删除节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#node-removeChild"><span class="toc-text">node.removeChild()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9A%E5%88%A0%E9%99%A4%E7%95%99%E8%A8%80"><span class="toc-text">Demo：删除留言</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -173,7 +173,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>237 <span>篇</span>
+        <span>文章数目：</span>231 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -191,7 +191,7 @@
     <div class="ct_center">
         <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>DOM-元素属性、节点操作</h1>
+        <h1>DOM节点操作</h1>
     </div>
     <div class="article_meta_other">
         <span>作者: <a href="/">尼采般地抒情</a></span>
@@ -216,127 +216,16 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="操作元素内容-属性"><a href="#操作元素内容-属性" class="headerlink" title="操作元素内容/属性"></a>操作元素内容/属性</h2><p>JavaScript 的 DOM 操作可以改变网页内容、结构和样式，我们可以利用 DOM 操作元素来改变元素里面的内容、属性等。（注意：这些操作都是通过元素对象的属性实现的）</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518357274-e26496b9-3fdb-47de-85be-fd6aea949767.png#align=left&display=inline&height=253&margin=%5Bobject%20Object%5D&originHeight=424&originWidth=741&status=done&style=stroke&width=442"></h4><h3 id="innerText-和-innerHTML"><a href="#innerText-和-innerHTML" class="headerlink" title="innerText 和 innerHTML"></a>innerText 和 innerHTML</h3><ul>
-<li>获取内容时的区别：innerText 会去除空格和换行，而 innerHTML 会保留空格和换行</li>
-<li>设置内容时的区别：innerText 不会识别 html，而 innerHTML 会识别</li>
-<li>小记：是属性，不是方法！要用赋值的形式，而不是带参数的形式</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053295394-7fe7d51d-3ce6-4f51-9898-9e0e62b207c4.png#align=left&display=inline&height=441&margin=%5Bobject%20Object%5D&name=image.png&originHeight=881&originWidth=1920&size=1394439&status=done&style=stroke&width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053546675-78ea1659-1dee-4b43-aa1a-82aad00e1795.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=879&originWidth=1920&size=1397046&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="改变元素属性操作"><a href="#改变元素属性操作" class="headerlink" title="改变元素属性操作"></a>改变元素属性操作</h3><h3 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053829361-6faff7b2-0d8f-41c6-b909-6b72ff3b5401.png#align=left&display=inline&height=352&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1920&size=639610&status=done&style=stroke&width=960" alt="image.png"></h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616054507713-8b717792-1d98-4477-a9e8-db7417b87f34.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=880&originWidth=1920&size=169274&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="element-style"><a href="#element-style" class="headerlink" title="element.style"></a>element.style</h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053829361-6faff7b2-0d8f-41c6-b909-6b72ff3b5401.png#align=left&display=inline&height=352&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1920&size=639610&status=done&style=stroke&width=960" alt="image.png"></h3><ul>
-<li>元素对象的 style 属性也是一个对象！</li>
-<li>元素对象.style.样式属性 = 值;</li>
-<li>其中样式属性的命名不再是中间有-的，而是驼峰命名，eg：backgroundColor</li>
-<li>js 修改的 style 样式操作，产生的是行内样式，css 权重较高</li>
-</ul>
-<h3 id="element-className"><a href="#element-className" class="headerlink" title="element.className"></a>element.className</h3><ul>
-<li>元素对象.className = 值;</li>
-<li>因为 class 是关键字，所有使用 className，覆盖原先的类名</li>
-</ul>
-<pre><code class="html">&lt;body&gt;
-  &lt;div class=&quot;first&quot;&gt;文本&lt;/div&gt;
-  &lt;script&gt;
-    // 1. 使用 element.style 获得修改元素样式  如果样式比较少 或者 功能简单的情况下使用
-    var test = document.querySelector(&quot;div&quot;);
-    test.onclick = function () &#123;
-      // 2. 我们可以通过 修改元素的className更改元素的样式 适合于样式较多或者功能复杂的情况
-      // 3. 如果想要保留原先的类名，我们可以这么做 多类名选择器
-      // this.className = &#39;change&#39;;
-      this.className = &quot;first change&quot;;
-    &#125;;
-  &lt;/script&gt;
-&lt;/body&gt;
-</code></pre>
-<h2 id="自定义元素属性"><a href="#自定义元素属性" class="headerlink" title="自定义元素属性"></a>自定义元素属性</h2><h3 id="element-getAttribute"><a href="#element-getAttribute" class="headerlink" title="element.getAttribute()"></a>element.getAttribute()</h3><ul>
-<li>和 element.属性不同的是，获取的是自定义属性的值，而 element.属性获取的是内置的属性</li>
-</ul>
-<pre><code class="html">&lt;div id=&quot;demo&quot; index=&quot;1&quot; class=&quot;nav&quot;&gt;&lt;/div&gt;
-&lt;script&gt;
-  var div = document.querySelector(&quot;div&quot;);
-  // 1. 获取元素的属性值
-  // (1) element.属性
-  console.log(div.id);
-  //(2) element.getAttribute(&#39;属性&#39;)  get得到获取 attribute 属性的意思 我们程序员自己添加的属性我们称为自定义属性 index
-  console.log(div.getAttribute(&quot;id&quot;));
-  console.log(div.getAttribute(&quot;index&quot;));
-&lt;/script&gt;
-</code></pre>
-<h3 id="element-setAttribute-‘’-’’"><a href="#element-setAttribute-‘’-’’" class="headerlink" title="element.setAttribute(‘’,’’)"></a>element.setAttribute(‘’,’’)</h3><ul>
-<li>element.setAttribute(‘属性’,’值’)；</li>
-</ul>
-<pre><code class="javascript">// 2. 设置元素属性值
-// (1) element.属性= &#39;值&#39;
-div.id = &quot;test&quot;;
-div.className = &quot;navs&quot;;
-// (2) element.setAttribute(&#39;属性&#39;, &#39;值&#39;);  主要针对于自定义属性
-div.setAttribute(&quot;index&quot;, 2);
-div.setAttribute(&quot;class&quot;, &quot;footer&quot;); // class 特殊  这里面写的就是
-</code></pre>
-<h3 id="element-removeAttribute-‘’"><a href="#element-removeAttribute-‘’" class="headerlink" title="element.removeAttribute(‘’)"></a>element.removeAttribute(‘’)</h3><pre><code class="javascript">// class 不是className
-// 3 移除属性 removeAttribute(属性)
-div.removeAttribute(&quot;index&quot;);
-</code></pre>
-<h3 id="Demo：tab-栏"><a href="#Demo：tab-栏" class="headerlink" title="Demo：tab 栏"></a>Demo：tab 栏</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358239-8396b94f-cc87-4ff3-bc86-20c652a2fe8f.png#align=left&display=inline&height=272&margin=%5Bobject%20Object%5D&originHeight=272&originWidth=786&status=done&style=stroke&width=786"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358314-a1d9f6be-a9c3-4693-8b11-eec0665df297.png#align=left&display=inline&height=290&margin=%5Bobject%20Object%5D&originHeight=290&originWidth=744&status=done&style=stroke&width=744"></p>
-<pre><code class="js">&lt;script&gt;
-        // 获取元素
-        var tab_list = document.querySelector(&#39;.tab_list&#39;);
-        var lis = tab_list.querySelectorAll(&#39;li&#39;);
-        var items = document.querySelectorAll(&#39;.item&#39;);
-        // for循环，给选项卡绑定点击事件
-        for (var i = 0; i &lt; lis.length; i++) &#123;
-            // 开始给5个小li 设置索引号
-            lis[i].setAttribute(&#39;index&#39;, i);
-            lis[i].onclick = function() &#123;
-                // 1. 上的模块选项卡，当前这一个底色会是红色，其余不变（排他思想）
-                // 干掉所有人 其余的li清除 class 这个类
-                for (var i = 0; i &lt; lis.length; i++) &#123;
-                    lis[i].className = &#39;&#39;;
-                &#125;
-                // 留下我自己
-                this.className = &#39;current&#39;;
-                // 2. 下面的显示内容模块
-                var index = this.getAttribute(&#39;index&#39;);
-                console.log(index);
-                // 干掉所有人 让其余的item 这些div 隐藏
-                for (var i = 0; i &lt; items.length; i++) &#123;
-                    items[i].style.display = &#39;none&#39;;
-                &#125;
-                // 留下我自己 让对应的item 显示出来
-                items[index].style.display = &#39;block&#39;;
-            &#125;
-        &#125;
-    &lt;/script&gt;
-</code></pre>
-<h3 id="element-dataset"><a href="#element-dataset" class="headerlink" title="element.dataset"></a>element.dataset</h3><p>自定义属性目的：是为了保存并使用数据。有些数据可以保存到页面中而不用保存到数据库中。<br>自定义属性获取是通过 getAttribute(‘属性’) 获取。<br>但是有些自定义属性很容易引起歧义，不容易判断是元素的内置属性还是自定义属性。<br>H5 给我们新增了自定义属性：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358371-b2d8cb33-5750-4e13-be06-27c86768b244.png#align=left&display=inline&height=196&margin=%5Bobject%20Object%5D&originHeight=196&originWidth=705&status=done&style=stroke&width=705"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358431-0a046321-c303-4333-9e0d-57875144f3e5.png#align=left&display=inline&height=125&margin=%5Bobject%20Object%5D&originHeight=125&originWidth=691&status=done&style=stroke&width=691"></p>
-<pre><code class="html">&lt;div getTime=&quot;20&quot; data-index=&quot;2&quot; data-list-name=&quot;andy&quot;&gt;&lt;/div&gt;
-&lt;script&gt;
-  var div = document.querySelector(&quot;div&quot;);
-  // console.log(div.getTime);
-  console.log(div.getAttribute(&quot;getTime&quot;));
-  div.setAttribute(&quot;data-time&quot;, 20);
-  console.log(div.getAttribute(&quot;data-index&quot;));
-  console.log(div.getAttribute(&quot;data-list-name&quot;));
-  // h5新增的获取自定义属性的方法 它只能获取data-开头的
-  // dataset 是一个集合里面存放了所有以data开头的自定义属性
-  console.log(div.dataset);
-  console.log(div.dataset.index);
-  console.log(div.dataset[&quot;index&quot;]);
-  // 如果自定义属性里面有多个-链接的单词，我们获取的时候采取 驼峰命名法
-  console.log(div.dataset.listName);
-  console.log(div.dataset[&quot;listName&quot;]);
-&lt;/script&gt;
-</code></pre>
-<h2 id="1-6-节点操作"><a href="#1-6-节点操作" class="headerlink" title="1.6. 节点操作"></a>1.6. 节点操作</h2><h3 id="节点概述"><a href="#节点概述" class="headerlink" title="节点概述"></a>节点概述</h3><p>网页中的所有内容都是节点（标签、属性、文本、注释等），在 DOM 中，节点使用 node 来表示。<br>HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358489-a0521202-b32d-46a9-9b8d-f0cfe9afc455.png#align=left&display=inline&height=236&margin=%5Bobject%20Object%5D&originHeight=236&originWidth=432&status=done&style=stroke&width=432"><br>一般地，节点至少拥有 nodeType（节点类型）、nodeName（节点名称）和 nodeValue（节点值）这三个基本属性。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358548-9283575f-7aef-450d-bc6e-b9d3a4384cc2.png#align=left&display=inline&height=148&margin=%5Bobject%20Object%5D&originHeight=148&originWidth=666&status=done&style=stroke&width=666"></p>
+    <h3 id="节点概述"><a href="#节点概述" class="headerlink" title="节点概述"></a>节点概述</h3><p>网页中的所有内容都是节点（标签、属性、文本、注释等），在 DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358489-a0521202-b32d-46a9-9b8d-f0cfe9afc455.png#align=left&display=inline&height=236&margin=%5Bobject%20Object%5D&originHeight=236&originWidth=432&status=done&style=stroke&width=432"><br>一般地，节点至少拥有 nodeType（节点类型）、nodeName（节点名称）和 nodeValue（节点值）这三个基本属性。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358548-9283575f-7aef-450d-bc6e-b9d3a4384cc2.png#align=left&display=inline&height=148&margin=%5Bobject%20Object%5D&originHeight=148&originWidth=666&status=done&style=stroke&width=666"></p>
 <blockquote>
 <p>节点层级：利用 DOM 树可以把节点划分为不同的层级关系，常见的是<strong>父子兄层级关系</strong>。</p>
 </blockquote>
-<h3 id="node-parentNode"><a href="#node-parentNode" class="headerlink" title="node.parentNode"></a>node.parentNode</h3><ul>
+<h2 id="父节点"><a href="#父节点" class="headerlink" title="父节点"></a>父节点</h2><h3 id="node-parentNode"><a href="#node-parentNode" class="headerlink" title="node.parentNode"></a>node.parentNode</h3><ul>
 <li>返回某节点的父节点，最近的一个父节点</li>
 <li>如果没有父节点，则返回 null</li>
 </ul>
 <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616056309357-b2a256d0-2a4d-4983-80f9-1eed069c3890.png#align=left&display=inline&height=354&margin=%5Bobject%20Object%5D&name=image.png&originHeight=708&originWidth=1920&size=1164429&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="parentNode-childNodes"><a href="#parentNode-childNodes" class="headerlink" title="parentNode.childNodes"></a>parentNode.childNodes</h3><ul>
+<h2 id="子节点"><a href="#子节点" class="headerlink" title="子节点"></a>子节点</h2><h3 id="parentNode-childNodes"><a href="#parentNode-childNodes" class="headerlink" title="parentNode.childNodes"></a>parentNode.childNodes</h3><ul>
 <li>返回指定节点的子节点的集合，会即时更新</li>
 <li>会返回所有的节点（包含元素节点、文本节点等）</li>
 </ul>
@@ -366,7 +255,7 @@ div.removeAttribute(&quot;index&quot;);
 <p>实际开发中，firstChild 和 lastChild 包含其他节点，操作不方便，而 firstElementChild 和 lastElementChild 又有兼容性问题，那么我们如何获取第一个子元素节点或最后一个子元素节点呢？</p>
 </blockquote>
 <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616057537841-77a6605b-5d29-4cf2-b750-0cd916841cdd.png#align=left&display=inline&height=303&margin=%5Bobject%20Object%5D&name=image.png&originHeight=606&originWidth=1920&size=992223&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="TODO：兄弟节点"><a href="#TODO：兄弟节点" class="headerlink" title="TODO：兄弟节点"></a>TODO：兄弟节点</h3><p><strong>下一个兄弟节点</strong><br><img src="../../../../../%E5%A4%87%E8%AF%BE%E8%B5%84%E6%96%99/20190220-%E8%AF%BE%E4%BB%B6%E5%88%B6%E4%BD%9C/Web%20APIs/Web%20APIs-day02/4-%E7%AC%94%E8%AE%B0/images/1550973538696.png#"><br><strong>上一个兄弟节点</strong><br><img src="../../../../../%E5%A4%87%E8%AF%BE%E8%B5%84%E6%96%99/20190220-%E8%AF%BE%E4%BB%B6%E5%88%B6%E4%BD%9C/Web%20APIs/Web%20APIs-day02/4-%E7%AC%94%E8%AE%B0/images/1550973558511.png#"></p>
+<h2 id="兄弟节点"><a href="#兄弟节点" class="headerlink" title="兄弟节点"></a>兄弟节点</h2><p><strong>下一个兄弟节点</strong><br><img src="../../../../../%E5%A4%87%E8%AF%BE%E8%B5%84%E6%96%99/20190220-%E8%AF%BE%E4%BB%B6%E5%88%B6%E4%BD%9C/Web%20APIs/Web%20APIs-day02/4-%E7%AC%94%E8%AE%B0/images/1550973538696.png#"><br><strong>上一个兄弟节点</strong><br><img src="../../../../../%E5%A4%87%E8%AF%BE%E8%B5%84%E6%96%99/20190220-%E8%AF%BE%E4%BB%B6%E5%88%B6%E4%BD%9C/Web%20APIs/Web%20APIs-day02/4-%E7%AC%94%E8%AE%B0/images/1550973558511.png#"></p>
 <pre><code class="js">&lt;div&gt;我是div&lt;/div&gt;
     &lt;span&gt;我是span&lt;/span&gt;
     &lt;script&gt;
@@ -390,11 +279,164 @@ div.removeAttribute(&quot;index&quot;);
   return null;
 &#125;
 </code></pre>
-<h3 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h3><ul>
+<h2 id="创建结点"><a href="#创建结点" class="headerlink" title="创建结点"></a>创建结点</h2><h3 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h3><ul>
 <li>document.createElement(‘tagName’)</li>
 <li>动态创建元素节点</li>
 </ul>
-<h3 id="node-appendChild"><a href="#node-appendChild" class="headerlink" title="node.appendChild()"></a>node.appendChild()</h3><ul>
+<h3 id="node-cloneNode"><a href="#node-cloneNode" class="headerlink" title="node.cloneNode()"></a>node.cloneNode()</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359854-90c1339a-ca41-47e5-86b1-189336c186d3.png#align=left&display=inline&height=248&margin=%5Bobject%20Object%5D&originHeight=248&originWidth=726&status=done&style=stroke&width=726"></p>
+<pre><code class="html">&lt;ul&gt;
+  &lt;li&gt;1111&lt;/li&gt;
+  &lt;li&gt;2&lt;/li&gt;
+  &lt;li&gt;3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;script&gt;
+  var ul = document.querySelector(&quot;ul&quot;);
+  // 1. node.cloneNode(); 括号为空或者里面是false 浅拷贝 只复制标签不复制里面的内容
+  // 2. node.cloneNode(true); 括号为true 深拷贝 复制标签复制里面的内容
+  var lili = ul.children[0].cloneNode(true);
+  ul.appendChild(lili);
+&lt;/script&gt;
+</code></pre>
+<h3 id="Demo：动态生成表格"><a href="#Demo：动态生成表格" class="headerlink" title="Demo：动态生成表格"></a>Demo：动态生成表格</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359913-8e1af74d-0a30-4370-83ea-4974ad83d2b8.png#align=left&display=inline&height=268&margin=%5Bobject%20Object%5D&originHeight=268&originWidth=718&status=done&style=stroke&width=718"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359980-7b2a19b1-47dd-41cb-8f9b-93d64873fb6f.png#align=left&display=inline&height=288&margin=%5Bobject%20Object%5D&originHeight=288&originWidth=751&status=done&style=stroke&width=751"></p>
+<pre><code class="html">&lt;script&gt;
+  // 1.先去准备好学生的数据
+  var datas = [
+    &#123;
+      name: &quot;魏璎珞&quot;,
+      subject: &quot;JavaScript&quot;,
+      score: 100,
+    &#125;,
+    &#123;
+      name: &quot;弘历&quot;,
+      subject: &quot;JavaScript&quot;,
+      score: 98,
+    &#125;,
+    &#123;
+      name: &quot;傅恒&quot;,
+      subject: &quot;JavaScript&quot;,
+      score: 99,
+    &#125;,
+    &#123;
+      name: &quot;明玉&quot;,
+      subject: &quot;JavaScript&quot;,
+      score: 88,
+    &#125;,
+    &#123;
+      name: &quot;大猪蹄子&quot;,
+      subject: &quot;JavaScript&quot;,
+      score: 0,
+    &#125;,
+  ];
+  // 2. 往tbody 里面创建行： 有几个人（通过数组的长度）我们就创建几行
+  var tbody = document.querySelector(&quot;tbody&quot;);
+  // 遍历数组
+  for (var i = 0; i &lt; datas.length; i++) &#123;
+    // 1. 创建 tr行
+    var tr = document.createElement(&quot;tr&quot;);
+    tbody.appendChild(tr);
+    // 2. 行里面创建单元格td 单元格的数量取决于每个对象里面的属性个数
+    // 使用for in遍历学生对象
+    for (var k in datas[i]) &#123;
+      // 创建单元格
+      var td = document.createElement(&quot;td&quot;);
+      // 把对象里面的属性值 datas[i][k] 给 td
+      td.innerHTML = datas[i][k];
+      tr.appendChild(td);
+    &#125;
+    // 3. 创建有删除2个字的单元格
+    var td = document.createElement(&quot;td&quot;);
+    td.innerHTML = &#39;&lt;a href=&quot;javascript:;&quot;&gt;删除 &lt;/a&gt;&#39;;
+    tr.appendChild(td);
+  &#125;
+  // 4. 删除操作 开始
+  var as = document.querySelectorAll(&quot;a&quot;);
+  for (var i = 0; i &lt; as.length; i++) &#123;
+    as[i].onclick = function () &#123;
+      // 点击a 删除 当前a 所在的行(链接的爸爸的爸爸)  node.removeChild(child)
+      tbody.removeChild(this.parentNode.parentNode);
+    &#125;;
+  &#125;
+&lt;/script&gt;
+</code></pre>
+<h3 id="创建元素的三种方式对比"><a href="#创建元素的三种方式对比" class="headerlink" title="创建元素的三种方式对比"></a>创建元素的三种方式对比</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360041-a233aa10-7238-46f4-bb78-2438898c8950.png#align=left&display=inline&height=346&margin=%5Bobject%20Object%5D&originHeight=346&originWidth=759&status=done&style=stroke&width=759"></p>
+<pre><code class="html">&lt;script&gt;
+  // 三种创建元素方式区别
+  // 1. document.write() 创建元素  如果页面文档流加载完毕，再调用这句话会导致页面重绘
+  var btn = document.querySelector(&quot;button&quot;);
+  btn.onclick = function () &#123;
+    document.write(&quot;&lt;div&gt;123&lt;/div&gt;&quot;);
+  &#125;;
+  // 2. innerHTML 创建元素
+  var inner = document.querySelector(&quot;.inner&quot;);
+  for (var i = 0; i &lt;= 100; i++) &#123;
+    inner.innerHTML += &#39;&lt;a href=&quot;#&quot;&gt;百度&lt;/a&gt;&#39;;
+  &#125;
+  var arr = [];
+  for (var i = 0; i &lt;= 100; i++) &#123;
+    arr.push(&#39;&lt;a href=&quot;#&quot;&gt;百度&lt;/a&gt;&#39;);
+  &#125;
+  inner.innerHTML = arr.join(&quot;&quot;);
+  // 3. document.createElement() 创建元素
+  var create = document.querySelector(&quot;.create&quot;);
+  for (var i = 0; i &lt;= 100; i++) &#123;
+    var a = document.createElement(&quot;a&quot;);
+    create.appendChild(a);
+  &#125;
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p>innerTHML 和 createElement 效率对比</p>
+</blockquote>
+<p><strong>innerHTML 字符串拼接方式（效率低）</strong></p>
+<pre><code class="html">&lt;script&gt;
+  function fn() &#123;
+    var d1 = +new Date();
+    var str = &quot;&quot;;
+    for (var i = 0; i &lt; 1000; i++) &#123;
+      document.body.innerHTML +=
+        &#39;&lt;div style=&quot;width:100px; height:2px; border:1px solid blue;&quot;&gt;&lt;/div&gt;&#39;;
+    &#125;
+    var d2 = +new Date();
+    console.log(d2 - d1);
+  &#125;
+  fn();
+&lt;/script&gt;
+</code></pre>
+<p><strong>createElement 方式（效率一般）</strong></p>
+<pre><code class="html">&lt;script&gt;
+  function fn() &#123;
+    var d1 = +new Date();
+    for (var i = 0; i &lt; 1000; i++) &#123;
+      var div = document.createElement(&quot;div&quot;);
+      div.style.width = &quot;100px&quot;;
+      div.style.height = &quot;2px&quot;;
+      div.style.border = &quot;1px solid red&quot;;
+      document.body.appendChild(div);
+    &#125;
+    var d2 = +new Date();
+    console.log(d2 - d1);
+  &#125;
+  fn();
+&lt;/script&gt;
+</code></pre>
+<p><strong>innerHTML 数组方式（效率高）</strong></p>
+<pre><code class="html">&lt;script&gt;
+  function fn() &#123;
+    var d1 = +new Date();
+    var array = [];
+    for (var i = 0; i &lt; 1000; i++) &#123;
+      array.push(
+        &#39;&lt;div style=&quot;width:100px; height:2px; border:1px solid blue;&quot;&gt;&lt;/div&gt;&#39;
+      );
+    &#125;
+    document.body.innerHTML = array.join(&quot;&quot;);
+    var d2 = +new Date();
+    console.log(d2 - d1);
+  &#125;
+  fn();
+&lt;/script&gt;
+</code></pre>
+<h2 id="插入结点"><a href="#插入结点" class="headerlink" title="插入结点"></a>插入结点</h2><h3 id="node-appendChild"><a href="#node-appendChild" class="headerlink" title="node.appendChild()"></a>node.appendChild()</h3><ul>
 <li>node.appendChild(child)</li>
 <li>添加到父节点的子节点列表末尾</li>
 </ul>
@@ -432,188 +474,43 @@ div.removeAttribute(&quot;index&quot;);
   &lt;/script&gt;
 &lt;/body&gt;
 </code></pre>
-<h3 id="node-removeChild"><a href="#node-removeChild" class="headerlink" title="node.removeChild()"></a>node.removeChild()</h3><ul>
+<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><h3 id="node-removeChild"><a href="#node-removeChild" class="headerlink" title="node.removeChild()"></a>node.removeChild()</h3><ul>
 <li>node.removeChild() 方法从 node 节点中删除一个子节点，返回删除的节点。</li>
 </ul>
 <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616060281051-79e7f85a-572a-4e31-b204-b5dbdaff1e60.png#align=left&display=inline&height=435&margin=%5Bobject%20Object%5D&name=image.png&originHeight=870&originWidth=1920&size=1459532&status=done&style=stroke&width=960" alt="image.png"></p>
 <h3 id="Demo：删除留言"><a href="#Demo：删除留言" class="headerlink" title="Demo：删除留言"></a>Demo：删除留言</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359732-302df5c2-5149-4e89-89dd-e99586f91651.png#align=left&display=inline&height=210&margin=%5Bobject%20Object%5D&originHeight=210&originWidth=361&status=done&style=stroke&width=361"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359795-1a54681c-6264-48c2-a670-28b1f41c4388.png#align=left&display=inline&height=155&margin=%5Bobject%20Object%5D&originHeight=155&originWidth=718&status=done&style=none&width=718"></p>
-<pre><code class="js">&lt;textarea name=&quot;&quot; id=&quot;&quot;&gt;&lt;/textarea&gt;
-    &lt;button&gt;发布&lt;/button&gt;
-    &lt;ul&gt;
-    &lt;/ul&gt;
-    &lt;script&gt;
-        // 1. 获取元素
-        var btn = document.querySelector(&#39;button&#39;);
-        var text = document.querySelector(&#39;textarea&#39;);
-        var ul = document.querySelector(&#39;ul&#39;);
-        // 2. 注册事件
-        btn.onclick = function() &#123;
-            if (text.value == &#39;&#39;) &#123;
-                alert(&#39;您没有输入内容&#39;);
-                return false;
-            &#125; else &#123;
-                // console.log(text.value);
-                // (1) 创建元素
-                var li = document.createElement(&#39;li&#39;);
-                // 先有li 才能赋值
-                li.innerHTML = text.value + &quot;&lt;a href=&#39;javascript:;&#39;&gt;删除&lt;/a&gt;&quot;;
-                // (2) 添加元素
-                // ul.appendChild(li);
-                ul.insertBefore(li, ul.children[0]);
-                // (3) 删除元素 删除的是当前链接的li  它的父亲
-                var as = document.querySelectorAll(&#39;a&#39;);
-                for (var i = 0; i &lt; as.length; i++) &#123;
-                    as[i].onclick = function() &#123;
-                        // 删除的是 li 当前a所在的li  this.parentNode;
-                        ul.removeChild(this.parentNode);
-                    &#125;
-                &#125;
-            &#125;
-        &#125;
-    &lt;/script&gt;
-</code></pre>
-<h3 id="node-cloneNode"><a href="#node-cloneNode" class="headerlink" title="node.cloneNode()"></a>node.cloneNode()</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359854-90c1339a-ca41-47e5-86b1-189336c186d3.png#align=left&display=inline&height=248&margin=%5Bobject%20Object%5D&originHeight=248&originWidth=726&status=done&style=stroke&width=726"></p>
-<pre><code class="html">&lt;ul&gt;
-  &lt;li&gt;1111&lt;/li&gt;
-  &lt;li&gt;2&lt;/li&gt;
-  &lt;li&gt;3&lt;/li&gt;
-&lt;/ul&gt;
+<pre><code class="html">&lt;textarea name=&quot;&quot; id=&quot;&quot;&gt;&lt;/textarea&gt;
+&lt;button&gt;发布&lt;/button&gt;
+&lt;ul&gt;&lt;/ul&gt;
 &lt;script&gt;
+  // 1. 获取元素
+  var btn = document.querySelector(&quot;button&quot;);
+  var text = document.querySelector(&quot;textarea&quot;);
   var ul = document.querySelector(&quot;ul&quot;);
-  // 1. node.cloneNode(); 括号为空或者里面是false 浅拷贝 只复制标签不复制里面的内容
-  // 2. node.cloneNode(true); 括号为true 深拷贝 复制标签复制里面的内容
-  var lili = ul.children[0].cloneNode(true);
-  ul.appendChild(lili);
-&lt;/script&gt;
-</code></pre>
-<h3 id="Demo：动态生成表格"><a href="#Demo：动态生成表格" class="headerlink" title="Demo：动态生成表格"></a>Demo：动态生成表格</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359913-8e1af74d-0a30-4370-83ea-4974ad83d2b8.png#align=left&display=inline&height=268&margin=%5Bobject%20Object%5D&originHeight=268&originWidth=718&status=done&style=stroke&width=718"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518359980-7b2a19b1-47dd-41cb-8f9b-93d64873fb6f.png#align=left&display=inline&height=288&margin=%5Bobject%20Object%5D&originHeight=288&originWidth=751&status=done&style=stroke&width=751"></p>
-<pre><code class="js">&lt;script&gt;
-        // 1.先去准备好学生的数据
-        var datas = [&#123;
-            name: &#39;魏璎珞&#39;,
-            subject: &#39;JavaScript&#39;,
-            score: 100
-        &#125;, &#123;
-            name: &#39;弘历&#39;,
-            subject: &#39;JavaScript&#39;,
-            score: 98
-        &#125;, &#123;
-            name: &#39;傅恒&#39;,
-            subject: &#39;JavaScript&#39;,
-            score: 99
-        &#125;, &#123;
-            name: &#39;明玉&#39;,
-            subject: &#39;JavaScript&#39;,
-            score: 88
-        &#125;, &#123;
-            name: &#39;大猪蹄子&#39;,
-            subject: &#39;JavaScript&#39;,
-            score: 0
-        &#125;];
-        // 2. 往tbody 里面创建行： 有几个人（通过数组的长度）我们就创建几行
-        var tbody = document.querySelector(&#39;tbody&#39;);
-        // 遍历数组
-        for (var i = 0; i &lt; datas.length; i++) &#123;
-            // 1. 创建 tr行
-            var tr = document.createElement(&#39;tr&#39;);
-            tbody.appendChild(tr);
-            // 2. 行里面创建单元格td 单元格的数量取决于每个对象里面的属性个数
-            // 使用for in遍历学生对象
-            for (var k in datas[i]) &#123;
-                // 创建单元格
-                var td = document.createElement(&#39;td&#39;);
-                // 把对象里面的属性值 datas[i][k] 给 td
-                td.innerHTML = datas[i][k];
-                tr.appendChild(td);
-            &#125;
-            // 3. 创建有删除2个字的单元格
-            var td = document.createElement(&#39;td&#39;);
-            td.innerHTML = &#39;&lt;a href=&quot;javascript:;&quot;&gt;删除 &lt;/a&gt;&#39;;
-            tr.appendChild(td);
-        &#125;
-        // 4. 删除操作 开始
-        var as = document.querySelectorAll(&#39;a&#39;);
-        for (var i = 0; i &lt; as.length; i++) &#123;
-            as[i].onclick = function() &#123;
-                // 点击a 删除 当前a 所在的行(链接的爸爸的爸爸)  node.removeChild(child)
-                tbody.removeChild(this.parentNode.parentNode)
-            &#125;
-        &#125;
-    &lt;/script&gt;
-</code></pre>
-<h3 id="创建元素的三种方式对比"><a href="#创建元素的三种方式对比" class="headerlink" title="创建元素的三种方式对比"></a>创建元素的三种方式对比</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360041-a233aa10-7238-46f4-bb78-2438898c8950.png#align=left&display=inline&height=346&margin=%5Bobject%20Object%5D&originHeight=346&originWidth=759&status=done&style=stroke&width=759"></p>
-<pre><code class="js">&lt;script&gt;
-        // 三种创建元素方式区别
-        // 1. document.write() 创建元素  如果页面文档流加载完毕，再调用这句话会导致页面重绘
-         var btn = document.querySelector(&#39;button&#39;);
-         btn.onclick = function() &#123;
-             document.write(&#39;&lt;div&gt;123&lt;/div&gt;&#39;);
-         &#125;
-        // 2. innerHTML 创建元素
-        var inner = document.querySelector(&#39;.inner&#39;);
-         for (var i = 0; i &lt;= 100; i++) &#123;
-             inner.innerHTML += &#39;&lt;a href=&quot;#&quot;&gt;百度&lt;/a&gt;&#39;
-         &#125;
-        var arr = [];
-        for (var i = 0; i &lt;= 100; i++) &#123;
-            arr.push(&#39;&lt;a href=&quot;#&quot;&gt;百度&lt;/a&gt;&#39;);
-        &#125;
-        inner.innerHTML = arr.join(&#39;&#39;);
-        // 3. document.createElement() 创建元素
-        var create = document.querySelector(&#39;.create&#39;);
-        for (var i = 0; i &lt;= 100; i++) &#123;
-            var a = document.createElement(&#39;a&#39;);
-            create.appendChild(a);
-        &#125;
-    &lt;/script&gt;
-</code></pre>
-<blockquote>
-<p>innerTHML 和 createElement 效率对比</p>
-</blockquote>
-<p><strong>innerHTML 字符串拼接方式（效率低）</strong></p>
-<pre><code class="js">&lt;script&gt;
-    function fn() &#123;
-        var d1 = +new Date();
-        var str = &#39;&#39;;
-        for (var i = 0; i &lt; 1000; i++) &#123;
-            document.body.innerHTML += &#39;&lt;div style=&quot;width:100px; height:2px; border:1px solid blue;&quot;&gt;&lt;/div&gt;&#39;;
-        &#125;
-        var d2 = +new Date();
-        console.log(d2 - d1);
+  // 2. 注册事件
+  btn.onclick = function () &#123;
+    if (text.value == &quot;&quot;) &#123;
+      alert(&quot;您没有输入内容&quot;);
+      return false;
+    &#125; else &#123;
+      // console.log(text.value);
+      // (1) 创建元素
+      var li = document.createElement(&quot;li&quot;);
+      // 先有li 才能赋值
+      li.innerHTML = text.value + &quot;&lt;a href=&#39;javascript:;&#39;&gt;删除&lt;/a&gt;&quot;;
+      // (2) 添加元素
+      // ul.appendChild(li);
+      ul.insertBefore(li, ul.children[0]);
+      // (3) 删除元素 删除的是当前链接的li  它的父亲
+      var as = document.querySelectorAll(&quot;a&quot;);
+      for (var i = 0; i &lt; as.length; i++) &#123;
+        as[i].onclick = function () &#123;
+          // 删除的是 li 当前a所在的li  this.parentNode;
+          ul.removeChild(this.parentNode);
+        &#125;;
+      &#125;
     &#125;
-    fn();
-&lt;/script&gt;
-</code></pre>
-<p><strong>createElement 方式（效率一般）</strong></p>
-<pre><code class="js">&lt;script&gt;
-    function fn() &#123;
-        var d1 = +new Date();
-        for (var i = 0; i &lt; 1000; i++) &#123;
-            var div = document.createElement(&#39;div&#39;);
-            div.style.width = &#39;100px&#39;;
-            div.style.height = &#39;2px&#39;;
-            div.style.border = &#39;1px solid red&#39;;
-            document.body.appendChild(div);
-        &#125;
-        var d2 = +new Date();
-        console.log(d2 - d1);
-    &#125;
-    fn();
-&lt;/script&gt;
-</code></pre>
-<p><strong>innerHTML 数组方式（效率高）</strong></p>
-<pre><code class="js">&lt;script&gt;
-    function fn() &#123;
-        var d1 = +new Date();
-        var array = [];
-        for (var i = 0; i &lt; 1000; i++) &#123;
-            array.push(&#39;&lt;div style=&quot;width:100px; height:2px; border:1px solid blue;&quot;&gt;&lt;/div&gt;&#39;);
-        &#125;
-        document.body.innerHTML = array.join(&#39;&#39;);
-        var d2 = +new Date();
-        console.log(d2 - d1);
-    &#125;
-    fn();
+  &#125;;
 &lt;/script&gt;
 </code></pre>
 
@@ -647,7 +544,7 @@ div.removeAttribute(&quot;index&quot;);
           
             <span class="prev_next_right">
                 <a href="/blog/1_day01_webapis/">
-                    <b>DOM-元素获取、事件知识</b>
+                    <b>DOM元素操作</b>
                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </a>
             </span>
@@ -707,11 +604,11 @@ div.removeAttribute(&quot;index&quot;);
             <ul style="display: none">
             
                             <li class="category-list-child">
-                                <a href="/categories/Algorithm/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95">分治算法</a>
+                                <a href="/categories/Algorithm/RSA%E7%AE%97%E6%B3%95">RSA算法</a>
                             </li>
                         
                             <li class="category-list-child">
-                                <a href="/categories/Algorithm/RSA%E7%AE%97%E6%B3%95">RSA算法</a>
+                                <a href="/categories/Algorithm/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95">分治算法</a>
                             </li>
                         
                             <li class="category-list-child">
@@ -799,19 +696,19 @@ div.removeAttribute(&quot;index&quot;);
             <ul style="display: none">
             
                             <li class="category-list-child">
-                                <a href="/categories/DataStructure/%E6%95%B0%E7%BB%84">数组</a>
-                            </li>
-                        
-                            <li class="category-list-child">
-                                <a href="/categories/DataStructure/%E4%B8%B2%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8">串和广义表</a>
-                            </li>
-                        
-                            <li class="category-list-child">
                                 <a href="/categories/DataStructure/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97">栈和队列</a>
                             </li>
                         
                             <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E6%95%B0%E7%BB%84">数组</a>
+                            </li>
+                        
+                            <li class="category-list-child">
                                 <a href="/categories/DataStructure/%E9%A1%BA%E5%BA%8F%E8%A1%A8">顺序表</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/DataStructure/%E4%B8%B2%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8">串和广义表</a>
                             </li>
                         
                             <li class="category-list-child">
@@ -923,15 +820,15 @@ div.removeAttribute(&quot;index&quot;);
             <ul style="display: none">
             
                             <li class="category-list-child">
-                                <a href="/categories/Web/BOM">BOM</a>
-                            </li>
-                        
-                            <li class="category-list-child">
-                                <a href="/categories/Web/JavaScript%E7%89%B9%E6%95%88">JavaScript特效</a>
+                                <a href="/categories/Web/DOM">DOM</a>
                             </li>
                         
                             <li class="category-list-child">
                                 <a href="/categories/Web/node">node</a>
+                            </li>
+                        
+                            <li class="category-list-child">
+                                <a href="/categories/Web/BOM">BOM</a>
                             </li>
                         
                             <li class="category-list-child">
@@ -952,10 +849,6 @@ div.removeAttribute(&quot;index&quot;);
                         
                             <li class="category-list-child">
                                 <a href="/categories/Web/Web%E5%85%B6%E4%BB%96">Web其他</a>
-                            </li>
-                        
-                            <li class="category-list-child">
-                                <a href="/categories/Web/DOM">DOM</a>
                             </li>
                         
             </ul>
