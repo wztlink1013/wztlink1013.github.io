@@ -343,7 +343,7 @@
     
     
     <entry>
-      <title>实验5——波兰/逆波兰表达式求值</title>
+      <title>实验5——波兰/逆波兰表达式求值（栈）</title>
       <link href="blog/iyb7wi/"/>
       <url>blog/iyb7wi/</url>
       
@@ -373,9 +373,9 @@
       
       <categories>
           
-          <category> DataStructure </category>
+          <category> Algorithm </category>
           
-          <category> 线结构 </category>
+          <category> 其他算法 </category>
           
       </categories>
       
@@ -499,7 +499,7 @@
     
     
     <entry>
-      <title>实验4——超市排队机（队列操作）</title>
+      <title>实验4——超市排队机（队列）</title>
       <link href="blog/zgiaxv/"/>
       <url>blog/zgiaxv/</url>
       
@@ -510,7 +510,7 @@
           
           <category> DataStructure </category>
           
-          <category> 线结构 </category>
+          <category> Problems </category>
           
       </categories>
       
@@ -524,7 +524,7 @@
       <link href="blog/fbfgft/"/>
       <url>blog/fbfgft/</url>
       
-        <content type="html"><![CDATA[<h2 id="顺序循环链表"><a href="#顺序循环链表" class="headerlink" title="顺序循环链表"></a>顺序循环链表</h2><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;using namespace std;typedef int Status;typedef int QElemType;#define OVERFLOW -1#define ERROR 0#define OK 1#define MAXSIZE 100/** * 循环队列——队列的顺序表示和实现 * * 操作：初始化、队列长度、入队、出队、取队头元素 *//* 存储形式 */typedef struct &#123;    QElemType *base;    int front;    int rear;&#125; SqQueue;/* 初始化 */Status InitQueue(SqQueue &amp;queue) &#123;    // 初始化这个base地址为一个有最大容量的数组初地址    queue.base = new int[MAXSIZE];    if (!queue.base) &#123;        return OVERFLOW;    &#125;    queue.front = queue.rear = 0;    return OK;&#125;/* 求队列长度 */Status QueueLength(SqQueue &amp;queue) &#123;    return (queue.rear - queue.front + MAXSIZE) % MAXSIZE;&#125;/* 入队 */Status EnQueue(SqQueue &amp;queue, QElemType e) &#123;    if ((queue.rear+1)%MAXSIZE == queue.front) &#123;        return OVERFLOW;    &#125;    queue.base[queue.rear] = e;    queue.rear = (queue.rear + 1) % MAXSIZE;    return OK;&#125;/* 出队 */Status DeQueue(SqQueue &amp;queue) &#123;    if ((queue.rear+1)%MAXSIZE == queue.front) &#123;        return OVERFLOW;    &#125;    QElemType e = queue.base[queue.front];    queue.front = (queue.front + 1) % MAXSIZE; //队头指针+1    return e;&#125;/* 取队头元素 */Status GetHead(SqQueue &amp;queue) &#123;    if (queue.front != queue.rear) &#123;        return queue.base[queue.front];    &#125;&#125;int main() &#123;    SqQueue test;    InitQueue(test);    EnQueue(test, 10);    EnQueue(test, 15);    EnQueue(test, 20);    cout &lt;&lt; &quot;队列长度为：&quot; &lt;&lt; QueueLength(test) &lt;&lt; &quot;\n&quot;;    cout &lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;    cout &lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;&#125;</code></pre><h2 id="链队"><a href="#链队" class="headerlink" title="链队"></a>链队</h2><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;using namespace std;typedef int Status;typedef int QElemType;#define OVERFLOW -1#define ERROR 0#define OK 1#define MAXSIZE 100/** * 链队——队列的链式表示和实现 * * 操作：初始化、入队、出队、取队头元素 *//* 存储形式 */typedef struct QNode&#123; //链队用的结点    QElemType data;    struct QNode *next;&#125;QNode,*QueuePtr;typedef struct &#123;    QueuePtr front;    QueuePtr rear;&#125;LinkQueue;/* 初始化 */Status InitQueue(LinkQueue &amp;queue) &#123;    queue.front = queue.rear = new QNode;    queue.front-&gt;next = NULL;    return OK;&#125;/* 入队 */Status EnQueue(LinkQueue &amp;queue, QElemType e) &#123;    QueuePtr temp = new QNode;    temp-&gt;data = e;    temp-&gt;next = NULL;    queue.rear-&gt;next = temp;    queue.rear = temp;    return OK;&#125;/* 出队 */Status DeQueue(LinkQueue &amp;queue) &#123;    if (queue.front == queue.rear) &#123;        return OVERFLOW;    &#125;    QElemType e = queue.front-&gt;next-&gt;data;    queue.front-&gt;next = queue.front-&gt;next-&gt;next;    // 考虑最后一个元素被删，队尾指针指向头结点    if (queue.rear == queue.front) &#123;        queue.front = queue.rear;    &#125;    return e;&#125;/* 取队头元素 */Status GetHead(LinkQueue &amp;queue) &#123;    if (queue.front != queue.rear)&#123;        return queue.front-&gt;next-&gt;data;    &#125;&#125;int main() &#123;    LinkQueue test;    InitQueue(test);    EnQueue(test, 10);    EnQueue(test, 15);    EnQueue(test, 20);    // cout &lt;&lt; &quot;队列长度为：&quot; &lt;&lt; QueueLength(test) &lt;&lt; &quot;\n&quot;;    cout &lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;    cout &lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;&#125;</code></pre>]]></content>
+        <content type="html"><![CDATA[<h2 id="顺序循环队列"><a href="#顺序循环队列" class="headerlink" title="顺序循环队列"></a>顺序循环队列</h2><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;using namespace std;typedef int Status;typedef int QElemType;#define OVERFLOW -1#define ERROR 0#define OK 1#define MAXSIZE 100/** * 循环队列——队列的顺序表示和实现 * * 操作：初始化、队列长度、入队、出队、取队头元素 *//* 存储形式 */typedef struct &#123;    QElemType *base;    int front;    int rear;&#125; SqQueue;/* 初始化 */Status InitQueue(SqQueue &amp;queue) &#123;    // 初始化这个base地址为一个有最大容量的数组初地址    queue.base = new int[MAXSIZE];    if (!queue.base) &#123;        return OVERFLOW;    &#125;    queue.front = queue.rear = 0;    return OK;&#125;/* 求队列长度 */Status QueueLength(SqQueue &amp;queue) &#123;    return (queue.rear - queue.front + MAXSIZE) % MAXSIZE;&#125;/* 入队 */Status EnQueue(SqQueue &amp;queue, QElemType e) &#123;    if ((queue.rear+1)%MAXSIZE == queue.front) &#123;        return OVERFLOW;    &#125;    queue.base[queue.rear] = e;    queue.rear = (queue.rear + 1) % MAXSIZE;    return OK;&#125;/* 出队 */Status DeQueue(SqQueue &amp;queue) &#123;    if ((queue.rear+1)%MAXSIZE == queue.front) &#123;        return OVERFLOW;    &#125;    QElemType e = queue.base[queue.front];    queue.front = (queue.front + 1) % MAXSIZE; //队头指针+1    return e;&#125;/* 取队头元素 */Status GetHead(SqQueue &amp;queue) &#123;    if (queue.front != queue.rear) &#123;        return queue.base[queue.front];    &#125;&#125;int main() &#123;    SqQueue test;    InitQueue(test);    EnQueue(test, 10);    EnQueue(test, 15);    EnQueue(test, 20);    cout &lt;&lt; &quot;队列长度为：&quot; &lt;&lt; QueueLength(test) &lt;&lt; &quot;\n&quot;;    cout &lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;    cout &lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;&#125;</code></pre><h2 id="链队"><a href="#链队" class="headerlink" title="链队"></a>链队</h2><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;using namespace std;typedef int Status;typedef int QElemType;#define OVERFLOW -1#define ERROR 0#define OK 1#define MAXSIZE 100/** * 链队——队列的链式表示和实现 * * 操作：初始化、入队、出队、取队头元素 *//* 存储形式 */typedef struct QNode&#123; //链队用的结点    QElemType data;    struct QNode *next;&#125;QNode,*QueuePtr;typedef struct &#123;    QueuePtr front;    QueuePtr rear;&#125;LinkQueue;/* 初始化 */Status InitQueue(LinkQueue &amp;queue) &#123;    queue.front = queue.rear = new QNode;    queue.front-&gt;next = NULL;    return OK;&#125;/* 入队 */Status EnQueue(LinkQueue &amp;queue, QElemType e) &#123;    QueuePtr temp = new QNode;    temp-&gt;data = e;    temp-&gt;next = NULL;    queue.rear-&gt;next = temp;    queue.rear = temp;    return OK;&#125;/* 出队 */Status DeQueue(LinkQueue &amp;queue) &#123;    if (queue.front == queue.rear) &#123;        return OVERFLOW;    &#125;    QElemType e = queue.front-&gt;next-&gt;data;    queue.front-&gt;next = queue.front-&gt;next-&gt;next;    // 考虑最后一个元素被删，队尾指针指向头结点    if (queue.rear == queue.front) &#123;        queue.front = queue.rear;    &#125;    return e;&#125;/* 取队头元素 */Status GetHead(LinkQueue &amp;queue) &#123;    if (queue.front != queue.rear)&#123;        return queue.front-&gt;next-&gt;data;    &#125;&#125;int main() &#123;    LinkQueue test;    InitQueue(test);    EnQueue(test, 10);    EnQueue(test, 15);    EnQueue(test, 20);    // cout &lt;&lt; &quot;队列长度为：&quot; &lt;&lt; QueueLength(test) &lt;&lt; &quot;\n&quot;;    cout &lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt; GetHead(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;    cout &lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt; DeQueue(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;&#125;</code></pre>]]></content>
       
       
       <categories>
@@ -756,7 +756,7 @@
           
           <category> DataStructure </category>
           
-          <category> 线结构 </category>
+          <category> 其他知识 </category>
           
       </categories>
       
