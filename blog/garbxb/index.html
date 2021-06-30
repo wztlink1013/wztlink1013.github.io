@@ -4,20 +4,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>内部排序的各种方法 | 尼采般地抒情</title>
+    <title>各类排序算法汇总 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="排序按照所占用的计算机内部存储设备，可以分为：内部排序和外部排序 &amp;gt; 内部排序：占用的是内存，待排序序列全部放在内存加以排序处理外部排序：占用的是外存，数据量比较大，内存空间不足以一次性全部容纳数据的情况**一、插入类排序将无序的子序列插入到有序序列中直接插入将元素序列走一遍，走到某个元素时，">
+    <meta name="description" content="前言：排序按照所占用的计算机内部存储设备，可以分为：内部排序和外部排序内部排序：占用的是内存，待排序序列全部放在内存加以排序处理外部排序：占用的是外存，数据量比较大，内存空间不足以一次性全部容纳数据的情况本文章暂时总结内部排序的各种算法。图：各种内部排序方法的比较**一、插入类排序将无序的子序列插入">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="内部排序的各种方法 | 尼采般地抒情">
+    <meta property="og:title" content="各类排序算法汇总 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/garbxb/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="排序按照所占用的计算机内部存储设备，可以分为：内部排序和外部排序 &amp;gt; 内部排序：占用的是内存，待排序序列全部放在内存加以排序处理外部排序：占用的是外存，数据量比较大，内存空间不足以一次性全部容纳数据的情况**一、插入类排序将无序的子序列插入到有序序列中直接插入将元素序列走一遍，走到某个元素时，">
+    <meta property="og:description" content="前言：排序按照所占用的计算机内部存储设备，可以分为：内部排序和外部排序内部排序：占用的是内存，待排序序列全部放在内存加以排序处理外部排序：占用的是外存，数据量比较大，内存空间不足以一次性全部容纳数据的情况本文章暂时总结内部排序的各种算法。图：各种内部排序方法的比较**一、插入类排序将无序的子序列插入">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -33,6 +33,12 @@
 
     <!-- 引入jQuery快速开发 -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- algolia for the search only version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
      
 </head>
 <body>
@@ -90,7 +96,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>244 <span>篇</span>
+        <span>文章数目：</span>245 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -132,7 +138,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8F%92%E5%85%A5%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">一、插入类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5"><span class="toc-text">直接插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E6%8F%92%E5%85%A5"><span class="toc-text">折半插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><span class="toc-text">希尔排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BA%A4%E6%8D%A2%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">二、交换类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="toc-text">冒泡排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-text">快速排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%80%89%E6%8B%A9%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">三、选择类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-text">简单选择排序</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8F%92%E5%85%A5%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">一、插入类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5"><span class="toc-text">直接插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8D%8A%E6%8F%92%E5%85%A5"><span class="toc-text">折半插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><span class="toc-text">希尔排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BA%A4%E6%8D%A2%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">二、交换类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="toc-text">冒泡排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-text">快速排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%80%89%E6%8B%A9%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">三、选择类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-text">简单选择排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91%E5%BD%A2%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-text">树形选择排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="toc-text">堆排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">四、归并排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%B7%AF%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">2-路归并排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%86%E9%85%8D%E7%B1%BB%E6%8E%92%E5%BA%8F"><span class="toc-text">五、分配类排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="toc-text">基数排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%A4%96%E9%83%A8%E6%8E%92%E5%BA%8F"><span class="toc-text">六、外部排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="toc-text">基本方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%B9%B3%E8%A1%A1%E5%BD%92%E5%B9%B6"><span class="toc-text">多路平衡归并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%AE%E6%8D%A2-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-text">置换-选择排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%BD%92%E5%B9%B6%E6%A0%91"><span class="toc-text">最佳归并树</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -173,7 +179,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>244 <span>篇</span>
+        <span>文章数目：</span>245 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -191,7 +197,7 @@
     <div class="ct_center">
         <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>内部排序的各种方法</h1>
+        <h1>各类排序算法汇总</h1>
     </div>
     <div class="article_meta_other">
         <span>作者: <a href="/">尼采般地抒情</a></span>
@@ -205,8 +211,8 @@
                 </span>
                 
                 <span>
-                    <a href="/categories/Algorithm/排序算法">
-                        排序算法
+                    <a href="/categories/Algorithm/查找排序算法">
+                        查找排序算法
                     </a>
                 </span>
                  
@@ -216,12 +222,17 @@
     </div>
 </div>
         <div class="component article">
-    <blockquote>
-<p>排序按照所占用的计算机内部存储设备，可以分为：<strong>内部排序</strong>和<strong>外部排序</strong> &gt; <strong>内部排序：</strong>占用的是内存，待排序序列全部放在内存加以排序处理<br><strong>外部排序：</strong>占用的是外存，数据量比较大，内存空间不足以一次性全部容纳数据的情况</p>
-</blockquote>
-<p>**<br><strong><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1623667337022-44c54af8-5961-43d6-8fa4-46ef3f6ec71f.png#align=left&display=inline&height=250&margin=%5Bobject%20Object%5D&name=image.png&originHeight=499&originWidth=1130&size=412707&status=done&style=stroke&width=565" alt="image.png"></strong></p>
+    <p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1625064781047-2f12af3a-ce5c-4280-b387-38a40f307b45.jpeg#align=left&display=inline&height=3508&margin=%5Bobject%20Object%5D&name=hezhao.jpg&originHeight=3508&originWidth=4961&size=599481&status=done&style=none&width=4961" alt="hezhao.jpg"></p>
+<p>前言：排序按照所占用的计算机内部存储设备，可以分为：<strong>内部排序</strong>和<strong>外部排序</strong></p>
+<ul>
+<li><strong>内部排序：</strong>占用的是内存，待排序序列全部放在内存加以排序处理</li>
+<li><strong>外部排序：</strong>占用的是外存，数据量比较大，内存空间不足以一次性全部容纳数据的情况</li>
+</ul>
+<p>本文章暂时总结内部排序的各种算法。</p>
+<p><strong><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1623667337022-44c54af8-5961-43d6-8fa4-46ef3f6ec71f.png#align=left&display=inline&height=250&margin=%5Bobject%20Object%5D&name=image.png&originHeight=499&originWidth=1130&size=412707&status=done&style=stroke&width=565" alt="image.png"></strong><br><strong>图：各种内部排序方法的比较</strong><br>**</p>
 <h2 id="一、插入类排序"><a href="#一、插入类排序" class="headerlink" title="一、插入类排序"></a>一、插入类排序</h2><p>将无序的子序列插入到有序序列中</p>
-<h3 id="直接插入"><a href="#直接插入" class="headerlink" title="直接插入"></a>直接插入</h3><p>将元素序列走一遍，走到某个元素时，将其插入到已走过的已排序序列中，这样可以保证走完所有元素，然后所有的元素都是排序好的。<br>数据结构选用的时顺序表</p>
+<h3 id="直接插入"><a href="#直接插入" class="headerlink" title="直接插入"></a>直接插入</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1625014050650-261f0307-6356-440f-b06a-12e264344572.gif#align=left&display=inline&height=523&margin=%5Bobject%20Object%5D&originHeight=523&originWidth=813&size=0&status=done&style=none&width=813"><br>将元素序列走一遍，走到某个元素时，将其插入到已走过的已排序序列中，这样可以保证走完所有元素，然后所有的元素都是排序好的。</p>
+<p>数据结构选用的时顺序表</p>
 <pre><code class="cpp">/* 直接插入排序 */
 void insertSort(SqList &amp;S) &#123;
     for (int i = 2; i &lt;= S.length;++i) &#123;
@@ -255,7 +266,8 @@ void BinsertSort(SqList &amp;S) &#123;
     &#125;
 &#125;
 </code></pre>
-<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><pre><code class="cpp">/* 希尔排序 */
+<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1625015190376-d54ed111-aa4a-41cf-9dde-6593a6aaf4e0.gif#align=left&display=inline&height=290&margin=%5Bobject%20Object%5D&originHeight=290&originWidth=665&size=0&status=done&style=none&width=665"></p>
+<pre><code class="cpp">/* 希尔排序 */
 void ShellInsert (SqList &amp;L, int dk) &#123;
     for (int i = dk + 1; i &lt;= L.length;++i) &#123;
         if (L.data[i]&lt;L.data[i-dk]) &#123;
@@ -273,7 +285,8 @@ void ShellSort (SqList &amp;L, int dt[],int t) &#123;
     &#125;
 &#125;
 </code></pre>
-<h2 id="二、交换类排序"><a href="#二、交换类排序" class="headerlink" title="二、交换类排序"></a>二、交换类排序</h2><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><pre><code class="cpp">/* 冒泡排序 */
+<h2 id="二、交换类排序"><a href="#二、交换类排序" class="headerlink" title="二、交换类排序"></a>二、交换类排序</h2><h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1625013969954-b7310256-1c0a-4b3c-b45b-a7b33eca8e5c.gif#align=left&display=inline&height=262&margin=%5Bobject%20Object%5D&originHeight=262&originWidth=813&size=0&status=done&style=none&width=813"></p>
+<pre><code class="cpp">/* 冒泡排序 */
 void BubbleSort(SqList &amp;L) &#123;
     int m = L.length - 1;
     int flag = 1;
@@ -290,7 +303,8 @@ void BubbleSort(SqList &amp;L) &#123;
     &#125;
 &#125;
 </code></pre>
-<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><pre><code class="cpp">/* 快速排序 */
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1625017709918-661c5cd4-fd2a-49a0-be80-bb59b791ed8f.gif#align=left&display=inline&height=252&margin=%5Bobject%20Object%5D&originHeight=252&originWidth=811&size=0&status=done&style=none&width=811"></p>
+<pre><code class="cpp">/* 快速排序 */
 int Partition (SqList &amp;L, int low, int high) &#123;
     L.data[0] = L.data[low];
     int pivotkey = L.data[low];
@@ -316,7 +330,9 @@ void QuickSort(SqList &amp;L) &#123;
     Qsort(L, 1, L.length);
 &#125;
 </code></pre>
-<h2 id="三、选择类排序"><a href="#三、选择类排序" class="headerlink" title="三、选择类排序"></a>三、选择类排序</h2><h3 id="简单选择排序"><a href="#简单选择排序" class="headerlink" title="简单选择排序"></a>简单选择排序</h3><pre><code class="cpp">/* 简单选择排序 */
+<h2 id="三、选择类排序"><a href="#三、选择类排序" class="headerlink" title="三、选择类排序"></a>三、选择类排序</h2><p><a target="_blank" rel="noopener" href="http://data.biancheng.net/view/72.html">参考：ata.biancheng.net/view/72.html</a></p>
+<h3 id="简单选择排序"><a href="#简单选择排序" class="headerlink" title="简单选择排序"></a>简单选择排序</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1625014017576-1b58bc2d-d46b-48e8-a307-6fc6f4ee8f0a.gif#align=left&display=inline&height=262&margin=%5Bobject%20Object%5D&originHeight=262&originWidth=813&size=0&status=done&style=none&width=813"></p>
+<pre><code class="cpp">/* 简单选择排序 */
 void SelectSort(SqList &amp;L) &#123;
     for (int i = 1; i &lt; L.length;i++) &#123;
         int k = i;
@@ -331,6 +347,16 @@ void SelectSort(SqList &amp;L) &#123;
     &#125;
 &#125;
 </code></pre>
+<h3 id="树形选择排序"><a href="#树形选择排序" class="headerlink" title="树形选择排序"></a>树形选择排序</h3><h3 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1625021691601-c1572503-c54d-4d12-8d3e-97da2ae0aa38.gif#align=left&display=inline&height=364&margin=%5Bobject%20Object%5D&originHeight=364&originWidth=547&size=0&status=done&style=none&width=547"></p>
+<h2 id="四、归并排序"><a href="#四、归并排序" class="headerlink" title="四、归并排序"></a>四、归并排序</h2><h3 id="2-路归并排序"><a href="#2-路归并排序" class="headerlink" title="2-路归并排序"></a>2-路归并排序</h3><p>给定一个序列，从左往右两两子序列进行归并</p>
+<p>子序列归并的算法：加入有两个靠着的 a、b 序列，由上面可知，a、b 各自都是有序序列，现在就是将这两个合并为一个有序序列 k，将 a 和 b 序列的各个元素进行比较，小的依次放入 k 序列，当 a、b 两个中有一个序列为空了，就将那个不为空的序列直接加入到 k 序列即可，最后 k 序列就是目的序列。</p>
+<h2 id="五、分配类排序"><a href="#五、分配类排序" class="headerlink" title="五、分配类排序"></a>五、分配类排序</h2><h3 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h3><p>TODO: 扑克牌的花色排序</p>
+<h2 id="六、外部排序"><a href="#六、外部排序" class="headerlink" title="六、外部排序"></a>六、外部排序</h2><h3 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h3><h3 id="多路平衡归并"><a href="#多路平衡归并" class="headerlink" title="多路平衡归并"></a>多路平衡归并</h3><p>基本思想是内部排序中的 2-路归并排序</p>
+<h3 id="置换-选择排序"><a href="#置换-选择排序" class="headerlink" title="置换-选择排序"></a>置换-选择排序</h3><h3 id="最佳归并树"><a href="#最佳归并树" class="headerlink" title="最佳归并树"></a>最佳归并树</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>文章的动画演示</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Hk_john/article/details/79888992">https://blog.csdn.net/Hk_john/article/details/79888992</a>（js）</li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/10/23/A91-sorting-algorithm/">https://www.itrhx.com/2020/10/23/A91-sorting-algorithm/</a>（python）</li>
+</ul>
 
 </div>
 
@@ -442,7 +468,7 @@ void SelectSort(SqList &amp;L) &#123;
                             </li>
                         
                             <li class="category-list-child">
-                                <a href="/categories/Algorithm/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95">排序算法</a>
+                                <a href="/categories/Algorithm/%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95">查找排序算法</a>
                             </li>
                         
                             <li class="category-list-child">
