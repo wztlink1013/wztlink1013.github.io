@@ -4,20 +4,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Kruskal最小生成树算法 | 尼采般地抒情</title>
+    <title>最小生成树算法（Prim+Kruskal） | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="一些概念连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。如果 G 是有向图，那么连接 i 和 j 的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向">
+    <meta name="description" content="贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Kruskal最小生成树算法 | 尼采般地抒情">
+    <meta property="og:title" content="最小生成树算法（Prim+Kruskal） | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/ghf568/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="一些概念连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。如果 G 是有向图，那么连接 i 和 j 的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向">
+    <meta property="og:description" content="贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -96,7 +96,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>245 <span>篇</span>
+        <span>文章数目：</span>244 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -138,7 +138,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5"><span class="toc-text">一些概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF"><span class="toc-text">算法思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5"><span class="toc-text">图的一些概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prim-%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF"><span class="toc-text">Prim 算法思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kruskal-%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF"><span class="toc-text">Kruskal 算法思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Kruskal-%E7%AE%97%E6%B3%95%E4%BB%A3%E7%A0%81"><span class="toc-text">Kruskal 算法代码</span></a></li></ol></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -179,7 +179,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>245 <span>篇</span>
+        <span>文章数目：</span>244 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -197,7 +197,7 @@
     <div class="ct_center">
         <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>Kruskal最小生成树算法</h1>
+        <h1>最小生成树算法（Prim+Kruskal）</h1>
     </div>
     <div class="article_meta_other">
         <span>作者: <a href="/">尼采般地抒情</a></span>
@@ -222,7 +222,10 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><p><strong>连通图</strong></p>
+    <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">贪心算法四个字总结：目前最优</div>
+
+<h2 id="图的一些概念"><a href="#图的一些概念" class="headerlink" title="图的一些概念"></a>图的一些概念</h2><p>具体看先前的一篇文章<a href="https://www.wztlink1013.com/blog/gqpli5/">https://www.wztlink1013.com/blog/gqpli5/</a></p>
+<p><strong>连通图</strong></p>
 <blockquote>
 <p>在<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806">图论</a>中，连通图基于连通的概念。在一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427">无向图</a> G 中，若从<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118">顶点</a>i 到顶点 j 有路径相连（当然从 j 到 i 也一定有路径），则称 i 和 j 是连通的。如果 G 是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE">有向图</a>，那么连接 i 和 j 的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865">连通性</a>是图的基本性质。</p>
 </blockquote>
@@ -238,12 +241,12 @@
 <blockquote>
 <p>是一个数据结构，功能有查找 a 和 b 是否为同一组；将 a 和 b 合并为同一组。</p>
 </blockquote>
-<h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p><code>Kruskal——克鲁斯卡尔算法</code></p>
-<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">贪心算法四个字总结：目前最优</div>
-
+<h2 id="Prim-算法思路"><a href="#Prim-算法思路" class="headerlink" title="Prim 算法思路"></a>Prim 算法思路</h2><p><code>Prim——普里姆算法</code></p>
+<p>类似于图的深度优先遍历一样，在遍历到一个结点的时候，在此根据该节点所连通的各边权值，取最小的，以此往复<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1625102662437-05ab5a6e-fcc3-46d5-8c2d-666c9c23fa9a.png#align=left&display=inline&height=194&margin=%5Bobject%20Object%5D&name=image.png&originHeight=387&originWidth=776&size=153006&status=done&style=none&width=388" alt="image.png"></p>
+<h2 id="Kruskal-算法思路"><a href="#Kruskal-算法思路" class="headerlink" title="Kruskal 算法思路"></a>Kruskal 算法思路</h2><p><code>Kruskal——克鲁斯卡尔算法</code></p>
 <p>把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</p>
 <p>比如有如下这么一个图：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png#align=left&display=inline&height=95&id=Hx7aL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=189&originWidth=438&size=10882&status=done&style=shadow&width=219" alt="image.png"><br>单独分析 ①② 边和 ③④ 边情况下，两个不在一个集合里面，<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png#align=left&display=inline&height=96&id=PuNRa&margin=%5Bobject%20Object%5D&name=image.png&originHeight=192&originWidth=769&size=21600&status=done&style=shadow&width=384.5" alt="image.png"><br>不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为 3 的时候，此时就需要将左右两个集合合并了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png#align=left&display=inline&height=101&id=wsUam&margin=%5Bobject%20Object%5D&name=image.png&originHeight=202&originWidth=748&size=22229&status=done&style=shadow&width=374" alt="image.png"><br>最后的结果样式就为如下<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png#align=left&display=inline&height=146&id=adOCr&margin=%5Bobject%20Object%5D&name=image.png&originHeight=292&originWidth=780&size=31319&status=done&style=shadow&width=390" alt="image.png"></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="Kruskal-算法代码"><a href="#Kruskal-算法代码" class="headerlink" title="Kruskal 算法代码"></a>Kruskal 算法代码</h3><pre><code class="cpp">#include &lt;stdio.h&gt;
 #include &lt;vector&gt;
 #include &lt;algorithm&gt;
 namespace NS_KruskalMST &#123;
