@@ -10,14 +10,14 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="报错信息Git push出(10054)/(port 443：time out)错git push error: RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054原因及解决的思考原因：由于Http协议错误，当 p">
+    <meta name="description" content="​前言：今年 GitHub 的各种操作被屏蔽的挺迷的，一开始我只是以为偶尔报个连接失败的 port443 的错误，但是后来经常性的出现本地 push 不上 GitHub 的情况，在此情况记录一下各种情况（clone、pull、push……）连接不上的解决办法。一、报错信息与原因分析报错信息Git p">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <!-- https://ogp.me/ -->
     <meta property="og:type" content="article">
     <meta property="og:title" content="Git push出(10054)/(port 443：time out)错 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/tttk33/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="报错信息Git push出(10054)/(port 443：time out)错git push error: RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054原因及解决的思考原因：由于Http协议错误，当 p">
+    <meta property="og:description" content="​前言：今年 GitHub 的各种操作被屏蔽的挺迷的，一开始我只是以为偶尔报个连接失败的 port443 的错误，但是后来经常性的出现本地 push 不上 GitHub 的情况，在此情况记录一下各种情况（clone、pull、push……）连接不上的解决办法。一、报错信息与原因分析报错信息Git p">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -138,7 +138,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF"><span class="toc-text">报错信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0%E5%8F%8A%E8%A7%A3%E5%86%B3%E7%9A%84%E6%80%9D%E8%80%83"><span class="toc-text">原因及解决的思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-1"><span class="toc-text">解决办法 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-2"><span class="toc-text">解决办法 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF%E4%B8%8E%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="toc-text">一、报错信息与原因分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF"><span class="toc-text">报错信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="toc-text">原因分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">二、常规解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1%EF%BC%9A%E6%94%B9%E4%BB%A3%E7%90%86"><span class="toc-text">常规解决方案 1：改代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2%EF%BC%9A%E6%94%B9%E5%8F%98%E6%9C%AC%E5%9C%B0-hosts-%E6%96%87%E4%BB%B6"><span class="toc-text">常规解决方案 2：改变本地 hosts 文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%92%88%E5%AF%B9%E6%80%A7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">三、针对性解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%88%E5%AF%B9-clone-%E5%A4%B1%E8%B4%A5"><span class="toc-text">针对 clone 失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%92%88%E5%AF%B9-pull%E3%80%81push-%E5%A4%B1%E8%B4%A5"><span class="toc-text">针对 pull、push 失败</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -216,24 +216,26 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h2><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">Git push出(10054)/(port 443：time out)错</div>
+    <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624951739057-ebfc3755-1e5a-426b-a7b3-a7841ead1b1f.png#clientId=u3f2416ef-009b-4&from=paste&height=241&id=yDPwn&margin=%5Bobject%20Object%5D&name=image.png&originHeight=482&originWidth=882&originalType=binary%E2%88%B6=2&size=54005&status=done&style=none&taskId=u314208e8-25e1-4b29-9147-2b0ebc4645c&width=441" alt="image.png"><br>​</p>
+<p><strong>前言：今年 GitHub 的各种操作被屏蔽的挺迷的，一开始我只是以为偶尔报个连接失败的 port443 的错误，但是后来经常性的出现本地 push 不上 GitHub 的情况，在此情况记录一下各种情况（clone、pull、push……）连接不上的解决办法。</strong></p>
+<h2 id="一、报错信息与原因分析"><a href="#一、报错信息与原因分析" class="headerlink" title="一、报错信息与原因分析"></a>一、报错信息与原因分析</h2><h3 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h3><pre><code class="bash">Git push出(10054)/(port 443：time out)错
 
-<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">git push error: RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054</div>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624951739057-ebfc3755-1e5a-426b-a7b3-a7841ead1b1f.png#clientId=u3f2416ef-009b-4&from=paste&height=241&id=u38f332c7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=482&originWidth=882&originalType=binary%E2%88%B6=2&size=54005&status=done&style=none&taskId=u314208e8-25e1-4b29-9147-2b0ebc4645c&width=441" alt="image.png"></p>
-<h2 id="原因及解决的思考"><a href="#原因及解决的思考" class="headerlink" title="原因及解决的思考"></a>原因及解决的思考</h2><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">原因：由于Http协议错误，当 pull 或者 clone 的时候，或者是 github 某个CDN被墙屏蔽所致。</div>
+git push error: RPC failed; curl 56 OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054
+</code></pre>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><ol>
+<li>由于 Http 协议错误，当 pull 或者 clone 的时候，或者是 github 某个 CDN 被 qiang 屏蔽所致。</li>
+<li>用了 kexueshangwang 工具之后，由于更改代理服务器连接端口，导致本地 push 偶尔失败（但是以前有用）。</li>
+</ol>
+<h2 id="二、常规解决方案"><a href="#二、常规解决方案" class="headerlink" title="二、常规解决方案"></a>二、常规解决方案</h2><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">2021.06.29更新解决方法：【针对clone失败】https的连接不行，那就用ssh的连接。
+2021.07.13更新解决方案：【针对pull、push失败】ssh连接push连接不行，那就用token来push。</div>
 ​
 
-<div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">2021.06.29更新解决方法：【针对克隆失败】https的连接不行，那就用ssh的连接呀。</div>
-​
-
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624953268520-f8c7c56d-6588-4991-b63c-11adc5cdd0ae.png#clientId=u1ae40c10-ed35-4&from=paste&height=98&id=u99e71d15&margin=%5Bobject%20Object%5D&name=image.png&originHeight=195&originWidth=882&originalType=binary%E2%88%B6=2&size=31370&status=done&style=none&taskId=u14d1ed3c-4738-4a91-b0e7-53ebf113528&width=441" alt="image.png"><br>​</p>
-<div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">解决方法：
-第一种方法是下面的三条命令（据说是玄学），另外如果用了该三条命令还不行，那就ctrl + c ，再进行输入命令，以此往复，总会出现GitHub的登录框的……；
+<div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">常规解决方法：
+第一种方法是下面的三条命令，另外如果用了该三条命令还不行，那就ctrl + c ，再进行输入命令，以此往复，总会出现GitHub的登录框的……；
 第二种方法就是在本地对host进行更改，让其可以访问github网站的相关ip；</div>
 ​
 
-<h2 id="解决办法-1"><a href="#解决办法-1" class="headerlink" title="解决办法 1"></a>解决办法 1</h2><blockquote>
+<h3 id="常规解决方案-1：改代理"><a href="#常规解决方案-1：改代理" class="headerlink" title="常规解决方案 1：改代理"></a>常规解决方案 1：改代理</h3><blockquote>
 <p>10054 的 bug 复制下面的</p>
 </blockquote>
 <pre><code class="bash">git config http.postBuffer 524288000
@@ -241,19 +243,34 @@
 <blockquote>
 <p>443 的 bug 复制下面的</p>
 </blockquote>
-<pre><code class="bash">git config --global --unset https.proxy
-
+<pre><code class="bash"># 设置ss
+git config --global http.proxy &#39;socks5://127.0.0.1:10080&#39;
+git config --global https.proxy &#39;socks5://127.0.0.1:10080&#39;
+# 设置代理
+git config --global https.proxy http://127.0.0.1:10080
+git config --global https.proxy https://127.0.0.1:10080
+# 取消代理
 git config --global --unset http.proxy
+git config --global --unset https.proxy
 </code></pre>
-<h2 id="解决办法-2"><a href="#解决办法-2" class="headerlink" title="解决办法 2"></a>解决办法 2</h2><p>在<a target="_blank" rel="noopener" href="https://www.ipaddress.com/">https://www.ipaddress.com/</a>里面查找下面三个域名的 ip 地址</p>
+<h3 id="常规解决方案-2：改变本地-hosts-文件"><a href="#常规解决方案-2：改变本地-hosts-文件" class="headerlink" title="常规解决方案 2：改变本地 hosts 文件"></a>常规解决方案 2：改变本地 hosts 文件</h3><p>在<a target="_blank" rel="noopener" href="https://www.ipaddress.com/">https://www.ipaddress.com/</a>里面查找下面三个域名的 ip 地址</p>
 <ul>
 <li>github.com</li>
 <li>github.global.ssl.fastly.net</li>
 <li>codeload.github.com</li>
 </ul>
-<p>将其添加到本电脑 hosts 文件当中<br><code>C:\Windows\System32\drivers\etc\hosts</code> <br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1615339105733-afb66a55-d96e-4dba-9650-a9d3cb8324fa.png#height=56&id=EhSLV&margin=%5Bobject%20Object%5D&name=image.png&originHeight=112&originWidth=490&originalType=binary%E2%88%B6=1&size=10992&status=done&style=stroke&width=245" alt="image.png"><br>CMD 窗口刷新 DNS 缓存<br><code>ipconfig /flushdns</code></p>
+<p>将其添加到本电脑 hosts 文件当中<br><code>C:\Windows\System32\drivers\etc\hosts</code> <br>类似下面：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1615339105733-afb66a55-d96e-4dba-9650-a9d3cb8324fa.png#height=56&id=EhSLV&margin=%5Bobject%20Object%5D&name=image.png&originHeight=112&originWidth=490&originalType=binary%E2%88%B6=1&size=10992&status=done&style=stroke&width=245" alt="image.png"><br>CMD 窗口刷新 DNS 缓存</p>
+<pre><code class="powershell">ipconfig /flushdns
+</code></pre>
+<h2 id="三、针对性解决方案"><a href="#三、针对性解决方案" class="headerlink" title="三、针对性解决方案"></a>三、针对性解决方案</h2><p>上面两种方案理论上解决了问题，但是奇葩的问题年年有，上述两种方案都不能解决，就用如下方案：</p>
+<h3 id="针对-clone-失败"><a href="#针对-clone-失败" class="headerlink" title="针对 clone 失败"></a>针对 clone 失败</h3><p>如果 https 连接失败，使用 ssh 链连接（前提是电脑端配置了 ssh），如果 ssh 连接也不行，那就下面的针对 pull、push 失败的方案。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624953268520-f8c7c56d-6588-4991-b63c-11adc5cdd0ae.png#clientId=u1ae40c10-ed35-4&from=paste&height=98&id=KCLWc&margin=%5Bobject%20Object%5D&name=image.png&originHeight=195&originWidth=882&originalType=binary%E2%88%B6=2&size=31370&status=done&style=none&taskId=u14d1ed3c-4738-4a91-b0e7-53ebf113528&width=441" alt="image.png"></p>
+<h3 id="针对-pull、push-失败"><a href="#针对-pull、push-失败" class="headerlink" title="针对 pull、push 失败"></a>针对 pull、push 失败</h3><p>ssh 连接不行，那就使用 token 来连接</p>
+<pre><code class="bash">git push https://一串token@github.com/wztlink1013/datastructure-algorithm
+</code></pre>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mmzs/p/12039888.html">https://www.cnblogs.com/mmzs/p/12039888.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f98ed938f91a">使用 Personal access tokens 以避免 Windows 下每次 git push 都需要输入账号密码</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000039738438">2021 年为什么最近 github 能访问不能 push 代码了</a></li>
 </ul>
 
 </div>
