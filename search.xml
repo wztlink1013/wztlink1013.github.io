@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>ajax相关知识</title>
+      <link href="blog/sggzfd/"/>
+      <url>blog/sggzfd/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1629125564200-d6272b27-ffcf-4f6d-b7f8-f1ccc7660b0c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=322&originWidth=623&size=13078&status=done&style=stroke&width=311.5" alt="image.png"></p><blockquote><p>ajax 函数的封装</p></blockquote><pre><code class="javascript">function ajax(options) &#123;  // 默认值  var defaults = &#123;    type: &quot;get&quot;,    url: &quot;&quot;,    data: &#123;&#125;,    header: &#123;      &quot;Content-Type&quot;: &quot;application/x-www-form-urlencoded&quot;,    &#125;,    success: function () &#123;&#125;,    error: function () &#123;&#125;,  &#125;;  // 使用用户传递的参数替换默认值参数  Object.assign(defaults, options);  // 创建ajax对象  var xhr = new XMLHttpRequest();  // 参数拼接变量  var params = &quot;&quot;;  // 循环参数  for (var attr in defaults.data) &#123;    // 参数拼接    params += attr + &quot;=&quot; + defaults.data[attr] + &quot;&amp;&quot;;    // 去掉参数中最后一个&amp;    params = params.substr(0, params.length - 1);  &#125;  // 如果请求方式为get  if (defaults.type == &quot;get&quot;) &#123;    // 将参数拼接在url地址的后面    defaults.url += &quot;?&quot; + params;  &#125;  // 配置ajax请求  xhr.open(defaults.type, defaults.url);  // 如果请求方式为post  if (defaults.type == &quot;post&quot;) &#123;    // 设置请求头    xhr.setRequestHeader(&quot;Content-Type&quot;, defaults.header[&quot;Content-Type&quot;]);    // 如果想服务器端传递的参数类型为json    if (defaults.header[&quot;Content-Type&quot;] == &quot;application/json&quot;) &#123;      // 将json对象转换为json字符串      xhr.send(JSON.stringify(defaults.data));    &#125; else &#123;      // 发送请求      xhr.send(params);    &#125;  &#125; else &#123;    xhr.send();  &#125;  // 请求加载完成  xhr.onload = function () &#123;    // 获取服务器端返回数据的类型    var contentType = xhr.getResponseHeader(&quot;content-type&quot;);    // 获取服务器端返回的响应数据    var responseText = xhr.responseText;    // 如果服务器端返回的数据是json数据类型    if (contentType.includes(&quot;application/json&quot;)) &#123;      // 将json字符串转换为json对象      responseText = JSON.parse(responseText);    &#125;    // 如果请求成功    if (xhr.status == 200) &#123;      // 调用成功回调函数, 并且将服务器端返回的结果传递给成功回调函数      defaults.success(responseText, xhr);    &#125; else &#123;      // 调用失败回调函数并且将xhr对象传递给回调函数      defaults.error(responseText, xhr);    &#125;  &#125;;  // 当网络中断时  xhr.onerror = function () &#123;    // 调用失败回调函数并且将xhr对象传递给回调函数    defaults.error(xhr);  &#125;;&#125;</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web </category>
+          
+          <category> node </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>RSA算法应用——GPG keys</title>
       <link href="blog/go85d1/"/>
       <url>blog/go85d1/</url>
@@ -1637,27 +1658,6 @@
     
     
     <entry>
-      <title>布局之百分比布局</title>
-      <link href="blog/oxqtosvrfeg8/"/>
-      <url>blog/oxqtosvrfeg8/</url>
-      
-        <content type="html"><![CDATA[<h2 id="meta-标签-viewport"><a href="#meta-标签-viewport" class="headerlink" title="meta 标签 viewport"></a>meta 标签 viewport</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1615360134988-de179521-dfc1-419f-a1b6-5e45b5b40096.png#align=left&display=inline&height=451&margin=%5Bobject%20Object%5D&originHeight=451&originWidth=1043&status=done&style=none&width=1043"></p><h2 id="normalize-css"><a href="#normalize-css" class="headerlink" title="normalize.css"></a>normalize.css</h2><p>移动端 CSS 初始化推荐使用 normalize.css/<br>Normalize.css：保护了有价值的默认值<br>Normalize.css：修复了浏览器的 bug<br>Normalize.css：是模块化的<br>Normalize.css：拥有详细的文档<br>官网地址： <a href="http://necolas.github.io/normalize.css/">http://necolas.github.io/normalize.css/</a></p><h2 id="box-sizing"><a href="#box-sizing" class="headerlink" title="box-sizing"></a>box-sizing</h2><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">传统模式宽度计算：盒子的宽度 = CSS中设置的width + border + padding</div><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">CSS3盒子模型：盒子的宽度=  CSS中设置的宽度width 里面包含了 border 和 padding</div>也就是说，我们的CSS3中的盒子模型， padding 和 border 不会撑大盒子了```css/*CSS3盒子模型*/box-sizing: border-box;/*传统盒子模型*/box-sizing: content-box;```移动端可以全部CSS3 盒子模型<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">PC端如果完全需要兼容，我们就用传统模式，如果不考虑兼容性，我们就选择 CSS3 盒子模型</div><pre><code class="css">-webkit-box-sizing: border-box              /* CSS3盒模型 */-moz-box-sizing: border-box                 /* CSS3盒模型 */box-sizing: border-box                      /* CSS3盒模型 */</code></pre><h3 id="移动端特殊样式"><a href="#移动端特殊样式" class="headerlink" title="移动端特殊样式"></a>移动端特殊样式</h3><pre><code class="css">/*CSS3盒子模型*/box-sizing: border-box;-webkit-box-sizing: border-box;/*点击高亮我们需要清除清除  设置为transparent 完成透明*/-webkit-tap-highlight-color: transparent;/*在移动端浏览器默认的外观在iOS上加上这个属性才能给按钮和输入框自定义样式*/-webkit-appearance: none;/*禁用长按页面时的弹出菜单*/img,a &#123;  -webkit-touch-callout: none;&#125;</code></pre><h2 id="移动端常见布局"><a href="#移动端常见布局" class="headerlink" title="移动端常见布局"></a>移动端常见布局</h2><h3 id="移动端单独制作"><a href="#移动端单独制作" class="headerlink" title="移动端单独制作"></a>移动端单独制作</h3><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">流式布局（百分比布局）</div>流式布局，就是百分比布局，也称非固定像素布局。通过盒子的宽度设置成百分比来根据屏幕的宽度来进行伸缩，不受固定像素的限制，内容向两侧填充。流式布局方式是移动web开发使用的比较常见的布局方式。]]></content>
-      
-      
-      <categories>
-          
-          <category> Language </category>
-          
-          <category> CSS </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>布局之Flex布局</title>
       <link href="blog/ogynfghwtsa7/"/>
       <url>blog/ogynfghwtsa7/</url>
@@ -1679,11 +1679,11 @@
     
     
     <entry>
-      <title>CSS3的3D效果</title>
-      <link href="blog/03_html5css3_day03/"/>
-      <url>blog/03_html5css3_day03/</url>
+      <title>布局之百分比布局</title>
+      <link href="blog/oxqtosvrfeg8/"/>
+      <url>blog/oxqtosvrfeg8/</url>
       
-        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="meta-标签-viewport"><a href="#meta-标签-viewport" class="headerlink" title="meta 标签 viewport"></a>meta 标签 viewport</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1615360134988-de179521-dfc1-419f-a1b6-5e45b5b40096.png#align=left&display=inline&height=451&margin=%5Bobject%20Object%5D&originHeight=451&originWidth=1043&status=done&style=none&width=1043"></p><h2 id="normalize-css"><a href="#normalize-css" class="headerlink" title="normalize.css"></a>normalize.css</h2><p>移动端 CSS 初始化推荐使用 normalize.css/<br>Normalize.css：保护了有价值的默认值<br>Normalize.css：修复了浏览器的 bug<br>Normalize.css：是模块化的<br>Normalize.css：拥有详细的文档<br>官网地址： <a href="http://necolas.github.io/normalize.css/">http://necolas.github.io/normalize.css/</a></p><h2 id="box-sizing"><a href="#box-sizing" class="headerlink" title="box-sizing"></a>box-sizing</h2><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">传统模式宽度计算：盒子的宽度 = CSS中设置的width + border + padding</div><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">CSS3盒子模型：盒子的宽度=  CSS中设置的宽度width 里面包含了 border 和 padding</div>也就是说，我们的CSS3中的盒子模型， padding 和 border 不会撑大盒子了```css/*CSS3盒子模型*/box-sizing: border-box;/*传统盒子模型*/box-sizing: content-box;```移动端可以全部CSS3 盒子模型<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">PC端如果完全需要兼容，我们就用传统模式，如果不考虑兼容性，我们就选择 CSS3 盒子模型</div><pre><code class="css">-webkit-box-sizing: border-box              /* CSS3盒模型 */-moz-box-sizing: border-box                 /* CSS3盒模型 */box-sizing: border-box                      /* CSS3盒模型 */</code></pre><h3 id="移动端特殊样式"><a href="#移动端特殊样式" class="headerlink" title="移动端特殊样式"></a>移动端特殊样式</h3><pre><code class="css">/*CSS3盒子模型*/box-sizing: border-box;-webkit-box-sizing: border-box;/*点击高亮我们需要清除清除  设置为transparent 完成透明*/-webkit-tap-highlight-color: transparent;/*在移动端浏览器默认的外观在iOS上加上这个属性才能给按钮和输入框自定义样式*/-webkit-appearance: none;/*禁用长按页面时的弹出菜单*/img,a &#123;  -webkit-touch-callout: none;&#125;</code></pre><h2 id="移动端常见布局"><a href="#移动端常见布局" class="headerlink" title="移动端常见布局"></a>移动端常见布局</h2><h3 id="移动端单独制作"><a href="#移动端单独制作" class="headerlink" title="移动端单独制作"></a>移动端单独制作</h3><div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">流式布局（百分比布局）</div>流式布局，就是百分比布局，也称非固定像素布局。通过盒子的宽度设置成百分比来根据屏幕的宽度来进行伸缩，不受固定像素的限制，内容向两侧填充。流式布局方式是移动web开发使用的比较常见的布局方式。]]></content>
       
       
       <categories>
@@ -1703,6 +1703,27 @@
       <title>CSS/CSS3选择器总结</title>
       <link href="blog/01_html5css3_day01/"/>
       <url>blog/01_html5css3_day01/</url>
+      
+        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Language </category>
+          
+          <category> CSS </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CSS3的3D效果</title>
+      <link href="blog/03_html5css3_day03/"/>
+      <url>blog/03_html5css3_day03/</url>
       
         <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
       
@@ -2018,27 +2039,6 @@
     
     
     <entry>
-      <title>移动端事件及特效</title>
-      <link href="blog/7_day07_webapis/"/>
-      <url>blog/7_day07_webapis/</url>
-      
-        <content type="html"><![CDATA[<h2 id="触屏事件"><a href="#触屏事件" class="headerlink" title="触屏事件"></a>触屏事件</h2><h3 id="1-1-1-触屏事件概述"><a href="#1-1-1-触屏事件概述" class="headerlink" title="1.1.1 触屏事件概述"></a>1.1.1 触屏事件概述</h3><p>移动端浏览器兼容性较好，我们不需要考虑以前 JS 的兼容性问题，可以放心的使用原生 JS 书写效果，但是移动端也有自己独特的地方。比如触屏事件 touch（也称触摸事件），Android 和 IOS 都有。touch 对象代表一个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。触屏事件可响应用户手指（或触控笔）对屏幕或者触控板操作。<br>常见的触屏事件如下：<br><img src="images%5C%E5%9B%BE%E7%89%871.png#"></p><h3 id="1-1-2-触摸事件对象（TouchEvent）"><a href="#1-1-2-触摸事件对象（TouchEvent）" class="headerlink" title="1.1.2 触摸事件对象（TouchEvent）"></a>1.1.2 触摸事件对象（TouchEvent）</h3><p>TouchEvent  是一类描述手指在触摸平面（触摸屏、触摸板等）的状态变化的事件。这类事件用于描述一个或多个触点，使开发者可以检测触点的移动，触点的增加和减少，等等<br>touchstart、touchmove、touchend 三个事件都会各自有事件对象。<br>触摸事件对象重点我们看三个常见对象列表：<br><img src="images%5C%E5%9B%BE%E7%89%872.png#"></p><blockquote><p><strong>因为平时我们都是给元素注册触摸事件，所以重点记住 targetTocuhes</strong></p></blockquote><h3 id="1-1-3-移动端拖动元素"><a href="#1-1-3-移动端拖动元素" class="headerlink" title="1.1.3 移动端拖动元素"></a>1.1.3 移动端拖动元素</h3><ol><li>touchstart、touchmove、touchend 可以实现拖动元素</li><li>但是拖动元素需要当前手指的坐标值 我们可以使用   targetTouches[0] 里面的 pageX 和 pageY</li><li>移动端拖动的原理：    手指移动中，计算出手指移动的距离。然后用盒子原来的位置 + 手指移动的距离</li><li>手指移动的距离：   手指滑动中的位置 减去   手指刚开始触摸的位置</li></ol><p>拖动元素三步曲：<br>（1） 触摸元素 touchstart：  获取手指初始坐标，同时获得盒子原来的位置<br>（2） 移动手指 touchmove：  计算手指的滑动距离，并且移动盒子<br>（3） 离开手指 touchend:</p><blockquote><p><strong>注意： 手指移动也会触发滚动屏幕所以这里要阻止默认的屏幕滚动 e.preventDefault();</strong></p></blockquote><h2 id="1-2-移动端常见特效"><a href="#1-2-移动端常见特效" class="headerlink" title="1.2. 移动端常见特效"></a>1.2. 移动端常见特效</h2><h3 id="1-2-1-案例-移动轮播图"><a href="#1-2-1-案例-移动轮播图" class="headerlink" title="1.2.1 案例: 移动轮播图"></a>1.2.1 案例: 移动轮播图</h3><p><code>移动端轮播图功能和基本PC端一致。</code></p><ol><li>可以自动播放图片</li><li>手指可以拖动播放轮播图</li></ol><h3 id="1-2-2-案例分析"><a href="#1-2-2-案例分析" class="headerlink" title="1.2.2. 案例分析:"></a>1.2.2. 案例分析:</h3><ol><li><p>自动播放功能</p></li><li><p>开启定时器</p></li><li><p>移动端移动，可以使用 translate 移动</p></li><li><p>想要图片优雅的移动，请添加过渡效果<img src="images%5C1551795152(1).jpg#"></p></li><li><p>自动播放功能-无缝滚动</p></li><li><p>注意，我们判断条件是要等到图片滚动完毕再去判断，就是过渡完成后判断</p></li><li><p>此时需要添加检测过渡完成事件   transitionend</p></li><li><p>判断条件：如果索引号等于 3 说明走到最后一张图片，此时 索引号要复原为 0</p></li><li><p>此时图片，去掉过渡效果，然后移动</p></li><li><p>如果索引号小于 0， 说明是倒着走， 索引号等于 2</p></li><li><p>此时图片，去掉过渡效果，然后移动<br><img src="images%5C1551795483(1).jpg#"></p></li></ol><h2 id="1-2-3-classList-属性"><a href="#1-2-3-classList-属性" class="headerlink" title="1.2.3 classList 属性"></a>1.2.3 classList 属性</h2><p>classList 属性是 HTML5 新增的一个属性，返回元素的类名。但是 ie10 以上版本支持。<br>该属性用于在元素中添加，移除及切换 CSS 类。有以下方法<br><strong>添加类：</strong><br>element.classList.add（’类名’）；</p><pre><code class="javascript">focus.classList.add(&quot;current&quot;);</code></pre><p><strong>移除类：</strong><br>element.classList.remove（’类名’）;</p><pre><code class="javascript">focus.classList.remove(&quot;current&quot;);</code></pre><p><strong>切换类：</strong><br>element.classList.toggle（’类名’）;</p><pre><code class="javascript">focus.classList.toggle(&quot;current&quot;);</code></pre><p><code>注意:以上方法里面，所有类名都不带点</code></p><h3 id="1-2-4-案例分析"><a href="#1-2-4-案例分析" class="headerlink" title="1.2.4. 案例分析"></a>1.2.4. 案例分析</h3><ol><li><p>小圆点跟随变化效果</p></li><li><p>把 ol 里面 li 带有 current 类名的选出来去掉类名 remove</p></li><li><p>让当前索引号的小 li 加上 current   add</p></li><li><p>但是，是等着过渡结束之后变化，所以这个写到 transitionend 事件里面<br><img src="images%5C1551796072(1).jpg#"></p></li><li><p>手指滑动轮播图</p></li><li><p>本质就是 ul 跟随手指移动，简单说就是移动端拖动元素</p></li><li><p>触摸元素 touchstart：  获取手指初始坐标</p></li><li><p>移动手指 touchmove：  计算手指的滑动距离，并且移动盒子</p></li><li><p>离开手指 touchend:   根据滑动的距离分不同的情况</p></li><li><p>如果移动距离小于某个像素   就回弹原来位置</p></li><li><p>如果移动距离大于某个像素就上一张下一张滑动。</p></li><li><p>滑动也分为左滑动和右滑动判断的标准是 移动距离正负 如果是负值就是左滑 反之右滑</p></li><li><p>如果是左滑就播放下一张 （index++）</p></li><li><p>如果是右滑就播放上一张   (index–)</p></li></ol><p><img src="images%5C1551796363(1).jpg#"><br><img src="images%5C1551796502(1).jpg#"></p><h3 id="1-3-1-案例：返回顶部"><a href="#1-3-1-案例：返回顶部" class="headerlink" title="1.3.1. 案例：返回顶部"></a>1.3.1. 案例：返回顶部</h3><p>当页面滚动某个地方，就显示，否则隐藏<br>点击可以返回顶部</p><h3 id="1-3-2-案例分析"><a href="#1-3-2-案例分析" class="headerlink" title="1.3.2.案例分析"></a>1.3.2.案例分析</h3><ol><li>滚动某个地方显示</li><li>事件：scroll 页面滚动事件</li><li>如果被卷去的头部（window.pageYOffset ）大于某个数值</li><li>点击，window.scroll(0,0)  返回顶部</li></ol><p><img src="images%5C1551797003(1).jpg#"></p><h2 id="1-4-click-延时解决方案"><a href="#1-4-click-延时解决方案" class="headerlink" title="1.4. click 延时解决方案"></a>1.4. click 延时解决方案</h2><p>移动端 click 事件会有 300ms 的延时，原因是移动端屏幕双击会缩放(double tap to zoom) 页面。<br>解决方案： 1. 禁用缩放。 浏览器禁用默认的双击缩放行为并且去掉 300ms 的点击延迟。</p><pre><code class="html">&lt;meta name=&quot;viewport&quot; content=&quot;user-scalable=no&quot; /&gt;</code></pre><pre><code>2.利用touch事件自己封装这个事件解决300ms 延迟。原理就是：</code></pre><ol><li>当我们手指触摸屏幕，记录当前触摸时间</li><li>当我们手指离开屏幕， 用离开的时间减去触摸的时间</li><li>如果时间小于 150ms，并且没有滑动过屏幕， 那么我们就定义为点击</li></ol><p>代码如下:</p><pre><code class="javascript">//封装tap，解决click 300ms 延时function tap (obj, callback) &#123;        var isMove = false;        var startTime = 0; // 记录触摸时候的时间变量        obj.addEventListener(&#39;touchstart&#39;, function (e) &#123;            startTime = Date.now(); // 记录触摸时间        &#125;);        obj.addEventListener(&#39;touchmove&#39;, function (e) &#123;            isMove = true;  // 看看是否有滑动，有滑动算拖拽，不算点击        &#125;);        obj.addEventListener(&#39;touchend&#39;, function (e) &#123;            if (!isMove &amp;&amp; (Date.now() - startTime) &lt; 150) &#123;  // 如果手指触摸和离开时间小于150ms 算点击                callback &amp;&amp; callback(); // 执行回调函数            &#125;            isMove = false;  //  取反 重置            startTime = 0;        &#125;);&#125;//调用  tap(div, function()&#123;   // 执行代码  &#125;);</code></pre><ol start="3"><li>使用插件。fastclick 插件解决 300ms 延迟。<br><img src="images%5C1551797533(1).jpg#"></li></ol><h2 id="1-5-移动端常用开发插件"><a href="#1-5-移动端常用开发插件" class="headerlink" title="1.5. 移动端常用开发插件"></a>1.5. 移动端常用开发插件</h2><h3 id="1-5-1-什么是插件"><a href="#1-5-1-什么是插件" class="headerlink" title="1.5.1. 什么是插件"></a>1.5.1. 什么是插件</h3><p>移动端要求的是快速开发，所以我们经常会借助于一些插件来帮我完成操作，那么什么是插件呢？<br>JS 插件是 js 文件，它遵循一定规范编写，方便程序展示效果，拥有特定功能且方便调用。如轮播图和瀑布流插件。<br>特点：它一般是为了解决某个问题而专门存在，其功能单一，并且比较小。<br>我们以前写的 animate.js 也算一个最简单的插件<br>fastclick 插件解决 300ms 延迟。 使用延时<br>GitHub 官网地址： <a href="https://github.com/ftlabs/fastclick">https://</a><a href="https://github.com/ftlabs/fastclick">github.com/ftlabs/fastclick</a></p><h3 id="1-5-2-插件的使用"><a href="#1-5-2-插件的使用" class="headerlink" title="1.5.2. 插件的使用"></a>1.5.2. 插件的使用</h3><ol><li><p>引入 js 插件文件。</p></li><li><p>按照规定语法使用。</p></li><li><p>fastclick 插件解决 300ms 延迟。 使用延时</p></li><li><p>GitHub 官网地址： <a href="https://github.com/ftlabs/fastclick">https://github.com/ftlabs/fastclick</a></p></li></ol><pre><code class="javascript">if (&quot;addEventListener&quot; in document) &#123;  document.addEventListener(    &quot;DOMContentLoaded&quot;,    function () &#123;      FastClick.attach(document.body);    &#125;,    false  );&#125;</code></pre><h3 id="1-5-3-Swiper-插件的使用"><a href="#1-5-3-Swiper-插件的使用" class="headerlink" title="1.5.3. Swiper 插件的使用"></a>1.5.3. Swiper 插件的使用</h3><p>中文官网地址： <a href="https://www.swiper.com.cn/">https://www.swiper.com.cn/</a></p><ol><li>引入插件相关文件。</li><li>按照规定语法使用</li></ol><h3 id="1-5-4-其他移动端常见插件"><a href="#1-5-4-其他移动端常见插件" class="headerlink" title="1.5.4. 其他移动端常见插件"></a>1.5.4. 其他移动端常见插件</h3><p>lsuperslide： <a href="http://www.superslide2.com/">http://www.superslide2.com/</a><br>l iscroll： <a href="https://github.com/cubiq/iscroll">https://github.com/cubiq/iscroll</a></p><h3 id="1-5-5-插件的使用总结"><a href="#1-5-5-插件的使用总结" class="headerlink" title="1.5.5. 插件的使用总结"></a>1.5.5. 插件的使用总结</h3><p>1.确认插件实现的功能 2.去官网查看使用说明 3.下载插件 4.打开 demo 实例文件，查看需要引入的相关文件，并且引入 5.复制 demo 实例文件中的结构 html，样式 css 以及 js 代码</p><h3 id="1-5-6-移动端视频插件-zy-media-js"><a href="#1-5-6-移动端视频插件-zy-media-js" class="headerlink" title="1.5.6. 移动端视频插件 zy.media.js"></a>1.5.6. 移动端视频插件 zy.media.js</h3><p>H5 给我们提供了 video 标签，但是浏览器的支持情况不同。<br>不同的视频格式文件，我们可以通过 source 解决。<br>但是外观样式，还有暂停，播放，全屏等功能我们只能自己写代码解决。<br>这个时候我们可以使用插件方式来制作。<br>我们可以通过 JS 修改元素的大小、颜色、位置等样式。</p><h2 id="1-6-移动端常用开发框架"><a href="#1-6-移动端常用开发框架" class="headerlink" title="1.6. 移动端常用开发框架"></a>1.6. 移动端常用开发框架</h2><h3 id="1-6-1-移动端视频插件-zy-media-js"><a href="#1-6-1-移动端视频插件-zy-media-js" class="headerlink" title="1.6.1. 移动端视频插件 zy.media.js"></a>1.6.1. 移动端视频插件 zy.media.js</h3><p>框架，顾名思义就是一套架构，它会基于自身的特点向用户提供一套较为完整的解决方案。框架的控制权在框架本身，使用者要按照框架所规定的某种规范进行开发。<br>插件一般是为了解决某个问题而专门存在，其功能单一，并且比较小。<br>前端常用的框架有 Bootstrap、Vue、Angular、React 等。既能开发 PC 端，也能开发移动端<br>前端常用的移动端插件有 swiper、superslide、iscroll 等。<br>框架： 大而全，一整套解决方案<br>插件： 小而专一，某个功能的解决方案</p><h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
-      
-      
-      <categories>
-          
-          <category> Web </category>
-          
-          <category> BOM </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>动画函数封装</title>
       <link href="blog/6_day06_webapis/"/>
       <url>blog/6_day06_webapis/</url>
@@ -2051,6 +2051,27 @@
           <category> Web </category>
           
           <category> JavaScript特效 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>移动端事件及特效</title>
+      <link href="blog/7_day07_webapis/"/>
+      <url>blog/7_day07_webapis/</url>
+      
+        <content type="html"><![CDATA[<h2 id="触屏事件"><a href="#触屏事件" class="headerlink" title="触屏事件"></a>触屏事件</h2><h3 id="1-1-1-触屏事件概述"><a href="#1-1-1-触屏事件概述" class="headerlink" title="1.1.1 触屏事件概述"></a>1.1.1 触屏事件概述</h3><p>移动端浏览器兼容性较好，我们不需要考虑以前 JS 的兼容性问题，可以放心的使用原生 JS 书写效果，但是移动端也有自己独特的地方。比如触屏事件 touch（也称触摸事件），Android 和 IOS 都有。touch 对象代表一个触摸点。触摸点可能是一根手指，也可能是一根触摸笔。触屏事件可响应用户手指（或触控笔）对屏幕或者触控板操作。<br>常见的触屏事件如下：<br><img src="images%5C%E5%9B%BE%E7%89%871.png#"></p><h3 id="1-1-2-触摸事件对象（TouchEvent）"><a href="#1-1-2-触摸事件对象（TouchEvent）" class="headerlink" title="1.1.2 触摸事件对象（TouchEvent）"></a>1.1.2 触摸事件对象（TouchEvent）</h3><p>TouchEvent  是一类描述手指在触摸平面（触摸屏、触摸板等）的状态变化的事件。这类事件用于描述一个或多个触点，使开发者可以检测触点的移动，触点的增加和减少，等等<br>touchstart、touchmove、touchend 三个事件都会各自有事件对象。<br>触摸事件对象重点我们看三个常见对象列表：<br><img src="images%5C%E5%9B%BE%E7%89%872.png#"></p><blockquote><p><strong>因为平时我们都是给元素注册触摸事件，所以重点记住 targetTocuhes</strong></p></blockquote><h3 id="1-1-3-移动端拖动元素"><a href="#1-1-3-移动端拖动元素" class="headerlink" title="1.1.3 移动端拖动元素"></a>1.1.3 移动端拖动元素</h3><ol><li>touchstart、touchmove、touchend 可以实现拖动元素</li><li>但是拖动元素需要当前手指的坐标值 我们可以使用   targetTouches[0] 里面的 pageX 和 pageY</li><li>移动端拖动的原理：    手指移动中，计算出手指移动的距离。然后用盒子原来的位置 + 手指移动的距离</li><li>手指移动的距离：   手指滑动中的位置 减去   手指刚开始触摸的位置</li></ol><p>拖动元素三步曲：<br>（1） 触摸元素 touchstart：  获取手指初始坐标，同时获得盒子原来的位置<br>（2） 移动手指 touchmove：  计算手指的滑动距离，并且移动盒子<br>（3） 离开手指 touchend:</p><blockquote><p><strong>注意： 手指移动也会触发滚动屏幕所以这里要阻止默认的屏幕滚动 e.preventDefault();</strong></p></blockquote><h2 id="1-2-移动端常见特效"><a href="#1-2-移动端常见特效" class="headerlink" title="1.2. 移动端常见特效"></a>1.2. 移动端常见特效</h2><h3 id="1-2-1-案例-移动轮播图"><a href="#1-2-1-案例-移动轮播图" class="headerlink" title="1.2.1 案例: 移动轮播图"></a>1.2.1 案例: 移动轮播图</h3><p><code>移动端轮播图功能和基本PC端一致。</code></p><ol><li>可以自动播放图片</li><li>手指可以拖动播放轮播图</li></ol><h3 id="1-2-2-案例分析"><a href="#1-2-2-案例分析" class="headerlink" title="1.2.2. 案例分析:"></a>1.2.2. 案例分析:</h3><ol><li><p>自动播放功能</p></li><li><p>开启定时器</p></li><li><p>移动端移动，可以使用 translate 移动</p></li><li><p>想要图片优雅的移动，请添加过渡效果<img src="images%5C1551795152(1).jpg#"></p></li><li><p>自动播放功能-无缝滚动</p></li><li><p>注意，我们判断条件是要等到图片滚动完毕再去判断，就是过渡完成后判断</p></li><li><p>此时需要添加检测过渡完成事件   transitionend</p></li><li><p>判断条件：如果索引号等于 3 说明走到最后一张图片，此时 索引号要复原为 0</p></li><li><p>此时图片，去掉过渡效果，然后移动</p></li><li><p>如果索引号小于 0， 说明是倒着走， 索引号等于 2</p></li><li><p>此时图片，去掉过渡效果，然后移动<br><img src="images%5C1551795483(1).jpg#"></p></li></ol><h2 id="1-2-3-classList-属性"><a href="#1-2-3-classList-属性" class="headerlink" title="1.2.3 classList 属性"></a>1.2.3 classList 属性</h2><p>classList 属性是 HTML5 新增的一个属性，返回元素的类名。但是 ie10 以上版本支持。<br>该属性用于在元素中添加，移除及切换 CSS 类。有以下方法<br><strong>添加类：</strong><br>element.classList.add（’类名’）；</p><pre><code class="javascript">focus.classList.add(&quot;current&quot;);</code></pre><p><strong>移除类：</strong><br>element.classList.remove（’类名’）;</p><pre><code class="javascript">focus.classList.remove(&quot;current&quot;);</code></pre><p><strong>切换类：</strong><br>element.classList.toggle（’类名’）;</p><pre><code class="javascript">focus.classList.toggle(&quot;current&quot;);</code></pre><p><code>注意:以上方法里面，所有类名都不带点</code></p><h3 id="1-2-4-案例分析"><a href="#1-2-4-案例分析" class="headerlink" title="1.2.4. 案例分析"></a>1.2.4. 案例分析</h3><ol><li><p>小圆点跟随变化效果</p></li><li><p>把 ol 里面 li 带有 current 类名的选出来去掉类名 remove</p></li><li><p>让当前索引号的小 li 加上 current   add</p></li><li><p>但是，是等着过渡结束之后变化，所以这个写到 transitionend 事件里面<br><img src="images%5C1551796072(1).jpg#"></p></li><li><p>手指滑动轮播图</p></li><li><p>本质就是 ul 跟随手指移动，简单说就是移动端拖动元素</p></li><li><p>触摸元素 touchstart：  获取手指初始坐标</p></li><li><p>移动手指 touchmove：  计算手指的滑动距离，并且移动盒子</p></li><li><p>离开手指 touchend:   根据滑动的距离分不同的情况</p></li><li><p>如果移动距离小于某个像素   就回弹原来位置</p></li><li><p>如果移动距离大于某个像素就上一张下一张滑动。</p></li><li><p>滑动也分为左滑动和右滑动判断的标准是 移动距离正负 如果是负值就是左滑 反之右滑</p></li><li><p>如果是左滑就播放下一张 （index++）</p></li><li><p>如果是右滑就播放上一张   (index–)</p></li></ol><p><img src="images%5C1551796363(1).jpg#"><br><img src="images%5C1551796502(1).jpg#"></p><h3 id="1-3-1-案例：返回顶部"><a href="#1-3-1-案例：返回顶部" class="headerlink" title="1.3.1. 案例：返回顶部"></a>1.3.1. 案例：返回顶部</h3><p>当页面滚动某个地方，就显示，否则隐藏<br>点击可以返回顶部</p><h3 id="1-3-2-案例分析"><a href="#1-3-2-案例分析" class="headerlink" title="1.3.2.案例分析"></a>1.3.2.案例分析</h3><ol><li>滚动某个地方显示</li><li>事件：scroll 页面滚动事件</li><li>如果被卷去的头部（window.pageYOffset ）大于某个数值</li><li>点击，window.scroll(0,0)  返回顶部</li></ol><p><img src="images%5C1551797003(1).jpg#"></p><h2 id="1-4-click-延时解决方案"><a href="#1-4-click-延时解决方案" class="headerlink" title="1.4. click 延时解决方案"></a>1.4. click 延时解决方案</h2><p>移动端 click 事件会有 300ms 的延时，原因是移动端屏幕双击会缩放(double tap to zoom) 页面。<br>解决方案： 1. 禁用缩放。 浏览器禁用默认的双击缩放行为并且去掉 300ms 的点击延迟。</p><pre><code class="html">&lt;meta name=&quot;viewport&quot; content=&quot;user-scalable=no&quot; /&gt;</code></pre><pre><code>2.利用touch事件自己封装这个事件解决300ms 延迟。原理就是：</code></pre><ol><li>当我们手指触摸屏幕，记录当前触摸时间</li><li>当我们手指离开屏幕， 用离开的时间减去触摸的时间</li><li>如果时间小于 150ms，并且没有滑动过屏幕， 那么我们就定义为点击</li></ol><p>代码如下:</p><pre><code class="javascript">//封装tap，解决click 300ms 延时function tap (obj, callback) &#123;        var isMove = false;        var startTime = 0; // 记录触摸时候的时间变量        obj.addEventListener(&#39;touchstart&#39;, function (e) &#123;            startTime = Date.now(); // 记录触摸时间        &#125;);        obj.addEventListener(&#39;touchmove&#39;, function (e) &#123;            isMove = true;  // 看看是否有滑动，有滑动算拖拽，不算点击        &#125;);        obj.addEventListener(&#39;touchend&#39;, function (e) &#123;            if (!isMove &amp;&amp; (Date.now() - startTime) &lt; 150) &#123;  // 如果手指触摸和离开时间小于150ms 算点击                callback &amp;&amp; callback(); // 执行回调函数            &#125;            isMove = false;  //  取反 重置            startTime = 0;        &#125;);&#125;//调用  tap(div, function()&#123;   // 执行代码  &#125;);</code></pre><ol start="3"><li>使用插件。fastclick 插件解决 300ms 延迟。<br><img src="images%5C1551797533(1).jpg#"></li></ol><h2 id="1-5-移动端常用开发插件"><a href="#1-5-移动端常用开发插件" class="headerlink" title="1.5. 移动端常用开发插件"></a>1.5. 移动端常用开发插件</h2><h3 id="1-5-1-什么是插件"><a href="#1-5-1-什么是插件" class="headerlink" title="1.5.1. 什么是插件"></a>1.5.1. 什么是插件</h3><p>移动端要求的是快速开发，所以我们经常会借助于一些插件来帮我完成操作，那么什么是插件呢？<br>JS 插件是 js 文件，它遵循一定规范编写，方便程序展示效果，拥有特定功能且方便调用。如轮播图和瀑布流插件。<br>特点：它一般是为了解决某个问题而专门存在，其功能单一，并且比较小。<br>我们以前写的 animate.js 也算一个最简单的插件<br>fastclick 插件解决 300ms 延迟。 使用延时<br>GitHub 官网地址： <a href="https://github.com/ftlabs/fastclick">https://</a><a href="https://github.com/ftlabs/fastclick">github.com/ftlabs/fastclick</a></p><h3 id="1-5-2-插件的使用"><a href="#1-5-2-插件的使用" class="headerlink" title="1.5.2. 插件的使用"></a>1.5.2. 插件的使用</h3><ol><li><p>引入 js 插件文件。</p></li><li><p>按照规定语法使用。</p></li><li><p>fastclick 插件解决 300ms 延迟。 使用延时</p></li><li><p>GitHub 官网地址： <a href="https://github.com/ftlabs/fastclick">https://github.com/ftlabs/fastclick</a></p></li></ol><pre><code class="javascript">if (&quot;addEventListener&quot; in document) &#123;  document.addEventListener(    &quot;DOMContentLoaded&quot;,    function () &#123;      FastClick.attach(document.body);    &#125;,    false  );&#125;</code></pre><h3 id="1-5-3-Swiper-插件的使用"><a href="#1-5-3-Swiper-插件的使用" class="headerlink" title="1.5.3. Swiper 插件的使用"></a>1.5.3. Swiper 插件的使用</h3><p>中文官网地址： <a href="https://www.swiper.com.cn/">https://www.swiper.com.cn/</a></p><ol><li>引入插件相关文件。</li><li>按照规定语法使用</li></ol><h3 id="1-5-4-其他移动端常见插件"><a href="#1-5-4-其他移动端常见插件" class="headerlink" title="1.5.4. 其他移动端常见插件"></a>1.5.4. 其他移动端常见插件</h3><p>lsuperslide： <a href="http://www.superslide2.com/">http://www.superslide2.com/</a><br>l iscroll： <a href="https://github.com/cubiq/iscroll">https://github.com/cubiq/iscroll</a></p><h3 id="1-5-5-插件的使用总结"><a href="#1-5-5-插件的使用总结" class="headerlink" title="1.5.5. 插件的使用总结"></a>1.5.5. 插件的使用总结</h3><p>1.确认插件实现的功能 2.去官网查看使用说明 3.下载插件 4.打开 demo 实例文件，查看需要引入的相关文件，并且引入 5.复制 demo 实例文件中的结构 html，样式 css 以及 js 代码</p><h3 id="1-5-6-移动端视频插件-zy-media-js"><a href="#1-5-6-移动端视频插件-zy-media-js" class="headerlink" title="1.5.6. 移动端视频插件 zy.media.js"></a>1.5.6. 移动端视频插件 zy.media.js</h3><p>H5 给我们提供了 video 标签，但是浏览器的支持情况不同。<br>不同的视频格式文件，我们可以通过 source 解决。<br>但是外观样式，还有暂停，播放，全屏等功能我们只能自己写代码解决。<br>这个时候我们可以使用插件方式来制作。<br>我们可以通过 JS 修改元素的大小、颜色、位置等样式。</p><h2 id="1-6-移动端常用开发框架"><a href="#1-6-移动端常用开发框架" class="headerlink" title="1.6. 移动端常用开发框架"></a>1.6. 移动端常用开发框架</h2><h3 id="1-6-1-移动端视频插件-zy-media-js"><a href="#1-6-1-移动端视频插件-zy-media-js" class="headerlink" title="1.6.1. 移动端视频插件 zy.media.js"></a>1.6.1. 移动端视频插件 zy.media.js</h3><p>框架，顾名思义就是一套架构，它会基于自身的特点向用户提供一套较为完整的解决方案。框架的控制权在框架本身，使用者要按照框架所规定的某种规范进行开发。<br>插件一般是为了解决某个问题而专门存在，其功能单一，并且比较小。<br>前端常用的框架有 Bootstrap、Vue、Angular、React 等。既能开发 PC 端，也能开发移动端<br>前端常用的移动端插件有 swiper、superslide、iscroll 等。<br>框架： 大而全，一整套解决方案<br>插件： 小而专一，某个功能的解决方案</p><h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web </category>
+          
+          <category> BOM </category>
           
       </categories>
       
@@ -2207,27 +2228,6 @@
     
     
     <entry>
-      <title>英语写作</title>
-      <link href="blog/skg9onyu1w1p/"/>
-      <url>blog/skg9onyu1w1p/</url>
-      
-        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Language </category>
-          
-          <category> English </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>CSS定位</title>
       <link href="blog/qfka5bkr6swg/"/>
       <url>blog/qfka5bkr6swg/</url>
@@ -2240,6 +2240,27 @@
           <category> Language </category>
           
           <category> CSS </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>英语写作</title>
+      <link href="blog/skg9onyu1w1p/"/>
+      <url>blog/skg9onyu1w1p/</url>
+      
+        <content type="html"><![CDATA[<p>这是加密文章！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Language </category>
+          
+          <category> English </category>
           
       </categories>
       
