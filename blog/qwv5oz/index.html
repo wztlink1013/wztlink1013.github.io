@@ -4,19 +4,19 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Vue学习笔记 | 尼采般地抒情</title>
+    <title>[转]vue中8种组件通信方式 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="Vue 开源项目Vue 练习开源 api 推荐vue 练手项目推荐Vue 2.x Todo 教程项目知识总结​https://juejin.cn/post/6844903830287548423vue 项目中使用 fetch 开发​https://www.jb51.net/article/20003">
+    <meta name="description" content="作者：ikoala链接：https://juejin.cn/post/6844903887162310669来源：稀土掘金部分内容自行添加​vue 是数据驱动视图更新的框架, 所以对于 vue 来说组件间的数据通信非常重要，那么组件之间如何进行数据通信的呢？ 首先我们需要知道在 vue 中组件之间存">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Vue学习笔记 | 尼采般地抒情">
+    <meta property="og:title" content="[转]vue中8种组件通信方式 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/qwv5oz/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="Vue 开源项目Vue 练习开源 api 推荐vue 练手项目推荐Vue 2.x Todo 教程项目知识总结​https://juejin.cn/post/6844903830287548423vue 项目中使用 fetch 开发​https://www.jb51.net/article/20003">
+    <meta property="og:description" content="作者：ikoala链接：https://juejin.cn/post/6844903887162310669来源：稀土掘金部分内容自行添加​vue 是数据驱动视图更新的框架, 所以对于 vue 来说组件间的数据通信非常重要，那么组件之间如何进行数据通信的呢？ 首先我们需要知道在 vue 中组件之间存">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -135,7 +135,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="toc-text">Vue 开源项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93"><span class="toc-text">项目知识总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0"><span class="toc-text">一些函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="toc-text">Vue 实例属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%80%BC%E3%80%81%E6%8C%87%E4%BB%A4"><span class="toc-text">插值、指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3"><span class="toc-text">数组相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81props-emit"><span class="toc-text">一、props &#x2F; $emit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%88%B6%E7%BB%84%E4%BB%B6%E5%90%91%E5%AD%90%E7%BB%84%E4%BB%B6%E4%BC%A0%E5%80%BC"><span class="toc-text">1. 父组件向子组件传值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%AD%90%E7%BB%84%E4%BB%B6%E5%90%91%E7%88%B6%E7%BB%84%E4%BB%B6%E4%BC%A0%E5%80%BC"><span class="toc-text">2. 子组件向父组件传值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-children-parent"><span class="toc-text">二、 $children &#x2F; $parent</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81provide-inject"><span class="toc-text">三、provide&#x2F; inject</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-text">概念:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%E9%AA%8C%E8%AF%81"><span class="toc-text">举例验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81ref-refs"><span class="toc-text">四、ref &#x2F; refs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81eventBus"><span class="toc-text">五、eventBus</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">1. 初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6"><span class="toc-text">2. 发送事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6"><span class="toc-text">3. 接收事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E7%A7%BB%E9%99%A4%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E8%80%85"><span class="toc-text">4. 移除事件监听者</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81Vuex"><span class="toc-text">六、Vuex</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Vuex-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1. Vuex 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Vuex-%E5%90%84%E4%B8%AA%E6%A8%A1%E5%9D%97"><span class="toc-text">2. Vuex 各个模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Vuex-%E5%AE%9E%E4%BE%8B%E5%BA%94%E7%94%A8"><span class="toc-text">3. Vuex 实例应用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81localStorage-sessionStorage"><span class="toc-text">七、localStorage &#x2F; sessionStorage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB-attrs-%E4%B8%8E-listeners"><span class="toc-text">八 $attrs 与 $listeners</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-text">总结</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -194,7 +194,7 @@
     <div class="ct_center">
         <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>Vue学习笔记</h1>
+        <h1>[转]vue中8种组件通信方式</h1>
     </div>
     <div class="article_meta_other">
         <span class="meta_item">
@@ -237,122 +237,234 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="Vue-开源项目"><a href="#Vue-开源项目" class="headerlink" title="Vue 开源项目"></a>Vue 开源项目</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://forum.vuejs.org/t/vue-api/63777">Vue 练习开源 api 推荐</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.sakura-snow.com/archives/355">vue 练手项目推荐</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zmrenwu.com/courses/vue2x-todo-tutorial/">Vue 2.x Todo 教程</a></li>
-</ul>
-<h2 id="项目知识总结"><a href="#项目知识总结" class="headerlink" title="项目知识总结"></a>项目知识总结</h2><ul>
-<li><p>​<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903830287548423">https://juejin.cn/post/6844903830287548423</a></p>
-<blockquote>
-<p>vue 项目中使用 fetch 开发</p>
+    <blockquote>
+<p>作者：ikoala<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903887162310669">https://juejin.cn/post/6844903887162310669</a><br>来源：稀土掘金</p>
 </blockquote>
-</li>
-<li><p>​<a target="_blank" rel="noopener" href="https://www.jb51.net/article/200034.htm">https://www.jb51.net/article/200034.htm</a></p>
 <blockquote>
-<p>脚本之家的 Vue 项目搭建的基础教程</p>
+<p>部分内容自行添加</p>
 </blockquote>
-</li>
-</ul>
-<h2 id="一些函数"><a href="#一些函数" class="headerlink" title="一些函数"></a>一些函数</h2><ul>
-<li>this：应该就是创建的 Vue 这个对象， <code>this.message = this.message.split(&#39;&#39;).reverse().join(&#39;&#39;)</code></li>
-<li>字符串函数<ul>
-<li>split()，join()：拆开，组合</li>
-</ul>
-</li>
-<li>component：定义组件<ul>
-<li>data：必须是一个函数，data 选项必须是一个函数，不然</li>
-<li>props：声明为属性，再该组件的 template 下可以直接使用</li>
-<li>template：组件模板</li>
-<li>methods 等等 Vue 属性都有</li>
-</ul>
-</li>
-<li>Object.freeze()：会阻止其响应式更新，系统无法再追踪变化</li>
-<li>＄：用来区分 Vue 实例和变量，Vue 实例用＄， <code>vm.$el === document.getElementById(&#39;example&#39;)</code></li>
-<li>input 里面的 key：防止切换输入形式值不变的情况 <code>&lt;input placeholder=&quot;Enter your username&quot; key=&quot;username-input&quot;&gt;</code></li>
-</ul>
-<h2 id="Vue-实例属性"><a href="#Vue-实例属性" class="headerlink" title="Vue 实例属性"></a>Vue 实例属性</h2><ul>
-<li>el：绑定 dom</li>
-<li>data：数据域</li>
-<li>methods：定义方法</li>
-<li>生命周期相关函数，可以在不同阶段添加不同代码<ul>
-<li>created</li>
-<li>mounted</li>
-<li>updated</li>
-<li>destroyed 等</li>
-</ul>
-</li>
-<li>computed：计算属性</li>
-<li>watch：侦听器</li>
-</ul>
-<h2 id="插值、指令"><a href="#插值、指令" class="headerlink" title="插值、指令"></a>插值、指令</h2><ul>
-<li><p><code>&#123; &#123; </code> <code>&#125; &#125;</code> ：插值为文本</p>
-</li>
-<li><p>v-once：一次性插值</p>
-</li>
-<li><p>v-html：插入并显示为 html 代码</p>
-</li>
-<li><p>v-bind：显示信息，响应式【简写：英文冒号:】</p>
-</li>
-<li><p><code>v-on:click=&quot;函数触发&quot;</code> ：事件监听器【简写： <code>@</code> 符号】</p>
+<p>​</p>
+<p>vue 是数据驱动视图更新的框架, 所以对于 vue 来说组件间的数据通信非常重要，那么组件之间如何进行数据通信的呢？ 首先我们需要知道在 vue 中组件之间存在什么样的关系, 才更容易理解他们的通信方式, 就好像过年回家，坐着一屋子的陌生人，相互之间怎么称呼，这时就需要先知道自己和他们之间是什么样的关系。 vue 组件中关系说明:<br><img src="https://cdn.nlark.com/yuque/0/2021/webp/1484158/1634717783943-1bb9ec9e-e679-49dd-b0ed-5bc34baa531c.webp#clientId=ua574fa86-91b0-4&from=paste&id=uf7a242be&margin=%5Bobject%20Object%5D&originHeight=402&originWidth=462&originalType=url%E2%88%B6=1&status=done&style=none&taskId=u0c5485e4-4105-4449-8467-e64ac21af71"><br>上面这张图片是 vue 官方的解释，通过$parent和$children 就可以访问组件的实例，拿到实例代表什么？代表可以访问此组件的所有方法和 data。接下来就是怎么实现拿到指定组件的实例。<br>如上图所示, A 与 B、A 与 C、B 与 D、C 与 E 组件之间是父子关系； B 与 C 之间是兄弟关系；A 与 D、A 与 E 之间是隔代关系； D 与 E 是堂兄关系（非直系亲属） 针对以上关系我们归类为：</p>
 <ul>
-<li>v-on:click=”greet”：其中 greet 是 Vue 实例中 methods 中的一个方法</li>
-<li>事件修饰符</li>
-<li>.stop</li>
-<li>.prevent</li>
-<li>.capture</li>
-<li>.self</li>
-<li>.once</li>
-<li>.passive</li>
-<li>＄ emit：子组件可以使用 $emit 触发父组件的自定义事件。</li>
-<li>vm.$emit( event, arg ) //触发当前实例上的事件</li>
-<li>vm.$on( event, fn );//监听 event 事件后运行 fn</li>
+<li>父子组件之间通信</li>
+<li>非父子组件之间通信(兄弟组件、隔代关系组件等)</li>
 </ul>
-</li>
-<li><p>v-if=”表达式”：</p>
-<blockquote>
-<p>v-else：搭配用的还可以有<br>v-else-if<br>v-if 优先级弱于 v-for</p>
-</blockquote>
-</li>
-<li><p>v-show：与 v-if 不同的是不管怎样都会被渲染</p>
-</li>
-<li><p>v-for=”num in nums”：循环</p>
-<blockquote>
-<p>支持第二个参数（即索引值）<br>也可以直接循环对象，可以将将对象的各个属性值全部打印出来<br>组件使用 v-for 的时候，key 值是必须的 1</p>
-</blockquote>
-</li>
-<li><p>v-model：表单输入和应用状态之间的双向绑定</p>
-</li>
-</ul>
-<h2 id="数组相关"><a href="#数组相关" class="headerlink" title="数组相关"></a>数组相关</h2><blockquote>
-<p>具体也可以参考 MDN 上的这几个函数介绍</p>
-</blockquote>
+<p>本文会介绍组件间通信的 8 种方式如下图目录所示:并介绍在不同的场景下如何选择有效方式实现的组件间通信方式，希望可以帮助小伙伴们更好理解组件间的通信。<br><img src="https://cdn.nlark.com/yuque/0/2021/webp/1484158/1634717783405-e8b52e03-c4ba-4d41-b033-a7a863e2122d.webp#clientId=ua574fa86-91b0-4&from=paste&id=u5f9556e2&margin=%5Bobject%20Object%5D&originHeight=566&originWidth=499&originalType=url%E2%88%B6=1&status=done&style=none&taskId=u4bdb95b2-ea28-445c-bd9f-49d8c329151"></p>
+<h3 id="一、props-emit"><a href="#一、props-emit" class="headerlink" title="一、props / $emit"></a>一、props / $emit</h3><p>父组件通过 props 的方式向子组件传递数据，而通过$emit 子组件可以向父组件通信。</p>
+<h4 id="1-父组件向子组件传值"><a href="#1-父组件向子组件传值" class="headerlink" title="1. 父组件向子组件传值"></a>1. 父组件向子组件传值</h4><p>下面通过一个例子说明父组件如何向子组件传递数据：在子组件 article.vue 中如何获取父组件 section.vue 中的数据 articles:[‘红楼梦’, ‘西游记’,’三国演义’]</p>
+<pre><code class="vue">// section父组件
+&lt;template&gt;
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;com-article :articles=&quot;articleList&quot;&gt;&lt;/com-article&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import comArticle from &quot;./test/article.vue&quot;;
+export default &#123;
+  name: &quot;HelloWorld&quot;,
+  components: &#123; comArticle &#125;,
+  data() &#123;
+    return &#123;
+      articleList: [&quot;红楼梦&quot;, &quot;西游记&quot;, &quot;三国演义&quot;],
+    &#125;;
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<pre><code class="vue">// 子组件 article.vue
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;span v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot;&gt;&#123;&#123; item &#125;&#125;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+  props: [&quot;articles&quot;],
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<p>总结: prop 只可以从上一级组件传递到下一级组件（父子组件），即所谓的单向数据流。而且 prop 只读，不可被修改，所有修改都会失效并警告。</p>
+<h4 id="2-子组件向父组件传值"><a href="#2-子组件向父组件传值" class="headerlink" title="2. 子组件向父组件传值"></a>2. 子组件向父组件传值</h4><p>对于$emit 我自己的理解是这样的: **$emit 绑定一个自定义事件**, 当这个语句被执行时, 就会将参数 arg 传递给父组件,父组件通过 v-on 监听并接收参数。 通过一个例子，说明子组件如何向父组件传递数据。 在上个例子的基础上, 点击页面渲染出来的 ariticle 的 item, 父组件中显示在数组中的下标</p>
+<pre><code class="vue">// 父组件中
+&lt;template&gt;
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;com-article
+      :articles=&quot;articleList&quot;
+      @onEmitIndex=&quot;onEmitIndex&quot;
+    &gt;&lt;/com-article&gt;
+    &lt;p&gt;&#123;&#123; currentIndex &#125;&#125;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import comArticle from &quot;./test/article.vue&quot;;
+export default &#123;
+  name: &quot;HelloWorld&quot;,
+  components: &#123; comArticle &#125;,
+  data() &#123;
+    return &#123;
+      currentIndex: -1,
+      articleList: [&quot;红楼梦&quot;, &quot;西游记&quot;, &quot;三国演义&quot;],
+    &#125;;
+  &#125;,
+  methods: &#123;
+    onEmitIndex(idx) &#123;
+      this.currentIndex = idx;
+    &#125;,
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<pre><code class="vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;div
+      v-for=&quot;(item, index) in articles&quot;
+      :key=&quot;index&quot;
+      @click=&quot;emitIndex(index)&quot;
+    &gt;
+      &#123;&#123; item &#125;&#125;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+  props: [&quot;articles&quot;],
+  methods: &#123;
+    emitIndex(index) &#123;
+      this.$emit(&quot;onEmitIndex&quot;, index);
+    &#125;,
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<h3 id="二、-children-parent"><a href="#二、-children-parent" class="headerlink" title="二、 $children / $parent"></a>二、 $children / $parent</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/webp/1484158/1634717783767-7876ba88-44e2-4106-a36e-970179a37ba5.webp#clientId=ua574fa86-91b0-4&from=paste&id=uaa00bad2&margin=%5Bobject%20Object%5D&originHeight=330&originWidth=642&originalType=url%E2%88%B6=1&status=done&style=none&taskId=u21f7e236-9acb-4090-834c-512affafa9d"></p>
+<h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><p>// 父组件中 <template> <div class="hello_world"> <div></div> <com-a></com-a> &lt;button @click=”changeA”&gt;点击改变子组件值</button> </div> </template> <script> import ComA from './test/comA.vue' export default { name: 'HelloWorld', components: { ComA }, data() { return { msg: 'Welcome' } }, methods: { changeA() { // 获取到子组件 A this.$children[0].messageA = 'this is new value'     }   } } </script> 复制代码<br>// 子组件中 <template>   <div class="com_a">     <span></span>     <p>获取父组件的值为:  </p>   </div> </template> <script> export default {   data() {     return {       messageA: 'this is old'     }   },   computed:{     parentVal(){       return this.$parent.msg; } } } </script> 复制代码<br>要注意边界情况，如在#app 上拿$parent得到的是new Vue()的实例，在这实例上再拿$parent 得到的是 undefined，而在最底层的子组件拿$children是个空数组。也要注意得到$parent 和$children的值不一样，$children 的值是数组，而$parent 是个对象</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>上面两种方式用于父子组件之间的通信， 而使用 props 进行父子组件通信更加普遍; 二者皆不能用于非父子组件之间的通信。</p>
+<h3 id="三、provide-inject"><a href="#三、provide-inject" class="headerlink" title="三、provide/ inject"></a>三、provide/ inject</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念:"></a>概念:</h4><p>provide/ inject 是 vue2.2.0 新增的 api, 简单来说就是父组件中通过 provide 来提供变量, 然后再子组件中通过 inject 来注入变量。<br>注意: 这里不论子组件嵌套有多深, 只要调用了 inject 那么就可以注入 provide 中的数据，而不局限于只能从当前父组件的 props 属性中回去数据</p>
+<h4 id="举例验证"><a href="#举例验证" class="headerlink" title="举例验证"></a>举例验证</h4><p>接下来就用一个例子来验证上面的描述: 假设有三个组件: A.vue、B.vue、C.vue 其中 C 是 B 的子组件，B 是 A 的子组件<br>// A.vue <template> <div> <comB></comB> </div> </template> <script> import comB from '../components/test/comB.vue' export default { name: "A", provide: { for: "demo" }, components:{ comB } } </script> 复制代码<br>// B.vue <template> <div>  <comC></comC> </div> </template> <script> import comC from '../components/test/comC.vue' export default { name: "B", inject: ['for'], data() { return { demo: this.for } }, components: { comC } } </script> 复制代码<br>// C.vue <template> <div>  </div> </template> <script> export default { name: "C", inject: ['for'], data() { return { demo: this.for } } } </script> 复制代码</p>
+<h3 id="四、ref-refs"><a href="#四、ref-refs" class="headerlink" title="四、ref / refs"></a>四、ref / refs</h3><p>ref：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；<br>如果用在子组件上，引用就指向组件实例，可以通过实例直接调用组件的方法或访问数据， 我们看一个 ref 来访问组件的例子:</p>
+<pre><code class="vue">// 子组件 A.vue export default &#123; data () &#123; return &#123; name: &#39;Vue.js&#39; &#125; &#125;, methods:
+&#123; sayHello () &#123; console.log(&#39;hello&#39;) &#125; &#125; &#125;
+</code></pre>
+<pre><code class="vue">// 父组件 app.vue
+
+&lt;template&gt;
+  &lt;component-a ref=&quot;comA&quot;&gt;&lt;/component-a&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default &#123;
+  mounted() &#123;
+    const comA = this.$refs.comA;
+    console.log(comA.name); // Vue.js
+    comA.sayHello(); // hello
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<h3 id="五、eventBus"><a href="#五、eventBus" class="headerlink" title="五、eventBus"></a>五、eventBus</h3><p>eventBus 又称为事件总线，在 vue 中可以使用它来作为沟通桥梁的概念, 就像是所有组件共用相同的事件中心，可以向该中心注册发送事件或接收事件， 所以组件都可以通知其他组件。<br>​</p>
+<p>eventBus 也有不方便之处, 当项目较大,就容易造成难以维护的灾难<br>在 Vue 的项目中怎么使用 eventBus 来实现组件之间的数据通信呢?具体通过下面几个步骤</p>
+<h4 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h4><p>首先需要创建一个事件总线并将其导出, 以便其他模块可以使用或者监听它.</p>
+<pre><code class="javascript">// event-bus.js
+
+import Vue from &quot;vue&quot;;
+export const EventBus = new Vue();
+</code></pre>
+<h4 id="2-发送事件"><a href="#2-发送事件" class="headerlink" title="2. 发送事件"></a>2. 发送事件</h4><p>假设你有两个组件: additionNum 和 showNum, 这两个组件可以是兄弟组件也可以是父子组件；这里我们以兄弟组件为例:</p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;show-num-com&gt;&lt;/show-num-com&gt;
+    &lt;addition-num-com&gt;&lt;/addition-num-com&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import showNumCom from &quot;./showNum.vue&quot;;
+import additionNumCom from &quot;./additionNum.vue&quot;;
+export default &#123;
+  components: &#123; showNumCom, additionNumCom &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<pre><code class="vue">// addtionNum.vue 中发送事件
+
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;button @click=&quot;additionHandle&quot;&gt;+加法器&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import &#123; EventBus &#125; from &quot;./event-bus.js&quot;;
+console.log(EventBus);
+export default &#123;
+  data() &#123;
+    return &#123;
+      num: 1,
+    &#125;;
+  &#125;,
+
+  methods: &#123;
+    additionHandle() &#123;
+      EventBus.$emit(&quot;addition&quot;, &#123;
+        num: this.num++,
+      &#125;);
+    &#125;,
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<h4 id="3-接收事件"><a href="#3-接收事件" class="headerlink" title="3. 接收事件"></a>3. 接收事件</h4><pre><code class="vue">// showNum.vue 中接收事件
+
+&lt;template&gt;
+  &lt;div&gt;计算和: &#123;&#123; count &#125;&#125;&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import &#123; EventBus &#125; from &quot;./event-bus.js&quot;;
+export default &#123;
+  data() &#123;
+    return &#123;
+      count: 0,
+    &#125;;
+  &#125;,
+
+  mounted() &#123;
+    EventBus.$on(&quot;addition&quot;, (param) =&gt; &#123;
+      this.count = this.count + param.num;
+    &#125;);
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<p>这样就实现了在组件 addtionNum.vue 中点击相加按钮, 在 showNum.vue 中利用传递来的 num 展示求和的结果.</p>
+<h4 id="4-移除事件监听者"><a href="#4-移除事件监听者" class="headerlink" title="4. 移除事件监听者"></a>4. 移除事件监听者</h4><p>如果想移除事件的监听, 可以像下面这样操作:</p>
+<pre><code class="vue">import &#123; eventBus &#125; from &#39;event-bus.js&#39; EventBus.$off(&#39;addition&#39;, &#123;&#125;)
+</code></pre>
+<h3 id="六、Vuex"><a href="#六、Vuex" class="headerlink" title="六、Vuex"></a>六、Vuex</h3><h4 id="1-Vuex-介绍"><a href="#1-Vuex-介绍" class="headerlink" title="1. Vuex 介绍"></a>1. Vuex 介绍</h4><p>Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化. Vuex 解决了多个视图依赖于同一状态和来自不同视图的行为需要变更同一状态的问题，将开发者的精力聚焦于数据的更新而不是数据在组件之间的传递上</p>
+<h4 id="2-Vuex-各个模块"><a href="#2-Vuex-各个模块" class="headerlink" title="2. Vuex 各个模块"></a>2. Vuex 各个模块</h4><ol>
+<li>state：用于数据的存储，是 store 中的唯一数据源</li>
+<li>getters：如 vue 中的计算属性一样，基于 state 数据的二次包装，常用于数据的筛选和多个数据的相关性计算</li>
+<li>mutations：类似函数，改变 state 数据的唯一途径，且不能用于处理异步事件</li>
+<li>actions：类似于 mutation，用于提交 mutation 来改变状态，而不直接变更状态，可以包含任意异步操作</li>
+<li>modules：类似于命名空间，用于项目中将各个模块的状态分开定义和操作，便于维护</li>
+</ol>
+<h4 id="3-Vuex-实例应用"><a href="#3-Vuex-实例应用" class="headerlink" title="3. Vuex 实例应用"></a>3. Vuex 实例应用</h4><p>// 父组件 <template> <div id="app"> <ChildA/> <ChildB/> </div> </template> <script> import ChildA from './components/ChildA' // 导入 A 组件 import ChildB from './components/ChildB' // 导入 B 组件 export default { name: 'App', components: {ChildA, ChildB} // 注册 A、B 组件 } </script> 复制代码<br>// 子组件 childA <template> <div id="childA"> <h1>我是 A 组件</h1> &lt;button @click=”transform”&gt;点我让 B 组件接收到数据</button> <p>因为你点了 B，所以我的信息发生了变化：</p> </div> </template> <script> export default { data() { return { AMessage: 'Hello，B 组件，我是 A 组件' } }, computed: { BMessage() { // 这里存储从 store 里获取的 B 组件的数据 return this.$store.state.BMsg       }     },     methods: {       transform() {         // 触发receiveAMsg，将A组件的数据存放到store里去         this.$store.commit('receiveAMsg', { AMsg: this.AMessage }) } } } </script> 复制代码<br>// 子组件 childB <template> <div id="childB"> <h1>我是 B 组件</h1> &lt;button @click=”transform”&gt;点我让 A 组件接收到数据</button> <p>因为你点了 A，所以我的信息发生了变化：</p> </div> </template> <script> export default { data() { return { BMessage: 'Hello，A 组件，我是 B 组件' } }, computed: { AMessage() { // 这里存储从 store 里获取的 A 组件的数据 return this.$store.state.AMsg       }     },     methods: {       transform() {         // 触发receiveBMsg，将B组件的数据存放到store里去         this.$store.commit('receiveBMsg', { BMsg: this.BMessage }) } } } </script> 复制代码<br>vuex 的 store,js<br>import Vue from ‘vue’ import Vuex from ‘vuex’ Vue.use(Vuex) const state = { // 初始化 A 和 B 组件的数据，等待获取 AMsg: ‘’, BMsg: ‘’ } const mutations = { receiveAMsg(state, payload) { // 将 A 组件的数据存放于 state state.AMsg = payload.AMsg }, receiveBMsg(state, payload) { // 将 B 组件的数据存放于 state state.BMsg = payload.BMsg } } export default new Vuex.Store({ state, mutations }) 复制代码</p>
+<h3 id="七、localStorage-sessionStorage"><a href="#七、localStorage-sessionStorage" class="headerlink" title="七、localStorage / sessionStorage"></a>七、localStorage / sessionStorage</h3><p>这种通信比较简单,缺点是数据和状态比较混乱,不太容易维护。 通过 window.localStorage.getItem(key)获取数据 通过 window.localStorage.setItem(key,value)存储数据<br>注意用 JSON.parse() / JSON.stringify() 做数据格式转换 localStorage / sessionStorage 可以结合 vuex, 实现数据的持久保存,同时使用 vuex 解决数据和状态混乱问题.</p>
+<h3 id="八-attrs-与-listeners"><a href="#八-attrs-与-listeners" class="headerlink" title="八 $attrs 与 $listeners"></a>八 $attrs 与 $listeners</h3><p>现在我们来讨论一种情况， 我们一开始给出的组件关系图中 A 组件与 D 组件是隔代关系， 那它们之前进行通信有哪些方式呢？</p>
+<ol>
+<li>使用 props 绑定来进行一级一级的信息传递, 如果 D 组件中状态改变需要传递数据给 A, 使用事件系统一级级往上传递</li>
+<li>使用 eventBus,这种情况下还是比较适合使用, 但是碰到多人合作开发时, 代码维护性较低, 可读性也低</li>
+<li>使用 Vuex 来进行数据管理, 但是如果仅仅是传递数据, 而不做中间处理,使用 Vuex 处理感觉有点大材小用了.</li>
+</ol>
+<p>在 vue2.4 中，为了解决该需求，引入了$attrs 和$listeners ， 新增了 inheritAttrs 选项。 在版本 2.4 以前，默认情况下,父作用域中不作为 prop 被识别 (且获取) 的特性绑定 (class 和 style 除外)，将会“回退”且作为普通的 HTML 特性应用在子组件的根元素上。接下来看一个跨级通信的例子:<br>// app.vue // index.vue <template> <div> <child-com1       :name="name"       :age="age"       :gender="gender"       :height="height"       title="程序员成长指北"     ></child-com1> </div> </template> <script> const childCom1 = () => import("./childCom1.vue"); export default { components: { childCom1 }, data() { return { name: "zhang", age: "18", gender: "女", height: "158" }; } }; </script> 复制代码<br>// childCom1.vue <template class="border"> <div> <p>name: </p> <p>childCom1 的$attrs: </p>     <child-com2 v-bind="$attrs"></child-com2> </div> </template> <script> const childCom2 = () => import("./childCom2.vue"); export default { components: { childCom2 }, inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在 props 声明的属性 props: { name: String // name 作为 props 属性绑定 }, created() { console.log(this.$attrs);      // { "age": "18", "gender": "女", "height": "158", "title": "程序员成长指北" }   } }; </script> 复制代码<br>// childCom2.vue <template>   <div class="border">     <p>age: </p>     <p>childCom2: </p>   </div> </template> <script> export default {   inheritAttrs: false,   props: {     age: String   },   created() {     console.log(this.$attrs); // { "gender": "女", "height": "158", "title": "程序员成长指北" } } }; </script> 复制代码</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>常见使用场景可以分为三类:</p>
 <ul>
-<li><p>push()：对一个对象数组添加一个元素，注意形式 <code>app_test_list.items.push(&#123;text:&quot;用push添加元素&quot;&#125;);</code></p>
-</li>
-<li><p>pop()：</p>
-</li>
-<li><p>shift()</p>
-</li>
-<li><p>unshift()</p>
-</li>
-<li><p>splice()</p>
-</li>
-<li><p>sort()</p>
-</li>
-<li><p>reverse()</p>
-</li>
-<li><p>filter()</p>
-</li>
-<li><p>concat()</p>
-</li>
-<li><p>slice()</p>
-</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>属性值之间使用冒号</li>
-<li>只有赋值才是等号</li>
-<li>对象内的属性之间用逗号分隔开</li>
+<li>父子组件通信: props; $parent / $children; provide / inject ; ref ; $attrs / $listeners</li>
+<li>兄弟组件通信: eventBus ; vuex</li>
+<li>跨级通信: eventBus；Vuex；provide / inject 、$attrs / $listeners</li>
 </ul>
 
 </div>
@@ -574,11 +686,11 @@
             <ul style="display: none">
             
                             <li class="category-list-child">
-                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
+                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
                             </li>
                         
                             <li class="category-list-child">
-                                <a href="/categories/Environment/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8">工具使用</a>
+                                <a href="/categories/Environment/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>
                             </li>
                         
             </ul>
