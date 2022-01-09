@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>RSA公钥密码算法 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="最近利用自己曾经写过的一篇文章『https://www.wztlink1013.com/blog/bw80k6/』（利用一次抓包来复习学习过的计网知识）前言：在分析 HTTPS 和 HTTP 这两个协议之间的区别的时候，我感觉 HTTPS 的 SSL(Secure Sockets Layer 安全套">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="RSA公钥密码算法 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/hbiq3g/">
+    <meta property="og:site_name" content="尼采般地抒情">
+    <meta property="og:description" content="最近利用自己曾经写过的一篇文章『https://www.wztlink1013.com/blog/bw80k6/』（利用一次抓包来复习学习过的计网知识）前言：在分析 HTTPS 和 HTTP 这两个协议之间的区别的时候，我感觉 HTTPS 的 SSL(Secure Sockets Layer 安全套">
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.9/highlight/10.7.1/highlight.min.js"></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.8/font/css/font-awesome.min.css">
+    <!-- 引入jQuery -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- algolia for the search only version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>246 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E5%AF%86%E9%92%A5"><span class="toc-text">对称密钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA-%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95"><span class="toc-text">RSA 公钥密码算法</span></a></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <div class="component clearfix blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>246 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>RSA公钥密码算法</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2022-01-08 18:31:45
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/数据结构与算法">
+                        数据结构与算法
+                    </a>
+                    
+                    <a href="/categories/数据结构与算法/RSA算法">
+                        RSA算法
+                    </a>
+                    
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <blockquote>
+<p>最近利用自己曾经写过的一篇文章『<a href="https://www.wztlink1013.com/blog/bw80k6/">https://www.wztlink1013.com/blog/bw80k6/</a>』（利用一次抓包来复习学习过的计网知识）</p>
+</blockquote>
+<p>前言：在分析 HTTPS 和 HTTP 这两个协议之间的区别的时候，我感觉 HTTPS 的 SSL(Secure Sockets Layer 安全套接字协议)证书很类似之前老师讲过的 RSA 算法，做此篇文章复习下 RSA 算法和加深 HTTPS 的理解。</p>
+<p>在密码学当中，由对称密钥和非对称密钥之分。</p>
+<h2 id="对称密钥"><a href="#对称密钥" class="headerlink" title="对称密钥"></a>对称密钥</h2><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612943343546-b8330998-9019-40a1-9759-12b459d5379b.png#align=left&display=inline&height=345&margin=%5Bobject%20Object%5D&name=image.png&originHeight=690&originWidth=982&size=266245&status=done&style=stroke&width=491" alt="image.png"><br>用一个简单的凯撒密码例子来讲解一下对称密钥：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612943823633-5283daed-a125-46fd-a785-93851daf5269.png#align=left&display=inline&height=325&margin=%5Bobject%20Object%5D&name=image.png&originHeight=650&originWidth=957&size=205858&status=done&style=stroke&width=478.5" alt="image.png"><br>上图是凯撒密码的定义，先说一下怎么用：</p>
+<p>假如张三和李四两个人之间需要传输一段密码 apple，他们之间共同约定使用密钥-3（再上图表示就为 e 字母编程 b 字母了，以此类推），而这个算法是基于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%A8%A1%E9%99%A4">mod 运算</a>（在这里看成是一种加密/解密机制）的。</p>
+<p>张三利用 mod 运算加密机制（mod 运算）将 apple 转换位 xmmfb<br>李四利用 mod 运算解密机制（mod 运算）将 xmmfb 转换位 apple</p>
+<blockquote>
+<p>a 为什么到 x：（0-3）mod26 可以看成（23-26）mod26=23，所以 a 往后退三位还是 x</p>
+</blockquote>
+<p>上述例子的加密机制和解密机制算法一样（mod 运算），实际上也可以不一样，不做详述。但是可以说名对称加密的密钥都一样，该例子中表现为-3</p>
+<h2 id="RSA-公钥密码算法"><a href="#RSA-公钥密码算法" class="headerlink" title="RSA 公钥密码算法"></a>RSA 公钥密码算法</h2><p>RSA 公钥密码算法是非对称加密。</p>
+<p>先说一下和上面的对称密钥的不同，很简单，不同之处就是对称密钥只有一个密钥，而非对称密钥有两个（我觉得严谨来说可以有多个，但在这里先局限地说有两个），而且一个叫公钥，一个叫密钥。</p>
+<p>还是上面的张三李四例子，就相当于张三这次用公钥来加密 apple 这个单词，加密成一段密文，这段密文<strong>只能由密钥来解密</strong>，即便是你有了公钥，也不能将其解密。</p>
+<p>然后来抛出几个问题来分析之：</p>
+<blockquote>
+<p>【Q1】公钥和密钥怎么来规定呢？我要是一个网络攻击者，我利用公钥来推理出密钥，那我岂不是直接解密了？！</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612945567958-1cd39a87-ba61-4dd8-955e-1a4fc130378d.png#align=left&display=inline&height=290&margin=%5Bobject%20Object%5D&name=image.png&originHeight=579&originWidth=474&size=117414&status=done&style=stroke&width=237" alt="image.png"><br>具体的相关 mod 运算在此不做详述</p>
+<blockquote>
+<p>【Q2】算法可靠与否</p>
+</blockquote>
+<p>为了保证严谨，同时也证明了这种算法的</p>
+<ul>
+<li>可行性，所计算出来的算法复杂度最高是 4 次方，对计算机而言，可计算</li>
+<li>不可攻破，在学界，大数因子分解不可行，或者说，如今的科技还不能轻易的破解</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612945767363-ee62dad7-357d-42d3-a932-78cc10d29866.png#align=left&display=inline&height=337&margin=%5Bobject%20Object%5D&name=image.png&originHeight=674&originWidth=985&size=269673&status=done&style=stroke&width=492.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612945781929-bea0946c-3f24-472d-a4d4-3c40abd83ee3.png#align=left&display=inline&height=244&margin=%5Bobject%20Object%5D&name=image.png&originHeight=487&originWidth=987&size=177512&status=done&style=stroke&width=493.5" alt="image.png"></p>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/hbiq3g/">https://www.wztlink1013.com/blog/hbiq3g/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/hbiq3g/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/yeg6my/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>最小生成树算法（Prim+Kruskal）</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/xfsu2c/">
+                    <b>计算方法各实验流程图汇总</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component clearfix comments" id="comments" style="display: block;">
+  <div class="comments_title">
+      <h2>评论区</h2>
+      <!-- 转换评论按钮 -->
+      <div class="comment-switch not-select">
+        <span class="first-comment">Beaudar</span>
+        <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+        <span class="second-comment">Twikoo</span>
+      </div>
+  </div>
+
+  <div class="comments_content">
+      <!-- utterances评论区 -->
+      <div id="utterances_comment" style="display: none;">
+      </div>
+      <!-- twikoo评论区 -->
+      <div id="twikoo_comment" style="display: block;">
+        <div id="tcomment"></div>
+        <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+        <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+        </script>
+      </div>
+  </div>
+</div>
+
+
+        
+        
+    </div>
+    <div class="ct_right">
+        
+
+<div class="component clearfix categories">
+    <h3>『技术』文章分类</h3><ul class="cate_forder">
+    
+            <li class="cate_cell">
+            <a href="/categories/Bug">Bug</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/JavaScript">JavaScript</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+</ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+
+
+    
+        <!-- 非首页 -->
+        
+<script src="/public/js/main.js"></script>
+
+     
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+</body>
+</html>
