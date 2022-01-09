@@ -4,19 +4,19 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>jsDelivr和Github构建免费CDN | 尼采般地抒情</title>
+    <title>jsDelivr+Github或NPM+国内镜像源两种方法构建免费CDN库 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情">
     <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="一、搭建缘由CDN 的全称是 Content Delivery Network，即内容分发网络。CDN 是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN 的关键技术">
+    <meta name="description" content="前言：此前一直使用 jsDelivr+GitHub 来构建免费的 CDN 服务，但是在 2121.12.20 左右，jsDelivr 貌似崩了，究其原因是其在国内的备案失效了，导致网宿停止对该域名的服务，之后恢复之后，国内节点也不会像之前一样的解析得快了，具体体现就是网站中涉及 jsDelivr 静">
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="jsDelivr和Github构建免费CDN | 尼采般地抒情">
+    <meta property="og:title" content="jsDelivr+Github或NPM+国内镜像源两种方法构建免费CDN库 | 尼采般地抒情">
     <meta property="og:url" content="https://www.wztlink1013.com/blog/erx9hf/">
     <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="一、搭建缘由CDN 的全称是 Content Delivery Network，即内容分发网络。CDN 是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN 的关键技术">
+    <meta property="og:description" content="前言：此前一直使用 jsDelivr+GitHub 来构建免费的 CDN 服务，但是在 2121.12.20 左右，jsDelivr 貌似崩了，究其原因是其在国内的备案失效了，导致网宿停止对该域名的服务，之后恢复之后，国内节点也不会像之前一样的解析得快了，具体体现就是网站中涉及 jsDelivr 静">
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -135,7 +135,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%90%AD%E5%BB%BA%E7%BC%98%E7%94%B1"><span class="toc-text">一、搭建缘由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81GitHub-%E6%96%B0%E5%BB%BA-CDN-%E4%BB%93%E5%BA%93"><span class="toc-text">二、GitHub 新建 CDN 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%BF%E7%94%A8-jsDlivr"><span class="toc-text">三、使用 jsDlivr</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%95%E4%B8%BA%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C-CDN"><span class="toc-text">何为内容分发网络 CDN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9ANPM-%E5%8C%85-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F"><span class="toc-text">方法一：NPM 包+国内镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CDN-%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90"><span class="toc-text">CDN 国内镜像源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-text">实现思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9AjsDelivr-GitHub-%E4%BB%93%E5%BA%93"><span class="toc-text">方法二：jsDelivr+GitHub 仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GitHub-%E6%96%B0%E5%BB%BA-CDN-%E4%BB%93%E5%BA%93"><span class="toc-text">GitHub 新建 CDN 仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-jsDelivr"><span class="toc-text">使用 jsDelivr</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -210,7 +210,7 @@
 -->
 <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>jsDelivr和Github构建免费CDN</h1>
+        <h1>jsDelivr+Github或NPM+国内镜像源两种方法构建免费CDN库</h1>
     </div>
     <div class="article_meta_other">
         <span class="meta_item">
@@ -249,11 +249,45 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="一、搭建缘由"><a href="#一、搭建缘由" class="headerlink" title="一、搭建缘由"></a>一、搭建缘由</h2><p>CDN 的全称是 Content Delivery Network，即内容分发网络。CDN 是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN 的关键技术主要有内容存储和分发技术。——百度百科</p>
-<p>通俗来说就是提取外链，同时加速访问的好处。Github 的资源在国内加载速度比较慢，因此需要使用 CDN 加速来优化网站打开速度，jsDelivr + Github 便是免费且好用的 CDN，非常适合博客网站使用。</p>
-<h2 id="二、GitHub-新建-CDN-仓库"><a href="#二、GitHub-新建-CDN-仓库" class="headerlink" title="二、GitHub 新建 CDN 仓库"></a>二、GitHub 新建 CDN 仓库</h2><p>在本地电脑进行一系列 clone/pull 等一系列操作，同时发布版本（最好上传一次就发布依次版本）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926808858-fcdea51e-42b2-4582-b46d-e9c105842039.png#align=left&display=inline&height=950&margin=%5Bobject%20Object%5D&originHeight=950&originWidth=1844&size=0&status=done&style=none&width=1844"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926808290-99384f86-d857-415a-83e6-9be3b5bcf279.png#align=left&display=inline&height=953&margin=%5Bobject%20Object%5D&originHeight=953&originWidth=1832&size=0&status=done&style=none&width=1832"></p>
-<h2 id="三、使用-jsDlivr"><a href="#三、使用-jsDlivr" class="headerlink" title="三、使用 jsDlivr"></a>三、使用 jsDlivr</h2><p><strong><code>[https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@](https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@)版本号/文件夹/文件名.文件后缀</code></strong></p>
-<p><strong>举个栗子</strong></p>
+    <p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1641718461641-3811ef80-de8d-4fe8-adf5-1e80d9bc3a4f.png#clientId=u667291ab-6b14-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=ue9c0ff30&margin=%5Bobject%20Object%5D&name=%E6%9E%84%E5%BB%BACDN%E5%BA%93.png&originHeight=383&originWidth=900&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=46755&status=done&style=none&taskId=u6626586e-8dfd-486a-bc28-1346ab73b96&title=" alt="构建CDN库.png"><br>前言：此前一直使用 jsDelivr+GitHub 来构建免费的 CDN 服务，但是在 2121.12.20 左右，jsDelivr 貌似崩了，究其原因是其在国内的备案失效了，导致网宿停止对该域名的服务，之后恢复之后，国内节点也不会像之前一样的解析得快了，具体体现就是网站中涉及 jsDelivr 静态资源 CDN 处打开会有卡顿的访问情况。<br>​</p>
+<p>所以本文介绍新一种搭建免费 CDN 的方案：将静态资源发布 NPM 包+国内镜像引用的方式，另一种是之前一直用的 jsDelivr+GitHub 仓库引用的方案。</p>
+<h3 id="何为内容分发网络-CDN"><a href="#何为内容分发网络-CDN" class="headerlink" title="何为内容分发网络 CDN"></a>何为内容分发网络 CDN</h3><blockquote>
+<p>CDN 的全称是 Content Delivery Network，即内容分发网络。CDN 是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN 的关键技术主要有内容存储和分发技术。——百度百科</p>
+</blockquote>
+<p>通俗来说就是提取外链，同时加速访问的好处。Github 的资源在国内加载速度比较慢，因此需要使用 CDN 加速来优化网站打开速度，<del>jsDelivr + Github 便是免费且好用的 CDN</del>（jsDelivr cdn 半挂状态），非常适合博客网站使用。</p>
+<h2 id="方法一：NPM-包-国内镜像"><a href="#方法一：NPM-包-国内镜像" class="headerlink" title="方法一：NPM 包+国内镜像"></a>方法一：NPM 包+国内镜像</h2><p>原因：</p>
+<ul>
+<li>网站引入的静态资源，如 js、css、图片等资源，使用公共的 CDN 库来引入会更好地优化网站速度。</li>
+<li>不用 jsDelivr+GitHub 做 CDN 的缘由是，镜像没有 npm 的镜像多</li>
+<li>jsDelivr cdn 挂了（盲猜薅羊毛导致），备案证书过期，国内速度不再是从前的那般快了</li>
+</ul>
+<h3 id="CDN-国内镜像源"><a href="#CDN-国内镜像源" class="headerlink" title="CDN 国内镜像源"></a>CDN 国内镜像源</h3><ul>
+<li>知乎做的：<a target="_blank" rel="noopener" href="https://npm.elemecdn.com/">https://npm.elemecdn.com/</a></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/yuque-hexo-lyrics@1.0.0/config.js">https://unpkg.zhimg.com/yuque-hexo-lyrics@1.0.0/config.js</a></p>
+<ul>
+<li>饿了么做的：<a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/">https://unpkg.zhimg.com/</a></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://npm.elemecdn.com/yuque-hexo-lyrics@1.0.0/config.js">https://npm.elemecdn.com/yuque-hexo-lyrics@1.0.0/config.js</a></p>
+<ul>
+<li>UNPKG（unpkg 镜像用的是 CloudFlare，国内加速效果不好）：<a target="_blank" rel="noopener" href="https://unpkg.com/">https://unpkg.com/</a></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://unpkg.com/yuque-hexo-lyrics@1.0.0/config.js">https://unpkg.com/yuque-hexo-lyrics@1.0.0/config.js</a></p>
+<ul>
+<li>……</li>
+</ul>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>将 GitHub 仓库私有化，同时配置 GitHub Actions，如果发布版本/fork/star 等操作，就将其 pulish 到 npm 包<br>​</p>
+<p>每次更新 GitHub 仓库之后，需要将 package.json 文件中的 version 字段的值指定，然后才能使用 GitHub Actions 进行自动化部署<br>​</p>
+<p>具体使用形式：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/cdn-website@0.0.0/ico/heroes_villains/Totoro.ico">https://unpkg.zhimg.com/cdn-website@0.0.0/ico/heroes_villains/Totoro.ico</a></li>
+<li><a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/cdn-pictures@0.0.0/about/teacher.png">https://unpkg.zhimg.com/cdn-pictures@0.0.0/about/teacher.png</a></li>
+<li><a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/cdn-articles@0.0.0/article1/20200725094728.jpg">https://unpkg.zhimg.com/cdn-articles@0.0.0/article1/20200725094728.jpg</a></li>
+</ul>
+<p>​</p>
+<p>其中，上述链接中的 CDN 链接<a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/">https://unpkg.zhimg.com/</a>都可以用其他国内镜像源替换</p>
+<h2 id="方法二：jsDelivr-GitHub-仓库"><a href="#方法二：jsDelivr-GitHub-仓库" class="headerlink" title="方法二：jsDelivr+GitHub 仓库"></a>方法二：jsDelivr+GitHub 仓库</h2><h3 id="GitHub-新建-CDN-仓库"><a href="#GitHub-新建-CDN-仓库" class="headerlink" title="GitHub 新建 CDN 仓库"></a>GitHub 新建 CDN 仓库</h3><p>在本地电脑进行一系列 clone/pull 等一系列操作，同时发布版本（最好上传一次就发布依次版本）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926808858-fcdea51e-42b2-4582-b46d-e9c105842039.png#crop=0&crop=0&crop=1&crop=1&height=950&id=H2FW1&originHeight=950&originWidth=1844&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=0&status=done&style=none&title=&width=1844"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926808290-99384f86-d857-415a-83e6-9be3b5bcf279.png#crop=0&crop=0&crop=1&crop=1&height=953&id=nIJCg&originHeight=953&originWidth=1832&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=0&status=done&style=none&title=&width=1832"></p>
+<h3 id="使用-jsDelivr"><a href="#使用-jsDelivr" class="headerlink" title="使用 jsDelivr"></a>使用 jsDelivr</h3><p><code>[**https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@**](https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@)**版本号/文件夹/文件名.文件后缀**</code><br><strong>举个栗子</strong></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wztlink1013/CDN@2.4/Pictures/blogbackground/fengbaobao_1.jpg">https://cdn.jsdelivr.net/gh/wztlink1013/CDN@2.4/Pictures/blogbackground/fengbaobao_1.jpg</a></li>
 <li><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/moezx/cdn@3.1.3//The%20Pet%20Girl%20of%20Sakurasou.mp4">https://cdn.jsdelivr.net/gh/moezx/cdn@3.1.3//The Pet Girl of Sakurasou.mp4</a></li>
@@ -269,13 +303,13 @@
 <p>1、加载任何 Github 发布、提交或分支</p>
 </blockquote>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/user/repo@version/file">https://cdn.jsdelivr.net/gh/user/repo@version/file</a></li>
-</ul>
+<li><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/user/repo@version/file">https://cdn.jsdelivr.net/gh/user/repo@version/file</a></p>
 <blockquote>
 <p>2、加载 jQuery v3.2.1</p>
 </blockquote>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js">https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js</a></li>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js">https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js</a></p>
+</li>
 </ul>
 <blockquote>
 <p>3、使用版本范围而不是特定版本</p>
