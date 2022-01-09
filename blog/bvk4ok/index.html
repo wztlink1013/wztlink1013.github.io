@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>莱文斯坦距离(LD)问题 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符串所需要的最少操作步数，操作形式有：替换字母删除字母插入字母问题分析利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算法的不">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="莱文斯坦距离(LD)问题 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/bvk4ok/">
+    <meta property="og:site_name" content="尼采般地抒情">
+    <meta property="og:description" content="问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符串所需要的最少操作步数，操作形式有：替换字母删除字母插入字母问题分析利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算法的不">
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.3/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.9/highlight/10.7.1/highlight.min.js"></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-website@1.0.8/font/css/font-awesome.min.css">
+    <!-- 引入jQuery -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- algolia for the search only version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>249 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <div class="component clearfix blogger">
+    <h3>尼采般地抒情</h3>
+    <img class="blogger_left" src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" alt="尼采般地抒情">
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>249 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>莱文斯坦距离(LD)问题</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://cdn.jsdelivr.net/gh/wztlink1013/cdn-pictures@1.0.1/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2020-10-23 19:22:37
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/数据结构与算法">
+                        数据结构与算法
+                    </a>
+                    
+                    <a href="/categories/数据结构与算法/动态规划算法">
+                        动态规划算法
+                    </a>
+                    
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>Levenshtein Distance</strong>也称<strong>莱文斯坦距离</strong></p>
+<p>具体形式就是求一个字符串到另一个字符串所需要的<strong>最少操作步数</strong>，操作形式有：</p>
+<ul>
+<li>替换字母</li>
+<li>删除字母</li>
+<li>插入字母</li>
+</ul>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算法的不同。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603615056984-36cbce7c-c55e-456a-bb90-eb18471167e0.png#align=left&display=inline&height=335&margin=%5Bobject%20Object%5D&name=image.png&originHeight=670&originWidth=1026&size=202356&status=done&style=shadow&width=513" alt="image.png"></p>
+<p><strong>莱文斯坦的公式化</strong>表述为：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603614727015-dad259b0-7904-4e5d-9ec8-f4ac284af2e5.png#align=left&display=inline&height=94&margin=%5Bobject%20Object%5D&name=image.png&originHeight=188&originWidth=874&size=23400&status=done&style=shadow&width=437" alt="image.png"></p>
+<p>下面利用表格的形式来步步推出该字母所需要达到相应的目标字母序列的步数。</p>
+<p>| |<br>| s | o | n |<br>| — | — | — | — | — |<br>|<br>| 0 | 1 | 2 | 3 |<br>| s | 1 | 0 | 1 | 2 |<br>| u | 2 | 1 | 1 | 2 |<br>| n | 3 | 2 | 2 | 1 |</p>
+<p>记横（son）为 i 字符串序列，纵（sun）为 j 字符串序列。需要完成的字符串变换为 i-&gt;j。现举例格子数值该怎么填：</p>
+<p>当到了第三行第三列的那一格，需要完成 s-&gt;s，有三种情况可以选择</p>
+<ol>
+<li>左操作(i-1,j)：删除 s 字符然后插入 s 字符===操作步数两步</li>
+<li>上操作(i,j-1)：插入 s 字符然后删除 s 字符===操作步数两步</li>
+<li>左上操作(i-1,j-1)：替换步骤，因为这个元素相同，故===操作步数零部</li>
+</ol>
+<p>然后选取上述三种情况最短步数的数值 0</p>
+<p>然后再看第三行第四列，需要完成 so-&gt;s，</p>
+<ol>
+<li>左操作：删除 o===一步</li>
+<li>上操作：插入 s 删除 so===三步</li>
+<li>做上操作：替换 s 删除 o===两步</li>
+</ol>
+<p>综上应该填 1</p>
+<p>其他格子也一样以上述方法填写。</p>
+<p>有个作业遗留问题，在 CAAIS 里面每个得出的值右上标的 <code>U</code>  <code>L</code>  <code>0</code>  <code>1</code>  这些的依次顺序是怎么个顺序？<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603615446981-23bea432-08ee-490a-9037-018ba6280c3b.png#align=left&display=inline&height=201&margin=%5Bobject%20Object%5D&name=image.png&originHeight=401&originWidth=651&size=49834&status=done&style=shadow&width=325.5" alt="image.png"></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="cpp">#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include&lt;iostream&gt;
+#include&lt;ctime&gt;
+
+const int LEN_NAME=100;
+
+namespace NS_LSEditDist &#123;
+    using namespace std;
+    void Initialization(const string &amp;x, const string &amp;y);
+    int GetLSEditDist(const string &amp;x, const string &amp;y);
+    void GetLSEdits(const string &amp;x, const string &amp;y);
+    void Output(const string &amp;x, const string &amp;y, int OptD);
+    void OutputE(const string &amp;x, const string &amp;y);
+    void OutputP(const string &amp;x, const string &amp;y);
+    static int m, n;
+    static vector&lt;vector&lt;int&gt;&gt; E;
+    static vector&lt;vector&lt;char&gt;&gt; P;
+    static string xe, ye;
+    void LSEditDistCaller(const string &amp;x, const string &amp;y)
+    &#123;
+        Initialization(x, y);
+        int OptD = GetLSEditDist(x, y);
+        GetLSEdits(x, y);
+        Output(x, y, OptD);
+    &#125;
+    int GetLSEditDist(const string &amp;x, const string &amp;y)
+    &#123;
+        for (int i = 1; i &lt;= m; i++)
+            for (int j = 1; j &lt;= n; j++)
+            &#123;
+                E[i][j] = min(E[i - 1][j] + 1,
+                              min(E[i][j - 1] + 1,
+                                  E[i - 1][j - 1] + (x[i - 1] != y[j - 1])));
+                if (E[i][j] == E[i - 1][j] + 1)
+                    P[i][j] = &#39;U&#39;;
+                else if (E[i][j] == E[i][j - 1] + 1)
+                    P[i][j] = &#39;L&#39;;
+                else if (x[i - 1] != y[j - 1])
+                    P[i][j] = &#39;1&#39;;
+            &#125;
+        return E[m][n];
+    &#125;
+    void GetLSEdits(const string &amp;x, const string &amp;y)
+    &#123;
+        int i = m, j = n;
+        while (i &gt; 0 || j &gt; 0)
+        &#123;
+            if (P[i][j] == &#39;0&#39; || P[i][j] == &#39;1&#39;)
+            &#123;
+                xe.insert(0, 1, x[i - 1]);
+                ye.insert(0, 1, y[j - 1]);
+                i--; j--;
+            &#125;
+            else if (P[i][j] == &#39;U&#39;)
+            &#123;
+                xe.insert(xe.begin(), x[i - 1]);
+                ye.insert(ye.begin(), &#39;-&#39;);
+                i--;
+            &#125;
+            else
+            &#123;
+                xe.insert(xe.begin(), &#39;-&#39;);
+                ye.insert(ye.begin(), y[j - 1]);
+                j--;
+            &#125;
+        &#125;
+    &#125;
+    void Initialization(const string &amp;x, const string &amp;y)
+    &#123;
+        m = x.length();
+        n = y.length();
+        E.clear();
+        E.resize(m + 1, vector&lt;int&gt;(n + 1, 0));
+        P.clear();
+        P.resize(m + 1, vector&lt;char&gt;(n + 1, &#39;0&#39;));
+        for (int j = 1; j &lt;= n; j++)
+        &#123;
+            E[0][j] = j;
+            P[0][j] = &#39;L&#39;;
+        &#125;
+        for (int i = 1; i &lt;= m; i++)
+        &#123;
+            E[i][0] = i;
+            P[i][0] = &#39;U&#39;;
+        &#125;
+        xe.clear();
+        ye.clear();
+    &#125;
+    void Output(const string &amp;x, const string &amp;y, int OptD)
+    &#123;
+        printf(&quot;Levenshtein distance: \n&quot;);
+        printf(&quot;Strings: %s, %s\n\n&quot;, x.c_str(), y.c_str());
+        OutputE(x, y);
+        OutputP(x, y);
+        printf(&quot;Distance: %d\n&quot;, OptD);
+        printf(&quot;Edited strings:\n&quot;);
+        for (auto c : xe)
+            printf(&quot;%2c&quot;, c);
+        printf(&quot;\n&quot;);
+        for (auto c : ye)
+            printf(&quot;%2c&quot;, c);
+        printf(&quot;\n\n&quot;);
+    &#125;
+    void OutputE(const string &amp;x, const string &amp;y)
+    &#123;
+        printf(&quot; E  &quot;);
+        for (int j = 0; j &lt; n; j++)
+            printf(&quot;%2c&quot;, y[j]);
+        printf(&quot;\n&quot;);
+        for (int i = 0; i &lt;= m; i++)
+        &#123;
+            if (i == 0)
+                printf(&quot;  &quot;);
+            else
+                printf(&quot;%2c&quot;, x[i - 1]);
+            for (int j = 0; j &lt;= n; j++)
+            &#123;
+                printf(&quot;%2d&quot;, E[i][j]);
+            &#125;
+            printf(&quot;\n&quot;);
+        &#125;
+        printf(&quot;\n&quot;);
+    &#125;
+    void OutputP(const string &amp;x, const string &amp;y)
+    &#123;
+        printf(&quot; P  &quot;);
+        for (int j = 0; j &lt; n; j++)
+            printf(&quot;%2c&quot;, y[j]);
+        printf(&quot;\n&quot;);
+        for (int i = 0; i &lt;= m; i++)
+        &#123;
+            if (i == 0)
+                printf(&quot;  &quot;);
+            else
+                printf(&quot;%2c&quot;, x[i - 1]);
+            for (int j = 0; j &lt;= n; j++)
+            &#123;
+                printf(&quot;%2c&quot;, P[i][j]);
+            &#125;
+            printf(&quot;\n&quot;);
+        &#125;
+        printf(&quot;\n&quot;);
+    &#125;
+&#125; //namespace NS_LSEditDist
+char *rand_str(char *str,const int len)
+&#123;
+    int i;
+    for(i=0;i&lt;len;++i)
+        str[i]=&#39;a&#39;+rand()%26;
+    str[++i]=&#39;\0&#39;;
+    return str;
+&#125;
+using namespace NS_LSEditDist;
+int main()
+&#123;
+    vector&lt;vector&lt;string&gt;&gt; abs = &#123;
+            &#123; &quot;water&quot;, &quot;wheat&quot; &#125;,
+            &#123; &quot;servant&quot;, &quot;reveal&quot; &#125;
+    &#125;;
+    for (auto ab : abs)
+    &#123;
+        string a = ab[0];
+        string b = ab[1];
+        LSEditDistCaller(a, b);
+    &#125;
+
+    cout&lt;&lt;&quot;两个100位字符串的LevenShtein距离：&quot;&lt;&lt;endl;
+
+    srand(time(NULL));
+    int i;
+    char name[LEN_NAME+1];
+    string x = rand_str(name,LEN_NAME);
+    string y = rand_str(name,LEN_NAME);
+
+    cout&lt;&lt;&quot;字符串1：&quot;&lt;&lt;x&lt;&lt;endl;
+    cout&lt;&lt;&quot;字符串2：&quot;&lt;&lt;y&lt;&lt;endl;
+
+    LSEditDistCaller(x, y);
+&#125;
+</code></pre>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%90%8A%E6%96%87%E6%96%AF%E5%9D%A6%E8%B7%9D%E9%9B%A2">莱文斯坦距离</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/2019/12/06/5dea0cb03281f/">理解 Levenshtein Distancee</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.throwable.club/2020/03/08/learn-about-levenshtein-distance-algorithm/">Levenshtein Distance（编辑距离）算法与使用场景</a></li>
+</ul>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/bvk4ok/">https://www.wztlink1013.com/blog/bvk4ok/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/bvk4ok/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/lkgrkx/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>IDEA-控制台输出中文乱码问题</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/bw80k6/">
+                    <b>利用WireShark捕获并分析以太网报文结构</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <div class="component clearfix comments" id="comments" style="display: block;">
+  <div class="comments_title">
+      <h2>评论区</h2>
+      <!-- 转换评论按钮 -->
+      <div class="comment-switch not-select">
+        <span class="first-comment">Beaudar</span>
+        <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+        <span class="second-comment">Twikoo</span>
+      </div>
+  </div>
+
+  <div class="comments_content">
+      <!-- utterances评论区 -->
+      <div id="utterances_comment" style="display: none;">
+      </div>
+      <!-- twikoo评论区 -->
+      <div id="twikoo_comment" style="display: block;">
+        <div id="tcomment"></div>
+        <script src="https://cdn.jsdelivr.net/npm/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+        <script>
+          twikoo.init({
+          envId: 'website-wikoo-4g46k8do98867542',
+          el: '#tcomment',
+          // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+          // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          }).then(function () {
+              console.log('Twikoo 初始化加载完成');
+          });
+        </script>
+      </div>
+  </div>
+</div>
+
+
+        
+        
+    </div>
+    <div class="ct_right">
+        
+
+<div class="component clearfix categories">
+    <h3>『技术』文章分类</h3><ul class="cate_forder">
+    
+            <li class="cate_cell">
+            <a href="/categories/Bug">Bug</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/JavaScript">JavaScript</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Web">Web</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+</ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+
+
+    
+        <!-- 非首页 -->
+        
+<script src="/public/js/main.js"></script>
+
+     
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+</body>
+</html>
