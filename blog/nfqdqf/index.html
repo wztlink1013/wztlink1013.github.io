@@ -1,0 +1,982 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Pandas库使用——各种索引 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情">
+    <meta name="email" content="wztlink1013@163.com">
+    <meta name="description" content="一、基本索引import pandas as pdimport numpy as npSeries 索引ser_obj1 = pd.Series(range(5), index = [&amp;#39;a&amp;#39;, &amp;#39;b&amp;#39;, &amp;#39;c&amp;#39;, &amp;#39;d&amp;#39;, &amp;#39;e">
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Pandas库使用——各种索引 | 尼采般地抒情">
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/nfqdqf/">
+    <meta property="og:site_name" content="尼采般地抒情">
+    <meta property="og:description" content="一、基本索引import pandas as pdimport numpy as npSeries 索引ser_obj1 = pd.Series(range(5), index = [&amp;#39;a&amp;#39;, &amp;#39;b&amp;#39;, &amp;#39;c&amp;#39;, &amp;#39;d&amp;#39;, &amp;#39;e">
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
+    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
+    <!-- 引入jQuery -->
+    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- algolia for the search only version -->
+    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+</head>
+<body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>255 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E6%9C%AC%E7%B4%A2%E5%BC%95"><span class="toc-text">一、基本索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Series-%E7%B4%A2%E5%BC%95"><span class="toc-text">Series 索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dataframe-%E7%B4%A2%E5%BC%95"><span class="toc-text">Dataframe 索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E7%B4%A2%E5%BC%95%E6%96%B9%E5%BC%8F"><span class="toc-text">三种索引方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Pandas-%E5%B1%82%E7%BA%A7%E7%B4%A2%E5%BC%95"><span class="toc-text">二、Pandas 层级索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%B1%82%E7%BA%A7%E7%B4%A2%E5%BC%95"><span class="toc-text">构造层级索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E5%8F%96%E5%AD%90%E9%9B%86"><span class="toc-text">选取子集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%88%86%E5%B1%82%E9%A1%BA%E5%BA%8F"><span class="toc-text">交换分层顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%88%86%E5%B1%82"><span class="toc-text">交换并排序分层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%80%8F%E8%A7%86%E8%A1%A8%E5%92%8C%E4%BA%A4%E5%8F%89%E8%A1%A8"><span class="toc-text">三、透视表和交叉表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%8F%E8%A7%86%E8%A1%A8"><span class="toc-text">透视表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E8%A1%A8"><span class="toc-text">交叉表</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:51
+ * @Description:  
+-->
+<div class="component clearfix blogger">
+  <h3>尼采般地抒情</h3>
+  <img
+    class="blogger_left"
+    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
+    alt="尼采般地抒情"
+  />
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>255 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:25
+ * @Description:  
+-->
+<div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Pandas库使用——各种索引</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2020-08-28 23:00:43
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/数据分析">
+                        数据分析
+                    </a>
+                    
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="一、基本索引"><a href="#一、基本索引" class="headerlink" title="一、基本索引"></a>一、基本索引</h2><pre><code class="python">import pandas as pd
+import numpy as np
+</code></pre>
+<h3 id="Series-索引"><a href="#Series-索引" class="headerlink" title="Series 索引"></a>Series 索引</h3><pre><code class="python">ser_obj1 = pd.Series(range(5), index = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;])
+print (ser_obj1.head())
+</code></pre>
+<pre><code>a    0
+b    1
+c    2
+d    3
+e    4
+dtype: int64
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;1. 行索引&#39;&#39;&#39;
+print(&#39;行索引====================================================================&#39;)
+print (ser_obj1[&#39;b&#39;])
+print (ser_obj1[0])
+print(&#39;切片索引====================================================================&#39;)
+&#39;&#39;&#39;2. 切片索引&#39;&#39;&#39;
+print (ser_obj1[1:3])
+print (ser_obj1[&#39;b&#39;:&#39;d&#39;])
+print(&#39;不连续索引索引====================================================================&#39;)
+#注意会不会包含尾巴。。
+&#39;&#39;&#39;3. 不连续索引&#39;&#39;&#39;
+print (ser_obj1[[0, 2, 4]])
+print (ser_obj1[[&#39;a&#39;, &#39;e&#39;]])
+print(&#39;布尔索引====================================================================&#39;)
+&#39;&#39;&#39;4. 布尔索引&#39;&#39;&#39;
+#是对里面的值进行判断，不是对索引
+ser_bool = ser_obj1 &gt; 2
+print (ser_bool)
+print (ser_obj1[ser_bool])#运用的方式
+print (ser_obj1[ser_obj1 &gt; 2])
+</code></pre>
+<pre><code>行索引====================================================================
+1
+0
+切片索引====================================================================
+b    1
+c    2
+dtype: int64
+b    1
+c    2
+d    3
+dtype: int64
+不连续索引索引====================================================================
+a    0
+c    2
+e    4
+dtype: int64
+a    0
+e    4
+dtype: int64
+布尔索引====================================================================
+a    False
+b    False
+c    False
+d     True
+e     True
+dtype: bool
+d    3
+e    4
+dtype: int64
+d    3
+e    4
+dtype: int64
+</code></pre>
+<h3 id="Dataframe-索引"><a href="#Dataframe-索引" class="headerlink" title="Dataframe 索引"></a>Dataframe 索引</h3><pre><code class="python">df_obj1 = pd.DataFrame(np.random.randn(5,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+print (df_obj1.head())
+</code></pre>
+<pre><code>          a         b         c         d
+0 -0.720611 -0.002543 -0.084255 -0.583719
+1  0.174715  0.288090 -0.254462 -1.669668
+2 -1.872654 -0.466842 -0.481040 -1.735558
+3  1.147668  1.205686  0.625582 -2.111863
+4  1.177882  0.049581 -0.404098 -0.497125
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;0. 转换成行索引的话===方式一：transpose或者T&#39;&#39;&#39;
+bb=df_obj1.transpose()
+print(df_obj1.T)
+print(bb)
+&#39;&#39;&#39;0. 转换成行索引的话===方式二：重构&#39;&#39;&#39;
+</code></pre>
+<pre><code>          0         1         2         3         4
+a -0.720611  0.174715 -1.872654  1.147668  1.177882
+b -0.002543  0.288090 -0.466842  1.205686  0.049581
+c -0.084255 -0.254462 -0.481040  0.625582 -0.404098
+d -0.583719 -1.669668 -1.735558 -2.111863 -0.497125
+          0         1         2         3         4
+a -0.720611  0.174715 -1.872654  1.147668  1.177882
+b -0.002543  0.288090 -0.466842  1.205686  0.049581
+c -0.084255 -0.254462 -0.481040  0.625582 -0.404098
+d -0.583719 -1.669668 -1.735558 -2.111863 -0.497125
+
+
+
+
+
+&#39;0. 转换成行索引的话===方式二：重构/重塑===还没有完全明白&#39;
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;1. 列索引=====默认为列索引来操作&#39;&#39;&#39;
+print (&#39;列索引&#39;)
+print(df_obj1.b)#当成属性来获取值
+print(&#39;===================&#39;)
+print (df_obj1[&#39;a&#39;]) # 返回Series类型
+print (type(df_obj1[&#39;a&#39;]))
+print (df_obj1[[&#39;a&#39;]]) # 返回DataFrame类型
+print (type(df_obj1[[&#39;a&#39;]]))
+&#39;&#39;&#39;2. 不连续索引&#39;&#39;&#39;
+print (&#39;不连续索引&#39;)
+print (df_obj1[[&#39;a&#39;,&#39;c&#39;]])
+print (df_obj1[[&#39;a&#39;,&#39;c&#39;]])
+</code></pre>
+<pre><code>列索引
+0   -0.002543
+1    0.288090
+2   -0.466842
+3    1.205686
+4    0.049581
+Name: b, dtype: float64
+===================
+0   -0.720611
+1    0.174715
+2   -1.872654
+3    1.147668
+4    1.177882
+Name: a, dtype: float64
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+          a
+0 -0.720611
+1  0.174715
+2 -1.872654
+3  1.147668
+4  1.177882
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+不连续索引
+          a         c
+0 -0.720611 -0.084255
+1  0.174715 -0.254462
+2 -1.872654 -0.481040
+3  1.147668  0.625582
+4  1.177882 -0.404098
+          a         c
+0 -0.720611 -0.084255
+1  0.174715 -0.254462
+2 -1.872654 -0.481040
+3  1.147668  0.625582
+4  1.177882 -0.404098
+</code></pre>
+<h3 id="三种索引方式"><a href="#三种索引方式" class="headerlink" title="三种索引方式"></a>三种索引方式</h3><pre><code class="python">print(ser_obj1)
+print(&#39;============================&#39;)
+print(df_obj1)
+</code></pre>
+<pre><code>a    0
+b    1
+c    2
+d    3
+e    4
+dtype: int64
+============================
+          a         b         c         d
+0 -0.720611 -0.002543 -0.084255 -0.583719
+1  0.174715  0.288090 -0.254462 -1.669668
+2 -1.872654 -0.466842 -0.481040 -1.735558
+3  1.147668  1.205686  0.625582 -2.111863
+4  1.177882  0.049581 -0.404098 -0.497125
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;1. 标签索引 loc===用的是index和column的值索引【标签索引】&#39;&#39;&#39;
+# Series
+print (ser_obj1[&#39;b&#39;:&#39;d&#39;])
+print (ser_obj1.loc[&#39;b&#39;:&#39;d&#39;])
+
+# DataFrame
+print (df_obj1[[&#39;a&#39;]])
+print (df_obj1.loc[0:2,&#39;a&#39;:&#39;c&#39;])
+</code></pre>
+<pre><code>b    1
+c    2
+d    3
+dtype: int64
+b    1
+c    2
+d    3
+dtype: int64
+          a
+0 -0.720611
+1  0.174715
+2 -1.872654
+3  1.147668
+4  1.177882
+          a         b         c
+0 -0.720611 -0.002543 -0.084255
+1  0.174715  0.288090 -0.254462
+2 -1.872654 -0.466842 -0.481040
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;2. 位置索引 iloc====用的是index和column的默认0，1，2，3···的值索引【位置索引】&#39;&#39;&#39;
+print (ser_obj1[1:3])
+print (ser_obj1.iloc[1:3])
+
+# DataFrame
+print (df_obj1.iloc[0:2, 0:2])
+# 注意和df_obj.loc[0:2, &#39;a&#39;]的区别 = = = 行和列：都不包括尾巴
+</code></pre>
+<pre><code>b    1
+c    2
+dtype: int64
+b    1
+c    2
+dtype: int64
+          a         b
+0 -0.720611 -0.002543
+1  0.174715  0.288090
+</code></pre>
+<pre><code class="python">&#39;&#39;&#39;3. 混合索引 ix===先按标签索引loc尝试操作，然后再按位置索引iloc尝试操作&#39;&#39;&#39;
+print (ser_obj1.ix[1:3])
+print (ser_obj1.ix[&#39;b&#39;:&#39;c&#39;])
+
+# DataFrame
+print (df_obj1.ix[0:2, 0:3])
+</code></pre>
+<pre><code>b    1
+c    2
+dtype: int64
+b    1
+c    2
+dtype: int64
+          a         b         c
+0 -0.720611 -0.002543 -0.084255
+1  0.174715  0.288090 -0.254462
+2 -1.872654 -0.466842 -0.481040
+</code></pre>
+<h2 id="二、Pandas-层级索引"><a href="#二、Pandas-层级索引" class="headerlink" title="二、Pandas 层级索引"></a>二、Pandas 层级索引</h2><h3 id="构造层级索引"><a href="#构造层级索引" class="headerlink" title="构造层级索引"></a>构造层级索引</h3><pre><code class="python">ser_obj = pd.Series(np.random.randn(12),
+                    index=[[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;, &#39;c&#39;, &#39;d&#39;, &#39;d&#39;, &#39;d&#39;],
+                           [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]])
+#列表里面的列表
+print (ser_obj)
+</code></pre>
+<pre><code>a  0   -0.373441
+   1    0.615976
+   2    0.959092
+b  0    1.743670
+   1   -0.791517
+   2   -0.774013
+c  0    1.271094
+   1   -0.723264
+   2    0.253038
+d  0   -0.767791
+   1    0.419253
+   2   -0.691644
+dtype: float64
+</code></pre>
+<ul>
+<li>MultiIndex 索引对象</li>
+</ul>
+<pre><code class="python">print (type(ser_obj.index))
+print (ser_obj.index)
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.indexes.multi.MultiIndex&#39;&gt;
+MultiIndex([(&#39;a&#39;, 0),
+            (&#39;a&#39;, 1),
+            (&#39;a&#39;, 2),
+            (&#39;b&#39;, 0),
+            (&#39;b&#39;, 1),
+            (&#39;b&#39;, 2),
+            (&#39;c&#39;, 0),
+            (&#39;c&#39;, 1),
+            (&#39;c&#39;, 2),
+            (&#39;d&#39;, 0),
+            (&#39;d&#39;, 1),
+            (&#39;d&#39;, 2)],
+           )
+</code></pre>
+<h3 id="选取子集"><a href="#选取子集" class="headerlink" title="选取子集"></a>选取子集</h3><pre><code class="python"># 外层选取
+print (ser_obj[&#39;c&#39;])
+</code></pre>
+<pre><code>0    1.271094
+1   -0.723264
+2    0.253038
+dtype: float64
+</code></pre>
+<pre><code class="python"># 内层选取
+print (ser_obj[:, 2])
+</code></pre>
+<pre><code>a    0.959092
+b   -0.774013
+c    0.253038
+d   -0.691644
+dtype: float64
+</code></pre>
+<h3 id="交换分层顺序"><a href="#交换分层顺序" class="headerlink" title="交换分层顺序"></a>交换分层顺序</h3><pre><code class="python">df_obj2 = pd.DataFrame(np.random.randn(6,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;],index=[[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;,&#39;b&#39;],[1, 2, 3, 1, 2,3]])
+#print (df_obj1.swaplevel())
+print (df_obj2)
+</code></pre>
+<pre><code>            a         b         c         d
+a 1  0.273776 -0.018659  1.512727 -0.088091
+  2 -0.410883 -1.488943  0.917268  1.179941
+  3 -0.237532 -0.823717  0.189495  1.060476
+b 1  0.727872  0.323352  0.443786  0.780510
+  2 -1.407645 -0.059689  1.439843 -1.700740
+  3 -0.377628 -0.137348 -0.739980  0.122528
+</code></pre>
+<h3 id="交换并排序分层"><a href="#交换并排序分层" class="headerlink" title="交换并排序分层"></a>交换并排序分层</h3><pre><code class="python">print (df_obj2.swaplevel().sortvalues(by=&#39;a&#39;))
+#Series没有这个内置函数sortlevel===dataframe有
+</code></pre>
+<h2 id="三、透视表和交叉表"><a href="#三、透视表和交叉表" class="headerlink" title="三、透视表和交叉表"></a>三、透视表和交叉表</h2><pre><code class="python">dataset_path = &#39;./data/starcraft.csv&#39;
+df_data = pd.read_csv(dataset_path, usecols=[&#39;LeagueIndex&#39;, &#39;Age&#39;, &#39;HoursPerWeek&#39;,
+                                             &#39;TotalHours&#39;, &#39;APM&#39;])
+print(df_data.head())
+</code></pre>
+<pre><code>   LeagueIndex   Age  HoursPerWeek  TotalHours       APM
+0            5  27.0          10.0      3000.0  143.7180
+1            5  23.0          10.0      5000.0  129.2322
+2            4  30.0          10.0       200.0   69.9612
+3            3  19.0          20.0       400.0  107.6016
+4            3  32.0          10.0       500.0  122.8908
+</code></pre>
+<h3 id="透视表"><a href="#透视表" class="headerlink" title="透视表"></a>透视表</h3><pre><code class="python">pd.pivot_table(df_data,
+               index=[&#39;Age&#39;],
+               columns=[&#39;LeagueIndex&#39;],
+               aggfunc=np.sum)
+</code></pre>
+<p>|             | APM        | HoursPerWeek | TotalHours |<br>| ———– | ———- | ———— | ———- | ———- | ———– | ———- | ——— | —– | —– | —– | — | —— | —— | —– | —— | ——- | ——- | ——- | ——— | ——– | ——- |<br>| LeagueIndex | 1          | 2            | 3          | 4          | 5           | 6          | 7         | 1     | 2     | 3     | … | 5      | 6      | 7     | 1      | 2       | 3       | 4       | 5         | 6        | 7       |<br>| Age         |            |              |            |            |             |            |           |       |       |       |     |        |        |       |        |         |         |         |           |          |         |<br>| 16.0        | 1062.44754 | 2919.70434   | 4851.9222  | 5149.7310  | 7787.37780  | 9042.1722  | 386.7774  | 324.0 | 720.0 | 778.0 | … | 1220.0 | 1280.0 | 56.0  | 4307.0 | 13143.0 | 29211.0 | 23581.0 | 49233.0   | 51320.0  | 3000.0  |<br>| 17.0        | 655.67280  | 1661.01540   | 4181.8920  | 5525.3586  | 10052.72100 | 8310.0858  | 573.8286  | 184.0 | 378.0 | 664.0 | … | 1460.0 | 1116.0 | 104.0 | 2044.0 | 7423.0  | 16602.0 | 24005.0 | 53375.0   | 45421.0  | 12700.0 |<br>| 18.0        | 704.47680  | 3300.41040   | 4847.2152  | 8763.0783  | 10988.66100 | 9134.7240  | 618.5790  | 204.0 | 548.0 | 886.0 | … | 1644.0 | 1194.0 | 164.0 | 3570.0 | 11471.0 | 21037.0 | 46034.0 | 1056486.0 | 50378.0  | 3200.0  |<br>| 19.0        | 734.55600  | 2216.81880   | 5183.7888  | 8030.1960  | 9271.09260  | 11955.6030 | 696.7770  | 126.0 | 458.0 | 950.0 | … | 962.0  | 1642.0 | 168.0 | 2355.0 | 8467.0  | 31861.0 | 39705.0 | 44697.0   | 70331.0  | 4166.0  |<br>| 20.0        | 1624.89660 | 2147.23200   | 4211.5686  | 10596.2070 | 10871.65440 | 14291.8692 | NaN       | 328.0 | 288.0 | 654.0 | … | 1290.0 | 1816.0 | NaN   | 7212.0 | 6325.0  | 20174.0 | 55083.0 | 64170.0   | 105131.0 | NaN     |<br>| 21.0        | 780.67950  | 1578.02880   | 3949.3062  | 8689.8804  | 11954.91660 | 13165.7649 | 867.3474  | 162.0 | 270.0 | 580.0 | … | 1446.0 | 1858.0 | 62.0  | 3377.0 | 7673.0  | 19095.0 | 42296.0 | 68739.0   | 82061.0  | 3180.0  |<br>| 22.0        | 674.59860  | 2147.50980   | 4379.3424  | 7818.7302  | 10473.28380 | 10165.8672 | 493.1586  | 146.0 | 372.0 | 680.0 | … | 1304.0 | 1448.0 | 112.0 | 4225.0 | 10861.0 | 23030.0 | 57996.0 | 84330.0   | 67069.0  | 6950.0  |<br>| 23.0        | 359.65980  | 1575.06120   | 4602.7416  | 7616.9298  | 8292.86160  | 6131.1936  | 1799.6520 | 46.0  | 320.0 | 598.0 | … | 998.0  | 726.0  | 296.0 | 896.0  | 12350.0 | 23081.0 | 40025.0 | 56097.0   | 43176.0  | 14290.0 |<br>| 24.0        | 439.43040  | 1717.55340   | 2876.8572  | 5503.7736  | 7292.32740  | 7240.4076  | 428.6538  | 116.0 | 344.0 | 406.0 | … | 668.0  | 1048.0 | 36.0  | 2070.0 | 9543.0  | 25421.0 | 35384.0 | 36147.0   | 43114.0  | 2250.0  |<br>| 25.0        | 572.61420  | 1178.02440   | 2201.6388  | 4710.9924  | 6168.19260  | 2200.6362  | 361.4550  | 124.0 | 166.0 | 268.0 | … | 682.0  | 256.0  | 52.0  | 2440.0 | 5846.0  | 11270.0 | 26610.0 | 40681.0   | 14890.0  | 3300.0  |<br>| 26.0        | 418.70874  | 1165.96680   | 1794.1890  | 3139.2852  | 4016.67060  | 3301.8498  | 408.2202  | 96.0  | 148.0 | 272.0 | … | 418.0  | 354.0  | 60.0  | 1608.0 | 3417.0  | 10548.0 | 16839.0 | 20100.0   | 17663.0  | 2300.0  |<br>| 27.0        | 359.17320  | 1164.15960   | 1426.4550  | 2850.1320  | 3498.30300  | 2040.8454  | NaN       | 40.0  | 152.0 | 226.0 | … | 340.0  | 164.0  | NaN   | 1100.0 | 3615.0  | 7525.0  | 15935.0 | 19770.0   | 11796.0  | NaN     |<br>| 28.0        | 333.84240  | 479.34000    | 1152.5958  | 2205.8778  | 1992.60540  | 521.7666   | NaN       | 28.0  | 90.0  | 220.0 | … | 186.0  | 44.0   | NaN   | 466.0  | 1860.0  | 7901.0  | 15370.0 | 10872.0   | 2500.0   | NaN     |<br>| 29.0        | 236.74020  | 695.88480    | 568.2594   | 1447.5906  | 1398.78540  | 715.9404   | NaN       | 54.0  | 56.0  | 80.0  | … | 180.0  | 106.0  | NaN   | 2490.0 | 2000.0  | 3816.0  | 8220.0  | 10292.0   | 5950.0   | NaN     |<br>| 30.0        | 125.53740  | 441.14160    | 733.6416   | 743.4468   | 578.32020   | 123.3774   | NaN       | 14.0  | 54.0  | 76.0  | … | 90.0   | 28.0   | NaN   | 210.0  | 2440.0  | 4370.0  | 6310.0  | 3440.0    | 1500.0   | NaN     |<br>| 31.0        | 41.58600   | 314.92980    | 659.2626   | 1166.7606  | 315.53460   | 200.1708   | NaN       | 12.0  | 36.0  | 68.0  | … | 12.0   | 16.0   | NaN   | 200.0  | 1300.0  | 3500.0  | 8710.0  | 1050.0    | 1500.0   | NaN     |<br>| 32.0        | 179.14380  | 315.54180    | 457.5174   | 541.8996   | 66.19740    | NaN        | NaN       | 40.0  | 56.0  | 68.0  | … | 10.0   | NaN    | NaN   | 1600.0 | 860.0   | 2300.0  | 6040.0  | 800.0     | NaN      | NaN     |<br>| 33.0        | 198.77880  | 153.34680    | 284.8218   | 116.7516   | 245.45166   | NaN        | NaN       | 32.0  | 12.0  | 42.0  | … | 60.0   | NaN    | NaN   | 1200.0 | 220.0   | 2065.0  | 1130.0  | 2050.0    | NaN      | NaN     |<br>| 34.0        | 49.11360   | 276.88260    | 268.4100   | 340.7124   | 174.54540   | NaN        | NaN       | 12.0  | 56.0  | 28.0  | … | 14.0   | NaN    | NaN   | 150.0  | 3380.0  | 1150.0  | 2400.0  | 2764.0    | NaN      | NaN     |<br>| 35.0        | 229.31280  | 54.04680     | 170.4930   | 634.7688   | 115.06440   | NaN        | NaN       | 54.0  | 8.0   | 26.0  | … | 12.0   | NaN    | NaN   | 1350.0 | 500.0   | 1950.0  | 3800.0  | 800.0     | NaN      | NaN     |<br>| 36.0        | NaN        | 150.13140    | 333.6474   | 73.6980    | NaN         | NaN        | NaN       | NaN   | 16.0  | 40.0  | … | NaN    | NaN    | NaN   | NaN    | 500.0   | 1950.0  | 400.0   | NaN       | NaN      | NaN     |<br>| 37.0        | 22.05960   | 49.89600     | 44.9682    | NaN        | 451.13160   | NaN        | NaN       | 12.0  | 30.0  | 6.0   | … | 32.0   | NaN    | NaN   | 300.0  | 125.0   | 600.0   | NaN     | 1800.0    | NaN      | NaN     |<br>| 38.0        | 71.59500   | NaN          | 334.6878   | NaN        | NaN         | NaN        | NaN       | 16.0  | NaN   | 46.0  | … | NaN    | NaN    | NaN   | 300.0  | NaN     | 2280.0  | NaN     | NaN       | NaN      | NaN     |<br>| 39.0        | 29.87640   | NaN          | 53.7690    | 86.7246    | NaN         | NaN        | NaN       | 10.0  | NaN   | 12.0  | … | NaN    | NaN    | NaN   | 500.0  | NaN     | 450.0   | 500.0   | NaN       | NaN      | NaN     |<br>| 40.0        | 38.55900   | 51.83580     | 107.4684   | NaN        | NaN         | NaN        | NaN       | 12.0  | 14.0  | 26.0  | … | NaN    | NaN    | NaN   | 150.0  | 500.0   | 1080.0  | NaN     | NaN       | NaN      | NaN     |<br>| 41.0        | NaN        | 108.45720    | 77.6472    | NaN        | NaN         | NaN        | NaN       | NaN   | 12.0  | 14.0  | … | NaN    | NaN    | NaN   | NaN    | 450.0   | 800.0   | NaN     | NaN       | NaN      | NaN     |<br>| 43.0        | NaN        | 86.05860     | NaN        | NaN        | NaN         | NaN        | NaN       | NaN   | 10.0  | NaN   | … | NaN    | NaN    | NaN   | NaN    | 730.0   | NaN     | NaN     | NaN       | NaN      | NaN     |<br>| 44.0        | NaN        | NaN          | NaN        | 89.5266    | NaN         | NaN        | NaN       | NaN   | NaN   | NaN   | … | NaN    | NaN    | NaN   | NaN    | NaN     | NaN     | 500.0   | NaN       | NaN      | NaN     |</p>
+<p>28 rows × 21 columns</p>
+<pre><code class="python">pd.pivot_table(df_data,
+               index=[&#39;Age&#39;],
+               columns=[&#39;LeagueIndex&#39;],
+               aggfunc=np.sum,
+               fill_value=-100.)
+</code></pre>
+<p>|             | APM        | HoursPerWeek | TotalHours |<br>| ———– | ———- | ———— | ———- | ———- | ———– | ———- | ——— | —- | —- | —- | — | —- | —- | —- | —- | —– | —– | —– | ——- | —— | —– |<br>| LeagueIndex | 1          | 2            | 3          | 4          | 5           | 6          | 7         | 1    | 2    | 3    | … | 5    | 6    | 7    | 1    | 2     | 3     | 4     | 5       | 6      | 7     |<br>| Age         |            |              |            |            |             |            |           |      |      |      |     |      |      |      |      |       |       |       |         |        |       |<br>| 16.0        | 1062.44754 | 2919.70434   | 4851.9222  | 5149.7310  | 7787.37780  | 9042.1722  | 386.7774  | 324  | 720  | 778  | … | 1220 | 1280 | 56   | 4307 | 13143 | 29211 | 23581 | 49233   | 51320  | 3000  |<br>| 17.0        | 655.67280  | 1661.01540   | 4181.8920  | 5525.3586  | 10052.72100 | 8310.0858  | 573.8286  | 184  | 378  | 664  | … | 1460 | 1116 | 104  | 2044 | 7423  | 16602 | 24005 | 53375   | 45421  | 12700 |<br>| 18.0        | 704.47680  | 3300.41040   | 4847.2152  | 8763.0783  | 10988.66100 | 9134.7240  | 618.5790  | 204  | 548  | 886  | … | 1644 | 1194 | 164  | 3570 | 11471 | 21037 | 46034 | 1056486 | 50378  | 3200  |<br>| 19.0        | 734.55600  | 2216.81880   | 5183.7888  | 8030.1960  | 9271.09260  | 11955.6030 | 696.7770  | 126  | 458  | 950  | … | 962  | 1642 | 168  | 2355 | 8467  | 31861 | 39705 | 44697   | 70331  | 4166  |<br>| 20.0        | 1624.89660 | 2147.23200   | 4211.5686  | 10596.2070 | 10871.65440 | 14291.8692 | -100.0000 | 328  | 288  | 654  | … | 1290 | 1816 | -100 | 7212 | 6325  | 20174 | 55083 | 64170   | 105131 | -100  |<br>| 21.0        | 780.67950  | 1578.02880   | 3949.3062  | 8689.8804  | 11954.91660 | 13165.7649 | 867.3474  | 162  | 270  | 580  | … | 1446 | 1858 | 62   | 3377 | 7673  | 19095 | 42296 | 68739   | 82061  | 3180  |<br>| 22.0        | 674.59860  | 2147.50980   | 4379.3424  | 7818.7302  | 10473.28380 | 10165.8672 | 493.1586  | 146  | 372  | 680  | … | 1304 | 1448 | 112  | 4225 | 10861 | 23030 | 57996 | 84330   | 67069  | 6950  |<br>| 23.0        | 359.65980  | 1575.06120   | 4602.7416  | 7616.9298  | 8292.86160  | 6131.1936  | 1799.6520 | 46   | 320  | 598  | … | 998  | 726  | 296  | 896  | 12350 | 23081 | 40025 | 56097   | 43176  | 14290 |<br>| 24.0        | 439.43040  | 1717.55340   | 2876.8572  | 5503.7736  | 7292.32740  | 7240.4076  | 428.6538  | 116  | 344  | 406  | … | 668  | 1048 | 36   | 2070 | 9543  | 25421 | 35384 | 36147   | 43114  | 2250  |<br>| 25.0        | 572.61420  | 1178.02440   | 2201.6388  | 4710.9924  | 6168.19260  | 2200.6362  | 361.4550  | 124  | 166  | 268  | … | 682  | 256  | 52   | 2440 | 5846  | 11270 | 26610 | 40681   | 14890  | 3300  |<br>| 26.0        | 418.70874  | 1165.96680   | 1794.1890  | 3139.2852  | 4016.67060  | 3301.8498  | 408.2202  | 96   | 148  | 272  | … | 418  | 354  | 60   | 1608 | 3417  | 10548 | 16839 | 20100   | 17663  | 2300  |<br>| 27.0        | 359.17320  | 1164.15960   | 1426.4550  | 2850.1320  | 3498.30300  | 2040.8454  | -100.0000 | 40   | 152  | 226  | … | 340  | 164  | -100 | 1100 | 3615  | 7525  | 15935 | 19770   | 11796  | -100  |<br>| 28.0        | 333.84240  | 479.34000    | 1152.5958  | 2205.8778  | 1992.60540  | 521.7666   | -100.0000 | 28   | 90   | 220  | … | 186  | 44   | -100 | 466  | 1860  | 7901  | 15370 | 10872   | 2500   | -100  |<br>| 29.0        | 236.74020  | 695.88480    | 568.2594   | 1447.5906  | 1398.78540  | 715.9404   | -100.0000 | 54   | 56   | 80   | … | 180  | 106  | -100 | 2490 | 2000  | 3816  | 8220  | 10292   | 5950   | -100  |<br>| 30.0        | 125.53740  | 441.14160    | 733.6416   | 743.4468   | 578.32020   | 123.3774   | -100.0000 | 14   | 54   | 76   | … | 90   | 28   | -100 | 210  | 2440  | 4370  | 6310  | 3440    | 1500   | -100  |<br>| 31.0        | 41.58600   | 314.92980    | 659.2626   | 1166.7606  | 315.53460   | 200.1708   | -100.0000 | 12   | 36   | 68   | … | 12   | 16   | -100 | 200  | 1300  | 3500  | 8710  | 1050    | 1500   | -100  |<br>| 32.0        | 179.14380  | 315.54180    | 457.5174   | 541.8996   | 66.19740    | -100.0000  | -100.0000 | 40   | 56   | 68   | … | 10   | -100 | -100 | 1600 | 860   | 2300  | 6040  | 800     | -100   | -100  |<br>| 33.0        | 198.77880  | 153.34680    | 284.8218   | 116.7516   | 245.45166   | -100.0000  | -100.0000 | 32   | 12   | 42   | … | 60   | -100 | -100 | 1200 | 220   | 2065  | 1130  | 2050    | -100   | -100  |<br>| 34.0        | 49.11360   | 276.88260    | 268.4100   | 340.7124   | 174.54540   | -100.0000  | -100.0000 | 12   | 56   | 28   | … | 14   | -100 | -100 | 150  | 3380  | 1150  | 2400  | 2764    | -100   | -100  |<br>| 35.0        | 229.31280  | 54.04680     | 170.4930   | 634.7688   | 115.06440   | -100.0000  | -100.0000 | 54   | 8    | 26   | … | 12   | -100 | -100 | 1350 | 500   | 1950  | 3800  | 800     | -100   | -100  |<br>| 36.0        | -100.00000 | 150.13140    | 333.6474   | 73.6980    | -100.00000  | -100.0000  | -100.0000 | -100 | 16   | 40   | … | -100 | -100 | -100 | -100 | 500   | 1950  | 400   | -100    | -100   | -100  |<br>| 37.0        | 22.05960   | 49.89600     | 44.9682    | -100.0000  | 451.13160   | -100.0000  | -100.0000 | 12   | 30   | 6    | … | 32   | -100 | -100 | 300  | 125   | 600   | -100  | 1800    | -100   | -100  |<br>| 38.0        | 71.59500   | -100.00000   | 334.6878   | -100.0000  | -100.00000  | -100.0000  | -100.0000 | 16   | -100 | 46   | … | -100 | -100 | -100 | 300  | -100  | 2280  | -100  | -100    | -100   | -100  |<br>| 39.0        | 29.87640   | -100.00000   | 53.7690    | 86.7246    | -100.00000  | -100.0000  | -100.0000 | 10   | -100 | 12   | … | -100 | -100 | -100 | 500  | -100  | 450   | 500   | -100    | -100   | -100  |<br>| 40.0        | 38.55900   | 51.83580     | 107.4684   | -100.0000  | -100.00000  | -100.0000  | -100.0000 | 12   | 14   | 26   | … | -100 | -100 | -100 | 150  | 500   | 1080  | -100  | -100    | -100   | -100  |<br>| 41.0        | -100.00000 | 108.45720    | 77.6472    | -100.0000  | -100.00000  | -100.0000  | -100.0000 | -100 | 12   | 14   | … | -100 | -100 | -100 | -100 | 450   | 800   | -100  | -100    | -100   | -100  |<br>| 43.0        | -100.00000 | 86.05860     | -100.0000  | -100.0000  | -100.00000  | -100.0000  | -100.0000 | -100 | 10   | -100 | … | -100 | -100 | -100 | -100 | 730   | -100  | -100  | -100    | -100   | -100  |<br>| 44.0        | -100.00000 | -100.00000   | -100.0000  | 89.5266    | -100.00000  | -100.0000  | -100.0000 | -100 | -100 | -100 | … | -100 | -100 | -100 | -100 | -100  | -100  | 500   | -100    | -100   | -100  |</p>
+<p>28 rows × 21 columns</p>
+<h3 id="交叉表"><a href="#交叉表" class="headerlink" title="交叉表"></a>交叉表</h3><pre><code class="python">pd.crosstab(df_data[&#39;LeagueIndex&#39;],
+            df_data[&#39;Age&#39;])
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Age</th>
+<th>16.0</th>
+<th>17.0</th>
+<th>18.0</th>
+<th>19.0</th>
+<th>20.0</th>
+<th>21.0</th>
+<th>22.0</th>
+<th>23.0</th>
+<th>24.0</th>
+<th>25.0</th>
+<th>…</th>
+<th>34.0</th>
+<th>35.0</th>
+<th>36.0</th>
+<th>37.0</th>
+<th>38.0</th>
+<th>39.0</th>
+<th>40.0</th>
+<th>41.0</th>
+<th>43.0</th>
+<th>44.0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LeagueIndex</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>18</td>
+<td>9</td>
+<td>13</td>
+<td>12</td>
+<td>22</td>
+<td>12</td>
+<td>12</td>
+<td>6</td>
+<td>9</td>
+<td>11</td>
+<td>…</td>
+<td>1</td>
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>38</td>
+<td>22</td>
+<td>38</td>
+<td>32</td>
+<td>25</td>
+<td>23</td>
+<td>28</td>
+<td>24</td>
+<td>24</td>
+<td>18</td>
+<td>…</td>
+<td>5</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>48</td>
+<td>43</td>
+<td>56</td>
+<td>53</td>
+<td>47</td>
+<td>44</td>
+<td>47</td>
+<td>47</td>
+<td>32</td>
+<td>26</td>
+<td>…</td>
+<td>3</td>
+<td>3</td>
+<td>5</td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>45</td>
+<td>49</td>
+<td>78</td>
+<td>71</td>
+<td>97</td>
+<td>81</td>
+<td>75</td>
+<td>72</td>
+<td>52</td>
+<td>45</td>
+<td>…</td>
+<td>4</td>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>55</td>
+<td>71</td>
+<td>81</td>
+<td>68</td>
+<td>80</td>
+<td>96</td>
+<td>81</td>
+<td>59</td>
+<td>58</td>
+<td>51</td>
+<td>…</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>50</td>
+<td>51</td>
+<td>56</td>
+<td>73</td>
+<td>86</td>
+<td>83</td>
+<td>68</td>
+<td>42</td>
+<td>48</td>
+<td>15</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>0</td>
+<td>5</td>
+<td>3</td>
+<td>9</td>
+<td>2</td>
+<td>2</td>
+<td>…</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>7 rows × 28 columns</p>
+<pre><code class="python">pd.crosstab(df_data[&#39;LeagueIndex&#39;],
+            [df_data[&#39;Age&#39;], df_data[&#39;HoursPerWeek&#39;]])
+</code></pre>
+<p>| Age          | 16.0 | … | 39.0 | 40.0 | 41.0 | 43.0 | 44.0 |<br>| ———— | —- | — | —- | —- | —- | —- | —- | —- | —- | —- | — | —- | —- | —- | —- | —- | — | — | —- | —- | — |<br>| HoursPerWeek | 0.0  | 2.0 | 4.0  | 6.0  | 8.0  | 10.0 | 12.0 | 14.0 | 16.0 | 20.0 | … | 12.0 | 10.0 | 12.0 | 14.0 | 16.0 | 4.0 | 8.0 | 14.0 | 10.0 | 6.0 |<br>| LeagueIndex  |      |     |      |      |      |      |      |      |      |      |     |      |      |      |      |      |     |     |      |      |     |<br>| 1            | 0    | 0   | 0    | 1    | 3    | 1    | 1    | 2    | 3    | 3    | … | 0    | 0    | 1    | 0    | 0    | 0   | 0   | 0    | 0    | 0   |<br>| 2            | 0    | 0   | 2    | 1    | 0    | 9    | 4    | 4    | 3    | 3    | … | 0    | 0    | 0    | 1    | 0    | 1   | 1   | 0    | 1    | 0   |<br>| 3            | 0    | 0   | 1    | 6    | 7    | 6    | 6    | 7    | 2    | 1    | … | 1    | 1    | 0    | 0    | 1    | 0   | 0   | 1    | 0    | 0   |<br>| 4            | 0    | 2   | 5    | 1    | 6    | 4    | 3    | 6    | 3    | 1    | … | 0    | 0    | 0    | 0    | 0    | 0   | 0   | 0    | 0    | 1   |<br>| 5            | 0    | 1   | 2    | 1    | 3    | 8    | 3    | 6    | 3    | 6    | … | 0    | 0    | 0    | 0    | 0    | 0   | 0   | 0    | 0    | 0   |<br>| 6            | 1    | 1   | 4    | 2    | 1    | 1    | 4    | 3    | 1    | 7    | … | 0    | 0    | 0    | 0    | 0    | 0   | 0   | 0    | 0    | 0   |<br>| 7            | 0    | 0   | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | … | 0    | 0    | 0    | 0    | 0    | 0   | 0   | 0    | 0    | 0   |</p>
+<p>7 rows × 325 columns</p>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/nfqdqf/">https://www.wztlink1013.com/blog/nfqdqf/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/nfqdqf/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/li8bkt/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Pandas库使用——基础知识</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/oq4xcx/">
+                    <b>Pandas库使用——分组聚合</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:49:29
+ * @Description:  
+-->
+<div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Beaudar</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">Twikoo</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- utterances评论区 -->
+    <div id="utterances_comment" style="display: none"></div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+      <script>
+        twikoo
+          .init({
+            envId: 'website-wikoo-4g46k8do98867542',
+            el: '#tcomment',
+            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          })
+          .then(function () {
+            console.log('Twikoo 初始化加载完成')
+          })
+      </script>
+    </div>
+  </div>
+</div>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        
+
+<div class="component clearfix categories">
+    <h3>『技术』文章分类</h3><ul class="cate_forder">
+    
+            <li class="cate_cell">
+            <a href="/categories/Bug">Bug</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/JavaScript">JavaScript</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+            <li class="cate_cell">
+            <a href="/categories/Web">Web</a>
+            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            <ul style="display: none">
+            
+            </ul>
+            </li>
+        
+</ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+
+
+    
+        <!-- 非首页 -->
+        
+<script src="/public/js/main.js"></script>
+
+     
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+</body>
+</html>
