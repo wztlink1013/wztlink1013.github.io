@@ -1,522 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>jQuery使用笔记 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="jQuery只是对原生的JavaScript进行封装，说白了就是封装成伪数组，所以记住它的一些调用方法就可以了参考资料jQuery API 速查表 –作者：ShifonejQuery 思维导图一些特性$符号：jq 里面的顶级对象入口函数：在 DOM 里面的 DOMContentLoaded，在$里面">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="jQuery使用笔记 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/aa9fsh/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="jQuery只是对原生的JavaScript进行封装，说白了就是封装成伪数组，所以记住它的一些调用方法就可以了参考资料jQuery API 速查表 –作者：ShifonejQuery 思维导图一些特性$符号：jq 里面的顶级对象入口函数：在 DOM 里面的 DOMContentLoaded，在$里面">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%80%A7"><span class="toc-text">一些特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8-API"><span class="toc-text">常用 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">选择器操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B7%E5%BC%8F%E6%93%8D%E4%BD%9C"><span class="toc-text">样式操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C%E6%93%8D%E4%BD%9C"><span class="toc-text">效果操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E6%93%8D%E4%BD%9C"><span class="toc-text">属性操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E6%96%87%E6%9C%AC%E5%80%BC%E6%93%8D%E4%BD%9C"><span class="toc-text">内容文本值操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E7%B4%A0%E6%93%8D%E4%BD%9C"><span class="toc-text">元素操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%BA%E5%AF%B8%E3%80%81%E4%BD%8D%E7%BD%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">尺寸、位置操作</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>jQuery使用笔记</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-04-02 02:12:42
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/JavaScript">
-                        JavaScript
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <p><code>jQuery</code>只是对原生的<code>JavaScript</code>进行封装，说白了就是封装成伪数组，所以记住它的一些调用方法就可以了</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://jquery.cuishifeng.cn/">jQuery API 速查表 –作者：Shifone</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.processon.com/view/link/5b7d6458e4b0534c9bb76ad9#map">jQuery 思维导图</a></li>
-</ul>
-<h2 id="一些特性"><a href="#一些特性" class="headerlink" title="一些特性"></a>一些特性</h2><ul>
-<li><code>$</code>符号：jq 里面的顶级对象</li>
-<li>入口函数：在 DOM 里面的 DOMContentLoaded，在$里面直接赋予入口函数即可</li>
-<li>jq 对象和 DOM 对象：</li>
-</ul>
-<p>两者之间的函数调用不能互换（因为是被封装成了伪数组）<br>jq 转换为 DOM：加数组下标即可（因为是被封装成了伪数组，利用索引即可）<br>DOM 转换为 jq：使用$符号即可（括号不加引号），或者是 get(索引值)</p>
-<h2 id="常用-API"><a href="#常用-API" class="headerlink" title="常用 API"></a>常用 API</h2><h3 id="选择器操作"><a href="#选择器操作" class="headerlink" title="选择器操作"></a>选择器操作</h3><ul>
-<li>元素获取：之前的 CSS 选择器（基础选择器、复合选择器）怎么写，这里直接就放到$里面即可</li>
-</ul>
-<p>筛选选择器<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617359781992-e02802ae-f357-4987-a8a0-46cc0c5be69a.png#height=165&id=yL3dG&margin=%5Bobject%20Object%5D&name=image.png&originHeight=249&originWidth=793&originalType=binary%E2%88%B6=1&size=49996&status=done&style=none&width=524" alt="image.png"></p>
-<ul>
-<li>隐式迭代：如果获取的元素是一个数组，那么对其赋予的新操作，会隐式遍历</li>
-<li>元素属性操作：css(“属性”,”值”)函数</li>
-<li>元素节点操作</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617359820567-38b9fad2-deb7-429f-9d21-8f9676563426.png#height=262&id=G7Yck&margin=%5Bobject%20Object%5D&name=image.png&originHeight=344&originWidth=709&originalType=binary%E2%88%B6=1&size=63602&status=done&style=none&width=541" alt="image.png"></p>
-<ul>
-<li>事件：.mouseover()、.click()</li>
-<li>.show()、.hide()：元素显示和隐藏</li>
-<li>$(this)当前这个对象</li>
-</ul>
-<h3 id="样式操作"><a href="#样式操作" class="headerlink" title="样式操作"></a>样式操作</h3><p>样式的操作还是和之前的 DOM 一样，有两种，一种是逐个设置该元素的属性和值，另一种就是改变其类，jq 里面也是这个大题思路，不过有不同</p>
-<ul>
-<li>单一设置：.css()函数，一个参数的时候，返回该参数的值，两个参数的时候，即赋予该属性及值</li>
-<li>clsss 设置</li>
-</ul>
-<p>.addClass(“类名”)：如果该元素没有该类，则加上<br>.removeClass()：移除指定类名<br>.toggle()：如果该元素有该类则删除，如果没有该类则加上</p>
-<ul>
-<li>class 设置和 DOM 里面 className 区别是前者不会删除原本的类，后者会</li>
-</ul>
-<h3 id="效果操作"><a href="#效果操作" class="headerlink" title="效果操作"></a>效果操作</h3><p>jq 封装了很多的效果，具体可以详查相关文档     <br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617361907950-d1d89194-401d-46aa-9471-34139e3e00df.png#height=149&id=SD9oO&margin=%5Bobject%20Object%5D&name=image.png&originHeight=298&originWidth=703&originalType=binary%E2%88%B6=1&size=42060&status=done&style=stroke&width=351.5" alt="image.png"></p>
-<h3 id="属性操作"><a href="#属性操作" class="headerlink" title="属性操作"></a>属性操作</h3><ul>
-<li>prop()：得到/设置元素固有的属性及值</li>
-<li>attr()：得到/设置元素自定义的属性及值</li>
-<li>data()：数据缓存</li>
-</ul>
-<h3 id="内容文本值操作"><a href="#内容文本值操作" class="headerlink" title="内容文本值操作"></a>内容文本值操作</h3><ul>
-<li>html()：相当于 innerHTML</li>
-<li>text()：相当于 innerText</li>
-<li>val()：操作表单的值（没有参数是获取值，有一个参数是设置）</li>
-</ul>
-<h3 id="元素操作"><a href="#元素操作" class="headerlink" title="元素操作"></a>元素操作</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">遍历</div>
-
-<blockquote>
-<p>第一种表达：</p>
-</blockquote>
-<ul>
-<li><p>$(“div”).each(function(index,ele){XXXX})</p>
-</li>
-<li><p>其中 index 是索引号，ele 得到的是 DOM 对象</p>
-<blockquote>
-<p>第二种表达</p>
-</blockquote>
-</li>
-<li><p>$.each(Object,function(index,ele){XXXXX})</p>
-</li>
-<li><p>主要用于数据处理</p>
-</li>
-</ul>
-<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">创建</div>
-
-<p>直接在$里面双引号加上需要创建的标签</p>
-<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">添加</div>
-
-<blockquote>
-<p>第一种关系：添加生成父子关系</p>
-</blockquote>
-<ul>
-<li><p>append(“”)</p>
-</li>
-<li><p>prepend(“”)</p>
-<blockquote>
-<p>第二种关系：添加生成兄弟关系</p>
-</blockquote>
-</li>
-<li><p>after(“”)</p>
-</li>
-<li><p>before(“”)</p>
-</li>
-</ul>
-<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">删除</div>
-
-<ul>
-<li>remove()：移除选定节点</li>
-<li>empty()：清空所选节点的左右子节点</li>
-<li>html(“”)：将所选节点的 html 内容制空（相当于删除节点了）</li>
-</ul>
-<h3 id="尺寸、位置操作"><a href="#尺寸、位置操作" class="headerlink" title="尺寸、位置操作"></a>尺寸、位置操作</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">尺寸操作</div>
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1484158/1617364626783-b5a50ec5-eeb2-4447-bc15-c7c209ae1d08.png#height=152&id=AIKMv&margin=%5Bobject%20Object%5D&name=image.png&originHeight=303&originWidth=1166&originalType=binary∶=1&size=133998&status=done&style=none&width=583)
-参数为空：返回值
-参数为一个值：设置
-
-<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">位置操作</div>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617364679986-4ff0b4c0-8622-4111-9c4b-c6571bd278db.png#height=127&id=SdHbS&margin=%5Bobject%20Object%5D&name=image.png&originHeight=253&originWidth=1246&originalType=binary%E2%88%B6=1&size=75964&status=done&style=stroke&width=623" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617364688980-2d85f32d-a51c-48ae-85a9-fc9f613536e5.png#height=144&id=AO6QL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=288&originWidth=1179&originalType=binary%E2%88%B6=1&size=78029&status=done&style=stroke&width=589.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617364699038-74aa84bc-20ec-4427-9485-311ebaf9d066.png#height=120&id=jllHI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=240&originWidth=1047&originalType=binary%E2%88%B6=1&size=62052&status=done&style=stroke&width=523.5" alt="image.png"></p>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/aa9fsh/">https://www.wztlink1013.com/blog/aa9fsh/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/aa9fsh/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/essay/las4ft/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>轮子哥……</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/zsiw5e/">
-                    <b>CSS的预处理器stylus</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

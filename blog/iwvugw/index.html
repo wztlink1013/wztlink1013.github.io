@@ -1,434 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>GitHub多人协作功能Pull requests | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="给出一个初始场景小吴和小王同时开发一个项目 project，该项目托管到 GitHub 上，假定该项目托管到小吴的 GitHub 上，小王要想同时开发这个 project，就必须要 fork 小吴的这个 project，最后两个人 GitHub 仓库是这个样子的：​小吴：xiaowu/project">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="GitHub多人协作功能Pull requests | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/iwvugw/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="给出一个初始场景小吴和小王同时开发一个项目 project，该项目托管到 GitHub 上，假定该项目托管到小吴的 GitHub 上，小王要想同时开发这个 project，就必须要 fork 小吴的这个 project，最后两个人 GitHub 仓库是这个样子的：​小吴：xiaowu/project">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99%E5%87%BA%E4%B8%80%E4%B8%AA%E5%88%9D%E5%A7%8B%E5%9C%BA%E6%99%AF"><span class="toc-text">给出一个初始场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%9C%BA%E6%99%AF"><span class="toc-text">具体工作场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%83%85%E5%86%B5"><span class="toc-text">第一种情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%83%85%E5%86%B5"><span class="toc-text">第二种情况</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>GitHub多人协作功能Pull requests</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2020-12-02 05:03:36
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/版本控制">
-                        版本控制
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <h2 id="给出一个初始场景"><a href="#给出一个初始场景" class="headerlink" title="给出一个初始场景"></a>给出一个初始场景</h2><p>小吴和小王同时开发一个项目 project，该项目托管到 GitHub 上，假定该项目托管到小吴的 GitHub 上，小王要想同时开发这个 project，就必须要 fork 小吴的这个 project，最后两个人 GitHub 仓库是这个样子的：<br>​</p>
-<p>小吴：xiaowu/project<br>小王：xiaowang/project<br>​</p>
-<p>（需要明确一点，小吴小王各自的 project 仓库现在就相当各做各的事情了）</p>
-<h2 id="具体工作场景"><a href="#具体工作场景" class="headerlink" title="具体工作场景"></a>具体工作场景</h2><p>小王的仓库 xiaowang/project 改了代码，想要 push 合并到小吴的仓库 xiaowu/project 中，这里分两种情况。</p>
-<h3 id="第一种情况"><a href="#第一种情况" class="headerlink" title="第一种情况"></a>第一种情况</h3><p><strong>小王在从 fork 小吴仓库到现在这段期间，小吴没有对 xiaowu/project 做任何改动</strong></p>
-<blockquote>
-<p>处理方法：直接 Pull request<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606915274704-123b219d-d7fe-4816-88c4-91ba11b5c466.png#height=143&id=e0K97&margin=%5Bobject%20Object%5D&name=image.png&originHeight=285&originWidth=1917&originalType=binary%E2%88%B6=1&size=47997&status=done&style=shadow&width=958.5" alt="image.png"> &gt; <img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606915405152-c1e60a93-99fb-42d5-a7a5-87c564fe53d4.png#height=270&id=Of4D4&margin=%5Bobject%20Object%5D&name=image.png&originHeight=540&originWidth=1920&originalType=binary%E2%88%B6=1&size=80075&status=done&style=shadow&width=960" alt="image.png"><br>可以看到 1 区域显示 Able to merge，表明这个 Pull request 对于双方是没有矛盾的</p>
-</blockquote>
-<h3 id="第二种情况"><a href="#第二种情况" class="headerlink" title="第二种情况"></a>第二种情况</h3><p><strong>小王在从 fork 小吴仓库到现在这段期间，小吴又在 xiaowu/project 里面做了改动，就相当于小王 fork 过后，两个人都对各自的仓库更新了，然后小王想将自己的改动推送到小吴那里</strong></p>
-<blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606916524143-c5076532-2497-4923-986f-d442122e6de7.png#height=287&id=YBom8&margin=%5Bobject%20Object%5D&name=image.png&originHeight=574&originWidth=1920&originalType=binary%E2%88%B6=1&size=91126&status=done&style=shadow&width=960" alt="image.png"> &gt; <strong>可以发现 1 处并没有那么顺利，因为产生了冲突，但是 2 处仍然可以新建一个 request 请求，先点击 2</strong> &gt; <img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606916762342-e5215ae5-cf61-43ac-9051-f73c40de1fb1.png#height=307&id=F7o57&margin=%5Bobject%20Object%5D&name=image.png&originHeight=613&originWidth=1191&originalType=binary%E2%88%B6=1&size=52688&status=done&style=shadow&width=595.5" alt="image.png"> &gt; <strong>点击之后会这样 👇</strong> &gt; <img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606916826669-b406d584-50a7-49d5-9044-166bba4bc75f.png#height=133&id=D3ARz&margin=%5Bobject%20Object%5D&name=image.png&originHeight=266&originWidth=1284&originalType=binary%E2%88%B6=1&size=32978&status=done&style=shadow&width=642" alt="image.png"><br>1 处显示矛盾的文件（就是小吴和小王在各自的仓库都进行了更改）<br>我们点击 2 处<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606916998671-6b369cf8-f6dc-4ad3-ba0b-d2f7006b7804.png#height=198&id=nRTI1&margin=%5Bobject%20Object%5D&name=image.png&originHeight=396&originWidth=1920&originalType=binary%E2%88%B6=1&size=65448&status=done&style=shadow&width=960" alt="image.png"><br>接下来解决这个问题并且点击 Mark as resolved 按钮就可以了<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606917076365-e79652f9-3c56-4259-87d4-b6e979af277d.png#height=181&id=UNqSw&margin=%5Bobject%20Object%5D&name=image.png&originHeight=361&originWidth=1920&originalType=binary%E2%88%B6=1&size=44612&status=done&style=shadow&width=960" alt="image.png"> &gt; <img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606917146702-bc316303-78f2-4746-94fa-72e4cda90dd0.png#height=196&id=jhbAg&margin=%5Bobject%20Object%5D&name=image.png&originHeight=391&originWidth=1920&originalType=binary%E2%88%B6=1&size=87061&status=done&style=shadow&width=960" alt="image.png"><br>最后就会出现下面的图，接下来，小吴在他的 GitHub 上同意接受这个请求就可以了。（或者小王有权限小王自己接受也可以）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1606917264180-37c25758-4db9-44f8-a3f6-0ca725d6c0fd.png#height=435&id=Z5Awy&margin=%5Bobject%20Object%5D&name=image.png&originHeight=869&originWidth=1435&originalType=binary%E2%88%B6=1&size=132722&status=done&style=shadow&width=717.5" alt="image.png"></p>
-</blockquote>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/iwvugw/">https://www.wztlink1013.com/blog/iwvugw/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/iwvugw/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/gw1d4z/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>hexo-部署出错at formatNunjucksError</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/ckr31m/">
-                    <b>P224.基本计算器</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

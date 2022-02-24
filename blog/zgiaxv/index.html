@@ -1,717 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>实验4——超市排队机（队列） | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="实验任务实验 4：队列的链式表示和实现    要求：某小超市有两个排队机，构建 2 个用带头结点的单链表队列 QA 和 QB, 实现下列操作       1、初始化队列(清空)；       2、入队；       3、出队;       4、求队列长度；       5、判断队列是否为空；    ">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="实验4——超市排队机（队列） | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/zgiaxv/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="实验任务实验 4：队列的链式表示和实现    要求：某小超市有两个排队机，构建 2 个用带头结点的单链表队列 QA 和 QB, 实现下列操作       1、初始化队列(清空)；       2、入队；       3、出队;       4、求队列长度；       5、判断队列是否为空；    ">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%BB%E5%8A%A1"><span class="toc-text">实验任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E8%AE%A8%E8%AE%BA"><span class="toc-text">实验讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%BB%A3%E7%A0%81"><span class="toc-text">代码代码</span></a></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>实验4——超市排队机（队列）</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-04-16 00:58:49
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/数据结构与算法">
-                        数据结构与算法
-                    </a>
-                    
-                    <a href="/categories/数据结构与算法/Problems">
-                        Problems
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <h2 id="实验任务"><a href="#实验任务" class="headerlink" title="实验任务"></a>实验任务</h2><p>实验 4：队列的链式表示和实现<br>    要求：某小超市有两个排队机，构建 2 个用带头结点的单链表队列 QA 和 QB, 实现下列操作<br>       1、初始化队列(清空)；<br>       2、入队；<br>       3、出队;<br>       4、求队列长度；<br>       5、判断队列是否为空；<br>       6、判断队列是否为满；<br>       7、对于队列 QA 和 QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。<br>截止日期：4 月 22 日</p>
-<h2 id="实验讨论"><a href="#实验讨论" class="headerlink" title="实验讨论"></a>实验讨论</h2><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">觉得问题里面有bug</div>
-
-<p>对问题判满的疑惑与解决，第六个问题对链对判满是否有意义，如果是链式存储，数据结构本身判断满没有意义，但是考虑到是小型超市，超市空间不大，所以对其进行一开始的用户自己输入两个队列的最大长度。</p>
-<p>但是这样又有一个问题，在问题 7 中，如果一个队列的售货员下班了，这个队列的所有人排到另一个队列中，那如果新队列的长度超出用户输入的队列最大长度呢？考虑到实际问题，这个问题不打算解决了，让他们挤挤……</p>
-<h2 id="代码代码"><a href="#代码代码" class="headerlink" title="代码代码"></a>代码代码</h2><pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
-using namespace std;
-
-typedef int Status;
-typedef int QElemType;
-
-#define OVERFLOW -1
-#define ERROR 0
-#define OK 1
-
-/**
-    实验4：队列的链式表示和实现
-    要求：某小超市有两个排队机，构建2个用带头结点的单链表队列QA和QB, 实现下列操作
-        1、初始化队列(清空)；
-        2、入队；
-        3、出队;
-        4、求队列长度；
-        5、判断队列是否为空；
-        6、判断队列是否为满；
-        7、对于队列QA和QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。
-
- */
-
-/* 存储形式 */
-typedef struct QNode&#123; //链队用的结点
-    QElemType data;
-    struct QNode *next;
-&#125;QNode,*QueuePtr;
-
-typedef struct &#123;
-    QueuePtr front;
-    QueuePtr rear;
-&#125;LinkQueue;
-
-/* 初始化 */
-Status InitQueue(LinkQueue &amp;queue) &#123;
-    queue.front = queue.rear = new QNode;
-    queue.front-&gt;next = NULL;
-    return OK;
-&#125;
-
-/* 求队列长度 */
-Status QueueLength(LinkQueue &amp;queue) &#123;
-    int count = 0;
-    if (queue.rear == queue.front) &#123;
-        return count;
-    &#125;
-    QueuePtr temp = queue.front;
-    while (temp != queue.rear) &#123;
-        count++;
-        temp = temp-&gt;next;
-    &#125;
-    return count;
-&#125;
-
-/* 入队 */
-Status EnQueue(LinkQueue &amp;queue, QElemType e, int length) &#123;
-    if (QueueLength(queue) &lt;length) &#123;
-        QueuePtr temp = new QNode;
-        temp-&gt;data = e;
-        temp-&gt;next = NULL;
-        queue.rear-&gt;next = temp;
-        queue.rear = temp;
-        return OK;
-    &#125; else &#123;
-        cout &lt;&lt; &quot;队已经满了，不能再入元素了&quot;&lt;&lt; &quot;\n&quot;;
-        return ERROR;
-    &#125;
-&#125;
-
-/* 出队 */
-Status DeQueue(LinkQueue &amp;queue) &#123;
-    if (queue.front == queue.rear) &#123;
-        return OVERFLOW;
-    &#125;
-    // 有必要定义一个p，不然头结点会掉
-    QueuePtr p = queue.front-&gt;next;
-    QElemType e = p-&gt;data;
-    queue.front-&gt;next = p-&gt;next;
-    // 考虑最后一个元素被删，队尾指针指向头结点
-    if (queue.rear == p) &#123;
-        queue.rear = queue.front;
-    &#125;
-    return e;
-&#125;
-
-/* 取队头元素 */
-// Status GetHead(LinkQueue &amp;queue) &#123;
-//     if (queue.front != queue.rear)&#123;
-//         return queue.front-&gt;next-&gt;data;
-//     &#125;
-// &#125;
-
-
-
-/* 判断队列是否为空 */
-bool QueueIsEmpty(LinkQueue &amp;queue) &#123;
-    if (queue.rear == queue.front) &#123;
-        return true;
-    &#125; else &#123;
-        return false;
-    &#125;
-&#125;
-
-/**
- * 判断队列是否为满
- * 不是很理解为什么链队需要判断是否为满呢？
- * 采用输入链队长度，利用链队函数来判断
- * 那么入队的代码需要输入length参数来判断是否还能让元素入队
- */
-bool QueueIsFull(LinkQueue &amp;queue, int length) &#123;
-    if (QueueLength(queue) == length) &#123;
-        return true;
-    &#125; else &#123;
-        return false;
-    &#125;
-&#125;
-
-/* 一个队列甩到另一个队列 */
-Status QueueMove(LinkQueue &amp;queue_delete,LinkQueue &amp;queue_add) &#123;
-    queue_add.rear-&gt;next = queue_delete.front-&gt;next;
-    queue_add.rear = queue_delete.rear;
-    return OK;
-&#125;
-
-/* 遍历查看队列元素 */
-Status DisplayQueue(LinkQueue &amp;queue) &#123;
-    LinkQueue L = queue;
-    while (L.front-&gt;next != NULL) &#123;
-        cout &lt;&lt; L.front-&gt;next-&gt;data &lt;&lt; &quot; &quot;;
-        L.front = L.front-&gt;next;
-    &#125;
-    cout &lt;&lt; &quot;\n&quot;;
-    return OK;
-&#125;
-
-int main() &#123;
-
-    cout&lt;&lt;&quot;------------------------链队菜单----------------------&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作0：退出程序&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作1：初始化两队列&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作2：入队操作&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作3：出队操作&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作4：判断判断链队是否为空&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作5：判断判断链队是否为满&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作6：售货员偷懒选项&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作7：查看队列&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;操作8：求队列长度&quot;&lt;&lt;&#39;\n&#39;;
-    cout&lt;&lt;&quot;--------------------------------------------------------&quot;&lt;&lt;&#39;\n&#39;;
-    int a, length,flag = 1;
-    cout &lt;&lt; &quot;请输入你希望排队机最多能排的人数：&quot;&lt;&lt;&quot;\n&quot;&lt;&lt;&quot;\n&quot;;
-    cin &gt;&gt; length;
-    LinkQueue QA,QB;
-    while(flag)
-    &#123;
-        cout&lt;&lt;&#39;\n&#39;&lt;&lt;&quot;请选择要执行的操作：&quot;;
-        while(cin&gt;&gt;a)
-        &#123;
-            if(a &lt; 0 || a &gt; 8)
-                cout&lt;&lt;&quot;请选择正确操作编号：&quot;;
-            else
-                break;
-        &#125;
-        switch(a)
-        &#123;
-            case 0:
-            &#123;
-                cout&lt;&lt;&quot;正在退出程序中……&quot;&lt;&lt;&#39;\n&#39;;
-                flag = 0;
-                break;
-            &#125;
-            case 1:
-            &#123;
-                cout&lt;&lt;&quot;初始化QA、QB队列中……&quot;&lt;&lt;&#39;\n&#39;;
-                InitQueue(QA);
-                InitQueue(QB);
-                break;
-            &#125;
-            case 2:
-            &#123;
-                cout&lt;&lt;&quot;请输入入队的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    cout&lt;&lt;&quot;请输入入QA队的队列的元素&quot;&lt;&lt;&#39;\n&#39;;
-                    int select_queue_A;
-                    cin &gt;&gt; select_queue_A;
-                    EnQueue(QA, select_queue_A, length);
-                &#125; else if (select_queue == 2) &#123;
-                    cout&lt;&lt;&quot;请输入入QB队的队列的元素&quot;&lt;&lt;&#39;\n&#39;;
-                    int select_queue_B;
-                    cin &gt;&gt; select_queue_B;
-                    EnQueue(QB, select_queue_B, length);
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-            case 3:
-            &#123;
-                cout&lt;&lt;&quot;请输入需要出队的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    DeQueue(QA);
-                &#125; else if (select_queue == 2) &#123;
-                    DeQueue(QB);
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-            case 4:
-            &#123;
-                cout&lt;&lt;&quot;请输入需要判空的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    cout &lt;&lt; &quot;QA队列为空吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsEmpty(QA) &lt;&lt; &quot;\n&quot;;
-                &#125; else if (select_queue == 2) &#123;
-                    cout &lt;&lt; &quot;QB队列为空吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsEmpty(QB) &lt;&lt; &quot;\n&quot;;
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-            case 5:
-            &#123;
-                cout&lt;&lt;&quot;请输入需要判满的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    cout &lt;&lt; &quot;QA队列为满吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsFull(QA,length) &lt;&lt; &quot;\n&quot;;
-                &#125; else if (select_queue == 2) &#123;
-                    cout &lt;&lt; &quot;QB队列为满吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsFull(QB,length) &lt;&lt; &quot;\n&quot;;
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-            case 6:
-            &#123;
-                cout&lt;&lt;&quot;请输入下班的售货员（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    QueueMove(QA, QB);
-                &#125; else if (select_queue == 2) &#123;
-                    QueueMove(QB, QA);
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-            case 7:
-            &#123;
-                cout&lt;&lt;&quot;请输入要查看的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    DisplayQueue(QA);
-                &#125; else if (select_queue == 2) &#123;
-                    DisplayQueue(QB);
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-            case 8:
-            &#123;
-                cout&lt;&lt;&quot;请输入要查看的队列的长度（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue;
-                cin &gt;&gt; select_queue;
-                if (select_queue == 1) &#123;
-                    cout&lt;&lt;QueueLength(QA)&lt;&lt; &quot;\n&quot;;
-                &#125; else if (select_queue == 2) &#123;
-                    cout&lt;&lt;QueueLength(QB)&lt;&lt; &quot;\n&quot;;
-                &#125; else &#123;
-                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-                &#125;
-                break;
-            &#125;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/zgiaxv/">https://www.wztlink1013.com/blog/zgiaxv/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/zgiaxv/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/re05fo/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>应用层及网络应用万维网的HTTP协议</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/fbfgft/">
-                    <b>C++队列顺序和链式实现及操作</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

@@ -1,755 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>es函数 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法：函数定义使用不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 return ">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="es函数 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/egols2d1kxs2/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法：函数定义使用不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 return ">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E4%BD%BF%E7%94%A8"><span class="toc-text">函数定义使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#function-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">function 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">匿名函数表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%8B%E5%8D%B3%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-text">立即调用函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="toc-text">函数参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#arguments"><span class="toc-text">arguments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%EF%BC%88ES6%EF%BC%89%E9%87%8C%E9%9D%A2%E7%9A%84%E4%B8%8D%E5%90%8C"><span class="toc-text">箭头函数（ES6）里面的不同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%80%BC%E4%BC%A0%E9%80%92"><span class="toc-text">关于值传递</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#this"><span class="toc-text">this</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%B8%B8%E7%94%A8-this-%E6%8C%87%E5%90%91"><span class="toc-text">几个常用 this 指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E7%9A%84-this-%E6%8C%87%E5%90%91"><span class="toc-text">函数内部的 this 指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8-this-%E6%8C%87%E5%90%91"><span class="toc-text">改变函数内部 this 指向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-text">闭包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">闭包的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="toc-text">闭包的案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95-%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">简单&#x2F;复杂数据类型传参</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E6%A0%88%E5%AD%98%E5%82%A8%E5%8C%BA%E5%88%AB"><span class="toc-text">堆栈存储区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">简单类型传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">复杂数据类型传参</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%A7%A3-js-%E9%87%8C%E9%9D%A2%E7%9A%84%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">理解 js 里面的任务执行机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%95%A5%E6%98%AF%E5%8D%95%E7%BA%BF%E7%A8%8B"><span class="toc-text">啥是单线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="toc-text">同步任务和异步任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6%EF%BC%88%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%EF%BC%89"><span class="toc-text">JS 执行机制（事件循环）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E5%88%9B%E5%BB%BA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%9E%9A%E4%B8%BE"><span class="toc-text">JS 创建异步任务枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%9F%E7%BA%A6-Promise"><span class="toc-text">期约 Promise</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>es函数</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-03-18 05:22:30
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/JavaScript">
-                        JavaScript
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法：</div>
-
-<h2 id="函数定义使用"><a href="#函数定义使用" class="headerlink" title="函数定义使用"></a>函数定义使用</h2><p>不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 return 的值，没有则返回 undefined。下面记录一下 js 里面的三种函数声明方式和不同情况下的使用场景。</p>
-<h3 id="function-关键字"><a href="#function-关键字" class="headerlink" title="function 关键字"></a>function 关键字</h3><blockquote>
-<p>自定义函数方式(命名函数)利用函数关键字 function 自定义函数方式</p>
-</blockquote>
-<pre><code class="javascript">// 声明定义方式
-function fn() &#123;...&#125;
-// 调用
-fn();
-</code></pre>
-<ul>
-<li>调用函数的代码既可以放到声明函数的前面，也可以放在声明函数的后面</li>
-</ul>
-<h3 id="匿名函数表达式"><a href="#匿名函数表达式" class="headerlink" title="匿名函数表达式"></a>匿名函数表达式</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">:::
-> 函数表达式方式(匿名函数）
-> 【C++11里面也有匿名函数的用法，基本上就是**匿名函数表达式**】
-
-<pre><code class="javascript">// 这是函数表达式写法，匿名函数后面跟分号结束
-var fn = function()&#123;...&#125;；
-// 调用的方式，函数调用必须写到函数体下面
-fn();
-</code></pre>
-<ul>
-<li>这个 fn 里面存储的是一个函数</li>
-<li>函数表达式方式原理跟声明变量方式是一致的</li>
-<li>函数调用的代码必须写到函数体后面</li>
-</ul>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><ul>
-<li>所有函数都是 Function 的对象，函数也是对象</li>
-</ul>
-<pre><code class="javascript">var f = new Function(&#39;a&#39;, &#39;b&#39;, &#39;console.log(a + b)&#39;);
-f(1, 2);
-var fn = new Function(&#39;参数1&#39;,&#39;参数2&#39;..., &#39;函数体&#39;)
-</code></pre>
-<hr>
-<h3 id="立即调用函数"><a href="#立即调用函数" class="headerlink" title="立即调用函数"></a>立即调用函数</h3><p>两种表达方式</p>
-<ul>
-<li>(function(){})()</li>
-<li>(function(){}())</li>
-</ul>
-<p>与立即执行函数相关的知识还有在函数前面加上一些符号（！、<del>、+……）会对函数的返回值进行相应的操作，其中加上</del>的意思是对返回值进行按位取反的操作，具体参考下面的参考资料<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617956106484-c021320c-100a-49b5-a668-99928bf3a720.png#align=left&display=inline&height=273&id=ll11Y&margin=%5Bobject%20Object%5D&name=image.png&originHeight=709&originWidth=1230&size=75306&status=done&style=none&width=472.98846435546875" alt="image.png"><br>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hot_cool/article/details/77567166">https://blog.csdn.net/hot_cool/article/details/77567166</a></p>
-<h2 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h2><h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617851666624-a963acb7-8a97-43bc-9998-35738a1a1a7f.png#align=left&display=inline&height=306&id=OVrKI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=612&originWidth=935&size=236202&status=done&style=stroke&width=467.5" alt="image.png"><br>当不确定有多少个参数传递的时候，可以用 arguments 来获取。JavaScript 中，arguments 实际上它是当前函数的一个内置对象。所有函数都内置了一个 arguments 对象，arguments 对象中存储了传递的所有实参。arguments 展示形式是一个伪数组，因此可以进行遍历。伪数组具有以下特点：</p>
-<ul>
-<li>具有 length 属性</li>
-<li>按索引方式储存数据</li>
-<li>不具有数组的 push , pop 等方法<br>注意：在函数内部使用该对象，用此对象获取函数调用时传的实参。</li>
-</ul>
-<h3 id="箭头函数（ES6）里面的不同"><a href="#箭头函数（ES6）里面的不同" class="headerlink" title="箭头函数（ES6）里面的不同"></a>箭头函数（ES6）里面的不同</h3><p>es6 的箭头函数用起来很方便，但是一个不方便的就是在这里面 arguments 不能用了<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852137156-ea361bcf-a64d-40e7-9ad4-de9ad5a2789d.png#align=left&display=inline&height=151&id=FOFeI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=301&originWidth=928&size=43847&status=done&style=none&width=464" alt="image.png"><br>如果非要用的化，将这个箭头函数放在一个普通函数里面，让箭头函数接受这个普通函数的参数<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852218090-65cab2f5-0088-41e5-95fa-0845a253fcbd.png#align=left&display=inline&height=102&id=kFJpX&margin=%5Bobject%20Object%5D&name=image.png&originHeight=203&originWidth=754&size=27598&status=done&style=stroke&width=377" alt="image.png"></p>
-<h3 id="关于值传递"><a href="#关于值传递" class="headerlink" title="关于值传递"></a>关于值传递</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852230127-5b2394d1-82c0-48a4-8bbb-385f5d27760b.png#align=left&display=inline&height=54&id=Iq2ke&margin=%5Bobject%20Object%5D&name=image.png&originHeight=108&originWidth=813&size=28188&status=done&style=stroke&width=406.5" alt="image.png"></p>
-<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><h3 id="几个常用-this-指向"><a href="#几个常用-this-指向" class="headerlink" title="几个常用 this 指向"></a>几个常用 this 指向</h3><ul>
-<li>全局作用域或者普通函数中 this 指向全局对象 window（定时器里面的 this 指向 window）</li>
-<li>方法调用中谁调用 this 指向谁</li>
-<li>构造函数中 this 指向构造函数的实例</li>
-</ul>
-<pre><code class="js">&lt;button&gt;点击&lt;/button&gt;
-    &lt;script&gt;
-        // this 指向问题 一般情况下this的最终指向的是那个调用它的对象
-        // 1. 全局作用域或者普通函数中this指向全局对象window（ 注意定时器里面的this指向window）
-        console.log(this);
-        function fn() &#123;
-            console.log(this);
-        &#125;
-        window.fn();
-        window.setTimeout(function() &#123;
-            console.log(this);
-        &#125;, 1000);
-        // 2. 方法调用中谁调用this指向谁
-        var o = &#123;
-            sayHi: function() &#123;
-                console.log(this); // this指向的是 o 这个对象
-            &#125;
-        &#125;
-        o.sayHi();
-        var btn = document.querySelector(&#39;button&#39;);
-        btn.addEventListener(&#39;click&#39;, function() &#123;
-                console.log(this); // 事件处理函数中的this指向的是btn这个按钮对象
-            &#125;)
-        // 3. 构造函数中this指向构造函数的实例
-        function Fun() &#123;
-            console.log(this); // this 指向的是fun 实例对象
-        &#125;
-        var fun = new Fun();
-    &lt;/script&gt;
-</code></pre>
-<h3 id="函数内部的-this-指向"><a href="#函数内部的-this-指向" class="headerlink" title="函数内部的 this 指向"></a>函数内部的 this 指向</h3><p>这些 this 的指向，是当我们调用函数的时候确定的。调用方式的不同决定了 this 的指向不同<br>一般指向我们的调用者.</p>
-<h3 id="改变函数内部-this-指向"><a href="#改变函数内部-this-指向" class="headerlink" title="改变函数内部 this 指向"></a>改变函数内部 this 指向</h3><div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">call方法</div>
-call()方法调用一个对象。简单理解为调用函数的方式，但是它可以改变函数的 this 指向
-应用场景:  经常做继承.
-```js
-var o = {
-    name: 'andy'
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
 }
- function fn(a, b) {
-      console.log(this);
-      console.log(a+b)
-};
-fn(1,2)// 此时的this指向的是window 运行结果为3
-fn.call(o,1,2)//此时的this指向的是对象o,参数使用逗号隔开,运行结果为3
-```
-
-<div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">apply方法</div>
-apply() 方法调用一个函数。简单理解为调用函数的方式，但是它可以改变函数的 this 指向。
-应用场景:  经常跟数组有关系
-```js
-var o = {
-    name: 'andy'
+.header:hover {
+  background-color: $color_header_bg_hover;
 }
- function fn(a, b) {
-      console.log(this);
-      console.log(a+b)
-};
-fn()// 此时的this指向的是window 运行结果为3
-fn.apply(o,[1,2])//此时的this指向的是对象o,参数使用数组传递 运行结果为3
-```
-
-<div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">bind方法</div>
-bind() 方法不会调用函数,但是能改变函数内部this 指向,返回的是原函数改变this之后产生的新函数
-如果只是想改变 this 指向，并且不想调用这个函数的时候，可以使用bind
-应用场景:不调用函数,但是还想改变this指向
-```js
-var o = {
- name: 'andy'
- };
-function fn(a, b) {
-    console.log(this);
-    console.log(a + b);
-};
-var f = fn.bind(o, 1, 2); //此处的f是bind返回的新函数
-f();//调用新函数  this指向的是对象o 参数使用逗号隔开
-```
-
-<div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">call、apply、bind三者的异同</div>
-
-<ul>
-<li>共同点 : 都可以改变 this 指向</li>
-<li>不同点:<ul>
-<li>call 和 apply 会调用函数, 并且改变函数内部 this 指向.</li>
-<li>call 和 apply 传递的参数不一样,call 传递参数使用逗号隔开,apply 使用数组传递</li>
-<li>bind 不会调用函数, 可以改变函数内部 this 指向.</li>
-</ul>
-</li>
-<li>应用场景<ol>
-<li> call 经常做继承.</li>
-<li> apply 经常跟数组有关系. 比如借助于数学对象实现数组最大值最小值</li>
-<li> bind 不调用函数,但是还想改变 this 指向. 比如改变定时器内部的 this 指向.</li>
-</ol>
-</li>
-</ul>
-<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>闭包（closure）指有权访问另一个函数作用域中变量的函数。简单理解就是 ，一个作用域可以访问另外一个函数内部的局部变量。</p>
-<h3 id="闭包的作用"><a href="#闭包的作用" class="headerlink" title="闭包的作用"></a>闭包的作用</h3><p>作用：延伸变量的作用范围。</p>
-<pre><code class="javascript">function fn() &#123;
-  var num = 10;
-  function fun() &#123;
-    console.log(num);
-  &#125;
-  return fun;
-&#125;
-var f = fn();
-f();
-</code></pre>
-<h3 id="闭包的案例"><a href="#闭包的案例" class="headerlink" title="闭包的案例"></a>闭包的案例</h3><ol>
-<li>利用闭包的方式得到当前 li 的索引号</li>
-</ol>
-<pre><code class="js">for (var i = 0; i &lt; lis.length; i++) &#123;
-  // 利用for循环创建了4个立即执行函数
-  // 立即执行函数也成为小闭包因为立即执行函数里面的任何一个函数都可以使用它的i这变量
-  (function (i) &#123;
-    lis[i].onclick = function () &#123;
-      console.log(i);
-    &#125;;
-  &#125;)(i);
-&#125;
-</code></pre>
-<ol start="2">
-<li>闭包应用-3 秒钟之后,打印所有 li 元素的内容</li>
-</ol>
-<pre><code class="js">for (var i = 0; i &lt; lis.length; i++) &#123;
-  (function (i) &#123;
-    setTimeout(function () &#123;
-      console.log(lis[i].innerHTML);
-    &#125;, 3000);
-  &#125;)(i);
-&#125;
-</code></pre>
-<ol start="3">
-<li>闭包应用-计算打车价格</li>
-</ol>
-<pre><code class="js">/*需求分析
-打车起步价13(3公里内),  之后每多一公里增加 5块钱.  用户输入公里数就可以计算打车价格
-如果有拥堵情况,总价格多收取10块钱拥堵费*/
-var car = (function () &#123;
-  var start = 13; // 起步价  局部变量
-  var total = 0; // 总价  局部变量
-  return &#123;
-    // 正常的总价
-    price: function (n) &#123;
-      if (n &lt;= 3) &#123;
-        total = start;
-      &#125; else &#123;
-        total = start + (n - 3) * 5;
-      &#125;
-      return total;
-    &#125;,
-    // 拥堵之后的费用
-    yd: function (flag) &#123;
-      return flag ? total + 10 : total;
-    &#125;,
-  &#125;;
-&#125;)();
-console.log(car.price(5)); // 23
-console.log(car.yd(true)); // 33
-</code></pre>
-<pre><code class="js">var name = &quot;The Window&quot;;
-   var object = &#123;
-     name: &quot;My Object&quot;,
-     getNameFunc: function() &#123;
-     return function() &#123;
-     return this.name;
-     &#125;;
-   &#125;
- &#125;;
-console.log(object.getNameFunc()())
------------------------------------------------------------------------------------
-var name = &quot;The Window&quot;;　　
-  var object = &#123;　　　　
-    name: &quot;My Object&quot;,
-    getNameFunc: function() &#123;
-    var that = this;
-    return function() &#123;
-    return that.name;
-    &#125;;
-  &#125;
-&#125;;
-console.log(object.getNameFunc()())
-</code></pre>
-<h2 id="简单-复杂数据类型传参"><a href="#简单-复杂数据类型传参" class="headerlink" title="简单/复杂数据类型传参"></a>简单/复杂数据类型传参</h2><pre><code>**简单类型**（**基本数据类型**、**值类型**）：在存储时变量中存储的是值本身，包括string ，number，boolean，undefined，null
-**复杂数据类型（引用类型）**：在存储时变量中存储的仅仅是地址（引用），通过 new 关键字创建的对象（系统对象、自定义对象），如 Object、Array、Date等；
-</code></pre>
-<h3 id="堆栈存储区别"><a href="#堆栈存储区别" class="headerlink" title="堆栈存储区别"></a>堆栈存储区别</h3><p>堆栈空间分配区别：<br>1、栈（操作系统）：由操作系统自动分配释放存放函数的参数值、局部变量的值等。其操作方式类似于数据结构中的栈；<br>简单数据类型存放到栈里面<br>2、堆（操作系统）：存储复杂类型(对象)，一般由程序员分配释放，若程序员不释放，由垃圾回收机制回收。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885075555-12234777-10f8-4df1-8a9f-e61078298520.png#align=left&display=inline&height=138&margin=%5Bobject%20Object%5D&name=image.png&originHeight=275&originWidth=476&size=16662&status=done&style=none&width=238" alt="image.png"><br>简单数据类型的存储方式：值类型变量的数据直接存放在变量（栈空间）中<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885085102-7ebb3c36-ffc2-4a5b-af50-c8e377f92cef.png#align=left&display=inline&height=121&margin=%5Bobject%20Object%5D&name=image.png&originHeight=241&originWidth=789&size=33962&status=done&style=stroke&width=394.5" alt="image.png"><br>复杂数据类型的存储方式：引用类型变量（栈空间）里存放的是地址，真正的对象实例存放在堆空间中<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885116525-3f8ac293-e955-40f9-bbff-1aa589b53efa.png#align=left&display=inline&height=130&margin=%5Bobject%20Object%5D&name=image.png&originHeight=259&originWidth=558&size=26906&status=done&style=stroke&width=279" alt="image.png"></p>
-<h3 id="简单类型传参"><a href="#简单类型传参" class="headerlink" title="简单类型传参"></a>简单类型传参</h3><pre><code>函数的形参也可以看做是一个变量，当我们把一个值类型变量作为参数传给函数的形参时，其实是把变量在栈空间里的值复制了一份给形参，那么在方法内部对形参做任何修改，都不会影响到的外部变量。
-</code></pre>
-<pre><code class="js">function fn(a) &#123;
-    a++;
-    console.log(a);
-&#125;
-var x = 10;
-fn(x);
-console.log(x)；
-</code></pre>
-<pre><code>    运行结果如下：
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885126655-4b3507e8-a666-4dae-b1c5-ecd0ad9f8bdb.png#align=left&display=inline&height=98&margin=%5Bobject%20Object%5D&name=image.png&originHeight=195&originWidth=364&size=6181&status=done&style=stroke&width=182" alt="image.png"></p>
-<h3 id="复杂数据类型传参"><a href="#复杂数据类型传参" class="headerlink" title="复杂数据类型传参"></a>复杂数据类型传参</h3><pre><code>函数的形参也可以看做是一个变量，当我们把引用类型变量传给形参时，其实是把变量在栈空间里保存的堆地址复制给了形参，形参和实参其实保存的是同一个堆地址，所以操作的是同一个对象。
-</code></pre>
-<pre><code class="JavaScript">function Person(name) &#123;
-    this.name = name;
-&#125;
-function f1(x) &#123; // x = p
-    console.log(x.name); // 2. 这个输出什么 ?
-    x.name = &quot;张学友&quot;;
-    console.log(x.name); // 3. 这个输出什么 ?
-&#125;
-var p = new Person(&quot;刘德华&quot;);
-console.log(p.name);    // 1. 这个输出什么 ?
-f1(p);
-console.log(p.name);    // 4. 这个输出什么 ?
-</code></pre>
-<pre><code>    运行结果如下：
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885137269-b37442f2-ea5b-45ce-a974-ff4676772c47.png#align=left&display=inline&height=163&margin=%5Bobject%20Object%5D&name=image.png&originHeight=325&originWidth=345&size=22422&status=done&style=stroke&width=172.5" alt="image.png"></p>
-<h2 id="理解-js-里面的任务执行机制"><a href="#理解-js-里面的任务执行机制" class="headerlink" title="理解 js 里面的任务执行机制"></a>理解 js 里面的任务执行机制</h2><p>相关概念</p>
-<ul>
-<li><input disabled="" type="checkbox"> 异步编程</li>
-<li><input disabled="" type="checkbox"> Javascript 的事件循环</li>
-<li><input disabled="" type="checkbox"> 任务队列</li>
-<li><input disabled="" type="checkbox"> 微任务队列</li>
-<li><input disabled="" type="checkbox"> ……</li>
-</ul>
-<p>以下代码执行的结果是什么？</p>
-<pre><code class="javascript">console.log(1);
-
-setTimeout(function () &#123;
-  console.log(3);
-&#125;, 3000);
-
-console.log(2);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616040077613-888913ee-a30f-453e-8ebf-c0fd62fde8ea.png#align=left&display=inline&height=60&id=neUVv&margin=%5Bobject%20Object%5D&name=image.png&originHeight=119&originWidth=1014&size=5961&status=done&style=stroke&width=507" alt="image.png"><br>以下代码执行的结果是什么？</p>
-<pre><code class="javascript">console.log(1);
-
-setTimeout(function () &#123;
-  console.log(3);
-&#125;, 0);
-
-console.log(2);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616040090596-2a14e894-a341-48a9-ba3e-71bbf0d66045.png#align=left&display=inline&height=63&id=bnEfE&margin=%5Bobject%20Object%5D&name=image.png&originHeight=125&originWidth=1021&size=6181&status=done&style=stroke&width=510.5" alt="image.png"></p>
-<h3 id="啥是单线程"><a href="#啥是单线程" class="headerlink" title="啥是单线程"></a>啥是单线程</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364671-590b3d5b-f91b-481d-9102-3e8caa4c6075.png#align=left&display=inline&height=90&id=ZFI00&margin=%5Bobject%20Object%5D&originHeight=90&originWidth=726&status=done&style=none&width=726"><br>单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。<br>这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。</p>
-<h3 id="同步任务和异步任务"><a href="#同步任务和异步任务" class="headerlink" title="同步任务和异步任务"></a>同步任务和异步任务</h3><pre><code>单线程导致的问题就是后面的任务等待前面任务完成，如果前面任务很耗时（比如读取网络数据），后面任务不得不一直等待！！
-为了解决这个问题，利用多核 CPU 的计算能力，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制。于是，JS 中出现了**同步任务**和**异步任务**。
-</code></pre>
-<blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1622775361143-bbbae322-0d9e-4dff-bb5f-9c727a926563.gif#align=left&display=inline&height=43&id=q4R2o&margin=%5Bobject%20Object%5D&originHeight=43&originWidth=42&status=done&style=none&width=42"><strong>操作系统忘完了</strong></p>
-</blockquote>
-<p>JS 中所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。<br><strong>【同步任务】</strong>指的是：<br>在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；<br><strong>【异步任务】</strong>指的是：<br>不进入主线程、而进入<strong>“任务队列”</strong>的任务，当主线程中的任务运行完了，才会从”任务队列”取出异步任务放入主线程执行。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364776-7168ea9f-39dc-4395-9d07-0a72969f568d.png#align=left&display=inline&height=432&id=uGzao&margin=%5Bobject%20Object%5D&originHeight=432&originWidth=746&status=done&style=stroke&width=746"></p>
-<h3 id="JS-执行机制（事件循环）"><a href="#JS-执行机制（事件循环）" class="headerlink" title="JS 执行机制（事件循环）"></a>JS 执行机制（事件循环）</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364833-4eb43c01-9779-4e8d-99a7-2f651cafb1b3.png#align=left&display=inline&height=390&id=MDARJ&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=768&status=done&style=stroke&width=768"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364890-56fd3e4e-9faa-48d5-a69f-85f0d3bfec1f.png#align=left&display=inline&height=379&id=nvj0H&margin=%5Bobject%20Object%5D&originHeight=379&originWidth=819&status=done&style=stroke&width=819"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364949-71e82dea-e99d-4755-bb73-1c4d68acf4eb.png#align=left&display=inline&height=44&id=mZ4Kh&margin=%5Bobject%20Object%5D&originHeight=44&originWidth=838&status=done&style=stroke&width=838"></p>
-<blockquote>
-<p>例子</p>
-</blockquote>
-<pre><code class="javascript">console.log(&quot;主线程：第一个&quot;);
-document.onclick = function () &#123;
-  console.log(&quot;点击事件开始&quot;);
-&#125;;
-setTimeout(function () &#123;
-  console.log(&quot;定时器3s&quot;);
-&#125;, 3000);
-setTimeout(function () &#123;
-  console.log(&quot;定时器1s&quot;);
-&#125;, 1000);
-console.log(&quot;主线程：最后一个&quot;);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622776526386-add5d6e7-7b7f-4e5c-98af-f9189c7282ca.png#align=left&display=inline&height=232&id=u6ef71c6b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=464&originWidth=796&size=129597&status=done&style=none&width=398" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622776561826-eb27e6c9-623e-4bc1-85b4-78ee987e86d5.png#align=left&display=inline&height=113&id=u5336dfef&margin=%5Bobject%20Object%5D&name=image.png&originHeight=225&originWidth=922&size=36281&status=done&style=none&width=461" alt="image.png"></p>
-<h3 id="JS-创建异步任务枚举"><a href="#JS-创建异步任务枚举" class="headerlink" title="JS 创建异步任务枚举"></a>JS 创建异步任务枚举</h3><blockquote>
-<p>参考：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903832388894727">理解 JavaScript 概念系列–异步任务</a></li>
-<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903760280420366">JS 异步编程六种方案</a></li>
-</ul>
-</blockquote>
-<h3 id="期约-Promise"><a href="#期约-Promise" class="headerlink" title="期约 Promise"></a>期约 Promise</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html">大白话讲解 Promise（一）</a></li>
-</ul>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/egols2d1kxs2/">https://www.wztlink1013.com/blog/egols2d1kxs2/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/egols2d1kxs2/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/kcce4yhndt7f/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>数据结构综述+复习</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/wgzidzz85o76/">
-                    <b>DOM事件</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

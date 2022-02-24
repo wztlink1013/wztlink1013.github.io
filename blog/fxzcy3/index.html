@@ -1,438 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>关于CDN的一些概念 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="CDN 回源cdn 回源是什么意思？CDN 回源包括回源地址和加速域名。常规的 CDN 都是回源的。即：当有用户访问某一个 URL 的时候，如果被解析到的那个 CDN 节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么 CDN 节点不会主动去源站拿的。回源地址：可以使">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="关于CDN的一些概念 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/fxzcy3/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="CDN 回源cdn 回源是什么意思？CDN 回源包括回源地址和加速域名。常规的 CDN 都是回源的。即：当有用户访问某一个 URL 的时候，如果被解析到的那个 CDN 节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么 CDN 节点不会主动去源站拿的。回源地址：可以使">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CDN-%E5%9B%9E%E6%BA%90"><span class="toc-text">CDN 回源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E4%BC%98%E5%8C%96"><span class="toc-text">网站优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gzip-%E6%99%BA%E8%83%BD%E5%8E%8B%E7%BC%A9"><span class="toc-text">Gzip 智能压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Brotli-%E6%99%BA%E8%83%BD%E5%8E%8B%E7%BC%A9"><span class="toc-text">Brotli 智能压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E5%8E%8B%E7%BC%A9"><span class="toc-text">页面压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#302-%E8%B0%83%E5%BA%A6"><span class="toc-text">302 调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TLS1-3"><span class="toc-text">TLS1.3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP-2-Server-Push"><span class="toc-text">HTTP&#x2F;2 + Server Push</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebP-%E8%87%AA%E9%80%82%E5%BA%94"><span class="toc-text">WebP 自适应</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E9%98%B2%E6%94%BB%E5%87%BB"><span class="toc-text">网站防攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-%E9%99%90%E5%88%B6%E8%AE%BF%E9%97%AE"><span class="toc-text">IP 限制访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CC-%E9%98%B2%E6%8A%A4"><span class="toc-text">CC 防护</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>关于CDN的一些概念</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-02-09 22:37:11
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/Web">
-                        Web
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <h2 id="CDN-回源"><a href="#CDN-回源" class="headerlink" title="CDN 回源"></a>CDN 回源</h2><p>cdn 回源是什么意思？CDN 回源包括回源地址和加速<a target="_blank" rel="noopener" href="https://www.west.cn/services/domain/">域名</a>。常规的 CDN 都是回源的。即：当有用户访问某一个 URL 的时候，如果被解析到的那个 CDN 节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么 CDN 节点不会主动去源站拿的。<br>回源地址：可以使回源域名，也可以是回源 IP，主要作用是 CDN 加速节点同步更新的一个地址；<br>加速域名：使用 CDN<a target="_blank" rel="noopener" href="https://www.west.cn/cloudhost/">服务器</a>需要加速的一个域名，一般会将加速域名做别名解析为 CDN 运营商提供的域名，来做 CDN 加速访问。<br><a target="_blank" rel="noopener" href="https://www.west.cn/docs/wp-content/uploads/2018/05/n-40.jpg"><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1612941062375-753094ca-dc39-494d-abaf-022708a631a3.jpeg#align=left&display=inline&height=300&margin=%5Bobject%20Object%5D&originHeight=300&originWidth=581&size=0&status=done&style=stroke&width=581"></a><br>回源域名一般是 cdn 领域的专业术语，通常情况下，是直接用 ip 进行回源的，但是如果客户源站有多个 ip，并且 ip 地址会经常变化，对于 cdn 厂商来说，为了避免经常更改配置（回源 ip），会采用回源域名方式进行回源，这样即使源站的 ip 变化了，也不影响原有的配置。<br>CDN 本来是给网站加速的，但是有时会因为不合适的回源策略给服务器带来负担，只有选择正确的策略才能给自己的网站带来更高的访问效率。</p>
-<h2 id="网站优化"><a href="#网站优化" class="headerlink" title="网站优化"></a>网站优化</h2><h3 id="Gzip-智能压缩"><a href="#Gzip-智能压缩" class="headerlink" title="Gzip 智能压缩"></a>Gzip 智能压缩</h3><p>gzip 是 GNUzip 的缩写，最早用于 UNIX 系统的文件压缩</p>
-<p>HTTP 协议上的 gzip 编码是一种用来改进 web 应用程序性能的技术，web 服务器和客户端（浏览器）必须共同支持 gzip<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612939525023-772b71d1-11ea-4f13-8629-500d71865e16.png#align=left&display=inline&height=352&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1091&size=127314&status=done&style=stroke&width=545.5" alt="image.png"></p>
-<h3 id="Brotli-智能压缩"><a href="#Brotli-智能压缩" class="headerlink" title="Brotli 智能压缩"></a>Brotli 智能压缩</h3><p>也是一种静态资源压缩算法，并且也支持 HTTPS</p>
-<h3 id="页面压缩"><a href="#页面压缩" class="headerlink" title="页面压缩"></a>页面压缩</h3><p>去除掉页面的注释或空格提高传输效率</p>
-<h3 id="302-调度"><a href="#302-调度" class="headerlink" title="302 调度"></a>302 调度</h3><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1445728">CDN 系列学习文章（三）——302 调度</a></p>
-<p>作者：深蓝加菲<br>链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/32148047/answer/70920110">https://www.zhihu.com/question/32148047/answer/70920110</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<p>一般是两者结合，DNS 做省市级别和跨运营商的调度， 302 做基于内容和精确 IP 的精确调度<br>DNS 的优点：<br>DNS 系统是天然的分布式结构<br>客户端本机，LDNS 都可以实现 cache，<strong>架构本身就能实现高的伸缩性和性能</strong></p>
-<hr>
-<p>DNS 的缺点：<br>DNS 并不是为 GSLB 设计的<br>GSLB 基于 local DNS 的地址判断，<strong>粒度较粗</strong>。而且 LDNS 可能和 end user 网络距离很远。<br>用户可能会设置错误的 Local DNS，该服务器和用户实际距离较远，比如 8.8.8.8 等(edns-client-subnet 可以部分解决该问题)<br>DNS 请求里面<strong>不会带有内容信息</strong>，GSLB 只能拥有 LDNS ip 信息，无法针对内容作出更加灵活的判断<br>因为 DNS reply TTL，所以某个用户一段时间内的请求都会导向同一个 site (解决：趋向于较短的 TTL)<br>因为 local dns 缓存和 TTL 的存在，你很难判断某次的返回会对负载有多大影响<br>某些 Local DNS 会忽略 DNS TTL 信息，而采用固定的 TTL 时间，对此我们无能为力<br>电信系统倾向于直接使用 ip 地址访问，不使用域名</p>
-<hr>
-<p>302 的优点：<br>可以直接得到 end user ip 和内容的地址，可以<strong>做出精确的 redirect</strong><br>每个请求都需要访问 GSLB,可以做出单独的处理<br>可以在一个点方便的作出统计和认证</p>
-<hr>
-<p>302 的缺点：<br>需要应用层协议支持(http / rtsp)<br>一般有重定向次数限制<br>GSLB 需要处理较多的请求，却没有 LDNS 作为 cache<br>GSLB 暴露给 end user ， 容易遭受攻击<br>用户访问 GSLB 本身就会带来时延，可能深圳的用户需要访问北京的 GSLB<br>单点故障(可以通过 GSLB 服务群集解决)<br>某些应用对 URL 变化敏感，比如 WEB<br>某些客户端支持不好(中文字符集等问题)</p>
-<h3 id="TLS1-3"><a href="#TLS1-3" class="headerlink" title="TLS1.3"></a>TLS1.3</h3><p>TLS 1.3 是一种全新的加密协议，它既能提高终端用户的访问速度，又能增强安全性</p>
-<h3 id="HTTP-2-Server-Push"><a href="#HTTP-2-Server-Push" class="headerlink" title="HTTP/2 + Server Push"></a>HTTP/2 + Server Push</h3><h3 id="WebP-自适应"><a href="#WebP-自适应" class="headerlink" title="WebP 自适应"></a>WebP 自适应</h3><p>WebP 自适应功能是 CDN 平台智能判断客户端浏览器是否支持 WebP 解码，如支持则返回 WebP 格式图片，否则返回原图，客户端以及源站无需任何改动。开启该特性，可以有效节省 CDN 传输带宽，加速图片渲染速度。</p>
-<h2 id="网站防攻击"><a href="#网站防攻击" class="headerlink" title="网站防攻击"></a>网站防攻击</h2><h3 id="IP-限制访问"><a href="#IP-限制访问" class="headerlink" title="IP 限制访问"></a>IP 限制访问</h3><h3 id="CC-防护"><a href="#CC-防护" class="headerlink" title="CC 防护"></a>CC 防护</h3>
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/fxzcy3/">https://www.wztlink1013.com/blog/fxzcy3/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/fxzcy3/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/pl8gro/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>HTTPS较HTTP安全在哪？</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/essay/ghnpqy/">
-                    <b>『Re：从零开始的异世界生活』</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

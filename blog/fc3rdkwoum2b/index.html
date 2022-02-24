@@ -1,554 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>es内置对象 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="文档学习：[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)内置对象体系DateRegExpArray、定型数组在代码执行">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="es内置对象 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/fc3rdkwoum2b/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="文档学习：[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)内置对象体系DateRegExpArray、定型数组在代码执行">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1%E4%BD%93%E7%B3%BB"><span class="toc-text">内置对象体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90%E7%9B%B8%E5%85%B3%E9%9B%B6%E7%A2%8E%E7%9F%A5%E8%AF%86%E8%AE%B0%E5%BD%95%E3%80%91"><span class="toc-text">【相关零碎知识记录】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Array-%E7%9A%84%E6%89%A9%E5%B1%95%E6%96%B9%E6%B3%95%EF%BC%88%E2%98%85%E2%98%85%EF%BC%89"><span class="toc-text">Array 的扩展方法（★★）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0-%E4%BF%AE%E6%94%B9-%E5%88%A0%E9%99%A4"><span class="toc-text">添加&#x2F;修改&#x2F;删除</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%88%E5%B1%95%E5%BC%80%E8%AF%AD%E6%B3%95%EF%BC%89"><span class="toc-text">扩展运算符（展开语法）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%96%B9%E6%B3%95%EF%BC%9AArray-from"><span class="toc-text">构造函数方法：Array.from()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%EF%BC%9Afind"><span class="toc-text">实例方法：find()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%EF%BC%9AfindIndex"><span class="toc-text">实例方法：findIndex()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%EF%BC%9Aincludes"><span class="toc-text">实例方法：includes()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E7%9A%84%E6%89%A9%E5%B1%95%E6%96%B9%E6%B3%95"><span class="toc-text">String 的扩展方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E2%98%85%E2%98%85%E2%98%85%EF%BC%89"><span class="toc-text">模板字符串（★★★）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%EF%BC%9AstartsWith-%E5%92%8C-endsWith"><span class="toc-text">实例方法：startsWith() 和 endsWith()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%EF%BC%9Arepeat"><span class="toc-text">实例方法：repeat()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88%E2%98%85%E2%98%85%EF%BC%89"><span class="toc-text">Set 数据结构（★★）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="toc-text">实例方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86"><span class="toc-text">遍历</span></a></li></ol></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>es内置对象</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-01-28 17:00:49
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/JavaScript">
-                        JavaScript
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">文档学习：[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)</div>
-
-<h2 id="内置对象体系"><a href="#内置对象体系" class="headerlink" title="内置对象体系"></a>内置对象体系</h2><ul>
-<li><strong>Date</strong></li>
-<li><strong>RegExp</strong></li>
-<li><strong>Array</strong>、定型数组</li>
-<li>在代码执行就已经存在的：global、Math</li>
-<li>三个基本类型的包装：Boolean、Number、String</li>
-<li>ES6 增强的集合对象：Map、WeakMap、Set、WeakSet</li>
-</ul>
-<h2 id="【相关零碎知识记录】"><a href="#【相关零碎知识记录】" class="headerlink" title="【相关零碎知识记录】"></a>【相关零碎知识记录】</h2><ul>
-<li>数组和对象可以赋值解构，</li>
-<li>剩余参数是以数组的形式存在的</li>
-<li>Object.assign 后者覆盖前者，再返回前者</li>
-</ul>
-<h2 id="Array-的扩展方法（★★）"><a href="#Array-的扩展方法（★★）" class="headerlink" title="Array 的扩展方法（★★）"></a>Array 的扩展方法（★★）</h2><h3 id="添加-修改-删除"><a href="#添加-修改-删除" class="headerlink" title="添加/修改/删除"></a>添加/修改/删除</h3><p>splice</p>
-<h4 id="扩展运算符（展开语法）"><a href="#扩展运算符（展开语法）" class="headerlink" title="扩展运算符（展开语法）"></a>扩展运算符（展开语法）</h4><p>扩展运算符可以将数组或者对象转为用逗号分隔的参数序列</p>
-<pre><code class="javascript">let ary = [1, 2, 3];
- ...ary  // 1, 2, 3
- console.log(...ary);    // 1 2 3,相当于下面的代码
- console.log(1,2,3);
-</code></pre>
-<h5 id="扩展运算符可以应用于合并数组"><a href="#扩展运算符可以应用于合并数组" class="headerlink" title="扩展运算符可以应用于合并数组"></a>扩展运算符可以应用于合并数组</h5><pre><code class="javascript">// 方法一
-let ary1 = [1, 2, 3];
-let ary2 = [3, 4, 5];
-let ary3 = [...ary1, ...ary2];
-// 方法二
-ary1.push(...ary2);
-</code></pre>
-<h5 id="将类数组或可遍历对象转换为真正的数组"><a href="#将类数组或可遍历对象转换为真正的数组" class="headerlink" title="将类数组或可遍历对象转换为真正的数组"></a>将类数组或可遍历对象转换为真正的数组</h5><pre><code class="javascript">let oDivs = document.getElementsByTagName(&quot;div&quot;);
-oDivs = [...oDivs];
-</code></pre>
-<h4 id="构造函数方法：Array-from"><a href="#构造函数方法：Array-from" class="headerlink" title="构造函数方法：Array.from()"></a>构造函数方法：Array.from()</h4><p>将伪数组或可遍历对象转换为真正的数组</p>
-<pre><code class="javascript">//定义一个集合
-let arrayLike = &#123;
-  0: &quot;a&quot;,
-  1: &quot;b&quot;,
-  2: &quot;c&quot;,
-  length: 3,
-&#125;;
-//转成数组
-let arr2 = Array.from(arrayLike); // [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
-</code></pre>
-<p>方法还可以接受第二个参数，作用类似于数组的 map 方法，用来对每个元素进行处理，将处理后的值放入返回的数组</p>
-<pre><code class="javascript">let arrayLike = &#123;
-  0: 1,
-  1: 2,
-  length: 2,
-&#125;;
-let newAry = Array.from(arrayLike, (item) =&gt; item * 2); //[2,4]
-</code></pre>
-<p>注意：如果是对象，那么属性需要写对应的索引</p>
-<h4 id="实例方法：find"><a href="#实例方法：find" class="headerlink" title="实例方法：find()"></a>实例方法：find()</h4><p>用于找出第一个符合条件的数组成员，如果没有找到返回 undefined</p>
-<pre><code class="javascript">let ary = [
-  &#123;
-    id: 1,
-    name: &quot;张三&quot;,
-  &#125;,
-  &#123;
-    id: 2,
-    name: &quot;李四&quot;,
-  &#125;,
-];
-let target = ary.find((item, index) =&gt; item.id == 2); //找数组里面符合条件的值，当数组中元素id等于2的查找出来，注意，只会匹配第一个
-</code></pre>
-<h4 id="实例方法：findIndex"><a href="#实例方法：findIndex" class="headerlink" title="实例方法：findIndex()"></a>实例方法：findIndex()</h4><p>用于找出第一个符合条件的数组成员的位置，如果没有找到返回-1</p>
-<pre><code class="javascript">let ary = [1, 5, 10, 15];
-let index = ary.findIndex((value, index) =&gt; value &gt; 9);
-console.log(index); // 2
-</code></pre>
-<h4 id="实例方法：includes"><a href="#实例方法：includes" class="headerlink" title="实例方法：includes()"></a>实例方法：includes()</h4><p>判断某个数组是否包含给定的值，返回布尔值。</p>
-<pre><code class="javascript">[1, 2, 3]
-  .includes(2) // true
-  [(1, 2, 3)].includes(4); // false
-</code></pre>
-<h2 id="String-的扩展方法"><a href="#String-的扩展方法" class="headerlink" title="String 的扩展方法"></a>String 的扩展方法</h2><h4 id="模板字符串（★★★）"><a href="#模板字符串（★★★）" class="headerlink" title="模板字符串（★★★）"></a>模板字符串（★★★）</h4><p>ES6 新增的创建字符串的方式，使用反引号定义</p>
-<pre><code class="javascript">let name = `zhangsan`;
-</code></pre>
-<h5 id="模板字符串中可以解析变量"><a href="#模板字符串中可以解析变量" class="headerlink" title="模板字符串中可以解析变量"></a>模板字符串中可以解析变量</h5><pre><code class="javascript">let name = &quot;张三&quot;;
-let sayHello = `hello,my name is $&#123;name&#125;`; // hello, my name is zhangsan
-</code></pre>
-<h5 id="模板字符串中可以换行"><a href="#模板字符串中可以换行" class="headerlink" title="模板字符串中可以换行"></a>模板字符串中可以换行</h5><pre><code class="javascript">let result = &#123;
-  name: &quot;zhangsan&quot;,
-  age: 20,
-  sex: &quot;男&quot;,
-&#125;;
-let html = ` &lt;div&gt;
-     &lt;span&gt;$&#123;result.name&#125;&lt;/span&gt;
-     &lt;span&gt;$&#123;result.age&#125;&lt;/span&gt;
-     &lt;span&gt;$&#123;result.sex&#125;&lt;/span&gt;
- &lt;/div&gt; `;
-</code></pre>
-<h5 id="在模板字符串中可以调用函数"><a href="#在模板字符串中可以调用函数" class="headerlink" title="在模板字符串中可以调用函数"></a>在模板字符串中可以调用函数</h5><pre><code class="javascript">const sayHello = function () &#123;
-  return &quot;哈哈哈哈 追不到我吧 我就是这么强大&quot;;
-&#125;;
-let greet = `$&#123;sayHello()&#125; 哈哈哈哈`;
-console.log(greet); // 哈哈哈哈 追不到我吧 我就是这么强大 哈哈哈哈
-</code></pre>
-<h4 id="实例方法：startsWith-和-endsWith"><a href="#实例方法：startsWith-和-endsWith" class="headerlink" title="实例方法：startsWith() 和 endsWith()"></a>实例方法：startsWith() 和 endsWith()</h4><ul>
-<li>startsWith()：表示参数字符串是否在原字符串的头部，返回布尔值</li>
-<li>endsWith()：表示参数字符串是否在原字符串的尾部，返回布尔值</li>
-</ul>
-<pre><code class="javascript">let str = &quot;Hello world!&quot;;
-str.startsWith(&quot;Hello&quot;); // true
-str.endsWith(&quot;!&quot;); // true
-</code></pre>
-<h4 id="实例方法：repeat"><a href="#实例方法：repeat" class="headerlink" title="实例方法：repeat()"></a>实例方法：repeat()</h4><p>repeat 方法表示将原字符串重复 n 次，返回一个新字符串</p>
-<pre><code class="javascript">&quot;x&quot;.repeat(3); // &quot;xxx&quot;
-&quot;hello&quot;.repeat(2); // &quot;hellohello&quot;
-</code></pre>
-<h2 id="Set-数据结构（★★）"><a href="#Set-数据结构（★★）" class="headerlink" title="Set 数据结构（★★）"></a>Set 数据结构（★★）</h2><p>ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。<br>Set 本身是一个构造函数，用来生成 Set 数据结构</p>
-<pre><code class="javascript">const s = new Set();
-</code></pre>
-<p>Set 函数可以接受一个数组作为参数，用来初始化。</p>
-<pre><code class="javascript">const set = new Set([1, 2, 3, 4, 4]); //&#123;1, 2, 3, 4&#125;
-</code></pre>
-<h4 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h4><ul>
-<li>add(value)：添加某个值，返回 Set 结构本身</li>
-<li>delete(value)：删除某个值，返回一个布尔值，表示删除是否成功</li>
-<li>has(value)：返回一个布尔值，表示该值是否为 Set 的成员</li>
-<li>clear()：清除所有成员，没有返回值</li>
-</ul>
-<pre><code class="javascript">const s = new Set();
-s.add(1).add(2).add(3); // 向 set 结构中添加值
-s.delete(2); // 删除 set 结构中的2值
-s.has(1); // 表示 set 结构中是否有1这个值 返回布尔值
-s.clear(); // 清除 set 结构中的所有值
-//注意：删除的是元素的值，不是代表的索引
-</code></pre>
-<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><p>Set 结构的实例与数组一样，也拥有 forEach 方法，用于对每个成员执行某种操作，没有返回值。</p>
-<pre><code class="javascript">s.forEach((value) =&gt; console.log(value));
-</code></pre>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/fc3rdkwoum2b/">https://www.wztlink1013.com/blog/fc3rdkwoum2b/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/fc3rdkwoum2b/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/1_day01_webapis/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>DOM元素操作</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/uz1d072engtt/">
-                    <b>es基本语法</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

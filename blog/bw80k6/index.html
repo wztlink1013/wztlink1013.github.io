@@ -1,572 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>利用WireShark捕获并分析以太网报文结构 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="学习网络协议分析工具 WireShark，利用 WireShark 捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。文章更新内容说明：无线上网和有线上网的 MAC 地址是不一样的【查看本地地址的截图是在家里的查看，wireshark 的使用是在学校】查看">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="利用WireShark捕获并分析以太网报文结构 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/bw80k6/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="学习网络协议分析工具 WireShark，利用 WireShark 捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。文章更新内容说明：无线上网和有线上网的 MAC 地址是不一样的【查看本地地址的截图是在家里的查看，wireshark 的使用是在学校】查看">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E4%BF%A1%E6%81%AF"><span class="toc-text">查看信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E7%9A%84-mac-%E5%9C%B0%E5%9D%80"><span class="toc-text">查看本地的 mac 地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ping-%E5%91%BD%E4%BB%A4"><span class="toc-text">ping 命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WireShark-%E4%BD%BF%E7%94%A8"><span class="toc-text">WireShark 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WireShark-%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%9D%A2%E6%9D%BF%E5%8A%9F%E8%83%BD%E5%8C%BA%E5%9F%9F"><span class="toc-text">WireShark 使用及面板功能区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8C%BA%E5%9F%9F-%E6%98%BE%E7%A4%BA%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">1 区域-显示过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8C%BA%E5%9F%9F-%E8%8E%B7%E5%8F%96%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8C%85"><span class="toc-text">2 区域-获取的数据包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%8C%BA%E5%9F%9F-%E5%8D%95%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%8C%85%E5%90%84%E5%B1%82%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9"><span class="toc-text">3 区域-单个数据包各层详细内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E6%98%9F%E7%BD%91%E7%99%BB%E5%BD%95%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-text">超星网登录案例分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94"><span class="toc-text">网站请求和响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E7%9B%B8%E5%BA%94%E5%8D%8F%E8%AE%AE"><span class="toc-text">发送请求相应协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B6%E5%88%B0%E5%93%8D%E5%BA%94%E7%9B%B8%E5%BA%94%E5%8D%8F%E8%AE%AE"><span class="toc-text">收到响应相应协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hypertext-Transfer-Protocol"><span class="toc-text">Hypertext Transfer Protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Line-based-text-data"><span class="toc-text">Line-based text data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Transmission-Control-Protocol"><span class="toc-text">Transmission Control Protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet-Protocol-Version-4"><span class="toc-text">Internet Protocol Version 4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ethernet-II-Src"><span class="toc-text">Ethernet II, Src</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Frame-75"><span class="toc-text">Frame 75</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">总体数据表示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-text">后记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Wireshark-%E6%8A%93%E4%B8%8D%E5%88%B0-HTTPS-%E6%95%B0%E6%8D%AE%E5%8C%85"><span class="toc-text">Wireshark 抓不到 HTTPS 数据包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>利用WireShark捕获并分析以太网报文结构</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2020-10-22 18:59:19
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/计算机网络">
-                        计算机网络
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <blockquote>
-<p>学习网络协议分析工具 WireShark，利用 WireShark 捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。</p>
-</blockquote>
-<blockquote>
-<p>文章更新内容说明：无线上网和有线上网的 MAC 地址是不一样的<br>【查看本地地址的截图是在家里的查看，wireshark 的使用是在学校】</p>
-</blockquote>
-<h2 id="查看信息"><a href="#查看信息" class="headerlink" title="查看信息"></a>查看信息</h2><h3 id="查看本地的-mac-地址"><a href="#查看本地的-mac-地址" class="headerlink" title="查看本地的 mac 地址"></a>查看本地的 mac 地址</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612839562082-cbc1fcf8-a520-4820-bafc-e26f07ba1177.png#align=left&display=inline&height=248&margin=%5Bobject%20Object%5D&name=image.png&originHeight=496&originWidth=1920&size=78833&status=done&style=shadow&width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612839610832-5568023d-da16-41af-b95e-1787acadf747.png#align=left&display=inline&height=402&margin=%5Bobject%20Object%5D&name=image.png&originHeight=804&originWidth=1335&size=109239&status=done&style=shadow&width=667.5" alt="image.png"></p>
-<h3 id="ping-命令"><a href="#ping-命令" class="headerlink" title="ping 命令"></a>ping 命令</h3><blockquote>
-<p>先使用 ping 命令找到需要抓包的网站的 ip 地址</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612845955475-12f08386-5ec4-4b3f-8cbf-56059d79677c.png#align=left&display=inline&height=162&margin=%5Bobject%20Object%5D&name=image.png&originHeight=323&originWidth=828&size=51064&status=done&style=shadow&width=414" alt="image.png"></p>
-<h2 id="WireShark-使用"><a href="#WireShark-使用" class="headerlink" title="WireShark 使用"></a>WireShark 使用</h2><h3 id="WireShark-使用及面板功能区域"><a href="#WireShark-使用及面板功能区域" class="headerlink" title="WireShark 使用及面板功能区域"></a>WireShark 使用及面板功能区域</h3><p>进入软件，若成功适配电脑网卡，则出现如下类似接口列表<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434019601-cc879af3-8784-4ada-83dc-642d64e02981.png#align=left&display=inline&height=329&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1038&originWidth=1920&size=115692&status=done&style=shadow&width=608" alt="image.png"><br>直接双击上图中 WLAN 行即可抓包，也可以如下设置网卡启动抓包<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434096441-73c67d75-4e36-4e76-ae3c-0a8b8976da28.png#align=left&display=inline&height=301&margin=%5Bobject%20Object%5D&name=image.png&originHeight=911&originWidth=1920&size=114148&status=done&style=shadow&width=634" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603431676018-f4988b52-5aef-4d92-8b9b-15109a08adab.png#align=left&display=inline&height=345&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1033&originWidth=1920&size=207427&status=done&style=shadow&width=641" alt="image.png"></p>
-<h3 id="1-区域-显示过滤器"><a href="#1-区域-显示过滤器" class="headerlink" title="1 区域-显示过滤器"></a>1 区域-显示过滤器</h3><blockquote>
-<p>为过滤 ip 地址区域。相关表达式语法有</p>
-</blockquote>
-<ol>
-<li>协议过滤。比如 TCP，只显示 TCP 协议。</li>
-<li>IP 过滤。比如 ip.src == 192.168.1.102,显示源地址为 192.168.1.102，</li>
-</ol>
-<p>ip.dst == 192.168.1.102, 目标地址为 192.168.1.102。</p>
-<ol start="3">
-<li>端口过滤。   tcp.port ==80,   端口为 80 的</li>
-</ol>
-<p>tcp.srcport == 80,只显示 TCP 协议的愿端口为 80 的。</p>
-<ol start="4">
-<li>Http 模式过滤。http.request.method==”GET”,   只显示 HTTP GET 方法的。</li>
-<li>逻辑运算符为 AND/ OR</li>
-</ol>
-<h3 id="2-区域-获取的数据包"><a href="#2-区域-获取的数据包" class="headerlink" title="2 区域-获取的数据包"></a>2 区域-获取的数据包</h3><blockquote>
-<p>封包列表(Packet List Pane)</p>
-</blockquote>
-<h3 id="3-区域-单个数据包各层详细内容"><a href="#3-区域-单个数据包各层详细内容" class="headerlink" title="3 区域-单个数据包各层详细内容"></a>3 区域-单个数据包各层详细内容</h3><blockquote>
-<p>选定的封包详细信息 (Packet Details Pane)</p>
-</blockquote>
-<ol>
-<li>Frame:物理层的数据帧概况。</li>
-</ol>
-<pre><code class="http">Frame 165: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface \Device\NPF_&#123;B016AB5D-3088-41BD-8997-48F19D9DEBFA&#125;, id 0 //165号帧，对方发送74字节，实际收到74字节
-    Interface id: 0 (\Device\NPF_&#123;B016AB5D-3088-41BD-8997-48F19D9DEBFA&#125;) //接口id为0
-        Interface name: \Device\NPF_&#123;B016AB5D-3088-41BD-8997-48F19D9DEBFA&#125;
-        Interface description: WLAN
-    Encapsulation type: Ethernet (1) //封装类型
-    Arrival Time: Oct 23, 2020 13:37:43.372763000 中国标准时间//捕获日期和时间（中国标准时间）
-    [Time shift for this packet: 0.000000000 seconds]
-    Epoch Time: 1603431463.372763000 seconds
-    [Time delta from previous captured frame: 0.008472000 seconds]//与前一包时间间隔
-    [Time delta from previous displayed frame: 0.000000000 seconds]
-    [Time since reference or first frame: 36.349570000 seconds]//此包与第一帧的时间间隔
-    Frame Number: 165//帧序号
-    Frame Length: 74 bytes (592 bits)//帧长度
-    Capture Length: 74 bytes (592 bits)//捕获字节长度
-    [Frame is marked: False]//是否做了标记
-    [Frame is ignored: False]//是否被忽略
-    [Protocols in frame: eth:ethertype:ip:icmp:data]//帧内封装的协议层次结构
-    [Coloring Rule Name: ICMP]//着色标记的协议名称
-    [Coloring Rule String: icmp || icmpv6]//着色规则显示的字符串
-</code></pre>
-<ol start="2">
-<li>Ethernet II:数据链路层以太网帧头部信息。</li>
-</ol>
-<pre><code class="http">Ethernet II, Src: IntelCor_fb:33:94 (0c:54:15:fb:33:94), Dst: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)
-    Destination: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)//目的MAC地址
-    Source: IntelCor_fb:33:94 (0c:54:15:fb:33:94)//源MAC地址（就是我电脑的MAC地址）
-    Type: IPv4 (0x0800)//0x0800表示使用IP协议
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603432754493-20843464-3bbb-4c01-9ceb-e781759a583d.png#align=left&display=inline&height=280&margin=%5Bobject%20Object%5D&name=image.png&originHeight=559&originWidth=1920&size=110051&status=done&style=shadow&width=960" alt="image.png"></p>
-<ol start="3">
-<li>Internet Protocol Version 4:互联网层 IP 包头部信息。</li>
-</ol>
-<pre><code class="http">Internet Protocol Version 4, Src: 192.168.43.36, Dst: 39.156.66.18
-    0100 .... = Version: 4//互联网协议IPv4
-    .... 0101 = Header Length: 20 bytes (5)//IP包头部长度
-    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)//差分服务字段
-    Total Length: 60//IP包的总长度
-    Identification: 0xdf8c (57228)//标志字段
-    Flags: 0x0000//标记字段
-    Fragment offset: 0//分的偏移量
-    Time to live: 128//生存期TTL
-    Protocol: ICMP (1)//此包内封装的上层协议为TCP
-    Header checksum: 0x05ba [validation disabled]//头部数据的校验和
-    [Header checksum status: Unverified]
-    Source: 192.168.43.36//来源IP地址
-    Destination: 39.156.66.18//目标IP地址
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433033837-c88714a1-eaa1-45cb-b836-5672e4515eee.png#align=left&display=inline&height=189&margin=%5Bobject%20Object%5D&name=image.png&originHeight=378&originWidth=640&size=84901&status=done&style=shadow&width=320" alt="image.png"></p>
-<ol start="4">
-<li>Transmission Control Protocol:传输层 T 的数据段头部信息，此处是 TCP。</li>
-</ol>
-<pre><code class="http">Transmission Control Protocol, Src Port: 80 (80), Dst Port: 50362 (50362), Seq: 1025, Ack: 447, Len: 714
-Source Port: 80 (80) //源端口号
-Destination Port: 50362 (50362) //目标端口号
-Sequence number: 1025 (relative sequence number) //序列号（相对序列号）
-[Next sequence number: 1739 (relative sequence number)] //下一个序列号
-Acknowledgment number: 447    (relative ack number) //确认序列号
-Header Length: 20 bytes  //头部长度
-.... 0000 0001 1000 = Flags: 0x018 (PSH, ACK) //TCP标记长度
-Window size value: 5896  //流量控制的窗口大小
-Checksum: 0x915b [validation disabled] //TCP数据段的校验和
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603433149527-0125377e-b64b-4e32-9eb0-e122d0c111cb.png#align=left&display=inline&height=190&margin=%5Bobject%20Object%5D&name=image.png&originHeight=379&originWidth=579&size=89043&status=done&style=shadow&width=289.5" alt="image.png"></p>
-<ol start="5">
-<li><p>Hypertext Transfer Protocol:应用层的信息，此处是 HTTP 协议。</p>
-</li>
-<li><p>Data（312 bytes）：数据。</p>
-</li>
-</ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603434354567-45e84cc7-63a9-4136-adde-85c377345e92.png#align=left&display=inline&height=147&margin=%5Bobject%20Object%5D&name=image.png&originHeight=347&originWidth=1920&size=49744&status=done&style=shadow&width=813" alt="image.png"></p>
-<h2 id="超星网登录案例分析"><a href="#超星网登录案例分析" class="headerlink" title="超星网登录案例分析"></a>超星网登录案例分析</h2><h3 id="网站请求和响应"><a href="#网站请求和响应" class="headerlink" title="网站请求和响应"></a>网站请求和响应</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849248230-2f38b355-ee1f-4ee1-8b8a-291e64f4e1bd.png#align=left&display=inline&height=356&margin=%5Bobject%20Object%5D&name=image.png&originHeight=711&originWidth=1920&size=230540&status=done&style=none&width=960" alt="image.png"></p>
-<h3 id="发送请求相应协议"><a href="#发送请求相应协议" class="headerlink" title="发送请求相应协议"></a>发送请求相应协议</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849740094-cbdefdda-f504-43f3-9e41-ac8dc8029fd3.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=880&originWidth=1920&size=208371&status=done&style=none&width=960" alt="image.png"></p>
-<h3 id="收到响应相应协议"><a href="#收到响应相应协议" class="headerlink" title="收到响应相应协议"></a>收到响应相应协议</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849811431-437bd72d-ac54-4c28-b731-9e128b6b998f.png#align=left&display=inline&height=441&margin=%5Bobject%20Object%5D&name=image.png&originHeight=881&originWidth=1918&size=151717&status=done&style=stroke&width=959" alt="image.png"></p>
-<blockquote>
-<p>接下来的 7 个小节内容来具体对数据报头做出分析 ❗</p>
-</blockquote>
-<h3 id="Hypertext-Transfer-Protocol"><a href="#Hypertext-Transfer-Protocol" class="headerlink" title="Hypertext Transfer Protocol"></a>Hypertext Transfer Protocol</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612849851243-b18b3e15-f21e-4998-bcfe-45c0b92aabde.png#align=left&display=inline&height=339&margin=%5Bobject%20Object%5D&name=image.png&originHeight=678&originWidth=1920&size=99636&status=done&style=shadow&width=960" alt="image.png"></p>
-<blockquote>
-<p>HTTP 协议定义了客户端和服务器之间交互的消息内容和步骤，大家按照固定的步骤和格式进行通信<br>根据 URL 可以定位请求资源的位置，但是对于这个资源可能还有多种处理方法，比如是请求资源还是要删除指定资源？</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851558692-ed870a9e-f619-4235-bb98-85d22557340f.png#align=left&display=inline&height=493&margin=%5Bobject%20Object%5D&name=image.png&originHeight=985&originWidth=1920&size=489577&status=done&style=none&width=960" alt="image.png"><br>这个时候<strong>浏览器</strong>将需要请求的信息，按照 HTTP 协议约定的格式，封装成为 HTTP 请求报文<br>HTTP 主要请求方法为 GET 和 POST<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851687862-c1a44f57-065b-4547-93bb-4ae9b1f9cb95.png#align=left&display=inline&height=190&margin=%5Bobject%20Object%5D&name=image.png&originHeight=379&originWidth=693&size=117900&status=done&style=shadow&width=346.5" alt="image.png"></p>
-<blockquote>
-<p>请求报文和响应报文的具体形式参考课本</p>
-</blockquote>
-<h3 id="Line-based-text-data"><a href="#Line-based-text-data" class="headerlink" title="Line-based text data"></a>Line-based text data</h3><p>这里面内容就是请求成功所返回的 Html 代码<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612851995920-233bc149-948d-43e1-a549-fc2887c23163.png#align=left&display=inline&height=353&margin=%5Bobject%20Object%5D&name=image.png&originHeight=706&originWidth=1920&size=159705&status=done&style=none&width=960" alt="image.png"></p>
-<h3 id="Transmission-Control-Protocol"><a href="#Transmission-Control-Protocol" class="headerlink" title="Transmission Control Protocol"></a>Transmission Control Protocol</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852359910-50409417-8113-4600-bbb6-6d0e02db4894.png#align=left&display=inline&height=356&margin=%5Bobject%20Object%5D&name=image.png&originHeight=712&originWidth=1920&size=104306&status=done&style=none&width=960" alt="image.png"><br>这个数据报传输使用的可靠的 TCP 协议，而不是 UDP，所以会有相应的滑动窗口、流量控制等等相关机制，还有三次握手，四次挥手……<br>（插个眼，日后再复习一下……）<br><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1612852762215-ba49fa51-55e0-440d-afa7-b567540e39a2.gif#align=left&display=inline&height=151&margin=%5Bobject%20Object%5D&name=huaji-779c5947261d2633.gif&originHeight=151&originWidth=218&size=163714&status=done&style=none&width=218" alt="huaji-779c5947261d2633.gif"><br>（插眼专用图/滑稽）</p>
-<h3 id="Internet-Protocol-Version-4"><a href="#Internet-Protocol-Version-4" class="headerlink" title="Internet Protocol Version 4"></a>Internet Protocol Version 4</h3><p>好了，接下来到了 IP 层，需要给上面来的数据报加上 IP 头部，IP 数据报结构如下：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853140617-ff243167-abb7-4c65-b5c3-b0bbaa77b5aa.png#align=left&display=inline&height=237&margin=%5Bobject%20Object%5D&name=image.png&originHeight=474&originWidth=892&size=244750&status=done&style=stroke&width=446" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853444183-7fa048ef-3e75-4586-82a7-ac9cc58c3630.png#align=left&display=inline&height=203&margin=%5Bobject%20Object%5D&name=image.png&originHeight=405&originWidth=1920&size=105587&status=done&style=stroke&width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852425531-82ec984f-ac3b-4f8a-a06e-0c48080815f6.png#align=left&display=inline&height=353&margin=%5Bobject%20Object%5D&name=image.png&originHeight=706&originWidth=1920&size=107520&status=done&style=none&width=960" alt="image.png"><br>比如说<code>45 </code>这个字节这具体表现是 ip 数据报的第一行和第二行的具体信息，IP 版本为 IPv4，报头长度为二十个字节，往后的各个字段都是这样一一对应的关系，具体还要加强对那张 ip 数据报结构图的理解，要了然于胸。</p>
-<h3 id="Ethernet-II-Src"><a href="#Ethernet-II-Src" class="headerlink" title="Ethernet II, Src"></a>Ethernet II, Src</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612853924295-ea6fe64c-bc90-4e49-ad4e-5ff212448fdc.png#align=left&display=inline&height=214&margin=%5Bobject%20Object%5D&name=image.png&originHeight=428&originWidth=904&size=226429&status=done&style=stroke&width=452" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612850191706-18807d7d-16b5-44fa-a436-5c2b7c4ed5ed.png#align=left&display=inline&height=321&margin=%5Bobject%20Object%5D&name=image.png&originHeight=641&originWidth=1920&size=151109&status=done&style=none&width=960" alt="image.png"></p>
-<blockquote>
-<p>图中三个方框的 14 个字节对应以太网 MAC 帧的前 14 个字节：前 6 个字节是目的地址，接下来的 6 个字节是源地址，最后两个字节是类型字段(用来标志上一层使用的是什么协议，以便把收到的 MAC 帧的数据交给上一层的这个协议。0x8000 代表上层使用的是 IP 数据报)，后面是数据部分。<br>另外：wireshark 把 8 字节的前序（前同步码）和 4 字节的 FCS（帧开始界定符）都给过滤掉了，所以捕获到的帧里看不到这两部分。</p>
-</blockquote>
-<h3 id="Frame-75"><a href="#Frame-75" class="headerlink" title="Frame 75"></a>Frame 75</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852486656-87756b19-ff3d-4833-9af9-d2006a401068.png#align=left&display=inline&height=353&margin=%5Bobject%20Object%5D&name=image.png&originHeight=706&originWidth=1920&size=135359&status=done&style=none&width=960" alt="image.png"></p>
-<ul>
-<li>对方发送 5520 字节，实际收到 5520 字节</li>
-<li>第一行表示接口位 0 号</li>
-</ul>
-<h3 id="总体数据表示"><a href="#总体数据表示" class="headerlink" title="总体数据表示"></a>总体数据表示</h3><p>其实在计算机看来，网络中的数据传输就是传输下面的这些字节</p>
-<blockquote>
-<p>一个字节由八个位组成，而位就是我们通常所说的二进制中的 0 或 1</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612852578885-9519d1d0-a72d-409b-a480-f8554b87fd0d.png#align=left&display=inline&height=299&margin=%5Bobject%20Object%5D&name=image.png&originHeight=598&originWidth=1918&size=138039&status=done&style=stroke&width=959" alt="image.png"></p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><h3 id="Wireshark-抓不到-HTTPS-数据包"><a href="#Wireshark-抓不到-HTTPS-数据包" class="headerlink" title="Wireshark 抓不到 HTTPS 数据包"></a>Wireshark 抓不到 HTTPS 数据包</h3><blockquote>
-<p>有些时候 HTTP 包也抓不到抑或是抓的不全，用如下方式解决即可。</p>
-</blockquote>
-<p>在 C 盘根目录下创建如下目录和文件，.log 就是后缀不要 txt<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612847971131-6c3c2084-c6d8-41ae-8a82-8a4df65748b8.png#align=left&display=inline&height=112&margin=%5Bobject%20Object%5D&name=image.png&originHeight=224&originWidth=811&size=14570&status=done&style=shadow&width=405.5" alt="image.png"><br>添加环境变量<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612848066208-6f22250b-e74d-4156-aa31-c5de17d2e812.png#align=left&display=inline&height=236&margin=%5Bobject%20Object%5D&name=image.png&originHeight=471&originWidth=968&size=35366&status=done&style=none&width=484" alt="image.png"><br>进入 wireshark 软件<br><code>编辑 ``首选项</code> <code>Protocols</code><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612848155164-ace1e002-1971-4910-8d04-cf9c388eb5cd.png#align=left&display=inline&height=496&margin=%5Bobject%20Object%5D&name=image.png&originHeight=992&originWidth=1362&size=89975&status=done&style=none&width=681" alt="image.png"></p>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/linyfeng/p/9496126.html">wireshark 抓包新手使用教程</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82498482">https://zhuanlan.zhihu.com/p/82498482</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/264942536">https://zhuanlan.zhihu.com/p/264942536</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zam183/article/details/103783785">https://blog.csdn.net/zam183/article/details/103783785</a></li>
-<li>TODO: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhaopei/p/12152139.html#autoid-2-6">Wireshark 抓包，带你快速入门</a></li>
-<li>TODO: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/noteless/p/10256470.html#21">网络是如何连接的？网络发展简介（四）</a></li>
-</ul>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/bw80k6/">https://www.wztlink1013.com/blog/bw80k6/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/bw80k6/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/bvk4ok/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>莱文斯坦距离(LD)问题</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/qlrcf6/">
-                    <b>ping、traceroute命令编程实现</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

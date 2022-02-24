@@ -1,572 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>DOM元素操作 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="API 和 Web API 和 SDK文档：https://developer.mozilla.org/zh-CN/docs/Web/APIAPI（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="DOM元素操作 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/1_day01_webapis/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="API 和 Web API 和 SDK文档：https://developer.mozilla.org/zh-CN/docs/Web/APIAPI（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#API-%E5%92%8C-Web-API-%E5%92%8C-SDK"><span class="toc-text">API 和 Web API 和 SDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM-%E6%80%BB%E7%BB%93"><span class="toc-text">DOM 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%85%83%E7%B4%A0"><span class="toc-text">获取元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementById"><span class="toc-text">getElementById</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementsByTagName"><span class="toc-text">getElementsByTagName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getElementsByClassName"><span class="toc-text">getElementsByClassName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#querySelector"><span class="toc-text">querySelector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#querySelectorAll"><span class="toc-text">querySelectorAll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96-body-html-%E5%AF%B9%E8%B1%A1"><span class="toc-text">获取 body&#x2F;html 对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%85%83%E7%B4%A0%E5%86%85%E5%AE%B9-%E5%B1%9E%E6%80%A7"><span class="toc-text">操作元素内容&#x2F;属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#-1"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#innerText-%E5%92%8C-innerHTML"><span class="toc-text">innerText 和 innerHTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7%E6%93%8D%E4%BD%9C"><span class="toc-text">改变元素属性操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-style"><span class="toc-text">element.style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-3"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-className"><span class="toc-text">element.className</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7"><span class="toc-text">自定义元素属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#element-getAttribute"><span class="toc-text">element.getAttribute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-setAttribute"><span class="toc-text">element.setAttribute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-removeAttribute"><span class="toc-text">element.removeAttribute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo%EF%BC%9Atab-%E6%A0%8F"><span class="toc-text">Demo：tab 栏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#element-dataset"><span class="toc-text">element.dataset</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>DOM元素操作</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-02-05 01:45:57
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/JavaScript">
-                        JavaScript
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <h2 id="API-和-Web-API-和-SDK"><a href="#API-和-Web-API-和-SDK" class="headerlink" title="API 和 Web API 和 SDK"></a>API 和 Web API 和 SDK</h2><blockquote>
-<p>文档：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API">https://developer.mozilla.org/zh-CN/docs/Web/API</a></p>
-</blockquote>
-<div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">API（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，无需理解其内部工作机制细节，只需直接调用使用即可。</div>
-
-<div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">Web API 是浏览器提供的一套操作浏览器功能和页面元素的 API ( BOM 和 DOM )。</div>
-
-<div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">[https://www.zhihu.com/question/21691705](https://www.zhihu.com/question/21691705)</div>
-
-<h2 id="DOM-总结"><a href="#DOM-总结" class="headerlink" title="DOM 总结"></a>DOM 总结</h2><p>关于 dom 操作，我们主要针对于元素的操作。主要有创建、增、删、改、查、属性操作、事件操作。<br>【1】创建<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360222-db94e8d0-f9a7-459d-8a24-88b745237bd5.png#align=left&display=inline&height=115&margin=%5Bobject%20Object%5D&originHeight=115&originWidth=691&status=done&style=stroke&width=691"><br>【2】增<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360287-480d224a-a047-4ef5-8bba-92845d85b573.png#align=left&display=inline&height=85&margin=%5Bobject%20Object%5D&originHeight=85&originWidth=720&status=done&style=stroke&width=720"><br>【3】删<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360367-4e96254b-5fd8-4f7e-8fb3-29143718f08d.png#align=left&display=inline&height=49&margin=%5Bobject%20Object%5D&originHeight=49&originWidth=695&status=done&style=stroke&width=695"><br>【4】改<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360436-7e94f916-24d1-4e97-84fe-6fc6ba6d68fb.png#align=left&display=inline&height=191&margin=%5Bobject%20Object%5D&originHeight=191&originWidth=731&status=done&style=stroke&width=731"><br>【5】查<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360497-cfec4566-ac5b-46c6-995d-8db307167137.png#align=left&display=inline&height=181&margin=%5Bobject%20Object%5D&originHeight=181&originWidth=703&status=done&style=stroke&width=703"><br>【6】属性操作<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360564-6e2cf7dd-fa5e-48fe-bcdb-be69ea87065c.png#align=left&display=inline&height=157&margin=%5Bobject%20Object%5D&originHeight=157&originWidth=722&status=done&style=stroke&width=722"><br>【7】事件操作（重点）</p>
-<h2 id="获取元素"><a href="#获取元素" class="headerlink" title="获取元素"></a>获取元素</h2><h3 id="getElementById"><a href="#getElementById" class="headerlink" title="getElementById"></a>getElementById</h3><ul>
-<li>语法：document.getElementById(id)</li>
-<li>作用：根据 ID 获取元素对象</li>
-<li>参数：id 值，区分大小写的字符串</li>
-<li>返回值：元素对象 或 null</li>
-</ul>
-<p>**</p>
-<pre><code class="javascript">var test_id = document.getElementById(&quot;indexLogo&quot;);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616048539813-60fc22f6-0d07-482c-aaae-0227b1f55206.png#align=left&display=inline&height=280&margin=%5Bobject%20Object%5D&name=image.png&originHeight=560&originWidth=916&size=53785&status=done&style=stroke&width=458" alt="image.png"></p>
-<h3 id="getElementsByTagName"><a href="#getElementsByTagName" class="headerlink" title="getElementsByTagName"></a>getElementsByTagName</h3><ul>
-<li>语法：document.getElementsByTagName(‘标签名’) 或者 element.getElementsByTagName(‘标签名’)</li>
-<li>作用：根据标签名获取元素对象</li>
-<li>参数：标签名</li>
-<li>返回值：元素对象集合（伪数组，数组元素是元素对象）**</li>
-</ul>
-<pre><code class="javascript">var test_tag = document.getElementsByTagName(&quot;p&quot;);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616048909454-bdfb7dbc-18e4-4449-abc6-800e87b42380.png#align=left&display=inline&height=442&margin=%5Bobject%20Object%5D&name=image.png&originHeight=884&originWidth=1920&size=1760479&status=done&style=stroke&width=960" alt="image.png"></p>
-<ul>
-<li>getElementsByTagName()获取到是动态集合，即：当页面增加了标签，这个集合中也就增加了元素。</li>
-<li>由上面的图可以知道，得到的不是一个对象，而是一个对象集合，所以要操作具体的一个 p 就要遍历，然后再进行操作（抑或是对其当作节点再进行操作）</li>
-</ul>
-<h3 id="getElementsByClassName"><a href="#getElementsByClassName" class="headerlink" title="getElementsByClassName"></a>getElementsByClassName</h3><h3 id=""><a href="#" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049522946-8c892471-1b04-4b04-b56f-630420bdb654.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=880&originWidth=1920&size=312821&status=done&style=stroke&width=960" alt="image.png"></h3><h3 id="querySelector"><a href="#querySelector" class="headerlink" title="querySelector"></a>querySelector</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049685312-55929307-c68b-4e1d-b6b5-1845c0d5a878.png#align=left&display=inline&height=226&margin=%5Bobject%20Object%5D&name=image.png&originHeight=451&originWidth=1920&size=239671&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="querySelectorAll"><a href="#querySelectorAll" class="headerlink" title="querySelectorAll"></a>querySelectorAll</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049810063-ee5595dc-89bb-47cc-aa9a-c9446ed97d6f.png#align=left&display=inline&height=306&margin=%5Bobject%20Object%5D&name=image.png&originHeight=612&originWidth=1920&size=288375&status=done&style=stroke&width=960" alt="image.png"></p>
-<ul>
-<li>如果是选择器，需要加符号 <code>querySelectorAll(&#39;#box1&#39;)</code> **</li>
-</ul>
-<h3 id="获取-body-html-对象"><a href="#获取-body-html-对象" class="headerlink" title="获取 body/html 对象"></a>获取 body/html 对象</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616050005999-ac944be2-9612-41ac-89f7-9fa04c4d3912.png#align=left&display=inline&height=442&margin=%5Bobject%20Object%5D&name=image.png&originHeight=884&originWidth=1920&size=301673&status=done&style=stroke&width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518355850-2e015c88-50b7-400e-9593-c7e21a9068b5.png#align=left&display=inline&height=272&margin=%5Bobject%20Object%5D&originHeight=272&originWidth=748&status=done&style=none&width=748"></p>
-<h2 id="操作元素内容-属性"><a href="#操作元素内容-属性" class="headerlink" title="操作元素内容/属性"></a>操作元素内容/属性</h2><p>JavaScript 的 DOM 操作可以改变网页内容、结构和样式，我们可以利用 DOM 操作元素来改变元素里面的内容、属性等。（注意：这些操作都是通过元素对象的属性实现的）</p>
-<h4 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518357274-e26496b9-3fdb-47de-85be-fd6aea949767.png#align=left&display=inline&height=253&margin=%5Bobject%20Object%5D&originHeight=424&originWidth=741&status=done&style=stroke&width=442"></h4><h3 id="innerText-和-innerHTML"><a href="#innerText-和-innerHTML" class="headerlink" title="innerText 和 innerHTML"></a>innerText 和 innerHTML</h3><ul>
-<li>获取内容时的区别：innerText 会去除空格和换行，而 innerHTML 会保留空格和换行</li>
-<li>设置内容时的区别：innerText 不会识别 html，而 innerHTML 会识别</li>
-<li>小记：是属性，不是方法！要用赋值的形式，而不是带参数的形式</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053295394-7fe7d51d-3ce6-4f51-9898-9e0e62b207c4.png#align=left&display=inline&height=441&margin=%5Bobject%20Object%5D&name=image.png&originHeight=881&originWidth=1920&size=1394439&status=done&style=stroke&width=960" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053546675-78ea1659-1dee-4b43-aa1a-82aad00e1795.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=879&originWidth=1920&size=1397046&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="改变元素属性操作"><a href="#改变元素属性操作" class="headerlink" title="改变元素属性操作"></a>改变元素属性操作</h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053829361-6faff7b2-0d8f-41c6-b909-6b72ff3b5401.png#align=left&display=inline&height=352&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1920&size=639610&status=done&style=stroke&width=960" alt="image.png"></h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616054507713-8b717792-1d98-4477-a9e8-db7417b87f34.png#align=left&display=inline&height=440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=880&originWidth=1920&size=169274&status=done&style=stroke&width=960" alt="image.png"></p>
-<h3 id="element-style"><a href="#element-style" class="headerlink" title="element.style"></a>element.style</h3><h3 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053829361-6faff7b2-0d8f-41c6-b909-6b72ff3b5401.png#align=left&display=inline&height=352&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1920&size=639610&status=done&style=stroke&width=960" alt="image.png"></h3><ul>
-<li>元素对象的 style 属性也是一个对象！</li>
-<li>元素对象.style.样式属性 = 值;</li>
-<li>其中样式属性的命名不再是中间有-的，而是驼峰命名，eg：backgroundColor</li>
-<li>js 修改的 style 样式操作，产生的是行内样式，css 权重较高</li>
-</ul>
-<h3 id="element-className"><a href="#element-className" class="headerlink" title="element.className"></a>element.className</h3><ul>
-<li>元素对象.className = 值;</li>
-<li>因为 class 是关键字，所有使用 className，覆盖原先的类名</li>
-</ul>
-<pre><code class="html">&lt;body&gt;
-  &lt;div class=&quot;first&quot;&gt;文本&lt;/div&gt;
-  &lt;script&gt;
-    // 1. 使用 element.style 获得修改元素样式  如果样式比较少 或者 功能简单的情况下使用
-    var test = document.querySelector(&quot;div&quot;);
-    test.onclick = function () &#123;
-      // 2. 我们可以通过 修改元素的className更改元素的样式 适合于样式较多或者功能复杂的情况
-      // 3. 如果想要保留原先的类名，我们可以这么做 多类名选择器
-      // this.className = &#39;change&#39;;
-      this.className = &quot;first change&quot;;
-    &#125;;
-  &lt;/script&gt;
-&lt;/body&gt;
-</code></pre>
-<h2 id="自定义元素属性"><a href="#自定义元素属性" class="headerlink" title="自定义元素属性"></a>自定义元素属性</h2><h3 id="element-getAttribute"><a href="#element-getAttribute" class="headerlink" title="element.getAttribute"></a>element.getAttribute</h3><ul>
-<li>和 element.属性不同的是，获取的是自定义属性的值，而 element.属性获取的是内置的属性</li>
-</ul>
-<pre><code class="html">&lt;div id=&quot;demo&quot; index=&quot;1&quot; class=&quot;nav&quot;&gt;&lt;/div&gt;
-&lt;script&gt;
-  var div = document.querySelector(&quot;div&quot;);
-  // 1. 获取元素的属性值
-  // (1) element.属性
-  console.log(div.id);
-  //(2) element.getAttribute(&#39;属性&#39;)  get得到获取 attribute 属性的意思 我们程序员自己添加的属性我们称为自定义属性 index
-  console.log(div.getAttribute(&quot;id&quot;));
-  console.log(div.getAttribute(&quot;index&quot;));
-&lt;/script&gt;
-</code></pre>
-<h3 id="element-setAttribute"><a href="#element-setAttribute" class="headerlink" title="element.setAttribute"></a>element.setAttribute</h3><ul>
-<li>element.setAttribute(‘属性’,’值’)；</li>
-</ul>
-<pre><code class="javascript">// 2. 设置元素属性值
-// (1) element.属性= &#39;值&#39;
-div.id = &quot;test&quot;;
-div.className = &quot;navs&quot;;
-// (2) element.setAttribute(&#39;属性&#39;, &#39;值&#39;);  主要针对于自定义属性
-div.setAttribute(&quot;index&quot;, 2);
-div.setAttribute(&quot;class&quot;, &quot;footer&quot;); // class 特殊  这里面写的就是
-</code></pre>
-<h3 id="element-removeAttribute"><a href="#element-removeAttribute" class="headerlink" title="element.removeAttribute"></a>element.removeAttribute</h3><pre><code class="javascript">// class 不是className
-// 3 移除属性 removeAttribute(属性)
-div.removeAttribute(&quot;index&quot;);
-</code></pre>
-<h3 id="Demo：tab-栏"><a href="#Demo：tab-栏" class="headerlink" title="Demo：tab 栏"></a>Demo：tab 栏</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358239-8396b94f-cc87-4ff3-bc86-20c652a2fe8f.png#align=left&display=inline&height=272&margin=%5Bobject%20Object%5D&originHeight=272&originWidth=786&status=done&style=stroke&width=786"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358314-a1d9f6be-a9c3-4693-8b11-eec0665df297.png#align=left&display=inline&height=290&margin=%5Bobject%20Object%5D&originHeight=290&originWidth=744&status=done&style=stroke&width=744"></p>
-<pre><code class="html">&lt;script&gt;
-  // 获取元素
-  var tab_list = document.querySelector(&quot;.tab_list&quot;);
-  var lis = tab_list.querySelectorAll(&quot;li&quot;);
-  var items = document.querySelectorAll(&quot;.item&quot;);
-  // for循环，给选项卡绑定点击事件
-  for (var i = 0; i &lt; lis.length; i++) &#123;
-    // 开始给5个小li 设置索引号
-    lis[i].setAttribute(&quot;index&quot;, i);
-    lis[i].onclick = function () &#123;
-      // 1. 上的模块选项卡，当前这一个底色会是红色，其余不变（排他思想）
-      // 干掉所有人 其余的li清除 class 这个类
-      for (var i = 0; i &lt; lis.length; i++) &#123;
-        lis[i].className = &quot;&quot;;
-      &#125;
-      // 留下我自己
-      this.className = &quot;current&quot;;
-      // 2. 下面的显示内容模块
-      var index = this.getAttribute(&quot;index&quot;);
-      console.log(index);
-      // 干掉所有人 让其余的item 这些div 隐藏
-      for (var i = 0; i &lt; items.length; i++) &#123;
-        items[i].style.display = &quot;none&quot;;
-      &#125;
-      // 留下我自己 让对应的item 显示出来
-      items[index].style.display = &quot;block&quot;;
-    &#125;;
-  &#125;
-&lt;/script&gt;
-</code></pre>
-<h3 id="element-dataset"><a href="#element-dataset" class="headerlink" title="element.dataset"></a>element.dataset</h3><p>自定义属性目的：是为了保存并使用数据。有些数据可以保存到页面中而不用保存到数据库中。<br>自定义属性获取是通过 getAttribute(‘属性’) 获取。<br>但是有些自定义属性很容易引起歧义，不容易判断是元素的内置属性还是自定义属性。<br>H5 给我们新增了自定义属性：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358371-b2d8cb33-5750-4e13-be06-27c86768b244.png#align=left&display=inline&height=196&margin=%5Bobject%20Object%5D&originHeight=196&originWidth=705&status=done&style=stroke&width=705"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358431-0a046321-c303-4333-9e0d-57875144f3e5.png#align=left&display=inline&height=125&margin=%5Bobject%20Object%5D&originHeight=125&originWidth=691&status=done&style=stroke&width=691"></p>
-<pre><code class="html">&lt;div getTime=&quot;20&quot; data-index=&quot;2&quot; data-list-name=&quot;andy&quot;&gt;&lt;/div&gt;
-&lt;script&gt;
-  var div = document.querySelector(&quot;div&quot;);
-  // console.log(div.getTime);
-  console.log(div.getAttribute(&quot;getTime&quot;));
-  div.setAttribute(&quot;data-time&quot;, 20);
-  console.log(div.getAttribute(&quot;data-index&quot;));
-  console.log(div.getAttribute(&quot;data-list-name&quot;));
-  // h5新增的获取自定义属性的方法 它只能获取data-开头的
-  // dataset 是一个集合里面存放了所有以data开头的自定义属性
-  console.log(div.dataset);
-  console.log(div.dataset.index);
-  console.log(div.dataset[&quot;index&quot;]);
-  // 如果自定义属性里面有多个-链接的单词，我们获取的时候采取 驼峰命名法
-  console.log(div.dataset.listName);
-  console.log(div.dataset[&quot;listName&quot;]);
-&lt;/script&gt;
-</code></pre>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/1_day01_webapis/">https://www.wztlink1013.com/blog/1_day01_webapis/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/1_day01_webapis/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/2_day02_webapis/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>DOM节点操作</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/fc3rdkwoum2b/">
-                    <b>es内置对象</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

@@ -1,697 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>es面向对象 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="对于实现面向对象这一块，JavaScript可谓是我见过最恶心的一门语言，现在发现之前学的C++或是Java简直不要太正规……JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="es面向对象 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/zfpg9dfgehog/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="对于实现面向对象这一块，JavaScript可谓是我见过最恶心的一门语言，现在发现之前学的C++或是Java简直不要太正规……JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8B%E5%80%BC%E5%92%8C%E5%BC%95%E7%94%A8%E5%80%BC"><span class="toc-text">原始值和引用值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%93%E7%B3%BB%E4%B8%80%EF%BC%9A%E5%8E%9F%E5%9E%8B"><span class="toc-text">体系一：原型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8E%9F%E5%9E%8B"><span class="toc-text">构造函数原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%8E%9F%E5%9E%8B"><span class="toc-text">对象原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#constructor-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">constructor 构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE%E5%92%8C%E6%88%90%E5%91%98%E6%9F%A5%E6%89%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">原型链和成员查找机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E4%BD%93%E7%B3%BB%E4%B8%AD%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-text">原型体系中的继承</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%93%E7%B3%BB%E4%BA%8C%EF%BC%9A%E7%B1%BB-class-%E3%80%90ES6%E3%80%91"><span class="toc-text">体系二：类(class)【ES6】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-%E7%BB%A7%E6%89%BF-%E4%BD%BF%E7%94%A8"><span class="toc-text">创建+继承+使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%EF%BC%9A%E4%B8%80%E7%B3%BB%E5%88%97%E5%88%9B%E5%BB%BA"><span class="toc-text">对象：一系列创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="toc-text">字面量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E5%B7%A5%E5%8E%82"><span class="toc-text">模式工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">原型模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%EF%BC%9AObject-%E5%86%85%E7%BD%AE%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="toc-text">对象：Object 内置方法使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E8%BF%AD%E4%BB%A3"><span class="toc-text">对象迭代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-defineProperty"><span class="toc-text">Object.defineProperty</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1%EF%BC%9Atab-%E6%A0%8F%E5%88%87%E6%8D%A2"><span class="toc-text">面向对象设计：tab 栏切换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="toc-text">功能需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%87%86%E5%A4%87"><span class="toc-text">案例准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E6%8D%A2"><span class="toc-text">切换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0"><span class="toc-text">添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-text">删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91"><span class="toc-text">编辑</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>es面向对象</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2021-03-18 05:22:29
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/JavaScript">
-                        JavaScript
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">对于实现面向对象这一块，JavaScript可谓是我见过最恶心的一门语言，现在发现之前学的C++或是Java简直不要太正规……
-JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成所谓的继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，但这里面的机制还是原型相关知识，记录学习一下。
-不管是原型也好，新加的class也罢，就一个目的——**为了实现面向对象**。从两个体系来展开详述。</div>
-
-<h2 id="原始值和引用值"><a href="#原始值和引用值" class="headerlink" title="原始值和引用值"></a>原始值和引用值</h2><p>这里面 Java 和 JavaScript 都是只有引用的概念，但是在 C/C++里面，就有指针的概念<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617868682681-90191ec3-c5b2-415f-9e38-df2706301e0c.png#align=left&display=inline&height=173&margin=%5Bobject%20Object%5D&name=image.png&originHeight=346&originWidth=931&size=136387&status=done&style=none&width=465.5" alt="image.png"></p>
-<ul>
-<li>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012443286/article/details/79496742">谈谈 JavaScript 中的变量、指针和引用</a></li>
-</ul>
-<h2 id="体系一：原型"><a href="#体系一：原型" class="headerlink" title="体系一：原型"></a>体系一：原型</h2><h3 id="构造函数原型"><a href="#构造函数原型" class="headerlink" title="构造函数原型"></a>构造函数原型</h3><p>每个构造函数里面都有一个属性，这个属性叫 prototype，<strong>指向另一个对象</strong>（有什么用？在后面原型链就会发现有用了），并且这个属性是一个对象，叫做构造函数原型</p>
-<blockquote>
-<p>这样可以解决一个问题，就是创建不同实例，这些事例所用的方法都是同一个内存下的方法，实现共享</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622631532174-610cc30a-7a6e-4ac5-ac53-adc0359b06f1.png#align=left&display=inline&height=245&margin=%5Bobject%20Object%5D&name=image.png&originHeight=489&originWidth=1029&size=268026&status=done&style=none&width=514.5" alt="image.png"></p>
-<h3 id="对象原型"><a href="#对象原型" class="headerlink" title="对象原型"></a>对象原型</h3><p>每个对象里面都有<strong>proto</strong>属性，这个叫对象原型，这个玩意指向<strong>构造函数的 prototype 对象</strong></p>
-<blockquote>
-<p><strong>proto</strong>对象原型的意义就在于为对象的查找机制提供一个方向，或者说一条路线，但是它是一个非标准属性，因此实际开发中，不可以使用这个属性，它只是内部指向原型对象 prototype</p>
-</blockquote>
-<h3 id="constructor-构造函数"><a href="#constructor-构造函数" class="headerlink" title="constructor 构造函数"></a>constructor 构造函数</h3><ol>
-<li>对象原型（ <strong>proto</strong>）和构造函数（prototype）原型对象里面都有一个属性 constructor 属性 ，constructor 我们称为构造函数，因为它<strong>指回构造函数本身</strong>。</li>
-<li>constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。</li>
-<li>一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor   就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。</li>
-</ol>
-<h3 id="原型链和成员查找机制"><a href="#原型链和成员查找机制" class="headerlink" title="原型链和成员查找机制"></a>原型链和成员查找机制</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622632967349-b2adf38c-b51f-445b-b4c8-7d0408e96390.png#align=left&display=inline&height=251&margin=%5Bobject%20Object%5D&name=image.png&originHeight=501&originWidth=1002&size=152264&status=done&style=none&width=501" alt="image.png"></p>
-<h3 id="原型体系中的继承"><a href="#原型体系中的继承" class="headerlink" title="原型体系中的继承"></a>原型体系中的继承</h3><p>call 方法可以改变一个函数的指向</p>
-<ol>
-<li>继承父构造函数里面的属性</li>
-</ol>
-<pre><code class="javascript">// 1. 父构造函数
-function Father(uname, age) &#123;
-  // this 指向父构造函数的对象实例
-  this.uname = uname;
-  this.age = age;
-&#125;
-// 2 .子构造函数
-function Son(uname, age, score) &#123;
-  // this 指向子构造函数的对象实例
-  // 3.使用call方式实现子继承父的属性
-  Father.call(this, uname, age);
-  this.score = score;
-&#125;
-var son = new Son(&quot;刘德华&quot;, 18, 100);
-console.log(son);
-</code></pre>
-<ol start="2">
-<li>继承方法</li>
-</ol>
-<pre><code class="js">// 1. 父构造函数
-function Father(uname, age) &#123;
-  // this 指向父构造函数的对象实例
-  this.uname = uname;
-  this.age = age;
-&#125;
-Father.prototype.money = function () &#123;
-  console.log(100000);
-&#125;;
-// 2 .子构造函数
-function Son(uname, age, score) &#123;
-  // this 指向子构造函数的对象实例
-  Father.call(this, uname, age);
-  this.score = score;
-&#125;
-// Son.prototype = Father.prototype;  这样直接赋值会有问题,如果修改了子原型对象,父原型对象也会跟着一起变化
-Son.prototype = new Father();
-// 如果利用对象的形式修改了原型对象,别忘了利用constructor 指回原来的构造函数
-Son.prototype.constructor = Son;
-// 这个是子构造函数专门的方法
-Son.prototype.exam = function () &#123;
-  console.log(&quot;孩子要考试&quot;);
-&#125;;
-var son = new Son(&quot;刘德华&quot;, 18, 100);
-console.log(son);
-</code></pre>
-<h2 id="体系二：类-class-【ES6】"><a href="#体系二：类-class-【ES6】" class="headerlink" title="体系二：类(class)【ES6】"></a>体系二：类(class)【ES6】</h2><p>在 ES6 中新增加了类的概念，可以使用 class 关键字声明一个类，之后以这个类来实例化对象。类抽象了对象的公共部分，它泛指某一大类（class）对象特指某一个，通过类实例化一个具体的对象。其创建的方式和之前学过的语言很类似。<br>在 ES6 中类没有变量提升，所以必须先定义类，才能通过类实例化对象</p>
-<h3 id="创建-继承-使用"><a href="#创建-继承-使用" class="headerlink" title="创建+继承+使用"></a>创建+继承+使用</h3><pre><code class="javascript">// 奥特曼类
-class Aoteman &#123;
-  // 构造函数里面放共有属性、方法
-  constructor(name, age) &#123;
-    this.name = name;
-    this.age = age;
-  &#125;
-  Ability(abi) &#123;
-    console.log(this.name + &quot; can &quot; + abi);
-  &#125;
-&#125;
-
-// 假奥特曼类 继承 奥特曼
-class Jia extends Aoteman &#123;
-  constructor(x, y) &#123;
-    // 继承父类的构造函数
-    super(x, y);
-    // 方便写自己的函数
-    this.x = x;
-    this.y = y;
-  &#125;
-  // 自己内部的函数
-  Chuiniu() &#123;
-    console.log(this.x + &quot; chuiniu&quot;);
-  &#125;
-&#125;
-
-// 创建迪迦对象
-let dijia = new Aoteman(&quot;dijia&quot;, 100);
-console.log(dijia);
-dijia.Ability(&quot;X-ray&quot;);
-let dijia_jia = new Jia(&quot;dijia_jia&quot;, 50);
-dijia_jia.Ability(&quot;xxx&quot;);
-dijia_jia.Chuiniu();
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622622728600-59f47873-c895-4686-b771-f1f538198f26.png#align=left&display=inline&height=77&margin=%5Bobject%20Object%5D&name=image.png&originHeight=153&originWidth=882&size=14744&status=done&style=none&width=441" alt="image.png"></p>
-<h2 id="对象：一系列创建"><a href="#对象：一系列创建" class="headerlink" title="对象：一系列创建"></a>对象：一系列创建</h2><h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><p>属性和方法的调用：<br>属性可以用”.”和[“属性名”]来调用<br>方法用”.”来调用</p>
-<h3 id="模式工厂"><a href="#模式工厂" class="headerlink" title="模式工厂"></a>模式工厂</h3><p>new 一个空对象，<code>let obj = new Object();</code><br>然后利用”.”的方式给其添加属性和方法<br>内置的 Object()构造函数<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622623002064-1297005b-76a6-4d94-9b12-a83cf709e3a1.png#align=left&display=inline&height=215&margin=%5Bobject%20Object%5D&name=image.png&originHeight=429&originWidth=1059&size=99843&status=done&style=shadow&width=529.5" alt="image.png"></p>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><blockquote>
-<p>构造函数：是一种特殊的函数，主要用来初始化对象，即为对象成员变量赋初始值，它总与 new 运算符一起使用。我们可以把对象中一些公共的属性和方法抽取出来，然后封装到这个函数里面。</p>
-</blockquote>
-<pre><code class="javascript">function 构造函数名(形参1,形参2,形参3) &#123;
-     this.属性名1 = 参数1;
-     this.属性名2 = 参数2;
-     this.属性名3 = 参数3;
-     this.方法名 = 函数体;
-&#125;
-
-let obj = new 构造函数名(实参1，实参2，实参3)
-</code></pre>
-<ul>
-<li>构造函数约定<strong>首字母大写</strong>。</li>
-<li>函数内的属性和方法前面需要添加 <strong>this</strong> ，表示当前对象的属性和方法。</li>
-<li>构造函数中<strong>不需要 return 返回结果</strong>。</li>
-<li>当我们创建对象的时候，<strong>必须用 new 来调用构造函数</strong>。</li>
-</ul>
-<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622623181327-bd4b5d09-8525-4c59-b550-9af381526f23.png#align=left&display=inline&height=264&margin=%5Bobject%20Object%5D&name=image.png&originHeight=527&originWidth=1059&size=125271&status=done&style=shadow&width=529.5" alt="image.png"><br>下面详述什么是原型</p>
-<h2 id="对象：Object-内置方法使用"><a href="#对象：Object-内置方法使用" class="headerlink" title="对象：Object 内置方法使用"></a>对象：Object 内置方法使用</h2><h3 id="对象迭代"><a href="#对象迭代" class="headerlink" title="对象迭代"></a>对象迭代</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">for...in 语句用于对数组或者对象的属性进行循环操作。</div>
-其语法如下：
-```js
-for (变量 in 对象名字) {
-    // 在此执行代码
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
 }
-```
-
-<ul>
-<li>语法中的变量是自定义的，它需要符合命名规范，通常我们会将这个变量写为 k 或者 key。书里面建议用 const 来加持。</li>
-</ul>
-<pre><code class="javascript">for (let k in obj) &#123;
-  console.log(k); // 这里的 k 是属性名
-  console.log(obj[k]); // 这里的 obj[k] 是属性值
-&#125;
-</code></pre>
-<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">Object.keys(对象)获取属性名</div>
-```javascript
-var obj = {
-     id: 1,
-     pname: '小米',
-     price: 1999,
-     num: 2000
-};
-var result = Object.keys(obj)
-console.log(result)//[id，pname,price,num]
-```
-
-<h3 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty"></a>Object.defineProperty</h3><p>Object.defineProperty 设置或修改对象中的属性</p>
-<pre><code class="javascript">Object.defineProperty(对象，修改或新增的属性名，&#123;
-        value:修改或新增的属性的值,
-        writable:true/false,//如果值为false 不允许修改这个属性值
-        enumerable: false,//enumerable 如果值为false 则不允许遍历
-    configurable: false  //configurable 如果为false 则不允许删除这个属性 属性是否可以被删除或是否可以再次修改特性
-&#125;)
-</code></pre>
-<h2 id="面向对象设计：tab-栏切换"><a href="#面向对象设计：tab-栏切换" class="headerlink" title="面向对象设计：tab 栏切换"></a>面向对象设计：tab 栏切换</h2><h3 id="功能需求"><a href="#功能需求" class="headerlink" title="功能需求"></a>功能需求</h3><ol>
-<li>点击 tab 栏,可以切换效果.</li>
-<li>点击 + 号, 可以添加 tab 项和内容项.</li>
-<li>点击 x 号, 可以删除当前的 tab 项和内容项.</li>
-<li>双击 tab 项文字或者内容项文字可以修改里面的文字内容</li>
-</ol>
-<h3 id="案例准备"><a href="#案例准备" class="headerlink" title="案例准备"></a>案例准备</h3><ol>
-<li>获取到标题元素</li>
-<li>获取到内容元素</li>
-<li>获取到删除的小按钮 x 号</li>
-<li>新建 js 文件,定义类,添加需要的属性方法(切换,删除,增加,修改)</li>
-<li>时刻注意 this 的指向问题</li>
-</ol>
-<h3 id="切换"><a href="#切换" class="headerlink" title="切换"></a>切换</h3><ul>
-<li>为获取到的标题绑定点击事件,展示对应的内容区域,存储对应的索引</li>
-</ul>
-<pre><code class="js">this.lis[i].index = i;
-this.lis[i].onclick = this.toggleTab;
-</code></pre>
-<ul>
-<li>使用排他,实现只有一个元素的显示</li>
-</ul>
-<pre><code class="js">toggleTab() &#123;
-   //将所有的标题与内容类样式全部移除
-     for (var i = 0; i &lt; this.lis.length; i++) &#123;
-     this.lis[i].className = &#39;&#39;;
-     this.sections[i].className = &#39;&#39;;
-     &#125;
-   //为当前的标题添加激活样式
-     this.className = &#39;liactive&#39;;
-    //为当前的内容添加激活样式
-     that.sections[this.index].className = &#39;conactive&#39;;
-  &#125;
-</code></pre>
-<h3 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h3><ul>
-<li>为添加按钮+ 绑定点击事件</li>
-</ul>
-<pre><code class="js">this.add.onclick = this.addTab;
-</code></pre>
-<ul>
-<li>实现标题与内容的添加,做好排他处理</li>
-</ul>
-<pre><code class="js">addTab() &#123;
-    that.clearClass();
-    // (1) 创建li元素和section元素
-    var random = Math.random();
-    var li = &#39;&lt;li class=&quot;liactive&quot;&gt;&lt;span&gt;新选项卡&lt;/span&gt;&lt;span class=&quot;iconfont icon-guanbi&quot;&gt;                &lt;/span&gt;&lt;/li&gt;&#39;;
-    var section = &#39;&lt;section class=&quot;conactive&quot;&gt;测试 &#39; + random + &#39;&lt;/section&gt;&#39;;
-    // (2) 把这两个元素追加到对应的父元素里面
-    that.ul.insertAdjacentHTML(&#39;beforeend&#39;, li);
-    that.fsection.insertAdjacentHTML(&#39;beforeend&#39;, section);
-    that.init();
-    &#125;
-</code></pre>
-<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
-<li>为元素的删除按钮 x 绑定点击事件</li>
-</ul>
-<pre><code class="js">this.remove[i].onclick = this.removeTab;
-</code></pre>
-<ul>
-<li>获取到点击的删除按钮的所在的父元素的所有,删除对应的标题与内容</li>
-</ul>
-<pre><code class="js">removeTab(e) &#123;
-     e.stopPropagation(); // 阻止冒泡 防止触发li 的切换点击事件
-     var index = this.parentNode.index;
-     console.log(index);
-     // 根据索引号删除对应的li 和section   remove()方法可以直接删除指定的元素
-     that.lis[index].remove();
-     that.sections[index].remove();
-     that.init();
-     // 当我们删除的不是选中状态的li 的时候,原来的选中状态li保持不变
-     if (document.querySelector(&#39;.liactive&#39;)) return;
-     // 当我们删除了选中状态的这个li 的时候, 让它的前一个li 处于选定状态
-     index--;
-     // 手动调用我们的点击事件  不需要鼠标触发
-     that.lis[index] &amp;&amp; that.lis[index].click();
- &#125;
-</code></pre>
-<h3 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h3><ul>
-<li>为元素(标题与内容)绑定双击事件</li>
-</ul>
-<pre><code class="javascript">this.spans[i].ondblclick = this.editTab;
-this.sections[i].ondblclick = this.editTab;
-</code></pre>
-<ul>
-<li>在双击事件处理文本选中状态,修改内部 DOM 节点,实现新旧 value 值的传递</li>
-</ul>
-<pre><code class="js">editTab() &#123;
-    var str = this.innerHTML;
-    // 双击禁止选定文字
-    window.getSelection ? window.getSelection().removeAllRanges() :                     document.selection.empty();
-    // alert(11);
-      this.innerHTML = &#39;&lt;input type=&quot;text&quot; /&gt;&#39;;
-      var input = this.children[0];
-      input.value = str;
-      input.select(); // 文本框里面的文字处于选定状态
-      // 当我们离开文本框就把文本框里面的值给span
-      input.onblur = function() &#123;
-      this.parentNode.innerHTML = this.value;
-      &#125;;
-      // 按下回车也可以把文本框里面的值给span
-      input.onkeyup = function(e) &#123;
-      if (e.keyCode === 13) &#123;
-      // 手动调用表单失去焦点事件  不需要鼠标离开操作
-      this.blur();
-      &#125;
-    &#125;
-&#125;
-</code></pre>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/zfpg9dfgehog/">https://www.wztlink1013.com/blog/zfpg9dfgehog/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/zfpg9dfgehog/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/wgzidzz85o76/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>DOM事件</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/iaxlbh/">
-                    <b>英语阅读</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

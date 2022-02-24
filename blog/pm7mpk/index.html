@@ -1,655 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>VScode 插件及环境配置总结等 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="前言：本来我也不是插件重度用户，写项目觉得太累赘，然后在公司前端工作之后，嗯，真香……本文总结 vscode 的使用，并记录配置相关信息以便更换设备迁移配置，具体内容有：常用插件代码校验（ESLint）和代码格式化（Prettier）的插件配置vscode 配置 C++运行环境DELETE: 彻底删">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="VScode 插件及环境配置总结等 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/pm7mpk/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="前言：本来我也不是插件重度用户，写项目觉得太累赘，然后在公司前端工作之后，嗯，真香……本文总结 vscode 的使用，并记录配置相关信息以便更换设备迁移配置，具体内容有：常用插件代码校验（ESLint）和代码格式化（Prettier）的插件配置vscode 配置 C++运行环境DELETE: 彻底删">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DELETE-%E5%BD%BB%E5%BA%95%E5%88%A0%E9%99%A4-vscode-%E8%BD%AF%E4%BB%B6"><span class="toc-text">DELETE: 彻底删除 vscode 软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81VScode-%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8"><span class="toc-text">一、VScode 插件使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="toc-text">常用插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%9B%86%E6%88%90-ESLint-%E5%92%8C-Prettier-%E4%BB%A3%E7%A0%81%E6%A0%A1%E9%AA%8C%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%8E%AF%E5%A2%83"><span class="toc-text">二、集成 ESLint 和 Prettier 代码校验格式化环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eslint-plugin-html"><span class="toc-text">eslint-plugin-html</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81VScode-%E9%85%8D%E7%BD%AE-C-C-%E7%8E%AF%E5%A2%83"><span class="toc-text">三、VScode 配置 C&#x2F;C++环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-text">下载编译器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%8F%92%E4%BB%B6"><span class="toc-text">下载插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE-vscode-%E9%85%8D%E7%BD%AE"><span class="toc-text">项目.vscode 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#launch-json"><span class="toc-text">launch.json</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#settings-json"><span class="toc-text">settings.json</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tasks-json"><span class="toc-text">tasks.json</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#References"><span class="toc-text">References</span></a></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>VScode 插件及环境配置总结等</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2020-08-28 23:07:56
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/工具使用">
-                        工具使用
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <p>前言：本来我也不是插件重度用户，写项目觉得太累赘，然后在公司前端工作之后，嗯，真香……本文总结 vscode 的使用，并记录配置相关信息以便更换设备迁移配置，具体内容有：</p>
-<ul>
-<li>常用插件</li>
-<li>代码校验（ESLint）和代码格式化（Prettier）的插件配置</li>
-<li>vscode 配置 C++运行环境</li>
-</ul>
-<h2 id="DELETE-彻底删除-vscode-软件"><a href="#DELETE-彻底删除-vscode-软件" class="headerlink" title="DELETE: 彻底删除 vscode 软件"></a>DELETE: 彻底删除 vscode 软件</h2><p><strong>本着要学会如何配置环境，首先要学会如何彻底删除软件的原则（曾经的 javaweb 懂得都懂……），先介绍一下如何在本地设备彻底删除 vscode 软件。</strong><br><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1640403466550-8a3fb5fa-9fe5-4ba0-8ea9-80e773fd43f5.jpeg#crop=0&crop=0&crop=1&crop=1&height=114&id=nq92q&originHeight=56&originWidth=52&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&status=done&style=none&title=&width=105.99074172973633"><br>因为：vscode 如果更换电脑配置混乱（比如 vue 相关，既有 vetur 也有 ESLint 和 Prettier 会进行选择等），就删除软件，重新下载然后配置插件：</p>
-<ul>
-<li><code>win + r</code> 打开运行</li>
-<li><code>%appdata%</code> 回车</li>
-<li>删除 Code 和 Visual Studio Code 文件夹</li>
-<li>地址栏输入 <code>%userprofile%</code> 回车</li>
-<li>删除 <code>.vscode</code> 文件夹</li>
-</ul>
-<h2 id="一、VScode-插件使用"><a href="#一、VScode-插件使用" class="headerlink" title="一、VScode 插件使用"></a>一、VScode 插件使用</h2><h3 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h3><ul>
-<li><input checked="" disabled="" type="checkbox"> Chinese (simplified)Language pack for Visual Code</li>
-</ul>
-<p>vscode 中文化</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> vscode-icons</li>
-</ul>
-<p>美化图标</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Waka Time</li>
-</ul>
-<p>记录软件编写各类语言时间分配</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Todo Highlight</li>
-</ul>
-<p>优化 TODO：高亮</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Live Server</li>
-</ul>
-<p>运行 HTML</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Auto Import</li>
-</ul>
-<p>自动导入包（组件）<br>第一次用到该组件（包）时是不会有自动导入提示的，在另一个文件第二次用时就会有自动导入提示了</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Color Highlight</li>
-</ul>
-<p>代码中有颜色的地方会高亮<br>文件中找到的 css/web 颜色，所以你无需打开页面就能看到它们是什么颜色。</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> HTML CSS Support</li>
-</ul>
-<p>让 html 标签上写 class 智能提示当前项目所支持的样式</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> IntelliSense for CSS class names in HTML</li>
-<li><input checked="" disabled="" type="checkbox"> JavaScript (ES6) code snippets</li>
-</ul>
-<p>ES6 语法智能提示以及快速输入，除 js 外还支持.ts，.jsx，.tsx，.html，.vue，省去了配置其支持各种包含 js 代码文件的时间</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> koroFileHeader</li>
-</ul>
-<p>生成文件头注释<br>配置参考：<a target="_blank" rel="noopener" href="https://github.com/OBKoro1/koro1FileHeader">https://github.com/OBKoro1/koro1FileHeader</a></p>
-<pre><code class="json">// 头部注释
-&quot;fileheader.customMade&quot;: &#123;
-  // 头部注释默认字段
-  &quot;Author&quot;: &quot;wztlink1013&quot;,
-  &quot;Date&quot;: &quot;Do not edit&quot;, // 设置后默认设置文件生成时间
-  &quot;LastEditTime&quot;: &quot;Do not edit&quot;, // 设置后，保存文件更改默认更新最后编辑时间
-  &quot;Description&quot;: &quot;&quot;
-&#125;,
-// 函数注释
-&quot;fileheader.cursorMode&quot;: &#123;
-  // 默认字段
-  &quot;description&quot;:&quot;&quot;,
-  &quot;param&quot;:&quot;&quot;,
-  &quot;return&quot;:&quot;&quot;
-&#125;,
-</code></pre>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Nuxt Typescript Snippets</li>
-<li><input checked="" disabled="" type="checkbox"> Path Autocomplete</li>
-</ul>
-<p>会有路径提示</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Path Intellisense</li>
-</ul>
-<p>自动路径补全</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Reactjs code snippets</li>
-<li><input checked="" disabled="" type="checkbox"> Vetur</li>
-</ul>
-<p>VSCode 里安装 Vetur 可以将“.vue”文件中的语法进行高亮显示，Vetur 不仅支持 Vue 中的 template 模板以外，还支持大多数主流的前端开发脚本和插件，比如 Sass、TypeScript、Jade 和 Less 等等。</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> vue</li>
-<li><input checked="" disabled="" type="checkbox"> Vue 3 Snippets</li>
-<li><input checked="" disabled="" type="checkbox"> Vue VSCode Snippets</li>
-<li><input checked="" disabled="" type="checkbox"> Auto Close Tag</li>
-</ul>
-<p>自动闭合 HTML/XML 标签</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> Auto Rename Tag</li>
-</ul>
-<p>自动关闭 Html 标签，输入起始标签后会自动变换尾部标签。</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> background</li>
-</ul>
-<p>背景图片的设置</p>
-<ul>
-<li><input disabled="" type="checkbox"> DotENV【添加 env 环境变量参数】</li>
-</ul>
-<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hbiao68/article/details/105205112">https://blog.csdn.net/hbiao68/article/details/105205112</a></p>
-<ul>
-<li><input disabled="" type="checkbox"> CodeRunner【编写 C/C++】</li>
-<li><input disabled="" type="checkbox"> C/C++【编写 C/C++】</li>
-<li><input disabled="" type="checkbox"> Todo Tree【优化 TODO：侧边栏】</li>
-<li><input disabled="" type="checkbox"> language-stylus【hexo 博客】</li>
-<li><input disabled="" type="checkbox"> Markdown Preview Github Styling【Markdown】</li>
-<li><input disabled="" type="checkbox"> Markdown All in One【Markdown】</li>
-<li><input disabled="" type="checkbox"> GitLens 【显示当前行 commit 信息，管理 git】</li>
-<li><input disabled="" type="checkbox"> Git History 【查看 commit 信息】</li>
-<li><input disabled="" type="checkbox"> Bracket Pair Colorrizer 2 【优化大括号】</li>
-</ul>
-<p>vscode 可以自定义 markdown 预览样式，css 文件以外链的方式放上</p>
-<h2 id="二、集成-ESLint-和-Prettier-代码校验格式化环境"><a href="#二、集成-ESLint-和-Prettier-代码校验格式化环境" class="headerlink" title="二、集成 ESLint 和 Prettier 代码校验格式化环境"></a>二、集成 ESLint 和 Prettier 代码校验格式化环境</h2><ul>
-<li><input checked="" disabled="" type="checkbox"> Prettier - Code formatter</li>
-</ul>
-<p>代码格式化插件：按照所需配置直接格式化代码</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> ESLint</li>
-</ul>
-<p>格式化检测工具：会给出警告抑或是报错，但不会修改</p>
-<h3 id="eslint-plugin-html"><a href="#eslint-plugin-html" class="headerlink" title="eslint-plugin-html"></a>eslint-plugin-html</h3><p>目的是为了检测 html 文件中的 js 代码，全局下载，让设备非 node 项目也能使用</p>
-<pre><code class="bash">npm install -g eslint-plugin-html
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640400558364-b89c0585-1302-4515-b27a-bdb053cf8701.png#clientId=uf4909dba-f5dd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=257&id=uc4ceedb9&margin=%5Bobject%20Object%5D&name=image.png&originHeight=514&originWidth=1656&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=70743&status=done&style=none&taskId=ue72c1dbf-e39a-418c-b15f-4b99cab5bf2&title=&width=828" alt="image.png"><br>每次打开 html，eslint 就会报错：</p>
-<pre><code>&#39;plugins&#39; doesn&#39;t add plugins to configuration to load. Please use the &#39;overrideConfig.plugins&#39; option instead.
-</code></pre>
-<p>官网 issues <a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode-eslint/issues/1376">https://github.com/microsoft/vscode-eslint/issues/1376</a> 中貌似也并未给出根治方法，暂时禁用：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640401735422-2e618454-6752-4b2e-9020-8788d0ad114d.png#clientId=uf4909dba-f5dd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=167&id=u7b0c7db1&margin=%5Bobject%20Object%5D&name=image.png&originHeight=333&originWidth=730&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=26497&status=done&style=none&taskId=u9c36aabe-d5cf-47bf-b227-a36925ba99f&title=&width=365" alt="image.png"></p>
-<h2 id="三、VScode-配置-C-C-环境"><a href="#三、VScode-配置-C-C-环境" class="headerlink" title="三、VScode 配置 C/C++环境"></a>三、VScode 配置 C/C++环境</h2><h3 id="下载编译器"><a href="#下载编译器" class="headerlink" title="下载编译器"></a>下载编译器</h3><blockquote>
-<p>下载地址：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/mingw-w64/files/">https://sourceforge.net/projects/mingw-w64/files/</a></p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624949859317-61aab22e-74c9-4210-9c4b-f192c9af76ea.png#clientId=ua287ede7-a77a-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=145&id=u0f6c1ee7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=290&originWidth=1911&originalType=binary%E2%88%B6=2&rotation=0&showTitle=false&size=36082&status=done&style=stroke&taskId=u6c7ef924-cb1d-47b3-b425-93a66e026c7&title=&width=955.5" alt="image.png"></p>
-<blockquote>
-<p>配置环境</p>
-</blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624949943592-2695ea6b-4237-4a26-8d5b-c39a2c2ff920.png#clientId=ua287ede7-a77a-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=296&id=u901eeafb&margin=%5Bobject%20Object%5D&name=image.png&originHeight=592&originWidth=970&originalType=binary%E2%88%B6=2&rotation=0&showTitle=false&size=59404&status=done&style=none&taskId=u7e7db4ac-4910-46b9-8de3-5243c003915&title=&width=485" alt="image.png"><br>检查是否配置成功<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624949993088-16f38896-e62c-4347-8e3e-d4ac0e5c4273.png#clientId=ua287ede7-a77a-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=360&id=u842c5c50&margin=%5Bobject%20Object%5D&name=image.png&originHeight=720&originWidth=1440&originalType=binary%E2%88%B6=2&rotation=0&showTitle=false&size=178894&status=done&style=none&taskId=uf6dc2199-051d-4307-90cb-b7cf37e1129&title=&width=720" alt="image.png"></p>
-<h3 id="下载插件"><a href="#下载插件" class="headerlink" title="下载插件"></a>下载插件</h3><p>在 vscode 中下载如下两个插件</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> CodeRunner</li>
-<li><input checked="" disabled="" type="checkbox"> C/C++</li>
-</ul>
-<p>​<img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624948996187-240d18a3-446f-4381-a685-e9a2a7af5d91.png#clientId=ua287ede7-a77a-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=173&id=ubffcb48a&margin=%5Bobject%20Object%5D&name=image.png&originHeight=345&originWidth=279&originalType=binary%E2%88%B6=2&rotation=0&showTitle=false&size=19757&status=done&style=none&taskId=u4925b98e-dacc-467a-9310-2d03d9b4e78&title=&width=139.5" alt="image.png"></p>
-<h3 id="项目-vscode-配置"><a href="#项目-vscode-配置" class="headerlink" title="项目.vscode 配置"></a>项目.vscode 配置</h3><p>建立一个 <code>.vscode</code>  文件夹，然后在里面新建下面三个文件即可。<br>​</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624949162500-fc5ebdeb-2c45-49d6-afb0-badec740d502.png#clientId=ua287ede7-a77a-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=168&id=ue1af6290&margin=%5Bobject%20Object%5D&name=image.png&originHeight=335&originWidth=334&originalType=binary%E2%88%B6=2&rotation=0&showTitle=false&size=22451&status=done&style=none&taskId=ud945aafd-c609-410f-a6ff-04c806979ea&title=&width=167" alt="image.png"></p>
-<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">注意：以后只有该配置文件夹的文件夹才能编写C/C++代码</div>
-
-<h4 id="launch-json"><a href="#launch-json" class="headerlink" title="launch.json"></a>launch.json</h4><pre><code class="json">&#123;
-  &quot;version&quot;: &quot;0.2.0&quot;,
-  &quot;configurations&quot;: [
-    &#123;
-      &quot;name&quot;: &quot;(gdb) Launch&quot;,
-      &quot;type&quot;: &quot;cppdbg&quot;,
-      &quot;request&quot;: &quot;launch&quot;,
-      &quot;program&quot;: &quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;.exe&quot;,
-      &quot;args&quot;: [],
-      &quot;stopAtEntry&quot;: false,
-      &quot;cwd&quot;: &quot;$&#123;workspaceFolder&#125;&quot;,
-      &quot;environment&quot;: [],
-      &quot;externalConsole&quot;: true,
-      &quot;internalConsoleOptions&quot;: &quot;neverOpen&quot;,
-      &quot;MIMode&quot;: &quot;gdb&quot;,
-      &quot;miDebuggerPath&quot;: &quot;gdb.exe&quot;,
-      &quot;setupCommands&quot;: [
-        &#123;
-          &quot;description&quot;: &quot;Enable pretty-printing for gdb&quot;,
-          &quot;text&quot;: &quot;-enable-pretty-printing&quot;,
-          &quot;ignoreFailures&quot;: false
-        &#125;
-      ],
-      &quot;preLaunchTask&quot;: &quot;Compile&quot;
-    &#125;
-  ]
-&#125;
-</code></pre>
-<h4 id="settings-json"><a href="#settings-json" class="headerlink" title="settings.json"></a>settings.json</h4><pre><code class="json">&#123;
-  &quot;files.defaultLanguage&quot;: &quot;c&quot;,
-  &quot;editor.formatOnType&quot;: true,
-  &quot;editor.suggest.snippetsPreventQuickSuggestions&quot;: false,
-  &quot;editor.acceptSuggestionOnEnter&quot;: &quot;off&quot;,
-  &quot;code-runner.runInTerminal&quot;: true,
-  &quot;code-runner.executorMap&quot;: &#123;
-    &quot;c&quot;: &quot;gcc &#39;$fileName&#39; -o &#39;$fileNameWithoutExt.exe&#39; -Wall -O2 -m64 -lm -static-libgcc -std=c11 -fexec-charset=GBK &amp;&amp; &amp;&#39;./$fileNameWithoutExt.exe&#39;&quot;,
-    &quot;cpp&quot;: &quot;g++ &#39;$fileName&#39; -o &#39;$fileNameWithoutExt.exe&#39; -Wall -O2 -m64 -static-libgcc -std=c++14 -fexec-charset=GBK &amp;&amp; &amp;&#39;./$fileNameWithoutExt.exe&#39;&quot;
-  &#125;,
-  &quot;code-runner.saveFileBeforeRun&quot;: true,
-  &quot;code-runner.preserveFocus&quot;: true,
-  &quot;code-runner.clearPreviousOutput&quot;: false,
-  &quot;code-runner.ignoreSelection&quot;: true,
-  &quot;code-runner.fileDirectoryAsCwd&quot;: true,
-
-  &quot;C_Cpp.clang_format_sortIncludes&quot;: true
-&#125;
-</code></pre>
-<h4 id="tasks-json"><a href="#tasks-json" class="headerlink" title="tasks.json"></a>tasks.json</h4><pre><code class="json">&#123;
-  &quot;version&quot;: &quot;2.0.0&quot;,
-  &quot;tasks&quot;: [
-    &#123;
-      &quot;label&quot;: &quot;Compile&quot;,
-      &quot;command&quot;: &quot;gcc&quot;,
-      &quot;args&quot;: [
-        &quot;$&#123;file&#125;&quot;,
-        &quot;-o&quot;,
-        &quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;.exe&quot;,
-        &quot;-g&quot;,
-        &quot;-m64&quot;,
-        &quot;-Wall&quot;,
-        &quot;-static-libgcc&quot;,
-        &quot;-fexec-charset=GBK&quot;
-      ],
-      &quot;type&quot;: &quot;process&quot;,
-      &quot;group&quot;: &#123;
-        &quot;kind&quot;: &quot;build&quot;,
-        &quot;isDefault&quot;: true
-      &#125;,
-      &quot;presentation&quot;: &#123;
-        &quot;echo&quot;: true,
-        &quot;reveal&quot;: &quot;always&quot;,
-        &quot;focus&quot;: false,
-        &quot;panel&quot;: &quot;shared&quot;
-      &#125;,
-      &quot;problemMatcher&quot;: &quot;$gcc&quot;
-    &#125;
-  ]
-&#125;
-</code></pre>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30315894">Visual Studio Code 如何编写运行 C、C++ 程序？</a></li>
-<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000006697219">vscode 插件推荐 - 献给所有前端工程师（2019.10.12 更新）</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/TriDiamond6/article/details/105604427?utm_source=app">VSCode 插件大全｜ VSCode 高级玩家之第二篇</a></li>
-</ul>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/pm7mpk/">https://www.wztlink1013.com/blog/pm7mpk/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/pm7mpk/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/qp5kuu/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>GitHub Actions使用之不同仓库文件夹迁移</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/qq1dno/">
-                    <b>电脑重装win10系统以及重装后的软件下载</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}

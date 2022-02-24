@@ -1,819 +1,163 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>Numpy库使用 | 尼采般地抒情</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="author" content="尼采般地抒情">
-    <meta name="email" content="wztlink1013@163.com">
-    <meta name="description" content="一、NumPyndarray 理解多维数组import numpy as np# 生成指定维度的随机多维数据#数学建模应该用不到data = np.random.rand(2, 3)print (data)print (type(data))#type是显示数据类型；shape显示维度；ndim维度">
-    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Numpy库使用 | 尼采般地抒情">
-    <meta property="og:url" content="https://www.wztlink1013.com/blog/mk2z96/">
-    <meta property="og:site_name" content="尼采般地抒情">
-    <meta property="og:description" content="一、NumPyndarray 理解多维数组import numpy as np# 生成指定维度的随机多维数据#数学建模应该用不到data = np.random.rand(2, 3)print (data)print (type(data))#type是显示数据类型；shape显示维度；ndim维度">
-    <meta name="generator" content="https://hexo.io" />
-    <!-- 解决语雀图片不显示 -->
-    <meta name="referrer" content="no-referrer" />
-    <!-- 引入highlight样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css">
-    <script type="text/javascript" src="https://unpkg.zhimg.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"></script>
-    <!-- 引入主CSS样式 -->
-    
-<link rel="stylesheet" href="/public/css/style.css">
-
-    <!-- font-awesome的css样式 -->
-    <link rel="stylesheet" href="https://unpkg.zhimg.com/cdn-website@0.0.0/font/css/font-awesome.min.css">
-    <!-- 引入jQuery -->
-    <script type="text/javascript" src="https://unpkg.zhimg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-    <!-- algolia for the search only version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
-    <!-- algolia for the default version -->
-    <script src="https://unpkg.zhimg.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
-    <!-- algolia 元信息 -->
-    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
-</head>
-<body>
-    <div class="bg_color"></div>
-<!-- PC端 -->
-<header class="header">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="arrow_left">
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="arrow_right">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端 -->
-<header class="header_app">
-    <a href="/">
-        <i class="fa fa-home" aria-hidden="true"></i>
-    </a>
-    <div class="hd_left" id="btn_app_sider">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-    </div>
-    <div class="hd_right" id="btn_app_right">
-        <i class="fa fa-picture-o" aria-hidden="true"></i>
-    </div>
-</header>
-<!-- 移动端侧边栏 -->
-<div class="app_side_glass" id="app_side_glass">
-</div>
-<div class="app_side_content" id="app_side_content">
-    <h3>尼采般地抒情</h3>
-    <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-    <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-    <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-</div>
-
-
-<div class="global_button">
-    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </div>
-    <div title="搜索" class="global_button_item" id="search_btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </div>
-    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
-        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
-    </div>
-    <div title="目录" class="global_button_item" id="toc_btn" >
-        <i class="fa fa-list" aria-hidden="true"></i>
-    </div>
-    <div title="夜间" class="global_button_item">
-        <i class="fa fa-adjust" aria-hidden="true"></i>
-    </div>
-    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
-        <i class="fa fa-share-alt" aria-hidden="true"></i>
-    </div>
-</div>
-<div class="toc_container">
-    <div class="toc_title">
-        <i class="fa fa-list" aria-hidden="true"></i>
-        <span>目录</span>
-    </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81NumPy"><span class="toc-text">一、NumPy</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ndarray-%E7%90%86%E8%A7%A3%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-text">ndarray 理解多维数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-ndarray"><span class="toc-text">创建 ndarray</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%93%8D%E4%BD%9C-nddarray"><span class="toc-text">二、操作 nddarray</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A2%E9%87%8F%E5%8C%96-vectorization"><span class="toc-text">矢量化 (vectorization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%87%E7%89%87"><span class="toc-text">索引与切片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AE-transpose"><span class="toc-text">转置 &#x3D;&#x3D;&#x3D; transpose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ndarray-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E5%8C%96-astype"><span class="toc-text">ndarray 数据类型转化 &#x3D;&#x3D;&#x3D; astype</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="toc-text">文本文件的读取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81np-%E7%9A%84%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-text">三、np 的常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AE-transpose-1"><span class="toc-text">转置 transpose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceil-%E5%92%8C-floor-%E5%92%8C-rint-%E5%92%8C-isnan"><span class="toc-text">ceil 和 floor 和 rint 和 isnan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#where"><span class="toc-text">where</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sum"><span class="toc-text">sum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#all-%E5%92%8C-any"><span class="toc-text">all 和 any</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unique"><span class="toc-text">unique</span></a></li></ol></li></ol>
-</div>
-<div class="search_box">
-        <div class="search">
-            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
-            <i class="fa fa-times search_close" aria-hidden="true"></i>
-        </div>
-
-    <div id="local-search-result">
-        请输入搜索词以便展示搜索结果……
-    </div>
-</div>
-<div class="clearfix container">
-    <div class="ct_left">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:51
- * @Description:  
--->
-<div class="component clearfix blogger">
-  <h3>尼采般地抒情</h3>
-  <img
-    class="blogger_left"
-    src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
-    alt="尼采般地抒情"
-  />
-</div>
-
-        <div class="component clearfix board">
-    <h3>公告栏</h3>
-    <div class="board_content">
-        <p>
-            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
-            <!-- 主题：hexo-theme-lyrics<hr> -->
-            <b>作者:尼采般地抒情</b><hr>
-        </p>
-
-    </div>
-</div>
-
-        <div class="component clearfix links">
-    <h3>站内导航</h3>
-    <ul>
-        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
-    </ul>
-</div>
-
-        <div class="component clearfix web_info">
-    <h3>站点信息</h3>
-    <div>
-        <span>文章数目：</span>254 <span>篇</span>
-    </div>
-    <div>
-        <span>已运行时间：</span>
-    </div>
-    <span id="webinfo_runtime_count_1"></span>
-    <img src="https://api.luvying.com/acgimg">
-</div>
-
-
-
-
-
-
-    </div>
-    <div class="ct_center">
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:48:25
- * @Description:  
--->
-<div class="component article_meta">
-    <div class="article_meta_title">
-        <h1>Numpy库使用</h1>
-    </div>
-    <div class="article_meta_other">
-        <span class="meta_item">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-            <img src="https://unpkg.zhimg.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
-            <a href="/">尼采般地抒情</a>
-        </span>
-        <span class="meta_item">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            2020-08-28 22:57:35
-        </span>
-        
-        
-            <span class="meta_item">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                
-                    <a href="/categories/数据分析">
-                        数据分析
-                    </a>
-                    
-            </span>
-         
-
-         
-
-        <span class="meta_item">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span id="twikoo_visitors">loading</span>
-            次访问
-        </span>
-
-        <span class="meta_item">
-            <i class="fa fa-comments-o" aria-hidden="true"></i>
-            <span id="twikoo_comments">loading</span>
-        </span>
-    </div>
-</div>
-        <div class="component article">
-    <h2 id="一、NumPy"><a href="#一、NumPy" class="headerlink" title="一、NumPy"></a>一、NumPy</h2><h3 id="ndarray-理解多维数组"><a href="#ndarray-理解多维数组" class="headerlink" title="ndarray 理解多维数组"></a>ndarray 理解多维数组</h3><pre><code class="python">import numpy as np
-
-# 生成指定维度的随机多维数据
-#数学建模应该用不到
-data = np.random.rand(2, 3)
-print (data)
-print (type(data))
-#type是显示数据类型；shape显示维度；ndim维度个数;type另外的作用
-</code></pre>
-<pre><code>[[0.46686682 0.68844304 0.76663872]
- [0.70747721 0.47887587 0.25943412]]
-&lt;class &#39;numpy.ndarray&#39;&gt;
-</code></pre>
-<blockquote>
-<p>ndim, shape 和 dtype 属性</p>
-</blockquote>
-<pre><code class="python">print (&#39;维度个数&#39;, data.ndim)
-print (&#39;各维度大小: &#39;, data.shape)
-print (&#39;数据类型: &#39;, data.dtype)
-</code></pre>
-<pre><code>维度个数 2
-各维度大小:  (2, 3)
-数据类型:  float64
-</code></pre>
-<h3 id="创建-ndarray"><a href="#创建-ndarray" class="headerlink" title="创建 ndarray"></a>创建 ndarray</h3><pre><code class="python">&#39;&#39;&#39;1. array创建&#39;&#39;&#39;
-# list转换为 ndarray
-l = range(10)
-data = np.array(l)
-print (data)
-print (data.shape)
-print (data.ndim)
-</code></pre>
-<pre><code>[0 1 2 3 4 5 6 7 8 9]
-(10,)
-1
-</code></pre>
-<pre><code class="python"># 嵌套序列转换为ndarray
-l2 = [range(10), range(10)]
-#就这样形成了一个数组
-data = np.array(l2)
-print (data)
-print (data.shape)
-</code></pre>
-<pre><code>[[0 1 2 3 4 5 6 7 8 9]
- [0 1 2 3 4 5 6 7 8 9]]
-(2, 10)
-</code></pre>
-<pre><code class="python">&#39;&#39;&#39;2. zeros;ones;empty创建&#39;&#39;&#39;
-
-# np.zeros
-zeros_arr = np.zeros((3, 4))
-#注意元组，这里经常报错
-# np.ones
-ones_arr = np.ones((2, 3))
-
-# np.empty[不全为零，而且是随机的一些数字]
-empty_arr = np.empty((3, 3))
-
-# np.empty 指定数据类型
-empty_int_arr = np.empty((3, 3), int)
-
-print (zeros_arr)
-print (&#39;-------------&#39;)
-print (ones_arr)
-print (&#39;-------------&#39;)
-print (empty_arr)
-print (&#39;-------------&#39;)
-print (empty_int_arr)
-</code></pre>
-<pre><code>[[0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]]
--------------
-[[1. 1. 1.]
- [1. 1. 1.]]
--------------
-[[0.000e+000 0.000e+000 0.000e+000]
- [0.000e+000 0.000e+000 2.174e-321]
- [0.000e+000 0.000e+000 0.000e+000]]
--------------
-[[0 0 0]
- [0 0 0]
- [0 0 0]]
-</code></pre>
-<pre><code class="python"># np.arange()
-#创建一系列连续的数算是numpy里面类似python里面range的功能
-print (np.arange(10))
-</code></pre>
-<pre><code>[0 1 2 3 4 5 6 7 8 9]
-</code></pre>
-<h2 id="二、操作-nddarray"><a href="#二、操作-nddarray" class="headerlink" title="二、操作 nddarray"></a>二、操作 nddarray</h2><h3 id="矢量化-vectorization"><a href="#矢量化-vectorization" class="headerlink" title="矢量化 (vectorization)"></a>矢量化 (vectorization)</h3><pre><code class="python"># 矢量与矢量运算
-arr = np.array([[1, 2, 3],
-                [4, 5, 6]])
-
-print (&quot;元素之间相乘：&quot;)
-#注意区分矩阵之间的运算。这里的矢量原酸相当于是广播式的运算
-print (arr * arr)
-
-print (&quot;矩阵相加：&quot;)
-print (arr + arr)
-</code></pre>
-<pre><code>元素之间相乘：
-[[ 1  4  9]
- [16 25 36]]
-矩阵相加：
-[[ 2  4  6]
- [ 8 10 12]]
-</code></pre>
-<pre><code class="python"># 矢量与标量运算
-print (1. / arr)
-print (2. * arr)
-</code></pre>
-<pre><code>[[1.         0.5        0.33333333]
- [0.25       0.2        0.16666667]]
-[[ 2.  4.  6.]
- [ 8. 10. 12.]]
-</code></pre>
-<h3 id="索引与切片"><a href="#索引与切片" class="headerlink" title="索引与切片"></a>索引与切片</h3><pre><code class="python"># 一维数组
-arr1 = np.arange(10)
-print (arr1)
-
-print (arr1[2:5])
-</code></pre>
-<pre><code>[0 1 2 3 4 5 6 7 8 9]
-[2 3 4]
-</code></pre>
-<pre><code class="python"># 多维数组
-arr2 = np.arange(12).reshape(3,4)
-#要学会定义多维数组，arange是形成12个随机数，之后的reshape是形成维数
-#多维数组的空间含义就是比如：3.4.5=长4宽5高3
-#还有点数就是应用函数
-print (arr2)
-</code></pre>
-<pre><code>[[ 0  1  2  3]
- [ 4  5  6  7]
- [ 8  9 10 11]]
-</code></pre>
-<pre><code class="python">print (arr2[1])
-
-print (arr2[0:2, 2:])
-
-print (arr2[:, 1:3])
-</code></pre>
-<pre><code>[4 5 6 7]
-[[2 3]
- [6 7]]
-[[ 1  2]
- [ 5  6]
- [ 9 10]]
-</code></pre>
-<pre><code class="python"># 条件索引
-
-# 找出 data_arr 中 2015年后的数据
-data_arr = np.random.rand(3,3)
-print (data_arr)
-
-year_arr = np.array([[2000, 2001, 2000],
-                     [2005, 2002, 2009],
-                     [2001, 2003, 2010]])
-
-is_year_after_2005 = year_arr &gt;= 2005
-#:他会扩展成同类型的数组
-print (is_year_after_2005, is_year_after_2005.dtype)
-
-filtered_arr = data_arr[is_year_after_2005]
-
-filtered_arr = data_arr[year_arr &gt;= 2005]
-print (filtered_arr)
-#中间的一些语句可以删除
-#最后生成得是一维数组，进行数据过滤的时候很有用
-</code></pre>
-<pre><code>[[0.61482194 0.0249229  0.28525661]
- [0.05121173 0.37672803 0.86259463]
- [0.22648329 0.4581513  0.18620441]]
-[[False False False]
- [ True False  True]
- [False False  True]] bool
-[0.05121173 0.86259463 0.18620441]
-</code></pre>
-<pre><code class="python"># 多个条件&amp; |
-filtered_arr = data_arr[(year_arr &lt;= 2005) &amp; (year_arr % 2 == 0)]
-print (filtered_arr)
-</code></pre>
-<pre><code>[0.61482194 0.28525661 0.37672803]
-</code></pre>
-<h3 id="转置-transpose"><a href="#转置-transpose" class="headerlink" title="转置 === transpose"></a>转置 === transpose</h3><pre><code class="python">arr = np.random.rand(2,3)
-print (arr)
-print (arr.transpose())
-</code></pre>
-<pre><code>[[0.01538974 0.47573964 0.90684253]
- [0.93683601 0.64306611 0.63846634]]
-[[0.01538974 0.93683601]
- [0.47573964 0.64306611]
- [0.90684253 0.63846634]]
-</code></pre>
-<pre><code class="python">#高维数组的转换(图像里面会用得到转换维度)
-
-arr3d = np.random.rand(2,3,4)
-print (arr3d)
-print (&#39;----------------------&#39;)
-print (arr3d.transpose((1,0,2))) # 多维数组的转置和定义不会
-</code></pre>
-<pre><code>[[[0.18074837 0.64652003 0.80527972 0.67800268]
-  [0.95766577 0.2498768  0.00304503 0.7058178 ]
-  [0.12523549 0.18796252 0.72463798 0.15352211]]
-
- [[0.38808013 0.31075033 0.53082474 0.32254431]
-  [0.6861262  0.02999367 0.70980993 0.09099878]
-  [0.14987301 0.78237398 0.90159408 0.82897071]]]
-----------------------
-[[[0.18074837 0.64652003 0.80527972 0.67800268]
-  [0.38808013 0.31075033 0.53082474 0.32254431]]
-
- [[0.95766577 0.2498768  0.00304503 0.7058178 ]
-  [0.6861262  0.02999367 0.70980993 0.09099878]]
-
- [[0.12523549 0.18796252 0.72463798 0.15352211]
-  [0.14987301 0.78237398 0.90159408 0.82897071]]]
-</code></pre>
-<h3 id="ndarray-数据类型转化-astype"><a href="#ndarray-数据类型转化-astype" class="headerlink" title="ndarray 数据类型转化 === astype"></a>ndarray 数据类型转化 === astype</h3><pre><code class="python">zeros_float_arr = np.zeros((3, 4), dtype=np.float64)
-print (zeros_float_arr)
-print (zeros_float_arr.dtype)
-
-# astype转换数据类型
-zeros_int_arr = zeros_float_arr.astype(np.int32)
-print (zeros_int_arr)
-print (zeros_int_arr.dtype)
-</code></pre>
-<pre><code>[[0. 0. 0. 0.]
- [0. 0. 0. 0.]
- [0. 0. 0. 0.]]
-float64
-[[0 0 0 0]
- [0 0 0 0]
- [0 0 0 0]]
-int32
-</code></pre>
-<h3 id="文本文件的读取"><a href="#文本文件的读取" class="headerlink" title="文本文件的读取"></a>文本文件的读取</h3><pre><code class="python"># loadtxt
-filename = &#39;./presidential_polls.csv&#39;
-data_array = np.loadtxt(filename,      # 文件名
-                        delimiter=&#39;,&#39;, # 指定里面的元素分隔符
-                        dtype=str,     # 指定数据类型
-                        usecols=(0,2,3)) # 指定读取的列索引号
-print (data_array, data_array.shape)
-</code></pre>
-<pre><code>[[&#39;cycle&#39; &#39;type&#39; &#39;matchup&#39;]
- [&#39;2016&#39; &#39;&quot;polls-plus&quot;&#39; &#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;]
- [&#39;2016&#39; &#39;&quot;polls-plus&quot;&#39; &#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;]
- ...
- [&#39;2016&#39; &#39;&quot;polls-only&quot;&#39; &#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;]
- [&#39;2016&#39; &#39;&quot;polls-only&quot;&#39; &#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;]
- [&#39;2016&#39; &#39;&quot;polls-only&quot;&#39; &#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;]] (10237, 3)
-</code></pre>
-<pre><code class="python"># loadtxt, 明确指定每列数据的类型
-filename = &#39;./presidential_polls.csv&#39;
-data_array = np.loadtxt(filename,      # 文件名
-                        delimiter=&#39;,&#39;, # 分隔符
-                        skiprows=1,
-                        dtype=&#123;&#39;names&#39;:(&#39;cycle&#39;, &#39;type&#39;, &#39;matchup&#39;),
-                               &#39;formats&#39;:(&#39;i4&#39;, &#39;S15&#39;, &#39;S50&#39;)&#125;,     # 数据类型
-                        usecols=(0,2,3)) # 指定读取的列索引号
-
-print (data_array, data_array.shape) # 读取的结果是一维的数组，每个元素是一个元组
-</code></pre>
-<pre><code>[(2016, b&#39;&quot;polls-plus&quot;&#39;, b&#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;)
- (2016, b&#39;&quot;polls-plus&quot;&#39;, b&#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;)
- (2016, b&#39;&quot;polls-plus&quot;&#39;, b&#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;) ...
- (2016, b&#39;&quot;polls-only&quot;&#39;, b&#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;)
- (2016, b&#39;&quot;polls-only&quot;&#39;, b&#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;)
- (2016, b&#39;&quot;polls-only&quot;&#39;, b&#39;&quot;Clinton vs. Trump vs. Johnson&quot;&#39;)] (10236,)
-</code></pre>
-<h2 id="三、np-的常用函数"><a href="#三、np-的常用函数" class="headerlink" title="三、np 的常用函数"></a>三、np 的常用函数</h2><h3 id="转置-transpose-1"><a href="#转置-transpose-1" class="headerlink" title="转置 transpose"></a>转置 transpose</h3><pre><code class="python">import numpy as np
-</code></pre>
-<pre><code class="python">arr = np.random.rand(2,3)
-print (arr)
-print (arr.transpose())
-</code></pre>
-<pre><code>[[0.78485041 0.88817969 0.34809014]
- [0.32744286 0.97539301 0.94401872]]
-[[0.78485041 0.32744286]
- [0.88817969 0.97539301]
- [0.34809014 0.94401872]]
-</code></pre>
-<pre><code class="python">#高维数组的转换(图像里面会用得到转换维度)
-#不懂这里！！！
-arr3d = np.random.rand(2,3,4)
-print (arr3d)
-print (&#39;----------------------&#39;)
-print (arr3d.transpose((1,0,2))) # 多维数组的转置和定义不会
-</code></pre>
-<pre><code>[[[0.28492549 0.60197236 0.45582367 0.21992479]
-  [0.1747163  0.69201365 0.85460359 0.65311699]
-  [0.62189644 0.25217555 0.16347156 0.29831219]]
-
- [[0.42826733 0.81396165 0.187138   0.560564  ]
-  [0.10162186 0.66419751 0.03261665 0.06969256]
-  [0.55461652 0.55020586 0.50693591 0.31741807]]]
-----------------------
-[[[0.28492549 0.60197236 0.45582367 0.21992479]
-  [0.42826733 0.81396165 0.187138   0.560564  ]]
-
- [[0.1747163  0.69201365 0.85460359 0.65311699]
-  [0.10162186 0.66419751 0.03261665 0.06969256]]
-
- [[0.62189644 0.25217555 0.16347156 0.29831219]
-  [0.55461652 0.55020586 0.50693591 0.31741807]]]
-</code></pre>
-<h3 id="ceil-和-floor-和-rint-和-isnan"><a href="#ceil-和-floor-和-rint-和-isnan" class="headerlink" title="ceil 和 floor 和 rint 和 isnan"></a>ceil 和 floor 和 rint 和 isnan</h3><pre><code class="python">arr = np.random.randn(2,3)
-
-print (arr)
-print (np.ceil(arr))
-#向上最接近的整数
-print (np.floor(arr))
-#向下最接近的整数
-print (np.rint(arr))
-#四舍五入
-print (np.isnan(arr))
-#判断元素是否为NaN
-#笔记上还有其他的函数
-</code></pre>
-<pre><code>[[ 0.262106   -1.33680008 -1.08562543]
- [ 0.3990978   0.1410074   0.64278274]]
-[[ 1. -1. -1.]
- [ 1.  1.  1.]]
-[[ 0. -2. -2.]
- [ 0.  0.  0.]]
-[[ 0. -1. -1.]
- [ 0.  0.  1.]]
-[[False False False]
- [False False False]]
-</code></pre>
-<h3 id="where"><a href="#where" class="headerlink" title="where"></a>where</h3><pre><code class="python">arr = np.random.randn(3,4)
-print (arr)
-
-np.where(arr &gt; 0, 1, -1)
-#（条件，满足输出，不满足输出）
-</code></pre>
-<pre><code>[[ 2.04688394  0.48063737  1.20876913 -0.93412937]
- [-0.43427472 -1.47755481  0.36882256 -0.08943138]
- [-0.2847686   0.96915893  0.32641235  0.28346922]]
-
-
-
-
-
-array([[ 1,  1,  1, -1],
-       [-1, -1,  1, -1],
-       [-1,  1,  1,  1]])
-</code></pre>
-<h3 id="sum"><a href="#sum" class="headerlink" title="sum"></a>sum</h3><pre><code class="python">arr = np.arange(10).reshape(5,2)
-print (arr)
-
-print (np.sum(arr))
-print (np.sum(arr, axis=0))
-print (np.sum(arr, axis=1))
-</code></pre>
-<pre><code>[[0 1]
- [2 3]
- [4 5]
- [6 7]
- [8 9]]
-45
-[20 25]
-[ 1  5  9 13 17]
-</code></pre>
-<h3 id="all-和-any"><a href="#all-和-any" class="headerlink" title="all 和 any"></a>all 和 any</h3><pre><code class="python">import numpy as np
-arr = np.random.randn(2,3)
-print (arr)
-
-print (np.any(arr &gt; 0))
-#有一个就对
-print (np.all(arr &gt; 0))
-#全部对才对
-&#39;&#39;&#39;
-·用处就是判断一组数据当中，是否===有点类似布尔类型的
-·这个也可以应用在pandas中的DataFrame中
-&#39;&#39;&#39;
-</code></pre>
-<pre><code>[[-1.020184   -0.48466272 -0.8496271 ]
- [ 0.88815825 -0.81911857  0.64570539]]
-True
-False
-
-
-
-
-
-&#39;\n·用处就是判断一组数据当中，是否===有点类似布尔类型的\n·这个也可以应用在pandas中的DataFrame中\n&#39;
-</code></pre>
-<h3 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h3><pre><code class="python">arr = np.array([[1, 2, 1], [2, 3, 4]])
-print (arr)
-print (np.unique(arr))
-</code></pre>
-<pre><code>[[1 2 1]
- [2 3 4]]
-[1 2 3 4]
-</code></pre>
-
-</div>
-
-         
-
-<div class="component article_more">
-    <ul>
-        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
-        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/mk2z96/">https://www.wztlink1013.com/blog/mk2z96/</a></li>
-        <li class="article_more_btn">
-            <span class="meta_item">
-                编辑：
-                <a target="_blank" rel="noopener" href="https://www.yuque.com/nicaibandishuqing/blog/mk2z96/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                部署：
-                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
-            </span>
-            <span class="meta_item">
-                订阅：
-                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
-            </span>
-        </li>
-    </ul>
-</div>
-        <div class="prev_next component">
-    
-          
-            <span class="prev_next_left">
-                <a href="/blog/oq4xcx/">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    <b>Pandas库使用——分组聚合</b>
-                </a>
-            </span>
-          
-          
-            <span class="prev_next_right">
-                <a href="/blog/kt0kvc/">
-                    <b>数据可视化</b>
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
-            </span>
-          
-    
-</div>
-
-
-        <!--
- * @Author: wztlink1013
- * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-01-09 14:49:29
- * @Description:  
--->
-<div class="component clearfix comments" id="comments" style="display: block">
-  <div class="comments_title">
-    <h2>评论区</h2>
-    <!-- 转换评论按钮 -->
-    <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
-      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
-    </div>
-  </div>
-
-  <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
-    <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
-      <div id="tcomment"></div>
-      <script src="https://unpkg.zhimg.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'website-wikoo-4g46k8do98867542',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
-    </div>
-  </div>
-</div>
-
-        
-        
-    </div>
-    <div class="ct_right">
-        
-
-<div class="component clearfix categories">
-    <h3>『技术』文章分类</h3><ul class="cate_forder">
-    
-            <li class="cate_cell">
-            <a href="/categories/Bug">Bug</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/JavaScript">JavaScript</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-            <li class="cate_cell">
-            <a href="/categories/Web">Web</a>
-            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-            <ul style="display: none">
-            
-            </ul>
-            </li>
-        
-</ul>
-</div>
-
-        <!-- partial('_widget/hot_articles') -->
-        <div class="component clearfix new_comments">
-    <h3 class="title">最新评论</h3>
-    <div class="new_comments_loding">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
-    </div>
-    <ul class="hot_articles_item"></ul>
-</div>
-
-<!-- 最新布局的文章列表布局 -->
-<!-- '<div class="item_up">
-        <img src="' + new_comments_avatar + '" class="avatar">
-        <div class="nick_name">
-            <span class="nick">' + new_comments_nick + '</span>
-            <span class="time">' + new_comments_time + '</span>
-        </div>
-    </div>
-    <div class="item_down">
-        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
-    </div>'
- -->
-
-    </div>
-
-</div>
-<footer class="footer">
-    <div class="content">
-    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
-    <!-- <div><a href="/">尼采般地抒情</a></div> -->
-    <div><a href="/about">联系方式</a></div>
-</div>
-</footer>
-
-
-    
-        <!-- 非首页 -->
-        
-<script src="/public/js/main.js"></script>
-
-     
-    <!-- 所有：CNZZ站长统计
-    <script type="text/javascript">
-        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
-    </script> -->
-</body>
-</html>
+/****************************************************
+        导航栏
+*****************************************************/
+.header {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header:hover {
+  background-color: $color_header_bg_hover;
+}
+.header .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+.header_app {
+  display: none;
+  position: relative;
+  max-width: 1260px;
+  width: 95%;
+  height: 50px;
+  background-color: $color_header_bg;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  margin-bottom: 15px;
+}
+.header_app:hover {
+  background-color: $color_header_bg_hover;
+}
+.header_app .hd_left:hover,
+.hd_right:hover {
+  cursor: pointer;
+}
+.header_app .hd_left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+  vertical-align: middle;
+}
+.header_app .hd_right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: $color_header_left_right_arrow;
+  text-align: center;
+}
+/****************************************************
+         版心：浮动布局
+*****************************************************/
+.container {
+  max-width: 1260px;
+  width: 95%;
+  margin: 0 auto;
+}
+.ct_left {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_right {
+  display: none;
+  float: left;
+  width: 20%;
+}
+.ct_center {
+  display: block;
+  float: left;
+  width: 100%;
+  padding: 0 20px;
+}
+/****************************************************
+        底部
+*****************************************************/
+.footer {
+  max-width: 1260px;
+  width: 100%;
+  padding: 40px 10px 90px;
+  margin: 0 auto;
+}
+.footer .content {
+  text-align: center;
+}
+/****************************************************
+        左中右的组件共有的样式类
+*****************************************************/
+.component {
+  width: 100%;
+  background-color: $color_container;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+.component:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+@-moz-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-webkit-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@-o-keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
+@keyframes move {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(500px, 0);
+  }
+}
