@@ -1,0 +1,825 @@
+<!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-04-07 20:00:43
+ * @Description:  
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue3学习笔记 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="前言：以官方文档为蓝本的 Vue 学习过程中，需要的一些细节以及实际开发中遇到的总结点。Vue 的学习过程中，主要分几个大块：基础知识：框架自行的一些语法（官网里面的基础）组件相关：尤其是组件之间的各类通信方式，在写/抽离组件里面经常用到，单独一篇文章总结。官方文档：Vue 2.x：https://" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Vue3学习笔记 | 尼采般地抒情" />
+    <meta
+      property="og:url"
+      content="https://www.wztlink1013.com/blog/vue_watch_summary/"
+    />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="前言：以官方文档为蓝本的 Vue 学习过程中，需要的一些细节以及实际开发中遇到的总结点。Vue 的学习过程中，主要分几个大块：基础知识：框架自行的一些语法（官网里面的基础）组件相关：尤其是组件之间的各类通信方式，在写/抽离组件里面经常用到，单独一篇文章总结。官方文档：Vue 2.x：https://" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"
+    ></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/font/css/font-awesome.min.css"
+    />
+    <!-- 引入jQuery -->
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/jquery@3.6.0/dist/jquery.min.js"
+    ></script>
+    <!-- algolia for the search only version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+  </head>
+  <body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7-%E6%96%B9%E6%B3%95-%E4%BE%A6%E5%90%AC%E5%99%A8"><span class="toc-text">计算属性+方法+侦听器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%EF%BC%88computed%EF%BC%89%E5%92%8C%E6%96%B9%E6%B3%95%EF%BC%88methods%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">计算属性（computed）和方法（methods）的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%EF%BC%88computed%EF%BC%89%E5%92%8C%E4%BE%A6%E5%90%AC%E5%99%A8%EF%BC%88watch%EF%BC%89%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">计算属性（computed）和侦听器（watch）的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%A6%E5%90%AC%E5%99%A8%EF%BC%88watch%EF%BC%89%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">侦听器（watch）的一些注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-deep-%E5%B1%9E%E6%80%A7"><span class="toc-text">使用 deep 属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9D%A5%E8%A1%A8%E7%A4%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7%E8%B0%83%E7%94%A8"><span class="toc-text">用字符串来表示对象的属性调用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7-computed"><span class="toc-text">使用计算属性(computed)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%AE%9E%E8%B7%B5%E7%90%86%E8%A7%A3"><span class="toc-text">生命周期实践理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue3-x-%E7%9B%B8%E4%BA%A4-Vue2-x-%E7%9A%84-API-%E5%B7%AE%E5%BC%82"><span class="toc-text">Vue3.x 相交 Vue2.x 的 API 差异</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#defineComponent"><span class="toc-text">defineComponent({})</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setup"><span class="toc-text">setup()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#watch"><span class="toc-text">watch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue3-%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3"><span class="toc-text">vue3 路由相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%97%E5%88%B0%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF"><span class="toc-text">得到动态路由信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE"><span class="toc-text">定义数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue3-%E5%AE%9A%E4%B9%89%E6%99%AE%E9%80%9A%E6%95%B0%E6%8D%AE"><span class="toc-text">Vue3 定义普通数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue3-%E5%AE%9A%E4%B9%89%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE"><span class="toc-text">Vue3 定义响应数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ref"><span class="toc-text">ref</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reactive"><span class="toc-text">reactive</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue2-%E4%B8%AD%E7%9A%84-data"><span class="toc-text">Vue2 中的 data</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8-setup-%E4%B8%AD%E4%BD%BF%E7%94%A8-data-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9F"><span class="toc-text">如何在 setup 中使用 data 中的数据库？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86"><span class="toc-text">其他知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B7%E5%BC%8F%E5%8F%AA%E5%9C%A8%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E6%9C%89%E6%95%88"><span class="toc-text">样式只在当前页面有效</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:51
+ * @Description:  
+-->
+<div class="component clearfix blogger">
+  <h3>尼采般地抒情</h3>
+  <img
+    class="blogger_left"
+    src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
+    alt="尼采般地抒情"
+  />
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-05-08 13:00:21
+ * @Description:  
+-->
+<div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Vue3学习笔记</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2021-10-27 21:27:16
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/👨‍💻Web开发/">
+                        👨‍💻Web开发
+                    </a>
+                
+                    <a href="/categories/👨‍💻Web开发/Vue/">
+                        Vue
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <p>前言：以官方文档为蓝本的 Vue 学习过程中，需要的一些细节以及实际开发中遇到的总结点。</p>
+<p>Vue 的学习过程中，主要分几个大块：</p>
+<ul>
+<li>基础知识：框架自行的一些语法（官网里面的<strong>基础</strong>）</li>
+<li>组件相关：尤其是组件之间的各类通信方式，在写/抽离组件里面经常用到，单独一篇文章总结。</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>Vue 2.x：<a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/">https://cn.vuejs.org/v2/guide/</a></li>
+<li>Vue 3：<a target="_blank" rel="noopener" href="https://v3.cn.vuejs.org/guide/introduction.html">https://v3.cn.vuejs.org/guide/introduction.html</a></li>
+</ul>
+<h2 id="计算属性-方法-侦听器"><a href="#计算属性-方法-侦听器" class="headerlink" title="计算属性+方法+侦听器"></a>计算属性+方法+侦听器</h2><h3 id="计算属性（computed）和方法（methods）的区别"><a href="#计算属性（computed）和方法（methods）的区别" class="headerlink" title="计算属性（computed）和方法（methods）的区别"></a>计算属性（computed）和方法（methods）的区别</h3><ul>
+<li>计算属性是基于他们的依赖来进行缓存的</li>
+</ul>
+<p>“他们的依赖”指的是 data 数据域中的 data 数据，如果其变动，计算属性值才会变</p>
+<ul>
+<li>方法不存在缓存</li>
+</ul>
+<h3 id="计算属性（computed）和侦听器（watch）的使用"><a href="#计算属性（computed）和侦听器（watch）的使用" class="headerlink" title="计算属性（computed）和侦听器（watch）的使用"></a>计算属性（computed）和侦听器（watch）的使用</h3><ul>
+<li>侦听器更用于异步或是开销较大的操作</li>
+</ul>
+<p>文档：<a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/api/#watch">https://cn.vuejs.org/v2/api/#watch</a></p>
+<h3 id="侦听器（watch）的一些注意事项"><a href="#侦听器（watch）的一些注意事项" class="headerlink" title="侦听器（watch）的一些注意事项"></a>侦听器（watch）的一些注意事项</h3><p>实际开发过程中：</p>
+<ul>
+<li><strong>非的确必要，尽量不要使用 watch 监听，实际过程中，会造成许多问题，比如渲染顺序等，会给后续添加功能带来难以维护的问题</strong></li>
+<li>当监听的数据不是一个简单的基本类型，比如一个对象，一个数组，此时应该使用深度监听：deep:true；当想让监听器一启动就触发一次 watch，应该使用： immediate: true。<blockquote>
+<p>直接<code>watch</code>监听对象内的是检测不到变化的，因为对象的指向并没有发生改变。Vue 中的 watch 监听对象内属性的变动方案</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="使用-deep-属性"><a href="#使用-deep-属性" class="headerlink" title="使用 deep 属性"></a>使用 deep 属性</h4><pre><code class="javascript">new Vue(&#123;
+  data: &#123;
+    count: 10，
+    blog:&#123;
+        title:&#39;my-blog&#39;,
+        categories:[]
+    &#125;
+  &#125;,
+  watch: &#123;
+    blog:&#123;
+        handler(newVal,oldVal)&#123;
+            console.log(`new: $&#123;newVal&#125;, old: $&#123;oldVal&#125;`);
+        &#125;,
+    deep:true
+    &#125;
+  &#125;
+&#125;)
+</code></pre>
+<p>里面的<code>deep</code>设为了<code>true</code>，这样的话，如果修改了这个<code>blog</code>中的任何一个属性，都会执行<code>handler</code>这个方法。不过这样会造成更多的性能开销，尤其是对象里面属性过多，结构嵌套过深的时候。而且有时候我们就只想关心这个对象中的某个特定属性，这个时候可以这样</p>
+<h4 id="用字符串来表示对象的属性调用"><a href="#用字符串来表示对象的属性调用" class="headerlink" title="用字符串来表示对象的属性调用"></a>用字符串来表示对象的属性调用</h4><pre><code class="javascript">new Vue(&#123;
+  data: &#123;
+    count: 10，
+    blog:&#123;
+        title:&#39;my-blog&#39;,
+        categories:[]
+    &#125;
+  &#125;,
+  watch: &#123;
+    &#39;blog.categories&#39;(newVal, oldVal) &#123;
+        console.log(`new:$&#123;newVal&#125;, old:$&#123;oldVal&#125;`);
+    &#125;,
+  &#125;
+&#125;)
+</code></pre>
+<h4 id="使用计算属性-computed"><a href="#使用计算属性-computed" class="headerlink" title="使用计算属性(computed)"></a>使用计算属性(computed)</h4><pre><code class="javascript">new Vue(&#123;
+  data: &#123;
+    count: 10，
+    blog:&#123;
+        title:&#39;my-blog&#39;,
+        categories:[]
+    &#125;
+  &#125;,
+  computed: &#123;
+    categories() &#123;
+      return this.blog.categories;
+    &#125;
+  &#125;,
+  watch: &#123;
+    categories(newVal, oldVal) &#123;
+      console.log(`new:$&#123;newVal&#125;, old:$&#123;oldVal&#125;`);
+    &#125;,
+  &#125;,
+&#125;)
+</code></pre>
+<p>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018080301">https://segmentfault.com/a/1190000018080301</a></p>
+<h2 id="生命周期实践理解"><a href="#生命周期实践理解" class="headerlink" title="生命周期实践理解"></a>生命周期实践理解</h2><p>vue2 当中：</p>
+<ol>
+<li>beforeCreate：在实例初始化之后，数据观测和事件配置之前被调用</li>
+<li>created：在实例创建完成后被立即调用</li>
+<li>beforeMount：在挂载开始之前被调用</li>
+<li>mounted：el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子</li>
+<li>beforeUpdate：数据更新时调用，发生在虚拟 DOM 打补丁之前</li>
+<li>updated：由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子</li>
+<li>beforeDestroy：实例销毁之前调用</li>
+<li>destroyed：实例销毁后调用</li>
+</ol>
+<pre><code class="vue">&lt;script&gt;
+setup() &#123;
+  console.log(&#39;----setup第一个执行----&#39;)
+  // vue3.x生命周期写在setup中
+  onBeforeMount(() =&gt; &#123;
+    console.log(&#39;------vue3中onBeforeMount-----&#39;)
+  &#125;)
+  onMounted(() =&gt; &#123;
+    console.log(&#39;------vue3中onMounted-----&#39;)
+  &#125;)
+  onRenderTriggered((event) =&gt; &#123;
+    console.log(&#39;------vue3中onRenderTriggered-----&#39;, event)
+  &#125;)
+&#125;,
+// vue2当中的
+beforeCreate() &#123;
+  console.log(&#39;----vue2中beforeCreate第二个执行----&#39;)
+&#125;,
+// vue2当中的
+created() &#123;
+  console.log(&#39;----vue2中created第三个执行----&#39;)
+&#125;,
+&lt;/script&gt;
+</code></pre>
+<p>执行结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1644646841871-0aaeece1-c5dd-493e-bbfc-41f52925931a.png#clientId=uc6b85a54-d54e-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=184&id=ue1197c21&margin=%5Bobject%20Object%5D&name=image.png&originHeight=184&originWidth=792&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=21679&status=done&style=stroke&taskId=u7cdef1da-82cb-4c2d-a530-94348eaa6e2&title=&width=792" alt="image.png"></p>
+<h2 id="Vue3-x-相交-Vue2-x-的-API-差异"><a href="#Vue3-x-相交-Vue2-x-的-API-差异" class="headerlink" title="Vue3.x 相交 Vue2.x 的 API 差异"></a>Vue3.x 相交 Vue2.x 的 API 差异</h2><ul>
+<li>参考教程：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6940454764421316644">Vue3.0 新特性以及使用经验总结</a></li>
+</ul>
+<h3 id="defineComponent"><a href="#defineComponent" class="headerlink" title="defineComponent({})"></a>defineComponent({})</h3><p>服务于 typescript 项目，defineComponent 本身的功能很简单，但是最主要的功能是为了 ts 下的类型推导。对于一个 ts 文件，如果我们直接写</p>
+<pre><code class="vue">export default &#123;&#125;
+</code></pre>
+<p>对于编辑器而言，{} 只是一个 Object 的类型，无法有针对性的提示我们对于 vue 组件来说 {} 里应该有哪些属性。但是增加一层 defineComponet 的话，</p>
+<pre><code class="html">export default defineComponent(&#123;&#125;)
+</code></pre>
+<p>这时，{} 就变成了 defineComponent 的参数，那么对参数类型的提示，就可以实现对 {} 中属性的提示，外还可以进行对参数的一些类型推导等操作。</p>
+<h3 id="setup"><a href="#setup" class="headerlink" title="setup()"></a>setup()</h3><pre><code class="vue">&lt;script&gt;
+setup() &#123;
+  console.log(&#39;----setup第一个执行----&#39;)
+  // vue3.x生命周期写在setup中
+  onBeforeMount(() =&gt; &#123;
+    console.log(&#39;------vue3中onBeforeMount-----&#39;)
+  &#125;)
+  onMounted(() =&gt; &#123;
+    console.log(&#39;------vue3中onMounted-----&#39;)
+  &#125;)
+  // 调试哪些数据发生了变化
+  onRenderTriggered((event) =&gt; &#123;
+    console.log(&#39;------vue3中onRenderTriggered-----&#39;, event)
+  &#125;)
+  // ref则处理 js 基础类型的双向绑定，也能处理对象
+  const year = ref(0)
+  // reactive用于处理对象的双向绑定
+  const user = reactive(&#123;nickname: &#39;xiaofan&#39;, age: 26, gender: &#39;女&#39;&#125;)
+  const timer = setInterval(() =&gt; &#123;
+    year.value++
+    user.age++
+    if (year.value === 2) &#123;
+      clearInterval(timer)
+    &#125;
+  &#125;, 1000)
+  // 侦听 reactive 定义的数据
+  watch(
+    () =&gt; user.age,
+    (curAge, preAge) =&gt; &#123;
+      console.log(&#39;reactive新值:&#39;, curAge, &#39;reactive老值:&#39;, preAge)
+    &#125;
+  )
+  // 侦听 ref 定义的数据
+  watch(year, (newVal, oldVal) =&gt; &#123;
+    console.log(&#39;ref新值:&#39;, newVal, &#39;ref老值:&#39;, oldVal)
+  &#125;)
+  // 也可以使用 toRefs 实现导出时候进行对象结构
+  return &#123;
+    year,
+    user,
+    blockContent: `AntV 是蚂蚁。`,
+  &#125;
+&#125;,
+&lt;/script&gt;
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1644647050857-a30d7d7c-d2e1-49a4-9695-58d1505df9b2.png#clientId=uc6b85a54-d54e-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=399&id=u5882a31f&margin=%5Bobject%20Object%5D&name=image.png&originHeight=399&originWidth=774&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=50245&status=done&style=stroke&taskId=u776fd526-d630-454c-abc4-6771f3fd831&title=&width=774" alt="image.png"></p>
+<h3 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h3><pre><code class="vue">&lt;script lang=&quot;ts&quot;&gt;
+import &#123;
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onUpdated,
+  onBeforeUnmount,
+  onUnmounted,
+  onErrorCaptured,
+  onRenderTracked,
+  onRenderTriggered,
+  reactive,
+  ref,
+  watch,
+&#125; from &quot;vue&quot;;
+import &#123;
+  UpCircleTwoTone,
+  HomeOutlined,
+  SettingFilled,
+  SmileOutlined,
+  SyncOutlined,
+  LoadingOutlined,
+  ClockCircleOutlined,
+&#125; from &quot;@ant-design/icons-vue&quot;;
+
+export default defineComponent(&#123;
+  components: &#123;
+    HomeOutlined,
+    SettingFilled,
+    SmileOutlined,
+    SyncOutlined,
+    LoadingOutlined,
+    UpCircleTwoTone,
+    ClockCircleOutlined,
+  &#125;,
+  data() &#123;
+    return &#123;
+      msg: &quot;msg in data&quot;,
+    &#125;;
+  &#125;,
+  setup() &#123;
+    console.log(&quot;----setup第一个执行----&quot;);
+    // vue3.x生命周期写在setup中
+    onBeforeMount(() =&gt; &#123;
+      console.log(&quot;------vue3中onBeforeMount-----&quot;);
+    &#125;);
+    onMounted(() =&gt; &#123;
+      console.log(&quot;------vue3中onMounted-----&quot;);
+    &#125;);
+    // 调试哪些数据发生了变化
+    onRenderTriggered((event) =&gt; &#123;
+      console.log(&quot;------vue3中onRenderTriggered-----&quot;, event);
+    &#125;);
+    // ref则处理 js 基础类型的双向绑定，也能处理对象
+    const year = ref(0);
+    // reactive用于处理对象的双向绑定
+    const user = reactive(&#123; nickname: &quot;xiaofan&quot;, age: 26, gender: &quot;女&quot; &#125;);
+    const timer = setInterval(() =&gt; &#123;
+      year.value++;
+      user.age++;
+      if (year.value === 2) &#123;
+        clearInterval(timer);
+      &#125;
+    &#125;, 1000);
+    // 侦听 reactive 定义的数据
+    watch(
+      () =&gt; user.age,
+      (curAge, preAge) =&gt; &#123;
+        console.log(&quot;reactive新值:&quot;, curAge, &quot;reactive老值:&quot;, preAge);
+      &#125;
+    );
+    // 侦听 ref 定义的数据
+    watch(year, (newVal, oldVal) =&gt; &#123;
+      console.log(&quot;ref新值:&quot;, newVal, &quot;ref老值:&quot;, oldVal);
+    &#125;);
+    // 也可以使用 toRefs 实现导出时候进行对象结构
+    return &#123;
+      year,
+      user,
+      blockContent: `AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便、专业可靠、不限可能的数据可视化最佳实践。得益于丰富的业务场景和用户需求挑战，AntV 经历多年积累与不断打磨，已支撑整个阿里集团内外 20000+ 业务系统，通过了日均千万级 UV 产品的严苛考验。
+我们正在基础图表，图分析，图编辑，地理空间可视化，智能可视化等各个可视化的领域耕耘，欢迎同路人一起前行。`,
+    &#125;;
+  &#125;,
+  // vue2当中的
+  beforeCreate() &#123;
+    console.log(&quot;----vue2中beforeCreate第二个执行----&quot;);
+  &#125;,
+  // vue2当中的
+  created() &#123;
+    console.log(&quot;----vue2中created第三个执行----&quot;);
+  &#125;,
+&#125;);
+&lt;/script&gt;
+</code></pre>
+<h2 id="vue3-路由相关"><a href="#vue3-路由相关" class="headerlink" title="vue3 路由相关"></a>vue3 路由相关</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/animatecat/article/details/117257037">vue3.0 router 路由跳转传参（router.push）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6962528855513006117">【Vue】015. Vue-Router（三）—— 路由传参</a></li>
+<li>官网：<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/">https://router.vuejs.org/zh/</a></li>
+</ul>
+<h3 id="得到动态路由信息"><a href="#得到动态路由信息" class="headerlink" title="得到动态路由信息"></a>得到动态路由信息</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> 在<code>index.ts</code>中得不到该路由页面的相关信息<del>===选一个比较好一点的传值方案，最好在路由 index.ts 设置（props）。</del>在路由使用组件中就可以使用。</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html">https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html</a></p>
+<pre><code class="vue">&lt;script lang=&quot;ts&quot;&gt;
+import &#123; useRouter &#125; from &quot;vue-router&quot;;
+export default defineComponent(&#123;
+  setup() &#123;
+    // 获取当前路由
+    const router = useRouter();
+    // 路由信息
+    const router_info = router.currentRoute.value;
+    const lookRouter = () =&gt; &#123;
+      console.log(router_info);
+    &#125;;
+
+    return &#123;
+      router_info,
+      lookRouter,
+    &#125;;
+  &#125;,
+&#125;);
+&lt;/script&gt;
+</code></pre>
+<h2 id="定义数据"><a href="#定义数据" class="headerlink" title="定义数据"></a>定义数据</h2><h3 id="Vue3-定义普通数据"><a href="#Vue3-定义普通数据" class="headerlink" title="Vue3 定义普通数据"></a>Vue3 定义普通数据</h3><ul>
+<li>【不建议】：也还可以使用 Vue2 中的 data，但是不能在 setup()中使用 this 访问</li>
+</ul>
+<p><strong>不再用 vue2 当中的 data API 了（因为不能进行操作，功能性大大减少）</strong></p>
+<ul>
+<li>【建议】：使用 ts 的接口类型定义数据</li>
+</ul>
+<pre><code class="vue">&lt;script lang=&quot;ts&quot;&gt;
+import &#123; defineComponent &#125; from &quot;vue&quot;;
+
+// 高效应用场景
+interface SpecialFunDataItem &#123;
+  title: string;
+  description: string;
+&#125;
+const apply_data: SpecialFunDataItem[] = [
+  &#123;
+    title: &quot;知识库/项目文档/产品手册&quot;,
+    description:
+      &quot;适合团队知识库建设、项目文档，开发手册、技术手册、API Document、在线写作。 适用于大型文档，目录检索式布局，多文档，多级分类排版。&quot;,
+  &#125;,
+  &#123;
+    title: &quot;帮助中心/FAQ/在线问答&quot;,
+    description:
+      &quot;适合团队知识库建设、项目文档，开发手册、技术手册、API Document、在线写作。 适用于大型文档，目录检索式布局，多文档，多级分类排版。&quot;,
+  &#125;,
+  &#123;
+    title: &quot;企业内部/外部知识管理&quot;,
+    description:
+      &quot;适合团队知识库建设、项目文档，开发手册、技术手册、API Document、在线写作。 适用于大型文档，目录检索式布局，多文档，多级分类排版。&quot;,
+  &#125;,
+  &#123;
+    title: &quot;第四个标题&quot;,
+    description:
+      &quot;适合团队知识库建设、项目文档，开发手册、技术手册、API Document、在线写作。 适用于大型文档，目录检索式布局，多文档，多级分类排版。&quot;,
+  &#125;,
+];
+
+export default defineComponent(&#123;
+  name: &quot;Home&quot;,
+  components: &#123;&#125;,
+  setup() &#123;
+    return &#123;
+      apply_data,
+    &#125;;
+  &#125;,
+&#125;);
+&lt;/script&gt;
+</code></pre>
+<h3 id="Vue3-定义响应数据"><a href="#Vue3-定义响应数据" class="headerlink" title="Vue3 定义响应数据"></a>Vue3 定义响应数据</h3><h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><pre><code class="typescript">    &lt;a-modal
+      v-model:visible=&quot;visible&quot;
+      :title=&quot;updateItem === &#39;delete_user&#39; ? &#39;删除账户&#39; : &#39;修改信息&#39;&quot;
+      @ok=&quot;handleOkInfo&quot;
+      @cancel=&quot;handleCancelInfo&quot;
+      ok-text=&quot;确认&quot;
+      cancel-text=&quot;取消&quot;
+    &gt;
+// -----------------------------------------------------------------------
+import &#123;ref&#125; from &#39;vue&#39;
+
+const visible = ref&lt;boolean&gt;(false)
+const handleOkInfo = (e: MouseEvent) =&gt; &#123;
+  visible.value = false
+&#125;
+
+    return &#123;
+      visible,
+    &#125;
+</code></pre>
+<h4 id="reactive"><a href="#reactive" class="headerlink" title="reactive"></a>reactive</h4><p>这个更过使用在对象和数组类型的响应式定义数据，因为在 vue2 中，对于数组和对象是不能够响应式的需要监听，而在 vue3 中，以此作为优化来定义响应式数据。</p>
+<h3 id="Vue2-中的-data"><a href="#Vue2-中的-data" class="headerlink" title="Vue2 中的 data"></a>Vue2 中的 data</h3><h4 id="如何在-setup-中使用-data-中的数据库？"><a href="#如何在-setup-中使用-data-中的数据库？" class="headerlink" title="如何在 setup 中使用 data 中的数据库？"></a>如何在 setup 中使用 data 中的数据库？</h4><p>按照以前 vue2，直接使用 this 可以访问到 data 中定义的数据，但在 vue3 不行，因为 setup()函数的执行要比 created，oncrated 函数都要早。</p>
+<p>具体使用以下小技巧可以访问到：</p>
+<pre><code class="javascript">&lt;div v-on:click=&quot;fun(testdata)&quot;&gt;&lt;/div&gt;
+
+setup()&#123;
+    const  fun=(i)=&gt;&#123;
+      alert(i)
+    &#125;
+&#125;,
+data()&#123;
+    return&#123;
+       testdata:1,
+    &#125;
+&#125;
+</code></pre>
+<p>也可以使用 getCurrentInstance 方法获取 data 内的数据<strong>（未验证）</strong></p>
+<pre><code class="vue">&lt;script lang=&quot;ts&quot;&gt;
+import &#123; getCurrentInstance &#125; from &quot;vue&quot;;
+export default &#123;
+  data() &#123;
+    return &#123;
+      b: &quot;data数据&quot;,
+    &#125;;
+  &#125;,
+  setup() &#123;
+    const datab = getCurrentInstance();
+    async function getdata() &#123;
+      let dataa = datab.data.b;
+      console.log(dataa);
+    &#125;
+  &#125;,
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<h2 id="其他知识"><a href="#其他知识" class="headerlink" title="其他知识"></a>其他知识</h2><h3 id="样式只在当前页面有效"><a href="#样式只在当前页面有效" class="headerlink" title="样式只在当前页面有效"></a>样式只在当前页面有效</h3><p>组件中 style 标签后面加上<code>scoped</code>就可以</p>
+<pre><code class="vue">&lt;style lang=&quot;less&quot; scoped&gt;&lt;/style&gt;
+</code></pre>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/vue_watch_summary/">https://www.wztlink1013.com/blog/vue_watch_summary/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/vue_watch_summary/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/qwv5oz/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Vue中几种组件通信方式</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/essay/gqoawl/">
+                    <b>国庆随笔：向死而生</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:49:29
+ * @Description:  
+-->
+<div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Beaudar</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">Twikoo</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- utterances评论区 -->
+    <div id="utterances_comment" style="display: none"></div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+      <script src="https://npm.elemecdn.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+      <script>
+        twikoo
+          .init({
+            envId: 'website-wikoo-4g46k8do98867542',
+            el: '#tcomment',
+            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          })
+          .then(function () {
+            console.log('Twikoo 初始化加载完成')
+          })
+      </script>
+    </div>
+  </div>
+</div>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/">DOM+BOM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/DOM/">DOM</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-TypeScript/">JavaScript+TypeScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/">🔨环境+工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+ 
+    <!-- 非首页 -->
+    
+<script src="/public/js/main.js"></script>
+ 
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+  </body>
+</html>

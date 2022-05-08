@@ -1,0 +1,845 @@
+<!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-04-07 20:00:43
+ * @Description:  
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Python的本地各类数据读取 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="一、TXT 文件操作读取全部内容import numpy as npimport pandas as pdtxt_filename = &amp;#39;./files/python_wiki.txt&amp;#39;# 打开文件file_obj = open(txt_filename,&amp;#39;r&amp;#39;)# " />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Python的本地各类数据读取 | 尼采般地抒情" />
+    <meta
+      property="og:url"
+      content="https://www.wztlink1013.com/blog/lb8ugs/"
+    />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="一、TXT 文件操作读取全部内容import numpy as npimport pandas as pdtxt_filename = &amp;#39;./files/python_wiki.txt&amp;#39;# 打开文件file_obj = open(txt_filename,&amp;#39;r&amp;#39;)# " />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"
+    ></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/font/css/font-awesome.min.css"
+    />
+    <!-- 引入jQuery -->
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/jquery@3.6.0/dist/jquery.min.js"
+    ></script>
+    <!-- algolia for the search only version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+  </head>
+  <body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81TXT-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">一、TXT 文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%85%A8%E9%83%A8%E5%86%85%E5%AE%B9"><span class="toc-text">读取全部内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%90%E8%A1%8C%E8%AF%BB%E5%8F%96"><span class="toc-text">逐行读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%85%A8%E9%83%A8%E5%86%85%E5%AE%B9%EF%BC%8C%E8%BF%94%E5%9B%9E%E5%88%97%E8%A1%A8"><span class="toc-text">读取全部内容，返回列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E6%93%8D%E4%BD%9C"><span class="toc-text">写操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#with-%E8%AF%AD%E5%8F%A5"><span class="toc-text">with 语句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81CSV-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">二、CSV 文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pandas-%E8%AF%BB-csv-%E6%96%87%E4%BB%B6"><span class="toc-text">pandas 读 csv 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pandas-%E5%86%99-csv-%E6%96%87%E4%BB%B6"><span class="toc-text">pandas 写 csv 文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81JSON-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">三、JSON 文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#json-%E8%AF%BB%E6%93%8D%E4%BD%9C"><span class="toc-text">json 读操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json-%E8%BD%AC-CSV"><span class="toc-text">json 转 CSV</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99-json-%E6%93%8D%E4%BD%9C"><span class="toc-text">写 json 操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81SQLite-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">四、SQLite 基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">连接数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-text">获取基本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%90%E6%9D%A1%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">逐条插入数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">批量插入数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%95%B0%E6%8D%AE"><span class="toc-text">查找数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81SQLite-json-%E6%93%8D%E4%BD%9C"><span class="toc-text">五、SQLite_json 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CROSS-JOIN-%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5"><span class="toc-text">CROSS JOIN 交叉连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INNER-JOIN-%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">INNER JOIN 内连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OUTER-JOIN-%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-text">OUTER JOIN 外连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81Excel-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">六、Excel 文件操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jupyter-Notebook-%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-text">Jupyter Notebook 的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-python"><span class="toc-text">安装 python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-jupyter"><span class="toc-text">安装 jupyter</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99"><span class="toc-text">报错</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ValueError-check-hostname-requires-server-hostname"><span class="toc-text">ValueError: check_hostname requires server_hostname</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ReadTimeoutError-HTTPSConnectionPool-host-%E2%80%99files-pythonhosted-org%E2%80%99-port-443-Read-timed-out"><span class="toc-text">ReadTimeoutError: HTTPSConnectionPool(host&#x3D;’files.pythonhosted.org’, port&#x3D;443): Read timed out.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="toc-text">数据分析</span></a></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:51
+ * @Description:  
+-->
+<div class="component clearfix blogger">
+  <h3>尼采般地抒情</h3>
+  <img
+    class="blogger_left"
+    src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
+    alt="尼采般地抒情"
+  />
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-05-08 13:00:21
+ * @Description:  
+-->
+<div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Python的本地各类数据读取</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2020-08-28 22:48:39
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/✨其他/">
+                        ✨其他
+                    </a>
+                
+                    <a href="/categories/✨其他/数据分析/">
+                        数据分析
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="一、TXT-文件操作"><a href="#一、TXT-文件操作" class="headerlink" title="一、TXT 文件操作"></a>一、TXT 文件操作</h2><h3 id="读取全部内容"><a href="#读取全部内容" class="headerlink" title="读取全部内容"></a>读取全部内容</h3><pre><code class="python">import numpy as np
+import pandas as pd
+</code></pre>
+<pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename,&#39;r&#39;)
+
+# 读取整个文件内容
+all_content = file_obj.read()
+
+# 关闭文件
+file_obj.close()
+
+print (all_content)
+</code></pre>
+<pre><code>Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[24][25] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[26][27] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]
+Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]
+Python interpreters are available for many operating systems, allowing Python code to run on a wide variety of systems. CPython, the reference implementation of Python, is open source software[30] and has a community-based development model, as do nearly all of its variant implementations. CPython is managed by the non-profit Python Software Foundation.
+</code></pre>
+<h3 id="逐行读取"><a href="#逐行读取" class="headerlink" title="逐行读取"></a>逐行读取</h3><pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;r&#39;)
+
+# 逐行读取
+line1 = file_obj.readline()
+print (line1)
+</code></pre>
+<pre><code>Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[24][25] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[26][27] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]
+</code></pre>
+<pre><code class="python"># 继续读下一行【不会全部读完】
+line2 = file_obj.readline()
+print (line2)
+
+# 关闭文件
+file_obj.close()
+</code></pre>
+<pre><code>Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]
+</code></pre>
+<h3 id="读取全部内容，返回列表"><a href="#读取全部内容，返回列表" class="headerlink" title="读取全部内容，返回列表"></a>读取全部内容，返回列表</h3><pre><code class="python">txt_filename = &#39;./files/python_wiki.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;r&#39;)
+
+lines = file_obj.readlines()
+
+for i, line in enumerate(lines):
+    print (&#39;%i: %s&#39; %(i, line))
+
+# 关闭文件
+file_obj.close()
+</code></pre>
+<pre><code>0: Python is a widely used high-level, general-purpose, interpreted, dynamic programming language.[24][25] Its design philosophy emphasizes code readability, and its syntax allows programmers to express concepts in fewer lines of code than possible in languages such as C++ or Java.[26][27] The language provides constructs intended to enable writing clear programs on both a small and large scale.[28]
+
+1: Python supports multiple programming paradigms, including object-oriented, imperative and functional programming or procedural styles. It features a dynamic type system and automatic memory management and has a large and comprehensive standard library.[29]
+
+2: Python interpreters are available for many operating systems, allowing Python code to run on a wide variety of systems. CPython, the reference implementation of Python, is open source software[30] and has a community-based development model, as do nearly all of its variant implementations. CPython is managed by the non-profit Python Software Foundation.
+</code></pre>
+<h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><pre><code class="python">txt_filename = &#39;./files/test_write.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;w&#39;)
+
+# 写入全部内容
+file_obj.write(&quot;《Python数据分析》&quot;)
+file_obj.close()
+</code></pre>
+<pre><code class="python">txt_filename = &#39;./files/test_write.txt&#39;
+
+# 打开文件
+file_obj = open(txt_filename, &#39;w&#39;)
+
+# 写入字符串列表
+lines = [&#39;这是第%i行\n&#39; %n for n in range(10)]
+file_obj.writelines(lines)
+file_obj.close()
+</code></pre>
+<h3 id="with-语句"><a href="#with-语句" class="headerlink" title="with 语句"></a>with 语句</h3><pre><code class="python">txt_filename = &#39;./files/test_write.txt&#39;
+with open(txt_filename, &#39;r&#39;) as f_obj:
+    print (f_obj.read())
+</code></pre>
+<pre><code>这是第0行
+这是第1行
+这是第2行
+这是第3行
+这是第4行
+这是第5行
+这是第6行
+这是第7行
+这是第8行
+这是第9行
+</code></pre>
+<h2 id="二、CSV-文件操作"><a href="#二、CSV-文件操作" class="headerlink" title="二、CSV 文件操作"></a>二、CSV 文件操作</h2><h3 id="pandas-读-csv-文件"><a href="#pandas-读-csv-文件" class="headerlink" title="pandas 读 csv 文件"></a>pandas 读 csv 文件</h3><blockquote>
+<p>根据路径导入数据以及指定的列</p>
+</blockquote>
+<pre><code class="python">import pandas as pd
+filename = &#39;./files/presidential_polls.csv&#39;
+df = pd.read_csv(filename, usecols=[&#39;cycle&#39;, &#39;type&#39;, &#39;startdate&#39;])#导入指定列
+print (type(df))
+print (df.head())
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+   cycle        type   startdate
+0   2016  polls-plus  10/25/2016
+1   2016  polls-plus  10/27/2016
+2   2016  polls-plus  10/27/2016
+3   2016  polls-plus  10/20/2016
+4   2016  polls-plus  10/20/2016
+</code></pre>
+<blockquote>
+<p>引用指定的列</p>
+</blockquote>
+<pre><code class="python">cycle_se = df[&#39;cycle&#39;]
+print (type(cycle_se))
+print (cycle_se.head())
+</code></pre>
+<pre><code>&lt;class &#39;pandas.core.series.Series&#39;&gt;
+0    2016
+1    2016
+2    2016
+3    2016
+4    2016
+Name: cycle, dtype: int64
+</code></pre>
+<blockquote>
+<p>多层索引成 dataframe 类型</p>
+</blockquote>
+<pre><code class="python">filename = &#39;./files/presidential_polls.csv&#39;
+df1 = pd.read_csv(filename,usecols=[&#39;cycle&#39;, &#39;type&#39;, &#39;startdate&#39;,&#39;state&#39;,&#39;grade&#39;],index_col = [&#39;state&#39;,&#39;grade&#39;])
+print(df1.head())
+</code></pre>
+<pre><code>                cycle        type   startdate
+state    grade
+U.S.     B       2016  polls-plus  10/25/2016
+         A+      2016  polls-plus  10/27/2016
+Virginia A+      2016  polls-plus  10/27/2016
+Florida  A       2016  polls-plus  10/20/2016
+U.S.     B+      2016  polls-plus  10/20/2016
+</code></pre>
+<blockquote>
+<p>跳过指定的行</p>
+</blockquote>
+<pre><code class="python">filename = &#39;./files/presidential_polls.csv&#39;
+df2 = pd.read_csv(filename,usecols=[&#39;cycle&#39;, &#39;type&#39;, &#39;startdate&#39;,&#39;state&#39;,&#39;grade&#39;],skiprows=[1, 2, 3])
+print(df2.head())
+</code></pre>
+<pre><code>   cycle        type         state   startdate grade
+0   2016  polls-plus       Florida  10/20/2016     A
+1   2016  polls-plus          U.S.  10/20/2016    B+
+2   2016  polls-plus          U.S.  10/22/2016     A
+3   2016  polls-plus          U.S.  10/26/2016    A-
+4   2016  polls-plus  Pennsylvania  10/25/2016    B-
+</code></pre>
+<h3 id="pandas-写-csv-文件"><a href="#pandas-写-csv-文件" class="headerlink" title="pandas 写 csv 文件"></a>pandas 写 csv 文件</h3><blockquote>
+<p>·to_csv 里面的 index 参数作用？===可能是不要索引的意思。</p>
+</blockquote>
+<pre><code class="python">filename = &#39;./files/pandas_output.csv&#39;
+df.to_csv(filename, index=None)
+</code></pre>
+<h2 id="三、JSON-文件操作"><a href="#三、JSON-文件操作" class="headerlink" title="三、JSON 文件操作"></a>三、JSON 文件操作</h2><h3 id="json-读操作"><a href="#json-读操作" class="headerlink" title="json 读操作"></a>json 读操作</h3><pre><code class="python">import json
+
+filename = &#39;./files/global_temperature.json&#39;
+with open(filename, &#39;r&#39;) as f_obj:
+    json_data = json.load(f_obj)
+
+# 返回值是dict类型
+print (type(json_data))
+</code></pre>
+<pre><code>&lt;class &#39;dict&#39;&gt;
+</code></pre>
+<pre><code class="python">print (json_data.keys())
+</code></pre>
+<pre><code>dict_keys([&#39;description&#39;, &#39;data&#39;])
+</code></pre>
+<h3 id="json-转-CSV"><a href="#json-转-CSV" class="headerlink" title="json 转 CSV"></a>json 转 CSV</h3><pre><code class="python">#print json_data[&#39;data&#39;].keys()
+print (json_data[&#39;data&#39;].values())
+</code></pre>
+<pre><code>dict_values([&#39;-0.1247&#39;, &#39;-0.0707&#39;, &#39;-0.0710&#39;, &#39;-0.1481&#39;, &#39;-0.2099&#39;, &#39;-0.2220&#39;, &#39;-0.2101&#39;, &#39;-0.2559&#39;, &#39;-0.1541&#39;, &#39;-0.1032&#39;, &#39;-0.3233&#39;, &#39;-0.2552&#39;, &#39;-0.3079&#39;, &#39;-0.3221&#39;, &#39;-0.2828&#39;, &#39;-0.2279&#39;, &#39;-0.0971&#39;, &#39;-0.1232&#39;, &#39;-0.2578&#39;, &#39;-0.1172&#39;, &#39;-0.0704&#39;, &#39;-0.1471&#39;, &#39;-0.2535&#39;, &#39;-0.3442&#39;, &#39;-0.4240&#39;, &#39;-0.2967&#39;, &#39;-0.2208&#39;, &#39;-0.3767&#39;, &#39;-0.4441&#39;, &#39;-0.4332&#39;, &#39;-0.3862&#39;, &#39;-0.4367&#39;, &#39;-0.3318&#39;, &#39;-0.3205&#39;, &#39;-0.1444&#39;, &#39;-0.0747&#39;, &#39;-0.2979&#39;, &#39;-0.3193&#39;, &#39;-0.2118&#39;, &#39;-0.2082&#39;, &#39;-0.2152&#39;, &#39;-0.1517&#39;, &#39;-0.2318&#39;, &#39;-0.2161&#39;, &#39;-0.2510&#39;, &#39;-0.1464&#39;, &#39;-0.0618&#39;, &#39;-0.1506&#39;, &#39;-0.1749&#39;, &#39;-0.2982&#39;, &#39;-0.1016&#39;, &#39;-0.0714&#39;, &#39;-0.1214&#39;, &#39;-0.2481&#39;, &#39;-0.1075&#39;, &#39;-0.1445&#39;, &#39;-0.1173&#39;, &#39;-0.0204&#39;, &#39;-0.0318&#39;, &#39;-0.0157&#39;, &#39;0.0927&#39;, &#39;0.1974&#39;, &#39;0.1549&#39;, &#39;0.1598&#39;, &#39;0.2948&#39;, &#39;0.1754&#39;, &#39;-0.0013&#39;, &#39;-0.0455&#39;, &#39;-0.0471&#39;, &#39;-0.0550&#39;, &#39;-0.1579&#39;, &#39;-0.0095&#39;, &#39;0.0288&#39;, &#39;0.0997&#39;, &#39;-0.1118&#39;, &#39;-0.1305&#39;, &#39;-0.1945&#39;, &#39;0.0538&#39;, &#39;0.1145&#39;, &#39;0.0640&#39;, &#39;0.0252&#39;, &#39;0.0818&#39;, &#39;0.0924&#39;, &#39;0.1100&#39;, &#39;-0.1461&#39;, &#39;-0.0752&#39;, &#39;-0.0204&#39;, &#39;-0.0112&#39;, &#39;-0.0282&#39;, &#39;0.0937&#39;, &#39;0.0383&#39;, &#39;-0.0775&#39;, &#39;0.0280&#39;, &#39;0.1654&#39;, &#39;-0.0698&#39;, &#39;0.0060&#39;, &#39;-0.0769&#39;, &#39;0.1996&#39;, &#39;0.1139&#39;, &#39;0.2288&#39;, &#39;0.2651&#39;, &#39;0.3024&#39;, &#39;0.1836&#39;, &#39;0.3429&#39;, &#39;0.1510&#39;, &#39;0.1357&#39;, &#39;0.2308&#39;, &#39;0.3710&#39;, &#39;0.3770&#39;, &#39;0.2982&#39;, &#39;0.4350&#39;, &#39;0.4079&#39;, &#39;0.2583&#39;, &#39;0.2857&#39;, &#39;0.3420&#39;, &#39;0.4593&#39;, &#39;0.3225&#39;, &#39;0.5185&#39;, &#39;0.6335&#39;, &#39;0.4427&#39;, &#39;0.4255&#39;, &#39;0.5455&#39;, &#39;0.6018&#39;, &#39;0.6145&#39;, &#39;0.5806&#39;, &#39;0.6583&#39;, &#39;0.6139&#39;, &#39;0.6113&#39;, &#39;0.5415&#39;, &#39;0.6354&#39;, &#39;0.7008&#39;, &#39;0.5759&#39;, &#39;0.6219&#39;, &#39;0.6687&#39;, &#39;0.7402&#39;, &#39;0.8990&#39;])
+</code></pre>
+<pre><code class="python"># 转换key
+year_str_lst = json_data[&#39;data&#39;].keys()
+year_lst = [int(year_str) for year_str in year_str_lst]
+print (year_lst)
+</code></pre>
+<pre><code>[1880, 1881, 1882, 1883, 1884, 1885, 1886, 1887, 1888, 1889, 1890, 1891, 1892, 1893, 1894, 1895, 1896, 1897, 1898, 1899, 1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1910, 1911, 1912, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933, 1934, 1935, 1936, 1937, 1938, 1939, 1940, 1941, 1942, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+</code></pre>
+<pre><code class="python"># 转换value
+temp_str_lst = json_data[&#39;data&#39;].values()
+temp_lst = [float(temp_str) for temp_str in temp_str_lst]
+print (temp_lst)
+</code></pre>
+<pre><code>[-0.1247, -0.0707, -0.071, -0.1481, -0.2099, -0.222, -0.2101, -0.2559, -0.1541, -0.1032, -0.3233, -0.2552, -0.3079, -0.3221, -0.2828, -0.2279, -0.0971, -0.1232, -0.2578, -0.1172, -0.0704, -0.1471, -0.2535, -0.3442, -0.424, -0.2967, -0.2208, -0.3767, -0.4441, -0.4332, -0.3862, -0.4367, -0.3318, -0.3205, -0.1444, -0.0747, -0.2979, -0.3193, -0.2118, -0.2082, -0.2152, -0.1517, -0.2318, -0.2161, -0.251, -0.1464, -0.0618, -0.1506, -0.1749, -0.2982, -0.1016, -0.0714, -0.1214, -0.2481, -0.1075, -0.1445, -0.1173, -0.0204, -0.0318, -0.0157, 0.0927, 0.1974, 0.1549, 0.1598, 0.2948, 0.1754, -0.0013, -0.0455, -0.0471, -0.055, -0.1579, -0.0095, 0.0288, 0.0997, -0.1118, -0.1305, -0.1945, 0.0538, 0.1145, 0.064, 0.0252, 0.0818, 0.0924, 0.11, -0.1461, -0.0752, -0.0204, -0.0112, -0.0282, 0.0937, 0.0383, -0.0775, 0.028, 0.1654, -0.0698, 0.006, -0.0769, 0.1996, 0.1139, 0.2288, 0.2651, 0.3024, 0.1836, 0.3429, 0.151, 0.1357, 0.2308, 0.371, 0.377, 0.2982, 0.435, 0.4079, 0.2583, 0.2857, 0.342, 0.4593, 0.3225, 0.5185, 0.6335, 0.4427, 0.4255, 0.5455, 0.6018, 0.6145, 0.5806, 0.6583, 0.6139, 0.6113, 0.5415, 0.6354, 0.7008, 0.5759, 0.6219, 0.6687, 0.7402, 0.899]
+</code></pre>
+<pre><code class="python">import pandas as pd
+
+# 构建 dataframe
+year_se = pd.Series(year_lst, name = &#39;year&#39;)
+temp_se = pd.Series(temp_lst, name = &#39;temperature&#39;)
+result_df = pd.concat([year_se, temp_se], axis = 1)
+print (result_df.head())
+
+# 保存csv
+result_df.to_csv(&#39;./files/json_to_csv.csv&#39;, index = None)
+</code></pre>
+<pre><code>   year  temperature
+0  1880      -0.1247
+1  1881      -0.0707
+2  1882      -0.0710
+3  1883      -0.1481
+4  1884      -0.2099
+</code></pre>
+<h3 id="写-json-操作"><a href="#写-json-操作" class="headerlink" title="写 json 操作"></a>写 json 操作</h3><pre><code class="python">book_dict = [&#123;&#39;书名&#39;:&#39;无声告白&#39;, &#39;作者&#39;:&#39;伍绮诗&#39;&#125;, &#123;&#39;书名&#39;:&#39;我不是潘金莲&#39;, &#39;作者&#39;:&#39;刘震云&#39;&#125;, &#123;&#39;书名&#39;:&#39;沉默的大多数 (王小波集)&#39;, &#39;作者&#39;:&#39;王小波&#39;&#125;]
+
+filename = &#39;./files/json_output.json&#39;
+with open(filename, &#39;w&#39;) as f_obj:
+    f_obj.write(json.dumps(book_dict, ensure_ascii=False))
+# 不需要加, encoding=&#39;utf-8&#39;参数
+</code></pre>
+<h2 id="四、SQLite-基本操作"><a href="#四、SQLite-基本操作" class="headerlink" title="四、SQLite 基本操作"></a>四、SQLite 基本操作</h2><h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><pre><code class="python">import sqlite3
+
+db_path = &#39;./files/test.sqlite&#39;
+
+conn = sqlite3.connect(db_path)
+cur = conn.cursor()
+conn.text_factory = str  # 处理中文
+</code></pre>
+<h3 id="获取基本信息"><a href="#获取基本信息" class="headerlink" title="获取基本信息"></a>获取基本信息</h3><pre><code class="python">cur.execute(&#39;SELECT SQLITE_VERSION()&#39;)
+
+print (&#39;SQLite版本：%s&#39; %str(cur.fetchone()[0]))
+</code></pre>
+<pre><code>SQLite版本：3.30.0
+</code></pre>
+<h3 id="逐条插入数据"><a href="#逐条插入数据" class="headerlink" title="逐条插入数据"></a>逐条插入数据</h3><pre><code class="python">cur.execute(&quot;DROP TABLE IF EXISTS book&quot;)
+cur.execute(&quot;CREATE TABLE book(id INT, name TEXT, price DOUBLE)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(1,&#39;肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷&#39;,14.40)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(2,&#39;法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货)&#39;,100.00)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(3,&#39;活着本来单纯:丰子恺散文漫画精品集(收藏本)&#39;,30.90)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(4,&#39;自在独行:贾平凹的独行世界&#39;,26.80)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(5,&#39;当你的才华还撑不起你的梦想时&#39;,23.00)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(6,&#39;巨人的陨落(套装共3册)&#39;,84.90)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(7,&#39;孤独深处(收录雨果奖获奖作品《北京折叠》)&#39;,21.90)&quot;)
+cur.execute(&quot;INSERT INTO book VALUES(8,&#39;世界知名企业员工指定培训教材:所谓情商高,就是会说话&#39;,22.00)&quot;)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64e7c00&gt;
+</code></pre>
+<h3 id="批量插入数据"><a href="#批量插入数据" class="headerlink" title="批量插入数据"></a>批量插入数据</h3><pre><code class="python">books = (
+    (9, &#39;人间草木&#39;, 30.00),
+    (10,&#39;你的善良必须有点锋芒&#39;, 20.50),
+    (11, &#39;这么慢,那么美&#39;, 24.80),
+    (12, &#39;考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版)&#39;, 23.90)
+)
+cur.executemany(&quot;INSERT INTO book VALUES(?, ?, ?)&quot;, books)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64e7c00&gt;
+</code></pre>
+<pre><code class="python">conn.commit()
+</code></pre>
+<h3 id="查找数据"><a href="#查找数据" class="headerlink" title="查找数据"></a>查找数据</h3><pre><code class="python">cur.execute(&#39;SELECT * FROM book&#39;)
+rows = cur.fetchall()
+
+# 通过索引号访问
+for row in rows:
+    print (&#39;序号: %i, 书名: %s, 价格: %.2f&#39; %(row[0], row[1], row[2]))
+</code></pre>
+<pre><code>序号: 1, 书名: 肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷, 价格: 14.40
+序号: 2, 书名: 法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货), 价格: 100.00
+序号: 3, 书名: 活着本来单纯:丰子恺散文漫画精品集(收藏本), 价格: 30.90
+序号: 4, 书名: 自在独行:贾平凹的独行世界, 价格: 26.80
+序号: 5, 书名: 当你的才华还撑不起你的梦想时, 价格: 23.00
+序号: 6, 书名: 巨人的陨落(套装共3册), 价格: 84.90
+序号: 7, 书名: 孤独深处(收录雨果奖获奖作品《北京折叠》), 价格: 21.90
+序号: 8, 书名: 世界知名企业员工指定培训教材:所谓情商高,就是会说话, 价格: 22.00
+序号: 9, 书名: 人间草木, 价格: 30.00
+序号: 10, 书名: 你的善良必须有点锋芒, 价格: 20.50
+序号: 11, 书名: 这么慢,那么美, 价格: 24.80
+序号: 12, 书名: 考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版), 价格: 23.90
+</code></pre>
+<pre><code class="python">conn.row_factory = sqlite3.Row
+cur = conn.cursor()
+cur.execute(&#39;SELECT * FROM book&#39;)
+rows = cur.fetchall()
+
+# 通过列名访问
+for row in rows:
+    print (&#39;序号: %i, 书名: %s, 价格: %.2f&#39; %(row[&#39;id&#39;], row[&#39;name&#39;], row[&#39;price&#39;]))
+</code></pre>
+<pre><code>序号: 1, 书名: 肖秀荣考研书系列:肖秀荣(2017)考研政治命题人终极预测4套卷, 价格: 14.40
+序号: 2, 书名: 法医秦明作品集:幸存者+清道夫+尸语者+无声的证词+第十一根手指(套装共5册) (两种封面随机发货), 价格: 100.00
+序号: 3, 书名: 活着本来单纯:丰子恺散文漫画精品集(收藏本), 价格: 30.90
+序号: 4, 书名: 自在独行:贾平凹的独行世界, 价格: 26.80
+序号: 5, 书名: 当你的才华还撑不起你的梦想时, 价格: 23.00
+序号: 6, 书名: 巨人的陨落(套装共3册), 价格: 84.90
+序号: 7, 书名: 孤独深处(收录雨果奖获奖作品《北京折叠》), 价格: 21.90
+序号: 8, 书名: 世界知名企业员工指定培训教材:所谓情商高,就是会说话, 价格: 22.00
+序号: 9, 书名: 人间草木, 价格: 30.00
+序号: 10, 书名: 你的善良必须有点锋芒, 价格: 20.50
+序号: 11, 书名: 这么慢,那么美, 价格: 24.80
+序号: 12, 书名: 考拉小巫的英语学习日记:写给为梦想而奋斗的人(全新修订版), 价格: 23.90
+</code></pre>
+<pre><code class="python">conn.close()
+</code></pre>
+<h2 id="五、SQLite-json-操作"><a href="#五、SQLite-json-操作" class="headerlink" title="五、SQLite_json 操作"></a>五、SQLite_json 操作</h2><pre><code class="python">import sqlite3
+
+db_path = &#39;./files/test_join.sqlite&#39;
+
+conn = sqlite3.connect(db_path)
+cur = conn.cursor()
+</code></pre>
+<pre><code class="python"># 建 depaetment 表，并插入数据
+cur.execute(&quot;DROP TABLE IF EXISTS department&quot;)
+cur.execute(&quot;CREATE TABLE department(\
+                id INT PRIMARY KEY NOT NULL, \
+                dept CHAR(50) NOT NULL, \
+                emp_id INT NOT NULL)&quot;)
+depts = (
+        (1, &#39;IT Builing&#39;, 1),
+        (2, &#39;Engineerin&#39;, 2),
+        (3, &#39;Finance&#39;, 7)
+)
+cur.executemany(&quot;INSERT INTO department VALUES(?, ?, ?)&quot;, depts)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64f70a0&gt;
+</code></pre>
+<pre><code class="python">conn.commit()
+</code></pre>
+<h3 id="CROSS-JOIN-交叉连接"><a href="#CROSS-JOIN-交叉连接" class="headerlink" title="CROSS JOIN 交叉连接"></a>CROSS JOIN 交叉连接</h3><pre><code class="python">cur.execute(&quot;SELECT emp_id, name, dept FROM company CROSS JOIN department;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code class="python"># 建 company 表，并插入数据
+cur.execute(&quot;DROP TABLE IF EXISTS company&quot;)
+cur.execute(&quot;CREATE TABLE company(\
+                    id INT PRIMARY KEY NOT NULL, \
+                    name CHAR(50) NOT NULL, \
+                    age INT NOT NULL, \
+                    address CHAR(50) NOT NULL,\
+                    salary DOUBLE NOT NULL)&quot;)
+companies = (
+        (1, &#39;Paul&#39;, 32, &#39;California&#39;, 20000.0),
+        (2, &#39;Allen&#39;, 25, &#39;Texas&#39;, 15000.0),
+        (3, &#39;Teddy&#39;, 23, &#39;Norway&#39;, 20000.0),
+        (4, &#39;Mark&#39;, 25, &#39;Rich-Mond&#39;, 65000.0),
+        (5, &#39;David&#39;, 27, &#39;Texas&#39;, 85000.0),
+        (6, &#39;Kim&#39;, 22, &#39;South-Hall&#39;, 45000.0),
+        (7, &#39;James&#39;, 24, &#39;Houston&#39;, 10000.0)
+)
+cur.executemany(&quot;INSERT INTO company VALUES (?, ?, ?, ?, ?)&quot;, companies)
+</code></pre>
+<pre><code>&lt;sqlite3.Cursor at 0x2d2d64f70a0&gt;
+</code></pre>
+<h3 id="INNER-JOIN-内连接"><a href="#INNER-JOIN-内连接" class="headerlink" title="INNER JOIN 内连接"></a>INNER JOIN 内连接</h3><pre><code class="python">cur.execute(&quot;SELECT emp_id, name, dept FROM company INNER JOIN department \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>(1, &#39;Paul&#39;, &#39;IT Builing&#39;)
+(2, &#39;Allen&#39;, &#39;Engineerin&#39;)
+(7, &#39;James&#39;, &#39;Finance&#39;)
+</code></pre>
+<h3 id="OUTER-JOIN-外连接"><a href="#OUTER-JOIN-外连接" class="headerlink" title="OUTER JOIN 外连接"></a>OUTER JOIN 外连接</h3><pre><code class="python"># 左连接
+cur.execute(&quot;SELECT emp_id, name, dept FROM company LEFT OUTER JOIN department \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>(1, &#39;Paul&#39;, &#39;IT Builing&#39;)
+(2, &#39;Allen&#39;, &#39;Engineerin&#39;)
+(None, &#39;Teddy&#39;, None)
+(None, &#39;Mark&#39;, None)
+(None, &#39;David&#39;, None)
+(None, &#39;Kim&#39;, None)
+(7, &#39;James&#39;, &#39;Finance&#39;)
+</code></pre>
+<pre><code class="python"># 右连接 （目前不支持）
+cur.execute(&quot;SELECT emp_id, name, dept FROM company RIGHT OUTER JOIN department \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>---------------------------------------------------------------------------
+
+OperationalError                          Traceback (most recent call last)
+
+&lt;ipython-input-41-ce0fc573748b&gt; in &lt;module&gt;
+      1 # 右连接 （目前不支持）
+      2 cur.execute(&quot;SELECT emp_id, name, dept FROM company RIGHT OUTER JOIN department \
+----&gt; 3             ON company.id = department.emp_id;&quot;)
+      4 rows = cur.fetchall()
+      5 for row in rows:
+
+
+OperationalError: RIGHT and FULL OUTER JOINs are not currently supported
+</code></pre>
+<pre><code class="python"># 右连接，交换两张表
+cur.execute(&quot;SELECT emp_id, name, dept FROM department LEFT OUTER JOIN company \
+            ON company.id = department.emp_id;&quot;)
+rows = cur.fetchall()
+for row in rows:
+    print (row)
+</code></pre>
+<pre><code>(1, &#39;Paul&#39;, &#39;IT Builing&#39;)
+(2, &#39;Allen&#39;, &#39;Engineerin&#39;)
+(7, &#39;James&#39;, &#39;Finance&#39;)
+</code></pre>
+<pre><code class="python">sqlite&gt; SELECT EMP_ID, NAME, DEPT FROM COMPANY LEFT OUTER JOIN DEPARTMENT
+      ON COMPANY.ID = DEPARTMENT.EMP_ID;
+</code></pre>
+<pre><code>  File &quot;&lt;ipython-input-43-a0833b733075&gt;&quot;, line 1
+    sqlite&gt; SELECT EMP_ID, NAME, DEPT FROM COMPANY LEFT OUTER JOIN DEPARTMENT
+                        ^
+SyntaxError: invalid syntax
+</code></pre>
+<h2 id="六、Excel-文件操作"><a href="#六、Excel-文件操作" class="headerlink" title="六、Excel 文件操作"></a>六、Excel 文件操作</h2><p>pandas.read_excel(io, sheet_name=0, header=0, names=None, index_col=None, usecols=None, squeeze=False, dtype=None, engine=None, converters=None, true_values=None, false_values=None, skiprows=None, nrows=None, na_values=None, keep_default_na=True, verbose=False, parse_dates=False, date_parser=None, thousands=None, comment=None, skipfooter=0, convert_float=True, mangle_dupe_cols=True, **kwds)</p>
+<p>df_fujian = pd.read_excel(“./datafiles/fujian.xlsx”,sheet_name=’日数据’)</p>
+<h2 id="Jupyter-Notebook-的安装"><a href="#Jupyter-Notebook-的安装" class="headerlink" title="Jupyter Notebook 的安装"></a>Jupyter Notebook 的安装</h2><p>一般有两种方法，第一种是下载 Anaconda，自带 python 环境以及 Jupyter Notebook 环境，但这一般都是刚学机器学习那会的集成安装方式，<del>最主要的劝退原因是所占体积较大，所以这里介绍原生的安装方式，在纯 Python 环境下，使用自带的 pip 包管理工具下载，类似地像 Pandas、Numpy 等包也可以以此种方式安装</del>。</p>
+<p>打脸 YYDS，收回上面画斜线的文字，因为自己以前的笔记里面，有许多其他库，一个一个安装太繁杂了，所以还是下载 Anaconda 集成环境吧。<br><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1640601860364-c314af96-93ca-44c7-a1f3-f56281bc0358.jpeg#id=JxlHZ&originHeight=56&originWidth=52&originalType=binary%E2%88%B6=1&status=done&style=none"><br>具体下载配置参考之前的文章：<a href="https://www.wztlink1013.com/blog/mv7tir/">Pycharm,Anaconda,JetBrains 系列 app 相关总结 | 尼采般地抒情</a></p>
+<h3 id="安装-python"><a href="#安装-python" class="headerlink" title="安装 python"></a>安装 python</h3><p>地址：<a target="_blank" rel="noopener" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640599312775-072daad3-4d63-44a3-9d12-f01c4bbf8e94.png#clientId=u2292d7fa-9c27-4&from=paste&height=93&id=u9139fb50&margin=%5Bobject%20Object%5D&name=image.png&originHeight=185&originWidth=728&originalType=binary%E2%88%B6=1&size=15279&status=done&style=none&taskId=ud116e129-dab4-49ec-ae46-05cd10ddcc7&width=364" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640599331716-24f74d29-d0d3-48d3-8ac8-98677a0a7f02.png#clientId=u2292d7fa-9c27-4&from=paste&height=219&id=u67f784d6&margin=%5Bobject%20Object%5D&name=image.png&originHeight=438&originWidth=1319&originalType=binary%E2%88%B6=1&size=90472&status=done&style=none&taskId=uea4c39b8-b55c-4d0d-b1cf-09fa248c859&width=659.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640599684114-22e00be7-1d4d-4429-89a3-749721cc6dc9.png#clientId=u2292d7fa-9c27-4&from=paste&height=307&id=u77942fec&margin=%5Bobject%20Object%5D&name=image.png&originHeight=614&originWidth=997&originalType=binary%E2%88%B6=1&size=248551&status=done&style=none&taskId=ue6b5fb11-a944-49f2-938b-e72c4649102&width=498.5" alt="image.png"><br>安装完之后进入 cmd 查看<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640599838509-509dc0d6-0ead-4d97-8c9a-c99b9ee2451d.png#clientId=u2292d7fa-9c27-4&from=paste&height=108&id=ubc4fd658&margin=%5Bobject%20Object%5D&name=image.png&originHeight=216&originWidth=1440&originalType=binary%E2%88%B6=1&size=31958&status=done&style=none&taskId=u8b40a744-5178-4de1-9707-7974ea413cd&width=720" alt="image.png"></p>
+<h3 id="安装-jupyter"><a href="#安装-jupyter" class="headerlink" title="安装 jupyter"></a>安装 jupyter</h3><pre><code class="powershell">pip install jupyter
+</code></pre>
+<p>安装成功之后，在项目文件夹下，打开 powershell 终端输入：jupyter notebook<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640601099229-bf7d396d-3c7c-4971-9552-459fccf9b37a.png#clientId=u2292d7fa-9c27-4&from=paste&height=285&id=u525810b2&margin=%5Bobject%20Object%5D&name=image.png&originHeight=570&originWidth=1440&originalType=binary%E2%88%B6=1&size=114883&status=done&style=none&taskId=uea1c66bc-9a4b-4e35-845d-7c547bb3ed2&width=720" alt="image.png"></p>
+<h2 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h2><h3 id="ValueError-check-hostname-requires-server-hostname"><a href="#ValueError-check-hostname-requires-server-hostname" class="headerlink" title="ValueError: check_hostname requires server_hostname"></a>ValueError: check_hostname requires server_hostname</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640600263157-e7be09d6-1de3-4a8e-8387-5711d8c0814b.png#clientId=u2292d7fa-9c27-4&from=paste&height=132&id=ue7f0bb3a&margin=%5Bobject%20Object%5D&name=image.png&originHeight=264&originWidth=1894&originalType=binary%E2%88%B6=1&size=62307&status=done&style=none&taskId=ufc1db7b2-7bc4-4573-b3be-be50266e541&width=947" alt="image.png"><br>关掉 tizi</p>
+<h3 id="ReadTimeoutError-HTTPSConnectionPool-host-’files-pythonhosted-org’-port-443-Read-timed-out"><a href="#ReadTimeoutError-HTTPSConnectionPool-host-’files-pythonhosted-org’-port-443-Read-timed-out" class="headerlink" title="ReadTimeoutError: HTTPSConnectionPool(host=’files.pythonhosted.org’, port=443): Read timed out."></a>ReadTimeoutError: HTTPSConnectionPool(host=’files.pythonhosted.org’, port=443): Read timed out.</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640600450333-c5b616f4-6f9c-41d5-ac8b-ad6a3a0cd5ad.png#clientId=u2292d7fa-9c27-4&from=paste&height=75&id=u99c9113d&margin=%5Bobject%20Object%5D&name=image.png&originHeight=150&originWidth=1565&originalType=binary%E2%88%B6=1&size=40157&status=done&style=none&taskId=u500b3749-fe5f-4a95-9a08-14104078dfe&width=782.5" alt="image.png"><br>按照报错信息，更新 pip</p>
+<h2 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h2><p>本地数据的读取</p>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/lb8ugs/">https://www.wztlink1013.com/blog/lb8ugs/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/lb8ugs/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/dggm37/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>数据的清洗和规整（二）</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/ml46ei/">
+                    <b>编程习惯</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:49:29
+ * @Description:  
+-->
+<div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Beaudar</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">Twikoo</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- utterances评论区 -->
+    <div id="utterances_comment" style="display: none"></div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+      <script src="https://npm.elemecdn.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+      <script>
+        twikoo
+          .init({
+            envId: 'website-wikoo-4g46k8do98867542',
+            el: '#tcomment',
+            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          })
+          .then(function () {
+            console.log('Twikoo 初始化加载完成')
+          })
+      </script>
+    </div>
+  </div>
+</div>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/">DOM+BOM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/DOM/">DOM</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-TypeScript/">JavaScript+TypeScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/">🔨环境+工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+ 
+    <!-- 非首页 -->
+    
+<script src="/public/js/main.js"></script>
+ 
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+  </body>
+</html>

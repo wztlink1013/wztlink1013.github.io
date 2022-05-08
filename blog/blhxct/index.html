@@ -1,0 +1,665 @@
+<!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-04-07 20:00:43
+ * @Description:  
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue-CLI搭建Vue3.x+TypeScript项目 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="前言：前端工程化开发总结，使用 Vue-CLI 脚手架搭建 Vue3.x + Typescript 项目，整体项目的环境配置。下载安装 Vue-CLI官方文档：Vue CLI 🛠️ Vue.js 开发的标准工具npm install -g @vue/cli# oryarn global add @" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Vue-CLI搭建Vue3.x+TypeScript项目 | 尼采般地抒情" />
+    <meta
+      property="og:url"
+      content="https://www.wztlink1013.com/blog/blhxct/"
+    />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="前言：前端工程化开发总结，使用 Vue-CLI 脚手架搭建 Vue3.x + Typescript 项目，整体项目的环境配置。下载安装 Vue-CLI官方文档：Vue CLI 🛠️ Vue.js 开发的标准工具npm install -g @vue/cli# oryarn global add @" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"
+    ></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/font/css/font-awesome.min.css"
+    />
+    <!-- 引入jQuery -->
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/jquery@3.6.0/dist/jquery.min.js"
+    ></script>
+    <!-- algolia for the search only version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+  </head>
+  <body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85-Vue-CLI"><span class="toc-text">下载安装 Vue-CLI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue-config-js"><span class="toc-text">vue.config.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-Jest"><span class="toc-text">[单元测试]Jest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue3-x-TypeScript-%E9%A1%B9%E7%9B%AE%E4%B8%8B%E7%9A%84-jest-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">Vue3.x+TypeScript 项目下的 jest 单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#jest-config-js"><span class="toc-text">jest.config.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E4%B8%AA%E6%96%87%E4%BB%B6%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">单个文件的单元测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E7%99%BD%E9%A1%B9%E7%9B%AE%E4%B8%8B%E7%9A%84-jest-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">空白项目下的 jest 单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-npm-%E6%8F%92%E4%BB%B6%E9%A1%B9%E7%9B%AE"><span class="toc-text">初始化 npm 插件项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD-Jest-%E5%92%8C-babel-%E4%BE%9D%E8%B5%96"><span class="toc-text">下载 Jest 和 babel 依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6"><span class="toc-text">创建测试文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-text">运行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jest-API-%E5%8F%8A%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-text">Jest API 及相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Jest-API"><span class="toc-text">Jest API</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jest-%E2%80%93coverage"><span class="toc-text">jest –coverage</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-e2e-cypress"><span class="toc-text">[单元测试]e2e-cypress</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue3-TypeScript-%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%8A%A5%E9%94%99"><span class="toc-text">Vue3+TypeScript 项目搭建过程中报错</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VSCode-%E6%8F%92%E4%BB%B6-ESLint-Prettier-vetur-%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%86%B2%E7%AA%81"><span class="toc-text">VSCode 插件 ESLint+Prettier+vetur 代码格式化冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Error-Cannot-find-module-%E2%80%98vue-loader-v16-package-json%E2%80%99"><span class="toc-text">Error: Cannot find module ‘vue-loader-v16&#x2F;package.json’</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vue-no-multiple-template-root-The-template-root-requires-exactly-one-element-eslint-plugin-vue"><span class="toc-text">[vue&#x2F;no-multiple-template-root]The template root requires exactly one element.eslint-plugin-vue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0%E6%A8%A1%E5%9D%97%E2%80%9C%E2%80%9D-aomao-engine%E2%80%9D%E2%80%9D%E6%88%96%E5%85%B6%E7%9B%B8%E5%BA%94%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E%E3%80%82ts-2307"><span class="toc-text">找不到模块“”@aomao&#x2F;engine””或其相应的类型声明。ts(2307)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%98vue-comment-directive%E2%80%99-%E2%80%94-error-in-the-end-of-public-index-html-just-after-vue-cli-installation"><span class="toc-text">‘vue&#x2F;comment-directive’ — error in the end of public&#x2F;index.html just after vue-cli installation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-%E2%90%8Deslintprettier-prettier"><span class="toc-text">Delete ␍eslintprettier&#x2F;prettier</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:51
+ * @Description:  
+-->
+<div class="component clearfix blogger">
+  <h3>尼采般地抒情</h3>
+  <img
+    class="blogger_left"
+    src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
+    alt="尼采般地抒情"
+  />
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-05-08 13:00:21
+ * @Description:  
+-->
+<div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>Vue-CLI搭建Vue3.x+TypeScript项目</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2021-12-26 18:33:36
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/🔨环境-工具/">
+                        🔨环境+工具
+                    </a>
+                
+                    <a href="/categories/🔨环境-工具/环境搭建/">
+                        环境搭建
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640572147933-73df2b83-c74d-4391-a90c-c8006aba471e.png#clientId=u01e0d066-2cd9-4&crop=0&crop=0&crop=1&crop=1&from=ui&id=u1d7f2957&margin=%5Bobject%20Object%5D&name=Vue-CLI%E6%90%AD%E5%BB%BAVue3.x%2BTypeScript%E9%A1%B9%E7%9B%AE.png&originHeight=383&originWidth=900&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=47722&status=done&style=none&taskId=ucee03059-16e7-4258-9442-24bef704273&title=" alt="Vue-CLI搭建Vue3.x+TypeScript项目.png"></p>
+<p>前言：前端工程化开发总结，使用 Vue-CLI 脚手架搭建 Vue3.x + Typescript 项目，整体项目的环境配置。</p>
+<h2 id="下载安装-Vue-CLI"><a href="#下载安装-Vue-CLI" class="headerlink" title="下载安装 Vue-CLI"></a>下载安装 Vue-CLI</h2><ul>
+<li>官方文档：<a target="_blank" rel="noopener" href="https://cli.vuejs.org/zh/guide/">Vue CLI 🛠️ Vue.js 开发的标准工具</a></li>
+</ul>
+<pre><code class="bash">npm install -g @vue/cli
+# or
+yarn global add @vue/cli
+# or
+cnpm install -g @vue/cli
+</code></pre>
+<p>查看版本：<code>vue --version</code><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640413980237-9582e32f-7515-40b8-80a7-f678456ac739.png#clientId=u4b22213f-3d48-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=44&id=ua167aa8d&margin=%5Bobject%20Object%5D&name=image.png&originHeight=88&originWidth=377&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=6055&status=done&style=none&taskId=uda0378c6-6748-4bd1-961a-261568ce909&title=&width=188.5" alt="image.png"></p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>新建并初始化项目文件夹</p>
+<pre><code class="bash">vue create vue3-cli-demo
+</code></pre>
+<p>选择最后一项自定义相关配置<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640414187756-6ebbf844-853d-4a66-b0d6-f401003c1fe8.png#clientId=u4b22213f-3d48-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=64&id=ub11023b3&margin=%5Bobject%20Object%5D&name=image.png&originHeight=127&originWidth=469&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=7161&status=done&style=none&taskId=u016245d6-16ee-4860-86cc-cc4b51da2ec&title=&width=234.5" alt="image.png"><br>全配置搭建测试<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640414751376-5215b4c4-3e85-4be2-9ce8-6e304bd5b70f.png#clientId=u4b22213f-3d48-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=212&id=ud9b0ef21&margin=%5Bobject%20Object%5D&name=image.png&originHeight=424&originWidth=807&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=58871&status=done&style=none&taskId=ub281502a-cdc2-455e-8f44-5986d29dac5&title=&width=403.5" alt="image.png"></p>
+<h2 id="vue-config-js"><a href="#vue-config-js" class="headerlink" title="vue.config.js"></a>vue.config.js</h2><p>Vue 项目的配置文件（详查：<a target="_blank" rel="noopener" href="https://cli.vuejs.org/zh/config/#vue-config-js">https://cli.vuejs.org/zh/config/#vue-config-js</a>）</p>
+<pre><code class="javascript">module.exports = &#123;
+  // 打包的目录
+  outputDir: &quot;dist&quot;,
+  // 在保存时校验格式
+  lintOnSave: true,
+  // 生产环境是否生成 SourceMap
+  productionSourceMap: false,
+  devServer: &#123;
+    // 启动服务后是否打开浏览器
+    open: true,
+    // 错误信息展示到页面
+    overlay: &#123;
+      warnings: true,
+      errors: true,
+    &#125;,
+    host: &quot;0.0.0.0&quot;,
+    port: 8066, // 服务端口
+    https: false,
+    hotOnly: false,
+    // proxy: &#123; // 设置代理
+    //   &#39;/api&#39;: &#123;
+    //     target: host,
+    //     changeOrigin: true,
+    //     pathRewrite: &#123;
+    //       &#39;/api&#39;: &#39;/&#39;,
+    //     &#125;
+    //   &#125;,
+    // &#125;,
+  &#125;,
+&#125;;
+</code></pre>
+<h2 id="单元测试-Jest"><a href="#单元测试-Jest" class="headerlink" title="[单元测试]Jest"></a>[单元测试]Jest</h2><h3 id="Vue3-x-TypeScript-项目下的-jest-单元测试"><a href="#Vue3-x-TypeScript-项目下的-jest-单元测试" class="headerlink" title="Vue3.x+TypeScript 项目下的 jest 单元测试"></a>Vue3.x+TypeScript 项目下的 jest 单元测试</h3><p>官网 API：<a target="_blank" rel="noopener" href="https://next.vue-test-utils.vuejs.org/api/">https://next.vue-test-utils.vuejs.org/api/</a></p>
+<h4 id="jest-config-js"><a href="#jest-config-js" class="headerlink" title="jest.config.js"></a>jest.config.js</h4><p>项目搭建成功之后的默认配置如下：</p>
+<pre><code class="javascript">module.exports = &#123;
+  preset: &quot;@vue/cli-plugin-unit-jest/presets/typescript-and-babel&quot;,
+  transform: &#123;
+    &quot;^.+\\.vue$&quot;: &quot;vue-jest&quot;,
+  &#125;,
+&#125;;
+</code></pre>
+<p>更改如下配置</p>
+<pre><code class="javascript">/*
+ * @Author: wztlink1013
+ * @Date: 2021-12-25 14:49:37
+ * @LastEditTime: 2021-12-26 14:56:39
+ * @Description:
+ */
+module.exports = &#123;
+  preset: &quot;@vue/cli-plugin-unit-jest/presets/typescript-and-babel&quot;,
+  // 测试的文件类型
+  moduleFileExtensions: [&quot;js&quot;, &quot;jsx&quot;, &quot;json&quot;, &quot;vue&quot;, &quot;ts&quot;, &quot;tsx&quot;],
+  // 转化方式
+  transform: &#123;
+    &quot;^.+\\.vue$&quot;: &quot;&lt;rootDir&gt;/node_modules/vue-jest&quot;,
+    &quot;.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$&quot;:
+      &quot;&lt;rootDir&gt;/node_modules/jest-transform-stub&quot;,
+    &quot;^.+\\.jsx?$&quot;: &quot;&lt;rootDir&gt;/node_modules/babel-jest&quot;,
+    &quot;^.+\\.tsx?$&quot;: &quot;&lt;rootDir&gt;/node_modules/ts-jest&quot;,
+  &#125;,
+  // 不进行匹配的目录
+  transformIgnorePatterns: [&quot;&lt;rootDir&gt;/node_modules/&quot;],
+  // 匹配哪些文件进行测试
+  testMatch: [&quot;**/tests/unit/**/*.spec.[jt]s?(x)&quot;, &quot;**/__tests__/*.[jt]s?(x)&quot;],
+  // @符号 表示当前项目下的src
+  moduleNameMapper: &#123;
+    &quot;^@/(.*)$&quot;: &quot;&lt;rootDir&gt;/src/$1&quot;,
+  &#125;,
+  // 将保存的快照测试结果进行序列化，使得其更美观
+  snapshotSerializers: [&quot;jest-serializer-vue&quot;],
+&#125;;
+</code></pre>
+<h4 id="单个文件的单元测试"><a href="#单个文件的单元测试" class="headerlink" title="单个文件的单元测试"></a>单个文件的单元测试</h4><p>项目下运行单元测试命令 <code>test:unit</code> 默认测试所有测试文件，不能指定文件进行单元测试。</p>
+<p>在本地下载全局 jest 然后指定命令去执行项目的单个文件单个测试</p>
+<pre><code class="bash">cnpm install jest --global
+</code></pre>
+<p>然后执行</p>
+<pre><code class="bash">jest ./tests/unit/jestTest.spec.ts
+</code></pre>
+<p>或</p>
+<pre><code>npx jest ./tests/unit/jestTest.spec.ts
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640502745377-c5d57f26-13d6-4701-b7fd-aa1fb0b4312f.png#clientId=u7eea065d-bb8e-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=191&id=u261c3a42&margin=%5Bobject%20Object%5D&name=image.png&originHeight=381&originWidth=595&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=37041&status=done&style=none&taskId=u21e6a05e-867b-4a2c-973f-15bebcd5776&title=&width=297.5" alt="image.png"></p>
+<h3 id="空白项目下的-jest-单元测试"><a href="#空白项目下的-jest-单元测试" class="headerlink" title="空白项目下的 jest 单元测试"></a>空白项目下的 jest 单元测试</h3><h4 id="初始化-npm-插件项目"><a href="#初始化-npm-插件项目" class="headerlink" title="初始化 npm 插件项目"></a>初始化 npm 插件项目</h4><pre><code class="bash">npm init -y
+</code></pre>
+<h4 id="下载-Jest-和-babel-依赖"><a href="#下载-Jest-和-babel-依赖" class="headerlink" title="下载 Jest 和 babel 依赖"></a>下载 Jest 和 babel 依赖</h4><pre><code class="bash">cnpm i @babel/core @babel/preset-env  jest@24.8.0 -D
+</code></pre>
+<h4 id="创建测试文件"><a href="#创建测试文件" class="headerlink" title="创建测试文件"></a>创建测试文件</h4><p>创建测试框架用的文件 index.js 和 index.test.js 两个文件<br><code>index.js</code></p>
+<pre><code class="javascript">/*
+ * @Descripttion:
+ * @Date: 2021-12-07 20:08:15
+ * @LastEditTime: 2021-12-07 20:08:16
+ */
+export const add = (a, b) =&gt; &#123;
+  return a + b;
+&#125;;
+
+export const reduce = (a, b) =&gt; &#123;
+  return a - b;
+&#125;;
+</code></pre>
+<p><code>index.test.js</code></p>
+<pre><code class="javascript">/*
+ * @Descripttion:
+ * @Date: 2021-12-07 20:08:31
+ * @LastEditTime: 2021-12-07 20:45:17
+ */
+import &#123; add, reduce &#125; from &quot;./index&quot;;
+
+// toBe 数字
+test(&quot;测试add函数&quot;, () =&gt; &#123;
+  expect(add(1, 2)).toBe(3);
+&#125;);
+test(&quot;测试add函数（函数功能出错===打印）&quot;, () =&gt; &#123;
+  expect(add(1, 2)).toBe(4);
+&#125;);
+test(&quot;测试reduce函数&quot;, () =&gt; &#123;
+  expect(reduce(3, 2)).toBe(1);
+&#125;);
+</code></pre>
+<p>不能运行是 node 环境不能直接使用 es6 语法，需要只用 babel 来转换<br>新建<code>.babelrc</code>文件</p>
+<pre><code class="bash">// .babelrc
+&#123;
+    &quot;presets&quot;: [
+            [&quot;@babel/preset-env&quot;, &#123;
+                &quot;targets&quot;: &quot;&gt; 5%&quot;
+            &#125;]
+    ]
+&#125;
+</code></pre>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>运行 npm run test 就可以测试了<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1638881167559-731c4af0-07c1-4d1b-b3d2-9273ab358fcb.png#clientId=ucda71d63-20a4-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=356&id=Bt95b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=712&originWidth=1653&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=137248&status=done&style=none&taskId=u8ac28f4c-b511-4b94-9225-de8ea201df3&title=&width=826.5" alt="image.png"></p>
+<h3 id="Jest-API-及相关命令"><a href="#Jest-API-及相关命令" class="headerlink" title="Jest API 及相关命令"></a>Jest API 及相关命令</h3><ul>
+<li>官方文档：<a target="_blank" rel="noopener" href="https://jestjs.io/zh-Hans/docs/getting-started">https://jestjs.io/zh-Hans/docs/getting-started</a></li>
+</ul>
+<p>相关教程：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904114753634317">Jest 前端自动化测试入门</a></li>
+<li><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/f743bf48dc9ea09e5cbd7285c">搭建基本 Jest 测试框架，解读覆盖率实现原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904082516377607">vue 项目搭建 jest 单元测试及采坑</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1602142">Vue-Test-Utils + Jest 单元测试入门与实践</a></li>
+<li>eslint 就可以使用：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/eslint-plugin-jest">eslint-plugin-jest</a></li>
+</ul>
+<h4 id="Jest-API"><a href="#Jest-API" class="headerlink" title="Jest API"></a>Jest API</h4><ul>
+<li><code>test()</code>类似请求后端接口一样，请求成功或失败的判断</li>
+<li><code>expect()</code>则是判断和预期的值是否一样，然后执行相应的操作</li>
+<li><code>toBe()</code>就是写入预期值来判断是否和自己写的代码值是否一样</li>
+<li><code>describe</code> 描述, decribe 会形成一个作用域</li>
+<li><code>it</code> 断言</li>
+</ul>
+<h4 id="jest-–coverage"><a href="#jest-–coverage" class="headerlink" title="jest –coverage"></a>jest –coverage</h4><p>查看覆盖率命令<br>该命令可以可视化展示，也可以在浏览器打开可视化结果网页<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640503326529-c0e50682-a7d0-4e47-9be3-df6c5e71b8e3.png#clientId=u7eea065d-bb8e-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=284&id=u1305df8b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=567&originWidth=1163&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=118032&status=done&style=none&taskId=u730983d2-ef03-4431-a420-8bb49c728a8&title=&width=581.5" alt="image.png"></p>
+<h2 id="单元测试-e2e-cypress"><a href="#单元测试-e2e-cypress" class="headerlink" title="[单元测试]e2e-cypress"></a>[单元测试]e2e-cypress</h2><p>插眼：日后再深入了解<br><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1640504518665-55a6bd16-bb69-411d-bc9b-de4b6e2db2cc.jpeg#crop=0&crop=0&crop=1&crop=1&id=nTdFS&originHeight=58&originWidth=79&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&status=done&style=none&title="><br>Vue 官方插件地址：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/@vue/cli-plugin-e2e-cypress">https://www.npmjs.com/package/@vue/cli-plugin-e2e-cypress</a></li>
+</ul>
+<p>参考教程：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/459612488233">Vue 项目采用 Cypress 做 e2e 自动化测试，手把手一撸到底</a></li>
+</ul>
+<h2 id="Vue3-TypeScript-项目搭建过程中报错"><a href="#Vue3-TypeScript-项目搭建过程中报错" class="headerlink" title="Vue3+TypeScript 项目搭建过程中报错"></a>Vue3+TypeScript 项目搭建过程中报错</h2><h3 id="VSCode-插件-ESLint-Prettier-vetur-代码格式化冲突"><a href="#VSCode-插件-ESLint-Prettier-vetur-代码格式化冲突" class="headerlink" title="VSCode 插件 ESLint+Prettier+vetur 代码格式化冲突"></a>VSCode 插件 ESLint+Prettier+vetur 代码格式化冲突</h3><p>这三者是代码校验和格式化的插件，当 vue3.x 项目搭建成功之后<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640422446727-53aab258-0454-486d-b2e7-f4c181c7b404.png#clientId=u2c3bc674-1572-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=36&id=W9mzl&margin=%5Bobject%20Object%5D&name=image.png&originHeight=72&originWidth=571&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=41601&status=done&style=none&taskId=u548b3ce1-52b7-4c4c-b289-07d4fcf6bb4&title=&width=285.5" alt="image.png"><br>该行配置需要注释，不然代码保存之后，会经过 Prettier 和 vetur 两者之间的来回格式化顺序，导致不能正常格式化。</p>
+<p>具体矛盾原因：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/101241781">解决 vscode eslint 与 prettier 冲突</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/347339865">VSCode 中 ESLint、Prettier 配置冲突问题原因及解决方案</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangpenghui522/p/13727990.html">VSCode-Prettier 和 ESLint 如何和睦共处? </a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1802491">Vue 基于 VSCode 结合 Vetur+ESlint+Prettier 统一 Vue 代码风格</a></p>
+</li>
+<li><p>Prettier 插件：一定要留，能保存所有文件，按照自己规则进行格式化</p>
+</li>
+<li><p>ESLint 插件</p>
+</li>
+<li><p>vetur 插件</p>
+</li>
+<li><p>Vue 项目中的 prettier 插件</p>
+</li>
+<li><p>Vue 项目中的 eslint 插件</p>
+</li>
+<li><p>Vue 项目中的 eslint 的各个子插件</p>
+<ul>
+<li>eslint-plugin-prettier：这个就是 typescript 项目中上述冲突的缘由</li>
+<li>eslint-config-prettier</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h3 id="Error-Cannot-find-module-‘vue-loader-v16-package-json’"><a href="#Error-Cannot-find-module-‘vue-loader-v16-package-json’" class="headerlink" title="Error: Cannot find module ‘vue-loader-v16/package.json’"></a>Error: Cannot find module ‘vue-loader-v16/package.json’</h3><p>在导入 Vue3 + TypeScript 的项目</p>
+<ol>
+<li>升级 npm</li>
+</ol>
+<p>使用 cnpm 的也要升级一下 cnpm</p>
+<pre><code class="bash">cnpm i -g cnpm
+</code></pre>
+<ol start="2">
+<li>重新安装 node_modules 依赖包</li>
+</ol>
+<pre><code class="bash">cnpm i // 重新安装
+</code></pre>
+<ol start="3">
+<li>重新下载</li>
+</ol>
+<pre><code class="bash">cnpm i -D vue-loader-v16
+</code></pre>
+<h3 id="vue-no-multiple-template-root-The-template-root-requires-exactly-one-element-eslint-plugin-vue"><a href="#vue-no-multiple-template-root-The-template-root-requires-exactly-one-element-eslint-plugin-vue" class="headerlink" title="[vue/no-multiple-template-root]The template root requires exactly one element.eslint-plugin-vue"></a>[vue/no-multiple-template-root]The template root requires exactly one element.eslint-plugin-vue</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640357960271-5a2b291c-9a75-45eb-90c7-181a081cd1b3.png#clientId=ua2d91374-f0a2-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=265&id=LDxro&margin=%5Bobject%20Object%5D&name=image.png&originHeight=530&originWidth=1048&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=56340&status=done&style=none&taskId=u1827695c-31a6-43ea-8dec-dda5389886c&title=&width=524" alt="image.png"></p>
+<h3 id="找不到模块“”-aomao-engine””或其相应的类型声明。ts-2307"><a href="#找不到模块“”-aomao-engine””或其相应的类型声明。ts-2307" class="headerlink" title="找不到模块“”@aomao/engine””或其相应的类型声明。ts(2307)"></a>找不到模块“”@aomao/engine””或其相应的类型声明。ts(2307)</h3><div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">报错信息</div>
+```bash
+找不到模块“"@aomao/engine"”或其相应的类型声明。ts(2307)
+```
+```bash
+模块“"@aomao/engine"”没有导出的成员“PluginEntry”。ts(2305)
+```
+<div style="background: #edf9e8;padding:10px;border: 1px solid #c2d2b5;border-radius:5px;margin-bottom:5px;">按照网上找的一些方法，都无法解决这个问题
+重启可以解决，插件用的太多===太卡顿</div>
+
+<h3 id="‘vue-comment-directive’-—-error-in-the-end-of-public-index-html-just-after-vue-cli-installation"><a href="#‘vue-comment-directive’-—-error-in-the-end-of-public-index-html-just-after-vue-cli-installation" class="headerlink" title="‘vue/comment-directive’ — error in the end of public/index.html just after vue-cli installation"></a>‘vue/comment-directive’ — error in the end of public/index.html just after vue-cli installation</h3><p>public 文件夹次啊的 index.html 文件末尾会有该报错，解决办法就是配置相关 rule<br><a target="_blank" rel="noopener" href="https://github.com/vuejs/eslint-plugin-vue/issues/1355">https://github.com/vuejs/eslint-plugin-vue/issues/1355</a></p>
+<h3 id="Delete-␍eslintprettier-prettier"><a href="#Delete-␍eslintprettier-prettier" class="headerlink" title="Delete ␍eslintprettier/prettier"></a>Delete <code>␍</code>eslintprettier/prettier</h3><p>将代码 push 到 GitHub 仓库，新拉取下来，文件的每行代码会有此报错<br><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1644376958819-fecf2dc0-76f0-4a31-b2a8-269dd345223d.png#clientId=u3756e34d-5956-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=141&id=ua5af1e6f&margin=%5Bobject%20Object%5D&name=image.png&originHeight=141&originWidth=536&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=86221&status=done&style=none&taskId=u2b35c8af-a51e-4081-a134-aa2bfdcb638&title=&width=536" alt="image.png"></p>
+<p>报错原因：文本文件的换行符不一致<br>具体参考：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904069304156168#heading-6">https://juejin.cn/post/6844904069304156168#heading-6</a><br>解决办法：</p>
+<ol>
+<li>【治标】如果只有少个文件，将 vscode 右下角处改为 LF 即可</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1644377438548-8db15f94-e644-43ac-bad4-2f4ce86eb274.png#clientId=u3756e34d-5956-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=111&id=u08d40637&margin=%5Bobject%20Object%5D&name=image.png&originHeight=111&originWidth=449&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=16273&status=done&style=none&taskId=u6d4468b6-8893-46fe-8a49-fc4606c1b58&title=&width=449" alt="image.png"></p>
+<ol start="2">
+<li>【治本】在 windows 环境下，全局关掉转换行</li>
+</ol>
+<pre><code class="bash">git config --global core.autocrlf false
+</code></pre>
+<p>然后再将刚刚拉取到本地的项目删掉，重新从 GitHub 拉取到本地，就不会出现该报错了</p>
+<ol start="3">
+<li>另外，在 vscode 设置中设置如下，可以达到新建文件就是 LF 转换行的效果了</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1644377676559-12ee984b-e189-4dcf-8a72-59e37198b974.png#clientId=u3756e34d-5956-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=55&id=u84528446&margin=%5Bobject%20Object%5D&name=image.png&originHeight=55&originWidth=362&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=14023&status=done&style=none&taskId=u7045718f-4060-4242-b6cf-b58bd89fd52&title=&width=362" alt="image.png"></p>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/blhxct/">https://www.wztlink1013.com/blog/blhxct/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/blhxct/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/dvkqhm/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Git Commit 的优化</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/essay/cook_greens/">
+                    <b>小炒之青菜</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:49:29
+ * @Description:  
+-->
+<div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Beaudar</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">Twikoo</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- utterances评论区 -->
+    <div id="utterances_comment" style="display: none"></div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+      <script src="https://npm.elemecdn.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+      <script>
+        twikoo
+          .init({
+            envId: 'website-wikoo-4g46k8do98867542',
+            el: '#tcomment',
+            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          })
+          .then(function () {
+            console.log('Twikoo 初始化加载完成')
+          })
+      </script>
+    </div>
+  </div>
+</div>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/">DOM+BOM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/DOM/">DOM</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-TypeScript/">JavaScript+TypeScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/">🔨环境+工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+ 
+    <!-- 非首页 -->
+    
+<script src="/public/js/main.js"></script>
+ 
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+  </body>
+</html>

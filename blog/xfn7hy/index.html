@@ -1,0 +1,722 @@
+<!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-04-07 20:00:43
+ * @Description:  
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>mongoose操作MongoDB数据库 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="GitHub：https://github.com/Automattic/mongoose英文文档：https://mongoosejs.com/docs/guide.html中文文档：http://www.mongoosejs.net/docs/guide.html如何使用 nodejs 写一个接" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="mongoose操作MongoDB数据库 | 尼采般地抒情" />
+    <meta
+      property="og:url"
+      content="https://www.wztlink1013.com/blog/xfn7hy/"
+    />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="GitHub：https://github.com/Automattic/mongoose英文文档：https://mongoosejs.com/docs/guide.html中文文档：http://www.mongoosejs.net/docs/guide.html如何使用 nodejs 写一个接" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"
+    ></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/font/css/font-awesome.min.css"
+    />
+    <!-- 引入jQuery -->
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/jquery@3.6.0/dist/jquery.min.js"
+    ></script>
+    <!-- algolia for the search only version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+  </head>
+  <body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MongoDB-%E4%BB%A5%E5%8F%8A%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7-Navicat"><span class="toc-text">MongoDB 以及可视化工具 Navicat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-mongoose"><span class="toc-text">安装 mongoose</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%AD%E5%8F%A5"><span class="toc-text">连接数据库语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E5%90%88"><span class="toc-text">创建集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0%E6%96%87%E6%A1%A3"><span class="toc-text">增加文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%96%87%E6%A1%A3"><span class="toc-text">查询文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongoose-%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-text">mongoose 条件查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%96%87%E6%A1%A3"><span class="toc-text">更新文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E6%A1%A3"><span class="toc-text">删除文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongoose-%E9%AA%8C%E8%AF%81"><span class="toc-text">mongoose 验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E4%BB%A3%E7%A0%81"><span class="toc-text">整体代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongodb-%E5%88%9B%E5%BB%BA%E9%9B%86%E5%90%88"><span class="toc-text">mongodb 创建集合</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:51
+ * @Description:  
+-->
+<div class="component clearfix blogger">
+  <h3>尼采般地抒情</h3>
+  <img
+    class="blogger_left"
+    src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
+    alt="尼采般地抒情"
+  />
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>290 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-05-08 13:00:21
+ * @Description:  
+-->
+<div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>mongoose操作MongoDB数据库</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2022-03-01 03:12:42
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/👨‍💻Web开发/">
+                        👨‍💻Web开发
+                    </a>
+                
+                    <a href="/categories/👨‍💻Web开发/DataBase/">
+                        DataBase
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <ul>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/Automattic/mongoose">https://github.com/Automattic/mongoose</a></li>
+<li>英文文档：<a target="_blank" rel="noopener" href="https://mongoosejs.com/docs/guide.html">https://mongoosejs.com/docs/guide.html</a></li>
+<li>中文文档：<a target="_blank" rel="noopener" href="http://www.mongoosejs.net/docs/guide.html">http://www.mongoosejs.net/docs/guide.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56030432">如何使用 nodejs 写一个接口 - MySQL 版</a></li>
+</ul>
+<p>shardb-mongodb 模块操作数据库不好去使用，比如查询，新建等，所以这个模块只用作 ot 服务那边；<br>另外使用 mongoose 去操作数据库方便写接口</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/share/sharedb-mongo">https://github.com/share/sharedb-mongo</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/46f06896c9cd">Mongoose 查询结果为空</a></li>
+</ul>
+<p>schema 的相关配置为 connection</p>
+<ul>
+<li>之前的增删改查笔记：<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/web-learn-notes/blob/gh-pages/learn-nodejs/express/model/connect.js">https://github.com/wztlink1013/web-learn-notes/blob/gh-pages/learn-nodejs/express/model/connect.js</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019201081">mongoose 踩坑笔记： Cannot overwrite `` model once compiled.</a></li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="MongoDB-以及可视化工具-Navicat"><a href="#MongoDB-以及可视化工具-Navicat" class="headerlink" title="MongoDB 以及可视化工具 Navicat"></a>MongoDB 以及可视化工具 Navicat</h3><p>参考之前写的文章：<a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/nwt63v">MongoDB 下载及使用+Navicat 使用+服务器上的配置</a></p>
+<h3 id="安装-mongoose"><a href="#安装-mongoose" class="headerlink" title="安装 mongoose"></a>安装 mongoose</h3><pre><code class="bash">cnpm install mongoose -S
+</code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="连接数据库语句"><a href="#连接数据库语句" class="headerlink" title="连接数据库语句"></a>连接数据库语句</h3><pre><code class="javascript">// 连接数据库
+mongoose
+  .connect(&quot;mongodb://127.0.0.1:27017/test-mongoose&quot;, &#123;
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  &#125;)
+  .then(() =&gt; &#123;
+    console.log(&quot;数据库连接成功&quot;);
+  &#125;)
+  .catch(() =&gt; &#123;
+    console.log(&quot;数据库连接失败&quot;);
+  &#125;);
+</code></pre>
+<p>然后再将这个 js 文件 require 到 app.js 里面使用</p>
+<pre><code class="javascript">// 数据库连接
+require(&quot;./model/connect&quot;);
+</code></pre>
+<h3 id="创建集合"><a href="#创建集合" class="headerlink" title="创建集合"></a>创建集合</h3><ul>
+<li>先利用函数 mongoose 的 schema 函数构建一个规则</li>
+<li>然后利用 model 函数创建一个集合并且用上这个规则</li>
+</ul>
+<pre><code class="javascript">// Schema：数据库集合的结构对象。
+// 创建一个集合(相当于sql里面的设定一个表)规则
+let TestSchema = new mongoose.Schema(&#123;
+  name: &#123; type: String &#125;,
+  age: &#123; type: Number, default: 0 &#125;,
+  email: &#123; type: String &#125;,
+  time: &#123; type: Date, default: Date.now &#125;,
+&#125;);
+
+// Model ：由Schema构造而成，可操作数据库。
+// 创建一个集合(并且应用上面的规则)
+let TestModel = mongoose.model(&quot;schema&quot;, TestSchema);
+</code></pre>
+<h3 id="增加文档"><a href="#增加文档" class="headerlink" title="增加文档"></a>增加文档</h3><ul>
+<li>第一个参数：create 函数</li>
+<li>第二个参数：可以打印相关信息（doc 和 err）</li>
+</ul>
+<pre><code class="javascript">// 创建（创建完执行以便之后就注释掉，不然会一直重复创建）
+TestModel.create(
+  [
+    &#123; name: &#39;test-1&#39;, age: 8 &#125;,
+    &#123; name: &#39;test-2&#39;, age: 18 &#125;,
+    &#123; name: &#39;test-3&#39;, age: 28 &#125;,
+    &#123; name: &#39;test-4&#39;, age: 38 &#125;,
+    &#123; name: &#39;test-5&#39;, age: 48 &#125;,
+    &#123; name: &#39;test-6&#39;, age: 58, email: &#39;tttt@qq.com&#39; &#125;,
+    &#123; name: &#39;test-7&#39;, age: 68, email: &#39;ssss@qq.com&#39; &#125;,
+    &#123; name: &#39;test-8&#39;, age: 18 &#125;,
+    &#123; name: &#39;test-9&#39;, age: 18, email: &#39;rrrr@qq.com&#39; &#125;,
+    &#123; name: &#39;test-10&#39;, age: 18 &#125;,
+  ],
+  (error, docs)&#123;
+    if (error) &#123;
+      console.log(error)
+    &#125; else &#123;
+      console.log(&#39;save ok&#39;)
+      console.log(docs)
+    &#125;
+  &#125;
+)
+</code></pre>
+<ul>
+<li>也可以创建一个对象赋值给一个变量，然后该变量利用函数 save 即可保存到数据库<div style="background: #FFF3F3;padding:10px;border: 1px solid #DEB8BE;border-radius:5px;margin-bottom:5px;">创建完执行以便之后就注释掉，不然会一直重复创建</div></li>
+</ul>
+<h3 id="查询文档"><a href="#查询文档" class="headerlink" title="查询文档"></a>查询文档</h3><ul>
+<li>查询函数<code>findOne</code>：返回第一条数据</li>
+<li>查询函数<code>find</code>：查询所有包含条件的数据</li>
+</ul>
+<pre><code class="javascript">// 查询
+TestModel.find(
+  // 28&lt;= age &lt;48
+  &#123; age: &#123; $gte: 28, $lt: 48 &#125; &#125;,
+  // 1为指定字段，0为排除字段
+  &#123; name: 1, age: 1, _id: 0 &#125;,
+  function (err, docs) &#123;
+    if (err) &#123;
+      console.log(&quot;查询出错: &quot; + err);
+    &#125; else &#123;
+      console.log(&quot;$gte,$lte查询结果为: &quot;);
+      console.log(docs);
+    &#125;
+  &#125;
+);
+</code></pre>
+<h3 id="mongoose-条件查询"><a href="#mongoose-条件查询" class="headerlink" title="mongoose 条件查询"></a>mongoose 条件查询</h3><p>键为变量时用<br>中括号括起来就行了</p>
+<pre><code class="javascript">checkStr(data.type_id, &#39;email&#39;)
+    ? (type_str = &#39;email&#39;)
+    : (type_str = &#39;user_id&#39;)
+Model_user.find(&#123; [type_str]: data.type_id &#125;, &#123;&#125;, (err, docs) =&gt; &#123;&#125;
+</code></pre>
+<p>逻辑查询<br>参考：</p>
+<ul>
+<li>文档：<a target="_blank" rel="noopener" href="http://mongoosejs.net/docs/queries.html">http://mongoosejs.net/docs/queries.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021010300">mongoose 系列之一 find 查询</a></li>
+</ul>
+<pre><code class="javascript">Model_user.find(
+  &#123; $or: [&#123; email: obj.email &#125;, &#123; user_id: obj.user_id &#125;] &#125;,
+  &#123;&#125;,
+  (err, docs) =&gt; &#123;&#125;
+);
+</code></pre>
+<h3 id="更新文档"><a href="#更新文档" class="headerlink" title="更新文档"></a>更新文档</h3><p><code>User.updateOne(&#123;查询条件&#125;, &#123;要修改的值&#125;).then(result =&gt; console.log(result))</code></p>
+<ul>
+<li>updateOne：更新单个</li>
+<li>updateMany：更新多个</li>
+</ul>
+<pre><code class="javascript">// 更新
+let conditions_1 = &#123; name: &quot;test-3&quot; &#125;;
+let update = &#123; $set: &#123; age: 11 &#125; &#125;;
+TestModel.updateOne(conditions_1, update, function (error) &#123;
+  if (error) &#123;
+    console.log(error);
+  &#125; else &#123;
+    console.log(&quot;Update success!&quot;);
+    TestModel.find(
+      &#123; name: &quot;test-3&quot; &#125;,
+      &#123; name: 1, age: 1, _id: 0 &#125;,
+      function (err, docs) &#123;
+        if (err) &#123;
+          console.log(&quot;查询出错: &quot; + err);
+        &#125; else &#123;
+          console.log(&quot;更新test-3后的查询结果为: &quot;);
+          console.log(docs);
+        &#125;
+      &#125;
+    );
+  &#125;
+&#125;);
+</code></pre>
+<h3 id="删除文档"><a href="#删除文档" class="headerlink" title="删除文档"></a>删除文档</h3><ul>
+<li>删除单个：<code>User.findOneAndDelete(&#123;&#125;)then(result =&gt; console.log(result))</code></li>
+<li>删除多个：<code>User.deleteMany(&#123;&#125;).then(result =&gt; console.log(result))</code></li>
+<li>deleteOne：删除单个</li>
+</ul>
+<pre><code class="javascript">// 删除
+let conditions_2 = &#123; name: &quot;test-2&quot; &#125;;
+TestModel.deleteOne(conditions_2, function (error) &#123;
+  if (error) &#123;
+    console.log(error);
+  &#125; else &#123;
+    console.log(&quot;Delete success!&quot;);
+    TestModel.find(
+      &#123; name: &quot;test-2&quot; &#125;,
+      &#123; name: 1, age: 1, _id: 0 &#125;,
+      function (err, docs) &#123;
+        if (err) &#123;
+          console.log(&quot;查询出错: &quot; + err);
+        &#125; else &#123;
+          console.log(&quot;删除test-2后的查询结果为: &quot;);
+          console.log(docs);
+        &#125;
+      &#125;
+    );
+  &#125;
+&#125;);
+</code></pre>
+<h3 id="mongoose-验证"><a href="#mongoose-验证" class="headerlink" title="mongoose 验证"></a>mongoose 验证</h3><p>required: true 必传字段<br>minlength：3 字符串最小长度<br>maxlength: 20 字符串最大长度<br>min: 2 数值最小为 2<br>max: 100 数值最大为 100<br>enum: [‘html’, ‘css’, ‘javascript’, ‘node.js’]<br>trim: true 去除字符串两边的空格<br>validate: 自定义验证器<br>default: 默认值</p>
+<p>获取错误信息：error.errors[‘字段名称’].message</p>
+<h3 id="整体代码"><a href="#整体代码" class="headerlink" title="整体代码"></a>整体代码</h3><pre><code class="javascript">/*
+ * @Author: wztlink1013
+ * @Date: 2022-01-11 12:43:02
+ * @LastEditTime: 2022-01-11 16:44:13
+ * @Description:
+ */
+const mongoose = require(&quot;mongoose&quot;);
+
+// 连接数据库
+mongoose
+  .connect(&quot;mongodb://127.0.0.1:27017/test-mongoose&quot;, &#123;
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  &#125;)
+  .then(() =&gt; &#123;
+    console.log(&quot;数据库连接成功&quot;);
+  &#125;)
+  .catch(() =&gt; &#123;
+    console.log(&quot;数据库连接失败&quot;);
+  &#125;);
+
+// Schema：数据库集合的结构对象。
+let TestSchema = new mongoose.Schema(&#123;
+  name: &#123; type: String &#125;,
+  age: &#123; type: Number, default: 0 &#125;,
+  email: &#123; type: String &#125;,
+  time: &#123; type: Date, default: Date.now &#125;,
+&#125;);
+
+// Model ：由Schema构造而成，可操作数据库。
+let TestModel = mongoose.model(&quot;schema&quot;, TestSchema);
+
+// Entity：由Model创建的实体，可操作数据库。
+// let TestEntity = new TestModel(&#123;
+//   name: &#39;helloworld&#39;,
+//   age: 28,
+//   email: &#39;helloworld@qq.com&#39;,
+// &#125;)
+// console.log(TestEntity)
+
+// 创建（创建完执行以便之后就注释掉，不然会一直重复创建）
+// TestModel.create(
+//   [
+//     &#123; name: &#39;test-1&#39;, age: 8 &#125;,
+//     &#123; name: &#39;test-2&#39;, age: 18 &#125;,
+//     &#123; name: &#39;test-3&#39;, age: 28 &#125;,
+//     &#123; name: &#39;test-4&#39;, age: 38 &#125;,
+//     &#123; name: &#39;test-5&#39;, age: 48 &#125;,
+//     &#123; name: &#39;test-6&#39;, age: 58, email: &#39;tttt@qq.com&#39; &#125;,
+//     &#123; name: &#39;test-7&#39;, age: 68, email: &#39;ssss@qq.com&#39; &#125;,
+//     &#123; name: &#39;test-8&#39;, age: 18 &#125;,
+//     &#123; name: &#39;test-9&#39;, age: 18, email: &#39;rrrr@qq.com&#39; &#125;,
+//     &#123; name: &#39;test-10&#39;, age: 18 &#125;,
+//   ],
+//   function (error, docs) &#123;
+//     if (error) &#123;
+//       console.log(error)
+//     &#125; else &#123;
+//       // console.log(&#39;save ok&#39;)
+//       // console.log(docs)
+//     &#125;
+//   &#125;
+// )
+
+// 查询
+TestModel.find(
+  // 28&lt;= age &lt;48
+  &#123; age: &#123; $gte: 28, $lt: 48 &#125; &#125;,
+  // 1为指定字段，0为排除字段
+  &#123; name: 1, age: 1, _id: 0 &#125;,
+  function (err, docs) &#123;
+    if (err) &#123;
+      console.log(&quot;查询出错: &quot; + err);
+    &#125; else &#123;
+      console.log(&quot;$gte,$lte查询结果为: &quot;);
+      console.log(docs);
+    &#125;
+  &#125;
+);
+// 更新
+let conditions_1 = &#123; name: &quot;test-3&quot; &#125;;
+let update = &#123; $set: &#123; age: 11 &#125; &#125;;
+TestModel.updateOne(conditions_1, update, function (error) &#123;
+  if (error) &#123;
+    console.log(error);
+  &#125; else &#123;
+    console.log(&quot;Update success!&quot;);
+    TestModel.find(
+      &#123; name: &quot;test-3&quot; &#125;,
+      &#123; name: 1, age: 1, _id: 0 &#125;,
+      function (err, docs) &#123;
+        if (err) &#123;
+          console.log(&quot;查询出错: &quot; + err);
+        &#125; else &#123;
+          console.log(&quot;更新test-3后的查询结果为: &quot;);
+          console.log(docs);
+        &#125;
+      &#125;
+    );
+  &#125;
+&#125;);
+// 删除
+let conditions_2 = &#123; name: &quot;test-2&quot; &#125;;
+TestModel.deleteOne(conditions_2, function (error) &#123;
+  if (error) &#123;
+    console.log(error);
+  &#125; else &#123;
+    console.log(&quot;Delete success!&quot;);
+    TestModel.find(
+      &#123; name: &quot;test-2&quot; &#125;,
+      &#123; name: 1, age: 1, _id: 0 &#125;,
+      function (err, docs) &#123;
+        if (err) &#123;
+          console.log(&quot;查询出错: &quot; + err);
+        &#125; else &#123;
+          console.log(&quot;删除test-2后的查询结果为: &quot;);
+          console.log(docs);
+        &#125;
+      &#125;
+    );
+  &#125;
+&#125;);
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1641879796743-f8670ed9-0562-4e6d-ab68-79418d34424f.png#clientId=u035ff002-183d-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=161&id=ddiif&margin=%5Bobject%20Object%5D&name=image.png&originHeight=180&originWidth=417&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=19710&status=done&style=none&taskId=u01a137ea-d112-4f6a-9da7-0839bf010ee&title=&width=373.49537658691406" alt="image.png"></p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/youhebuke225/article/details/106872122">mongoose 查询到的对象无法读取问题</a></li>
+</ul>
+<h3 id="mongodb-创建集合"><a href="#mongodb-创建集合" class="headerlink" title="mongodb 创建集合"></a>mongodb 创建集合</h3>
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/xfn7hy/">https://www.wztlink1013.com/blog/xfn7hy/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/xfn7hy/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/tdgoby/">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <b>Express框架</b>
+                </a>
+            </span>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/aeavli/">
+                    <b>校内实习Springboot+Ajax全栈在线考试管理系统</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:49:29
+ * @Description:  
+-->
+<div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Beaudar</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">Twikoo</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- utterances评论区 -->
+    <div id="utterances_comment" style="display: none"></div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+      <script src="https://npm.elemecdn.com/twikoo@1.4.5/dist/twikoo.all.min.js"></script>
+      <script>
+        twikoo
+          .init({
+            envId: 'website-wikoo-4g46k8do98867542',
+            el: '#tcomment',
+            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          })
+          .then(function () {
+            console.log('Twikoo 初始化加载完成')
+          })
+      </script>
+    </div>
+  </div>
+</div>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/">DOM+BOM</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DOM-BOM/DOM/">DOM</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-TypeScript/">JavaScript+TypeScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/">🔨环境+工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+ 
+    <!-- 非首页 -->
+    
+<script src="/public/js/main.js"></script>
+ 
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+  </body>
+</html>
