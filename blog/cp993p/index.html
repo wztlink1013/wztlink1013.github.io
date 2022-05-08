@@ -10,22 +10,22 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <title>442. 数组中重复的数据🔖数组 | 尼采般地抒情</title>
+    <title>442. 数组中重复的数据🔖数组🔖哈希表 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array//** * @param &amp;#123;number[]&amp;#125; nums * @return &amp;#123;number[]&amp;#125; */var findDupli" />
+    <meta name="description" content="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/暴力解法/** * @param &amp;#123;number[]&amp;#125; nums * @return &amp;#123;number[]&amp;#125; */var findD" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="442. 数组中重复的数据🔖数组 | 尼采般地抒情" />
+    <meta property="og:title" content="442. 数组中重复的数据🔖数组🔖哈希表 | 尼采般地抒情" />
     <meta
       property="og:url"
       content="https://www.wztlink1013.com/blog/cp993p/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array//** * @param &amp;#123;number[]&amp;#125; nums * @return &amp;#123;number[]&amp;#125; */var findDupli" />
+    <meta property="og:description" content="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/暴力解法/** * @param &amp;#123;number[]&amp;#125; nums * @return &amp;#123;number[]&amp;#125; */var findD" />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -156,7 +156,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E8%A7%A3%E6%B3%95"><span class="toc-text">暴力解法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">哈希表</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -231,7 +231,7 @@
 -->
 <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>442. 数组中重复的数据🔖数组</h1>
+        <h1>442. 数组中重复的数据🔖数组🔖哈希表</h1>
     </div>
     <div class="article_meta_other">
         <span class="meta_item">
@@ -278,8 +278,10 @@
     </div>
 </div>
         <div class="component article">
-    <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/">https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/</a></p>
-<pre><code class="javascript">/**
+    <ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/">https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/</a></li>
+</ul>
+<h3 id="暴力解法"><a href="#暴力解法" class="headerlink" title="暴力解法"></a>暴力解法</h3><pre><code class="javascript">/**
  * @param &#123;number[]&#125; nums
  * @return &#123;number[]&#125;
  */
@@ -287,15 +289,33 @@ var findDuplicates = function (nums) &#123;
   let arr = [];
   let result = [];
   nums.forEach((data) =&gt; &#123;
-    if (arr.includes(data)) &#123;
-      result.push(data);
-    &#125; else &#123;
-      arr.push(data);
-    &#125;
+    arr.includes(data) ? result.push(data) : arr.push(data);
   &#125;);
   return result;
 &#125;;
 </code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015297299-44ac1ea9-f775-483d-b762-d57c71ff32c9.png#clientId=u0e5e373a-3004-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=330&id=u730a2960&margin=%5Bobject%20Object%5D&name=image.png&originHeight=396&originWidth=756&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=31972&status=done&style=none&taskId=uc9e91118-2e56-4dd0-8a3b-949623b19cc&title=&width=629.9999749660502" alt="image.png"></p>
+<h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><pre><code class="javascript">/**
+ * @param &#123;number[]&#125; nums
+ * @return &#123;number[]&#125;
+ */
+var findDuplicates = function (nums) &#123;
+  const map = new Map();
+  const arr = [];
+
+  for (let i = 0; i &lt; nums.length; i++) &#123;
+    if (map.has(nums[i])) &#123;
+      arr.push(nums[i]);
+      map.delete(nums[i]);
+    &#125; else &#123;
+      map.set(nums[i]);
+    &#125;
+  &#125;
+
+  return arr;
+&#125;;
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015256459-e3d10aa5-79a4-4ea5-b8c2-edb2ffd6abe1.png#clientId=u0e5e373a-3004-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=327&id=ue83dc54e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=392&originWidth=752&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=31583&status=done&style=none&taskId=u210c9c7b-fec6-4817-bf0c-ad9160f7d04&title=&width=626.6666417651716" alt="image.png"></p>
 
 </div>
 
