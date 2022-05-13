@@ -1,0 +1,539 @@
+<!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-04-07 20:00:43
+ * @Description:  
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>原始值+引用值+浅拷贝+深拷贝 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="原始值和引用值这里面 Java 和 JavaScript 都是只有引用的概念，但是在 C/C++里面，就有指针的概念原始值： 存储在栈中的简单数据段，即他们的值直接存储在变量访问的位置。包括：undefined、null、boolean、number、string。引用值：存储在堆中的对象，即存储在" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="原始值+引用值+浅拷贝+深拷贝 | 尼采般地抒情" />
+    <meta
+      property="og:url"
+      content="https://www.wztlink1013.com/blog/lwi9wr/"
+    />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="原始值和引用值这里面 Java 和 JavaScript 都是只有引用的概念，但是在 C/C++里面，就有指针的概念原始值： 存储在栈中的简单数据段，即他们的值直接存储在变量访问的位置。包括：undefined、null、boolean、number、string。引用值：存储在堆中的对象，即存储在" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- 引入highlight样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/9.18.1/solarized-light.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/cdn-website@0.0.0/highlight/10.7.1/highlight.min.js"
+    ></script>
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- font-awesome的css样式 -->
+    <link
+      rel="stylesheet"
+      href="https://npm.elemecdn.com/cdn-website@0.0.0/font/css/font-awesome.min.css"
+    />
+    <!-- 引入jQuery -->
+    <script
+      type="text/javascript"
+      src="https://npm.elemecdn.com/jquery@3.6.0/dist/jquery.min.js"
+    ></script>
+    <!-- algolia for the search only version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"></script>
+    <!-- algolia for the default version -->
+    <script src="https://npm.elemecdn.com/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+    <!-- algolia 元信息 -->
+    <meta property="algolia:search" data-application-id="S6IZ6GONGO" data-api-key="d28a34ff9a07bff7c9e54ceef1e1df3b" data-index-name="website">
+  </head>
+  <body>
+    <div class="bg_color"></div>
+<!-- PC端 -->
+<header class="header">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端 -->
+<header class="header_app">
+    <a href="/">
+        <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+    </div>
+</header>
+<!-- 移动端侧边栏 -->
+<div class="app_side_glass" id="app_side_glass">
+</div>
+<div class="app_side_content" id="app_side_content">
+    <h3>尼采般地抒情</h3>
+    <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+    <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>293 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+</div>
+
+
+<div class="global_button">
+    <div title="顶部" class="global_button_item" id="go_top" style="display: none;">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </div>
+    <div title="搜索" class="global_button_item" id="search_btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div title="评论" class="global_button_item" id="go_comments" style="display: none;">
+        <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+    </div>
+    <div title="目录" class="global_button_item" id="toc_btn" >
+        <i class="fa fa-list" aria-hidden="true"></i>
+    </div>
+    <div title="夜间" class="global_button_item">
+        <i class="fa fa-adjust" aria-hidden="true"></i>
+    </div>
+    <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </div>
+</div>
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8B%E5%80%BC%E5%92%8C%E5%BC%95%E7%94%A8%E5%80%BC"><span class="toc-text">原始值和引用值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-text">深拷贝与浅拷贝</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%86%E6%A6%82%E5%BF%B5"><span class="toc-text">区分概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%AE%9E%E7%8E%B0"><span class="toc-text">浅拷贝实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%AE%9E%E7%8E%B0"><span class="toc-text">深拷贝实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%86%99%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-text">手写深拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Object-assign-obj"><span class="toc-text">Object.assign({}, obj)</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+        <div class="search">
+            <input type="text" autocomplete="off" name="search" placeholder="搜索一下吧~" id="local-search-input">
+            <i class="fa fa-times search_close" aria-hidden="true"></i>
+        </div>
+
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+    <div class="ct_left">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-01-09 14:48:51
+ * @Description:  
+-->
+<div class="component clearfix blogger">
+  <h3>尼采般地抒情</h3>
+  <img
+    class="blogger_left"
+    src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png"
+    alt="尼采般地抒情"
+  />
+</div>
+
+        <div class="component clearfix board">
+    <h3>公告栏</h3>
+    <div class="board_content">
+        <p>
+            <b>此网站主题为本人手写主题，主题还在开发中……</b><hr>
+            <!-- 主题：hexo-theme-lyrics<hr> -->
+            <b>作者:尼采般地抒情</b><hr>
+        </p>
+
+    </div>
+</div>
+
+        <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+        <div class="component clearfix web_info">
+    <h3>站点信息</h3>
+    <div>
+        <span>文章数目：</span>293 <span>篇</span>
+    </div>
+    <div>
+        <span>已运行时间：</span>
+    </div>
+    <span id="webinfo_runtime_count_1"></span>
+    <img src="https://api.luvying.com/acgimg">
+</div>
+
+
+
+
+
+
+    </div>
+    <div class="ct_center">
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-05-08 13:00:21
+ * @Description:  
+-->
+<div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>原始值+引用值+浅拷贝+深拷贝</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+            <img src="https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2022-05-12 20:42:03
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/👨‍💻Web开发/">
+                        👨‍💻Web开发
+                    </a>
+                
+                    <a href="/categories/👨‍💻Web开发/JavaScript-DOM-BOM-TS/">
+                        JavaScript+DOM+BOM+TS
+                    </a>
+                
+                    <a href="/categories/👨‍💻Web开发/JavaScript-DOM-BOM-TS/ECMAScript/">
+                        ECMAScript
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+        <div class="component article">
+    <h2 id="原始值和引用值"><a href="#原始值和引用值" class="headerlink" title="原始值和引用值"></a>原始值和引用值</h2><p>这里面 Java 和 JavaScript 都是只有引用的概念，但是在 C/C++里面，就有指针的概念<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617868682681-90191ec3-c5b2-415f-9e38-df2706301e0c.png#crop=0&crop=0&crop=1&crop=1&height=173&id=dmTBK&margin=%5Bobject%20Object%5D&name=image.png&originHeight=346&originWidth=931&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=136387&status=done&style=stroke&title=&width=465.5" alt="image.png"></p>
+<ul>
+<li>原始值： <strong>存储在栈中的简单数据段</strong>，即他们的值直接存储在变量访问的位置。</li>
+</ul>
+<p>包括：undefined、null、boolean、number、string。</p>
+<ul>
+<li>引用值：<strong>存储在堆中的对象</strong>，即存储在变量处的值是一个指针，只想存储对象的内存处。</li>
+</ul>
+<p>包括：object、array、function 等</p>
+<ul>
+<li>两者的区别：</li>
+</ul>
+<p>原始变量及他们的值储存在栈中，当把一个原始变量传递给另一个原始变量时，是把一个栈房间的东西复制到另一个栈房间，且这两个原始变量互不影响。<strong>引用值是把引用变量的名称储存在栈中，但是把其实际对象储存在堆中</strong>，且存在一个指针由变量名指向储存在堆中的实际对象，当把引用对象传递给另一个变量时，复制的其实是指向实际对象的指针，此时两者指向的是同一个数据，若通过方法改变其中一个变量的值，则访问另一个变量时，其值也会随之加以改变；但若不是通过方法而是通过重新赋值，此时，相当于重新开了一个房间，该值的原指针改变，则另外一个值不会随他的改变而改变。</p>
+<pre><code class="javascript">let s = &quot;基本类型&quot;;
+let s_test = s;
+s_test = &quot;改变之后不影响s&quot;;
+console.log(s);
+console.log(s_test);
+
+let arr = [&quot;原始数组值&quot;];
+arr_test = arr;
+arr_test[0] = &quot;改变值&quot;;
+console.log(arr);
+console.log(arr_test);
+
+//基本类型
+//改变之后不影响s
+//[ &#39;改变值&#39; ]
+//[ &#39;改变值&#39; ]
+</code></pre>
+<ul>
+<li>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012443286/article/details/79496742">谈谈 JavaScript 中的变量、指针和引用</a></li>
+</ul>
+<h2 id="深拷贝与浅拷贝"><a href="#深拷贝与浅拷贝" class="headerlink" title="深拷贝与浅拷贝"></a>深拷贝与浅拷贝</h2><h3 id="区分概念"><a href="#区分概念" class="headerlink" title="区分概念"></a>区分概念</h3><ul>
+<li>浅拷贝：直接赋值，还是指向同一个堆</li>
+<li>深拷贝：相当于重新创建一个对象，新开存储空间</li>
+<li>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016440069">js 浅拷贝与深拷贝方法</a></li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1651305177480-c971984f-5aa2-48af-9d4b-3eee50afffee.png#clientId=u20944b5d-52c0-4&crop=0&crop=0&crop=1&crop=1&from=paste&id=u19a4acf0&margin=%5Bobject%20Object%5D&originHeight=219&originWidth=291&originalType=url%E2%88%B6=1&rotation=0&showTitle=false&status=done&style=none&taskId=u266d5f95-2ac1-462b-a2dd-60227f98c77&title=">、</p>
+<h3 id="浅拷贝实现"><a href="#浅拷贝实现" class="headerlink" title="浅拷贝实现"></a>浅拷贝实现</h3><ol>
+<li>直接等号赋值</li>
+</ol>
+<pre><code class="javascript">let obj = &#123;
+  ss: &quot;ss&quot;,
+  hh: &quot;hh&quot;,
+&#125;;
+
+let obj_qian = obj;
+obj_qian.ss = &quot;sss&quot;;
+obj_qian.hh = &quot;hhh&quot;;
+console.log(obj); //&#123; ss: &#39;sss&#39;, hh: &#39;hhh&#39; &#125;
+console.log(obj_qian); //&#123; ss: &#39;sss&#39;, hh: &#39;hhh&#39; &#125;
+</code></pre>
+<h3 id="深拷贝实现"><a href="#深拷贝实现" class="headerlink" title="深拷贝实现"></a>深拷贝实现</h3><ol>
+<li>直接创建一个同类型的数据结构，然后将原值一个个复制过来（数组）</li>
+<li>JSON 方法（对象）</li>
+</ol>
+<pre><code class="javascript">let obj = &#123;
+  ss: &quot;ss&quot;,
+  hh: &quot;hh&quot;,
+&#125;;
+
+let obj_shen_JSON = JSON.parse(JSON.stringify(obj));
+obj_shen_JSON.ss = &quot;sssss&quot;;
+obj_shen_JSON.hh = &quot;hhhhh&quot;;
+console.log(obj); //&#123; ss: &#39;ss&#39;, hh: &#39;hh&#39; &#125;
+console.log(obj_shen_JSON); // &#123; ss: &#39;sssss&#39;, hh: &#39;hhhhh&#39; &#125;
+</code></pre>
+<h3 id="手写深拷贝"><a href="#手写深拷贝" class="headerlink" title="手写深拷贝"></a>手写深拷贝</h3><pre><code class="javascript">let clone = (target) =&gt; &#123;
+  if (typeof target === &quot;object&quot;) &#123;
+    let cloneTarget = Array.isArray(target) ? [] : &#123;&#125;;
+    for (const key in target) &#123;
+      cloneTarget[key] = clone(target[key]);
+    &#125;
+    return cloneTarget;
+  &#125; else &#123;
+    return target;
+  &#125;
+&#125;;
+
+let obj_1 = &#123;
+  c: &quot;c&quot;,
+  d: &#123;
+    d1: &quot;d1&quot;,
+    d2: &quot;d2&quot;,
+  &#125;,
+&#125;;
+let obj_my = clone(obj_1);
+obj_1.c = &quot;ccccccc&quot;;
+obj_1.d.d1 = &quot;dsdddddddd&quot;;
+console.log(obj_1);
+console.log(obj_my);
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652416167805-60ef8c07-9bba-4d43-a2e2-349b986c3c35.png#clientId=u481d9d93-75a6-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=55&id=u1714696c&margin=%5Bobject%20Object%5D&name=image.png&originHeight=66&originWidth=545&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=12683&status=done&style=none&taskId=u8343e817-307c-4128-8299-a5473b77be4&title=&width=454.1666486197055" alt="image.png"></p>
+<h3 id="Object-assign-obj"><a href="#Object-assign-obj" class="headerlink" title="Object.assign({}, obj)"></a>Object.assign({}, obj)</h3><ul>
+<li><strong>assign 既可以是深拷贝，也可以是浅拷贝</strong></li>
+<li>Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象分配到目标对象。它将返回目标对象。</li>
+<li>对于 Object.assign()而言，如果对象的属性值为简单类型（string，number），通过 Object.assign({},srcobj);得到的新对象为深拷贝；如果属性值为对象或其他引用类型，那对于这个对象而言其实是浅拷贝的</li>
+</ul>
+<pre><code class="javascript">let obj = &#123;
+  a: &quot;a&quot;,
+  b: &quot;b&quot;,
+&#125;;
+
+let obj_deep = Object.assign(&#123;&#125;, obj);
+obj.a = &quot;aa&quot;;
+console.log(obj);
+console.log(obj_deep);
+
+console.log(&quot;--------------------------------&quot;);
+let obj_obj = &#123;
+  c: &quot;c&quot;,
+  d: &#123;
+    d1: &quot;d1&quot;,
+    d2: &quot;d2&quot;,
+  &#125;,
+&#125;;
+
+let obj_qian = Object.assign(&#123;&#125;, obj_obj);
+obj_obj.c = &quot;cc&quot;;
+obj_obj.d.d1 = &quot;d1111&quot;;
+console.log(obj_obj);
+console.log(obj_qian);
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652415857368-38e9203a-1178-4fc4-b53d-a6059c212ad0.png#clientId=u481d9d93-75a6-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=102&id=u6b2eae5b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=122&originWidth=506&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=18908&status=done&style=none&taskId=ub0c10380-e6fb-4416-902b-2b6d02919d8&title=&width=421.6666499111394" alt="image.png"></p>
+
+</div>
+
+         
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/lwi9wr/">https://www.wztlink1013.com/blog/lwi9wr/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/lwi9wr/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/website/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="https://www.wztlink1013.com/feed.xml"><i class="fa fa-feed" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+        <div class="prev_next component">
+    
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/cp993p/">
+                    <b>442. 数组中重复的数据🔖数组🔖哈希表</b>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </span>
+          
+    
+</div>
+
+
+        <!--
+ * @Author: wztlink1013
+ * @Date: 2022-01-09 13:45:03
+ * @LastEditTime: 2022-05-08 13:34:11
+ * @Description:  
+-->
+<div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Beaudar</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">Twikoo</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- utterances评论区 -->
+    <div id="utterances_comment" style="display: none"></div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+      <script src="https://npm.elemecdn.com/twikoo@1.5.9/dist/twikoo.all.min.js"></script>
+      <script>
+        twikoo
+          .init({
+            envId: 'website-wikoo-4g46k8do98867542',
+            el: '#tcomment',
+            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
+            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+          })
+          .then(function () {
+            console.log('Twikoo 初始化加载完成')
+          })
+      </script>
+    </div>
+  </div>
+</div>
+
+        
+        
+    </div>
+    <div class="ct_right">
+        <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/">JavaScript+DOM+BOM+TS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/DOM/">DOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/ECMAScript/">ECMAScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/TypeScript/">TypeScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/">🔨环境+工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
+</div>
+
+        <!-- partial('_widget/hot_articles') -->
+        <div class="component clearfix new_comments">
+    <h3 class="title">最新评论</h3>
+    <div class="new_comments_loding">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+    </div>
+
+</div>
+<footer class="footer">
+    <div class="content">
+    <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+    <!-- <div><a href="/">尼采般地抒情</a></div> -->
+    <div><a href="/about">联系方式</a></div>
+</div>
+</footer>
+ 
+    <!-- 非首页 -->
+    
+<script src="/public/js/main.js"></script>
+ 
+    <!-- 所有：CNZZ站长统计
+    <script type="text/javascript">
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278838985'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278838985%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+        document.getElementById("cnzz_stat_icon_1278838985").style.display = "none";
+    </script> -->
+  </body>
+</html>
