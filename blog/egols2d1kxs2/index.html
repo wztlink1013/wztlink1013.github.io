@@ -10,22 +10,22 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <title>函数 | 尼采般地抒情</title>
+    <title>函数-闭包-this指向 | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法：函数定义使用不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 return " />
+    <meta name="description" content="前言：基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法函数定义使用不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 retur" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="函数 | 尼采般地抒情" />
+    <meta property="og:title" content="函数-闭包-this指向 | 尼采般地抒情" />
     <meta
       property="og:url"
       content="https://www.wztlink1013.com/blog/egols2d1kxs2/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法：函数定义使用不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 return " />
+    <meta property="og:description" content="前言：基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法函数定义使用不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 retur" />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -114,7 +114,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>293 <span>篇</span>
+        <span>文章数目：</span>296 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -156,7 +156,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E4%BD%BF%E7%94%A8"><span class="toc-text">函数定义使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#function-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">function 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">匿名函数表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%8B%E5%8D%B3%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-text">立即调用函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="toc-text">函数参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#arguments"><span class="toc-text">arguments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%EF%BC%88ES6%EF%BC%89%E9%87%8C%E9%9D%A2%E7%9A%84%E4%B8%8D%E5%90%8C"><span class="toc-text">箭头函数（ES6）里面的不同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%80%BC%E4%BC%A0%E9%80%92"><span class="toc-text">关于值传递</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#this"><span class="toc-text">this</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%B8%B8%E7%94%A8-this-%E6%8C%87%E5%90%91"><span class="toc-text">几个常用 this 指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E7%9A%84-this-%E6%8C%87%E5%90%91"><span class="toc-text">函数内部的 this 指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8-this-%E6%8C%87%E5%90%91"><span class="toc-text">改变函数内部 this 指向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-text">闭包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">闭包的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="toc-text">闭包的案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95-%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">简单&#x2F;复杂数据类型传参</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E6%A0%88%E5%AD%98%E5%82%A8%E5%8C%BA%E5%88%AB"><span class="toc-text">堆栈存储区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">简单类型传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">复杂数据类型传参</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%A7%A3-js-%E9%87%8C%E9%9D%A2%E7%9A%84%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">理解 js 里面的任务执行机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%95%A5%E6%98%AF%E5%8D%95%E7%BA%BF%E7%A8%8B"><span class="toc-text">啥是单线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="toc-text">同步任务和异步任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6%EF%BC%88%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%EF%BC%89"><span class="toc-text">JS 执行机制（事件循环）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E5%88%9B%E5%BB%BA%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%9E%9A%E4%B8%BE"><span class="toc-text">JS 创建异步任务枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%9F%E7%BA%A6-Promise"><span class="toc-text">期约 Promise</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E4%BD%BF%E7%94%A8"><span class="toc-text">函数定义使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#function-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">function 关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">匿名函数表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%8B%E5%8D%B3%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-text">立即调用函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="toc-text">函数参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#arguments"><span class="toc-text">arguments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%EF%BC%88ES6%EF%BC%89%E9%87%8C%E9%9D%A2%E7%9A%84%E4%B8%8D%E5%90%8C"><span class="toc-text">箭头函数（ES6）里面的不同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%80%BC%E4%BC%A0%E9%80%92"><span class="toc-text">关于值传递</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#this"><span class="toc-text">this</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%B8%B8%E7%94%A8-this-%E6%8C%87%E5%90%91"><span class="toc-text">几个常用 this 指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E7%9A%84-this-%E6%8C%87%E5%90%91"><span class="toc-text">函数内部的 this 指向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8-this-%E6%8C%87%E5%90%91"><span class="toc-text">改变函数内部 this 指向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-text">闭包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">闭包的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E6%A1%88%E4%BE%8B"><span class="toc-text">闭包的案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95-%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">简单&#x2F;复杂数据类型传参</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E6%A0%88%E5%AD%98%E5%82%A8%E5%8C%BA%E5%88%AB"><span class="toc-text">堆栈存储区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">简单类型传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%A0%E5%8F%82"><span class="toc-text">复杂数据类型传参</span></a></li></ol></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -207,7 +207,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>293 <span>篇</span>
+        <span>文章数目：</span>296 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -231,7 +231,7 @@
 -->
 <div class="component article_meta">
     <div class="article_meta_title">
-        <h1>函数</h1>
+        <h1>函数-闭包-this指向</h1>
     </div>
     <div class="article_meta_other">
         <span class="meta_item">
@@ -278,7 +278,7 @@
     </div>
 </div>
         <div class="component article">
-    <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法：</div>
+    <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">前言：基本上和之前学过的语言一样，return语句、continue语句、break语句、函数的传参用法基本都一样，记录一下js的特征用法</div>
 
 <h2 id="函数定义使用"><a href="#函数定义使用" class="headerlink" title="函数定义使用"></a>函数定义使用</h2><p>不像之前的 C++、JAVA 那样需要一个返回值来声明，JavaScript 里面直接一个关键字就搞定了，如果里面有 return 就返回 return 的值，没有则返回 undefined。下面记录一下 js 里面的三种函数声明方式和不同情况下的使用场景。</p>
 <h3 id="function-关键字"><a href="#function-关键字" class="headerlink" title="function 关键字"></a>function 关键字</h3><blockquote>
@@ -292,12 +292,12 @@ fn();
 <ul>
 <li>调用函数的代码既可以放到声明函数的前面，也可以放在声明函数的后面</li>
 </ul>
-<h3 id="匿名函数表达式"><a href="#匿名函数表达式" class="headerlink" title="匿名函数表达式"></a>匿名函数表达式</h3><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">:::
-> 函数表达式方式(匿名函数）
-> 【C++11里面也有匿名函数的用法，基本上就是**匿名函数表达式**】
-
+<h3 id="匿名函数表达式"><a href="#匿名函数表达式" class="headerlink" title="匿名函数表达式"></a>匿名函数表达式</h3><p>函数表达式方式(匿名函数）</p>
+<blockquote>
+<p>【C++11 里面也有匿名函数的用法，基本上就是<strong>匿名函数表达式</strong>】</p>
+</blockquote>
 <pre><code class="javascript">// 这是函数表达式写法，匿名函数后面跟分号结束
-var fn = function()&#123;...&#125;；
+var fn = function()&#123;...&#125;;
 // 调用的方式，函数调用必须写到函数体下面
 fn();
 </code></pre>
@@ -313,27 +313,26 @@ fn();
 f(1, 2);
 var fn = new Function(&#39;参数1&#39;,&#39;参数2&#39;..., &#39;函数体&#39;)
 </code></pre>
-<hr>
 <h3 id="立即调用函数"><a href="#立即调用函数" class="headerlink" title="立即调用函数"></a>立即调用函数</h3><p>两种表达方式</p>
 <ul>
 <li>(function(){})()</li>
 <li>(function(){}())</li>
 </ul>
-<p>与立即执行函数相关的知识还有在函数前面加上一些符号（！、<del>、+……）会对函数的返回值进行相应的操作，其中加上</del>的意思是对返回值进行按位取反的操作，具体参考下面的参考资料<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617956106484-c021320c-100a-49b5-a668-99928bf3a720.png#align=left&display=inline&height=273&id=ll11Y&margin=%5Bobject%20Object%5D&name=image.png&originHeight=709&originWidth=1230&size=75306&status=done&style=none&width=472.98846435546875" alt="image.png"><br>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hot_cool/article/details/77567166">https://blog.csdn.net/hot_cool/article/details/77567166</a></p>
-<h2 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h2><h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617851666624-a963acb7-8a97-43bc-9998-35738a1a1a7f.png#align=left&display=inline&height=306&id=OVrKI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=612&originWidth=935&size=236202&status=done&style=stroke&width=467.5" alt="image.png"><br>当不确定有多少个参数传递的时候，可以用 arguments 来获取。JavaScript 中，arguments 实际上它是当前函数的一个内置对象。所有函数都内置了一个 arguments 对象，arguments 对象中存储了传递的所有实参。arguments 展示形式是一个伪数组，因此可以进行遍历。伪数组具有以下特点：</p>
+<p>与立即执行函数相关的知识还有在函数前面加上一些符号（！、<del>、+……）会对函数的返回值进行相应的操作，其中加上</del>的意思是对返回值进行按位取反的操作，具体参考下面的参考资料<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617956106484-c021320c-100a-49b5-a668-99928bf3a720.png#crop=0&crop=0&crop=1&crop=1&height=273&id=ll11Y&margin=%5Bobject%20Object%5D&name=image.png&originHeight=709&originWidth=1230&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=75306&status=done&style=none&title=&width=472.98846435546875" alt="image.png"><br>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hot_cool/article/details/77567166">https://blog.csdn.net/hot_cool/article/details/77567166</a></p>
+<h2 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h2><h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617851666624-a963acb7-8a97-43bc-9998-35738a1a1a7f.png#crop=0&crop=0&crop=1&crop=1&height=306&id=OVrKI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=612&originWidth=935&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=236202&status=done&style=stroke&title=&width=467.5" alt="image.png"><br>当不确定有多少个参数传递的时候，可以用 arguments 来获取。JavaScript 中，arguments 实际上它是当前函数的一个内置对象。所有函数都内置了一个 arguments 对象，arguments 对象中存储了传递的所有实参。arguments 展示形式是一个伪数组，因此可以进行遍历。伪数组具有以下特点：</p>
 <ul>
 <li>具有 length 属性</li>
 <li>按索引方式储存数据</li>
 <li>不具有数组的 push , pop 等方法<br>注意：在函数内部使用该对象，用此对象获取函数调用时传的实参。</li>
 </ul>
-<h3 id="箭头函数（ES6）里面的不同"><a href="#箭头函数（ES6）里面的不同" class="headerlink" title="箭头函数（ES6）里面的不同"></a>箭头函数（ES6）里面的不同</h3><p>es6 的箭头函数用起来很方便，但是一个不方便的就是在这里面 arguments 不能用了<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852137156-ea361bcf-a64d-40e7-9ad4-de9ad5a2789d.png#align=left&display=inline&height=151&id=FOFeI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=301&originWidth=928&size=43847&status=done&style=none&width=464" alt="image.png"><br>如果非要用的化，将这个箭头函数放在一个普通函数里面，让箭头函数接受这个普通函数的参数<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852218090-65cab2f5-0088-41e5-95fa-0845a253fcbd.png#align=left&display=inline&height=102&id=kFJpX&margin=%5Bobject%20Object%5D&name=image.png&originHeight=203&originWidth=754&size=27598&status=done&style=stroke&width=377" alt="image.png"></p>
-<h3 id="关于值传递"><a href="#关于值传递" class="headerlink" title="关于值传递"></a>关于值传递</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852230127-5b2394d1-82c0-48a4-8bbb-385f5d27760b.png#align=left&display=inline&height=54&id=Iq2ke&margin=%5Bobject%20Object%5D&name=image.png&originHeight=108&originWidth=813&size=28188&status=done&style=stroke&width=406.5" alt="image.png"></p>
+<h3 id="箭头函数（ES6）里面的不同"><a href="#箭头函数（ES6）里面的不同" class="headerlink" title="箭头函数（ES6）里面的不同"></a>箭头函数（ES6）里面的不同</h3><p>es6 的箭头函数用起来很方便，但是一个不方便的就是在这里面 arguments 不能用了<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852137156-ea361bcf-a64d-40e7-9ad4-de9ad5a2789d.png#crop=0&crop=0&crop=1&crop=1&height=151&id=FOFeI&margin=%5Bobject%20Object%5D&name=image.png&originHeight=301&originWidth=928&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=43847&status=done&style=none&title=&width=464" alt="image.png"><br>如果非要用的化，将这个箭头函数放在一个普通函数里面，让箭头函数接受这个普通函数的参数<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852218090-65cab2f5-0088-41e5-95fa-0845a253fcbd.png#crop=0&crop=0&crop=1&crop=1&height=102&id=kFJpX&margin=%5Bobject%20Object%5D&name=image.png&originHeight=203&originWidth=754&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=27598&status=done&style=stroke&title=&width=377" alt="image.png"></p>
+<h3 id="关于值传递"><a href="#关于值传递" class="headerlink" title="关于值传递"></a>关于值传递</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617852230127-5b2394d1-82c0-48a4-8bbb-385f5d27760b.png#crop=0&crop=0&crop=1&crop=1&height=54&id=Iq2ke&margin=%5Bobject%20Object%5D&name=image.png&originHeight=108&originWidth=813&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=28188&status=done&style=stroke&title=&width=406.5" alt="image.png"></p>
 <h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><h3 id="几个常用-this-指向"><a href="#几个常用-this-指向" class="headerlink" title="几个常用 this 指向"></a>几个常用 this 指向</h3><ul>
 <li>全局作用域或者普通函数中 this 指向全局对象 window（定时器里面的 this 指向 window）</li>
 <li>方法调用中谁调用 this 指向谁</li>
 <li>构造函数中 this 指向构造函数的实例</li>
 </ul>
-<pre><code class="js">&lt;button&gt;点击&lt;/button&gt;
+<pre><code class="javascript">&lt;button&gt;点击&lt;/button&gt;
     &lt;script&gt;
         // this 指向问题 一般情况下this的最终指向的是那个调用它的对象
         // 1. 全局作用域或者普通函数中this指向全局对象window（ 注意定时器里面的this指向window）
@@ -367,7 +366,7 @@ var fn = new Function(&#39;参数1&#39;,&#39;参数2&#39;..., &#39;函数体&#39
 <h3 id="改变函数内部-this-指向"><a href="#改变函数内部-this-指向" class="headerlink" title="改变函数内部 this 指向"></a>改变函数内部 this 指向</h3><div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">call方法</div>
 call()方法调用一个对象。简单理解为调用函数的方式，但是它可以改变函数的 this 指向
 应用场景:  经常做继承.
-```js
+```javascript
 var o = {
     name: 'andy'
 }
@@ -382,7 +381,7 @@ fn.call(o,1,2)//此时的this指向的是对象o,参数使用逗号隔开,运行
 <div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">apply方法</div>
 apply() 方法调用一个函数。简单理解为调用函数的方式，但是它可以改变函数的 this 指向。
 应用场景:  经常跟数组有关系
-```js
+```javascript
 var o = {
     name: 'andy'
 }
@@ -398,7 +397,7 @@ fn.apply(o,[1,2])//此时的this指向的是对象o,参数使用数组传递 运
 bind() 方法不会调用函数,但是能改变函数内部this 指向,返回的是原函数改变this之后产生的新函数
 如果只是想改变 this 指向，并且不想调用这个函数的时候，可以使用bind
 应用场景:不调用函数,但是还想改变this指向
-```js
+```javascript
 var o = {
  name: 'andy'
  };
@@ -442,7 +441,7 @@ f();
 <h3 id="闭包的案例"><a href="#闭包的案例" class="headerlink" title="闭包的案例"></a>闭包的案例</h3><ol>
 <li>利用闭包的方式得到当前 li 的索引号</li>
 </ol>
-<pre><code class="js">for (var i = 0; i &lt; lis.length; i++) &#123;
+<pre><code class="javascript">for (var i = 0; i &lt; lis.length; i++) &#123;
   // 利用for循环创建了4个立即执行函数
   // 立即执行函数也成为小闭包因为立即执行函数里面的任何一个函数都可以使用它的i这变量
   (function (i) &#123;
@@ -455,7 +454,7 @@ f();
 <ol start="2">
 <li>闭包应用-3 秒钟之后,打印所有 li 元素的内容</li>
 </ol>
-<pre><code class="js">for (var i = 0; i &lt; lis.length; i++) &#123;
+<pre><code class="javascript">for (var i = 0; i &lt; lis.length; i++) &#123;
   (function (i) &#123;
     setTimeout(function () &#123;
       console.log(lis[i].innerHTML);
@@ -466,7 +465,7 @@ f();
 <ol start="3">
 <li>闭包应用-计算打车价格</li>
 </ol>
-<pre><code class="js">/*需求分析
+<pre><code class="javascript">/*需求分析
 打车起步价13(3公里内),  之后每多一公里增加 5块钱.  用户输入公里数就可以计算打车价格
 如果有拥堵情况,总价格多收取10块钱拥堵费*/
 var car = (function () &#123;
@@ -491,7 +490,7 @@ var car = (function () &#123;
 console.log(car.price(5)); // 23
 console.log(car.yd(true)); // 33
 </code></pre>
-<pre><code class="js">var name = &quot;The Window&quot;;
+<pre><code class="javascript">var name = &quot;The Window&quot;;
    var object = &#123;
      name: &quot;My Object&quot;,
      getNameFunc: function() &#123;
@@ -514,13 +513,13 @@ var name = &quot;The Window&quot;;　　
 &#125;;
 console.log(object.getNameFunc()())
 </code></pre>
-<h2 id="简单-复杂数据类型传参"><a href="#简单-复杂数据类型传参" class="headerlink" title="简单/复杂数据类型传参"></a>简单/复杂数据类型传参</h2><pre><code>**简单类型**（**基本数据类型**、**值类型**）：在存储时变量中存储的是值本身，包括string ，number，boolean，undefined，null
-**复杂数据类型（引用类型）**：在存储时变量中存储的仅仅是地址（引用），通过 new 关键字创建的对象（系统对象、自定义对象），如 Object、Array、Date等；
-</code></pre>
-<h3 id="堆栈存储区别"><a href="#堆栈存储区别" class="headerlink" title="堆栈存储区别"></a>堆栈存储区别</h3><p>堆栈空间分配区别：<br>1、栈（操作系统）：由操作系统自动分配释放存放函数的参数值、局部变量的值等。其操作方式类似于数据结构中的栈；<br>简单数据类型存放到栈里面<br>2、堆（操作系统）：存储复杂类型(对象)，一般由程序员分配释放，若程序员不释放，由垃圾回收机制回收。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885075555-12234777-10f8-4df1-8a9f-e61078298520.png#align=left&display=inline&height=138&margin=%5Bobject%20Object%5D&name=image.png&originHeight=275&originWidth=476&size=16662&status=done&style=none&width=238" alt="image.png"><br>简单数据类型的存储方式：值类型变量的数据直接存放在变量（栈空间）中<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885085102-7ebb3c36-ffc2-4a5b-af50-c8e377f92cef.png#align=left&display=inline&height=121&margin=%5Bobject%20Object%5D&name=image.png&originHeight=241&originWidth=789&size=33962&status=done&style=stroke&width=394.5" alt="image.png"><br>复杂数据类型的存储方式：引用类型变量（栈空间）里存放的是地址，真正的对象实例存放在堆空间中<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885116525-3f8ac293-e955-40f9-bbff-1aa589b53efa.png#align=left&display=inline&height=130&margin=%5Bobject%20Object%5D&name=image.png&originHeight=259&originWidth=558&size=26906&status=done&style=stroke&width=279" alt="image.png"></p>
-<h3 id="简单类型传参"><a href="#简单类型传参" class="headerlink" title="简单类型传参"></a>简单类型传参</h3><pre><code>函数的形参也可以看做是一个变量，当我们把一个值类型变量作为参数传给函数的形参时，其实是把变量在栈空间里的值复制了一份给形参，那么在方法内部对形参做任何修改，都不会影响到的外部变量。
-</code></pre>
-<pre><code class="js">function fn(a) &#123;
+<h2 id="简单-复杂数据类型传参"><a href="#简单-复杂数据类型传参" class="headerlink" title="简单/复杂数据类型传参"></a>简单/复杂数据类型传参</h2><ul>
+<li><strong>简单类型</strong>（<strong>基本数据类型</strong>、<strong>值类型</strong>）：在存储时变量中存储的是值本身，包括 string ，number，boolean，undefined，null</li>
+<li><strong>复杂数据类型（引用类型）</strong>：在存储时变量中存储的仅仅是地址（引用），通过 new 关键字创建的对象（系统对象、自定义对象），如 Object、Array、Date 等；</li>
+</ul>
+<h3 id="堆栈存储区别"><a href="#堆栈存储区别" class="headerlink" title="堆栈存储区别"></a>堆栈存储区别</h3><p>堆栈空间分配区别：<br>1、栈（操作系统）：由操作系统自动分配释放存放函数的参数值、局部变量的值等。其操作方式类似于数据结构中的栈；<br>简单数据类型存放到栈里面<br>2、堆（操作系统）：存储复杂类型(对象)，一般由程序员分配释放，若程序员不释放，由垃圾回收机制回收。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885075555-12234777-10f8-4df1-8a9f-e61078298520.png#crop=0&crop=0&crop=1&crop=1&height=138&id=N6D51&margin=%5Bobject%20Object%5D&name=image.png&originHeight=275&originWidth=476&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=16662&status=done&style=none&title=&width=238" alt="image.png"><br>简单数据类型的存储方式：值类型变量的数据直接存放在变量（栈空间）中<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885085102-7ebb3c36-ffc2-4a5b-af50-c8e377f92cef.png#crop=0&crop=0&crop=1&crop=1&height=121&id=hEv5b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=241&originWidth=789&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=33962&status=done&style=stroke&title=&width=394.5" alt="image.png"><br>复杂数据类型的存储方式：引用类型变量（栈空间）里存放的是地址，真正的对象实例存放在堆空间中<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885116525-3f8ac293-e955-40f9-bbff-1aa589b53efa.png#crop=0&crop=0&crop=1&crop=1&height=130&id=ZXK4X&margin=%5Bobject%20Object%5D&name=image.png&originHeight=259&originWidth=558&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=26906&status=done&style=stroke&title=&width=279" alt="image.png"></p>
+<h3 id="简单类型传参"><a href="#简单类型传参" class="headerlink" title="简单类型传参"></a>简单类型传参</h3><p>函数的形参也可以看做是一个变量，当我们把一个值类型变量作为参数传给函数的形参时，其实是把变量在栈空间里的值复制了一份给形参，那么在方法内部对形参做任何修改，都不会影响到的外部变量。</p>
+<pre><code class="javascript">function fn(a) &#123;
     a++;
     console.log(a);
 &#125;
@@ -528,89 +527,25 @@ var x = 10;
 fn(x);
 console.log(x)；
 </code></pre>
-<pre><code>    运行结果如下：
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885126655-4b3507e8-a666-4dae-b1c5-ecd0ad9f8bdb.png#align=left&display=inline&height=98&margin=%5Bobject%20Object%5D&name=image.png&originHeight=195&originWidth=364&size=6181&status=done&style=stroke&width=182" alt="image.png"></p>
-<h3 id="复杂数据类型传参"><a href="#复杂数据类型传参" class="headerlink" title="复杂数据类型传参"></a>复杂数据类型传参</h3><pre><code>函数的形参也可以看做是一个变量，当我们把引用类型变量传给形参时，其实是把变量在栈空间里保存的堆地址复制给了形参，形参和实参其实保存的是同一个堆地址，所以操作的是同一个对象。
-</code></pre>
-<pre><code class="JavaScript">function Person(name) &#123;
-    this.name = name;
+<p>运行结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885126655-4b3507e8-a666-4dae-b1c5-ecd0ad9f8bdb.png#crop=0&crop=0&crop=1&crop=1&height=98&id=E6Jxe&margin=%5Bobject%20Object%5D&name=image.png&originHeight=195&originWidth=364&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=6181&status=done&style=stroke&title=&width=182" alt="image.png"></p>
+<h3 id="复杂数据类型传参"><a href="#复杂数据类型传参" class="headerlink" title="复杂数据类型传参"></a>复杂数据类型传参</h3><p>函数的形参也可以看做是一个变量，当我们把引用类型变量传给形参时，其实是把变量在栈空间里保存的堆地址复制给了形参，形参和实参其实保存的是同一个堆地址，所以操作的是同一个对象。</p>
+<pre><code class="javascript">function Person(name) &#123;
+  this.name = name;
 &#125;
-function f1(x) &#123; // x = p
-    console.log(x.name); // 2. 这个输出什么 ?
-    x.name = &quot;张学友&quot;;
-    console.log(x.name); // 3. 这个输出什么 ?
+function f1(x) &#123;
+  // x = p
+  console.log(x.name); // 2. 这个输出什么 ?
+  x.name = &quot;张学友&quot;;
+  console.log(x.name); // 3. 这个输出什么 ?
 &#125;
 var p = new Person(&quot;刘德华&quot;);
-console.log(p.name);    // 1. 这个输出什么 ?
+console.log(p.name); // 1. 这个输出什么 ?
 f1(p);
-console.log(p.name);    // 4. 这个输出什么 ?
+console.log(p.name); // 4. 这个输出什么 ?
 </code></pre>
 <pre><code>    运行结果如下：
 </code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885137269-b37442f2-ea5b-45ce-a974-ff4676772c47.png#align=left&display=inline&height=163&margin=%5Bobject%20Object%5D&name=image.png&originHeight=325&originWidth=345&size=22422&status=done&style=stroke&width=172.5" alt="image.png"></p>
-<h2 id="理解-js-里面的任务执行机制"><a href="#理解-js-里面的任务执行机制" class="headerlink" title="理解 js 里面的任务执行机制"></a>理解 js 里面的任务执行机制</h2><p>相关概念</p>
-<ul>
-<li><input disabled="" type="checkbox"> 异步编程</li>
-<li><input disabled="" type="checkbox"> Javascript 的事件循环</li>
-<li><input disabled="" type="checkbox"> 任务队列</li>
-<li><input disabled="" type="checkbox"> 微任务队列</li>
-<li><input disabled="" type="checkbox"> ……</li>
-</ul>
-<p>以下代码执行的结果是什么？</p>
-<pre><code class="javascript">console.log(1);
-
-setTimeout(function () &#123;
-  console.log(3);
-&#125;, 3000);
-
-console.log(2);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616040077613-888913ee-a30f-453e-8ebf-c0fd62fde8ea.png#align=left&display=inline&height=60&id=neUVv&margin=%5Bobject%20Object%5D&name=image.png&originHeight=119&originWidth=1014&size=5961&status=done&style=stroke&width=507" alt="image.png"><br>以下代码执行的结果是什么？</p>
-<pre><code class="javascript">console.log(1);
-
-setTimeout(function () &#123;
-  console.log(3);
-&#125;, 0);
-
-console.log(2);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616040090596-2a14e894-a341-48a9-ba3e-71bbf0d66045.png#align=left&display=inline&height=63&id=bnEfE&margin=%5Bobject%20Object%5D&name=image.png&originHeight=125&originWidth=1021&size=6181&status=done&style=stroke&width=510.5" alt="image.png"></p>
-<h3 id="啥是单线程"><a href="#啥是单线程" class="headerlink" title="啥是单线程"></a>啥是单线程</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364671-590b3d5b-f91b-481d-9102-3e8caa4c6075.png#align=left&display=inline&height=90&id=ZFI00&margin=%5Bobject%20Object%5D&originHeight=90&originWidth=726&status=done&style=none&width=726"><br>单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。<br>这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。</p>
-<h3 id="同步任务和异步任务"><a href="#同步任务和异步任务" class="headerlink" title="同步任务和异步任务"></a>同步任务和异步任务</h3><pre><code>单线程导致的问题就是后面的任务等待前面任务完成，如果前面任务很耗时（比如读取网络数据），后面任务不得不一直等待！！
-为了解决这个问题，利用多核 CPU 的计算能力，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制。于是，JS 中出现了**同步任务**和**异步任务**。
-</code></pre>
-<blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1622775361143-bbbae322-0d9e-4dff-bb5f-9c727a926563.gif#align=left&display=inline&height=43&id=q4R2o&margin=%5Bobject%20Object%5D&originHeight=43&originWidth=42&status=done&style=none&width=42"><strong>操作系统忘完了</strong></p>
-</blockquote>
-<p>JS 中所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。<br><strong>【同步任务】</strong>指的是：<br>在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；<br><strong>【异步任务】</strong>指的是：<br>不进入主线程、而进入<strong>“任务队列”</strong>的任务，当主线程中的任务运行完了，才会从”任务队列”取出异步任务放入主线程执行。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364776-7168ea9f-39dc-4395-9d07-0a72969f568d.png#align=left&display=inline&height=432&id=uGzao&margin=%5Bobject%20Object%5D&originHeight=432&originWidth=746&status=done&style=stroke&width=746"></p>
-<h3 id="JS-执行机制（事件循环）"><a href="#JS-执行机制（事件循环）" class="headerlink" title="JS 执行机制（事件循环）"></a>JS 执行机制（事件循环）</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364833-4eb43c01-9779-4e8d-99a7-2f651cafb1b3.png#align=left&display=inline&height=390&id=MDARJ&margin=%5Bobject%20Object%5D&originHeight=390&originWidth=768&status=done&style=stroke&width=768"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364890-56fd3e4e-9faa-48d5-a69f-85f0d3bfec1f.png#align=left&display=inline&height=379&id=nvj0H&margin=%5Bobject%20Object%5D&originHeight=379&originWidth=819&status=done&style=stroke&width=819"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518364949-71e82dea-e99d-4755-bb73-1c4d68acf4eb.png#align=left&display=inline&height=44&id=mZ4Kh&margin=%5Bobject%20Object%5D&originHeight=44&originWidth=838&status=done&style=stroke&width=838"></p>
-<blockquote>
-<p>例子</p>
-</blockquote>
-<pre><code class="javascript">console.log(&quot;主线程：第一个&quot;);
-document.onclick = function () &#123;
-  console.log(&quot;点击事件开始&quot;);
-&#125;;
-setTimeout(function () &#123;
-  console.log(&quot;定时器3s&quot;);
-&#125;, 3000);
-setTimeout(function () &#123;
-  console.log(&quot;定时器1s&quot;);
-&#125;, 1000);
-console.log(&quot;主线程：最后一个&quot;);
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622776526386-add5d6e7-7b7f-4e5c-98af-f9189c7282ca.png#align=left&display=inline&height=232&id=u6ef71c6b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=464&originWidth=796&size=129597&status=done&style=none&width=398" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622776561826-eb27e6c9-623e-4bc1-85b4-78ee987e86d5.png#align=left&display=inline&height=113&id=u5336dfef&margin=%5Bobject%20Object%5D&name=image.png&originHeight=225&originWidth=922&size=36281&status=done&style=none&width=461" alt="image.png"></p>
-<h3 id="JS-创建异步任务枚举"><a href="#JS-创建异步任务枚举" class="headerlink" title="JS 创建异步任务枚举"></a>JS 创建异步任务枚举</h3><blockquote>
-<p>参考：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903832388894727">理解 JavaScript 概念系列–异步任务</a></li>
-<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903760280420366">JS 异步编程六种方案</a></li>
-</ul>
-</blockquote>
-<h3 id="期约-Promise"><a href="#期约-Promise" class="headerlink" title="期约 Promise"></a>期约 Promise</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html">大白话讲解 Promise（一）</a></li>
-</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611885137269-b37442f2-ea5b-45ce-a974-ff4676772c47.png#crop=0&crop=0&crop=1&crop=1&height=163&id=qL1s3&margin=%5Bobject%20Object%5D&name=image.png&originHeight=325&originWidth=345&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=22422&status=done&style=stroke&title=&width=172.5" alt="image.png"></p>
 
 </div>
 
@@ -704,7 +639,7 @@ console.log(&quot;主线程：最后一个&quot;);
     <div class="ct_right">
         <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/">JavaScript+DOM+BOM+TS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/DOM/">DOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/ECMAScript/">ECMAScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/TypeScript/">TypeScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/">🔨环境+工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83-%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/">✨其他</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/Bug/">Bug</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E2%9C%A8%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/">👨‍💻Web开发</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/">JavaScript+DOM+BOM+TS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/BOM/">BOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/DOM/">DOM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/ECMAScript/">ECMAScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/JavaScript-DOM-BOM-TS/TypeScript/">TypeScript</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Web业务解决方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86/">Web其他知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/Web%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/">Web性能优化方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BBWeb%E5%BC%80%E5%8F%91/jQuery/">jQuery</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">💪计算机素养</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%92%AA%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">🔨环境工具</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%F0%9F%94%A8%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul></li></ul>
 </div>
 
         <!-- partial('_widget/hot_articles') -->
