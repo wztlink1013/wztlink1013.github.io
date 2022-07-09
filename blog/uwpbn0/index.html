@@ -1,7 +1,7 @@
 <!--
  * @Author: wztlink1013
  * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-07-07 19:21:49
+ * @LastEditTime: 2022-07-09 15:32:17
  * @Description:  
 -->
 
@@ -40,6 +40,8 @@
     ></script>
     <!-- valine js文件 -->
     <script src='https://unpkg.com/valine/dist/Valine.min.js'></script>
+    <!-- twikoo 评论文件 -->
+    <script src="https://npm.elemecdn.com/twikoo@1.5.11/dist/twikoo.all.min.js"></script>
     <!-- 引入主CSS样式 -->
     
 <link rel="stylesheet" href="/public/css/style.css">
@@ -279,7 +281,7 @@
         <div class="component article">
     <!doctype html><div class="lake-content" typography="classic"><h2 id="TEpBv"></h2><h2 id="MJWMh"><span class="ne-text">仓库文件夹备份</span></h2><pre data-language="yaml" id="bMRN9" class="ne-codeblock language-yaml">name: CI
 
-<p>on: [watch]<br>jobs:<br>build:<br>runs-on: ubuntu-latest<br>steps: - uses: actions/checkout@v2 - name: 配置 Git<br>run: |<br>git config –global user.name ‘wztlink1013’<br>git config –global user.email ‘<a href="mailto:&#x32;&#53;&#53;&#48;&#51;&#55;&#x34;&#x38;&#49;&#x35;&#64;&#113;&#113;&#x2e;&#x63;&#x6f;&#x6d;">&#x32;&#53;&#53;&#48;&#51;&#55;&#x34;&#x38;&#49;&#x35;&#64;&#113;&#113;&#x2e;&#x63;&#x6f;&#x6d;</a>‘ - name: 在云端进行复制文件夹操作<br>env:<br>Github_Token: $<br>      run: |<br>        git clone https://${Github_Token}@github.com/wztlink1013/website-source website-source<br>cd website-source<br>cp -r ./Secret 文集/ ./backup/<br>git status<br>git add .<br>git commit -m “backup”<br>git push –force –quiet “https://${Github_Token}@github.com/wztlink1013/website-source” master:master</pre><h2 id="vFzCL"><span class="ne-text">博客 CICD 腾讯云函数</span></h2><h3 id="b6DTs"><span class="ne-text">Python2.7 执行环境</span></h3><pre data-language="python" id="ydhP6" class="ne-codeblock language-python"># -<em>- coding: utf8 -</em>-<br>import requests</p>
+<p>on: [watch]<br>jobs:<br>build:<br>runs-on: ubuntu-latest<br>steps: - uses: actions/checkout@v2 - name: 配置 Git<br>run: |<br>git config –global user.name ‘wztlink1013’<br>git config –global user.email ‘<a href="mailto:&#50;&#53;&#53;&#x30;&#x33;&#55;&#52;&#56;&#x31;&#x35;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#109;">&#50;&#53;&#53;&#x30;&#x33;&#55;&#52;&#56;&#x31;&#x35;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#109;</a>‘ - name: 在云端进行复制文件夹操作<br>env:<br>Github_Token: $<br>      run: |<br>        git clone https://${Github_Token}@github.com/wztlink1013/website-source website-source<br>cd website-source<br>cp -r ./Secret 文集/ ./backup/<br>git status<br>git add .<br>git commit -m “backup”<br>git push –force –quiet “https://${Github_Token}@github.com/wztlink1013/website-source” master:master</pre><h2 id="vFzCL"><span class="ne-text">博客 CICD 腾讯云函数</span></h2><h3 id="b6DTs"><span class="ne-text">Python2.7 执行环境</span></h3><pre data-language="python" id="ydhP6" class="ne-codeblock language-python"># -<em>- coding: utf8 -</em>-<br>import requests</p>
 <p>def main_handler(event, context):<br>r = requests.post(“<a target="_blank" rel="noopener" href="https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;">https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;</a>,<br>json={‘event_type’: “run-it”},<br>headers = {“User-Agent”:’curl/7.52.1’,<br>‘Content-Type’: ‘application/json’,<br>‘Accept’: ‘application/vnd.github.everest-preview+json’,<br>‘Authorization’: ‘token <strong><strong>**</strong></strong>‘})</p>
 <pre><code>if r.status_code == 204:
     return &quot;This&#39;s OK!&quot;
@@ -339,7 +341,7 @@ else:
         <!--
  * @Author: wztlink1013
  * @Date: 2022-01-09 13:45:03
- * @LastEditTime: 2022-07-09 13:20:50
+ * @LastEditTime: 2022-07-09 16:59:32
  * @Description:  
 -->
 <div class="component clearfix comments" id="comments" style="display: block">
@@ -347,31 +349,35 @@ else:
     <h2>评论区</h2>
     <!-- 转换评论按钮 -->
     <div class="comment-switch not-select">
-      <span class="first-comment">Beaudar</span>
+      <span class="first-comment">Twikoo</span>
       <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
-      <span class="second-comment">Twikoo</span>
+      <span class="second-comment">giscus</span>
     </div>
   </div>
 
   <div class="comments_content">
-    <!-- utterances评论区 -->
-    <div id="utterances_comment" style="display: none"></div>
+    <!-- giscus评论区 -->
+    <div id="github_comment" style="display: block">
+      <script
+        src="https://giscus.app/client.js"
+        data-repo="wztlink1013/comment"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMzkxNDA3MDQ="
+        data-category="General"
+        data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDU2NTcx"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </div>
     <!-- twikoo评论区 -->
-    <div id="twikoo_comment" style="display: block">
+    <div id="twikoo_comment" style="display: none">
       <div id="tcomment"></div>
-      <script src="https://npm.elemecdn.com/twikoo@1.5.11/dist/twikoo.all.min.js"></script>
-      <script>
-        twikoo
-          .init({
-            envId: 'https://twikoo-source.vercel.app/',
-            el: '#tcomment',
-            // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，如果您的环境地域不是上海，需传此参数
-            // path: 'window.location.pathname', // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
-          })
-          .then(function () {
-            console.log('Twikoo 初始化加载完成')
-          })
-      </script>
     </div>
   </div>
 </div>
