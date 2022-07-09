@@ -116,7 +116,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -158,7 +158,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E5%BE%AA%E7%8E%AF%E8%A7%A3%E5%86%B3"><span class="toc-text">暴力循环解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%A4%E7%AB%AF%E5%8F%8C%E6%8C%87%E9%92%88%E7%A7%BB%E5%8A%A8%E8%A7%A3%E5%86%B3"><span class="toc-text">两端双指针移动解决</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#wvuOt"><span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#zm5Lb"><span class="toc-text">暴力循环解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bpe3H"><span class="toc-text">两端双指针移动解决</span></a></li></ol></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -209,7 +209,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -281,48 +281,12 @@
     </div>
 </div>
         <div class="component article">
-    <ul>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/container-with-most-water/">https://leetcode-cn.com/problems/container-with-most-water/</a></li>
-</ul>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><h4 id="暴力循环解决"><a href="#暴力循环解决" class="headerlink" title="暴力循环解决"></a>暴力循环解决</h4><ul>
-<li>对数组各个元素进行第一遍遍历，在此之中<strong>以该元素为基准</strong>对<strong>该元素后面的所有元素进行遍历</strong>，进行<code>两者最短高度 * （后面元素下标 - 该元素下标）</code>运算，遍历完成即可得到上述值的最大值 result。</li>
-<li>该元素后面的所有元素进行遍历：这个循环是指定开始索引的位置往后进行的遍历，使用传统 for 循环或是 for in 循环</li>
-</ul>
-<p>这种解法会超时，写的时候我就感觉到了数组的双循环八成是超时，即便我是第二个循环不找全部元素，但还是超时 n^2 逃不掉<img src="https://cdn.nlark.com/yuque/0/2022/jpeg/1484158/1648709054571-cb914e0d-2a17-4e20-bdb3-d0f105bec0fe.jpeg#crop=0&crop=0&crop=1&crop=1&id=u4K1n&originHeight=56&originWidth=52&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
-<pre><code class="typescript">function maxArea(height: number[]): number &#123;
-  let result: number = 0
-  height.forEach((data: number, index: number) =&gt; &#123;
-    if (index !== height.length - 1) &#123;
-      for (let i: number = index + 1; i &lt; height.length; i++) &#123;
-        let result_temp = Math.min(height[i], data) * (i - index)
-        result &gt; result_temp ? (result = result) : (result = result_temp)
-      &#125;
-    &#125;
-  &#125;)
-  return result
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648707457045-2a083f7a-faab-4354-91bf-7a6b9e45c867.png#clientId=u753f0702-a2dc-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=442&id=uc882220e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=530&originWidth=1561&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=103463&status=done&style=none&taskId=u22067f24-7e23-4771-a53d-ee9f7730591&title=&width=1300.8332816428629" alt="image.png"></p>
-<h4 id="两端双指针移动解决"><a href="#两端双指针移动解决" class="headerlink" title="两端双指针移动解决"></a>两端双指针移动解决</h4><ul>
-<li>探究解决办法的规律来解决问题，利用双指针在首末端往中间靠，每次移动 arr[指针]小的，然后在此次与 result 相比较。</li>
-<li>这样只需要遍历一遍即可，时间复杂度为 n</li>
-</ul>
-<pre><code class="typescript">function maxArea(height: number[]): number &#123;
-  let head: number = 0;
-  let back: number = height.length - 1;
-  const result_fun = (head: number, back: number): number =&gt; &#123;
-    return Math.min(height[head], height[back]) * (back - head);
-  &#125;;
-  let result = result_fun(head, back);
+    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="ub9ee704f"><a href="https://leetcode-cn.com/problems/container-with-most-water/" data-href="https://leetcode-cn.com/problems/container-with-most-water/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/container-with-most-water/</span></a></li></ul><p id="ub4ceec83" class="ne-p"><span class="ne-text"></span></p><h3 id="wvuOt"><span class="ne-text">思路</span></h3><h4 id="zm5Lb"><span class="ne-text">暴力循环解决</span></h4><ul class="ne-ul"><li id="u9e4d4ab9"><span class="ne-text">对数组各个元素进行第一遍遍历，在此之中</span><strong><span class="ne-text">以该元素为基准</span></strong><span class="ne-text">对</span><strong><span class="ne-text">该元素后面的所有元素进行遍历</span></strong><span class="ne-text">，进行</span><code class="ne-code"><span class="ne-text">两者最短高度 * （后面元素下标 - 该元素下标）</span></code><span class="ne-text">运算，遍历完成即可得到上述值的最大值result。</span></li><li id="ub9c5a2fb"><span class="ne-text">该元素后面的所有元素进行遍历：这个循环是指定开始索引的位置往后进行的遍历，使用传统for循环或是for in循环</span></li></ul><p id="ub507a9bd" class="ne-p"><span class="ne-text"></span></p><p id="u3d71db66" class="ne-p"><span class="ne-text">这种解法会超时，写的时候我就感觉到了数组的双循环八成是超时，即便我是第二个循环不找全部元素，但还是超时n^2逃不掉</span><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/1484158/1648709054571-cb914e0d-2a17-4e20-bdb3-d0f105bec0fe.jpeg" width="52" id="u4K1n" class="ne-image"></p><pre data-language="typescript" id="k2hFv" class="ne-codeblock language-typescript">function maxArea(height: number[]): number {
 
-  while (head !== back) &#123;
-    height[head] &lt; height[back] ? head++ : back--;
-    if (result &lt;= result_fun(head, back)) result = result_fun(head, back);
-  &#125;
-
-  return result;
-&#125;
-</code></pre>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648710814761-4255d705-1462-47ed-8a96-ad66c4bf25a6.png#clientId=u753f0702-a2dc-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=179&id=u401ae785&name=image.png&originHeight=215&originWidth=720&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=23653&status=done&style=none&taskId=uac477603-59d0-4be6-b3e4-bb0899d2f68&title=&width=599.999976158143" alt="image.png"></p>
+<p>let result: number = 0<br>height.forEach((data: number, index: number) =&gt; {<br>if (index !== height.length - 1) {<br>for (let i: number = index + 1; i &lt; height.length; i++) {<br>let result_temp = Math.min(height[i], data) * (i - index)<br>result &gt; result_temp ? (result = result) : (result = result_temp)<br>}<br>}<br>})<br>return result</p>
+<p></pre><p id="u903f225f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648707457045-2a083f7a-faab-4354-91bf-7a6b9e45c867.png" width="1300.8332816428629" id="uc882220e" class="ne-image"></p><h4 id="bpe3H"><span class="ne-text">两端双指针移动解决</span></h4><ul class="ne-ul"><li id="u7385276d"><span class="ne-text">探究解决办法的规律来解决问题，利用双指针在首末端往中间靠，每次移动arr[指针]小的，然后在此次与result相比较。</span></li><li id="u3f46a4a7"><span class="ne-text">这样只需要遍历一遍即可，时间复杂度为n</span></li></ul><p id="u80e14356" class="ne-p"><span class="ne-text"></span></p><pre data-language="typescript" id="VRgYM" class="ne-codeblock language-typescript">function maxArea(height: number[]): number {<br>  let head: number = 0<br>  let back: number = height.length - 1<br>  const result_fun = (head: number, back: number): number => {<br>    return Math.min(height[head], height[back]) * (back - head)<br>  }<br>  let result = result_fun(head, back)</p>
+<p>while (head !== back) {<br>height[head] &lt; height[back] ? head++ : back–<br>if(result &lt;= result_fun(head, back) ) result = result_fun(head, back)<br>}</p>
+<p>return result<br>}</pre><p id="u36e90195" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648710814761-4255d705-1462-47ed-8a96-ad66c4bf25a6.png" width="599.999976158143" id="u401ae785" class="ne-image"></p><p id="u7cc03987" class="ne-p"><span class="ne-text"></span></p><p id="ucf47e7f1" class="ne-p"><span class="ne-text"></span></p><p id="u45d2fc7b" class="ne-p"><span class="ne-text"></span></p><p id="u85afaab6" class="ne-p"><span class="ne-text"></span></p><p id="u31ad7968" class="ne-p"><span class="ne-text"></span></p><p id="u3ea57d64" class="ne-p"><span class="ne-text"></span></p><p id="ucbf45dc3" class="ne-p"><span class="ne-text"></span></p><p id="u0d5526ac" class="ne-p"><span class="ne-text"></span></p><p id="ua16ce551" class="ne-p"><span class="ne-text"></span></p><p id="u1a516ef3" class="ne-p"><span class="ne-text"></span></p></div></p>
 
 </div>
 

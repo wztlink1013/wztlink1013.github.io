@@ -16,7 +16,7 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="问题分析对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理代码实现package com.wztlink1013.problems.leetcode.editor.cn;// P150.逆波兰表达式求值// P150.evalu" />
+    <meta name="description" content="问题分析对所给字符串进行遍历，遇到数字字符就压入栈stack内，遇到+-*/符号就pop处栈的两个元素，进行该字符运算处理代码实现package com.wztlink1013.problems.leetcode.editor.cn;// P150.逆波兰表达式求值// P150.evaluate-" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="150.逆波兰表达式求值🔖栈 | 尼采般地抒情" />
@@ -25,7 +25,7 @@
       content="https://www.wztlink1013.com/blog/ewoap5/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="问题分析对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理代码实现package com.wztlink1013.problems.leetcode.editor.cn;// P150.逆波兰表达式求值// P150.evalu" />
+    <meta property="og:description" content="问题分析对所给字符串进行遍历，遇到数字字符就压入栈stack内，遇到+-*/符号就pop处栈的两个元素，进行该字符运算处理代码实现package com.wztlink1013.problems.leetcode.editor.cn;// P150.逆波兰表达式求值// P150.evaluate-" />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -116,7 +116,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -158,7 +158,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vi7Gj"><span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gnNEL"><span class="toc-text">代码实现</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -209,7 +209,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -281,128 +281,49 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>对所给字符串进行遍历，遇到数字字符就压入栈 stack 内，遇到+-*/符号就 pop 处栈的两个元素，进行该字符运算处理</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="vi7Gj"><span class="ne-text">问题分析</span></h2><p id="eb6bae56e307e499aa83c1b2931e1693" class="ne-p"><span class="ne-text">对所给字符串进行遍历，遇到数字字符就压入栈stack内，遇到+-*/符号就pop处栈的两个元素，进行该字符运算处理</span></p><p id="u854f3b3d" class="ne-p"><span class="ne-text"></span></p><h2 id="gnNEL"><span class="ne-text">代码实现</span></h2><pre data-language="java" id="sx7ex" class="ne-codeblock language-java">package com.wztlink1013.problems.leetcode.editor.cn;
 
-// P150.逆波兰表达式求值
-// P150.evaluate-reverse-polish-notation
-//根据 逆波兰表示法，求表达式的值。
-//
-// 有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
-//
-//
-//
-// 说明：
-//
-//
-// 整数除法只保留整数部分。
-// 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。
-//
-//
-//
-//
-// 示例 1：
-//
-// 输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]
-//输出: 9
-//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
-//
-//
-// 示例 2：
-//
-// 输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;]
-//输出: 6
-//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
-//
-//
-// 示例 3：
-//
-// 输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]
-//输出: 22
-//解释:
-//该算式转化为常见的中缀算术表达式为：
-//  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
-//= ((10 * (6 / (12 * -11))) + 17) + 5
-//= ((10 * (6 / -132)) + 17) + 5
-//= ((10 * 0) + 17) + 5
-//= (0 + 17) + 5
-//= 17 + 5
-//= 22
-//
-//
-//
-// 逆波兰表达式：
-//
-// 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。
-//
-//
-// 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。
-// 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。
-//
-//
-// 逆波兰表达式主要有以下两个优点：
-//
-//
-// 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。
-// 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。
-//
-// Related Topics 栈
-// 👍 213 👎 0
+<p>// P150.逆波兰表达式求值<br>// P150.evaluate-reverse-polish-notation<br>//根据 逆波兰表示法，求表达式的值。<br>//<br>// 有效的运算符包括 +, -, <em>, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。<br>//<br>//<br>//<br>// 说明：<br>//<br>//<br>// 整数除法只保留整数部分。<br>// 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。<br>//<br>//<br>//<br>//<br>// 示例 1：<br>//<br>// 输入: [“2”, “1”, “+”, “3”, “</em>“]<br>//输出: 9<br>//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) _ 3) = 9<br>//<br>//<br>// 示例 2：<br>//<br>// 输入: [“4”, “13”, “5”, “/“, “+”]<br>//输出: 6<br>//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6<br>//<br>//<br>// 示例 3：<br>//<br>// 输入: [“10”, “6”, “9”, “3”, “+”, “-11”, “<em>“, “/“, “</em>“, “17”, “+”, “5”, “+”]<br>//输出: 22<br>//解释:<br>//该算式转化为常见的中缀算术表达式为：<br>// ((10 _ (6 / ((9 + 3) _ -11))) + 17) + 5<br>//= ((10 _ (6 / (12 _ -11))) + 17) + 5<br>//= ((10 _ (6 / -132)) + 17) + 5<br>//= ((10 _ 0) + 17) + 5<br>//= (0 + 17) + 5<br>//= 17 + 5<br>//= 22<br>//<br>//<br>//<br>// 逆波兰表达式：<br>//<br>// 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。<br>//<br>//<br>// 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) _ ( 3 + 4 ) 。<br>// 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) _ ) 。<br>//<br>//<br>// 逆波兰表达式主要有以下两个优点：<br>//<br>//<br>// 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + _ 也可以依据次序计算出正确结果。<br>// 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。<br>//<br>// Related Topics 栈<br>// 👍 213 👎 0</p>
+<p>import java.util.Stack;</p>
+<p>public class P150EvaluateReversePolishNotation{<br>public static void main(String[] args) {<br>Solution solution = new P150EvaluateReversePolishNotation().new Solution();<br>String[] tokens_1 = {“10”, “6”, “9”, “3”, “+”, “-11”, “<em>“, “/“, “</em>“, “17”, “+”, “5”, “+”};<br>int temp = solution.evalRPN(tokens_1);<br>System.out.println(temp);</p>
+<pre><code>&#125;
+</code></pre>
+<p>//leetcode submit region begin(Prohibit modification and deletion)<br>class Solution {<br>public int evalRPN(String[] tokens) {<br>Stack<String> stack = new Stack&lt;&gt;();</p>
+<pre><code>    String temp = &quot;0&quot;;
+    stack.push(temp);
 
-
-import java.util.Stack;
-
-public class P150EvaluateReversePolishNotation&#123;
-    public static void main(String[] args) &#123;
-        Solution solution = new P150EvaluateReversePolishNotation().new Solution();
-        String[] tokens_1 = &#123;&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;&#125;;
-        int temp = solution.evalRPN(tokens_1);
-        System.out.println(temp);
-
-    &#125;
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution &#123;
-    public int evalRPN(String[] tokens) &#123;
-        Stack&lt;String&gt; stack = new Stack&lt;&gt;();
-
-        String temp = &quot;0&quot;;
-        stack.push(temp);
-
-        for (String token : tokens) &#123;
-            int sum = 0;
-            if (token.equals(&quot;+&quot;)) &#123;
-                sum += Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop());
-                String str = String.valueOf(sum);
-                stack.push(str);
-            &#125; else if (token.equals(&quot;-&quot;)) &#123;
-                int i = Integer.parseInt(stack.pop());
-                int j = Integer.parseInt(stack.pop());
-                sum += j-i;
-                String str = String.valueOf(sum);
-                stack.push(str);
-            &#125; else if (token.equals(&quot;*&quot;)) &#123;
-                sum += Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop());
-                String str = String.valueOf(sum);
-                stack.push(str);
-            &#125; else if (token.equals(&quot;/&quot;)) &#123;
-                int i = Integer.parseInt(stack.pop());
-                int j = Integer.parseInt(stack.pop());
-                sum += j / i;
-                String str = String.valueOf(sum);
-                stack.push(str);
-            &#125; else &#123;
-                stack.push(token);
-            &#125;
+    for (String token : tokens) &#123;
+        int sum = 0;
+        if (token.equals(&quot;+&quot;)) &#123;
+            sum += Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop());
+            String str = String.valueOf(sum);
+            stack.push(str);
+        &#125; else if (token.equals(&quot;-&quot;)) &#123;
+            int i = Integer.parseInt(stack.pop());
+            int j = Integer.parseInt(stack.pop());
+            sum += j-i;
+            String str = String.valueOf(sum);
+            stack.push(str);
+        &#125; else if (token.equals(&quot;*&quot;)) &#123;
+            sum += Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop());
+            String str = String.valueOf(sum);
+            stack.push(str);
+        &#125; else if (token.equals(&quot;/&quot;)) &#123;
+            int i = Integer.parseInt(stack.pop());
+            int j = Integer.parseInt(stack.pop());
+            sum += j / i;
+            String str = String.valueOf(sum);
+            stack.push(str);
+        &#125; else &#123;
+            stack.push(token);
         &#125;
-        int result = Integer.parseInt(stack.pop());
-        return result;
     &#125;
-&#125;
-//leetcode submit region end(Prohibit modification and deletion)
-
+    int result = Integer.parseInt(stack.pop());
+    return result;
 &#125;
 </code></pre>
+<p>}<br>//leetcode submit region end(Prohibit modification and deletion)</p>
+<p>}</pre></div></p>
 
 </div>
 

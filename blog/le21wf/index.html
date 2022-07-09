@@ -116,7 +116,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -158,7 +158,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#P232-%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97"><span class="toc-text">P232. 栈实现队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P225-%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88"><span class="toc-text">P225. 队列实现栈</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#o2VfU"><span class="toc-text">P232. 栈实现队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YtwL8"><span class="toc-text">P225. 队列实现栈</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -209,7 +209,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -281,292 +281,126 @@
     </div>
 </div>
         <div class="component article">
-    <p>简单实现一下，熟悉一下写题目，这几天找找状态……<img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1615278756585-fb0d9f38-8031-472f-9a19-8545be93a548.gif#align=left&display=inline&height=100&margin=%5Bobject%20Object%5D&name=huaji-6f8ff8999ff5ed9a.gif&originHeight=100&originWidth=100&size=12637&status=done&style=none&width=100" alt="huaji-6f8ff8999ff5ed9a.gif"></p>
-<h2 id="P232-栈实现队列"><a href="#P232-栈实现队列" class="headerlink" title="P232. 栈实现队列"></a>P232. 栈实现队列</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+    <!doctype html><div class="lake-content" typography="classic"><p id="a29a1b8e333ebb6218a4a850e5fe17c2" class="ne-p"><span class="ne-text">简单实现一下，熟悉一下写题目，这几天找找状态……</span><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1615278756585-fb0d9f38-8031-472f-9a19-8545be93a548.gif" width="100" id="QjErw" class="ne-image"></p><p id="ef899eed96ff8a1bcaaa60a81c23e200" class="ne-p"><br></p><p id="u880365d5" class="ne-p"><br></p><h2 id="o2VfU"><span class="ne-text">P232. 栈实现队列</span></h2><pre data-language="java" id="xxz59" class="ne-codeblock language-java">package com.wztlink1013.problems.leetcode.editor.cn;
 
-// P232.用栈实现队列
-// P232.implement-queue-using-stacks
-//请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：
-//
-// 实现 MyQueue 类：
-//
-//
-// void push(int x) 将元素 x 推到队列的末尾
-// int pop() 从队列的开头移除并返回元素
-// int peek() 返回队列开头的元素
-// boolean empty() 如果队列为空，返回 true ；否则，返回 false
-//
-//
-//
-//
-// 说明：
-//
-//
-// 你只能使用标准的栈操作 —— 也就是只有 push to top, peek/pop from top, size, 和 is empty 操作是合法的。
-//
-// 你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。
-//
-//
-//
-//
-// 进阶：
-//
-//
-// 你能否实现每个操作均摊时间复杂度为 O(1) 的队列？换句话说，执行 n 个操作的总时间复杂度为 O(n) ，即使其中一个操作可能花费较长时间。
-//
-//
-//
-//
-// 示例：
-//
-//
-//输入：
-//[&quot;MyQueue&quot;, &quot;push&quot;, &quot;push&quot;, &quot;peek&quot;, &quot;pop&quot;, &quot;empty&quot;]
-//[[], [1], [2], [], [], []]
-//输出：
-//[null, null, null, 1, 1, false]
-//
-//解释：
-//MyQueue myQueue = new MyQueue();
-//myQueue.push(1); // queue is: [1]
-//myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
-//myQueue.peek(); // return 1
-//myQueue.pop(); // return 1, queue is [2]
-//myQueue.empty(); // return false
-//
-//
-//
-//
-//
-//
-//
-// 提示：
-//
-//
-// 1 &lt;= x &lt;= 9
-// 最多调用 100 次 push、pop、peek 和 empty
-// 假设所有操作都是有效的 （例如，一个空的队列不会调用 pop 或者 peek 操作）
-//
-// Related Topics 栈 设计
-// 👍 361 👎 0
-
-import java.util.Stack;
-
-public class P232ImplementQueueUsingStacks&#123;
-    public void main(String[] args) &#123;
-        MyQueue myQueue = new MyQueue();
-        //本地调试需要将MyQueue类和主函数加上静态static修饰字
-        //具体解释：https://www.cnblogs.com/dolphin0520/p/3799052.html
-        myQueue.push(1); // queue is: [1]
-        myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
-        myQueue.pop();
-        myQueue.peek();
-//        myQueue.peek(); // return 1
-//        myQueue.pop(); // return 1, queue is [2]
-//        myQueue.empty(); // return false
-//        System.out.println(myQueue);
-    &#125;
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class MyQueue &#123;
-    Stack&lt;Integer&gt; stack_input = new Stack&lt;&gt;();
-    Stack&lt;Integer&gt; stack_output = new Stack&lt;&gt;();
-    /** Initialize your data structure here. */
-    public MyQueue() &#123;
-//        Stack&lt;Integer&gt; stack_input = new Stack&lt;&gt;();
-//        Stack&lt;Integer&gt; stack_output = new Stack&lt;&gt;();
-    &#125;
-
-    /** Push element x to the back of queue. */
-    public void push(int x) &#123;
-        stack_input.push(x);
-        int temp = stack_input.size();
-        if (stack_output.size() == 0) &#123;
-            for (int i=0; i&lt;temp; i++)&#123;
-                stack_output.push(stack_input.pop());
-            &#125;
+<p>// P232.用栈实现队列<br>// P232.implement-queue-using-stacks<br>//请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：<br>//<br>// 实现 MyQueue 类：<br>//<br>//<br>// void push(int x) 将元素 x 推到队列的末尾<br>// int pop() 从队列的开头移除并返回元素<br>// int peek() 返回队列开头的元素<br>// boolean empty() 如果队列为空，返回 true ；否则，返回 false<br>//<br>//<br>//<br>//<br>// 说明：<br>//<br>//<br>// 你只能使用标准的栈操作 —— 也就是只有 push to top, peek/pop from top, size, 和 is empty 操作是合法的。<br>//<br>// 你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。<br>//<br>//<br>//<br>//<br>// 进阶：<br>//<br>//<br>// 你能否实现每个操作均摊时间复杂度为 O(1) 的队列？换句话说，执行 n 个操作的总时间复杂度为 O(n) ，即使其中一个操作可能花费较长时间。<br>//<br>//<br>//<br>//<br>// 示例：<br>//<br>//<br>//输入：<br>//[“MyQueue”, “push”, “push”, “peek”, “pop”, “empty”]<br>//[[], [1], [2], [], [], []]<br>//输出：<br>//[null, null, null, 1, 1, false]<br>//<br>//解释：<br>//MyQueue myQueue = new MyQueue();<br>//myQueue.push(1); // queue is: [1]<br>//myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)<br>//myQueue.peek(); // return 1<br>//myQueue.pop(); // return 1, queue is [2]<br>//myQueue.empty(); // return false<br>//<br>//<br>//<br>//<br>//<br>//<br>//<br>// 提示：<br>//<br>//<br>// 1 &lt;= x &lt;= 9<br>// 最多调用 100 次 push、pop、peek 和 empty<br>// 假设所有操作都是有效的 （例如，一个空的队列不会调用 pop 或者 peek 操作）<br>//<br>// Related Topics 栈 设计<br>// 👍 361 👎 0</p>
+<p>import java.util.Stack;</p>
+<p>public class P232ImplementQueueUsingStacks{<br>public void main(String[] args) {<br>MyQueue myQueue = new MyQueue();<br>//本地调试需要将 MyQueue 类和主函数加上静态 static 修饰字<br>//具体解释：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dolphin0520/p/3799052.html">https://www.cnblogs.com/dolphin0520/p/3799052.html</a><br>myQueue.push(1); // queue is: [1]<br>myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)<br>myQueue.pop();<br>myQueue.peek();<br>// myQueue.peek(); // return 1<br>// myQueue.pop(); // return 1, queue is [2]<br>// myQueue.empty(); // return false<br>// System.out.println(myQueue);<br>}</p>
+<p>//leetcode submit region begin(Prohibit modification and deletion)<br>class MyQueue {<br>Stack<Integer> stack_input = new Stack&lt;&gt;();<br>Stack<Integer> stack_output = new Stack&lt;&gt;();<br>/*_ Initialize your data structure here. _/<br>public MyQueue() {<br>// Stack<Integer> stack_input = new Stack&lt;&gt;();<br>// Stack<Integer> stack_output = new Stack&lt;&gt;();<br>}</p>
+<pre><code>/** Push element x to the back of queue. */
+public void push(int x) &#123;
+    stack_input.push(x);
+    int temp = stack_input.size();
+    if (stack_output.size() == 0) &#123;
+        for (int i=0; i&lt;temp; i++)&#123;
+            stack_output.push(stack_input.pop());
         &#125;
-    &#125;
-
-    /** Removes the element from in front of queue and returns that element. */
-    public int pop() &#123;
-        int temp = stack_input.size();
-        if (stack_output.size() == 0) &#123;
-            for (int i=0; i&lt;temp; i++)&#123;
-                stack_output.push(stack_input.pop());
-            &#125;
-        &#125;
-        return stack_output.pop();
-    &#125;
-
-    /** Get the front element. */
-    public int peek() &#123;
-        int temp = stack_input.size();
-        if (stack_output.size() == 0) &#123;
-            for (int i=0; i&lt;temp; i++)&#123;
-                stack_output.push(stack_input.pop());
-            &#125;
-        &#125;
-        return stack_output.peek();
-    &#125;
-
-    /** Returns whether the queue is empty. */
-    public boolean empty() &#123;
-        if (stack_input.size() == 0 &amp;&amp; stack_output.size() == 0) &#123;
-            return true;
-        &#125;
-        return false;
     &#125;
 &#125;
 
-/**
- * Your MyQueue object will be instantiated and called as such:
- * MyQueue obj = new MyQueue();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.peek();
- * boolean param_4 = obj.empty();
- */
-//leetcode submit region end(Prohibit modification and deletion)
+/** Removes the element from in front of queue and returns that element. */
+public int pop() &#123;
+    int temp = stack_input.size();
+    if (stack_output.size() == 0) &#123;
+        for (int i=0; i&lt;temp; i++)&#123;
+            stack_output.push(stack_input.pop());
+        &#125;
+    &#125;
+    return stack_output.pop();
+&#125;
 
+/** Get the front element. */
+public int peek() &#123;
+    int temp = stack_input.size();
+    if (stack_output.size() == 0) &#123;
+        for (int i=0; i&lt;temp; i++)&#123;
+            stack_output.push(stack_input.pop());
+        &#125;
+    &#125;
+    return stack_output.peek();
+&#125;
+
+/** Returns whether the queue is empty. */
+public boolean empty() &#123;
+    if (stack_input.size() == 0 &amp;&amp; stack_output.size() == 0) &#123;
+        return true;
+    &#125;
+    return false;
 &#125;
 </code></pre>
-<h2 id="P225-队列实现栈"><a href="#P225-队列实现栈" class="headerlink" title="P225. 队列实现栈"></a>P225. 队列实现栈</h2><pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+<p>}</p>
+<p>/**</p>
+<ul>
+<li>Your MyQueue object will be instantiated and called as such:</li>
+<li>MyQueue obj = new MyQueue();</li>
+<li>obj.push(x);</li>
+<li>int param_2 = obj.pop();</li>
+<li>int param_3 = obj.peek();</li>
+<li>boolean param_4 = obj.empty();<br>*/<br>//leetcode submit region end(Prohibit modification and deletion)</li>
+</ul>
+<p>}</pre><h2 id="YtwL8"><span class="ne-text">P225. 队列实现栈</span></h2><pre data-language="java" id="Lphd1" class="ne-codeblock language-java">package com.wztlink1013.problems.leetcode.editor.cn;</p>
+<p>// P225.用队列实现栈<br>// P225.implement-stack-using-queues<br>//请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通队列的全部四种操作（push、top、pop 和 empty）。<br>//<br>// 实现 MyStack 类：<br>//<br>//<br>// void push(int x) 将元素 x 压入栈顶。<br>// int pop() 移除并返回栈顶元素。<br>// int top() 返回栈顶元素。<br>// boolean empty() 如果栈是空的，返回 true ；否则，返回 false 。<br>//<br>//<br>//<br>//<br>// 注意：<br>//<br>//<br>// 你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作。<br>// 你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。<br>//<br>//<br>//<br>//<br>// 示例：<br>//<br>//<br>//输入：<br>//[“MyStack”, “push”, “push”, “top”, “pop”, “empty”]<br>//[[], [1], [2], [], [], []]<br>//输出：<br>//[null, null, null, 2, 2, false]<br>//<br>//解释：<br>//MyStack myStack = new MyStack();<br>//myStack.push(1);<br>//myStack.push(2);<br>//myStack.top(); // 返回 2<br>//myStack.pop(); // 返回 2<br>//myStack.empty(); // 返回 False<br>//<br>//<br>//<br>//<br>// 提示：<br>//<br>//<br>// 1 &lt;= x &lt;= 9<br>// 最多调用 100 次 push、pop、top 和 empty<br>// 每次调用 pop 和 top 都保证栈不为空<br>//<br>//<br>//<br>//<br>// 进阶：你能否实现每种操作的均摊时间复杂度为 O(1) 的栈？换句话说，执行 n 个操作的总时间复杂度 O(n) ，尽管其中某个操作可能需要比其他操作更长的<br>//时间。你可以使用两个以上的队列。<br>// Related Topics 栈 设计<br>// 👍 291 👎 0</p>
+<p>import java.util.LinkedList;<br>import java.util.Queue;</p>
+<p>public class P225ImplementStackUsingQueues{<br>public void main(String[] args) {<br>// Solution solution = new P225ImplementStackUsingQueues().new Solution();</p>
+<pre><code>&#125;
+</code></pre>
+<p>//leetcode submit region begin(Prohibit modification and deletion)<br>class MyStack {<br>Queue<Integer> queue_input = new LinkedList&lt;&gt;();<br>Queue<Integer> queue_output = new LinkedList&lt;&gt;();<br>/*_ Initialize your data structure here. _/<br>public MyStack() {</p>
+<pre><code>&#125;
 
-// P225.用队列实现栈
-// P225.implement-stack-using-queues
-//请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通队列的全部四种操作（push、top、pop 和 empty）。
-//
-// 实现 MyStack 类：
-//
-//
-// void push(int x) 将元素 x 压入栈顶。
-// int pop() 移除并返回栈顶元素。
-// int top() 返回栈顶元素。
-// boolean empty() 如果栈是空的，返回 true ；否则，返回 false 。
-//
-//
-//
-//
-// 注意：
-//
-//
-// 你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作。
-// 你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。
-//
-//
-//
-//
-// 示例：
-//
-//
-//输入：
-//[&quot;MyStack&quot;, &quot;push&quot;, &quot;push&quot;, &quot;top&quot;, &quot;pop&quot;, &quot;empty&quot;]
-//[[], [1], [2], [], [], []]
-//输出：
-//[null, null, null, 2, 2, false]
-//
-//解释：
-//MyStack myStack = new MyStack();
-//myStack.push(1);
-//myStack.push(2);
-//myStack.top(); // 返回 2
-//myStack.pop(); // 返回 2
-//myStack.empty(); // 返回 False
-//
-//
-//
-//
-// 提示：
-//
-//
-// 1 &lt;= x &lt;= 9
-// 最多调用100 次 push、pop、top 和 empty
-// 每次调用 pop 和 top 都保证栈不为空
-//
-//
-//
-//
-// 进阶：你能否实现每种操作的均摊时间复杂度为 O(1) 的栈？换句话说，执行 n 个操作的总时间复杂度 O(n) ，尽管其中某个操作可能需要比其他操作更长的
-//时间。你可以使用两个以上的队列。
-// Related Topics 栈 设计
-// 👍 291 👎 0
-
-
-import java.util.LinkedList;
-import java.util.Queue;
-
-public class P225ImplementStackUsingQueues&#123;
-    public void main(String[] args) &#123;
-//        Solution solution = new P225ImplementStackUsingQueues().new Solution();
-
-    &#125;
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class MyStack &#123;
-    Queue&lt;Integer&gt; queue_input = new LinkedList&lt;&gt;();
-    Queue&lt;Integer&gt; queue_output = new LinkedList&lt;&gt;();
-    /** Initialize your data structure here. */
-    public MyStack() &#123;
-
-    &#125;
-
-    /** Push element x onto stack. */
-    public void push(int x) &#123;
-        queue_input.add(x);
-    &#125;
-
-    /** Removes the element on top of the stack and returns that element. */
-    public int pop() &#123;
-        int temp_2 = queue_input.size();
-        for (int i=0; i&lt;temp_2; i++) &#123;
-            queue_output.add(queue_input.remove());
-        &#125;
-        int temp_3 = queue_output.size();
-        for (int i=0; i&lt;temp_3-1; i++) &#123;
-            queue_input.add(queue_output.remove());
-        &#125;
-        return queue_output.remove();
-    &#125;
-
-    /** Get the top element. */
-    public int top() &#123;
-        int top = 0;
-        int temp_4 = queue_input.size();
-        for (int i=0; i&lt;temp_4; i++) &#123;
-            queue_output.add(queue_input.remove());
-        &#125;
-        int temp_5 = queue_output.size();
-        for (int i=0; i&lt;temp_5; i++) &#123;
-            if (i == temp_5-1) &#123;
-                top = queue_output.element();
-            &#125;
-            queue_input.add(queue_output.remove());
-        &#125;
-        return top;
-    &#125;
-
-    /** Returns whether the stack is empty. */
-    public boolean empty() &#123;
-        if (queue_input.size() == 0 &amp;&amp; queue_output.size() == 0) &#123;
-            return true;
-        &#125;
-        return false;
-    &#125;
+/** Push element x onto stack. */
+public void push(int x) &#123;
+    queue_input.add(x);
 &#125;
 
-/**
- * Your MyStack object will be instantiated and called as such:
- * MyStack obj = new MyStack();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.top();
- * boolean param_4 = obj.empty();
- */
-//leetcode submit region end(Prohibit modification and deletion)
+/** Removes the element on top of the stack and returns that element. */
+public int pop() &#123;
+    int temp_2 = queue_input.size();
+    for (int i=0; i&lt;temp_2; i++) &#123;
+        queue_output.add(queue_input.remove());
+    &#125;
+    int temp_3 = queue_output.size();
+    for (int i=0; i&lt;temp_3-1; i++) &#123;
+        queue_input.add(queue_output.remove());
+    &#125;
+    return queue_output.remove();
+&#125;
 
+/** Get the top element. */
+public int top() &#123;
+    int top = 0;
+    int temp_4 = queue_input.size();
+    for (int i=0; i&lt;temp_4; i++) &#123;
+        queue_output.add(queue_input.remove());
+    &#125;
+    int temp_5 = queue_output.size();
+    for (int i=0; i&lt;temp_5; i++) &#123;
+        if (i == temp_5-1) &#123;
+            top = queue_output.element();
+        &#125;
+        queue_input.add(queue_output.remove());
+    &#125;
+    return top;
+&#125;
+
+/** Returns whether the stack is empty. */
+public boolean empty() &#123;
+    if (queue_input.size() == 0 &amp;&amp; queue_output.size() == 0) &#123;
+        return true;
+    &#125;
+    return false;
 &#125;
 </code></pre>
+<p>}</p>
+<p>/**</p>
+<ul>
+<li>Your MyStack object will be instantiated and called as such:</li>
+<li>MyStack obj = new MyStack();</li>
+<li>obj.push(x);</li>
+<li>int param_2 = obj.pop();</li>
+<li>int param_3 = obj.top();</li>
+<li>boolean param_4 = obj.empty();<br>*/<br>//leetcode submit region end(Prohibit modification and deletion)</li>
+</ul>
+<p>}</pre><p id="c85ff563fe7096567c2ba4ddbe4a46f7" class="ne-p"><br></p><p id="978d3b8ea3f6378eb757293446e8714d" class="ne-p"><br></p><p id="177934f4fd8489d50ebbf77c3edd6caf" class="ne-p"><br></p><p id="955b42ad8438ffa991a6e0e0d5a36501" class="ne-p"><br></p><p id="e9d6c34d897fe5fda361fea40c76df6d" class="ne-p"><br></p></div></p>
 
 </div>
 

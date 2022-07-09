@@ -16,7 +16,7 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="Queue 队列设计在头尾两端进行操作，先进先出 FIFO队列的接口设计int size(); //队列元素个数boolean isEmpty(); //队列是否为空void clear(); //清空队列元素void enQueue(E element); //入队E deQueue(); // " />
+    <meta name="description" content="Queue队列设计在头尾两端进行操作，先进先出FIFO队列的接口设计int size(); //队列元素个数boolean isEmpty(); //队列是否为空void clear(); //清空队列元素void enQueue(E element); //入队E deQueue(); // 出队" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="JAVA队列设计 | 尼采般地抒情" />
@@ -25,7 +25,7 @@
       content="https://www.wztlink1013.com/blog/zqmygi/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="Queue 队列设计在头尾两端进行操作，先进先出 FIFO队列的接口设计int size(); //队列元素个数boolean isEmpty(); //队列是否为空void clear(); //清空队列元素void enQueue(E element); //入队E deQueue(); // " />
+    <meta property="og:description" content="Queue队列设计在头尾两端进行操作，先进先出FIFO队列的接口设计int size(); //队列元素个数boolean isEmpty(); //队列是否为空void clear(); //清空队列元素void enQueue(E element); //入队E deQueue(); // 出队" />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -116,7 +116,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -158,7 +158,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Queue-%E9%98%9F%E5%88%97%E8%AE%BE%E8%AE%A1"><span class="toc-text">Queue 队列设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deque-%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97%E8%AE%BE%E8%AE%A1"><span class="toc-text">Deque 双端队列设计</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LaKGf"><span class="toc-text">Queue队列设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TZeCs"><span class="toc-text">Deque 双端队列设计</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -209,7 +209,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -281,98 +281,75 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="Queue-队列设计"><a href="#Queue-队列设计" class="headerlink" title="Queue 队列设计"></a>Queue 队列设计</h2><blockquote>
-<p>在头尾两端进行操作，先进先出 FIFO</p>
-</blockquote>
-<p>队列的接口设计</p>
-<pre><code class="java">int size(); //队列元素个数
-boolean isEmpty(); //队列是否为空
-void clear(); //清空队列元素
-void enQueue(E element); //入队
-E deQueue(); // 出队
-E front(); //获取队列的头元素
-</code></pre>
-<pre><code class="java">package com.wztlink1013.ds.queue;
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="LaKGf"><span class="ne-text">Queue队列设计</span></h2><div class="ne-quote"><p id="ac52ddc375fb2102c6135f5574ffbc64" class="ne-p"><span class="ne-text">在头尾两端进行操作，先进先出FIFO</span></p></div><p id="3e5326d211f6e4b86271a61fb80d22ac" class="ne-p"><span class="ne-text">队列的接口设计</span></p><p id="ud2eeb6ba" class="ne-p"><span class="ne-text"></span></p><p id="u343a0a17" class="ne-p"><span class="ne-text"></span></p><pre data-language="java" id="1m4VW" class="ne-codeblock language-java">int size(); //队列元素个数
 
-import com.wztlink1013.ds.queue.list.LinkedList;
-import com.wztlink1013.ds.queue.list.List;
+<p>boolean isEmpty(); //队列是否为空<br>void clear(); //清空队列元素<br>void enQueue(E element); //入队<br>E deQueue(); // 出队<br>E front(); //获取队列的头元素</pre><pre data-language="java" id="xRhaL" class="ne-codeblock language-java">package com.wztlink1013.ds.queue;</p>
+<p>import com.wztlink1013.ds.queue.list.LinkedList;<br>import com.wztlink1013.ds.queue.list.List;</p>
+<p>public class Queue<E> {<br>private List<E> list = new LinkedList&lt;&gt;();</p>
+<pre><code>public int size() &#123;
+    return list.size();
+&#125;
 
-public class Queue&lt;E&gt; &#123;
-    private List&lt;E&gt; list = new LinkedList&lt;&gt;();
+public boolean isEmpty() &#123;
+    return list.isEmpty();
+&#125;
 
-    public int size() &#123;
-        return list.size();
-    &#125;
+public void clear() &#123;
+    list.clear();
+&#125;
 
-    public boolean isEmpty() &#123;
-        return list.isEmpty();
-    &#125;
+public void enQueue(E element) &#123;
+    list.add(element);
+&#125;
 
-    public void clear() &#123;
-        list.clear();
-    &#125;
+public E deQueue() &#123;
+    return list.remove(0);
+&#125;
 
-    public void enQueue(E element) &#123;
-        list.add(element);
-    &#125;
-
-    public E deQueue() &#123;
-        return list.remove(0);
-    &#125;
-
-    public E front() &#123;
-        return list.get(0);
-    &#125;
+public E front() &#123;
+    return list.get(0);
 &#125;
 </code></pre>
-<h2 id="Deque-双端队列设计"><a href="#Deque-双端队列设计" class="headerlink" title="Deque 双端队列设计"></a>Deque 双端队列设计</h2><blockquote>
-<p>双端队列是能在头尾两端添加、删除的队列</p>
-</blockquote>
-<pre><code class="java">package com.wztlink1013.ds.queue;
+<p>}</pre><h2 id="TZeCs"><span class="ne-text">Deque 双端队列设计</span></h2><div class="ne-quote"><p id="af7aaae0a02d7ec3a05c28f48a5a7e0d" class="ne-p"><span class="ne-text">双端队列是能在头尾两端添加、删除的队列</span></p></div><pre data-language="java" id="VyodE" class="ne-codeblock language-java">package com.wztlink1013.ds.queue;</p>
+<p>import com.wztlink1013.ds.queue.list.LinkedList;<br>import com.wztlink1013.ds.queue.list.List;</p>
+<p>public class Deque<E> {<br>private List<E> list = new LinkedList&lt;&gt;();</p>
+<pre><code>public int size() &#123;
+    return list.size();
+&#125;
 
-import com.wztlink1013.ds.queue.list.LinkedList;
-import com.wztlink1013.ds.queue.list.List;
+public boolean isEmpty() &#123;
+    return list.isEmpty();
+&#125;
 
-public class Deque&lt;E&gt; &#123;
-    private List&lt;E&gt; list = new LinkedList&lt;&gt;();
+public void clear() &#123;
+    list.clear();
+&#125;
 
-    public int size() &#123;
-        return list.size();
-    &#125;
+public void enQueueRear(E element) &#123;
+    list.add(element);
+&#125;
 
-    public boolean isEmpty() &#123;
-        return list.isEmpty();
-    &#125;
+public E deQueueFront() &#123;
+    return list.remove(0);
+&#125;
 
-    public void clear() &#123;
-        list.clear();
-    &#125;
+public void enQueueFront(E element) &#123;
+    list.add(0, element);
+&#125;
 
-    public void enQueueRear(E element) &#123;
-        list.add(element);
-    &#125;
+public E deQueueRear() &#123;
+    return list.remove(list.size() - 1);
+&#125;
 
-    public E deQueueFront() &#123;
-        return list.remove(0);
-    &#125;
+public E front() &#123;
+    return list.get(0);
+&#125;
 
-    public void enQueueFront(E element) &#123;
-        list.add(0, element);
-    &#125;
-
-    public E deQueueRear() &#123;
-        return list.remove(list.size() - 1);
-    &#125;
-
-    public E front() &#123;
-        return list.get(0);
-    &#125;
-
-    public E rear() &#123;
-        return list.get(list.size() - 1);
-    &#125;
+public E rear() &#123;
+    return list.get(list.size() - 1);
 &#125;
 </code></pre>
+<p>}</pre></div></p>
 
 </div>
 

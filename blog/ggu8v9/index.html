@@ -16,7 +16,7 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="问题描述压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。比如：给出一串字母 Huffman Coding   ，按照计算机处理形式，会根据 ascll 码将这串字符编码，具体形式（十进制）就是 104 117 102 102 109 97 110 32 67 111 100 1" />
+    <meta name="description" content="问题描述压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。比如：给出一串字母   Huffman Coding   ，按照计算机处理形式，会根据ascll码将这串字符编码，具体形式（十进制）就是104 117 102 102 109 97 110 32 67 111 100 10" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Huffman编码算法 | 尼采般地抒情" />
@@ -25,7 +25,7 @@
       content="https://www.wztlink1013.com/blog/ggu8v9/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="问题描述压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。比如：给出一串字母 Huffman Coding   ，按照计算机处理形式，会根据 ascll 码将这串字符编码，具体形式（十进制）就是 104 117 102 102 109 97 110 32 67 111 100 1" />
+    <meta property="og:description" content="问题描述压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。比如：给出一串字母   Huffman Coding   ，按照计算机处理形式，会根据ascll码将这串字符编码，具体形式（十进制）就是104 117 102 102 109 97 110 32 67 111 100 10" />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -116,7 +116,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -158,7 +158,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="toc-text">算法描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">编码实现</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sgeWE"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CaJgL"><span class="toc-text">算法描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3eVEL"><span class="toc-text">编码实现</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -209,7 +209,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -281,182 +281,9 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。</p>
-<p>比如：给出一串字母 <code>Huffman Coding</code>   ，按照计算机处理形式，会根据 ascll 码将这串字符编码，具体形式（十进制）就是 104 117 102 102 109 97 110 32 67 111 100 105 110 103，然后转换成二进制，最后会得到需要 97 个比特来存储。</p>
-<h2 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h2><p>算法角度来讲对上述问题 ascll 编码方式是浪费空间的，优化方向是改变编码方式，根据字母出现的频率来“按需分配”进制位。</p>
-<p>给出下面所给出的字母，以及出现的频率，来得到哈夫曼编码<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340774734-5ec5e8f1-0fae-47ff-8ded-dccf9611a3ad.png#align=left&display=inline&height=45&id=pbDsY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=89&originWidth=411&size=4276&status=done&style=shadow&width=205.5" alt="image.png"><br>先提出将频率小的依次加入。d 和 h 组合权值为 9(或者说 A 只是称呼方便)，然后将这个 9“替换 d 和 h”代入整个序列，在进行插入树操作，</p>
-<blockquote>
-<p>过程中，遵循数字大的在左数字小的在右原则（互换也没关系，只不过换的是二进制的 0 和 1）</p>
-</blockquote>
-<p>在进行到 E 的时候，此时的队列应该为 120 107 42 37，所以此时需要重新调整队列，然后进行到结束。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340899720-d8867a90-d01c-4bf6-8ec7-ca0e812a99dd.png#align=left&display=inline&height=221&id=vJM66&margin=%5Bobject%20Object%5D&name=image.png&originHeight=443&originWidth=376&size=24239&status=done&style=shadow&width=188" alt="image.png"><br>最后的编码结果为：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605341313840-61587c86-135d-4ba0-96aa-844868de1d56.png#align=left&display=inline&height=101&id=ENEj4&margin=%5Bobject%20Object%5D&name=image.png&originHeight=201&originWidth=165&size=4405&status=done&style=shadow&width=82.5" alt="image.png"></p>
-<h2 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h2><pre><code class="cpp">#include &lt;stdio.h&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-namespace NS_HuffmanCoding &#123;
-using namespace std;
-void BuildHuffmanTree();
-void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars);
-void Finalization();
-struct HFMNode &#123;
-  char Ch; int Freq;
-  HFMNode* Left, * Right;
-  HFMNode(char pCh, int pFreq, HFMNode* pLeft, HFMNode* pRight)
-    : Ch(pCh), Freq(pFreq), Left(pLeft), Right(pRight) &#123;&#125;
-  HFMNode(char pCh, int pFreq)
-    : HFMNode(pCh, pFreq, NULL, NULL) &#123;&#125;
-&#125;;
-void MinHeapify(vector&lt;HFMNode*&gt;&amp; H);
-void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node);
-void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i);
-void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i);
-HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H);
-void DeleteANode(HFMNode* node);
-void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars);
-void Output();
-static vector&lt;HFMNode*&gt; Q;
-void HuffmanCodingCaller(vector&lt;pair&lt;char, int&gt;&gt; chars)
-&#123;
-  ShowInput(chars);
-  Initialization(chars);
-  BuildHuffmanTree();
-  Output();
-  Finalization();
-&#125;
-void BuildHuffmanTree()
-&#123;
-  char C = &#39;A&#39;;
-  while (Q.size() &gt; 1)
-  &#123;
-    HFMNode* x = ExtractMin(Q);
-    HFMNode* y = ExtractMin(Q);
-    HFMNode* z = new HFMNode(C++, x-&gt;Freq + y-&gt;Freq, x, y);
-    InsertH(Q, z);
-  &#125;
-&#125;
-HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H)
-&#123;
-  swap(H.front(), H.back());
-  HFMNode* p = H.back();
-  H.pop_back();
-  if (!H.empty())
-    SiftDown(H, 0);
-  return p;
-&#125;
-void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i)
-&#123;
-    while ((i = (i &lt;&lt; 1) + 1) &lt; H.size()) &#123;
-        if ((i + 1 &lt; H.size()) &amp;&amp; (H[i + 1]-&gt;Freq &lt; H[i]-&gt;Freq))
-            i = i + 1;
-        if (H[(i - 1) &gt;&gt; 1]-&gt;Freq &gt; H[i]-&gt;Freq)
-            swap(H[(i - 1) &gt;&gt; 1], H[i]);
-        else break;
-    &#125;
-&#125;
-void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node)
-&#123;
-  H.push_back(node);
-  SiftUp(H, H.size() - 1);
-&#125;
-void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i)
-&#123;
-  while (i &gt; 0 &amp;&amp; H[i]-&gt;Freq &lt; H[(i - 1) &gt;&gt; 1]-&gt;Freq) &#123;
-    swap(H[i], H[(i - 1) &gt;&gt; 1]);
-    i = (i - 1) &gt;&gt; 1;
-  &#125;
-&#125;
-void MinHeapify(vector&lt;HFMNode*&gt;&amp; H)
-&#123;
-  for (int i = (H.size() &gt;&gt; 1) - 1; i &gt;= 0; i--) &#123;
-    SiftDown(H, i);
-  &#125;
-&#125;
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="sgeWE"><span class="ne-text">问题描述</span></h2><p id="9e986f8b518aa874e5488365b4e318ad" class="ne-p"><span class="ne-text">压缩算法，目的就是根据字母的出现频率来“按需分配”编码来优化编码方式。</span></p><p id="077c62ae4385fc6d47f65957345e17f5" class="ne-p"><span class="ne-text">比如：给出一串字母   </span><code class="ne-code"><span class="ne-text">Huffman Coding</span></code><span class="ne-text">   ，按照计算机处理形式，会根据ascll码将这串字符编码，具体形式（十进制）就是104 117 102 102 109 97 110 32 67 111 100 105 110 103，然后转换成二进制，最后会得到需要97个比特来存储。</span></p><h2 id="CaJgL"><span class="ne-text">算法描述</span></h2><p id="7e72a7f72a1ef85799d8e92db7d33404" class="ne-p"><span class="ne-text">算法角度来讲对上述问题ascll编码方式是浪费空间的，优化方向是改变编码方式，根据字母出现的频率来“按需分配”进制位。</span></p><p id="7bcb792f84491e892aa6eec4fe5ff850" class="ne-p"><br></p><p id="3568172be7d1c8656b762c0d960074ad" class="ne-p" style="text-align: left"><span class="ne-text">给出下面所给出的字母，以及出现的频率，来得到哈夫曼编码</span></p><p id="6ccb77d085739e1dd8a502fd7145d98b" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340774734-5ec5e8f1-0fae-47ff-8ded-dccf9611a3ad.png" width="205.5" id="pbDsY" class="ne-image"></p><p id="08528f8a11c5d0ecc0cd3bae97773b5b" class="ne-p" style="text-align: left"><span class="ne-text">先提出将频率小的依次加入。d和h组合权值为9(或者说A只是称呼方便)，然后将这个9“替换d和h”代入整个序列，在进行插入树操作，</span></p><div class="ne-quote"><p id="a5e27cd3dfd648344330915cf07369d8" class="ne-p" style="text-align: left"><span class="ne-text">过程中，遵循数字大的在左数字小的在右原则（互换也没关系，只不过换的是二进制的0和1）</span></p></div><p id="80aefeec8f8b6ab08a4c6c02bfb68c36" class="ne-p"><span class="ne-text">在进行到E的时候，此时的队列应该为120 107 42 37，所以此时需要重新调整队列，然后进行到结束。</span></p><p id="e68706c149a6ec04640e3cad07d51c50" class="ne-p" style="text-align: left"><br></p><p id="c8e68bfc6996011d2dc03f21a12bb5f5" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605340899720-d8867a90-d01c-4bf6-8ec7-ca0e812a99dd.png" width="188" id="vJM66" class="ne-image"></p><p id="4ef66678373379b55daca8b336a95124" class="ne-p" style="text-align: left"><span class="ne-text">最后的编码结果为：</span></p><p id="05a0e15b6dd3480361d88674d68f7b0d" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605341313840-61587c86-135d-4ba0-96aa-844868de1d56.png" width="82.5" id="ENEj4" class="ne-image"></p><h2 id="3eVEL"><span class="ne-text">编码实现</span></h2><pre data-language="cpp" id="rNy23" class="ne-codeblock language-cpp">#include <stdio.h>
 
-void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars)
-&#123;
-  Q.clear();
-  for (auto ch : chars)
-    Q.push_back(new HFMNode(ch.first, ch.second));
-  MinHeapify(Q);
-&#125;
-void Finalization()
-&#123;
-  DeleteANode(Q[0]);
-&#125;
-void DeleteANode(HFMNode* node)
-&#123;
-  if (node-&gt;Left)
-  &#123;
-    DeleteANode(node-&gt;Left);
-    DeleteANode(node-&gt;Right);
-  &#125;
-  delete node;
-&#125;
-void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars)
-&#123;
-  printf(&quot;Huffman coding input: \n&quot;);
-  for (auto c : chars)
-    printf(&quot;%c,%d; &quot;, c.first, c.second);
-  printf(&quot;\n&quot;);
-&#125;
-static vector&lt;char&gt; coding;
-static vector&lt;pair&lt;char, vector&lt;char&gt;&gt;&gt; codingList;
-void GetHuffmanCoding(HFMNode* node)
-&#123;
-  if (node-&gt;Left)
-  &#123;
-    coding.push_back(&#39;0&#39;);
-    GetHuffmanCoding(node-&gt;Left);
-    coding.pop_back();
-    coding.push_back(&#39;1&#39;);
-    GetHuffmanCoding(node-&gt;Right);
-    coding.pop_back();
-  &#125;
-  else
-  &#123;
-    codingList.push_back(pair&lt;char,
-      vector&lt;char&gt;&gt;(node-&gt;Ch, coding));
-  &#125;
-&#125;
-void Output()
-&#123;
-  printf(&quot;Huffman coding:\n&quot;);
-  coding.clear();
-  codingList.clear();
-  GetHuffmanCoding(Q[0]);
-  sort(codingList.begin(), codingList.end());
-  for (auto c1 : codingList)
-  &#123;
-    printf(&quot;  %c: &quot;, c1.first);
-    for (auto c2 : c1.second)
-      printf(&quot;%c&quot;, c2);
-    printf(&quot;\n&quot;);
-  &#125;
-  printf(&quot;\n&quot;);
-&#125;
-&#125; //namespace NS_HuffmanCoding
-using namespace NS_HuffmanCoding;
-void TestHuffmanCoding()
-&#123;
-  vector&lt;vector&lt;pair&lt;char, int&gt;&gt;&gt; charLists = &#123;
-      //Introduction to Algorithms
-     &#123;
-        &#123; &#123;&#39;a&#39;,40&#125;, &#123;&#39;b&#39;,13&#125;, &#123;&#39;c&#39;,12&#125;,
-          &#123;&#39;d&#39;,16&#125;, &#123;&#39;e&#39;,9&#125;, &#123;&#39;f&#39;,5&#125; &#125;,
-     &#125;,
-     //ÑÏÎµÃô
-     &#123;
-        &#123; &#123;&#39;a&#39;,5&#125;, &#123;&#39;b&#39;,29&#125;, &#123;&#39;c&#39;,7&#125;, &#123;&#39;d&#39;,8&#125;,
-          &#123;&#39;e&#39;,14&#125;, &#123;&#39;f&#39;,23&#125;, &#123;&#39;g&#39;,3&#125;, &#123;&#39;h&#39;,11&#125; &#125;,
-     &#125;,
-  &#125;;
-  int n = charLists.size();
-  for (int i = 0; i &lt; n; i++)
-  &#123;
-    HuffmanCodingCaller(charLists[i]);
-  &#125;
-&#125;
-</code></pre>
+<dl><dt>#include <vector><br>#include <algorithm><br>namespace NS_HuffmanCoding {<br>using namespace std;<br>void BuildHuffmanTree();<br>void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars);<br>void Finalization();<br>struct HFMNode {<br>char Ch; int Freq;<br>HFMNode* Left, * Right;<br>HFMNode(char pCh, int pFreq, HFMNode* pLeft, HFMNode* pRight)<br>: Ch(pCh), Freq(pFreq), Left(pLeft), Right(pRight) {}<br>HFMNode(char pCh, int pFreq)</dt><dd>HFMNode(pCh, pFreq, NULL, NULL) {}<br>};<br>void MinHeapify(vector&lt;HFMNode*&gt;&amp; H);<br>void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node);<br>void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i);<br>void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i);<br>HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H);<br>void DeleteANode(HFMNode* node);<br>void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars);<br>void Output();<br>static vector&lt;HFMNode*&gt; Q;<br>void HuffmanCodingCaller(vector&lt;pair&lt;char, int&gt;&gt; chars)<br>{<br>ShowInput(chars);<br>Initialization(chars);<br>BuildHuffmanTree();<br>Output();<br>Finalization();<br>}<br>void BuildHuffmanTree()<br>{<br>char C = ‘A’;<br>while (Q.size() &gt; 1)<br>{<br>HFMNode* x = ExtractMin(Q);<br>HFMNode* y = ExtractMin(Q);<br>HFMNode* z = new HFMNode(C++, x-&gt;Freq + y-&gt;Freq, x, y);<br>InsertH(Q, z);<br>}<br>}<br>HFMNode* ExtractMin(vector&lt;HFMNode*&gt;&amp; H)<br>{<br>swap(H.front(), H.back());<br>HFMNode* p = H.back();<br>H.pop_back();<br>if (!H.empty())<br>SiftDown(H, 0);<br>return p;<br>}<br>void SiftDown(vector&lt;HFMNode*&gt;&amp; H, int i)<br>{<br>while ((i = (i &lt;&lt; 1) + 1) &lt; H.size()) {<br>if ((i + 1 &lt; H.size()) &amp;&amp; (H[i + 1]-&gt;Freq &lt; H[i]-&gt;Freq))<br>i = i + 1;<br>if (H[(i - 1) &gt;&gt; 1]-&gt;Freq &gt; H[i]-&gt;Freq)<br>swap(H[(i - 1) &gt;&gt; 1], H[i]);<br>else break;<br>}<br>}<br>void InsertH(vector&lt;HFMNode*&gt;&amp; H, HFMNode* node)<br>{<br>H.push_back(node);<br>SiftUp(H, H.size() - 1);<br>}<br>void SiftUp(vector&lt;HFMNode*&gt;&amp; H, int i)<br>{<br>while (i &gt; 0 &amp;&amp; H[i]-&gt;Freq &lt; H[(i - 1) &gt;&gt; 1]-&gt;Freq) {<br>swap(H[i], H[(i - 1) &gt;&gt; 1]);<br>i = (i - 1) &gt;&gt; 1;<br>}<br>}<br>void MinHeapify(vector&lt;HFMNode*&gt;&amp; H)<br>{<br>for (int i = (H.size() &gt;&gt; 1) - 1; i &gt;= 0; i–) {<br>SiftDown(H, i);<br>}<br>}</dd></dl><p>void Initialization(vector&lt;pair&lt;char, int&gt;&gt; chars)<br>{<br>Q.clear();<br>for (auto ch : chars)<br>Q.push_back(new HFMNode(ch.first, ch.second));<br>MinHeapify(Q);<br>}<br>void Finalization()<br>{<br>DeleteANode(Q[0]);<br>}<br>void DeleteANode(HFMNode* node)<br>{<br>if (node-&gt;Left)<br>{<br>DeleteANode(node-&gt;Left);<br>DeleteANode(node-&gt;Right);<br>}<br>delete node;<br>}<br>void ShowInput(vector&lt;pair&lt;char, int&gt;&gt; chars)<br>{<br>printf(“Huffman coding input: \n”);<br>for (auto c : chars)<br>printf(“%c,%d; “, c.first, c.second);<br>printf(“\n”);<br>}<br>static vector<char> coding;<br>static vector&lt;pair&lt;char, vector<char>&gt;&gt; codingList;<br>void GetHuffmanCoding(HFMNode* node)<br>{<br>if (node-&gt;Left)<br>{<br>coding.push_back(‘0’);<br>GetHuffmanCoding(node-&gt;Left);<br>coding.pop_back();<br>coding.push_back(‘1’);<br>GetHuffmanCoding(node-&gt;Right);<br>coding.pop_back();<br>}<br>else<br>{<br>codingList.push_back(pair&lt;char,<br>vector<char>&gt;(node-&gt;Ch, coding));<br>}<br>}<br>void Output()<br>{<br>printf(“Huffman coding:\n”);<br>coding.clear();<br>codingList.clear();<br>GetHuffmanCoding(Q[0]);<br>sort(codingList.begin(), codingList.end());<br>for (auto c1 : codingList)<br>{<br>printf(“ %c: “, c1.first);<br>for (auto c2 : c1.second)<br>printf(“%c”, c2);<br>printf(“\n”);<br>}<br>printf(“\n”);<br>}<br>} //namespace NS_HuffmanCoding<br>using namespace NS_HuffmanCoding;<br>void TestHuffmanCoding()<br>{<br>vector&lt;vector&lt;pair&lt;char, int&gt;&gt;&gt; charLists = {<br>//Introduction to Algorithms<br>{<br>{ {‘a’,40}, {‘b’,13}, {‘c’,12},<br>{‘d’,16}, {‘e’,9}, {‘f’,5} },<br>},<br>//ÑÏÎµÃô<br>{<br>{ {‘a’,5}, {‘b’,29}, {‘c’,7}, {‘d’,8},<br>{‘e’,14}, {‘f’,23}, {‘g’,3}, {‘h’,11} },<br>},<br>};<br>int n = charLists.size();<br>for (int i = 0; i &lt; n; i++)<br>{<br>HuffmanCodingCaller(charLists[i]);<br>}<br>}</pre></div></p>
 
 </div>
 

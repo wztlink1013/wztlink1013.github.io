@@ -116,7 +116,7 @@
     <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -158,7 +158,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95"><span class="toc-text">一、银行家算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">二、代码实现</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#V9yxn"><span class="toc-text">一、银行家算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ji5xK"><span class="toc-text">二、代码实现</span></a></li></ol>
 </div>
 <div class="search_box">
         <div class="search">
@@ -209,7 +209,7 @@
         <div class="component clearfix web_info">
     <h3>站点信息</h3>
     <div>
-        <span>文章数目：</span>300 <span>篇</span>
+        <span>文章数目：</span>293 <span>篇</span>
     </div>
     <div>
         <span>已运行时间：</span>
@@ -281,330 +281,19 @@
     </div>
 </div>
         <div class="component article">
-    <h2 id="一、银行家算法"><a href="#一、银行家算法" class="headerlink" title="一、银行家算法"></a>一、银行家算法</h2><p><strong>功能：避免死锁</strong></p>
-<blockquote>
-<p>在银行中，客户申请贷款的数量是有限的，每个客户在第一次申请贷款时要声明完成该项目所需的最大资金量，在满足所有贷款要求时，客户应及时归还。银行家在客户申请的贷款数量不超过自己拥有的最大值时，都应尽量满足客户的需要。在这样的描述中，银行家就好比操作系统，资金就是资源，客户就相当于要申请资源的进程。</p>
-</blockquote>
-<h2 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h2><pre><code class="cpp">#include &lt;iostream&gt;
-using namespace std;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;string.h&gt;
-/* 定义全局变量 */
-const int    x = 50, y = 50;                                 /* x为进程个数 y为资源种类数 */
-int        Available[y];                                   /* 各资源可利用的数量 */
-int        Allocation[x][y];                               /* 各进程当前已分配的资源数量 */
-int        Max[x][y];                                      /* 各进程对各类资源的最大需求数 */
-int        Need[x][y];                                     /* 尚需多少资源 */
-int        Request[y];                                     /* 申请多少资源 */
-int        Work[y];                                        /* 工作向量，表示系统可提供给进程继续运行所需的各类资源数量 */
-int        Finish[x];                                      /* 表示系统是否有足够的资源分配给进程，1为是 */
-int        p[x];                                           /* 存储安全序列 */
-int        i, j;                                           /* i表示进程，j表示资源 */
-int        n, m;                                           /* n为进程i的数量,m为资源j种类数 */
-int        l    = 0;                                    /* l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的 */
-int        counter = 0;                                    /* 记数器,记录可执行的进程数 */
-/* 函数声明 */
-void chushihua();                                               /* 初始化函数 */
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="V9yxn"><span class="ne-text">一、银行家算法</span></h2><p id="1cdb67fe575acdd8dff6bdb9071e29c8" class="ne-p"><strong><span class="ne-text">功能：避免死锁</span></strong></p><div class="ne-quote"><p id="eb42c5817ebe3f45a7934aff9cf5e8ef" class="ne-p"><span class="ne-text">在银行中，客户申请贷款的数量是有限的，每个客户在第一次申请贷款时要声明完成该项目所需的最大资金量，在满足所有贷款要求时，客户应及时归还。银行家在客户申请的贷款数量不超过自己拥有的最大值时，都应尽量满足客户的需要。在这样的描述中，银行家就好比操作系统，资金就是资源，客户就相当于要申请资源的进程。</span></p></div><p id="u788edfa5" class="ne-p"><span class="ne-text"></span></p><h2 id="ji5xK"><span class="ne-text">二、代码实现</span></h2><pre data-language="cpp" id="NAIsL" class="ne-codeblock language-cpp">#include <iostream>
 
-
-void safe();                                                    /* 安全性算法 */
-
-
-void show();                                                    /* 函数show,输出当前状态 */
-
-
-void bank();                                                    /* 银行家算法 */
-
-
-void jieshu();                                                  /* 结束函数 */
-
-
-void chushihua()
-&#123;
-    cout &lt;&lt; &quot;输入进程的数量: &quot;;                                    /* 从此开始输入有关数据 */
-    cin &gt;&gt; n;
-    cout &lt;&lt; &quot;输入资源种类数: &quot;;
-    cin &gt;&gt; m;
-    cout &lt;&lt; endl &lt;&lt; &quot;输入各种资源当前可用的数量( &quot; &lt;&lt; m &lt;&lt; &quot; 种): &quot; &lt;&lt; endl;
-    for ( j = 0; j &lt; m; j++ )                               /* m为资源数 */
-    &#123;
-        cout &lt;&lt; &quot;输入资源 &quot; &lt;&lt; j &lt;&lt; &quot; 可利用的数量Available[&quot; &lt;&lt; j &lt;&lt; &quot;]: &quot;;
-        cin &gt;&gt; Available[j];                            /* 输入数字的过程 */
-        Work[j] = Available[j];                         /* 初始化Work[j]，它的初始值就是当前可用的资源数 */
-    &#125;
-    cout &lt;&lt; endl &lt;&lt; &quot;输入各进程当前已分配的资源数量Allocation[&quot; &lt;&lt; n &lt;&lt; &quot;][&quot; &lt;&lt; m &lt;&lt; &quot;]: &quot; &lt;&lt; endl;
-    for ( i = 0; i &lt; n; i++ )                               /* n为进程数 */
-    &#123;
-        for ( j = 0; j &lt; m; j++ )                       /* m为资源数 */
-        &#123;
-            cout &lt;&lt; &quot; 输入进程 &quot; &lt;&lt; i &lt;&lt; &quot; 当前已分配的资源 &quot; &lt;&lt; j &lt;&lt; &quot; 数量: &quot;;
-            cin &gt;&gt; Allocation[i][j];
-        &#125;
-        cout &lt;&lt; endl;
-        Finish[i] = 0;                                  /* 初始化Finish[i] */
-    &#125;
-    cout &lt;&lt; endl &lt;&lt; &quot;输入各进程对各类资源的最大需求Max[&quot; &lt;&lt; n &lt;&lt; &quot;][&quot; &lt;&lt; m &lt;&lt; &quot;]: &quot; &lt;&lt; endl;
-    for ( i = 0; i &lt; n; i++ )                               /* n为进程数 */
-    &#123;
-        for ( j = 0; j &lt; m; j++ )                       /* m为资源数 */
-        &#123;
-            cout &lt;&lt; &quot; 输入进程 &quot; &lt;&lt; i &lt;&lt; &quot; 对资源 &quot; &lt;&lt; j &lt;&lt; &quot; 的最大需求数: &quot;;
-            cin &gt;&gt; Max[i][j];
-            if ( Max[i][j] &gt;= Allocation[i][j] )    /* 若最大需求大于已分配，则计算需求量 */
-                Need[i][j] = Max[i][j] - Allocation[i][j];
-            else
-                Need[i][j] = 0;                 /* Max小于已分配的时候，此类资源已足够不需再申请 */
-        &#125;
-        cout &lt;&lt; endl;
-    &#125;
-    cout &lt;&lt; endl &lt;&lt; &quot;初始化完成&quot; &lt;&lt; endl;
-&#125;
-
-
-/* 安全性算法函数 */
-void safe()
-&#123;
-    l = 0;                                                                  /* l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的 */
-    for ( i = 0; i &lt; n; i++ )                                               /* n为进程数 */
-    &#123;
-        if ( Finish[i] == 0 )
-        &#123;                                                               /* 逐个查找Finish[i]==0的进程 条件一 */
-            counter = 0;                                            /* 记数器,记录有多少个进程已经执行 */
-            for ( j = 0; j &lt; m; j++ )                               /* m为资源数 */
-            &#123;
-                if ( Work[j] &gt;= Need[i][j] )
-                    counter = counter + 1;                  /* 可用大于需求，记数，该进程可以执行 */
-            &#125;
-            if ( counter == m )                                     /* i进程的每类资源都符合Work[j]&gt;=Need[i][j] 条件二 */
-            &#123;
-                p[l]        = i;                            /* 存储安全序列 */
-                Finish[i]    = 1;                            /* i进程标志为可分配 */
-                for ( j = 0; j &lt; m; j++ )
-                    Work[j] = Work[j] + Allocation[i][j];   /* 释放资源 */
-                l    = l + 1;                                /* 记数,现在有l个进程是安全的，当l=n时说明满足安全序列 */
-                i    = -1;                                   /* 从第一个进程开始继续寻找满足条件一二的进程 */
-            &#125;
-        &#125;
-    &#125;
-&#125;
-
-
-/* 显示当前状态函数 */
-void show()                                     /* 函数show,输出当前资源分配情况 */
-&#123;
-    int    i, j;                           /* 局部变量，i表示进程，j表示资源 */
-    int    All[y];                         /* 各种资源的总数量 */
-    int    L1;                             /* 局部变量L1 */
-    cout &lt;&lt; &quot;当前的状态为：&quot; &lt;&lt; endl;
-    cout &lt;&lt; &quot;各种资源的总数量:&quot; &lt;&lt; endl;
-    for ( j = 0; j &lt; m; j++ )               /* m为资源数 */
-    &#123;
-        cout &lt;&lt; &quot; 资源&quot; &lt;&lt; j &lt;&lt; &quot;: &quot;;
-        All[j] = Available[j];          /* 总数量=可用的+已分配的 */
-        for ( i = 0; i &lt; n; i++ )       /* n为进程数 */
-            All[j] += Allocation[i][j];
-        cout &lt;&lt; All[j] &lt;&lt; &quot; &quot;;
-    &#125;
-    cout &lt;&lt; endl &lt;&lt; &quot;当前各种资源可用的量为(available):&quot; &lt;&lt; endl;
-    for ( j = 0; j &lt; m; j++ )               /* m为资源数 */
-        cout &lt;&lt; &quot; 资源&quot; &lt;&lt; j &lt;&lt; &quot;: &quot; &lt;&lt; Available[j] &lt;&lt; &quot; &quot;;
-    cout &lt;&lt; endl &lt;&lt; &quot;各进程所需的最大资源量(Max): &quot; &lt;&lt; endl;
-    for ( i = 0; i &lt; m; i++ )               /* m为资源数 */
-    &#123;
-        cout &lt;&lt; &quot; 资源&quot; &lt;&lt; i &lt;&lt; &quot; &quot;;
-    &#125;
-    cout &lt;&lt; endl;
-    for ( L1 = 0; L1 &lt; n; L1++ )            /* n为进程数 */
-    &#123;
-        cout &lt;&lt; &quot;进程&quot; &lt;&lt; L1 &lt;&lt; &quot;: &quot;;
-        for ( j = 0; j &lt; m; j++ )
-            cout &lt;&lt; Max[L1][j] &lt;&lt; &quot; &quot;;
-        cout &lt;&lt; endl;
-    &#125;
-    cout &lt;&lt; endl &lt;&lt; &quot;各进程已经得到的资源量(allocation): &quot; &lt;&lt; endl;
-    for ( i = 0; i &lt; m; i++ )       /* m为资源数 */
-    &#123;
-        cout &lt;&lt; &quot; 资源&quot; &lt;&lt; i &lt;&lt; &quot; &quot;;
-    &#125;
-    cout &lt;&lt; endl;
-    for ( L1 = 0; L1 &lt; n; L1++ )    /* n为进程数 */
-    &#123;
-        cout &lt;&lt; &quot;进程&quot; &lt;&lt; L1 &lt;&lt; &quot;: &quot;;
-        for ( j = 0; j &lt; m; j++ )
-            cout &lt;&lt; Allocation[L1][j] &lt;&lt; &quot; &quot;;
-        cout &lt;&lt; endl;
-    &#125;
-    cout &lt;&lt; endl &lt;&lt; &quot;各进程还需要的资源量(need):&quot; &lt;&lt; endl;
-    for ( i = 0; i &lt; m; i++ ) /* m为资源数 */
-    &#123;
-        cout &lt;&lt; &quot; 资源&quot; &lt;&lt; i &lt;&lt; &quot; &quot;;
-    &#125;
-    cout &lt;&lt; endl;
-    for ( L1 = 0; L1 &lt; n; L1++ )
-    &#123;
-        cout &lt;&lt; &quot;进程&quot; &lt;&lt; L1 &lt;&lt; &quot;: &quot;;
-        for ( j = 0; j &lt; m; j++ )
-            cout &lt;&lt; Need[L1][j] &lt;&lt; &quot; &quot;;
-        cout &lt;&lt; endl;
-    &#125;
-&#125;
-
-
-/* 银行家算法函数 */
-void bank()
-&#123;
-    cout &lt;&lt; endl &lt;&lt; &quot;进程申请分配资源：&quot; &lt;&lt; endl;
-    int    k    = 0;                                                            /* 用于输入进程编号 */
-    bool    r    = false;                                                        /* 初值为假，输入Y继续申请则置为真 */
-    do                                                                              /* 输入请求 */
-    &#123;
-        cout &lt;&lt; &quot;输入申请资源的进程(0-&quot; &lt;&lt; n - 1 &lt;&lt; &quot;): &quot;;
-        cin &gt;&gt; k;                                                               /* 进程编号 */
-        cout &lt;&lt; endl;
-        while ( k &gt; n - 1 )                                                     /* 输入错误处理 */
-        &#123;
-            cout &lt;&lt; endl &lt;&lt; &quot;无该进程号，重新输入：&quot; &lt;&lt; endl;
-            cout &lt;&lt; endl &lt;&lt; &quot;输入申请资源的进程(0--&quot; &lt;&lt; n - 1 &lt;&lt; &quot;): &quot;;
-            cin &gt;&gt; k;                                                       /* 进程编号 */
-            cout &lt;&lt; endl;
-        &#125;
-        cout &lt;&lt; endl &lt;&lt; &quot;输入该进程申请各类资源的数量: &quot; &lt;&lt; endl;
-        for ( j = 0; j &lt; m; j++ )                                               /* m为资源数 */
-        &#123;
-            do                                                              /* do……while 循环判断申请输入的情况 */
-            &#123;
-                cout &lt;&lt; &quot;进程 &quot; &lt;&lt; k &lt;&lt; &quot; 申请资源[&quot; &lt;&lt; j &lt;&lt; &quot;]的数量:&quot;;
-                cin &gt;&gt; Request[j];                                      /* 输入请求进程数 */
-                cout &lt;&lt; endl;
-                if ( Request[j] &gt; Need[k][j] )                          /* 申请大于需求量时出错，提示重新输入 cout&lt;&lt;&quot;申请量大于需要量!&quot;&lt;&lt;endl; */
-                &#123;
-                    cout &lt;&lt; &quot;申请的资源&quot; &lt;&lt; j &lt;&lt; &quot;的数量为&quot; &lt;&lt; Request[j] &lt;&lt; &quot;,大于进程&quot; &lt;&lt; k &lt;&lt; &quot;对该资源需求量&quot; &lt;&lt; Need[k][j] &lt;&lt; &quot;。&quot; &lt;&lt; endl;
-                    cout &lt;&lt; &quot;重新输入!&quot; &lt;&lt; endl;
-                &#125;
-/* 先判断是否申请大于需求量，再判断是否申请大于可利用量 */
-                else if ( Request[j] &gt; Available[j] )                   /* 申请大于可利用量， 应该阻塞等待 */
-                &#123;
-                    cout &lt;&lt; &quot;\n没有那么多资源，目前可利用资源&quot; &lt;&lt; j &lt;&lt; &quot;数量为&quot; &lt;&lt; Available[j] &lt;&lt; &quot;,本次申请不成功，进程等待!&quot; &lt;&lt; endl;
-                    Finish[k] = 0;                                  /* 该进程等待 */
-                    goto error;                                     /* goto语句跳转，结束本次申请 */
-                &#125;
-            &#125;
-            while ( Request[j] &gt; Need[k][j] );                              /* Request[j]&gt;Available[j] */
-        &#125;
-/* 改变Available、Allocation、Need的值 */
-        for ( j = 0; j &lt; m; j++ )                                               /* m为资源数 */
-        &#123;
-            Available[j]        = Available[j] - Request[j];            /* 可用的资源数=可用的资源数-请求分配的资源数 */
-            Allocation[k][j]    = Allocation[k][j] + Request[j];        /* 已分配的资源数=已分配的资源数+请求的资源数 */
-            Need[k][j]        = Need[k][j] - Request[j];              /* 还需要的资源数=还需要的资源数-请求的资源数 */
-            Work[j]            = Available[j];
-        &#125;
-        safe();                                                                 /* 调用安全性算法函数，判断当前状态的安全性 */
-        if ( l &lt; n )                                                            /* l用来记录有几个进程是Finish[i]=1的，当l=n是说明系统状态是安全的 */
-        &#123;
-            l = 0;
-            cout &lt;&lt; &quot;\n试分配后,状态不安全,所以不予分配!恢复原状态&quot; &lt;&lt; endl;
-/* 恢复数据 */
-            for ( j = 0; j &lt; m; j++ )                                       /* m为资源数 */
-            &#123;
-                Available[j]        = Available[j] + Request[j];
-                Allocation[k][j]    = Allocation[k][j] - Request[j];
-                Need[k][j]        = Need[k][j] + Request[j];
-                Work[j]            = Available[j];
-            &#125;
-            for ( i = 0; i &lt; n; i++ )                                       /* n为进程数 */
-                Finish[i] = 0;                                          /* 进程均置为未分配状态 */
-        &#125;else  &#123; /* l=n，即所有的Finish[i]=1,每一个进程均能执行 */
-            l = 0;                                                          /* 判断标志 */
-            cout &lt;&lt; &quot;\n申请资源成功!!!&quot; &lt;&lt; endl;
-            for ( j = 0; j &lt; m; j++ )                                       /* m为资源数 */
-            &#123;
-                if ( Need[k][j] == 0 )
-                    ;
-                else &#123;                                                  /*有一种资源还没全部申请到，则该进程不可执行，不能释放拥有的资源 */
-                    l = 1;                                          /* 置l为1，作为判断标志 */
-                    break;
-                &#125;
-            &#125;
-            if ( l != 1 )                                                   /* 进程可以执行，则释放该进程的所有资源 */
-            &#123;
-                for ( j = 0; j &lt; m; j++ )                               /* m为资源数 */
-                &#123;
-                    Available[j]        = Available[j] + Allocation[k][j];
-                    Allocation[k][j]    = 0;
-                &#125;
-                cout &lt;&lt; &quot;该进程已得到所有需求资源，执行后将释放其所有拥有资源！&quot; &lt;&lt; endl;
-            &#125;
-            l = 0;                                                          /* 归零 */
-            cout &lt;&lt; &quot;\n安全的状态!&quot; &lt;&lt; endl;
-            cout &lt;&lt; &quot;安全序列为: &quot;;
-            cout &lt;&lt; endl &lt;&lt; &quot;进程&quot; &lt;&lt; &quot;(&quot; &lt;&lt; p[0] &lt;&lt; &quot;)&quot;;                     /* 输出安全序列，考虑显示格式，先输出第一个 */
-            Finish[0] = 0;
-            for ( i = 1; i &lt; n; i++ )
-            &#123;
-                cout &lt;&lt; &quot;==&gt;&gt;&quot; &lt;&lt; &quot;进程&quot; &lt;&lt; &quot;(&quot; &lt;&lt; p[i] &lt;&lt; &quot;)&quot;;
-                Finish[i] = 0;                                          /* 所有进程置为未分配状态 */
-            &#125;
-            cout &lt;&lt; endl &lt;&lt; endl;
-        &#125;
-        show();                                                                 /* 显示当前状态 */
-error:                                                                                  /* 申请大于可利用量， 应该阻塞等待,结束本次资源申请，GOTO 语句跳转至此 */
-        cout &lt;&lt; endl &lt;&lt; &quot;是否继续申请资源(y/n)或（Y/N）?&quot;;
-        char* b = new char;                                                     /* 输入y/n，判断是否继续申请 &lt;&lt;endl */
-        cin &gt;&gt; b;
-        cout &lt;&lt; endl;
-        cout &lt;&lt; &quot;-------------------------------------------&quot; &lt;&lt; endl &lt;&lt; endl;
-        cout &lt;&lt; endl;
-        if ( *b == &#39;y&#39; || *b == &#39;Y&#39; )
-            r = true;                                                       /* 继续申请 */
-        else&#123;
-            r = false;                                                      /*不继续申请 */
-            jieshu();                                                       /* 调用结束函数 */
-        &#125;
-    &#125;
-    while ( r == true );
-&#125;
-
-
-/* 结束函数 */
-void jieshu()
-&#123;
-    cout &lt;&lt; endl &lt;&lt; endl;
-    cout &lt;&lt; &quot;\t\t 演示计算完毕&quot; &lt;&lt; endl;
-    cout &lt;&lt; endl &lt;&lt; endl;
-&#125;
-
-
-/* 主函数 */
-int main()
-&#123;
-    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; &quot;\t\t\t\t模拟银行家算法&quot; &lt;&lt; endl &lt;&lt; endl;
-    chushihua();                                    /* 初始化函数调用 */
-    cout &lt;&lt; endl;
-    show();                                         /* 输出当前状态 */
-    safe();                                         /* 判断当前状态的安全性 */
-    if ( l &lt; n )                                    /* l在safe中是用来记录安全的进程的个数的 */
-    &#123;
-        cout &lt;&lt; &quot;\n当前状态不安全，拒绝申请！&quot; &lt;&lt; endl;
-        cout &lt;&lt; endl;
-        return(0);
-    &#125;else  &#123;
-        int i;                                  /* 局部变量 */
-        l = 0;
-        cout &lt;&lt; endl &lt;&lt; &quot;\n当前的状态是安全的!安全序列为:&quot; &lt;&lt; endl;
-        cout &lt;&lt; &quot;进程&quot; &lt;&lt; &quot;(&quot; &lt;&lt; p[0] &lt;&lt; &quot;)&quot;;     /* 输出安全序列 */
-        for ( i = 1; i &lt; n; i++ )
-            cout &lt;&lt; &quot;-&gt;&gt;&quot; &lt;&lt; &quot;进程&quot; &lt;&lt; &quot;(&quot; &lt;&lt; p[i] &lt;&lt; &quot;)&quot;;
-        for ( i = 0; i &lt; n; i++ )
-            Finish[i] = 0;                  /* 所有进程置为未分配状态 */
-        cout &lt;&lt; endl;
-    &#125;
-    bank();                                         /* 调用银行家算法函数 */
-    cout &lt;&lt; &quot;\t\t 演示计算完毕&quot; &lt;&lt; endl;
-    return(0);
-&#125;
-</code></pre>
+<p>using namespace std;<br>#include &lt;stdio.h&gt;<br>#include &lt;stdlib.h&gt;<br>#include &lt;string.h&gt;<br>/_ 定义全局变量 <em>/<br>const int x = 50, y = 50; /</em> x 为进程个数 y 为资源种类数 <em>/<br>int Available[y]; /</em> 各资源可利用的数量 <em>/<br>int Allocation[x][y]; /</em> 各进程当前已分配的资源数量 <em>/<br>int Max[x][y]; /</em> 各进程对各类资源的最大需求数 <em>/<br>int Need[x][y]; /</em> 尚需多少资源 <em>/<br>int Request[y]; /</em> 申请多少资源 <em>/<br>int Work[y]; /</em> 工作向量，表示系统可提供给进程继续运行所需的各类资源数量 <em>/<br>int Finish[x]; /</em> 表示系统是否有足够的资源分配给进程，1 为是 <em>/<br>int p[x]; /</em> 存储安全序列 <em>/<br>int i, j; /</em> i 表示进程，j 表示资源 <em>/<br>int n, m; /</em> n 为进程 i 的数量,m 为资源 j 种类数 <em>/<br>int l = 0; /</em> l 用来记录有几个进程是 Finish[i]=1 的，当 l=n 是说明系统状态是安全的 <em>/<br>int counter = 0; /</em> 记数器,记录可执行的进程数 <em>/<br>/</em> 函数声明 <em>/<br>void chushihua(); /</em> 初始化函数 _/</p>
+<p>void safe(); /_ 安全性算法 _/</p>
+<p>void show(); /_ 函数 show,输出当前状态 _/</p>
+<p>void bank(); /_ 银行家算法 _/</p>
+<p>void jieshu(); /_ 结束函数 _/</p>
+<p>void chushihua()<br>{<br>cout &lt;&lt; “输入进程的数量: “; /_ 从此开始输入有关数据 <em>/<br>cin &gt;&gt; n;<br>cout &lt;&lt; “输入资源种类数: “;<br>cin &gt;&gt; m;<br>cout &lt;&lt; endl &lt;&lt; “输入各种资源当前可用的数量( “ &lt;&lt; m &lt;&lt; “ 种): “ &lt;&lt; endl;<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>cout &lt;&lt; “输入资源 “ &lt;&lt; j &lt;&lt; “ 可利用的数量 Available[“ &lt;&lt; j &lt;&lt; “]: “;<br>cin &gt;&gt; Available[j]; /</em> 输入数字的过程 <em>/<br>Work[j] = Available[j]; /</em> 初始化 Work[j]，它的初始值就是当前可用的资源数 <em>/<br>}<br>cout &lt;&lt; endl &lt;&lt; “输入各进程当前已分配的资源数量 Allocation[“ &lt;&lt; n &lt;&lt; “][“ &lt;&lt; m &lt;&lt; “]: “ &lt;&lt; endl;<br>for ( i = 0; i &lt; n; i++ ) /_ n 为进程数 _/<br>{<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>cout &lt;&lt; “ 输入进程 “ &lt;&lt; i &lt;&lt; “ 当前已分配的资源 “ &lt;&lt; j &lt;&lt; “ 数量: “;<br>cin &gt;&gt; Allocation[i][j];<br>}<br>cout &lt;&lt; endl;<br>Finish[i] = 0; /_ 初始化 Finish[i] _/<br>}<br>cout &lt;&lt; endl &lt;&lt; “输入各进程对各类资源的最大需求 Max[“ &lt;&lt; n &lt;&lt; “][“ &lt;&lt; m &lt;&lt; “]: “ &lt;&lt; endl;<br>for ( i = 0; i &lt; n; i++ ) /_ n 为进程数 _/<br>{<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>cout &lt;&lt; “ 输入进程 “ &lt;&lt; i &lt;&lt; “ 对资源 “ &lt;&lt; j &lt;&lt; “ 的最大需求数: “;<br>cin &gt;&gt; Max[i][j];<br>if ( Max[i][j] &gt;= Allocation[i][j] ) /</em> 若最大需求大于已分配，则计算需求量 <em>/<br>Need[i][j] = Max[i][j] - Allocation[i][j];<br>else<br>Need[i][j] = 0; /</em> Max 小于已分配的时候，此类资源已足够不需再申请 _/<br>}<br>cout &lt;&lt; endl;<br>}<br>cout &lt;&lt; endl &lt;&lt; “初始化完成” &lt;&lt; endl;<br>}</p>
+<p>/_ 安全性算法函数 <em>/<br>void safe()<br>{<br>l = 0; /</em> l 用来记录有几个进程是 Finish[i]=1 的，当 l=n 是说明系统状态是安全的 <em>/<br>for ( i = 0; i &lt; n; i++ ) /_ n 为进程数 _/<br>{<br>if ( Finish[i] == 0 )<br>{ /_ 逐个查找 Finish[i]==0 的进程 条件一 _/<br>counter = 0; /_ 记数器,记录有多少个进程已经执行 _/<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>if ( Work[j] &gt;= Need[i][j] )<br>counter = counter + 1; /</em> 可用大于需求，记数，该进程可以执行 <em>/<br>}<br>if ( counter == m ) /</em> i 进程的每类资源都符合 Work[j]&gt;=Need[i][j] 条件二 <em>/<br>{<br>p[l] = i; /</em> 存储安全序列 <em>/<br>Finish[i] = 1; /</em> i 进程标志为可分配 <em>/<br>for ( j = 0; j &lt; m; j++ )<br>Work[j] = Work[j] + Allocation[i][j]; /</em> 释放资源 <em>/<br>l = l + 1; /</em> 记数,现在有 l 个进程是安全的，当 l=n 时说明满足安全序列 <em>/<br>i = -1; /</em> 从第一个进程开始继续寻找满足条件一二的进程 _/<br>}<br>}<br>}<br>}</p>
+<p>/_ 显示当前状态函数 <em>/<br>void show() /</em> 函数 show,输出当前资源分配情况 <em>/<br>{<br>int i, j; /</em> 局部变量，i 表示进程，j 表示资源 <em>/<br>int All[y]; /</em> 各种资源的总数量 <em>/<br>int L1; /</em> 局部变量 L1 <em>/<br>cout &lt;&lt; “当前的状态为：” &lt;&lt; endl;<br>cout &lt;&lt; “各种资源的总数量:” &lt;&lt; endl;<br>for ( j = 0; j &lt; m; j++ ) /</em> m 为资源数 <em>/<br>{<br>cout &lt;&lt; “ 资源” &lt;&lt; j &lt;&lt; “: “;<br>All[j] = Available[j]; /</em> 总数量=可用的+已分配的 <em>/<br>for ( i = 0; i &lt; n; i++ ) /</em> n 为进程数 <em>/<br>All[j] += Allocation[i][j];<br>cout &lt;&lt; All[j] &lt;&lt; “ “;<br>}<br>cout &lt;&lt; endl &lt;&lt; “当前各种资源可用的量为(available):” &lt;&lt; endl;<br>for ( j = 0; j &lt; m; j++ ) /</em> m 为资源数 <em>/<br>cout &lt;&lt; “ 资源” &lt;&lt; j &lt;&lt; “: “ &lt;&lt; Available[j] &lt;&lt; “ “;<br>cout &lt;&lt; endl &lt;&lt; “各进程所需的最大资源量(Max): “ &lt;&lt; endl;<br>for ( i = 0; i &lt; m; i++ ) /</em> m 为资源数 <em>/<br>{<br>cout &lt;&lt; “ 资源” &lt;&lt; i &lt;&lt; “ “;<br>}<br>cout &lt;&lt; endl;<br>for ( L1 = 0; L1 &lt; n; L1++ ) /</em> n 为进程数 <em>/<br>{<br>cout &lt;&lt; “进程” &lt;&lt; L1 &lt;&lt; “: “;<br>for ( j = 0; j &lt; m; j++ )<br>cout &lt;&lt; Max[L1][j] &lt;&lt; “ “;<br>cout &lt;&lt; endl;<br>}<br>cout &lt;&lt; endl &lt;&lt; “各进程已经得到的资源量(allocation): “ &lt;&lt; endl;<br>for ( i = 0; i &lt; m; i++ ) /</em> m 为资源数 <em>/<br>{<br>cout &lt;&lt; “ 资源” &lt;&lt; i &lt;&lt; “ “;<br>}<br>cout &lt;&lt; endl;<br>for ( L1 = 0; L1 &lt; n; L1++ ) /</em> n 为进程数 <em>/<br>{<br>cout &lt;&lt; “进程” &lt;&lt; L1 &lt;&lt; “: “;<br>for ( j = 0; j &lt; m; j++ )<br>cout &lt;&lt; Allocation[L1][j] &lt;&lt; “ “;<br>cout &lt;&lt; endl;<br>}<br>cout &lt;&lt; endl &lt;&lt; “各进程还需要的资源量(need):” &lt;&lt; endl;<br>for ( i = 0; i &lt; m; i++ ) /</em> m 为资源数 _/<br>{<br>cout &lt;&lt; “ 资源” &lt;&lt; i &lt;&lt; “ “;<br>}<br>cout &lt;&lt; endl;<br>for ( L1 = 0; L1 &lt; n; L1++ )<br>{<br>cout &lt;&lt; “进程” &lt;&lt; L1 &lt;&lt; “: “;<br>for ( j = 0; j &lt; m; j++ )<br>cout &lt;&lt; Need[L1][j] &lt;&lt; “ “;<br>cout &lt;&lt; endl;<br>}<br>}</p>
+<p>/_ 银行家算法函数 <em>/<br>void bank()<br>{<br>cout &lt;&lt; endl &lt;&lt; “进程申请分配资源：” &lt;&lt; endl;<br>int k = 0; /_ 用于输入进程编号 _/<br>bool r = false; /_ 初值为假，输入 Y 继续申请则置为真 _/<br>do /_ 输入请求 _/<br>{<br>cout &lt;&lt; “输入申请资源的进程(0-“ &lt;&lt; n - 1 &lt;&lt; “): “;<br>cin &gt;&gt; k; /</em> 进程编号 <em>/<br>cout &lt;&lt; endl;<br>while ( k &gt; n - 1 ) /</em> 输入错误处理 <em>/<br>{<br>cout &lt;&lt; endl &lt;&lt; “无该进程号，重新输入：” &lt;&lt; endl;<br>cout &lt;&lt; endl &lt;&lt; “输入申请资源的进程(0–” &lt;&lt; n - 1 &lt;&lt; “): “;<br>cin &gt;&gt; k; /</em> 进程编号 <em>/<br>cout &lt;&lt; endl;<br>}<br>cout &lt;&lt; endl &lt;&lt; “输入该进程申请各类资源的数量: “ &lt;&lt; endl;<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>do /_ do……while 循环判断申请输入的情况 _/<br>{<br>cout &lt;&lt; “进程 “ &lt;&lt; k &lt;&lt; “ 申请资源[“ &lt;&lt; j &lt;&lt; “]的数量:”;<br>cin &gt;&gt; Request[j]; /</em> 输入请求进程数 <em>/<br>cout &lt;&lt; endl;<br>if ( Request[j] &gt; Need[k][j] ) /</em> 申请大于需求量时出错，提示重新输入 cout&lt;&lt;”申请量大于需要量!”&lt;&lt;endl; <em>/<br>{<br>cout &lt;&lt; “申请的资源” &lt;&lt; j &lt;&lt; “的数量为” &lt;&lt; Request[j] &lt;&lt; “,大于进程” &lt;&lt; k &lt;&lt; “对该资源需求量” &lt;&lt; Need[k][j] &lt;&lt; “。” &lt;&lt; endl;<br>cout &lt;&lt; “重新输入!” &lt;&lt; endl;<br>}<br>/_ 先判断是否申请大于需求量，再判断是否申请大于可利用量 _/<br>else if ( Request[j] &gt; Available[j] ) /</em> 申请大于可利用量， 应该阻塞等待 <em>/<br>{<br>cout &lt;&lt; “\n 没有那么多资源，目前可利用资源” &lt;&lt; j &lt;&lt; “数量为” &lt;&lt; Available[j] &lt;&lt; “,本次申请不成功，进程等待!” &lt;&lt; endl;<br>Finish[k] = 0; /_ 该进程等待 _/<br>goto error; /_ goto 语句跳转，结束本次申请 _/<br>}<br>}<br>while ( Request[j] &gt; Need[k][j] ); /</em> Request[j]&gt;Available[j] <em>/<br>}<br>/</em> 改变 Available、Allocation、Need 的值 _/<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>Available[j] = Available[j] - Request[j]; /_ 可用的资源数=可用的资源数-请求分配的资源数 _/<br>Allocation[k][j] = Allocation[k][j] + Request[j]; /_ 已分配的资源数=已分配的资源数+请求的资源数 _/<br>Need[k][j] = Need[k][j] - Request[j]; /_ 还需要的资源数=还需要的资源数-请求的资源数 _/<br>Work[j] = Available[j];<br>}<br>safe(); /_ 调用安全性算法函数，判断当前状态的安全性 _/<br>if ( l &lt; n ) /_ l 用来记录有几个进程是 Finish[i]=1 的，当 l=n 是说明系统状态是安全的 _/<br>{<br>l = 0;<br>cout &lt;&lt; “\n 试分配后,状态不安全,所以不予分配!恢复原状态” &lt;&lt; endl;<br>/_ 恢复数据 _/<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>Available[j] = Available[j] + Request[j];<br>Allocation[k][j] = Allocation[k][j] - Request[j];<br>Need[k][j] = Need[k][j] + Request[j];<br>Work[j] = Available[j];<br>}<br>for ( i = 0; i &lt; n; i++ ) /_ n 为进程数 _/<br>Finish[i] = 0; /_ 进程均置为未分配状态 _/<br>}else { /_ l=n，即所有的 Finish[i]=1,每一个进程均能执行 _/<br>l = 0; /_ 判断标志 _/<br>cout &lt;&lt; “\n 申请资源成功!!!” &lt;&lt; endl;<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>if ( Need[k][j] == 0 )<br>;<br>else { /_有一种资源还没全部申请到，则该进程不可执行，不能释放拥有的资源 _/<br>l = 1; /_ 置 l 为 1，作为判断标志 _/<br>break;<br>}<br>}<br>if ( l != 1 ) /_ 进程可以执行，则释放该进程的所有资源 _/<br>{<br>for ( j = 0; j &lt; m; j++ ) /_ m 为资源数 _/<br>{<br>Available[j] = Available[j] + Allocation[k][j];<br>Allocation[k][j] = 0;<br>}<br>cout &lt;&lt; “该进程已得到所有需求资源，执行后将释放其所有拥有资源！” &lt;&lt; endl;<br>}<br>l = 0; /_ 归零 _/<br>cout &lt;&lt; “\n 安全的状态!” &lt;&lt; endl;<br>cout &lt;&lt; “安全序列为: “;<br>cout &lt;&lt; endl &lt;&lt; “进程” &lt;&lt; “(“ &lt;&lt; p[0] &lt;&lt; “)”; /_ 输出安全序列，考虑显示格式，先输出第一个 _/<br>Finish[0] = 0;<br>for ( i = 1; i &lt; n; i++ )<br>{<br>cout &lt;&lt; “==&gt;&gt;” &lt;&lt; “进程” &lt;&lt; “(“ &lt;&lt; p[i] &lt;&lt; “)”;<br>Finish[i] = 0; /_ 所有进程置为未分配状态 _/<br>}<br>cout &lt;&lt; endl &lt;&lt; endl;<br>}<br>show(); /_ 显示当前状态 _/<br>error: /_ 申请大于可利用量， 应该阻塞等待,结束本次资源申请，GOTO 语句跳转至此 _/<br>cout &lt;&lt; endl &lt;&lt; “是否继续申请资源(y/n)或（Y/N）?”;<br>char* b = new char; /* 输入 y/n，判断是否继续申请 &lt;&lt;endl */<br>cin &gt;&gt; b;<br>cout &lt;&lt; endl;<br>cout &lt;&lt; “——————————————-“ &lt;&lt; endl &lt;&lt; endl;<br>cout &lt;&lt; endl;<br>if ( *b == ‘y’ || <em>b == ‘Y’ )<br>r = true; /</em> 继续申请 */<br>else{<br>r = false; /*不继续申请 <em>/<br>jieshu(); /</em> 调用结束函数 */<br>}<br>}<br>while ( r == true );<br>}</p>
+<p>/_ 结束函数 _/<br>void jieshu()<br>{<br>cout &lt;&lt; endl &lt;&lt; endl;<br>cout &lt;&lt; “\t\t 演示计算完毕” &lt;&lt; endl;<br>cout &lt;&lt; endl &lt;&lt; endl;<br>}</p>
+<p>/_ 主函数 _/<br>int main()<br>{<br>cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; “\t\t\t\t 模拟银行家算法” &lt;&lt; endl &lt;&lt; endl;<br>chushihua(); /_ 初始化函数调用 _/<br>cout &lt;&lt; endl;<br>show(); /_ 输出当前状态 _/<br>safe(); /_ 判断当前状态的安全性 _/<br>if ( l &lt; n ) /_ l 在 safe 中是用来记录安全的进程的个数的 _/<br>{<br>cout &lt;&lt; “\n 当前状态不安全，拒绝申请！” &lt;&lt; endl;<br>cout &lt;&lt; endl;<br>return(0);<br>}else {<br>int i; /_ 局部变量 _/<br>l = 0;<br>cout &lt;&lt; endl &lt;&lt; “\n 当前的状态是安全的!安全序列为:” &lt;&lt; endl;<br>cout &lt;&lt; “进程” &lt;&lt; “(“ &lt;&lt; p[0] &lt;&lt; “)”; /_ 输出安全序列 _/<br>for ( i = 1; i &lt; n; i++ )<br>cout &lt;&lt; “-&gt;&gt;” &lt;&lt; “进程” &lt;&lt; “(“ &lt;&lt; p[i] &lt;&lt; “)”;<br>for ( i = 0; i &lt; n; i++ )<br>Finish[i] = 0; /_ 所有进程置为未分配状态 _/<br>cout &lt;&lt; endl;<br>}<br>bank(); /_ 调用银行家算法函数 _/<br>cout &lt;&lt; “\t\t 演示计算完毕” &lt;&lt; endl;<br>return(0);<br>}</pre></div></p>
 
 </div>
 
