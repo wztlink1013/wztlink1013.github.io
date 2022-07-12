@@ -16,7 +16,7 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/dfs/**Definition for a binary tree node.function TreeNode(val, left, right) {this.val = (val" />
+    <meta name="description" content="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/dfs/**- Definition for a binary tree node.- function TreeNode(val, left, right) &amp;#123;-     " />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="129. 求根节点到叶节点数字之和🔖DFS | 尼采般地抒情" />
@@ -25,7 +25,7 @@
       content="https://www.wztlink1013.com/blog/thy7mx/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/dfs/**Definition for a binary tree node.function TreeNode(val, left, right) {this.val = (val" />
+    <meta property="og:description" content="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/dfs/**- Definition for a binary tree node.- function TreeNode(val, left, right) &amp;#123;-     " />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,38 +319,68 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u6a1cce50"><a href="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/" data-href="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/</span></a></li></ul><p id="ufc5039cc" class="ne-p"><span class="ne-text"></span></p><h3 id="dyUoI"><span class="ne-text">dfs</span></h3><pre data-language="javascript" id="hWrGB" class="ne-codeblock language-javascript">/**
+    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u6a1cce50"><a href="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/" data-href="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/</span></a></li></ul><p id="ufc5039cc" class="ne-p"><span class="ne-text"></span></p><h3 id="dyUoI"><span class="ne-text">dfs</span></h3>
 
-<ul>
-<li>Definition for a binary tree node.</li>
-<li>function TreeNode(val, left, right) {</li>
-<li><pre><code>this.val = (val===undefined ? 0 : val)
+<pre><code class="javascript">/**
+
+- Definition for a binary tree node.
+- function TreeNode(val, left, right) &#123;
+-     this.val = (val===undefined ? 0 : val)
+-     this.left = (left===undefined ? null : left)
+-     this.right = (right===undefined ? null : right)
+- &#125;
+  \*/
+  /\*\*
+- @param &#123;TreeNode&#125; root
+- @return &#123;number&#125;
+  _/
+  var sumNumbers = function(root) &#123;
+  if (!root) return root
+  let arr = []
+  let result = 0
+  let dfs = (data, presum) =&gt; &#123;
+  if (data) &#123;
+  presum = data.val + presum _ 10
+  if (!data.left &amp;&amp; !data.right)
+  arr.push(presum)
+  else &#123;
+  dfs(data.left, presum)
+  dfs(data.right, presum)
+  &#125;
+  &#125;
+  &#125;
+  dfs(root, 0)
+  result = arr.reduce((a, b) =&gt; &#123;return a + b&#125;)
+  return result
+  &#125;;
 </code></pre>
-</li>
-<li><pre><code>this.left = (left===undefined ? null : left)
+<p id="u6922ddff" class="ne-p"><span class="ne-text">优化一下得到：</span></p>
+
+<pre><code class="javascript">/\*\*
+- Definition for a binary tree node.
+- function TreeNode(val, left, right) &#123;
+-     this.val = (val===undefined ? 0 : val)
+-     this.left = (left===undefined ? null : left)
+-     this.right = (right===undefined ? null : right)
+- &#125;
+  \*/
+  /\*\*
+- @param &#123;TreeNode&#125; root
+- @return &#123;number&#125;
+  _/
+  var sumNumbers = function(root) &#123;
+  let dfs = (data, presum) =&gt; &#123;
+  if (data === null) return 0
+  presum = data.val + presum _ 10
+  if (!data.left &amp;&amp; !data.right) &#123;
+  return presum
+  &#125;
+  return dfs(data.left, presum) + dfs(data.right, presum)
+  &#125;
+  return dfs(root, 0)
+  &#125;;
 </code></pre>
-</li>
-<li><pre><code>this.right = (right===undefined ? null : right)
-</code></pre>
-</li>
-<li>}<br>*/<br>/**</li>
-<li>@param {TreeNode} root</li>
-<li>@return {number}<br>_/<br>var sumNumbers = function(root) {<br>if (!root) return root<br>let arr = []<br>let result = 0<br>let dfs = (data, presum) =&gt; {<br>if (data) {<br>presum = data.val + presum _ 10<br>if (!data.left &amp;&amp; !data.right)<br>arr.push(presum)<br>else {<br>dfs(data.left, presum)<br>dfs(data.right, presum)<br>}<br>}<br>}<br>dfs(root, 0)<br>result = arr.reduce((a, b) =&gt; {return a + b})<br>return result<br>};</pre><p id="u6922ddff" class="ne-p"><span class="ne-text">优化一下得到：</span></p><pre data-language="javascript" id="vEREk" class="ne-codeblock language-javascript">/**</li>
-<li>Definition for a binary tree node.</li>
-<li>function TreeNode(val, left, right) {</li>
-<li><pre><code>this.val = (val===undefined ? 0 : val)
-</code></pre>
-</li>
-<li><pre><code>this.left = (left===undefined ? null : left)
-</code></pre>
-</li>
-<li><pre><code>this.right = (right===undefined ? null : right)
-</code></pre>
-</li>
-<li>}<br>*/<br>/**</li>
-<li>@param {TreeNode} root</li>
-<li>@return {number}<br>_/<br>var sumNumbers = function(root) {<br>let dfs = (data, presum) =&gt; {<br>if (data === null) return 0<br>presum = data.val + presum _ 10<br>if (!data.left &amp;&amp; !data.right) {<br>return presum<br>}<br>return dfs(data.left, presum) + dfs(data.right, presum)<br>}<br>return dfs(root, 0)<br>};</pre><p id="ub2e4a533" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015642635-9c156952-829a-4fe0-9659-13773d03152d.png" width="620.8333086636342" id="u5238ad6b" class="ne-image"></p></div></li>
-</ul>
+<p id="ub2e4a533" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015642635-9c156952-829a-4fe0-9659-13773d03152d.png" width="620.8333086636342" id="u5238ad6b" class="ne-image"></p></div>
 
 </div>
 

@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,179 +319,296 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><h2 id="20T4y"><span class="ne-text">实验任务</span></h2><p id="9f9b98eac38d19e538b42d7746c04a9f" class="ne-p"><span class="ne-text">    实验4：队列的链式表示和实现</span></p><p id="7f5ef7b6fb7c14232a9d0715d945ae8e" class="ne-p"><span class="ne-text">    要求：某小超市有两个排队机，构建2个用带头结点的单链表队列QA和QB, 实现下列操作</span></p><p id="61513287fe3e2922bdd79107f0ef3355" class="ne-p"><span class="ne-text">        1、初始化队列(清空)；</span></p><p id="e318417a78d41bdc35b2fb51fea54408" class="ne-p"><span class="ne-text">        2、入队；</span></p><p id="66ab82335f33a8cb72f8a7d37f44777b" class="ne-p"><span class="ne-text">        3、出队;</span></p><p id="c16c943dd4288a72dd6b295bfa0377bf" class="ne-p"><span class="ne-text">        4、求队列长度；</span></p><p id="10fe96031b21a32c13c6097ae020e25f" class="ne-p"><span class="ne-text">        5、判断队列是否为空；</span></p><p id="ae0a391b09cffe7a9126f70818e56eda" class="ne-p"><span class="ne-text">        6、判断队列是否为满；</span></p><p id="9e5d1dae28859a8abeca1d0471446006" class="ne-p"><span class="ne-text">        7、对于队列QA和QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。</span></p><p id="5e9cc15a80111b6a597cc9e255190af3" class="ne-p"><span class="ne-text">截止日期：4月22日</span></p><p id="u7db2feae" class="ne-p"><span class="ne-text"></span></p><h2 id="14MhD"><span class="ne-text">实验讨论</span></h2><p id="2e010ce1f965a4edb43b07e76023f987" class="ne-p"><br></p><div data-type="info" class="ne-alert"><p id="87dfb2648de3a04b1bf58824421fe863" class="ne-p"><span class="ne-text">觉得问题里面有bug</span></p></div><p id="06843150f7061a5692c3cab91b34abaf" class="ne-p"><br></p><p id="d94608e0b1b127fba7a074eb3c24a11b" class="ne-p"><span class="ne-text">对问题判满的疑惑与解决，第六个问题对链对判满是否有意义，如果是链式存储，数据结构本身判断满没有意义，但是考虑到是小型超市，超市空间不大，所以对其进行一开始的用户自己输入两个队列的最大长度。</span></p><p id="b46ce36306c0795c661082ae93333276" class="ne-p"><br></p><p id="d1dc74f717ac959b4fe6f310f217fb61" class="ne-p"><span class="ne-text">但是这样又有一个问题，在问题7中，如果一个队列的售货员下班了，这个队列的所有人排到另一个队列中，那如果新队列的长度超出用户输入的队列最大长度呢？考虑到实际问题，这个问题不打算解决了，让他们挤挤……</span></p><h2 id="yLU1H"><span class="ne-text">代码代码</span></h2><pre data-language="cpp" id="wFMVW" class="ne-codeblock language-cpp">#include<bits/stdc++.h>
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="20T4y"><span class="ne-text">实验任务</span></h2><p id="9f9b98eac38d19e538b42d7746c04a9f" class="ne-p"><span class="ne-text">    实验4：队列的链式表示和实现</span></p><p id="7f5ef7b6fb7c14232a9d0715d945ae8e" class="ne-p"><span class="ne-text">    要求：某小超市有两个排队机，构建2个用带头结点的单链表队列QA和QB, 实现下列操作</span></p><p id="61513287fe3e2922bdd79107f0ef3355" class="ne-p"><span class="ne-text">        1、初始化队列(清空)；</span></p><p id="e318417a78d41bdc35b2fb51fea54408" class="ne-p"><span class="ne-text">        2、入队；</span></p><p id="66ab82335f33a8cb72f8a7d37f44777b" class="ne-p"><span class="ne-text">        3、出队;</span></p><p id="c16c943dd4288a72dd6b295bfa0377bf" class="ne-p"><span class="ne-text">        4、求队列长度；</span></p><p id="10fe96031b21a32c13c6097ae020e25f" class="ne-p"><span class="ne-text">        5、判断队列是否为空；</span></p><p id="ae0a391b09cffe7a9126f70818e56eda" class="ne-p"><span class="ne-text">        6、判断队列是否为满；</span></p><p id="9e5d1dae28859a8abeca1d0471446006" class="ne-p"><span class="ne-text">        7、对于队列QA和QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。</span></p><p id="5e9cc15a80111b6a597cc9e255190af3" class="ne-p"><span class="ne-text">截止日期：4月22日</span></p><p id="u7db2feae" class="ne-p"><span class="ne-text"></span></p><h2 id="14MhD"><span class="ne-text">实验讨论</span></h2><p id="2e010ce1f965a4edb43b07e76023f987" class="ne-p"><br></p><div data-type="info" class="ne-alert"><p id="87dfb2648de3a04b1bf58824421fe863" class="ne-p"><span class="ne-text">觉得问题里面有bug</span></p></div><p id="06843150f7061a5692c3cab91b34abaf" class="ne-p"><br></p><p id="d94608e0b1b127fba7a074eb3c24a11b" class="ne-p"><span class="ne-text">对问题判满的疑惑与解决，第六个问题对链对判满是否有意义，如果是链式存储，数据结构本身判断满没有意义，但是考虑到是小型超市，超市空间不大，所以对其进行一开始的用户自己输入两个队列的最大长度。</span></p><p id="b46ce36306c0795c661082ae93333276" class="ne-p"><br></p><p id="d1dc74f717ac959b4fe6f310f217fb61" class="ne-p"><span class="ne-text">但是这样又有一个问题，在问题7中，如果一个队列的售货员下班了，这个队列的所有人排到另一个队列中，那如果新队列的长度超出用户输入的队列最大长度呢？考虑到实际问题，这个问题不打算解决了，让他们挤挤……</span></p><h2 id="yLU1H"><span class="ne-text">代码代码</span></h2>
 
-<p>using namespace std;</p>
-<p>typedef int Status;<br>typedef int QElemType;</p>
-<p>#define OVERFLOW -1<br>#define ERROR 0<br>#define OK 1</p>
-<p>/**<br>实验 4：队列的链式表示和实现<br>要求：某小超市有两个排队机，构建 2 个用带头结点的单链表队列 QA 和 QB, 实现下列操作<br>1、初始化队列(清空)；<br>2、入队；<br>3、出队;<br>4、求队列长度；<br>5、判断队列是否为空；<br>6、判断队列是否为满；<br>7、对于队列 QA 和 QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。</p>
-<p>*/</p>
-<p>/_ 存储形式 _/<br>typedef struct QNode{ //链队用的结点<br>QElemType data;<br>struct QNode *next;<br>}QNode,*QueuePtr;</p>
-<p>typedef struct {<br>QueuePtr front;<br>QueuePtr rear;<br>}LinkQueue;</p>
-<p>/_ 初始化 _/<br>Status InitQueue(LinkQueue &amp;queue) {<br>queue.front = queue.rear = new QNode;<br>queue.front-&gt;next = NULL;<br>return OK;<br>}</p>
-<p>/_ 求队列长度 _/<br>Status QueueLength(LinkQueue &amp;queue) {<br>int count = 0;<br>if (queue.rear == queue.front) {<br>return count;<br>}<br>QueuePtr temp = queue.front;<br>while (temp != queue.rear) {<br>count++;<br>temp = temp-&gt;next;<br>}<br>return count;<br>}</p>
-<p>/_ 入队 _/<br>Status EnQueue(LinkQueue &amp;queue, QElemType e, int length) {<br>if (QueueLength(queue) &lt;length) {<br>QueuePtr temp = new QNode;<br>temp-&gt;data = e;<br>temp-&gt;next = NULL;<br>queue.rear-&gt;next = temp;<br>queue.rear = temp;<br>return OK;<br>} else {<br>cout &lt;&lt; “队已经满了，不能再入元素了”&lt;&lt; “\n”;<br>return ERROR;<br>}<br>}</p>
-<p>/_ 出队 _/<br>Status DeQueue(LinkQueue &amp;queue) {<br>if (queue.front == queue.rear) {<br>return OVERFLOW;<br>}<br>// 有必要定义一个 p，不然头结点会掉<br>QueuePtr p = queue.front-&gt;next;<br>QElemType e = p-&gt;data;<br>queue.front-&gt;next = p-&gt;next;<br>// 考虑最后一个元素被删，队尾指针指向头结点<br>if (queue.rear == p) {<br>queue.rear = queue.front;<br>}<br>return e;<br>}</p>
-<p>/_ 取队头元素 _/<br>// Status GetHead(LinkQueue &amp;queue) {<br>// if (queue.front != queue.rear){<br>// return queue.front-&gt;next-&gt;data;<br>// }<br>// }</p>
-<p>/_ 判断队列是否为空 _/<br>bool QueueIsEmpty(LinkQueue &amp;queue) {<br>if (queue.rear == queue.front) {<br>return true;<br>} else {<br>return false;<br>}<br>}</p>
-<p>/**</p>
-<ul>
-<li>判断队列是否为满</li>
-<li>不是很理解为什么链队需要判断是否为满呢？</li>
-<li>采用输入链队长度，利用链队函数来判断</li>
-<li>那么入队的代码需要输入 length 参数来判断是否还能让元素入队<br>*/<br>bool QueueIsFull(LinkQueue &amp;queue, int length) {<br>if (QueueLength(queue) == length) {<br>return true;<br>} else {<br>return false;<br>}<br>}</li>
-</ul>
-<p>/_ 一个队列甩到另一个队列 _/<br>Status QueueMove(LinkQueue &amp;queue_delete,LinkQueue &amp;queue_add) {<br>queue_add.rear-&gt;next = queue_delete.front-&gt;next;<br>queue_add.rear = queue_delete.rear;<br>return OK;<br>}</p>
-<p>/_ 遍历查看队列元素 _/<br>Status DisplayQueue(LinkQueue &amp;queue) {<br>LinkQueue L = queue;<br>while (L.front-&gt;next != NULL) {<br>cout &lt;&lt; L.front-&gt;next-&gt;data &lt;&lt; “ “;<br>L.front = L.front-&gt;next;<br>}<br>cout &lt;&lt; “\n”;<br>return OK;<br>}</p>
-<p>int main() {</p>
-<pre><code>cout&lt;&lt;&quot;------------------------链队菜单----------------------&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作0：退出程序&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作1：初始化两队列&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作2：入队操作&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作3：出队操作&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作4：判断判断链队是否为空&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作5：判断判断链队是否为满&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作6：售货员偷懒选项&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作7：查看队列&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;操作8：求队列长度&quot;&lt;&lt;&#39;\n&#39;;
-cout&lt;&lt;&quot;--------------------------------------------------------&quot;&lt;&lt;&#39;\n&#39;;
-int a, length,flag = 1;
-cout &lt;&lt; &quot;请输入你希望排队机最多能排的人数：&quot;&lt;&lt;&quot;\n&quot;&lt;&lt;&quot;\n&quot;;
-cin &gt;&gt; length;
-LinkQueue QA,QB;
-while(flag)
-&#123;
-    cout&lt;&lt;&#39;\n&#39;&lt;&lt;&quot;请选择要执行的操作：&quot;;
-    while(cin&gt;&gt;a)
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef int Status;
+typedef int QElemType;
+
+#define OVERFLOW -1
+#define ERROR 0
+#define OK 1
+
+/\*\*
+实验 4：队列的链式表示和实现
+要求：某小超市有两个排队机，构建 2 个用带头结点的单链表队列 QA 和 QB, 实现下列操作
+1、初始化队列(清空)；
+2、入队；
+3、出队;
+4、求队列长度；
+5、判断队列是否为空；
+6、判断队列是否为满；
+7、对于队列 QA 和 QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。
+
+\*/
+
+/_ 存储形式 _/
+typedef struct QNode&#123; //链队用的结点
+QElemType data;
+struct QNode *next;
+&#125;QNode,*QueuePtr;
+
+typedef struct &#123;
+QueuePtr front;
+QueuePtr rear;
+&#125;LinkQueue;
+
+/_ 初始化 _/
+Status InitQueue(LinkQueue &amp;queue) &#123;
+queue.front = queue.rear = new QNode;
+queue.front-&gt;next = NULL;
+return OK;
+&#125;
+
+/_ 求队列长度 _/
+Status QueueLength(LinkQueue &amp;queue) &#123;
+int count = 0;
+if (queue.rear == queue.front) &#123;
+return count;
+&#125;
+QueuePtr temp = queue.front;
+while (temp != queue.rear) &#123;
+count++;
+temp = temp-&gt;next;
+&#125;
+return count;
+&#125;
+
+/_ 入队 _/
+Status EnQueue(LinkQueue &amp;queue, QElemType e, int length) &#123;
+if (QueueLength(queue) &lt;length) &#123;
+QueuePtr temp = new QNode;
+temp-&gt;data = e;
+temp-&gt;next = NULL;
+queue.rear-&gt;next = temp;
+queue.rear = temp;
+return OK;
+&#125; else &#123;
+cout &lt;&lt; &quot;队已经满了，不能再入元素了&quot;&lt;&lt; &quot;\n&quot;;
+return ERROR;
+&#125;
+&#125;
+
+/_ 出队 _/
+Status DeQueue(LinkQueue &amp;queue) &#123;
+if (queue.front == queue.rear) &#123;
+return OVERFLOW;
+&#125;
+// 有必要定义一个 p，不然头结点会掉
+QueuePtr p = queue.front-&gt;next;
+QElemType e = p-&gt;data;
+queue.front-&gt;next = p-&gt;next;
+// 考虑最后一个元素被删，队尾指针指向头结点
+if (queue.rear == p) &#123;
+queue.rear = queue.front;
+&#125;
+return e;
+&#125;
+
+/_ 取队头元素 _/
+// Status GetHead(LinkQueue &amp;queue) &#123;
+// if (queue.front != queue.rear)&#123;
+// return queue.front-&gt;next-&gt;data;
+// &#125;
+// &#125;
+
+/_ 判断队列是否为空 _/
+bool QueueIsEmpty(LinkQueue &amp;queue) &#123;
+if (queue.rear == queue.front) &#123;
+return true;
+&#125; else &#123;
+return false;
+&#125;
+&#125;
+
+/\*\*
+
+- 判断队列是否为满
+- 不是很理解为什么链队需要判断是否为满呢？
+- 采用输入链队长度，利用链队函数来判断
+- 那么入队的代码需要输入 length 参数来判断是否还能让元素入队
+  \*/
+  bool QueueIsFull(LinkQueue &amp;queue, int length) &#123;
+  if (QueueLength(queue) == length) &#123;
+  return true;
+  &#125; else &#123;
+  return false;
+  &#125;
+  &#125;
+
+/_ 一个队列甩到另一个队列 _/
+Status QueueMove(LinkQueue &amp;queue_delete,LinkQueue &amp;queue_add) &#123;
+queue_add.rear-&gt;next = queue_delete.front-&gt;next;
+queue_add.rear = queue_delete.rear;
+return OK;
+&#125;
+
+/_ 遍历查看队列元素 _/
+Status DisplayQueue(LinkQueue &amp;queue) &#123;
+LinkQueue L = queue;
+while (L.front-&gt;next != NULL) &#123;
+cout &lt;&lt; L.front-&gt;next-&gt;data &lt;&lt; &quot; &quot;;
+L.front = L.front-&gt;next;
+&#125;
+cout &lt;&lt; &quot;\n&quot;;
+return OK;
+&#125;
+
+int main() &#123;
+
+    cout&lt;&lt;&quot;------------------------链队菜单----------------------&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作0：退出程序&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作1：初始化两队列&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作2：入队操作&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作3：出队操作&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作4：判断判断链队是否为空&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作5：判断判断链队是否为满&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作6：售货员偷懒选项&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作7：查看队列&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;操作8：求队列长度&quot;&lt;&lt;&#39;\n&#39;;
+    cout&lt;&lt;&quot;--------------------------------------------------------&quot;&lt;&lt;&#39;\n&#39;;
+    int a, length,flag = 1;
+    cout &lt;&lt; &quot;请输入你希望排队机最多能排的人数：&quot;&lt;&lt;&quot;\n&quot;&lt;&lt;&quot;\n&quot;;
+    cin &gt;&gt; length;
+    LinkQueue QA,QB;
+    while(flag)
     &#123;
-        if(a &lt; 0 || a &gt; 8)
-            cout&lt;&lt;&quot;请选择正确操作编号：&quot;;
-        else
-            break;
+        cout&lt;&lt;&#39;\n&#39;&lt;&lt;&quot;请选择要执行的操作：&quot;;
+        while(cin&gt;&gt;a)
+        &#123;
+            if(a &lt; 0 || a &gt; 8)
+                cout&lt;&lt;&quot;请选择正确操作编号：&quot;;
+            else
+                break;
+        &#125;
+        switch(a)
+        &#123;
+            case 0:
+            &#123;
+                cout&lt;&lt;&quot;正在退出程序中……&quot;&lt;&lt;&#39;\n&#39;;
+                flag = 0;
+                break;
+            &#125;
+            case 1:
+            &#123;
+                cout&lt;&lt;&quot;初始化QA、QB队列中……&quot;&lt;&lt;&#39;\n&#39;;
+                InitQueue(QA);
+                InitQueue(QB);
+                break;
+            &#125;
+            case 2:
+            &#123;
+                cout&lt;&lt;&quot;请输入入队的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    cout&lt;&lt;&quot;请输入入QA队的队列的元素&quot;&lt;&lt;&#39;\n&#39;;
+                    int select_queue_A;
+                    cin &gt;&gt; select_queue_A;
+                    EnQueue(QA, select_queue_A, length);
+                &#125; else if (select_queue == 2) &#123;
+                    cout&lt;&lt;&quot;请输入入QB队的队列的元素&quot;&lt;&lt;&#39;\n&#39;;
+                    int select_queue_B;
+                    cin &gt;&gt; select_queue_B;
+                    EnQueue(QB, select_queue_B, length);
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+            case 3:
+            &#123;
+                cout&lt;&lt;&quot;请输入需要出队的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    DeQueue(QA);
+                &#125; else if (select_queue == 2) &#123;
+                    DeQueue(QB);
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+            case 4:
+            &#123;
+                cout&lt;&lt;&quot;请输入需要判空的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    cout &lt;&lt; &quot;QA队列为空吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsEmpty(QA) &lt;&lt; &quot;\n&quot;;
+                &#125; else if (select_queue == 2) &#123;
+                    cout &lt;&lt; &quot;QB队列为空吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsEmpty(QB) &lt;&lt; &quot;\n&quot;;
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+            case 5:
+            &#123;
+                cout&lt;&lt;&quot;请输入需要判满的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    cout &lt;&lt; &quot;QA队列为满吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsFull(QA,length) &lt;&lt; &quot;\n&quot;;
+                &#125; else if (select_queue == 2) &#123;
+                    cout &lt;&lt; &quot;QB队列为满吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsFull(QB,length) &lt;&lt; &quot;\n&quot;;
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+            case 6:
+            &#123;
+                cout&lt;&lt;&quot;请输入下班的售货员（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    QueueMove(QA, QB);
+                &#125; else if (select_queue == 2) &#123;
+                    QueueMove(QB, QA);
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+            case 7:
+            &#123;
+                cout&lt;&lt;&quot;请输入要查看的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    DisplayQueue(QA);
+                &#125; else if (select_queue == 2) &#123;
+                    DisplayQueue(QB);
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+            case 8:
+            &#123;
+                cout&lt;&lt;&quot;请输入要查看的队列的长度（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
+                int select_queue;
+                cin &gt;&gt; select_queue;
+                if (select_queue == 1) &#123;
+                    cout&lt;&lt;QueueLength(QA)&lt;&lt; &quot;\n&quot;;
+                &#125; else if (select_queue == 2) &#123;
+                    cout&lt;&lt;QueueLength(QB)&lt;&lt; &quot;\n&quot;;
+                &#125; else &#123;
+                    cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
+                &#125;
+                break;
+            &#125;
+        &#125;
     &#125;
-    switch(a)
-    &#123;
-        case 0:
-        &#123;
-            cout&lt;&lt;&quot;正在退出程序中……&quot;&lt;&lt;&#39;\n&#39;;
-            flag = 0;
-            break;
-        &#125;
-        case 1:
-        &#123;
-            cout&lt;&lt;&quot;初始化QA、QB队列中……&quot;&lt;&lt;&#39;\n&#39;;
-            InitQueue(QA);
-            InitQueue(QB);
-            break;
-        &#125;
-        case 2:
-        &#123;
-            cout&lt;&lt;&quot;请输入入队的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                cout&lt;&lt;&quot;请输入入QA队的队列的元素&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue_A;
-                cin &gt;&gt; select_queue_A;
-                EnQueue(QA, select_queue_A, length);
-            &#125; else if (select_queue == 2) &#123;
-                cout&lt;&lt;&quot;请输入入QB队的队列的元素&quot;&lt;&lt;&#39;\n&#39;;
-                int select_queue_B;
-                cin &gt;&gt; select_queue_B;
-                EnQueue(QB, select_queue_B, length);
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-        case 3:
-        &#123;
-            cout&lt;&lt;&quot;请输入需要出队的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                DeQueue(QA);
-            &#125; else if (select_queue == 2) &#123;
-                DeQueue(QB);
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-        case 4:
-        &#123;
-            cout&lt;&lt;&quot;请输入需要判空的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                cout &lt;&lt; &quot;QA队列为空吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsEmpty(QA) &lt;&lt; &quot;\n&quot;;
-            &#125; else if (select_queue == 2) &#123;
-                cout &lt;&lt; &quot;QB队列为空吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsEmpty(QB) &lt;&lt; &quot;\n&quot;;
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-        case 5:
-        &#123;
-            cout&lt;&lt;&quot;请输入需要判满的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                cout &lt;&lt; &quot;QA队列为满吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsFull(QA,length) &lt;&lt; &quot;\n&quot;;
-            &#125; else if (select_queue == 2) &#123;
-                cout &lt;&lt; &quot;QB队列为满吗？&quot;&lt;&lt; boolalpha &lt;&lt; QueueIsFull(QB,length) &lt;&lt; &quot;\n&quot;;
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-        case 6:
-        &#123;
-            cout&lt;&lt;&quot;请输入下班的售货员（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                QueueMove(QA, QB);
-            &#125; else if (select_queue == 2) &#123;
-                QueueMove(QB, QA);
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-        case 7:
-        &#123;
-            cout&lt;&lt;&quot;请输入要查看的队列（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                DisplayQueue(QA);
-            &#125; else if (select_queue == 2) &#123;
-                DisplayQueue(QB);
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-        case 8:
-        &#123;
-            cout&lt;&lt;&quot;请输入要查看的队列的长度（QA输入1，QB输入2）&quot;&lt;&lt;&#39;\n&#39;;
-            int select_queue;
-            cin &gt;&gt; select_queue;
-            if (select_queue == 1) &#123;
-                cout&lt;&lt;QueueLength(QA)&lt;&lt; &quot;\n&quot;;
-            &#125; else if (select_queue == 2) &#123;
-                cout&lt;&lt;QueueLength(QB)&lt;&lt; &quot;\n&quot;;
-            &#125; else &#123;
-                cout &lt;&lt; &quot;输入有误！&quot;&lt;&lt; &quot;\n&quot;;
-            &#125;
-            break;
-        &#125;
-    &#125;
+
 &#125;
 </code></pre>
-<p>}</pre></div></p>
+</div>
 
 </div>
 

@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,48 +319,98 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><h2 id="qBwwM"><span class="ne-text">问题思路</span></h2><p id="08d50083874be74117e6e22e45bdce8f" class="ne-p"><span class="ne-text">用栈来作为临时存取非括号的求和数。对字符串进行逐个遍历，然后对遇到的每个字符串进行判断</span></p><ul class="ne-ul"><li id="b5cdec04cd257aa592ef59810a4af372"><span class="ne-text">数字：将其求和到sum当中</span></li><li id="d1177edf6ed8225eddd2b90fba55cbc4"><span class="ne-text">（：将上述sum和符号压入栈内</span></li><li id="196c7a9b829fde933e3b4af76d924a5c"><span class="ne-text">）：将栈内的元素取出与现有sum求和</span></li><li id="1166e7c68cdc0bd4ed851db695c47b66"><span class="ne-text">+：直接走</span></li><li id="4ba40d6ea839a7bfbfd7dc6b53927f06"><span class="ne-text">-：直接走不过给下一个计算数提前加负号</span></li></ul><p id="ueba54000" class="ne-p"><span class="ne-text"></span></p><h2 id="UGPHv"><span class="ne-text">代码实现</span></h2><pre data-language="java" id="lAUyp" class="ne-codeblock language-java">package com.wztlink1013.problems.leetcode.editor.cn;
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="qBwwM"><span class="ne-text">问题思路</span></h2><p id="08d50083874be74117e6e22e45bdce8f" class="ne-p"><span class="ne-text">用栈来作为临时存取非括号的求和数。对字符串进行逐个遍历，然后对遇到的每个字符串进行判断</span></p><ul class="ne-ul"><li id="b5cdec04cd257aa592ef59810a4af372"><span class="ne-text">数字：将其求和到sum当中</span></li><li id="d1177edf6ed8225eddd2b90fba55cbc4"><span class="ne-text">（：将上述sum和符号压入栈内</span></li><li id="196c7a9b829fde933e3b4af76d924a5c"><span class="ne-text">）：将栈内的元素取出与现有sum求和</span></li><li id="1166e7c68cdc0bd4ed851db695c47b66"><span class="ne-text">+：直接走</span></li><li id="4ba40d6ea839a7bfbfd7dc6b53927f06"><span class="ne-text">-：直接走不过给下一个计算数提前加负号</span></li></ul><p id="ueba54000" class="ne-p"><span class="ne-text"></span></p><h2 id="UGPHv"><span class="ne-text">代码实现</span></h2>
 
-<p>// P224.基本计算器<br>//实现一个基本的计算器来计算一个简单的字符串表达式的值。<br>//<br>// 字符串表达式可以包含左括号 ( ，右括号 )，加号 + ，减号 -，非负整数和空格 。<br>//<br>// 示例 1:<br>//<br>// 输入: “1 + 1”<br>//输出: 2<br>//<br>//<br>// 示例 2:<br>//<br>// 输入: “ 2-1 + 2 “<br>//输出: 3<br>//<br>// 示例 3:<br>//<br>// 输入: “(1+(4+5+2)-3)+(6+8)”<br>//输出: 23<br>//<br>// 说明：<br>//<br>//<br>// 你可以假设所给定的表达式都是有效的。<br>// 请不要使用内置的库函数 eval。<br>//<br>// Related Topics 栈 数学<br>// 👍 309 👎 0</p>
-<p>import java.util.Stack;</p>
-<p>public class P224BasicCalculator{<br>public static void main(String[] args) {<br>Solution solution = new P224BasicCalculator().new Solution();<br>int key_1 = solution.calculate(“7896979”);<br>int key_2 = solution.calculate(“(23-2)-33+1111”);<br>System.out.println(key_1);<br>System.out.println(key_2);<br>}</p>
-<p>//leetcode submit region begin(Prohibit modification and deletion)<br>class Solution {<br>public int calculate(String s) {<br>Stack<Integer> stack_1 = new Stack<Integer>();<br>int sum = 0;<br>int sign = 1;<br>int num = 0;</p>
-<pre><code>    for (int i=0;i&lt;s.length();i++) &#123;
-        char ch = s.charAt(i);
-        if (Character.isDigit(ch)) &#123;
-            num = 10 * num + (int) (ch - &#39;0&#39;);
-        &#125; else if (ch == &#39;+&#39;) &#123;
-            num = num * sign;
-            sum = sum + num;
-            sign = 1;
-            num = 0;
-        &#125; else if (ch == &#39;-&#39;) &#123;
-            num = num * sign;
-            sum = sum + num;
-            sign = -1;
-            num = 0;
-        &#125; else if (ch == &#39;(&#39;) &#123;
-            stack_1.push(sum);
-            stack_1.push(sign);
-            sum = 0;
-            num = 0;
-            sign = 1;
-        &#125; else if (ch == &#39;)&#39;) &#123;
-            num = num * sign;
-            sum = sum + num;
-            sum = stack_1.pop() * sum;
-            sum = sum + stack_1.pop();
-            num = 0;
-            sign = 1;
+<pre><code class="java">package com.wztlink1013.problems.leetcode.editor.cn;
+
+// P224.基本计算器
+//实现一个基本的计算器来计算一个简单的字符串表达式的值。
+//
+// 字符串表达式可以包含左括号 ( ，右括号 )，加号 + ，减号 -，非负整数和空格 。
+//
+// 示例 1:
+//
+// 输入: &quot;1 + 1&quot;
+//输出: 2
+//
+//
+// 示例 2:
+//
+// 输入: &quot; 2-1 + 2 &quot;
+//输出: 3
+//
+// 示例 3:
+//
+// 输入: &quot;(1+(4+5+2)-3)+(6+8)&quot;
+//输出: 23
+//
+// 说明：
+//
+//
+// 你可以假设所给定的表达式都是有效的。
+// 请不要使用内置的库函数 eval。
+//
+// Related Topics 栈 数学
+// 👍 309 👎 0
+
+import java.util.Stack;
+
+public class P224BasicCalculator&#123;
+public static void main(String[] args) &#123;
+Solution solution = new P224BasicCalculator().new Solution();
+int key_1 = solution.calculate(&quot;7896979&quot;);
+int key_2 = solution.calculate(&quot;(23-2)-33+1111&quot;);
+System.out.println(key_1);
+System.out.println(key_2);
+&#125;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution &#123;
+public int calculate(String s) &#123;
+Stack&lt;Integer&gt; stack_1 = new Stack&lt;Integer&gt;();
+int sum = 0;
+int sign = 1;
+int num = 0;
+
+        for (int i=0;i&lt;s.length();i++) &#123;
+            char ch = s.charAt(i);
+            if (Character.isDigit(ch)) &#123;
+                num = 10 * num + (int) (ch - &#39;0&#39;);
+            &#125; else if (ch == &#39;+&#39;) &#123;
+                num = num * sign;
+                sum = sum + num;
+                sign = 1;
+                num = 0;
+            &#125; else if (ch == &#39;-&#39;) &#123;
+                num = num * sign;
+                sum = sum + num;
+                sign = -1;
+                num = 0;
+            &#125; else if (ch == &#39;(&#39;) &#123;
+                stack_1.push(sum);
+                stack_1.push(sign);
+                sum = 0;
+                num = 0;
+                sign = 1;
+            &#125; else if (ch == &#39;)&#39;) &#123;
+                num = num * sign;
+                sum = sum + num;
+                sum = stack_1.pop() * sum;
+                sum = sum + stack_1.pop();
+                num = 0;
+                sign = 1;
+            &#125;
+
         &#125;
+        sum = sum + sign * num;
+        return sum;
+    &#125;&#125;
 
-    &#125;
-    sum = sum + sign * num;
-    return sum;
-&#125;&#125;
+//leetcode submit region end(Prohibit modification and deletion)
+
+&#125;
 </code></pre>
-<p>//leetcode submit region end(Prohibit modification and deletion)</p>
-<p>}</pre></div></p>
+</div>
 
 </div>
 

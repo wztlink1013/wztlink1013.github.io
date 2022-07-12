@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,36 +319,101 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><h3 id="IHGHb"><span class="ne-text">接口设计</span></h3><pre data-language="java" id="5nBTl" class="ne-codeblock language-java">public int size(); // 返回动态数组元素个数
+    <!doctype html><div class="lake-content" typography="classic"><h3 id="IHGHb"><span class="ne-text">接口设计</span></h3>
 
-<p>public boolean isEmpty(); // 是否为空<br>public boolean contains(E element); // 是否包含某个元素<br>public void add(E element); // 在数组尾部添加元素<br>public E get(int index); // 返回 index 位置对应的元素<br>public E set(int index, E element); // 设置/更换 index 位置上的值<br>public void add (int index, E element); // 在 index 位置上添加元素<br>public E remove(int index); // 移除 index 位置上的值<br>public int indexOf(E element); // 查看元素的位置<br>public void clear(); // 清空动态数组所有元素</pre><h3 id="yhped"><span class="ne-text">private 设计</span></h3><pre data-language="java" id="sJ0PL" class="ne-codeblock language-java">// 元素的数量<br>private int size;<br>// 所有的元素<br>private E[] elements;</p>
-<p>private static final int DEFAULT_CAPACITY = 10;<br>private static final int ELEMENT_NOT_FOUND = -1;</p>
-<p>/**<br>_ 保证要有 capacity 的容量<br>_ @param capacity<br>*/<br>private void ensureCapacity(int capacity) {<br>int oldCapacity = elements.length;<br>if (oldCapacity &gt;= capacity) return;</p>
-<pre><code>// 新容量为旧容量的1.5倍
-int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
-E[] newElements = (E[]) new Object[newCapacity];
+<pre><code class="java">public int size(); // 返回动态数组元素个数
+
+public boolean isEmpty(); // 是否为空
+public boolean contains(E element); // 是否包含某个元素
+public void add(E element); // 在数组尾部添加元素
+public E get(int index); // 返回 index 位置对应的元素
+public E set(int index, E element); // 设置/更换 index 位置上的值
+public void add (int index, E element); // 在 index 位置上添加元素
+public E remove(int index); // 移除 index 位置上的值
+public int indexOf(E element); // 查看元素的位置
+public void clear(); // 清空动态数组所有元素
+</code></pre>
+<h3 id="yhped"><span class="ne-text">private 设计</span></h3>
+
+<pre><code class="java">// 元素的数量
+private int size;
+// 所有的元素
+private E[] elements;
+
+private static final int DEFAULT_CAPACITY = 10;
+private static final int ELEMENT_NOT_FOUND = -1;
+
+/\*\*
+_ 保证要有 capacity 的容量
+_ @param capacity
+\*/
+private void ensureCapacity(int capacity) &#123;
+int oldCapacity = elements.length;
+if (oldCapacity &gt;= capacity) return;
+
+    // 新容量为旧容量的1.5倍
+    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+    E[] newElements = (E[]) new Object[newCapacity];
+    for (int i = 0; i &lt; size; i++) &#123;
+        newElements[i] = elements[i];
+    &#125;
+    elements = newElements;
+
+    System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
+
+&#125;
+
+private void outOfBounds(int index) &#123;
+throw new IndexOutOfBoundsException(&quot;Index:&quot; + index + &quot;, Size:&quot; + size);
+&#125;
+
+private void rangeCheck(int index) &#123;
+if (index &lt; 0 || index &gt;= size) &#123;
+outOfBounds(index);
+&#125;
+&#125;
+
+private void rangeCheckForAdd(int index) &#123;
+if (index &lt; 0 || index &gt; size) &#123;
+outOfBounds(index);
+&#125;
+&#125;
+</code></pre>
+<h3 id="UCaGc"><span class="ne-text">构造函数设计</span></h3>
+
+<pre><code class="java">public ArrayList(int capaticy) &#123;
+capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
+elements = (E[]) new Object[capaticy];
+&#125;
+
+public ArrayList() &#123;
+this(DEFAULT_CAPACITY);
+&#125;
+</code></pre>
+<h3 id="BtPzG"><span class="ne-text">重写输出</span></h3>
+
+<pre><code class="java">@Override
+public String toString() &#123;
+// size=3, [99, 88, 77]
+StringBuilder string = new StringBuilder();
+string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
 for (int i = 0; i &lt; size; i++) &#123;
-    newElements[i] = elements[i];
+if (i != 0) &#123;
+string.append(&quot;, &quot;);
 &#125;
-elements = newElements;
 
-System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
-</code></pre>
-<p>}</p>
-<p>private void outOfBounds(int index) {<br>throw new IndexOutOfBoundsException(“Index:” + index + “, Size:” + size);<br>}</p>
-<p>private void rangeCheck(int index) {<br>if (index &lt; 0 || index &gt;= size) {<br>outOfBounds(index);<br>}<br>}</p>
-<p>private void rangeCheckForAdd(int index) {<br>if (index &lt; 0 || index &gt; size) {<br>outOfBounds(index);<br>}<br>}</pre><h3 id="UCaGc"><span class="ne-text">构造函数设计</span></h3><pre data-language="java" id="sKVoN" class="ne-codeblock language-java">public ArrayList(int capaticy) {<br>capaticy = (capaticy < DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;<br>elements = (E[]) new Object[capaticy];<br>}</p>
-<p>public ArrayList() {<br>this(DEFAULT_CAPACITY);<br>}</pre><h3 id="BtPzG"><span class="ne-text">重写输出</span></h3><pre data-language="java" id="58KBo" class="ne-codeblock language-java">@Override<br>public String toString() {<br>// size=3, [99, 88, 77]<br>StringBuilder string = new StringBuilder();<br>string.append("size=").append(size).append(", [");<br>for (int i = 0; i < size; i++) {<br>if (i != 0) {<br>string.append(", ");<br>}</p>
-<pre><code>    string.append(elements[i]);
+        string.append(elements[i]);
 
-    //            if (i != size - 1) &#123;
-    //                string.append(&quot;, &quot;);
-    //            &#125;
+        //            if (i != size - 1) &#123;
+        //                string.append(&quot;, &quot;);
+        //            &#125;
+    &#125;
+    string.append(&quot;]&quot;);
+    return string.toString();
+
 &#125;
-string.append(&quot;]&quot;);
-return string.toString();
 </code></pre>
-<p>}</pre><p id="uf7239e17" class="ne-p"><span class="ne-text">22</span></p></div></p>
+<p id="uf7239e17" class="ne-p"><span class="ne-text">22</span></p></div>
 
 </div>
 

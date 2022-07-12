@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,9 +319,233 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><div data-type="info" class="ne-alert"><p id="5e0adbd3c4d03c372bc5bdbf949fc59c" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">贪心算法四个字总结：目前最优</span></p></div><h2 id="nHUEx"><span class="ne-text">图的一些概念</span></h2><p id="be7203f2c5e3cc70ac3430a06137165d" class="ne-p"><span class="ne-text">具体看先前的一篇文章</span><a href="https://www.wztlink1013.com/blog/gqpli5/" data-href="https://www.wztlink1013.com/blog/gqpli5/" target="_blank" class="ne-link"><span class="ne-text">https://www.wztlink1013.com/blog/gqpli5/</span></a></p><p id="5898cb029323a7e7bcde68a749655cea" class="ne-p"><span class="ne-text"></span></p><p id="0efe0efc44dc0dc883b9f397c6ac1ab9" class="ne-p"><strong><span class="ne-text">连通图</span></strong></p><div class="ne-quote"><p id="8380f5d22f1a9a91b06b0c585ee37581" class="ne-p"><span class="ne-text" style="color: #333333; font-size: 14px">在</span><a href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" data-href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" target="_blank" class="ne-link"><span class="ne-text">图论</span></a><span class="ne-text" style="color: #333333; font-size: 14px">中，连通图基于连通的概念。在一个</span><a href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" data-href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" target="_blank" class="ne-link"><span class="ne-text">无向图</span></a><span class="ne-text" style="color: #333333; font-size: 14px"> G 中，若从</span><a href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" data-href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" target="_blank" class="ne-link"><span class="ne-text">顶点</span></a><span class="ne-text" style="color: #333333; font-size: 14px">i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是</span><a href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" data-href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" target="_blank" class="ne-link"><span class="ne-text">有向图</span></a><span class="ne-text" style="color: #333333; font-size: 14px">，那么连接i和j的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的</span><a href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" data-href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" target="_blank" class="ne-link"><span class="ne-text">连通性</span></a><span class="ne-text" style="color: #333333; font-size: 14px">是图的基本性质。</span></p></div><p id="665951f6ed45e95795596091ea37cb43" class="ne-p"><strong><span class="ne-text">生成树</span></strong></p><div class="ne-quote"><p id="10112c33ae37e9de266d7dc9ad43da3e" class="ne-p"><span class="ne-text">包含图的全部顶点，边数最少的连通子图</span></p></div><p id="bf98f96271e09d1bf20e8fafda285603" class="ne-p"><strong><span class="ne-text">最小生成树</span></strong></p><div class="ne-quote"><p id="3826220ba76c178c35683068e2ab02a8" class="ne-p"><span class="ne-text">总权值最小的生成树</span></p></div><p id="b7c6c94ca874bae05cd003d128c1f69e" class="ne-p"><span class="ne-text">常见问题（该算法）就是求最小生成树。</span></p><p id="3ad4e5b28974402730ddf0a7a6c9a765" class="ne-p"><strong><span class="ne-text">并查集</span></strong></p><div class="ne-quote"><p id="fb49f1af56a20258b0994e05a5bd822f" class="ne-p"><span class="ne-text">是一个数据结构，功能有查找a和b是否为同一组；将a和b合并为同一组。</span></p></div><h2 id="Vz5Jg"><span class="ne-text">Prim算法思路</span></h2><p id="63b94f88c91d418b3a5ea7c1d40eb1c1" class="ne-p"><code class="ne-code"><span class="ne-text">Prim——普里姆算法</span></code></p><p id="57e1c39936058ab0cf89190777c671eb" class="ne-p"><span class="ne-text"></span></p><p id="65c9dddc9466daf1f87f622ae9013e7e" class="ne-p"><span class="ne-text">类似于图的深度优先遍历一样，在遍历到一个结点的时候，在此根据该节点所连通的各边权值，取最小的，以此往复</span></p><p id="cbff9ebe6415e49d40421bd46dcadcad" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1625102662437-05ab5a6e-fcc3-46d5-8c2d-666c9c23fa9a.png" width="388" id="Qjspy" class="ne-image"></p><h2 id="PFbmU"><span class="ne-text">Kruskal算法</span><span class="ne-text">思路</span></h2><p id="bc1fd8840968eaa8cd942c02348006fc" class="ne-p"><code class="ne-code"><span class="ne-text">Kruskal——克鲁斯卡尔算法</span></code></p><p id="5d99ae9579b08eceffe5b7ad59c14ee2" class="ne-p"><br></p><p id="7a889ea78b39c7c9c9904fcebe169343" class="ne-p"><span class="ne-text">把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</span></p><p id="26e6db5a49dd1bdcfc6be897e96f7c38" class="ne-p"><br></p><p id="bb2fe010dc25de5f292f2c92b428fe68" class="ne-p"><span class="ne-text">比如有如下这么一个图：</span></p><p id="6e2e9f3149f755d4f53fdad50964b38b" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png" width="219" id="Hx7aL" class="ne-image"></p><p id="aac64b9ab680edd476d18b367cb142ba" class="ne-p" style="text-align: left"><span class="ne-text">单独分析①②边和③④边情况下，两个不在一个集合里面，</span></p><p id="39ba58d75802638e8beb1aeb08e5f2b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png" width="384.5" id="PuNRa" class="ne-image"></p><p id="c55b6b173dedc37838a3ebc2021f673d" class="ne-p"><span class="ne-text">不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为3的时候，此时就需要将左右两个集合合并了</span></p><p id="90ebd57d6561894820dc28eb8dba77c2" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png" width="374" id="wsUam" class="ne-image"></p><p id="997a98f28e94a25540a4893a96c5098d" class="ne-p" style="text-align: left"><span class="ne-text">最后的结果样式就为如下</span></p><p id="fd9a3ee6d2a2bf0a101c0dfb8cb7eb03" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png" width="390" id="adOCr" class="ne-image"></p><p id="91b40a459460ec5d2efb79ae1d139a58" class="ne-p" style="text-align: center"><br></p><h2 id="9kZiP"><span class="ne-text">代码实现</span></h2><h3 id="YPhZh"><span class="ne-text">Kruskal算法代码</span></h3><pre data-language="cpp" id="ViSvq" class="ne-codeblock language-cpp">#include <stdio.h>
+    <!doctype html><div class="lake-content" typography="classic"><div data-type="info" class="ne-alert"><p id="5e0adbd3c4d03c372bc5bdbf949fc59c" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">贪心算法四个字总结：目前最优</span></p></div><h2 id="nHUEx"><span class="ne-text">图的一些概念</span></h2><p id="be7203f2c5e3cc70ac3430a06137165d" class="ne-p"><span class="ne-text">具体看先前的一篇文章</span><a href="https://www.wztlink1013.com/blog/gqpli5/" data-href="https://www.wztlink1013.com/blog/gqpli5/" target="_blank" class="ne-link"><span class="ne-text">https://www.wztlink1013.com/blog/gqpli5/</span></a></p><p id="5898cb029323a7e7bcde68a749655cea" class="ne-p"><span class="ne-text"></span></p><p id="0efe0efc44dc0dc883b9f397c6ac1ab9" class="ne-p"><strong><span class="ne-text">连通图</span></strong></p><div class="ne-quote"><p id="8380f5d22f1a9a91b06b0c585ee37581" class="ne-p"><span class="ne-text" style="color: #333333; font-size: 14px">在</span><a href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" data-href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" target="_blank" class="ne-link"><span class="ne-text">图论</span></a><span class="ne-text" style="color: #333333; font-size: 14px">中，连通图基于连通的概念。在一个</span><a href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" data-href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" target="_blank" class="ne-link"><span class="ne-text">无向图</span></a><span class="ne-text" style="color: #333333; font-size: 14px"> G 中，若从</span><a href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" data-href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" target="_blank" class="ne-link"><span class="ne-text">顶点</span></a><span class="ne-text" style="color: #333333; font-size: 14px">i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是</span><a href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" data-href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" target="_blank" class="ne-link"><span class="ne-text">有向图</span></a><span class="ne-text" style="color: #333333; font-size: 14px">，那么连接i和j的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的</span><a href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" data-href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" target="_blank" class="ne-link"><span class="ne-text">连通性</span></a><span class="ne-text" style="color: #333333; font-size: 14px">是图的基本性质。</span></p></div><p id="665951f6ed45e95795596091ea37cb43" class="ne-p"><strong><span class="ne-text">生成树</span></strong></p><div class="ne-quote"><p id="10112c33ae37e9de266d7dc9ad43da3e" class="ne-p"><span class="ne-text">包含图的全部顶点，边数最少的连通子图</span></p></div><p id="bf98f96271e09d1bf20e8fafda285603" class="ne-p"><strong><span class="ne-text">最小生成树</span></strong></p><div class="ne-quote"><p id="3826220ba76c178c35683068e2ab02a8" class="ne-p"><span class="ne-text">总权值最小的生成树</span></p></div><p id="b7c6c94ca874bae05cd003d128c1f69e" class="ne-p"><span class="ne-text">常见问题（该算法）就是求最小生成树。</span></p><p id="3ad4e5b28974402730ddf0a7a6c9a765" class="ne-p"><strong><span class="ne-text">并查集</span></strong></p><div class="ne-quote"><p id="fb49f1af56a20258b0994e05a5bd822f" class="ne-p"><span class="ne-text">是一个数据结构，功能有查找a和b是否为同一组；将a和b合并为同一组。</span></p></div><h2 id="Vz5Jg"><span class="ne-text">Prim算法思路</span></h2><p id="63b94f88c91d418b3a5ea7c1d40eb1c1" class="ne-p"><code class="ne-code"><span class="ne-text">Prim——普里姆算法</span></code></p><p id="57e1c39936058ab0cf89190777c671eb" class="ne-p"><span class="ne-text"></span></p><p id="65c9dddc9466daf1f87f622ae9013e7e" class="ne-p"><span class="ne-text">类似于图的深度优先遍历一样，在遍历到一个结点的时候，在此根据该节点所连通的各边权值，取最小的，以此往复</span></p><p id="cbff9ebe6415e49d40421bd46dcadcad" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1625102662437-05ab5a6e-fcc3-46d5-8c2d-666c9c23fa9a.png" width="388" id="Qjspy" class="ne-image"></p><h2 id="PFbmU"><span class="ne-text">Kruskal算法</span><span class="ne-text">思路</span></h2><p id="bc1fd8840968eaa8cd942c02348006fc" class="ne-p"><code class="ne-code"><span class="ne-text">Kruskal——克鲁斯卡尔算法</span></code></p><p id="5d99ae9579b08eceffe5b7ad59c14ee2" class="ne-p"><br></p><p id="7a889ea78b39c7c9c9904fcebe169343" class="ne-p"><span class="ne-text">把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</span></p><p id="26e6db5a49dd1bdcfc6be897e96f7c38" class="ne-p"><br></p><p id="bb2fe010dc25de5f292f2c92b428fe68" class="ne-p"><span class="ne-text">比如有如下这么一个图：</span></p><p id="6e2e9f3149f755d4f53fdad50964b38b" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png" width="219" id="Hx7aL" class="ne-image"></p><p id="aac64b9ab680edd476d18b367cb142ba" class="ne-p" style="text-align: left"><span class="ne-text">单独分析①②边和③④边情况下，两个不在一个集合里面，</span></p><p id="39ba58d75802638e8beb1aeb08e5f2b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png" width="384.5" id="PuNRa" class="ne-image"></p><p id="c55b6b173dedc37838a3ebc2021f673d" class="ne-p"><span class="ne-text">不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为3的时候，此时就需要将左右两个集合合并了</span></p><p id="90ebd57d6561894820dc28eb8dba77c2" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png" width="374" id="wsUam" class="ne-image"></p><p id="997a98f28e94a25540a4893a96c5098d" class="ne-p" style="text-align: left"><span class="ne-text">最后的结果样式就为如下</span></p><p id="fd9a3ee6d2a2bf0a101c0dfb8cb7eb03" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png" width="390" id="adOCr" class="ne-image"></p><p id="91b40a459460ec5d2efb79ae1d139a58" class="ne-p" style="text-align: center"><br></p><h2 id="9kZiP"><span class="ne-text">代码实现</span></h2><h3 id="YPhZh"><span class="ne-text">Kruskal算法代码</span></h3>
 
-<p>#include <vector><br>#include <algorithm><br>namespace NS_KruskalMST {<br>using namespace std;<br>void KruskalMST();<br>int FindSet(int u);<br>void UnionSets(int u, int v);<br>void Initialization();<br>void GenEdges();<br>void MakeSets();<br>void Output(int v0);<br>#define INF INT_MAX<br>static int n;<br>static vector&lt;vector<int>&gt; WMatrix;<br>static vector&lt;pair&lt;pair&lt;int, int&gt;, int&gt;&gt; Edges;<br>//Node struct for the disjoint set<br>struct DJSNode {<br>int Parent; int Rank;<br>DJSNode(int p) : Parent(p), Rank(0) {}<br>};<br>static vector<DJSNode> DisjointSet;<br>static vector&lt;pair&lt;int, int&gt;&gt; MST;<br>//The adjacency list for MST<br>static vector&lt;vector<int>&gt; MSTList;<br>static vector<int> Prev;<br>void KruskalMSTCaller(int an,<br>vector&lt;vector<int>&gt; &amp;wMatrix, int v0)<br>{<br>n = an;<br>WMatrix = wMatrix;<br>Initialization();<br>KruskalMST();<br>Output(v0);<br>}<br>void KruskalMST()<br>{<br>for (auto &amp;e: Edges)<br>{<br>int u = e.first.first;<br>int v = e.first.second;<br>int setU = FindSet(u);<br>int setV = FindSet(v);<br>if (setU != setV)<br>{<br>MST.push_back(e.first);<br>if (MST.size() == n - 1)<br>break;<br>UnionSets(setU, setV);<br>}<br>}<br>}<br>int FindSet(int u)<br>{<br>while (u != DisjointSet[u].Parent)<br>u = DisjointSet[u].Parent;<br>//For path compression:<br>//DisjointSet[u].Parent =<br>// FindSet(DisjointSet[u].Parent);<br>return u;<br>}<br>void UnionSets(int u, int v)<br>{<br>if (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)<br>DisjointSet[v].Parent = u;<br>else<br>DisjointSet[u].Parent = v;<br>if (DisjointSet[u].Rank == DisjointSet[v].Rank)<br>DisjointSet[u].Rank++;<br>}<br>void Initialization()<br>{<br>GenEdges();<br>sort(Edges.begin(), Edges.end(),<br>[](pair&lt;pair&lt;int, int&gt;, int&gt;a,<br>pair&lt;pair&lt;int, int&gt;, int&gt;b)<br>{return a.second &lt; b.second; });<br>MakeSets();<br>MST.clear();<br>}<br>void GenEdges()<br>{<br>Edges.clear();<br>//Traverse the upper triangle of WMatrix<br>for (int i = 0; i &lt; n - 1; i++)<br>{<br>for (int j = i + 1; j &lt; n; j++)<br>if (WMatrix[i][j] != INF)<br>Edges.push_back({ {i, j},<br>WMatrix[i][j] });<br>}<br>}<br>void MakeSets()<br>{<br>DisjointSet.clear();<br>for (int i = 0; i &lt; n; i++)<br>DisjointSet.push_back(DJSNode(i));<br>}<br>void OutputWMatrix()<br>{<br>printf(“n = %d\n”, n);<br>printf(“The weight matrix:\n”);<br>printf(“%3c”, ‘ ‘);<br>for (int j = 0; j &lt; n; j++)<br>printf(“%3d”, j + 1);<br>printf(“\n”);<br>for (int i = 0; i &lt; n; i++)<br>{<br>printf(“%3d”, i + 1);<br>for (auto j : WMatrix[i])<br>if (j &lt; INF)<br>printf(“%3d”, j);<br>else<br>printf(“%3c”, ‘*‘);<br>printf(“\n”);<br>}<br>}<br>void OutputPath(int u)<br>{<br>if (Prev[u] == -1)<br>printf(“%d”, u + 1);<br>else<br>{<br>OutputPath(Prev[u]);<br>printf(“-%d”, u + 1);<br>}<br>}<br>void GenMSTList()<br>{<br>MSTList.clear();<br>MSTList.resize(n);<br>for (auto &amp;e: MST)<br>{<br>MSTList[e.first].push_back(e.second);<br>MSTList[e.second].push_back(e.first);<br>}<br>}<br>void GenPrev(int v)<br>{<br>for (auto &amp;u : MSTList[v])<br>if (u != -1)<br>{<br>Prev[u] = v;<br>auto w = find(MSTList[u].begin(),<br>MSTList[u].end(), v);<br>MSTList[u]w - MSTList[u].begin()] = -1;<br>GenPrev(u);<br>}<br>}<br>void Output(int v0)<br>{<br>printf(“Kruskal’s MST algorithm\n”);<br>OutputWMatrix();<br>int wSum = 0;<br>for (int i = 0; i &lt; n - 1; i++)<br>wSum += WMatrix[MST[i].first][MST[i].second];<br>GenMSTList();<br>Prev.clear();<br>Prev.resize(n);<br>Prev[v0] = -1;<br>GenPrev(v0);<br>printf(“The MST edges:\n”);<br>printf(“Edge Weight\n”);<br>for (auto &amp;e : MST)<br>printf(“ %d-%d %d\n”, e.first + 1, e.second + 1,<br>WMatrix[e.first][e.second]);<br>printf(“Total MST weight: %d\n”, wSum);<br>printf(“The MST paths from vertex %d:\n”, v0 + 1);<br>for (int u = 0; u &lt; n; u++)<br>if (u != v0)<br>{<br>printf(“%3d: “, u + 1);<br>OutputPath(u);<br>printf(“\n”);<br>}<br>printf(“\n”);<br>}<br>} //namespace NS_KruskalMST<br>using namespace NS_KruskalMST;<br>void TestKruskalMST(int v0 = 0)<br>{<br>vector&lt;vector&lt;vector<int>&gt;&gt; w = {<br>//<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/">https://www.geeksforgeeks.org/</a><br>//prims-minimum-spanning-tree-mst-greedy-algo-5/<br>{<br>{ 0, 2,INF, 6,INF },<br>{ 2, 0, 3, 8, 5 },<br>{ INF, 3, 0,INF, 7 },<br>{ 6, 8,INF, 0, 9 },<br>{ INF, 5, 7, 9, 0 }<br>},<br>// Dijkstra’s algorithm on Wikipedia<br>{<br>{ 0, 7, 9,INF,INF, 14 },<br>{ 7, 0, 10, 15,INF,INF },<br>{ 9, 10, 0, 11,INF, 2 },<br>{ INF, 15, 11, 0, 6,INF },<br>{ INF,INF,INF, 6, 0, 9 },<br>{ 14,INF, 2,INF, 9, 0 },<br>},<br>//<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/">https://www.geeksforgeeks.org/</a><br>//kruskals-minimum-spanning-tree-using-stl-in-c/<br>{<br>{ 0, 4,INF,INF,INF,INF,INF, 8,INF },<br>{ 4, 0, 8,INF,INF,INF,INF, 11,INF },<br>{ INF, 8, 0, 7,INF, 4,INF,INF, 2 },<br>{ INF,INF, 7, 0, 9, 14,INF,INF,INF },<br>{ INF,INF,INF, 9, 0, 10,INF,INF,INF },<br>{ INF,INF, 4, 14, 10, 0, 2,INF,INF },<br>{ INF,INF,INF,INF,INF, 2, 0, 1, 6 },<br>{ 8, 11,INF,INF,INF,INF, 1, 0, 7 },<br>{ INF,INF, 2,INF,INF,INF, 6, 7, 0 },<br>},<br>};<br>int k = w.size();<br>for (int i = 0; i &lt; k; i++)<br>{<br>if (v0 &gt; w[i].size() - 1)<br>v0 = w[i].size() - 1;<br>KruskalMSTCaller(w[i].size(), w[i], v0);<br>}<br>}</pre></div></p>
+<pre><code class="cpp">#include &lt;stdio.h&gt;
+
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+namespace NS_KruskalMST &#123;
+using namespace std;
+void KruskalMST();
+int FindSet(int u);
+void UnionSets(int u, int v);
+void Initialization();
+void GenEdges();
+void MakeSets();
+void Output(int v0);
+#define INF INT_MAX
+static int n;
+static vector&lt;vector&lt;int&gt;&gt; WMatrix;
+static vector&lt;pair&lt;pair&lt;int, int&gt;, int&gt;&gt; Edges;
+//Node struct for the disjoint set
+struct DJSNode &#123;
+int Parent; int Rank;
+DJSNode(int p) : Parent(p), Rank(0) &#123;&#125;
+&#125;;
+static vector&lt;DJSNode&gt; DisjointSet;
+static vector&lt;pair&lt;int, int&gt;&gt; MST;
+//The adjacency list for MST
+static vector&lt;vector&lt;int&gt;&gt; MSTList;
+static vector&lt;int&gt; Prev;
+void KruskalMSTCaller(int an,
+vector&lt;vector&lt;int&gt;&gt; &amp;wMatrix, int v0)
+&#123;
+n = an;
+WMatrix = wMatrix;
+Initialization();
+KruskalMST();
+Output(v0);
+&#125;
+void KruskalMST()
+&#123;
+for (auto &amp;e: Edges)
+&#123;
+int u = e.first.first;
+int v = e.first.second;
+int setU = FindSet(u);
+int setV = FindSet(v);
+if (setU != setV)
+&#123;
+MST.push_back(e.first);
+if (MST.size() == n - 1)
+break;
+UnionSets(setU, setV);
+&#125;
+&#125;
+&#125;
+int FindSet(int u)
+&#123;
+while (u != DisjointSet[u].Parent)
+u = DisjointSet[u].Parent;
+//For path compression:
+//DisjointSet[u].Parent =
+// FindSet(DisjointSet[u].Parent);
+return u;
+&#125;
+void UnionSets(int u, int v)
+&#123;
+if (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)
+DisjointSet[v].Parent = u;
+else
+DisjointSet[u].Parent = v;
+if (DisjointSet[u].Rank == DisjointSet[v].Rank)
+DisjointSet[u].Rank++;
+&#125;
+void Initialization()
+&#123;
+GenEdges();
+sort(Edges.begin(), Edges.end(),
+[](pair&lt;pair&lt;int, int&gt;, int&gt;a,
+pair&lt;pair&lt;int, int&gt;, int&gt;b)
+&#123;return a.second &lt; b.second; &#125;);
+MakeSets();
+MST.clear();
+&#125;
+void GenEdges()
+&#123;
+Edges.clear();
+//Traverse the upper triangle of WMatrix
+for (int i = 0; i &lt; n - 1; i++)
+&#123;
+for (int j = i + 1; j &lt; n; j++)
+if (WMatrix[i][j] != INF)
+Edges.push_back(&#123; &#123;i, j&#125;,
+WMatrix[i][j] &#125;);
+&#125;
+&#125;
+void MakeSets()
+&#123;
+DisjointSet.clear();
+for (int i = 0; i &lt; n; i++)
+DisjointSet.push_back(DJSNode(i));
+&#125;
+void OutputWMatrix()
+&#123;
+printf(&quot;n = %d\n&quot;, n);
+printf(&quot;The weight matrix:\n&quot;);
+printf(&quot;%3c&quot;, &#39; &#39;);
+for (int j = 0; j &lt; n; j++)
+printf(&quot;%3d&quot;, j + 1);
+printf(&quot;\n&quot;);
+for (int i = 0; i &lt; n; i++)
+&#123;
+printf(&quot;%3d&quot;, i + 1);
+for (auto j : WMatrix[i])
+if (j &lt; INF)
+printf(&quot;%3d&quot;, j);
+else
+printf(&quot;%3c&quot;, &#39;\*&#39;);
+printf(&quot;\n&quot;);
+&#125;
+&#125;
+void OutputPath(int u)
+&#123;
+if (Prev[u] == -1)
+printf(&quot;%d&quot;, u + 1);
+else
+&#123;
+OutputPath(Prev[u]);
+printf(&quot;-%d&quot;, u + 1);
+&#125;
+&#125;
+void GenMSTList()
+&#123;
+MSTList.clear();
+MSTList.resize(n);
+for (auto &amp;e: MST)
+&#123;
+MSTList[e.first].push_back(e.second);
+MSTList[e.second].push_back(e.first);
+&#125;
+&#125;
+void GenPrev(int v)
+&#123;
+for (auto &amp;u : MSTList[v])
+if (u != -1)
+&#123;
+Prev[u] = v;
+auto w = find(MSTList[u].begin(),
+MSTList[u].end(), v);
+MSTList[u]w - MSTList[u].begin()] = -1;
+GenPrev(u);
+&#125;
+&#125;
+void Output(int v0)
+&#123;
+printf(&quot;Kruskal&#39;s MST algorithm\n&quot;);
+OutputWMatrix();
+int wSum = 0;
+for (int i = 0; i &lt; n - 1; i++)
+wSum += WMatrix[MST[i].first][MST[i].second];
+GenMSTList();
+Prev.clear();
+Prev.resize(n);
+Prev[v0] = -1;
+GenPrev(v0);
+printf(&quot;The MST edges:\n&quot;);
+printf(&quot;Edge Weight\n&quot;);
+for (auto &amp;e : MST)
+printf(&quot; %d-%d %d\n&quot;, e.first + 1, e.second + 1,
+WMatrix[e.first][e.second]);
+printf(&quot;Total MST weight: %d\n&quot;, wSum);
+printf(&quot;The MST paths from vertex %d:\n&quot;, v0 + 1);
+for (int u = 0; u &lt; n; u++)
+if (u != v0)
+&#123;
+printf(&quot;%3d: &quot;, u + 1);
+OutputPath(u);
+printf(&quot;\n&quot;);
+&#125;
+printf(&quot;\n&quot;);
+&#125;
+&#125; //namespace NS_KruskalMST
+using namespace NS_KruskalMST;
+void TestKruskalMST(int v0 = 0)
+&#123;
+vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; w = &#123;
+//https://www.geeksforgeeks.org/
+//prims-minimum-spanning-tree-mst-greedy-algo-5/
+&#123;
+&#123; 0, 2,INF, 6,INF &#125;,
+&#123; 2, 0, 3, 8, 5 &#125;,
+&#123; INF, 3, 0,INF, 7 &#125;,
+&#123; 6, 8,INF, 0, 9 &#125;,
+&#123; INF, 5, 7, 9, 0 &#125;
+&#125;,
+// Dijkstra&#39;s algorithm on Wikipedia
+&#123;
+&#123; 0, 7, 9,INF,INF, 14 &#125;,
+&#123; 7, 0, 10, 15,INF,INF &#125;,
+&#123; 9, 10, 0, 11,INF, 2 &#125;,
+&#123; INF, 15, 11, 0, 6,INF &#125;,
+&#123; INF,INF,INF, 6, 0, 9 &#125;,
+&#123; 14,INF, 2,INF, 9, 0 &#125;,
+&#125;,
+//https://www.geeksforgeeks.org/
+//kruskals-minimum-spanning-tree-using-stl-in-c/
+&#123;
+&#123; 0, 4,INF,INF,INF,INF,INF, 8,INF &#125;,
+&#123; 4, 0, 8,INF,INF,INF,INF, 11,INF &#125;,
+&#123; INF, 8, 0, 7,INF, 4,INF,INF, 2 &#125;,
+&#123; INF,INF, 7, 0, 9, 14,INF,INF,INF &#125;,
+&#123; INF,INF,INF, 9, 0, 10,INF,INF,INF &#125;,
+&#123; INF,INF, 4, 14, 10, 0, 2,INF,INF &#125;,
+&#123; INF,INF,INF,INF,INF, 2, 0, 1, 6 &#125;,
+&#123; 8, 11,INF,INF,INF,INF, 1, 0, 7 &#125;,
+&#123; INF,INF, 2,INF,INF,INF, 6, 7, 0 &#125;,
+&#125;,
+&#125;;
+int k = w.size();
+for (int i = 0; i &lt; k; i++)
+&#123;
+if (v0 &gt; w[i].size() - 1)
+v0 = w[i].size() - 1;
+KruskalMSTCaller(w[i].size(), w[i], v0);
+&#125;
+&#125;
+</code></pre>
+</div>
 
 </div>
 

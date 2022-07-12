@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,25 +319,38 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u548cf5a7"><a href="https://leetcode-cn.com/problems/restore-ip-addresses/" data-href="https://leetcode-cn.com/problems/restore-ip-addresses/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/restore-ip-addresses/</span></a></li></ul><p id="u300a127c" class="ne-p"><span class="ne-text"></span></p><h3 id="Uh8J5"><span class="ne-text">思路</span></h3><ul class="ne-ul"><li id="u123f0828"><span class="ne-text">长度为12位：最小单元位3</span></li><li id="u999a712f"><span class="ne-text">长度为11位：最小单元位2</span></li><li id="u00b89315"><span class="ne-text">其他情况的最小单元位有可能是1</span></li></ul><p id="u07aa0710" class="ne-p"><span class="ne-text"></span></p><h3 id="P81a3"><span class="ne-text">ts代码</span></h3><pre data-language="typescript" id="vAKCa" class="ne-codeblock language-typescript">function restoreIpAddresses(s: string): string[] {
+    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u548cf5a7"><a href="https://leetcode-cn.com/problems/restore-ip-addresses/" data-href="https://leetcode-cn.com/problems/restore-ip-addresses/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/restore-ip-addresses/</span></a></li></ul><p id="u300a127c" class="ne-p"><span class="ne-text"></span></p><h3 id="Uh8J5"><span class="ne-text">思路</span></h3><ul class="ne-ul"><li id="u123f0828"><span class="ne-text">长度为12位：最小单元位3</span></li><li id="u999a712f"><span class="ne-text">长度为11位：最小单元位2</span></li><li id="u00b89315"><span class="ne-text">其他情况的最小单元位有可能是1</span></li></ul><p id="u07aa0710" class="ne-p"><span class="ne-text"></span></p><h3 id="P81a3"><span class="ne-text">ts代码</span></h3>
 
-<p>// 保存所有符合条件的 IP 地址<br>let r: any[] = []<br>// 分四步递归处理 ip 分段<br>let search = (cur: any, sub: any) =&gt; {<br>if (sub.length &gt; 12) return</p>
-<pre><code>// 边界条件
-if (cur.length === 4 &amp;&amp; cur.join(&#39;&#39;) === s) &#123;
-  r.push(cur.join(&#39;.&#39;))
-&#125; else &#123;
-  // 正常的处理过程
-  for (let i = 0, len = Math.min(3, sub.length), tmp; i &lt; len; i++) &#123;
-    tmp = sub.substr(0, i + 1)
-    if (tmp - 256 &lt; 0) &#123;
-      // 转换下数据类型，如 01为1（LeetCode测试用例）
-      search(cur.concat([tmp * 1]), sub.substr(i + 1))
+<pre><code class="typescript">function restoreIpAddresses(s: string): string[] &#123;
+
+// 保存所有符合条件的 IP 地址
+let r: any[] = []
+// 分四步递归处理 ip 分段
+let search = (cur: any, sub: any) =&gt; &#123;
+if (sub.length &gt; 12) return
+
+    // 边界条件
+    if (cur.length === 4 &amp;&amp; cur.join(&#39;&#39;) === s) &#123;
+      r.push(cur.join(&#39;.&#39;))
+    &#125; else &#123;
+      // 正常的处理过程
+      for (let i = 0, len = Math.min(3, sub.length), tmp; i &lt; len; i++) &#123;
+        tmp = sub.substr(0, i + 1)
+        if (tmp - 256 &lt; 0) &#123;
+          // 转换下数据类型，如 01为1（LeetCode测试用例）
+          search(cur.concat([tmp * 1]), sub.substr(i + 1))
+        &#125;
+      &#125;
     &#125;
-  &#125;
+
 &#125;
+search([], s)
+return r
+&#125;
+
+console.log(restoreIpAddresses(&#39;101023&#39;))
 </code></pre>
-<p>}<br>search([], s)<br>return r<br>}</p>
-<p>console.log(restoreIpAddresses(‘101023’))</pre></div></p>
+</div>
 
 </div>
 

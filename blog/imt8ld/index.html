@@ -16,7 +16,7 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="https://leetcode-cn.com/problems/same-tree/BFS/**Definition for a binary tree node.function TreeNode(val, left, right) {this.val = (val===undefined ? " />
+    <meta name="description" content="https://leetcode-cn.com/problems/same-tree/BFS/**- Definition for a binary tree node.- function TreeNode(val, left, right) &amp;#123;-     this.val = (val" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="100. 相同的树🔖BFS🔖DFS | 尼采般地抒情" />
@@ -25,7 +25,7 @@
       content="https://www.wztlink1013.com/blog/imt8ld/"
     />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="https://leetcode-cn.com/problems/same-tree/BFS/**Definition for a binary tree node.function TreeNode(val, left, right) {this.val = (val===undefined ? " />
+    <meta property="og:description" content="https://leetcode-cn.com/problems/same-tree/BFS/**- Definition for a binary tree node.- function TreeNode(val, left, right) &amp;#123;-     this.val = (val" />
     <meta name="generator" content="https://hexo.io" />
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,93 +319,104 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u4caaba6d"><a href="https://leetcode-cn.com/problems/same-tree/" data-href="https://leetcode-cn.com/problems/same-tree/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/same-tree/</span></a></li></ul><p id="u88c6e409" class="ne-p"><span class="ne-text"></span></p><h3 id="h4eM0"><span class="ne-text">BFS</span></h3><pre data-language="javascript" id="mcmxz" class="ne-codeblock language-javascript">/**
+    <!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u4caaba6d"><a href="https://leetcode-cn.com/problems/same-tree/" data-href="https://leetcode-cn.com/problems/same-tree/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/same-tree/</span></a></li></ul><p id="u88c6e409" class="ne-p"><span class="ne-text"></span></p><h3 id="h4eM0"><span class="ne-text">BFS</span></h3>
 
-<ul>
-<li><p>Definition for a binary tree node.</p>
-</li>
-<li><p>function TreeNode(val, left, right) {</p>
-</li>
-<li><pre><code>this.val = (val===undefined ? 0 : val)
-</code></pre>
-</li>
-<li><pre><code>this.left = (left===undefined ? null : left)
-</code></pre>
-</li>
-<li><pre><code>this.right = (right===undefined ? null : right)
-</code></pre>
-</li>
-<li><p>}<br>*/<br>/**</p>
-</li>
-<li><p>@param {TreeNode} p</p>
-</li>
-<li><p>@param {TreeNode} q</p>
-</li>
-<li><p>@return {boolean}<br>*/<br>var isSameTree = function(p, q) {<br>if (p === null &amp;&amp; q === null) return true<br>if (p === null || q === null) return false</p>
-<pre><code>let que_1 = [p]
-let que_2 = [q]
+<pre><code class="javascript">/**
 
-while(que_1.length !== 0) &#123;
-    let que_1_size = que_1.length
-    let que_2_size = que_2.length
-    if (que_1_size !== que_2_size) return false
-    for (let i = 0; i&lt;que_1_size; i++) &#123;
-        let mp1 = que_1.shift()
-        let mp2 = que_2.shift()
-        if (mp1.val !== mp2.val) return false
-        if (mp1.left &amp;&amp; mp2.left) &#123;
-            que_1.push(mp1.left)
-            que_2.push(mp2.left)
-        &#125; else if(!mp1.left &amp;&amp; !mp2.left)&#123;&#125; else &#123;
-            return false
-        &#125;
-        if (mp1.right &amp;&amp; mp2.right) &#123;
-            que_1.push(mp1.right)
-            que_2.push(mp2.right)
-        &#125; else if(!mp1.right &amp;&amp; !mp2.right)&#123;&#125; else &#123;
-            return false
-        &#125;
-    &#125;
-&#125;
-return true
+- Definition for a binary tree node.
+- function TreeNode(val, left, right) &#123;
+-     this.val = (val===undefined ? 0 : val)
+-     this.left = (left===undefined ? null : left)
+-     this.right = (right===undefined ? null : right)
+- &#125;
+  \*/
+  /\*\*
+- @param &#123;TreeNode&#125; p
+- @param &#123;TreeNode&#125; q
+- @return &#123;boolean&#125;
+  \*/
+  var isSameTree = function(p, q) &#123;
+  if (p === null &amp;&amp; q === null) return true
+  if (p === null || q === null) return false
+
+      let que_1 = [p]
+      let que_2 = [q]
+
+      while(que_1.length !== 0) &#123;
+          let que_1_size = que_1.length
+          let que_2_size = que_2.length
+          if (que_1_size !== que_2_size) return false
+          for (let i = 0; i&lt;que_1_size; i++) &#123;
+              let mp1 = que_1.shift()
+              let mp2 = que_2.shift()
+              if (mp1.val !== mp2.val) return false
+              if (mp1.left &amp;&amp; mp2.left) &#123;
+                  que_1.push(mp1.left)
+                  que_2.push(mp2.left)
+              &#125; else if(!mp1.left &amp;&amp; !mp2.left)&#123;&#125; else &#123;
+                  return false
+              &#125;
+              if (mp1.right &amp;&amp; mp2.right) &#123;
+                  que_1.push(mp1.right)
+                  que_2.push(mp2.right)
+              &#125; else if(!mp1.right &amp;&amp; !mp2.right)&#123;&#125; else &#123;
+                  return false
+              &#125;
+          &#125;
+      &#125;
+      return true
+
+  &#125;;
 </code></pre>
-<p>};</pre><p id="u2a1b40a8" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015502900-ce25f41b-27ba-42d1-aba5-574187e8e2b8.png" width="630.8333082662698" id="u588d5535" class="ne-image"></p><h3 id="fOcqM"><span class="ne-text">DFS</span></h3><p id="ud9083096" class="ne-p"><span class="ne-text">肝不动了，直接暴力 run ok 就行</span></p><pre data-language="javascript" id="px4sF" class="ne-codeblock language-javascript">/**</p>
-</li>
-<li><p>Definition for a binary tree node.</p>
-</li>
-<li><p>function TreeNode(val, left, right) {</p>
-</li>
-<li><pre><code>this.val = (val===undefined ? 0 : val)
+<p id="u2a1b40a8" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015502900-ce25f41b-27ba-42d1-aba5-574187e8e2b8.png" width="630.8333082662698" id="u588d5535" class="ne-image"></p><h3 id="fOcqM"><span class="ne-text">DFS</span></h3><p id="ud9083096" class="ne-p"><span class="ne-text">肝不动了，直接暴力 run ok 就行</span></p>
+
+<pre><code class="javascript">/\*\*
+
+- Definition for a binary tree node.
+- function TreeNode(val, left, right) &#123;
+-     this.val = (val===undefined ? 0 : val)
+-     this.left = (left===undefined ? null : left)
+-     this.right = (right===undefined ? null : right)
+- &#125;
+  \*/
+  /\*\*
+- @param &#123;TreeNode&#125; p
+- @param &#123;TreeNode&#125; q
+- @return &#123;boolean&#125;
+  \*/
+  var isSameTree = function(p, q) &#123;
+  let result = true
+  if (p === null &amp;&amp; q === null) return result
+  if (p === null || q === null) return !result
+  let arr_1 = []
+  let arr_2 = []
+  let dfs = (data, arr) =&gt; &#123;
+  if (data) &#123;
+  arr.push(data.val)
+  if (data.left) &#123;
+  dfs(data.left, arr)
+  &#125; else &#123;
+  arr.push(99999)
+  &#125;
+  if (data.right) &#123;
+  dfs(data.right, arr)
+  &#125; else &#123;
+  arr.push(99999)
+  &#125;
+          &#125;
+      &#125;
+      dfs(p, arr_1)
+      dfs(q, arr_2)
+      if (arr_1.length !== arr_2.length) result = false
+      arr_1.forEach((data, index) =&gt; &#123;
+          if (data !== arr_2[index]) &#123;
+              result = false
+          &#125;
+      &#125;)
+      return result
+  &#125;;
 </code></pre>
-</li>
-<li><pre><code>this.left = (left===undefined ? null : left)
-</code></pre>
-</li>
-<li><pre><code>this.right = (right===undefined ? null : right)
-</code></pre>
-</li>
-<li><p>}<br>*/<br>/**</p>
-</li>
-<li><p>@param {TreeNode} p</p>
-</li>
-<li><p>@param {TreeNode} q</p>
-</li>
-<li><p>@return {boolean}<br>*/<br>var isSameTree = function(p, q) {<br>let result = true<br>if (p === null &amp;&amp; q === null) return result<br>if (p === null || q === null) return !result<br>let arr_1 = []<br>let arr_2 = []<br>let dfs = (data, arr) =&gt; {<br>if (data) {<br>arr.push(data.val)<br>if (data.left) {<br>dfs(data.left, arr)<br>} else {<br>arr.push(99999)<br>}<br>if (data.right) {<br>dfs(data.right, arr)<br>} else {<br>arr.push(99999)<br>}</p>
-<pre><code>    &#125;
-&#125;
-dfs(p, arr_1)
-dfs(q, arr_2)
-if (arr_1.length !== arr_2.length) result = false
-arr_1.forEach((data, index) =&gt; &#123;
-    if (data !== arr_2[index]) &#123;
-        result = false
-    &#125;
-&#125;)
-return result
-</code></pre>
-<p>};</pre><p id="ufa7f6e11" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015520028-ccb54006-a5de-4448-8501-d6570716c111.png" width="636.6666413678073" id="u4ffec31d" class="ne-image"></p></div></p>
-</li>
-</ul>
+<p id="ufa7f6e11" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1652015520028-ccb54006-a5de-4448-8501-d6570716c111.png" width="636.6666413678073" id="u4ffec31d" class="ne-image"></p></div>
 
 </div>
 

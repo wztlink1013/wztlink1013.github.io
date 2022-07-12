@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -315,24 +315,147 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><p id="u03591007" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640570522971-b4d4a696-55c0-496b-a81d-deeb3e83a111.png" width="900" id="u4339158d" class="ne-image"></p><p id="u2d28a016" class="ne-p"><span class="ne-text"></span></p><p id="ubbfe2e60" class="ne-p"><span class="ne-text">前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：</span></p><ul class="ne-ul"><li id="ucc09ec77"><span class="ne-text">commitizen：简单的 commit 规范</span></li><li id="ufbab311b"><span class="ne-text">cz-conventional-changelog：执行会将项目npm发布新版本，并自动生成CHANGELOG.md文件</span></li></ul><ul class="ne-ul"><li id="u82705670"><span class="ne-text">commitlint：格式校验工具</span></li><li id="u419914ec"><span class="ne-text">husky：Git的钩子，在此作用为代码的提交规范和规范的校验</span></li></ul><ul class="ne-ul"><li id="u1fd40f0a"><span class="ne-text">standard-version：辅助 cz-conventional-changelog 打 version 等功能</span></li></ul><h3 id="Ttl7l"><span class="ne-text">commitizen和cz-conventional-changelog</span></h3><p id="u6c3b2139" class="ne-p"><span class="ne-text">下载cz-conventional-changelog commitizen</span></p><pre data-language="bash" id="lpbeV" class="ne-codeblock language-bash">cnpm i -D commitizen cz-conventional-changelog</pre><p id="u65da1f08" class="ne-p"><span class="ne-text">package.json添加配置信息</span></p><pre data-language="json" id="EWjvg" class="ne-codeblock language-json">"scripts": {
+    <!doctype html><div class="lake-content" typography="classic"><p id="u03591007" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640570522971-b4d4a696-55c0-496b-a81d-deeb3e83a111.png" width="900" id="u4339158d" class="ne-image"></p><p id="u2d28a016" class="ne-p"><span class="ne-text"></span></p><p id="ubbfe2e60" class="ne-p"><span class="ne-text">前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：</span></p><ul class="ne-ul"><li id="ucc09ec77"><span class="ne-text">commitizen：简单的 commit 规范</span></li><li id="ufbab311b"><span class="ne-text">cz-conventional-changelog：执行会将项目npm发布新版本，并自动生成CHANGELOG.md文件</span></li></ul><ul class="ne-ul"><li id="u82705670"><span class="ne-text">commitlint：格式校验工具</span></li><li id="u419914ec"><span class="ne-text">husky：Git的钩子，在此作用为代码的提交规范和规范的校验</span></li></ul><ul class="ne-ul"><li id="u1fd40f0a"><span class="ne-text">standard-version：辅助 cz-conventional-changelog 打 version 等功能</span></li></ul><h3 id="Ttl7l"><span class="ne-text">commitizen和cz-conventional-changelog</span></h3><p id="u6c3b2139" class="ne-p"><span class="ne-text">下载cz-conventional-changelog commitizen</span></p>
 
-<p>…,<br>“commit”: “git status &amp;&amp; git add . &amp;&amp; git-cz”,<br>},<br>,<br>“config”: {<br>“commitizen”: {<br>“path”: “node_modules/cz-conventional-changelog”<br>}<br>}</pre><p id="u37926c96" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510064091-ff75df38-e750-452f-8a16-6e6930f8505b.png" width="470.5" id="ua1b3c4e2" class="ne-image"></p><p id="u6b5ae494" class="ne-p"><span class="ne-text">成功提交之后</span></p><p id="u44e5300c" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510234956-c68282df-e059-4a8b-b118-0932250a7420.png" width="587" id="ue703c449" class="ne-image"></p><p id="uf283b9bd" class="ne-p"><br></p><h3 id="Ag1Il"><span class="ne-text">Commitlint 及 husky</span></h3><pre data-language="bash" id="I91lf" class="ne-codeblock language-bash">cnpm i -D husky @commitlint/config-conventional @commitlint/cli</pre><p id="u14464e93" class="ne-p"><span class="ne-text">项目根目录新建 commitlint.config.js</span></p><pre data-language="javascript" id="BKunN" class="ne-codeblock language-javascript">module.exports = { extends: ['@commitlint/config-conventional']}</pre><p id="u0d788f8b" class="ne-p"><span class="ne-text">package.json 添加如下</span></p><pre data-language="json" id="SW0Pa" class="ne-codeblock language-json"># package.json</p>
-<p>…,<br>“husky”: {<br>“hooks”: {<br>“commit-msg”: “commitlint -E $HUSKY_GIT_PARAMS” }<br>}</p>
-<p></pre><p id="u2563d439" class="ne-p"><span class="ne-text">执行命令 npm run commit</span></p><pre data-language="plain" id="dxbYZ" class="ne-codeblock language-plain">1.Select the type of change that you're committing 选择改动类型 (<type>)</p>
-<p>2.What is the scope of this change (e.g. component or file name)? 填写改动范围 (<scope>)</p>
-<p>3.Write a short, imperative tense description of the change: 写一个精简的描述 (<subject>)</p>
-<p>4.Provide a longer description of the change: (press enter to skip) 对于改动写一段长描述 (<body>)</p>
-<p>5.Are there any breaking changes? (y/n) 是破坏性修改吗？默认 n (<footer>)</p>
-<p>6.Does this change affect any openreve issues? (y/n) 改动修复了哪个问题？默认 n (<footer>)</pre><p id="u24586855" class="ne-p"><span class="ne-text">生成如下格式</span></p><pre data-language="plain" id="cQNro" class="ne-codeblock language-plain"><type>(<scope>): <subject><br><BLANK LINE></p>
-<body>
-<BLANK LINE>
-<footer></pre><p id="uad666844" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515038577-11c2fbe0-0e7e-4ec4-8836-2c49553151c0.png" width="241.5" id="ub44884a1" class="ne-image"></p><p id="u915a5ef0" class="ne-p"><span class="ne-text">其中各自含义为</span></p><ul class="ne-ul"><li id="u6aada6e4"><span class="ne-text">scope 指 commit 的范围（哪些模块进行了修改）</span></li><li id="u54a150bc"><span class="ne-text">subject 指 commit 的简短描述</span></li></ul><ul class="ne-ul"><li id="u290da520"><span class="ne-text">body 指 commit 主体内容（长描述）</span></li><li id="u6a10d0a9"><span class="ne-text">footer 指 commit footer 信息</span></li></ul><ul class="ne-ul"><li id="ue4e2d962"><span class="ne-text">type 指当前 commit 类型，一般有下面几种可选类型：</span></li></ul><p id="u7e7f121a" class="ne-p"><br></p><pre data-language="plain" id="c25Cc" class="ne-codeblock language-plain"># 主要type
+<pre><code class="bash">cnpm i -D commitizen cz-conventional-changelog
+</code></pre>
+<p id="u65da1f08" class="ne-p"><span class="ne-text">package.json添加配置信息</span></p>
+
+<pre><code class="json">&quot;scripts&quot;: &#123;
+
+...,
+&quot;commit&quot;: &quot;git status &amp;&amp; git add . &amp;&amp; git-cz&quot;,
+&#125;,
+,
+&quot;config&quot;: &#123;
+&quot;commitizen&quot;: &#123;
+&quot;path&quot;: &quot;node_modules/cz-conventional-changelog&quot;
+&#125;
+&#125;
+</code></pre>
+<p id="u37926c96" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510064091-ff75df38-e750-452f-8a16-6e6930f8505b.png" width="470.5" id="ua1b3c4e2" class="ne-image"></p><p id="u6b5ae494" class="ne-p"><span class="ne-text">成功提交之后</span></p><p id="u44e5300c" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510234956-c68282df-e059-4a8b-b118-0932250a7420.png" width="587" id="ue703c449" class="ne-image"></p><p id="uf283b9bd" class="ne-p"><br></p><h3 id="Ag1Il"><span class="ne-text">Commitlint 及 husky</span></h3>
+
+<pre><code class="bash">cnpm i -D husky @commitlint/config-conventional @commitlint/cli
+</code></pre>
+<p id="u14464e93" class="ne-p"><span class="ne-text">项目根目录新建 commitlint.config.js</span></p>
+
+<pre><code class="javascript">module.exports = &#123; extends: [&#39;@commitlint/config-conventional&#39;]&#125;
+</code></pre>
+<p id="u0d788f8b" class="ne-p"><span class="ne-text">package.json 添加如下</span></p>
+
+<pre><code class="json"># package.json
+
+...,
+&quot;husky&quot;: &#123;
+&quot;hooks&quot;: &#123;
+&quot;commit-msg&quot;: &quot;commitlint -E $HUSKY_GIT_PARAMS&quot; &#125;
+&#125;
+
+</code></pre>
+<p id="u2563d439" class="ne-p"><span class="ne-text">执行命令 npm run commit</span></p>
+
+<pre><code class="plain">1.Select the type of change that you&#39;re committing 选择改动类型 (&lt;type&gt;)
+
+2.What is the scope of this change (e.g. component or file name)? 填写改动范围 (&lt;scope&gt;)
+
+3.Write a short, imperative tense description of the change: 写一个精简的描述 (&lt;subject&gt;)
+
+4.Provide a longer description of the change: (press enter to skip) 对于改动写一段长描述 (&lt;body&gt;)
+
+5.Are there any breaking changes? (y/n) 是破坏性修改吗？默认 n (&lt;footer&gt;)
+
+6.Does this change affect any openreve issues? (y/n) 改动修复了哪个问题？默认 n (&lt;footer&gt;)
+</code></pre>
+<p id="u24586855" class="ne-p"><span class="ne-text">生成如下格式</span></p>
+
+<pre><code class="plain">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+&lt;BLANK LINE&gt;
+
+&lt;body&gt;
+&lt;BLANK LINE&gt;
+&lt;footer&gt;
+</code></pre>
+<p id="uad666844" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515038577-11c2fbe0-0e7e-4ec4-8836-2c49553151c0.png" width="241.5" id="ub44884a1" class="ne-image"></p><p id="u915a5ef0" class="ne-p"><span class="ne-text">其中各自含义为</span></p><ul class="ne-ul"><li id="u6aada6e4"><span class="ne-text">scope 指 commit 的范围（哪些模块进行了修改）</span></li><li id="u54a150bc"><span class="ne-text">subject 指 commit 的简短描述</span></li></ul><ul class="ne-ul"><li id="u290da520"><span class="ne-text">body 指 commit 主体内容（长描述）</span></li><li id="u6a10d0a9"><span class="ne-text">footer 指 commit footer 信息</span></li></ul><ul class="ne-ul"><li id="ue4e2d962"><span class="ne-text">type 指当前 commit 类型，一般有下面几种可选类型：</span></li></ul><p id="u7e7f121a" class="ne-p"><br></p>
+
+<pre><code class="plain"># 主要type
 feat:     增加新功能
 fix:      修复bug
 
-<h1 id="特殊-type"><a href="#特殊-type" class="headerlink" title="特殊 type"></a>特殊 type</h1><p>docs: 只改动了文档相关的内容<br>style: 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号<br>build: 构造工具的或者外部依赖的改动，例如 webpack，npm<br>refactor: 代码重构时使用<br>revert: 执行 git revert 打印的 message</p>
-<h1 id="暂不使用-type"><a href="#暂不使用-type" class="headerlink" title="暂不使用 type"></a>暂不使用 type</h1><p>test: 添加测试或者修改现有测试<br>perf: 提高性能的改动<br>ci: 与 CI（持续集成服务）有关的改动<br>chore: 不修改 src 或者 test 的其余修改，例如构建过程或辅助工具的变动</pre><h3 id="yQnaq"><span class="ne-text">standard-version: 自动生成 CHANGELOG</span></h3><p id="u109f02e4" class="ne-p"><span class="ne-text">下载插件</span></p><pre data-language="bash" id="hsUqT" class="ne-codeblock language-bash">cnpm i --save-dev standard-version</pre><p id="u9bbba48e" class="ne-p"><span class="ne-text">package.json 添加如下</span></p><pre data-language="json" id="E390b" class="ne-codeblock language-json">{<br>"scripts": {<br>"release": "standard-version"<br>}<br>}</pre><p id="u453f6cbd" class="ne-p"><span class="ne-text">执行 npm run release，在根目录会生成 CHANGELOG.md 文件</span></p><p id="u9255ba0b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515612285-57b296de-7def-4ef9-b022-286ac9ef1ac2.png" width="554.5" id="u715cd9c7" class="ne-image"></p><h3 id="zi86S"><span class="ne-text">总 package.json</span></h3><pre data-language="json" id="YlQL0" class="ne-codeblock language-json">{<br>"name": "web-learn-notes",<br>"version": "1.1.0",<br>"description": "web 学习笔记仓库",<br>"main": "index.js",<br>"scripts": {<br>"commit": "git status && git add . && git-cz",<br>"release": "standard-version",<br>"test": "echo &quot;Error: no test specified&quot; && exit 1"<br>},<br>"repository": {<br>"type": "git",<br>"url": "git+<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/web-learn-notes.git&quot;">https://github.com/wztlink1013/web-learn-notes.git&quot;</a><br>},<br>"keywords": [<br>"web",<br>"学习",<br>"笔记"<br>],<br>"author": "wztlink1013",<br>"license": "ISC",<br>"bugs": {<br>"url": "<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/web-learn-notes/issues&quot;">https://github.com/wztlink1013/web-learn-notes/issues&quot;</a><br>},<br>"homepage": "<a target="_blank" rel="noopener" href="https://github.com/wztlink1013/web-learn-notes#readme&quot;">https://github.com/wztlink1013/web-learn-notes#readme&quot;</a>,<br>"devDependencies": {<br>"@commitlint/cli": "^16.0.0",<br>"@commitlint/config-conventional": "^16.0.0",<br>"commitizen": "^4.2.4",<br>"cz-conventional-changelog": "^3.3.0",<br>"husky": "^7.0.4",<br>"standard-version": "^9.3.2"<br>},<br>"config": {<br>"commitizen": {<br>"path": "node_modules/cz-conventional-changelog"<br>}<br>},<br>"husky": {<br>"hooks": {<br>"commit-msg": "commitlint -E $HUSKY_GIT_PARAMS"<br>}<br>}<br>}</pre></div></p>
+# 特殊 type
+
+docs: 只改动了文档相关的内容
+style: 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
+build: 构造工具的或者外部依赖的改动，例如 webpack，npm
+refactor: 代码重构时使用
+revert: 执行 git revert 打印的 message
+
+# 暂不使用 type
+
+test: 添加测试或者修改现有测试
+perf: 提高性能的改动
+ci: 与 CI（持续集成服务）有关的改动
+chore: 不修改 src 或者 test 的其余修改，例如构建过程或辅助工具的变动
+</code></pre>
+<h3 id="yQnaq"><span class="ne-text">standard-version: 自动生成 CHANGELOG</span></h3><p id="u109f02e4" class="ne-p"><span class="ne-text">下载插件</span></p>
+
+<pre><code class="bash">cnpm i --save-dev standard-version
+</code></pre>
+<p id="u9bbba48e" class="ne-p"><span class="ne-text">package.json 添加如下</span></p>
+
+<pre><code class="json">&#123;
+&quot;scripts&quot;: &#123;
+&quot;release&quot;: &quot;standard-version&quot;
+&#125;
+&#125;
+</code></pre>
+<p id="u453f6cbd" class="ne-p"><span class="ne-text">执行 npm run release，在根目录会生成 CHANGELOG.md 文件</span></p><p id="u9255ba0b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515612285-57b296de-7def-4ef9-b022-286ac9ef1ac2.png" width="554.5" id="u715cd9c7" class="ne-image"></p><h3 id="zi86S"><span class="ne-text">总 package.json</span></h3>
+
+<pre><code class="json">&#123;
+&quot;name&quot;: &quot;web-learn-notes&quot;,
+&quot;version&quot;: &quot;1.1.0&quot;,
+&quot;description&quot;: &quot;web 学习笔记仓库&quot;,
+&quot;main&quot;: &quot;index.js&quot;,
+&quot;scripts&quot;: &#123;
+&quot;commit&quot;: &quot;git status &amp;&amp; git add . &amp;&amp; git-cz&quot;,
+&quot;release&quot;: &quot;standard-version&quot;,
+&quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+&#125;,
+&quot;repository&quot;: &#123;
+&quot;type&quot;: &quot;git&quot;,
+&quot;url&quot;: &quot;git+https://github.com/wztlink1013/web-learn-notes.git&quot;
+&#125;,
+&quot;keywords&quot;: [
+&quot;web&quot;,
+&quot;学习&quot;,
+&quot;笔记&quot;
+],
+&quot;author&quot;: &quot;wztlink1013&quot;,
+&quot;license&quot;: &quot;ISC&quot;,
+&quot;bugs&quot;: &#123;
+&quot;url&quot;: &quot;https://github.com/wztlink1013/web-learn-notes/issues&quot;
+&#125;,
+&quot;homepage&quot;: &quot;https://github.com/wztlink1013/web-learn-notes#readme&quot;,
+&quot;devDependencies&quot;: &#123;
+&quot;@commitlint/cli&quot;: &quot;^16.0.0&quot;,
+&quot;@commitlint/config-conventional&quot;: &quot;^16.0.0&quot;,
+&quot;commitizen&quot;: &quot;^4.2.4&quot;,
+&quot;cz-conventional-changelog&quot;: &quot;^3.3.0&quot;,
+&quot;husky&quot;: &quot;^7.0.4&quot;,
+&quot;standard-version&quot;: &quot;^9.3.2&quot;
+&#125;,
+&quot;config&quot;: &#123;
+&quot;commitizen&quot;: &#123;
+&quot;path&quot;: &quot;node_modules/cz-conventional-changelog&quot;
+&#125;
+&#125;,
+&quot;husky&quot;: &#123;
+&quot;hooks&quot;: &#123;
+&quot;commit-msg&quot;: &quot;commitlint -E $HUSKY_GIT_PARAMS&quot;
+&#125;
+&#125;
+&#125;
+</code></pre>
+</div>
 
 </div>
 

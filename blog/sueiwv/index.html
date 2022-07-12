@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,11 +319,80 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><p id="u62f590fc" class="ne-p"><span class="ne-text">题目链接：</span></p><ul class="ne-ul"><li id="u79899ad5"><a href="https://leetcode-cn.com/problems/count-binary-substrings/" data-href="https://leetcode-cn.com/problems/count-binary-substrings/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/count-binary-substrings/</span></a></li></ul><h3 id="gs1qv"><span class="ne-text">解决思路</span></h3><ul class="ne-ul"><li id="u80a880bd"><span class="ne-text">数学规律就是将字符串按照</span><strong><span class="ne-text">一整个0或1</span></strong><span class="ne-text">切割开来，将其放入数组arr，然后arr中相邻的元素（字符串）进行字符串长度比较大小，取小的，最后所有相邻的元素比较后的所有相加就是所需结果</span></li><li id="u86427819"><span class="ne-text">将字符串按照</span><strong><span class="ne-text">一整个0或1</span></strong><span class="ne-text">切割开来：先对字符串遍历，找到异元素，记录其下标，存为数组arr；然后利用splice方法＋arr数组进行切割为目标数组</span></li></ul><h3 id="KZHav"><span class="ne-text">代码实现</span></h3><p id="u1b748dff" class="ne-p"><span class="ne-text">将上述解决思路用代码实现如下：</span></p><pre data-language="typescript" id="GbNzD" class="ne-codeblock language-typescript">function countBinarySubstrings(s: string): number {
+    <!doctype html><div class="lake-content" typography="classic"><p id="u62f590fc" class="ne-p"><span class="ne-text">题目链接：</span></p><ul class="ne-ul"><li id="u79899ad5"><a href="https://leetcode-cn.com/problems/count-binary-substrings/" data-href="https://leetcode-cn.com/problems/count-binary-substrings/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode-cn.com/problems/count-binary-substrings/</span></a></li></ul><h3 id="gs1qv"><span class="ne-text">解决思路</span></h3><ul class="ne-ul"><li id="u80a880bd"><span class="ne-text">数学规律就是将字符串按照</span><strong><span class="ne-text">一整个0或1</span></strong><span class="ne-text">切割开来，将其放入数组arr，然后arr中相邻的元素（字符串）进行字符串长度比较大小，取小的，最后所有相邻的元素比较后的所有相加就是所需结果</span></li><li id="u86427819"><span class="ne-text">将字符串按照</span><strong><span class="ne-text">一整个0或1</span></strong><span class="ne-text">切割开来：先对字符串遍历，找到异元素，记录其下标，存为数组arr；然后利用splice方法＋arr数组进行切割为目标数组</span></li></ul><h3 id="KZHav"><span class="ne-text">代码实现</span></h3><p id="u1b748dff" class="ne-p"><span class="ne-text">将上述解决思路用代码实现如下：</span></p>
 
-<p>let flag: string = s[0]<br>let arr: number[] = []<br>let arr_target: string[] = []<br>for (let i: number = 0; i &lt; s.length; i++) {<br>if (s[i] !== flag) {<br>arr.push(i)<br>flag = s[i]<br>}<br>}<br>arr.forEach((data: number, index: number) =&gt; {<br>if (index === 0) {<br>arr_target.push(String(s.slice(0, data)))<br>// 分割数组只有一个元素情况下<br>if (arr.length === 1) arr_target.push(String(s.slice(data, s.length)))<br>} else if (index === arr.length - 1) {<br>arr_target.push(String(s.slice(arr[index - 1], data)))<br>arr_target.push(String(s.slice(data, s.length)))<br>} else {<br>arr_target.push(String(s.slice(arr[index - 1], data)))<br>}<br>})<br>let result: number = 0<br>arr_target.forEach((data: string, index: number) =&gt; {<br>if (index &lt; arr_target.length - 1)<br>result += Math.min(<br>String(data).length,<br>String(arr_target[index + 1]).length<br>)<br>})<br>return result<br>}</p>
-<p>console.log(countBinarySubstrings(‘1100’))</p>
-<p></pre><ul class="ne-ul"><li id="u239fffbf"><strong><span class="ne-text" style="color: #E8323C">对上述逻辑的小优化</span></strong><span class="ne-text">：上面是利用arr还转换为原只含0、1的数组，但是可以利用arr直接进行求算结果</span></li></ul><pre data-language="typescript" id="BAqOK" class="ne-codeblock language-typescript">function countBinarySubstrings(s: string): number {<br>  let flag: string = s[0]<br>  let arr: number[] = []<br>  let result: number = 0<br>  for (let i: number = 0; i < s.length; i++) {<br>    if (s[i] !== flag) {<br>      arr.push(i)<br>      flag = s[i]<br>    }<br>  }<br>  arr.forEach((data: number, index: number) => {<br>    if (index === 0) {<br>      arr.length === 1<br>        ? (result += Math.min(data, s.length - data))<br>        : (result += Math.min(data, arr[index + 1] - data))<br>    } else if (index === arr.length - 1) {<br>      result += Math.min(data - arr[index - 1], s.length - data)<br>    } else {<br>      result += Math.min(arr[index + 1] - data, data - arr[index - 1])<br>    }<br>  })<br>  return result<br>}</pre><p id="u2dadfbee" class="ne-p"><span class="ne-text">最后优化效果如下</span></p><p id="ueb92bbd2" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1647944556161-5866cbd8-f97b-4fdc-9e84-9d3dc2ebc571.png" width="699.9999721845002" id="u40ceee23" class="ne-image"></p><h3 id="FNmDD"><span class="ne-text">优化方案</span></h3><p id="u6015cfa7" class="ne-p"><span class="ne-text">在官网解决方案中，看到其他的解决方案：</span></p><h4 id="bouKe"><span class="ne-text">利用正则表达式来切换原字符串</span></h4><pre data-language="typescript" id="RqF5v" class="ne-codeblock language-typescript">s.match(/([1]+)|([0]+)/g)</pre><p id="u3bc26102" class="ne-p"><span class="ne-text">上面的正则表达式就能实现如下效果…………</span></p><pre data-language="javascript" id="lfSId" class="ne-codeblock language-javascript">[ '00', '11', '00', '11' ]</pre><p id="u581d3060" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/1484158/1647945287324-1f4f1d3f-6731-4794-a023-ba9ebb97397c.jpeg" width="75" id="BFxC7" class="ne-image"><span class="ne-text">正则表达式太重要了！！</span></p><p id="u3fa4a566" class="ne-p"><span class="ne-text">得到上述数组再进行数组内相邻元素比较元素字符串长度取小值，然后相加，类似上面方法即可。</span></p></div></p>
+<pre><code class="typescript">function countBinarySubstrings(s: string): number &#123;
+
+let flag: string = s[0]
+let arr: number[] = []
+let arr_target: string[] = []
+for (let i: number = 0; i &lt; s.length; i++) &#123;
+if (s[i] !== flag) &#123;
+arr.push(i)
+flag = s[i]
+&#125;
+&#125;
+arr.forEach((data: number, index: number) =&gt; &#123;
+if (index === 0) &#123;
+arr_target.push(String(s.slice(0, data)))
+// 分割数组只有一个元素情况下
+if (arr.length === 1) arr_target.push(String(s.slice(data, s.length)))
+&#125; else if (index === arr.length - 1) &#123;
+arr_target.push(String(s.slice(arr[index - 1], data)))
+arr_target.push(String(s.slice(data, s.length)))
+&#125; else &#123;
+arr_target.push(String(s.slice(arr[index - 1], data)))
+&#125;
+&#125;)
+let result: number = 0
+arr_target.forEach((data: string, index: number) =&gt; &#123;
+if (index &lt; arr_target.length - 1)
+result += Math.min(
+String(data).length,
+String(arr_target[index + 1]).length
+)
+&#125;)
+return result
+&#125;
+
+console.log(countBinarySubstrings(&#39;1100&#39;))
+
+</code></pre>
+<ul class="ne-ul"><li id="u239fffbf"><strong><span class="ne-text" style="color: #E8323C">对上述逻辑的小优化</span></strong><span class="ne-text">：上面是利用arr还转换为原只含0、1的数组，但是可以利用arr直接进行求算结果</span></li></ul>
+
+<pre><code class="typescript">function countBinarySubstrings(s: string): number &#123;
+  let flag: string = s[0]
+  let arr: number[] = []
+  let result: number = 0
+  for (let i: number = 0; i &lt; s.length; i++) &#123;
+    if (s[i] !== flag) &#123;
+      arr.push(i)
+      flag = s[i]
+    &#125;
+  &#125;
+  arr.forEach((data: number, index: number) =&gt; &#123;
+    if (index === 0) &#123;
+      arr.length === 1
+        ? (result += Math.min(data, s.length - data))
+        : (result += Math.min(data, arr[index + 1] - data))
+    &#125; else if (index === arr.length - 1) &#123;
+      result += Math.min(data - arr[index - 1], s.length - data)
+    &#125; else &#123;
+      result += Math.min(arr[index + 1] - data, data - arr[index - 1])
+    &#125;
+  &#125;)
+  return result
+&#125;
+</code></pre>
+<p id="u2dadfbee" class="ne-p"><span class="ne-text">最后优化效果如下</span></p><p id="ueb92bbd2" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1647944556161-5866cbd8-f97b-4fdc-9e84-9d3dc2ebc571.png" width="699.9999721845002" id="u40ceee23" class="ne-image"></p><h3 id="FNmDD"><span class="ne-text">优化方案</span></h3><p id="u6015cfa7" class="ne-p"><span class="ne-text">在官网解决方案中，看到其他的解决方案：</span></p><h4 id="bouKe"><span class="ne-text">利用正则表达式来切换原字符串</span></h4>
+
+<pre><code class="typescript">s.match(/([1]+)|([0]+)/g)
+</code></pre>
+<p id="u3bc26102" class="ne-p"><span class="ne-text">上面的正则表达式就能实现如下效果…………</span></p>
+
+<pre><code class="javascript">[ &#39;00&#39;, &#39;11&#39;, &#39;00&#39;, &#39;11&#39; ]
+</code></pre>
+<p id="u581d3060" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/1484158/1647945287324-1f4f1d3f-6731-4794-a023-ba9ebb97397c.jpeg" width="75" id="BFxC7" class="ne-image"><span class="ne-text">正则表达式太重要了！！</span></p><p id="u3fa4a566" class="ne-p"><span class="ne-text">得到上述数组再进行数组内相邻元素比较元素字符串长度取小值，然后相加，类似上面方法即可。</span></p></div>
 
 </div>
 

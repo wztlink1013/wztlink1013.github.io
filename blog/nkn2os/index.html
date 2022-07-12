@@ -147,7 +147,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -256,7 +256,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    918
+    920
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -319,397 +319,441 @@
     </div>
 </div>
         <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><h2 id="87ed5342"><span class="ne-text">LinkedList和ArrayList的设计</span></h2><p id="u138158d0" class="ne-p"><br></p><p id="uec8e29a0" class="ne-p"><br></p><div class="ne-quote"><p id="06b3dd2f95b4188a76d895dc7d174e4f" class="ne-p"><span class="ne-text" style="color: #F5222D">同时设计LinkedList和ArrayList</span></p></div><ul class="ne-ul"><li id="57803a540903fc07605b8f82b8c92064"><strong><span class="ne-text">LinkedList</span></strong><span class="ne-text">不需要构造函数</span></li><li id="bc16b24596092dadd91267c5f6b7b794"><strong><span class="ne-text">ArrayList</span></strong><span class="ne-text">需要，后者需要一个容量的初始化。</span></li></ul><p id="094c1b843afa0d090e6c14fb0948ce50" class="ne-p"><br></p><p id="ff0c850e3ddf6f7d3e965268398eb025" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603191040309-0ed4b536-89c0-449d-85cc-e763afcb73ea.png" width="278.5" id="NZYUa" class="ne-image"></p><h3 id="9cXZd"><span class="ne-text">接口List设计</span></h3><div class="ne-quote"><p id="19863c3bb1cb0b3ed277ef3db37ea991" class="ne-p"><span class="ne-text">只用来</span><strong><span class="ne-text">声明对外接口</span></strong><span class="ne-text">，不能声明</span></p></div><pre data-language="java" id="4qE9A" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;
+    <!doctype html><div class="lake-content" typography="classic"><h2 id="87ed5342"><span class="ne-text">LinkedList和ArrayList的设计</span></h2><p id="u138158d0" class="ne-p"><br></p><p id="uec8e29a0" class="ne-p"><br></p><div class="ne-quote"><p id="06b3dd2f95b4188a76d895dc7d174e4f" class="ne-p"><span class="ne-text" style="color: #F5222D">同时设计LinkedList和ArrayList</span></p></div><ul class="ne-ul"><li id="57803a540903fc07605b8f82b8c92064"><strong><span class="ne-text">LinkedList</span></strong><span class="ne-text">不需要构造函数</span></li><li id="bc16b24596092dadd91267c5f6b7b794"><strong><span class="ne-text">ArrayList</span></strong><span class="ne-text">需要，后者需要一个容量的初始化。</span></li></ul><p id="094c1b843afa0d090e6c14fb0948ce50" class="ne-p"><br></p><p id="ff0c850e3ddf6f7d3e965268398eb025" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603191040309-0ed4b536-89c0-449d-85cc-e763afcb73ea.png" width="278.5" id="NZYUa" class="ne-image"></p><h3 id="9cXZd"><span class="ne-text">接口List设计</span></h3><div class="ne-quote"><p id="19863c3bb1cb0b3ed277ef3db37ea991" class="ne-p"><span class="ne-text">只用来</span><strong><span class="ne-text">声明对外接口</span></strong><span class="ne-text">，不能声明</span></p></div>
 
-<p>/**</p>
-<ul>
-<li>fun：实现 ArrayList 和 LinkedList 的接口</li>
-<li>*/</li>
-</ul>
-<p>public interface List<E> {<br>static final int ELEMENT_NOT_FOUND = -1;</p>
-<pre><code>/**
- * 元素的数量[抽象类中实现]
- * @return
- */
-int size();
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
-/**
- * 是否为空[抽象类中实现]
- * @return
- */
-boolean isEmpty();
+/\*\*
 
-/**
- * 是否包含某个元素[抽象类中实现]
- * @param element
- * @return
- */
-boolean contains(E element);
+- fun：实现 ArrayList 和 LinkedList 的接口
+- \*/
 
-/**
- * 添加元素到尾部[抽象类中实现]
- * @param element
- */
-void add(E element);
+public interface List&lt;E&gt; &#123;
+static final int ELEMENT_NOT_FOUND = -1;
 
-/**
- * 清除所有元素[实现类中实现]
- */
-void clear();
+    /**
+     * 元素的数量[抽象类中实现]
+     * @return
+     */
+    int size();
 
-/**
- * 获取index位置的元素[实现类中实现]
- * @param index
- * @return
- */
-E get(int index);
+    /**
+     * 是否为空[抽象类中实现]
+     * @return
+     */
+    boolean isEmpty();
 
-/**
- * 设置index位置的元素[实现类中实现]
- * @param index
- * @param element
- * @return 原来的元素ֵ
- */
-E set(int index, E element);
+    /**
+     * 是否包含某个元素[抽象类中实现]
+     * @param element
+     * @return
+     */
+    boolean contains(E element);
 
-/**
- * 在index位置插入一个元素[实现类中实现]
- * @param index
- * @param element
- */
-void add(int index, E element);
+    /**
+     * 添加元素到尾部[抽象类中实现]
+     * @param element
+     */
+    void add(E element);
 
-/**
- * 删除index位置的元素[实现类中实现]
- * @param index
- * @return
- */
-E remove(int index);
+    /**
+     * 清除所有元素[实现类中实现]
+     */
+    void clear();
 
-/**
- * 查看元素的索引[实现类中实现]
- * @param element
- * @return
- */
-int indexOf(E element);
+    /**
+     * 获取index位置的元素[实现类中实现]
+     * @param index
+     * @return
+     */
+    E get(int index);
+
+    /**
+     * 设置index位置的元素[实现类中实现]
+     * @param index
+     * @param element
+     * @return 原来的元素ֵ
+     */
+    E set(int index, E element);
+
+    /**
+     * 在index位置插入一个元素[实现类中实现]
+     * @param index
+     * @param element
+     */
+    void add(int index, E element);
+
+    /**
+     * 删除index位置的元素[实现类中实现]
+     * @param index
+     * @return
+     */
+    E remove(int index);
+
+    /**
+     * 查看元素的索引[实现类中实现]
+     * @param element
+     * @return
+     */
+    int indexOf(E element);
+
+&#125;
+
 </code></pre>
-<p>}</p>
-<p></pre><h3 id="SyVsT"><span class="ne-text">抽象类AbstractList设计</span></h3><div class="ne-quote"><p id="074137348dfb83ac851f92e3410c4d2b" class="ne-p"><span class="ne-text">放ArrayList和LinkedList的公共代码</span></p><ul class="ne-ul"><li id="bdc02f7dd192704b4f61a9702ec8910e"><strong><span class="ne-text">实现List接口类</span></strong><span class="ne-text">的共同代码</span></li><li id="c6aa6536ec4a4d325c86ece9d1eb3efa"><span class="ne-text">ArrayList和LinkedList都用得到但是不对外公开的代码</span></li></ul><p id="f18b25c51383375495aa35bafcf41c32" class="ne-p"><span class="ne-text">声明抽象类abstract，就意味着可以不用全部实现接口List里面的所有方法</span></p></div><pre data-language="java" id="Eh9BM" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;</p>
-<p>/**</p>
-<ul>
-<li>fun：放 ArrayList 和 LinkedList 公共代码的抽象类（父类）</li>
-<li>*/</li>
-</ul>
-<p>public abstract class AbstractList<E> implements List<E> {</p>
-<pre><code>protected int size;
-/**
- * 元素的数量
- * @return
- */
-public int size() &#123;
-    return size;
-&#125;
+<h3 id="SyVsT"><span class="ne-text">抽象类AbstractList设计</span></h3><div class="ne-quote"><p id="074137348dfb83ac851f92e3410c4d2b" class="ne-p"><span class="ne-text">放ArrayList和LinkedList的公共代码</span></p><ul class="ne-ul"><li id="bdc02f7dd192704b4f61a9702ec8910e"><strong><span class="ne-text">实现List接口类</span></strong><span class="ne-text">的共同代码</span></li><li id="c6aa6536ec4a4d325c86ece9d1eb3efa"><span class="ne-text">ArrayList和LinkedList都用得到但是不对外公开的代码</span></li></ul><p id="f18b25c51383375495aa35bafcf41c32" class="ne-p"><span class="ne-text">声明抽象类abstract，就意味着可以不用全部实现接口List里面的所有方法</span></p></div>
 
-/**
- * 是否为空
- * @return
- */
-public boolean isEmpty() &#123;
-    return size == 0;
-&#125;
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
-/**
- * 是否包含某个元素
- * @param element
- * @return
- */
-public boolean contains(E element) &#123;
-    return indexOf(element) != ELEMENT_NOT_FOUND;
-&#125;
+/\*\*
 
-/**
- * 添加元素到尾部
- * @param element
- */
-public void add(E element) &#123;
-    add(size, element);
-&#125;
+- fun：放 ArrayList 和 LinkedList 公共代码的抽象类（父类）
+- \*/
 
-/**
- * 下面三个是ArrayList和LinkedList两个实现类中的公共代码
- * */
-protected void outOfBounds(int index) &#123;
-    throw new IndexOutOfBoundsException(&quot;Index:&quot; + index + &quot;, Size:&quot; + size);
-&#125;
+public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; &#123;
 
-protected void rangeCheck(int index) &#123;
-    if (index &lt; 0 || index &gt;= size) &#123;
-        outOfBounds(index);
+    protected int size;
+    /**
+     * 元素的数量
+     * @return
+     */
+    public int size() &#123;
+        return size;
     &#125;
+
+    /**
+     * 是否为空
+     * @return
+     */
+    public boolean isEmpty() &#123;
+        return size == 0;
+    &#125;
+
+    /**
+     * 是否包含某个元素
+     * @param element
+     * @return
+     */
+    public boolean contains(E element) &#123;
+        return indexOf(element) != ELEMENT_NOT_FOUND;
+    &#125;
+
+    /**
+     * 添加元素到尾部
+     * @param element
+     */
+    public void add(E element) &#123;
+        add(size, element);
+    &#125;
+
+    /**
+     * 下面三个是ArrayList和LinkedList两个实现类中的公共代码
+     * */
+    protected void outOfBounds(int index) &#123;
+        throw new IndexOutOfBoundsException(&quot;Index:&quot; + index + &quot;, Size:&quot; + size);
+    &#125;
+
+    protected void rangeCheck(int index) &#123;
+        if (index &lt; 0 || index &gt;= size) &#123;
+            outOfBounds(index);
+        &#125;
+    &#125;
+
+    protected void rangeCheckForAdd(int index) &#123;
+        if (index &lt; 0 || index &gt; size) &#123;
+            outOfBounds(index);
+        &#125;
+    &#125;
+
 &#125;
 
-protected void rangeCheckForAdd(int index) &#123;
-    if (index &lt; 0 || index &gt; size) &#123;
-        outOfBounds(index);
-    &#125;
-&#125;
 </code></pre>
-<p>}</p>
-<p></pre><h3 id="LHnfr"><span class="ne-text" style="color: #000000">ArrayList设计</span></h3><pre data-language="java" id="WvNpC" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;</p>
-<p>/**<br>_fun：实现动态数组<br>_/<br>@SuppressWarnings(“unchecked”)<br>public class ArrayList<E> extends AbstractList<E> {<br>private E[] elements;</p>
-<pre><code>private static final int DEFAULT_CAPACITY = 10;
+<h3 id="LHnfr"><span class="ne-text" style="color: #000000">ArrayList设计</span></h3>
 
-public ArrayList(int capaticy) &#123;
-    capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
-    elements = (E[]) new Object[capaticy];
-&#125;
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
-public ArrayList() &#123;
-    this(DEFAULT_CAPACITY);
-&#125;
+/\*\*
+_fun：实现动态数组
+_/
+@SuppressWarnings(&quot;unchecked&quot;)
+public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
+private E[] elements;
 
+    private static final int DEFAULT_CAPACITY = 10;
 
-@Override
-public void clear() &#123;
-    for (int i = 0; i &lt; size; i++) &#123;
-        elements[i] = null;
+    public ArrayList(int capaticy) &#123;
+        capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
+        elements = (E[]) new Object[capaticy];
     &#125;
-    size = 0;
-&#125;
 
-@Override
-public E get(int index) &#123;
-    rangeCheck(index);
-    return elements[index];
-&#125;
-
-@Override
-public E set(int index, E element) &#123;
-    rangeCheck(index);
-
-    E old = elements[index];
-    elements[index] = element;
-    return old;
-&#125;
-
-@Override
-public void add(int index, E element) &#123;
-    rangeCheckForAdd(index);
-
-    ensureCapacity(size + 1);
-
-    for (int i = size; i &gt; index; i--) &#123;
-        elements[i] = elements[i - 1];
+    public ArrayList() &#123;
+        this(DEFAULT_CAPACITY);
     &#125;
-    elements[index] = element;
-    size++;
-&#125;
 
-@Override
-public E remove(int index) &#123;
-    rangeCheck(index);
 
-    E old = elements[index];
-    for (int i = index + 1; i &lt; size; i++) &#123;
-        elements[i - 1] = elements[i];
-    &#125;
-    elements[--size] = null;
-    return old;
-&#125;
-
-@Override
-public int indexOf(E element) &#123;
-    if (element == null) &#123;  // 1
+    @Override
+    public void clear() &#123;
         for (int i = 0; i &lt; size; i++) &#123;
-            if (elements[i] == null) return i;
+            elements[i] = null;
         &#125;
-    &#125; else &#123;
+        size = 0;
+    &#125;
+
+    @Override
+    public E get(int index) &#123;
+        rangeCheck(index);
+        return elements[index];
+    &#125;
+
+    @Override
+    public E set(int index, E element) &#123;
+        rangeCheck(index);
+
+        E old = elements[index];
+        elements[index] = element;
+        return old;
+    &#125;
+
+    @Override
+    public void add(int index, E element) &#123;
+        rangeCheckForAdd(index);
+
+        ensureCapacity(size + 1);
+
+        for (int i = size; i &gt; index; i--) &#123;
+            elements[i] = elements[i - 1];
+        &#125;
+        elements[index] = element;
+        size++;
+    &#125;
+
+    @Override
+    public E remove(int index) &#123;
+        rangeCheck(index);
+
+        E old = elements[index];
+        for (int i = index + 1; i &lt; size; i++) &#123;
+            elements[i - 1] = elements[i];
+        &#125;
+        elements[--size] = null;
+        return old;
+    &#125;
+
+    @Override
+    public int indexOf(E element) &#123;
+        if (element == null) &#123;  // 1
+            for (int i = 0; i &lt; size; i++) &#123;
+                if (elements[i] == null) return i;
+            &#125;
+        &#125; else &#123;
+            for (int i = 0; i &lt; size; i++) &#123;
+                if (element.equals(elements[i])) return i; // n
+            &#125;
+        &#125;
+        return ELEMENT_NOT_FOUND;
+    &#125;
+
+
+    /**
+     * 保证要有capacity的容量
+     * @param capacity
+     */
+    private void ensureCapacity(int capacity) &#123;
+        int oldCapacity = elements.length;
+        if (oldCapacity &gt;= capacity) return;
+
+        // 新容量为旧容量的1.5倍
+        int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+        E[] newElements = (E[]) new Object[newCapacity];
         for (int i = 0; i &lt; size; i++) &#123;
-            if (element.equals(elements[i])) return i; // n
+            newElements[i] = elements[i];
         &#125;
+        elements = newElements;
+
+        System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
     &#125;
-    return ELEMENT_NOT_FOUND;
-&#125;
 
+    @Override
+    public String toString() &#123;
+        // size=3, [99, 88, 77]
+        StringBuilder string = new StringBuilder();
+        string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
+        for (int i = 0; i &lt; size; i++) &#123;
+            if (i != 0) &#123;
+                string.append(&quot;, &quot;);
+            &#125;
 
-/**
- * 保证要有capacity的容量
- * @param capacity
- */
-private void ensureCapacity(int capacity) &#123;
-    int oldCapacity = elements.length;
-    if (oldCapacity &gt;= capacity) return;
+            string.append(elements[i]);
 
-    // 新容量为旧容量的1.5倍
-    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
-    E[] newElements = (E[]) new Object[newCapacity];
-    for (int i = 0; i &lt; size; i++) &#123;
-        newElements[i] = elements[i];
-    &#125;
-    elements = newElements;
-
-    System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
-&#125;
-
-@Override
-public String toString() &#123;
-    // size=3, [99, 88, 77]
-    StringBuilder string = new StringBuilder();
-    string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
-    for (int i = 0; i &lt; size; i++) &#123;
-        if (i != 0) &#123;
-            string.append(&quot;, &quot;);
         &#125;
-
-        string.append(elements[i]);
-
+        string.append(&quot;]&quot;);
+        return string.toString();
     &#125;
-    string.append(&quot;]&quot;);
-    return string.toString();
-&#125;
 
-/**
- * 新添加功能
- */
-public int search(E element)&#123;
-    for (int i = 0;i&lt;size;i++)&#123;
-        if (element == elements[i])&#123;
-            return i;
+    /**
+     * 新添加功能
+     */
+    public int search(E element)&#123;
+        for (int i = 0;i&lt;size;i++)&#123;
+            if (element == elements[i])&#123;
+                return i;
+            &#125;
         &#125;
+        return ELEMENT_NOT_FOUND;
     &#125;
-    return ELEMENT_NOT_FOUND;
+
 &#125;
+
 </code></pre>
-<p>}</p>
-<p></pre><p id="eef65beb7cc29a45fc39ce651b8ed461" class="ne-p"><br></p><h3 id="DCY67"><span class="ne-text">LinkedList设计</span></h3><pre data-language="java" id="mtOUT" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;</p>
-<p>/**<br>_fun：链表的实现<br>_/<br>@SuppressWarnings(“unchecked”)<br>public class LinkedList<E> extends AbstractList<E> {<br>private Node<E> first;<br>private Node<E> last;</p>
-<pre><code>private static class Node&lt;E&gt; &#123;
-    E element;
-    Node&lt;E&gt; prev;
-    Node&lt;E&gt; next;
-    public Node(E element, Node&lt;E&gt; next) &#123;
-        this.element = element;
-        this.next = next;
-    &#125;
-&#125;
+<p id="eef65beb7cc29a45fc39ce651b8ed461" class="ne-p"><br></p><h3 id="DCY67"><span class="ne-text">LinkedList设计</span></h3>
 
-@Override
-public void clear() &#123;
-    size = 0;
-    first = null;
-    last = null;
-&#125;
+<pre><code class="java">package com.wztlink1013.ds.linkedlist;
 
-@Override
-public E get(int index) &#123;
-    return node(index).element;
-&#125;
+/\*\*
+_fun：链表的实现
+_/
+@SuppressWarnings(&quot;unchecked&quot;)
+public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
+private Node&lt;E&gt; first;
+private Node&lt;E&gt; last;
 
-@Override
-public E set(int index, E element) &#123;
-    Node&lt;E&gt; node = node(index);
-    E old = node.element;
-    node.element = element;
-    return old;
-&#125;
-
-@Override
-public void add(int index, E element) &#123;
-    if (index == 0)&#123;
-        first = new Node&lt;&gt;(element, first);
-    &#125; else &#123;
-        Node&lt;E&gt; prev = node(index - 1);
-        prev.next = new Node&lt;&gt;(element, prev.next);
-    &#125;
-    size++;
-&#125;
-
-@Override
-public E remove(int index) &#123;
-</code></pre>
-<p>// Node<E> node = first;<br>// if (index == 0) {<br>// first = first.next;<br>// } else {<br>// Node<E> prev = node(index -1);<br>// node = prev.next;<br>// prev.next = node.next;<br>// }<br>rangeCheck(index);</p>
-<pre><code>    Node&lt;E&gt; node = node(index);
-    Node&lt;E&gt; prev = node.prev;
-    Node&lt;E&gt; next = node.next;
-
-    if (prev == null) &#123; // index == 0
-        first = next;
-    &#125; else &#123;
-        prev.next = next;
+    private static class Node&lt;E&gt; &#123;
+        E element;
+        Node&lt;E&gt; prev;
+        Node&lt;E&gt; next;
+        public Node(E element, Node&lt;E&gt; next) &#123;
+            this.element = element;
+            this.next = next;
+        &#125;
     &#125;
 
-    if (next == null) &#123; // index == size - 1
-        last = prev;
-    &#125; else &#123;
-        next.prev = prev;
+    @Override
+    public void clear() &#123;
+        size = 0;
+        first = null;
+        last = null;
     &#125;
 
-    size--;
-    return node.element;
-&#125;
+    @Override
+    public E get(int index) &#123;
+        return node(index).element;
+    &#125;
 
-@Override
-public int indexOf(E element) &#123;
-    if (element == null) &#123;
+    @Override
+    public E set(int index, E element) &#123;
+        Node&lt;E&gt; node = node(index);
+        E old = node.element;
+        node.element = element;
+        return old;
+    &#125;
+
+    @Override
+    public void add(int index, E element) &#123;
+        if (index == 0)&#123;
+            first = new Node&lt;&gt;(element, first);
+        &#125; else &#123;
+            Node&lt;E&gt; prev = node(index - 1);
+            prev.next = new Node&lt;&gt;(element, prev.next);
+        &#125;
+        size++;
+    &#125;
+
+    @Override
+    public E remove(int index) &#123;
+
+// Node&lt;E&gt; node = first;
+// if (index == 0) &#123;
+// first = first.next;
+// &#125; else &#123;
+// Node&lt;E&gt; prev = node(index -1);
+// node = prev.next;
+// prev.next = node.next;
+// &#125;
+rangeCheck(index);
+
+        Node&lt;E&gt; node = node(index);
+        Node&lt;E&gt; prev = node.prev;
+        Node&lt;E&gt; next = node.next;
+
+        if (prev == null) &#123; // index == 0
+            first = next;
+        &#125; else &#123;
+            prev.next = next;
+        &#125;
+
+        if (next == null) &#123; // index == size - 1
+            last = prev;
+        &#125; else &#123;
+            next.prev = prev;
+        &#125;
+
+        size--;
+        return node.element;
+    &#125;
+
+    @Override
+    public int indexOf(E element) &#123;
+        if (element == null) &#123;
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; size; i++) &#123;
+                if (node.element == null) return i;
+
+                node = node.next;
+            &#125;
+        &#125; else &#123;
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; size; i++) &#123;
+                if (element.equals(node.element)) return i;
+
+                node = node.next;
+            &#125;
+        &#125;
+        return ELEMENT_NOT_FOUND;
+    &#125;
+
+    /**
+     * 获取index位置对应的节点对象
+     * @param index
+     * @return
+     */
+    private Node&lt;E&gt; node(int index) &#123;
+        rangeCheck(index);
+
+        if (index &lt; (size &gt;&gt; 1)) &#123;
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; index; i++) &#123;
+                node = node.next;
+            &#125;
+            return node;
+        &#125; else &#123;
+            Node&lt;E&gt; node = last;
+            for (int i = size - 1; i &gt; index; i--) &#123;
+                node = node.prev;
+            &#125;
+            return node;
+        &#125;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        StringBuilder string = new StringBuilder();
+        string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
         Node&lt;E&gt; node = first;
         for (int i = 0; i &lt; size; i++) &#123;
-            if (node.element == null) return i;
+            if (i != 0) &#123;
+                string.append(&quot;, &quot;);
+            &#125;
+
+            string.append(node);
 
             node = node.next;
         &#125;
-    &#125; else &#123;
-        Node&lt;E&gt; node = first;
-        for (int i = 0; i &lt; size; i++) &#123;
-            if (element.equals(node.element)) return i;
-
-            node = node.next;
-        &#125;
+        string.append(&quot;]&quot;);
+        return string.toString();
     &#125;
-    return ELEMENT_NOT_FOUND;
-&#125;
 
-/**
- * 获取index位置对应的节点对象
- * @param index
- * @return
- */
-private Node&lt;E&gt; node(int index) &#123;
-    rangeCheck(index);
-
-    if (index &lt; (size &gt;&gt; 1)) &#123;
-        Node&lt;E&gt; node = first;
-        for (int i = 0; i &lt; index; i++) &#123;
-            node = node.next;
-        &#125;
-        return node;
-    &#125; else &#123;
-        Node&lt;E&gt; node = last;
-        for (int i = size - 1; i &gt; index; i--) &#123;
-            node = node.prev;
-        &#125;
-        return node;
-    &#125;
-&#125;
-
-@Override
-public String toString() &#123;
-    StringBuilder string = new StringBuilder();
-    string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
-    Node&lt;E&gt; node = first;
-    for (int i = 0; i &lt; size; i++) &#123;
-        if (i != 0) &#123;
-            string.append(&quot;, &quot;);
-        &#125;
-
-        string.append(node);
-
-        node = node.next;
-    &#125;
-    string.append(&quot;]&quot;);
-    return string.toString();
 &#125;
 </code></pre>
-<p>}</pre><h2 id="mAZyd"></h2></div></p>
+<h2 id="mAZyd"></h2></div>
 
 </div>
 
