@@ -4,11 +4,34 @@
   
     
     <entry>
+      <title>Typescript 中如何实现并发控制且并发上限为concurrency？</title>
+      <link href="/blog/wboxcq/"/>
+      <url>/blog/wboxcq/</url>
+      
+        <content type="html"><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="u5db88ede" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1658750399274-d7c6f4fd-a9ce-4f10-a771-b9567b84830d.png" width="255.5555736086509" id="u9eff5b76" class="ne-image"></p><p id="u336780ef" class="ne-p"><span class="ne-text">前言：使用Typescript编写如下函数功能 并发控制函数 要求控制任务执行的并发上限为concurrency</span></p><p id="ua4fed787" class="ne-p"><span class="ne-text"></span></p><pre><code class="typescript">/*- @Author: wztlink1013- @Date: 2022-07-25 19:57:09- @LastEditTime: 2022-07-25 19:57:22- @Description:  \*/  // Practice 1  const test_1 = () =&gt; &#123;  return new Promise(resolve =&gt; &#123;  setTimeout(() =&gt; &#123;  console.log(&#39;2000&#39;)  let myDate = new Date()  console.log(&#39;---- &#39;, myDate.toTimeString().substring(0, 8), &#39; ----&#39;)  resolve(2000)  &#125;, 2000)  &#125;)  &#125;  const test_2 = () =&gt; &#123;  return new Promise(resolve =&gt; &#123;  setTimeout(() =&gt; &#123;  console.log(&#39;3000&#39;)  let myDate = new Date()  console.log(&#39;---- &#39;, myDate.toTimeString().substring(0, 8), &#39; ----&#39;)  resolve(3000)  &#125;, 3000)  &#125;)  &#125;  const test_3 = () =&gt; &#123;  return new Promise(resolve =&gt; &#123;  setTimeout(() =&gt; &#123;  console.log(&#39;4000&#39;)  let myDate = new Date()  console.log(&#39;---- &#39;, myDate.toTimeString().substring(0, 8), &#39; ----&#39;)  resolve(4000)  &#125;, 4000)  &#125;)  &#125;let arr = [test_1, test_2, test_3]async function parallel(tasks: (() =&gt; void)[],concurrency: number): Promise&lt;void&gt; &#123;const ret: any[] = []const executing: any[] = []let myDate = new Date()console.log(&#39;----start &#39;, myDate.toTimeString().substring(0, 8), &#39; ----&#39;)for (const item of tasks) &#123;const p = Promise.resolve().then(item)ret.push(p)    if (concurrency &lt;= tasks.length) &#123;      const e: any = p.then(() =&gt; executing.splice(executing.indexOf(e), 1))      executing.push(e)      if (executing.length &gt;= concurrency) &#123;        await Promise.race(executing)      &#125;    &#125;&#125;// return Promise.all(ret);&#125;parallel(arr, 2)</code></pre></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> 👨‍💻Web开发 </category>
+          
+          <category> JS+TS </category>
+          
+          <category> ECMAScript </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>实现一个类微信聊天界面</title>
       <link href="/blog/yx51zf/"/>
       <url>/blog/yx51zf/</url>
       
-        <content type="html"><![CDATA[<!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u2703b449"><span class="ne-text">编写一个类微信聊天界面要求除了常规功能外，顶部有一个系统状态栏，显示当前时间，精确到秒</span></li></ul><ul class="ne-ul"><li id="u8dda41c6"><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px">其中icon使用了</span><a href="http://www.fontawesome.com.cn/get-started/" data-href="http://www.fontawesome.com.cn/get-started/" target="_blank" class="ne-link"><span class="ne-text">http://www.fontawesome.com.cn/get-started/</span></a><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px"> UI库</span></li></ul><p id="u1119cc0b" class="ne-p"><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px"></span></p><pre><code class="vue">&lt;template&gt;    &lt;div class=&quot;box&quot;&gt;        &lt;div class=&quot;header&quot;&gt;            &lt;div class=&quot;status&quot;&gt;                &lt;span&gt;                    &lt;i class=&quot;fa fa-wifi&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                &lt;/span&gt;                &lt;span style=&quot;float: right&quot;&gt;                    &lt;i class=&quot;fa fa-battery-quarter&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                    &#123;&#123;timer&#125;&#125;                &lt;/span&gt;            &lt;/div&gt;            &lt;div class=&quot;info&quot;&gt;                &lt;span style=&quot;float: left;margin-left: 5px;&quot;&gt;                    &lt;i class=&quot;fa fa-chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                &lt;/span&gt;                &lt;span&gt;群聊1&lt;/span&gt;                &lt;span style=&quot;float: right;margin-right: 5px;&quot;&gt;                    &lt;i class=&quot;fa fa-ellipsis-h&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                &lt;/span&gt;            &lt;/div&gt;        &lt;/div&gt;        &lt;div class=&quot;content&quot;&gt;            &lt;div v-for=&quot;item, index in news_items&quot; class=&quot;new_box&quot;&gt;                &lt;div v-if=&quot;item.isMe === true&quot; style=&quot;width: 100%;text-align: right;&quot;&gt;                    &lt;div style=&quot;display: inline-block;margin-left: 10px&quot;&gt;                        &lt;div class=&quot;new_box_detail&quot;&gt;&#123;&#123;item.content&#125;&#125;&lt;/div&gt;                    &lt;/div&gt;                    &lt;img :src=&#39;item.avatar&#39; alt=&quot;&quot;&gt;                &lt;/div&gt;                &lt;div v-if=&quot;item.isMe === false&quot;&gt;                    &lt;img :src=&#39;item.avatar&#39; alt=&quot;&quot;&gt;                    &lt;div style=&quot;display: inline-block;margin-left: 10px;&quot;&gt;                        &lt;span&gt;&#123;&#123;item.name&#125;&#125;&lt;/span&gt;                        &lt;br&gt;                        &lt;div class=&quot;new_box_detail&quot;&gt;&#123;&#123;item.content&#125;&#125;&lt;/div&gt;                    &lt;/div&gt;                &lt;/div&gt;            &lt;/div&gt;        &lt;/div&gt;        &lt;div class=&quot;input_box&quot;&gt;            &lt;i class=&quot;fa fa-commenting fa-2x&quot; aria-hidden=&quot;true&quot; style=&quot;margin: 10px&quot;&gt;&lt;/i&gt;            &lt;span&gt;&lt;input type=&quot;text&quot; name=&quot;input_content&quot; @keyup.enter=&quot;enterKeyDown&quot; v-model=&quot;new_info&quot;&gt;&lt;/span&gt;            &lt;i class=&quot;fa fa-smile-o fa-2x&quot; aria-hidden=&quot;true&quot; style=&quot;margin-left: 10px&quot;&gt;&lt;/i&gt;            &lt;i class=&quot;fa fa-plus-circle fa-2x&quot; aria-hidden=&quot;true&quot;  style=&quot;margin-left: 10px&quot;&gt;&lt;/i&gt;        &lt;/div&gt;    &lt;/div&gt;&lt;/template&gt;&lt;script setup lang=&quot;ts&quot;&gt;import &#123; reactive, ref &#125; from &#39;vue&#39;interface NewsItemsInterface &#123;  id: number  avatar: string  isMe: boolean  content: string  name: string&#125;let news_items: NewsItemsInterface[] = reactive([  &#123;    id: 1,    avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,    content: &#39;用户1消息&#39;,    name: &#39;小王&#39;,    isMe: false  &#125;,  &#123;    id: 2,    avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,    content: &#39;我的消息&#39;,    name: &#39;小吴&#39;,    isMe: true  &#125;,  &#123;    id: 3,    avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,    content: &#39;用户2消息用户2消息用户2消息&#39;,    name: &#39;小李&#39;,    isMe: false  &#125;,])let timer = ref(&#39;&#39;)let new_info = ref(&#39;&#39;)const toDateYMDHMS = () =&gt; &#123;  const date = new Date()  const h = date.getHours() &lt; 10 ? `0$&#123;date.getHours()&#125;:` : date.getHours() + &#39;:&#39;  const m = date.getMinutes() &lt; 10 ? `0$&#123;date.getMinutes()&#125;:` : date.getMinutes() + &#39;:&#39;  const s = date.getSeconds() &lt; 10 ? `0$&#123;date.getSeconds()&#125;` : date.getSeconds()  return h + m + s&#125;setInterval(() =&gt; &#123;    timer.value = toDateYMDHMS()&#125;, 1000)const enterKeyDown = () =&gt; &#123;    news_items.push(&#123;        id: 2,        avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,        content: new_info.value,        name: &#39;小吴&#39;,        isMe: true    &#125;)    new_info.value = &#39;&#39;&#125;&lt;/script&gt;&lt;style scoped&gt;.box &#123;    margin: 0 auto;    height: 100%;    width: 60vw;    border: 1px rgb(0, 0, 0) solid;&#125;/* ------------------------------------------------------------------------- */.header &#123;    height: 80px;    /* border: 1px cyan solid; */    background-color: rgb(231, 231, 231);&#125;.header .status &#123;    height: 30px;    line-height: 30px;    vertical-align: middle;&#125;.header .info &#123;    height: 50px;    line-height: 50px;    text-align: center;&#125;/* ------------------------------------------------------------------------- */.content &#123;    /* border: 1px red solid; */    background-color: rgb(164, 201, 201);    height: 75vh&#125;.content .new_box img &#123;    width: 30px;&#125;.content .new_box_detail &#123;    background-color: rgb(255, 255, 255);    padding: 5px;&#125;/* ------------------------------------------------------------------------- */.input_box &#123;    /* border: 1px blueviolet solid; */    height: 60px;    line-height: 60px;    background-color: rgb(231, 231, 231);&#125;.input_box input &#123;    width: 70%;    border: none;    outline: none;    height: 60%;&#125;.input_box input:focus &#123;    outline: none;&#125;&lt;/style&gt;</code></pre></div>]]></content>
+        <content type="html"><![CDATA[<!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u2703b449"><span class="ne-text">编写一个类微信聊天界面要求除了常规功能外，顶部有一个系统状态栏，显示当前时间，精确到秒</span></li></ul><ul class="ne-ul"><li id="u8dda41c6"><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px">其中icon使用了</span><a href="http://www.fontawesome.com.cn/get-started/" data-href="http://www.fontawesome.com.cn/get-started/" target="_blank" class="ne-link"><span class="ne-text">http://www.fontawesome.com.cn/get-started/</span></a><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px"> UI库（下图未放icon）</span></li></ul><p id="u3dc031bb" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1658750105722-3d6a1954-d707-48bd-8fe4-377aefe9fba7.png" width="407.99310302734375" id="u144640ca" class="ne-image"></p><p id="u1119cc0b" class="ne-p"><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px"></span></p><pre><code class="vue">&lt;template&gt;    &lt;div class=&quot;box&quot;&gt;        &lt;div class=&quot;header&quot;&gt;            &lt;div class=&quot;status&quot;&gt;                &lt;span&gt;                    &lt;i class=&quot;fa fa-wifi&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                &lt;/span&gt;                &lt;span style=&quot;float: right&quot;&gt;                    &lt;i class=&quot;fa fa-battery-quarter&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                    &#123;&#123;timer&#125;&#125;                &lt;/span&gt;            &lt;/div&gt;            &lt;div class=&quot;info&quot;&gt;                &lt;span style=&quot;float: left;margin-left: 5px;&quot;&gt;                    &lt;i class=&quot;fa fa-chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                &lt;/span&gt;                &lt;span&gt;群聊1&lt;/span&gt;                &lt;span style=&quot;float: right;margin-right: 5px;&quot;&gt;                    &lt;i class=&quot;fa fa-ellipsis-h&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;                &lt;/span&gt;            &lt;/div&gt;        &lt;/div&gt;        &lt;div class=&quot;content&quot;&gt;            &lt;div v-for=&quot;item, index in news_items&quot; class=&quot;new_box&quot;&gt;                &lt;div v-if=&quot;item.isMe === true&quot; style=&quot;width: 100%;text-align: right;&quot;&gt;                    &lt;div style=&quot;display: inline-block;margin-left: 10px&quot;&gt;                        &lt;div class=&quot;new_box_detail&quot;&gt;&#123;&#123;item.content&#125;&#125;&lt;/div&gt;                    &lt;/div&gt;                    &lt;img :src=&#39;item.avatar&#39; alt=&quot;&quot;&gt;                &lt;/div&gt;                &lt;div v-if=&quot;item.isMe === false&quot;&gt;                    &lt;img :src=&#39;item.avatar&#39; alt=&quot;&quot;&gt;                    &lt;div style=&quot;display: inline-block;margin-left: 10px;&quot;&gt;                        &lt;span&gt;&#123;&#123;item.name&#125;&#125;&lt;/span&gt;                        &lt;br&gt;                        &lt;div class=&quot;new_box_detail&quot;&gt;&#123;&#123;item.content&#125;&#125;&lt;/div&gt;                    &lt;/div&gt;                &lt;/div&gt;            &lt;/div&gt;        &lt;/div&gt;        &lt;div class=&quot;input_box&quot;&gt;            &lt;i class=&quot;fa fa-commenting fa-2x&quot; aria-hidden=&quot;true&quot; style=&quot;margin: 10px&quot;&gt;&lt;/i&gt;            &lt;span&gt;&lt;input type=&quot;text&quot; name=&quot;input_content&quot; @keyup.enter=&quot;enterKeyDown&quot; v-model=&quot;new_info&quot;&gt;&lt;/span&gt;            &lt;i class=&quot;fa fa-smile-o fa-2x&quot; aria-hidden=&quot;true&quot; style=&quot;margin-left: 10px&quot;&gt;&lt;/i&gt;            &lt;i class=&quot;fa fa-plus-circle fa-2x&quot; aria-hidden=&quot;true&quot;  style=&quot;margin-left: 10px&quot;&gt;&lt;/i&gt;        &lt;/div&gt;    &lt;/div&gt;&lt;/template&gt;&lt;script setup lang=&quot;ts&quot;&gt;import &#123; reactive, ref &#125; from &#39;vue&#39;interface NewsItemsInterface &#123;  id: number  avatar: string  isMe: boolean  content: string  name: string&#125;let news_items: NewsItemsInterface[] = reactive([  &#123;    id: 1,    avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,    content: &#39;用户1消息&#39;,    name: &#39;小王&#39;,    isMe: false  &#125;,  &#123;    id: 2,    avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,    content: &#39;我的消息&#39;,    name: &#39;小吴&#39;,    isMe: true  &#125;,  &#123;    id: 3,    avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,    content: &#39;用户2消息用户2消息用户2消息&#39;,    name: &#39;小李&#39;,    isMe: false  &#125;,])let timer = ref(&#39;&#39;)let new_info = ref(&#39;&#39;)const toDateYMDHMS = () =&gt; &#123;  const date = new Date()  const h = date.getHours() &lt; 10 ? `0$&#123;date.getHours()&#125;:` : date.getHours() + &#39;:&#39;  const m = date.getMinutes() &lt; 10 ? `0$&#123;date.getMinutes()&#125;:` : date.getMinutes() + &#39;:&#39;  const s = date.getSeconds() &lt; 10 ? `0$&#123;date.getSeconds()&#125;` : date.getSeconds()  return h + m + s&#125;setInterval(() =&gt; &#123;    timer.value = toDateYMDHMS()&#125;, 1000)const enterKeyDown = () =&gt; &#123;    news_items.push(&#123;        id: 2,        avatar: &#39;https://npm.elemecdn.com/cdn-pictures@0.0.0/avatar/pic/MilkTea.png&#39;,        content: new_info.value,        name: &#39;小吴&#39;,        isMe: true    &#125;)    new_info.value = &#39;&#39;&#125;&lt;/script&gt;&lt;style scoped&gt;.box &#123;    margin: 0 auto;    height: 100%;    width: 60vw;    border: 1px rgb(0, 0, 0) solid;&#125;/* ------------------------------------------------------------------------- */.header &#123;    height: 80px;    /* border: 1px cyan solid; */    background-color: rgb(231, 231, 231);&#125;.header .status &#123;    height: 30px;    line-height: 30px;    vertical-align: middle;&#125;.header .info &#123;    height: 50px;    line-height: 50px;    text-align: center;&#125;/* ------------------------------------------------------------------------- */.content &#123;    /* border: 1px red solid; */    background-color: rgb(164, 201, 201);    height: 75vh&#125;.content .new_box img &#123;    width: 30px;&#125;.content .new_box_detail &#123;    background-color: rgb(255, 255, 255);    padding: 5px;&#125;/* ------------------------------------------------------------------------- */.input_box &#123;    /* border: 1px blueviolet solid; */    height: 60px;    line-height: 60px;    background-color: rgb(231, 231, 231);&#125;.input_box input &#123;    width: 70%;    border: none;    outline: none;    height: 60%;&#125;.input_box input:focus &#123;    outline: none;&#125;&lt;/style&gt;</code></pre></div>]]></content>
       
       
       <categories>
@@ -29,7 +52,7 @@
       <link href="/blog/he31vw/"/>
       <url>/blog/he31vw/</url>
       
-        <content type="html"><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="u2eccf227" class="ne-p"><span class="ne-text">编写一个ButtonGroup组件要求支持 单选、多选</span></p><p id="u04fd3e7b" class="ne-p"><span class="ne-text"></span></p><pre><code class="vue">&lt;template&gt;&lt;div style=&quot;text-align: center&quot;&gt;  &lt;div&gt;    &lt;p&gt;选择butonGroup的单选/多选类型：&lt;/p&gt;    &lt;label&gt;单选&lt;input type=&quot;radio&quot; v-model=&quot;gender&quot; value=&quot;single&quot; @click=&quot;clickSingleMulti&quot;/&gt;&lt;/label&gt;    &lt;label&gt;多选&lt;input type=&quot;radio&quot; v-model=&quot;gender&quot; value=&quot;multi&quot; @click=&quot;clickSingleMulti&quot; /&gt;&lt;/label&gt;    &lt;p&gt;已选类型：&#123;&#123;gender === 'single' ? '单选' : gender === 'multi' ? '多选' : ''&#125;&#125;&lt;/p&gt;  &lt;/div&gt;  &lt;hr&gt;  &lt;div v-for=&quot;item, index in button_items&quot;&gt;    &lt;button @click=&quot;clickFun(item, $event)&quot; :selected=&#39;item.select&#39; :disabled=&quot;gender === &#39;&#39;&quot;&gt;      &#123;&#123;item.title&#125;&#125;    &lt;/button&gt;  &lt;/div&gt;&lt;/div&gt;&lt;/template&gt;&lt;script setup lang=&quot;ts&quot;&gt;import &#123; reactive, ref &#125; from &#39;vue&#39;interface ButtonItemsInterface &#123;  id: number  title: string  select: boolean&#125;let button_items: ButtonItemsInterface[] = reactive([  &#123;    id: 1,    title: &#39;选项1&#39;,    select: false  &#125;,  &#123;    id: 2,    title: &#39;选项2&#39;,    select: false  &#125;,  &#123;    id: 3,    title: &#39;选项3&#39;,    select: false  &#125;,])let result: any[] = reactive([])let gender = ref(&#39;&#39;)// 置空函数，当切换单选多选，置空result数组const clickSingleMulti = () =&gt; &#123;  result = []&#125;const clickFun = (item: any, e: any) =&gt; &#123;  if (gender.value === &#39;multi&#39;) &#123;        if (e.target.getAttribute(&#39;selected&#39;) === &#39;true&#39;) &#123;        // 被选中        let index = result.indexOf(item.id)        if (index &gt; -1) &#123;            result.splice(index,1);        &#125;    &#125; else &#123;        // 未被选中        result.push(item.id)    &#125;    item.select = !item.select    console.log(&#39;单选选择的结果：&#39;, result)  &#125; else &#123;    result = []    result.push(item.id)    console.log(&#39;多选选择的结果：&#39;, result)  &#125;&#125;&lt;/script&gt;&lt;style scoped&gt;button[selected=true] &#123;    color: red;&#125;&lt;/style&gt;</code></pre></div>]]></content>
+        <content type="html"><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="u2eccf227" class="ne-p"><span class="ne-text">编写一个ButtonGroup组件要求支持 单选、多选</span></p><p id="ud689e7b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1658749703167-7b9db556-0f22-411b-8adb-8289b5725b76.png" width="607.4074503162137" id="u4982b92e" class="ne-image"></p><p id="u04fd3e7b" class="ne-p"><span class="ne-text"></span></p><pre><code class="vue">&lt;template&gt;&lt;div style=&quot;text-align: center&quot;&gt;  &lt;div&gt;    &lt;p&gt;选择butonGroup的单选/多选类型：&lt;/p&gt;    &lt;label&gt;单选&lt;input type=&quot;radio&quot; v-model=&quot;gender&quot; value=&quot;single&quot; @click=&quot;clickSingleMulti&quot;/&gt;&lt;/label&gt;    &lt;label&gt;多选&lt;input type=&quot;radio&quot; v-model=&quot;gender&quot; value=&quot;multi&quot; @click=&quot;clickSingleMulti&quot; /&gt;&lt;/label&gt;    &lt;p&gt;已选类型：&#123;&#123;gender === 'single' ? '单选' : gender === 'multi' ? '多选' : ''&#125;&#125;&lt;/p&gt;  &lt;/div&gt;  &lt;hr&gt;  &lt;div v-for=&quot;item, index in button_items&quot;&gt;    &lt;button @click=&quot;clickFun(item, $event)&quot; :selected=&#39;item.select&#39; :disabled=&quot;gender === &#39;&#39;&quot;&gt;      &#123;&#123;item.title&#125;&#125;    &lt;/button&gt;  &lt;/div&gt;&lt;/div&gt;&lt;/template&gt;&lt;script setup lang=&quot;ts&quot;&gt;import &#123; reactive, ref &#125; from &#39;vue&#39;interface ButtonItemsInterface &#123;  id: number  title: string  select: boolean&#125;let button_items: ButtonItemsInterface[] = reactive([  &#123;    id: 1,    title: &#39;选项1&#39;,    select: false  &#125;,  &#123;    id: 2,    title: &#39;选项2&#39;,    select: false  &#125;,  &#123;    id: 3,    title: &#39;选项3&#39;,    select: false  &#125;,])let result: any[] = reactive([])let gender = ref(&#39;&#39;)// 置空函数，当切换单选多选，置空result数组const clickSingleMulti = () =&gt; &#123;  result = []&#125;const clickFun = (item: any, e: any) =&gt; &#123;  if (gender.value === &#39;multi&#39;) &#123;        if (e.target.getAttribute(&#39;selected&#39;) === &#39;true&#39;) &#123;        // 被选中        let index = result.indexOf(item.id)        if (index &gt; -1) &#123;            result.splice(index,1);        &#125;    &#125; else &#123;        // 未被选中        result.push(item.id)    &#125;    item.select = !item.select    console.log(&#39;单选选择的结果：&#39;, result)  &#125; else &#123;    result = []    result.push(item.id)    console.log(&#39;多选选择的结果：&#39;, result)  &#125;&#125;&lt;/script&gt;&lt;style scoped&gt;button[selected=true] &#123;    color: red;&#125;&lt;/style&gt;</code></pre></div>]]></content>
       
       
       <categories>
@@ -154,7 +177,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
@@ -177,7 +200,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> BOM </category>
           
@@ -219,7 +242,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
@@ -981,7 +1004,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
@@ -1027,7 +1050,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> TypeScript </category>
           
@@ -2515,7 +2538,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> BOM </category>
           
@@ -2798,7 +2821,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> DOM </category>
           
@@ -2821,7 +2844,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
@@ -2844,7 +2867,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
@@ -3345,7 +3368,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> BOM </category>
           
@@ -3368,7 +3391,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> BOM </category>
           
@@ -3391,7 +3414,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> DOM </category>
           
@@ -3414,7 +3437,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> DOM </category>
           
@@ -3437,7 +3460,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
@@ -3460,7 +3483,7 @@
           
           <category> 👨‍💻Web开发 </category>
           
-          <category> JavaScript+DOM+BOM+TS </category>
+          <category> JS+TS </category>
           
           <category> ECMAScript </category>
           
