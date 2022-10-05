@@ -44,6 +44,10 @@
     
 <script src="/public/js/plugins/twikoo/1.6.7/twikoo.all.min.js"></script>
 
+    <!-- axios 文件 -->
+    
+<script src="/public/js/plugins/axios/1.0.0/axios.min.js"></script>
+
   <link rel="alternate" href="/atom.xml" title="尼采般地抒情" type="application/atom+xml">
 <link rel="alternate" href="/rss2.xml" title="尼采般地抒情" type="application/rss+xml">
 </head>
@@ -306,8 +310,8 @@
             <span id="twikoo_comments">loading</span>
         </span>
     </div>
-</div> <div class="component article">
-    <!doctype html><div class="lake-content" typography="classic"><h2 id="sEWoQ"><span class="ne-text">原始值和引用值</span></h2><p id="be789bab58359dda0d9df532eb85cd7a" class="ne-p"><span class="ne-text">这里面Java和JavaScript都是只有引用的概念，但是在C/C++里面，就有指针的概念</span></p><p id="185ad2ff8b1c9fccb24c3ec65e95156f" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617868682681-90191ec3-c5b2-415f-9e38-df2706301e0c.png" width="465.5" id="dmTBK" class="ne-image"></p><ul class="ne-ul"><li id="u7ae02f1b"><span class="ne-text">原始值： </span><strong><span class="ne-text">存储在栈中的简单数据段</span></strong><span class="ne-text">，即他们的值直接存储在变量访问的位置。</span></li></ul><p id="u4c8c2b5b" class="ne-p"><span class="ne-text">包括：undefined、null、boolean、number、string。</span></p><p id="u2f8d3de3" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="u1cc91305"><span class="ne-text">引用值：</span><strong><span class="ne-text">存储在堆中的对象</span></strong><span class="ne-text">，即存储在变量处的值是一个指针，只想存储对象的内存处。</span></li></ul><p id="uc6a34d30" class="ne-p"><span class="ne-text">包括：object、array、function等</span></p><p id="u602c0ed7" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="ud38b6f2e"><span class="ne-text">两者的区别：</span></li></ul><p id="u02a3d07c" class="ne-p"><span class="ne-text">原始变量及他们的值储存在栈中，当把一个原始变量传递给另一个原始变量时，是把一个栈房间的东西复制到另一个栈房间，且这两个原始变量互不影响。</span><strong><span class="ne-text">引用值是把引用变量的名称储存在栈中，但是把其实际对象储存在堆中</span></strong><span class="ne-text">，且存在一个指针由变量名指向储存在堆中的实际对象，当把引用对象传递给另一个变量时，复制的其实是指向实际对象的指针，此时两者指向的是同一个数据，若通过方法改变其中一个变量的值，则访问另一个变量时，其值也会随之加以改变；但若不是通过方法而是通过重新赋值，此时，相当于重新开了一个房间，该值的原指针改变，则另外一个值不会随他的改变而改变。</span></p>
+</div> <div class="component article" id="article">
+  <!doctype html><div class="lake-content" typography="classic"><h2 id="sEWoQ"><span class="ne-text">原始值和引用值</span></h2><p id="be789bab58359dda0d9df532eb85cd7a" class="ne-p"><span class="ne-text">这里面Java和JavaScript都是只有引用的概念，但是在C/C++里面，就有指针的概念</span></p><p id="185ad2ff8b1c9fccb24c3ec65e95156f" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1617868682681-90191ec3-c5b2-415f-9e38-df2706301e0c.png" width="465.5" id="dmTBK" class="ne-image"></p><ul class="ne-ul"><li id="u7ae02f1b"><span class="ne-text">原始值： </span><strong><span class="ne-text">存储在栈中的简单数据段</span></strong><span class="ne-text">，即他们的值直接存储在变量访问的位置。</span></li></ul><p id="u4c8c2b5b" class="ne-p"><span class="ne-text">包括：undefined、null、boolean、number、string。</span></p><p id="u2f8d3de3" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="u1cc91305"><span class="ne-text">引用值：</span><strong><span class="ne-text">存储在堆中的对象</span></strong><span class="ne-text">，即存储在变量处的值是一个指针，只想存储对象的内存处。</span></li></ul><p id="uc6a34d30" class="ne-p"><span class="ne-text">包括：object、array、function等</span></p><p id="u602c0ed7" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="ud38b6f2e"><span class="ne-text">两者的区别：</span></li></ul><p id="u02a3d07c" class="ne-p"><span class="ne-text">原始变量及他们的值储存在栈中，当把一个原始变量传递给另一个原始变量时，是把一个栈房间的东西复制到另一个栈房间，且这两个原始变量互不影响。</span><strong><span class="ne-text">引用值是把引用变量的名称储存在栈中，但是把其实际对象储存在堆中</span></strong><span class="ne-text">，且存在一个指针由变量名指向储存在堆中的实际对象，当把引用对象传递给另一个变量时，复制的其实是指向实际对象的指针，此时两者指向的是同一个数据，若通过方法改变其中一个变量的值，则访问另一个变量时，其值也会随之加以改变；但若不是通过方法而是通过重新赋值，此时，相当于重新开了一个房间，该值的原指针改变，则另外一个值不会随他的改变而改变。</span></p>
 
 <pre><code class="javascript">let s = &#39;基本类型&#39;
 
