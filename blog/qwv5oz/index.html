@@ -322,13 +322,13 @@
   <!doctype html><div class="lake-content" typography="classic"><div data-type="info" class="ne-alert"><p id="ucc0fb243" class="ne-p" style="text-align: center"><span class="ne-text">本文转载自：</span><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903887162310669" data-href="https://juejin.cn/post/6844903887162310669" class="ne-link"><span class="ne-text">vue中8种组件通信方式, 值得收藏! - 掘金</span></a></p><p id="uc7462431" class="ne-p" style="text-align: center"><span class="ne-text">（部分内容自行添加/修改）</span></p></div><p id="804b58e6d41ad7fb2480630c3092516e_p_3" class="ne-p"><br></p><p id="497144d8506882a2db679d679af2acea_p_4" class="ne-p"><span class="ne-text">vue 是数据驱动视图更新的框架, 所以对于 vue 来说组件间的数据通信非常重要，那么组件之间如何进行数据通信的呢？ 首先我们需要知道在 vue 中组件之间存在什么样的关系, 才更容易理解他们的通信方式, 就好像过年回家，坐着一屋子的陌生人，相互之间怎么称呼，这时就需要先知道自己和他们之间是什么样的关系。 vue 组件中关系说明:</span></p><p id="9b32206ce2e4698409fa9b6e702ab5dc_p_6" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/webp/1484158/1635399234264-ec4a46fa-6e27-4efb-922f-871b5ef8719c.webp" width="462" id="ubbf5437a" class="ne-image"></p><p id="e1b0979b54c1fb29acc1d92ad2159922_p_7" class="ne-p"><br></p><p id="277ac1b9a01a26e550f334d2d650a2af_p_8" class="ne-p"><span class="ne-text">如上图所示, A 与 B、A 与 C、B 与 D、C 与 E 组件之间是父子关系； B 与 C 之间是兄弟关系；A 与 D、A 与 E 之间是隔代关系； D 与 E 是堂兄关系（非直系亲属） 针对以上关系我们归类为：</span></p><p id="eadc4ec477465f1f239730d987d394b1_p_9" class="ne-p"><br></p><ul class="ne-ul"><li id="e921ea6da6315ea6a03b83b1fbdb45ce_li_0"><span class="ne-text">父子组件之间通信</span></li></ul><ul class="ne-ul"><li id="afaa832eef1dad88d3692c9ee7c0cb23_li_1"><span class="ne-text">非父子组件之间通信 (兄弟组件、隔代关系组件等)</span></li></ul><p id="042da541aac17f869693ba89ebd10d8e_p_10" class="ne-p"><br></p><p id="95350d3f636bad4a4fd5424d38f13bf2_p_11" class="ne-p"><span class="ne-text">本文会介绍组件间通信的 8 种方式如下图目录所示: 并介绍在不同的场景下如何选择有效方式实现的组件间通信方式，希望可以帮助小伙伴们更好理解组件间的通信。</span></p><p id="09a2b5671cf447a1a3529d71c89cf9e1_p_12" class="ne-p"><br></p><p id="2845b5316b00b43029a07a2ab35a1d57_p_13" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/webp/1484158/1635399242725-f019c2ac-ea0b-48d2-81c1-fa4f80211155.webp" width="499" id="u2d5076b9" class="ne-image"></p><p id="7cf79ceeaaf91ef14264b4c55c1c8c1d_p_14" class="ne-p"><br></p><h2 id="aokck"><span class="ne-text">一、</span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$emit</span></code></h2><p id="c53070088aadb43ef468f61fca8ca22a_p_15" class="ne-p"><br></p><p id="aefd39de20827e7fa178830efd84d682_p_16" class="ne-p"><span class="ne-text">父组件通过</span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">的方式向子组件传递数据，而通过</span><code class="ne-code"><span class="ne-text">$emit</span></code><span class="ne-text"> 子组件可以向父组件通信。</span></p><h3 id="erDJy"><span class="ne-text">vue2</span></h3><h4 id="0695b088"><span class="ne-text">1. 父组件向子组件传值</span></h4><p id="3f8949dd5527f0c9624c3fd3faefb76f_p_18" class="ne-p"><br></p><p id="0a6e4fcd704856005fdf95a5090e6575_p_19" class="ne-p"><span class="ne-text">下面通过一个例子说明父组件如何向子组件传递数据：在子组件</span><code class="ne-code"><span class="ne-text">article.vue</span></code><span class="ne-text">中如何获取父组件</span><code class="ne-code"><span class="ne-text">section.vue</span></code><span class="ne-text">中的数据</span><code class="ne-code"><span class="ne-text">articles:['红楼梦', '西游记','三国演义']</span></code></p><p id="db841a6e995b001085603629a3ace379_p_20" class="ne-p"><br></p>
 
 <pre><code class="vue">// section父组件
-&lt;template&gt;
-  &lt;div class=&quot;section&quot;&gt;
-    &lt;com-article :articles=&quot;articleList&quot;&gt;&lt;/com-article&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;com-article :articles=&amp;quot;articleList&amp;quot;&amp;gt;&amp;lt;/com-article&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 import comArticle from &#39;./test/article.vue&#39;
 export default &#123;
   name: &#39;HelloWorld&#39;,
@@ -339,32 +339,32 @@ export default &#123;
     &#125;
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// 子组件 article.vue
-&lt;template&gt;
-  &lt;div&gt;
-    &lt;span v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/span&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;span v-for=&amp;quot;(item, index) in articles&amp;quot; :key=&amp;quot;index&amp;quot;&amp;gt;&#123;&#123;item&#125;&#125;&amp;lt;/span&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 export default &#123;
   props: [&#39;articles&#39;]
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <p id="u3858a5f2" class="ne-p"><br></p><div class="ne-quote"><p id="85be3e4d88c775ffac9191a0916bdfa5_p_22" class="ne-p"><span class="ne-text">总结: prop 只可以从上一级组件传递到下一级组件（父子组件），即所谓的单向数据流。而且 prop 只读，不可被修改，所有修改都会失效并警告。</span></p></div><p id="4547a4b65fb57fca5301c6973643450c_p_23" class="ne-p"><br></p><h4 id="16b04c6a"><span class="ne-text">2. 子组件向父组件传值</span></h4><p id="1f3b4b4a4867a8b756c196b38558d0c4_p_24" class="ne-p"><br></p><p id="434c1d7d47824a48e59b3b09d32b26c5_p_25" class="ne-p"><span class="ne-text">对于</span><code class="ne-code"><span class="ne-text">$emit</span></code><span class="ne-text"> 我自己的理解是这样的: </span><code class="ne-code"><span class="ne-text">$emit</span></code><span class="ne-text">绑定一个自定义事件, 当这个语句被执行时, 就会将参数 arg 传递给父组件, 父组件通过 v-on 监听并接收参数。 通过一个例子，说明子组件如何向父组件传递数据。 在上个例子的基础上, 点击页面渲染出来的</span><code class="ne-code"><span class="ne-text">ariticle</span></code><span class="ne-text">的</span><code class="ne-code"><span class="ne-text">item</span></code><span class="ne-text">, 父组件中显示在数组中的下标</span></p><p id="b57de0a6a045efefe71d109094be9ddc_p_26" class="ne-p"><br></p>
 
 <pre><code class="vue">// 父组件
-&lt;template&gt;
-  &lt;div class=&quot;section&quot;&gt;
-    &lt;com-article :articles=&quot;articleList&quot; @onEmitIndex=&quot;onEmitIndex&quot;&gt;&lt;/com-article&gt;
-    &lt;p&gt;&#123;&#123;currentIndex&#125;&#125;&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div class=&amp;quot;section&amp;quot;&amp;gt;
+    &amp;lt;com-article :articles=&amp;quot;articleList&amp;quot; @onEmitIndex=&amp;quot;onEmitIndex&amp;quot;&amp;gt;&amp;lt;/com-article&amp;gt;
+    &amp;lt;p&amp;gt;&#123;&#123;currentIndex&#125;&#125;&amp;lt;/p&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 import comArticle from &#39;./test/article.vue&#39;
 export default &#123;
   name: &#39;HelloWorld&#39;,
@@ -381,16 +381,16 @@ export default &#123;
     &#125;
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// 子组件
-&lt;template&gt;
-  &lt;div&gt;
-    &lt;div v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot; @click=&quot;emitIndex(index)&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;div v-for=&amp;quot;(item, index) in articles&amp;quot; :key=&amp;quot;index&amp;quot; @click=&amp;quot;emitIndex(index)&amp;quot;&amp;gt;&#123;&#123;item&#125;&#125;&amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 export default &#123;
   props: [&#39;articles&#39;],
   methods: &#123;
@@ -399,18 +399,18 @@ export default &#123;
     &#125;
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <h3 id="B7Xr9"><span class="ne-text">vue3</span></h3><h4 id="MIVx6"><span class="ne-text">父组件使用子组件方法</span></h4><p id="u5c98065f" class="ne-p"><span class="ne-text">子组件中：</span></p><p id="u77189cae" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1660894949430-ba1829bd-2001-4409-8c5a-d871feb4e07b.png" width="642" id="u0f0c93f6" class="ne-image"></p><p id="u8caa8f0f" class="ne-p"><span class="ne-text">父组件中：</span></p><p id="u8c24c3cc" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1660894970901-7604b713-71c3-453b-8744-245337da8e2b.png" width="742" id="u71458f7b" class="ne-image"></p><p id="uf4bd113e" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1660894987922-550b8a82-3f32-4b51-a760-ecadfc91bcbb.png" width="421" id="u7b9262a6" class="ne-image"></p><p id="u14c7a9dc" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1660895002286-18a4fb67-cb55-45c0-a3a5-f1f95f1a7d5c.png" width="648" id="ue776a999" class="ne-image"></p><h4 id="X50gB"><span class="ne-text">子组件使用父组件方法</span></h4><p id="u6f59878b" class="ne-p"><span class="ne-text">父组件</span></p><p id="ub5f76767" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1661149948014-41b17b1e-8c6c-46af-a9b1-a327ad4d2be6.png" width="733" id="u2915e955" class="ne-image"></p><p id="uc68de4ec" class="ne-p"><span class="ne-text">子组件</span></p><p id="u9acc0831" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1661149976565-2e690cd0-1303-465f-bc26-5361a080ba00.png" width="730" id="u35b6bd99" class="ne-image"></p><h4 id="rWS9U"><span class="ne-text">defineProps defineEmits defineExpose</span></h4>
 
-<pre><code class="vue">&lt;template&gt;
-    &lt;h3&gt;父组件&lt;/h3&gt;
-    &lt;SonTemplate :father_variable=&#39;father_variable&#39; @fatherToSonFun=&quot;fatherToSonFun&quot; ref=&quot;son&quot; /&gt;
-    &lt;span&gt;父组件 wait_son_value is : &#123;&#123;wait_son_value&#125;&#125;&lt;/span&gt;&lt;hr /&gt;
-    &lt;button @click=&quot;clickGetSonTemplateValue&quot;&gt;点击之后会获得子组件的son_val变量的值: &lt;/button&gt;&#123;&#123;value_form_son&#125;&#125;&lt;hr /&gt;
-&lt;/template&gt;
+<pre><code class="vue">&amp;lt;template&amp;gt;
+    &amp;lt;h3&amp;gt;父组件&amp;lt;/h3&amp;gt;
+    &amp;lt;SonTemplate :father_variable=&#39;father_variable&#39; @fatherToSonFun=&amp;quot;fatherToSonFun&amp;quot; ref=&amp;quot;son&amp;quot; /&amp;gt;
+    &amp;lt;span&amp;gt;父组件 wait_son_value is : &#123;&#123;wait_son_value&#125;&#125;&amp;lt;/span&amp;gt;&amp;lt;hr /&amp;gt;
+    &amp;lt;button @click=&amp;quot;clickGetSonTemplateValue&amp;quot;&amp;gt;点击之后会获得子组件的son_val变量的值: &amp;lt;/button&amp;gt;&#123;&#123;value_form_son&#125;&#125;&amp;lt;hr /&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script setup lang=&quot;ts&quot;&gt;
+&amp;lt;script setup lang=&amp;quot;ts&amp;quot;&amp;gt;
 import &#123;ref&#125; from &#39;vue&#39;
 import SonTemplate from &#39;./SonTemplate.vue&#39;
 
@@ -419,36 +419,36 @@ const father_variable = ref(&#39;variable from father template!&#39;)
 
 // [defineEmits]
 const wait_son_value=ref(&#39;父组件原本的值&#39;)
-const fatherToSonFun = (val: string) =&gt; &#123;
+const fatherToSonFun = (val: string) =&amp;gt; &#123;
     wait_son_value.value = val
 &#125;
 // [ref defineExpose]
 const son = ref()
 const value_form_son = ref()
-const clickGetSonTemplateValue = () =&gt; &#123;
+const clickGetSonTemplateValue = () =&amp;gt; &#123;
     value_form_son.value = son.value.son_val
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
-<pre><code class="vue">&lt;template&gt;
-    &lt;h3&gt;子组件&lt;/h3&gt;
-    &lt;span&gt;父组件传来的值：&lt;/span&gt;&#123;&#123;props.father_variable&#125;&#125;&lt;hr/&gt;
-    &lt;button @click=&quot;clickEvent&quot;&gt;点击之后会改变父组件里面的wait_son_value的值&lt;/button&gt;
-&lt;/template&gt;
+<pre><code class="vue">&amp;lt;template&amp;gt;
+    &amp;lt;h3&amp;gt;子组件&amp;lt;/h3&amp;gt;
+    &amp;lt;span&amp;gt;父组件传来的值：&amp;lt;/span&amp;gt;&#123;&#123;props.father_variable&#125;&#125;&amp;lt;hr/&amp;gt;
+    &amp;lt;button @click=&amp;quot;clickEvent&amp;quot;&amp;gt;点击之后会改变父组件里面的wait_son_value的值&amp;lt;/button&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script setup lang=&quot;ts&quot;&gt;
+&amp;lt;script setup lang=&amp;quot;ts&amp;quot;&amp;gt;
 import &#123;ref&#125; from &#39;vue&#39;
 // [defineProps]
 const props = defineProps(&#123;
   father_variable: &#123;
       type: String,
-      default: () =&gt; &#39;default_value&#39;
+      default: () =&amp;gt; &#39;default_value&#39;
     &#125;
 &#125;) 
 // [defineEmits]
 const son_val = ref(&#39;子组件传来的值&#39;)
 const emit = defineEmits([&#39;fatherToSonFun&#39;])
-const clickEvent = () =&gt; &#123;
+const clickEvent = () =&amp;gt; &#123;
   emit(&#39;fatherToSonFun&#39;, son_val)
 &#125;
 
@@ -456,41 +456,41 @@ const clickEvent = () =&gt; &#123;
 defineExpose(&#123;
   son_val
 &#125;)
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <ul class="ne-ul"><li id="u77f134f8"><span class="ne-text">父传子组件的props里面的变量失去响应式，解决办法</span></li></ul>
 
-<pre><code class="vue">&lt;script setup lang=&quot;ts&quot;&gt;
+<pre><code class="vue">&amp;lt;script setup lang=&amp;quot;ts&amp;quot;&amp;gt;
   import &#123; watch &#125; from &#39;vue&#39;;
   const props = defineProps(&#123;
     menuList: &#123;
       type: Array,
-      default: () =&gt; []
+      default: () =&amp;gt; []
     &#125;
   &#125;);
 
   watch(
-    () =&gt; [...props.menuList],
-    (numbers, prevNumbers) =&gt; &#123;
+    () =&amp;gt; [...props.menuList],
+    (numbers, prevNumbers) =&amp;gt; &#123;
       // console.log(&#39;numbers新值&#39;, numbers);
       // console.log(&#39;numbers旧值&#39;, prevNumbers);
       console.log(&#39;____________&#39;, props.menuList.length);
     &#125;
   );
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <h2 id="jjpSa"><span class="ne-text">二、 </span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$parent</span></code></h2><p id="d17d837b16c49a0e5c21edc18722e410_p_28" class="ne-p"><br></p><p id="cdd59d689a9a129b64c13b91ec6fb344_p_29" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/webp/1484158/1635399257895-523f1b19-b58a-42bf-9649-abebf7694ef2.webp" width="642" id="u4267112c" class="ne-image"></p><p id="d657ac1e4c3211af4f7dcea889518735_p_30" class="ne-p"><br></p><p id="a53b13677e55fdbc670902cf2d24e401_p_31" class="ne-p"><span class="ne-text">上面这张图片是</span><code class="ne-code"><span class="ne-text">vue</span></code><span class="ne-text">官方的解释，通过</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">就可以访问组件的实例，拿到实例代表什么？代表可以访问此组件的所有方法和</span><code class="ne-code"><span class="ne-text">data</span></code><span class="ne-text">。接下来就是怎么实现拿到指定组件的实例。</span></p><p id="bb3e20f1faeaf6bf9497bffd7f381295_p_32" class="ne-p"><br></p><h4 id="ec09647d"><span class="ne-text">使用方法</span></h4><p id="73b74e66f7d869f94eb34b57d63eae3f_p_33" class="ne-p"><br></p>
 
 <pre><code class="vue">// 父组件中
-&lt;template&gt;
-  &lt;div class=&quot;hello_world&quot;&gt;
-    &lt;div&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;
-    &lt;com-a&gt;&lt;/com-a&gt;
-    &lt;button @click=&quot;changeA&quot;&gt;点击改变子组件值&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div class=&amp;quot;hello_world&amp;quot;&amp;gt;
+    &amp;lt;div&amp;gt;&#123;&#123;msg&#125;&#125;&amp;lt;/div&amp;gt;
+    &amp;lt;com-a&amp;gt;&amp;lt;/com-a&amp;gt;
+    &amp;lt;button @click=&amp;quot;changeA&amp;quot;&amp;gt;点击改变子组件值&amp;lt;/button&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 import ComA from &#39;./test/comA.vue&#39;
 export default &#123;
   name: &#39;HelloWorld&#39;,
@@ -508,17 +508,17 @@ export default &#123;
     &#125;
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// 子组件中
-&lt;template&gt;
-  &lt;div class=&quot;com_a&quot;&gt;
-    &lt;span&gt;&#123;&#123;messageA&#125;&#125;&lt;/span&gt;
-    &lt;p&gt;获取父组件的值为:  &#123;&#123;parentVal&#125;&#125;&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div class=&amp;quot;com_a&amp;quot;&amp;gt;
+    &amp;lt;span&amp;gt;&#123;&#123;messageA&#125;&#125;&amp;lt;/span&amp;gt;
+    &amp;lt;p&amp;gt;获取父组件的值为:  &#123;&#123;parentVal&#125;&#125;&amp;lt;/p&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 export default &#123;
   data() &#123;
     return &#123;
@@ -531,44 +531,44 @@ export default &#123;
     &#125;
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <div class="ne-quote"><p id="baca8b35b9df69242628141ffca869a0_p_35" class="ne-p"><span class="ne-text">要注意边界情况，如在</span><code class="ne-code"><span class="ne-text">#app</span></code><span class="ne-text">上拿</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">得到的是</span><code class="ne-code"><span class="ne-text">new Vue()</span></code><span class="ne-text">的实例，在这实例上再拿</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">得到的是</span><code class="ne-code"><span class="ne-text">undefined</span></code><span class="ne-text">，而在最底层的子组件拿</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">是个空数组。也要注意得到</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">的值不一样，</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text"> 的值是数组，而</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">是个对象</span></p></div><p id="6f8f966688575a1f666bafa122494f73_p_36" class="ne-p"><br></p><h4 id="25f9c7fa"><span class="ne-text">总结</span></h4><p id="ab57135091a86c42cc63ec67ac068a45_p_37" class="ne-p"><br></p><p id="c9f98fb68f54448a9f9adec409bc4cbe_p_38" class="ne-p"><span class="ne-text">上面两种方式用于父子组件之间的通信， 而使用 props 进行父子组件通信更加普遍; 二者皆不能用于非父子组件之间的通信。</span></p><p id="faade82d6cfe8ed09f505bc5d9204fda_p_39" class="ne-p"><br></p><h2 id="xvUaQ"><span class="ne-text">三、</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">/ </span><code class="ne-code"><span class="ne-text">inject</span></code></h2><p id="17b412f9fc3ec51ada5f566f0d09108c_p_40" class="ne-p"><br></p><h4 id="6213df69"><span class="ne-text">概念:</span></h4><p id="d9d31f80b21bee6005ee4bb0be1d9a6b_p_41" class="ne-p"><br></p><p id="1a0cc332e9c0eec97da9ef6fd3dc9b58_p_42" class="ne-p"><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">/ </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 是</span><code class="ne-code"><span class="ne-text">vue2.2.0</span></code><span class="ne-text">新增的 api, 简单来说就是父组件中通过</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">来提供变量, 然后再子组件中通过</span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text">来注入变量。</span></p><p id="4930f2b57b08d977b4a7a79433f23490_p_43" class="ne-p"><br></p><div class="ne-quote"><p id="6071f021259eae15a0d98d5f11dbac4b_p_44" class="ne-p"><span class="ne-text">注意: 这里不论子组件嵌套有多深, 只要调用了</span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 那么就可以注入</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">中的数据，而不局限于只能从当前父组件的 props 属性中回去数据</span></p></div><p id="0e4b859961c17882302ca1144adad96d_p_45" class="ne-p"><br></p><h4 id="dcf3dc0b"><span class="ne-text">举例验证</span></h4><p id="e81b6efc8e2153cf8aa53e3b04d7f22c_p_46" class="ne-p"><br></p><p id="7c7f50d376751d2fe628d85ee09618ef_p_47" class="ne-p"><span class="ne-text">接下来就用一个例子来验证上面的描述: 假设有三个组件: A.vue、B.vue、C.vue 其中 C 是 B 的子组件，B 是 A 的子组件</span></p><p id="aa95668f5a65b03373d1b0b3f9f8d3a6_p_48" class="ne-p"><br></p>
 
 <pre><code class="vue">// A.vue
 
-&lt;template&gt;
-  &lt;div&gt;
-    &lt;comB&gt;&lt;/comB&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;comB&amp;gt;&amp;lt;/comB&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
   import comB from &#39;../components/test/comB.vue&#39;
   export default &#123;
-    name: &quot;A&quot;,
+    name: &amp;quot;A&amp;quot;,
     provide: &#123;
-      for: &quot;demo&quot;
+      for: &amp;quot;demo&amp;quot;
     &#125;,
     components:&#123;
       comB
     &#125;
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// B.vue
 
-&lt;template&gt;
-  &lt;div&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
     &#123;&#123;demo&#125;&#125;
-    &lt;comC&gt;&lt;/comC&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+    &amp;lt;comC&amp;gt;&amp;lt;/comC&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
   import comC from &#39;../components/test/comC.vue&#39;
   export default &#123;
-    name: &quot;B&quot;,
+    name: &amp;quot;B&amp;quot;,
     inject: [&#39;for&#39;],
     data() &#123;
       return &#123;
@@ -579,18 +579,18 @@ export default &#123;
       comC
     &#125;
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// C.vue
-&lt;template&gt;
-  &lt;div&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
     &#123;&#123;demo&#125;&#125;
-  &lt;/div&gt;
-&lt;/template&gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
   export default &#123;
-    name: &quot;C&quot;,
+    name: &amp;quot;C&amp;quot;,
     inject: [&#39;for&#39;],
     data() &#123;
       return &#123;
@@ -598,16 +598,16 @@ export default &#123;
       &#125;
     &#125;
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <h2 id="ZNDHX"><span class="ne-text">四、</span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">refs</span></code></h2><h4 id="YzKrJ"><span class="ne-text">基本使用</span></h4><p id="1072ea36c24eecae31028b57db98b711_p_51" class="ne-p"><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text">：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例，可以通过实例直接调用组件的方法或访问数据， 我们看一个</span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> 来访问组件的例子:</span></p>
 
 <pre><code class="vue">// 父组件 app.vue
 
-&lt;template&gt;
-  &lt;component-a ref=&quot;comA&quot;&gt;&lt;/component-a&gt;
-&lt;/template&gt;
-&lt;script&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;component-a ref=&amp;quot;comA&amp;quot;&amp;gt;&amp;lt;/component-a&amp;gt;
+&amp;lt;/template&amp;gt;
+&amp;lt;script&amp;gt;
   export default &#123;
     mounted () &#123;
       const comA = this.$refs.comA;
@@ -615,7 +615,7 @@ export default &#123;
       comA.sayHello();  // hello
     &#125;
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <p id="bc2359f7bb1e32241fa27f528e60a125_p_52" class="ne-p"><br></p>
 
@@ -636,14 +636,14 @@ export default &#123;
 </code></pre>
 <h4 id="Cz2f0"><span class="ne-text">和v-for共使用</span></h4><p id="u22aa1746" class="ne-p"><span class="ne-text">遇到过这个场景，在主组件里面需要多次渲染子组件</span></p>
 
-<pre><code class="vue">      &lt;!-- 直播绑定 --&gt;
-      &lt;div slot=&quot;liveBind&quot;&gt;
-        &lt;AddLiveBindItem
-          v-for=&quot;(data, index) in datas&quot;
-          :key=&quot;data.id&quot;
-          :dataConfig=&quot;data.dataConfig&quot;
-          :isFirst=&quot;index === 0 ? true : false&quot;
-          :liveBindId=&quot;
+<pre><code class="vue">      &amp;lt;!-- 直播绑定 --&amp;gt;
+      &amp;lt;div slot=&amp;quot;liveBind&amp;quot;&amp;gt;
+        &amp;lt;AddLiveBindItem
+          v-for=&amp;quot;(data, index) in datas&amp;quot;
+          :key=&amp;quot;data.id&amp;quot;
+          :dataConfig=&amp;quot;data.dataConfig&amp;quot;
+          :isFirst=&amp;quot;index === 0 ? true : false&amp;quot;
+          :liveBindId=&amp;quot;
             index === 0
               ? 1
               : index === 1
@@ -655,15 +655,15 @@ export default &#123;
               : index === 4
               ? 5
               : 6
-          &quot;
-          @toDeleteLiveBind=&quot;toDeleteLiveBind(index)&quot;
-          ref=&quot;addLiveBindRef&quot;
-        /&gt;
-      &lt;/div&gt;
+          &amp;quot;
+          @toDeleteLiveBind=&amp;quot;toDeleteLiveBind(index)&amp;quot;
+          ref=&amp;quot;addLiveBindRef&amp;quot;
+        /&amp;gt;
+      &amp;lt;/div&amp;gt;
 </code></pre>
 <p id="uae784a6c" class="ne-p"><span class="ne-text">具体使用：下面第四行代码</span></p>
 
-<pre><code class="javascript">      this.datas.forEach((_it, index) =&gt; &#123;
+<pre><code class="javascript">      this.datas.forEach((_it, index) =&amp;gt; &#123;
         // 当前表单的配置项遍历上传
         liveRelationList.push(
           this.$refs.addLiveBindRef[index].liveBindApiParams
@@ -674,7 +674,7 @@ export default &#123;
 </code></pre>
 <h4 id="zUA4Q"><span class="ne-text">其他理解</span></h4><ul class="ne-ul"><li id="u54e5a1b7"><span class="ne-text">v-for 用于元素或组件时,引用信息将是</span><strong><span class="ne-text">包含 DOM 节点或组件实例的数组，</span></strong><span class="ne-text">按照这个理解，可以直接利用$refs来获取dom元素</span></li></ul>
 
-<pre><code class="javascript">this.$refs.addAlert.style.display = &quot;block&quot;;
+<pre><code class="javascript">this.$refs.addAlert.style.display = &amp;quot;block&amp;quot;;
 </code></pre>
 <p id="u209130bb" class="ne-p"><strong><span class="ne-text">$refs只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问$refs。这是官方说法，提倡props来操作，缺点就是非响应式的</span></strong></p><p id="ub56bb401" class="ne-p"><span class="ne-text"></span></p><p id="u567fd29b" class="ne-p"><strong><span class="ne-text">ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</span></strong></p><h2 id="fSF87"><span class="ne-text">五、eventBus</span></h2><p id="e10b5c78ee7ba45f407740af88433fc9_p_54" class="ne-p"><br></p><p id="6a46758b0a566ff1d337ce36227f583e_p_55" class="ne-p"><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> 又称为事件总线，在 vue 中可以使用它来作为沟通桥梁的概念, 就像是所有组件共用相同的事件中心，可以向该中心</span><strong><span class="ne-text">注册发送事件</span></strong><span class="ne-text">或</span><strong><span class="ne-text">接收事件</span></strong><span class="ne-text">， 所以</span><strong><span class="ne-text">组件都可以通知其他组件</span></strong><span class="ne-text">。</span></p><p id="a6e7204180aba568d27cc7b95d0717fd_p_56" class="ne-p"><br></p><div class="ne-quote"><p id="9973944624be5f0aade0adc966299174_p_57" class="ne-p"><span class="ne-text">eventBus 也有不方便之处, 当项目较大, 就容易造成难以维护的灾难</span></p></div><p id="e3c9bad72638009a374744280c63ecc6_p_58" class="ne-p"><br></p><p id="3085c6811d84ca25944e7aab016ae59b_p_59" class="ne-p"><span class="ne-text">在 Vue 的项目中怎么使用</span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">来实现组件之间的数据通信呢? 具体通过下面几个步骤</span></p><p id="daa3e859dfee1b8825cb9c219dcb2526_p_60" class="ne-p"><br></p><h4 id="824f2b2d"><span class="ne-text">1. 初始化</span></h4><p id="d89d8c6a729313c0d25f9b1742c0d590_p_61" class="ne-p"><br></p><p id="ae2699b2afa224478e7e6cc93d0dda54_p_62" class="ne-p"><span class="ne-text">首先需要创建一个事件总线并将其导出, 以便其他模块可以使用或者监听它.</span></p><p id="87e34965e50e2c8e31ce44a85667e8dd_p_63" class="ne-p"><br></p>
 
@@ -685,32 +685,32 @@ export const EventBus = new Vue()
 </code></pre>
 <p id="b3add770127d8c2a5064673aa8a9731f_p_64" class="ne-p"><br></p><p id="2a81d6eed31dfd1dc3c193bbdb75c1a1_p_65" class="ne-p"><br></p><p id="98de67513ec537a79ef3aa695ade51aa_p_66" class="ne-p"><span class="ne-text">假设你有两个组件: </span><code class="ne-code"><span class="ne-text">additionNum</span></code><span class="ne-text"> 和 </span><code class="ne-code"><span class="ne-text">showNum</span></code><span class="ne-text">, 这两个组件可以是兄弟组件也可以是父子组件；这里我们以兄弟组件为例:</span></p><p id="152302cc03cd3433e252fd8fbe4bade7_p_67" class="ne-p"><br></p>
 
-<pre><code class="vue">&lt;template&gt;
-  &lt;div&gt;
-    &lt;show-num-com&gt;&lt;/show-num-com&gt;
-    &lt;addition-num-com&gt;&lt;/addition-num-com&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+<pre><code class="vue">&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;show-num-com&amp;gt;&amp;lt;/show-num-com&amp;gt;
+    &amp;lt;addition-num-com&amp;gt;&amp;lt;/addition-num-com&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 import showNumCom from &#39;./showNum.vue&#39;
 import additionNumCom from &#39;./additionNum.vue&#39;
 export default &#123;
   components: &#123; showNumCom, additionNumCom &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <h4 id="gt0jW"><span class="ne-text">2. 发送事件</span></h4>
 
 <pre><code class="vue">// addtionNum.vue 中发送事件
 
-&lt;template&gt;
-  &lt;div&gt;
-    &lt;button @click=&quot;additionHandle&quot;&gt;+加法器&lt;/button&gt;    
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;button @click=&amp;quot;additionHandle&amp;quot;&amp;gt;+加法器&amp;lt;/button&amp;gt;    
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 import &#123;EventBus&#125; from &#39;./event-bus.js&#39;
 console.log(EventBus)
 export default &#123;
@@ -728,17 +728,17 @@ export default &#123;
     &#125;
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <h4 id="8ef9023b"><span class="ne-text">3. 接收事件</span></h4><p id="956e0d4312e941b77cd57ec35c294aff_p_69" class="ne-p"><br></p>
 
 <pre><code class="vue">// showNum.vue 中接收事件
 
-&lt;template&gt;
-  &lt;div&gt;计算和: &#123;&#123;count&#125;&#125;&lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;计算和: &#123;&#123;count&#125;&#125;&amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
 import &#123; EventBus &#125; from &#39;./event-bus.js&#39;
 export default &#123;
   data() &#123;
@@ -748,12 +748,12 @@ export default &#123;
   &#125;,
 
   mounted() &#123;
-    EventBus.$on(&#39;addition&#39;, param =&gt; &#123;
+    EventBus.$on(&#39;addition&#39;, param =&amp;gt; &#123;
       this.count = this.count + param.num;
     &#125;)
   &#125;
 &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <p id="67523e0fa28fe87849ce38cd391e3347_p_70" class="ne-p"><br></p><p id="854f22ccbc720f4f25f3f1e4fbae5cf0_p_71" class="ne-p"><span class="ne-text">这样就实现了在组件</span><code class="ne-code"><span class="ne-text">addtionNum.vue</span></code><span class="ne-text">中点击相加按钮, 在</span><code class="ne-code"><span class="ne-text">showNum.vue</span></code><span class="ne-text">中利用传递来的 </span><code class="ne-code"><span class="ne-text">num</span></code><span class="ne-text"> 展示求和的结果.</span></p><p id="200b796b4b1f5a36aa12caae6b6fa3d8_p_72" class="ne-p"><br></p><h4 id="964c73f0"><span class="ne-text">4. 移除事件监听者</span></h4><p id="7e9db6e1dddd1090f9cbf7742b89f0d6_p_73" class="ne-p"><br></p><p id="017aded1276858df53bbac28c927111b_p_74" class="ne-p"><span class="ne-text">如果想移除事件的监听, 可以像下面这样操作:</span></p><p id="cee026a6997be2fe2ca3b5d6e2ce2bf0_p_75" class="ne-p"><br></p>
 
@@ -764,14 +764,14 @@ EventBus.$off(&#39;addition&#39;, &#123;&#125;)
 
 <pre><code class="vue">// 父组件
 
-&lt;template&gt;
-  &lt;div id=&quot;app&quot;&gt;
-    &lt;ChildA/&gt;
-    &lt;ChildB/&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div id=&amp;quot;app&amp;quot;&amp;gt;
+    &amp;lt;ChildA/&amp;gt;
+    &amp;lt;ChildB/&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
   import ChildA from &#39;./components/ChildA&#39; // 导入A组件
   import ChildB from &#39;./components/ChildB&#39; // 导入B组件
 
@@ -779,19 +779,19 @@ EventBus.$off(&#39;addition&#39;, &#123;&#125;)
     name: &#39;App&#39;,
     components: &#123;ChildA, ChildB&#125; // 注册A、B组件
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// 子组件childA
 
-&lt;template&gt;
-  &lt;div id=&quot;childA&quot;&gt;
-    &lt;h1&gt;我是A组件&lt;/h1&gt;
-    &lt;button @click=&quot;transform&quot;&gt;点我让B组件接收到数据&lt;/button&gt;
-    &lt;p&gt;因为你点了B，所以我的信息发生了变化：&#123;&#123;BMessage&#125;&#125;&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div id=&amp;quot;childA&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;我是A组件&amp;lt;/h1&amp;gt;
+    &amp;lt;button @click=&amp;quot;transform&amp;quot;&amp;gt;点我让B组件接收到数据&amp;lt;/button&amp;gt;
+    &amp;lt;p&amp;gt;因为你点了B，所以我的信息发生了变化：&#123;&#123;BMessage&#125;&#125;&amp;lt;/p&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
   export default &#123;
     data() &#123;
       return &#123;
@@ -813,19 +813,19 @@ EventBus.$off(&#39;addition&#39;, &#123;&#125;)
       &#125;
     &#125;
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// 子组件 childB
 
-&lt;template&gt;
-  &lt;div id=&quot;childB&quot;&gt;
-    &lt;h1&gt;我是B组件&lt;/h1&gt;
-    &lt;button @click=&quot;transform&quot;&gt;点我让A组件接收到数据&lt;/button&gt;
-    &lt;p&gt;因为你点了A，所以我的信息发生了变化：&#123;&#123;AMessage&#125;&#125;&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div id=&amp;quot;childB&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;我是B组件&amp;lt;/h1&amp;gt;
+    &amp;lt;button @click=&amp;quot;transform&amp;quot;&amp;gt;点我让A组件接收到数据&amp;lt;/button&amp;gt;
+    &amp;lt;p&amp;gt;因为你点了A，所以我的信息发生了变化：&#123;&#123;AMessage&#125;&#125;&amp;lt;/p&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 
-&lt;script&gt;
+&amp;lt;script&amp;gt;
   export default &#123;
     data() &#123;
       return &#123;
@@ -847,7 +847,7 @@ EventBus.$off(&#39;addition&#39;, &#123;&#125;)
       &#125;
     &#125;
   &#125;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <p id="d2ef17a7a18d8c7e67af8d1ea686174e_p_85" class="ne-p"><span class="ne-text">vuex 的</span><code class="ne-code"><span class="ne-text">store,js</span></code></p><p id="c07d4a2054239914d4a014d7d64fcf23_p_86" class="ne-p"><br></p>
 
@@ -894,43 +894,43 @@ this.sortColumnSession = JSON.parse(
 <pre><code class="vue">// app.vue
 // index.vue
 
-&lt;template&gt;
-  &lt;div&gt;
-    &lt;child-com1
-      :name=&quot;name&quot;
-      :age=&quot;age&quot;
-      :gender=&quot;gender&quot;
-      :height=&quot;height&quot;
-      title=&quot;程序员成长指北&quot;
-    &gt;&lt;/child-com1&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
-&lt;script&gt;
-const childCom1 = () =&gt; import(&quot;./childCom1.vue&quot;);
+&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;child-com1
+      :name=&amp;quot;name&amp;quot;
+      :age=&amp;quot;age&amp;quot;
+      :gender=&amp;quot;gender&amp;quot;
+      :height=&amp;quot;height&amp;quot;
+      title=&amp;quot;程序员成长指北&amp;quot;
+    &amp;gt;&amp;lt;/child-com1&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
+&amp;lt;script&amp;gt;
+const childCom1 = () =&amp;gt; import(&amp;quot;./childCom1.vue&amp;quot;);
 export default &#123;
   components: &#123; childCom1 &#125;,
   data() &#123;
     return &#123;
-      name: &quot;zhang&quot;,
-      age: &quot;18&quot;,
-      gender: &quot;女&quot;,
-      height: &quot;158&quot;
+      name: &amp;quot;zhang&amp;quot;,
+      age: &amp;quot;18&amp;quot;,
+      gender: &amp;quot;女&amp;quot;,
+      height: &amp;quot;158&amp;quot;
     &#125;;
   &#125;
 &#125;;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// childCom1.vue
 
-&lt;template class=&quot;border&quot;&gt;
-  &lt;div&gt;
-    &lt;p&gt;name: &#123;&#123; name&#125;&#125;&lt;/p&gt;
-    &lt;p&gt;childCom1的$attrs: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;
-    &lt;child-com2 v-bind=&quot;$attrs&quot;&gt;&lt;/child-com2&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
-&lt;script&gt;
-const childCom2 = () =&gt; import(&quot;./childCom2.vue&quot;);
+&amp;lt;template class=&amp;quot;border&amp;quot;&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;p&amp;gt;name: &#123;&#123; name&#125;&#125;&amp;lt;/p&amp;gt;
+    &amp;lt;p&amp;gt;childCom1的$attrs: &#123;&#123; $attrs &#125;&#125;&amp;lt;/p&amp;gt;
+    &amp;lt;child-com2 v-bind=&amp;quot;$attrs&amp;quot;&amp;gt;&amp;lt;/child-com2&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
+&amp;lt;script&amp;gt;
+const childCom2 = () =&amp;gt; import(&amp;quot;./childCom2.vue&amp;quot;);
 export default &#123;
   components: &#123;
     childCom2
@@ -941,20 +941,20 @@ export default &#123;
   &#125;,
   created() &#123;
     console.log(this.$attrs);
-     // &#123; &quot;age&quot;: &quot;18&quot;, &quot;gender&quot;: &quot;女&quot;, &quot;height&quot;: &quot;158&quot;, &quot;title&quot;: &quot;程序员成长指北&quot; &#125;
+     // &#123; &amp;quot;age&amp;quot;: &amp;quot;18&amp;quot;, &amp;quot;gender&amp;quot;: &amp;quot;女&amp;quot;, &amp;quot;height&amp;quot;: &amp;quot;158&amp;quot;, &amp;quot;title&amp;quot;: &amp;quot;程序员成长指北&amp;quot; &#125;
   &#125;
 &#125;;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
 <pre><code class="vue">// childCom2.vue
 
-&lt;template&gt;
-  &lt;div class=&quot;border&quot;&gt;
-    &lt;p&gt;age: &#123;&#123; age&#125;&#125;&lt;/p&gt;
-    &lt;p&gt;childCom2: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
-&lt;script&gt;
+&amp;lt;template&amp;gt;
+  &amp;lt;div class=&amp;quot;border&amp;quot;&amp;gt;
+    &amp;lt;p&amp;gt;age: &#123;&#123; age&#125;&#125;&amp;lt;/p&amp;gt;
+    &amp;lt;p&amp;gt;childCom2: &#123;&#123; $attrs &#125;&#125;&amp;lt;/p&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
+&amp;lt;script&amp;gt;
 
 export default &#123;
   inheritAttrs: false,
@@ -963,13 +963,12 @@ export default &#123;
   &#125;,
   created() &#123;
     console.log(this.$attrs); 
-    // &#123; &quot;gender&quot;: &quot;女&quot;, &quot;height&quot;: &quot;158&quot;, &quot;title&quot;: &quot;程序员成长指北&quot; &#125;
+    // &#123; &amp;quot;gender&amp;quot;: &amp;quot;女&amp;quot;, &amp;quot;height&amp;quot;: &amp;quot;158&amp;quot;, &amp;quot;title&amp;quot;: &amp;quot;程序员成长指北&amp;quot; &#125;
   &#125;
 &#125;;
-&lt;/script&gt;
+&amp;lt;/script&amp;gt;
 </code></pre>
-<h2 id="d3gur"><span class="ne-text">总结</span></h2><p id="ec69cd8d8f73ee437722723e0adf1fa7_p_100" class="ne-p"><br></p><p id="d1dd1ab4b6c9dd3f0d10d775396b2c46_p_101" class="ne-p"><span class="ne-text">常见使用场景可以分为三类:</span></p><p id="a2c2ab33193f15adcdff2e08f718d7c2_p_102" class="ne-p"><br></p><ul class="ne-ul"><li id="38d84b7f285f00e4e99192b24cdc3891_li_10"><span class="ne-text">父子组件通信: </span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><ul class="ne-ul"><li id="3e789b8578fdd7d181db9f576fa76889_li_11"><span class="ne-text">兄弟组件通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> ; vuex</span></li></ul><ul class="ne-ul"><li id="e10c2c9737bf8956c62733553c8b2e96_li_12"><span class="ne-text">跨级通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">；Vuex；</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 、</span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><p id="1fde78b69ce88c86f4251c4f97a3b4b1_p_104" class="ne-p"><br></p><p id="de46638becbf26f6c7e35f22ece99363_p_108" class="ne-p"><span class="ne-text">
-</span></p></div>
+<h2 id="d3gur"><span class="ne-text">总结</span></h2><p id="ec69cd8d8f73ee437722723e0adf1fa7_p_100" class="ne-p"><br></p><p id="d1dd1ab4b6c9dd3f0d10d775396b2c46_p_101" class="ne-p"><span class="ne-text">常见使用场景可以分为三类:</span></p><p id="a2c2ab33193f15adcdff2e08f718d7c2_p_102" class="ne-p"><br></p><ul class="ne-ul"><li id="38d84b7f285f00e4e99192b24cdc3891_li_10"><span class="ne-text">父子组件通信: </span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><ul class="ne-ul"><li id="3e789b8578fdd7d181db9f576fa76889_li_11"><span class="ne-text">兄弟组件通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> ; vuex</span></li></ul><ul class="ne-ul"><li id="e10c2c9737bf8956c62733553c8b2e96_li_12"><span class="ne-text">跨级通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">；Vuex；</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 、</span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><p id="1fde78b69ce88c86f4251c4f97a3b4b1_p_104" class="ne-p"><br></p><p id="de46638becbf26f6c7e35f22ece99363_p_108" class="ne-p"><span class="ne-text"><br /></span></p></div>
 </div>
 
      

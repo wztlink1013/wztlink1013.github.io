@@ -325,22 +325,22 @@
     <div class="component article" id="article">
   <!doctype html><div class="lake-content" typography="classic"><h2 id="6aTqg"><span class="ne-text">实验内容</span></h2><p id="7d4494118179e44e0f3ed8839f84ffb0" class="ne-p"><span class="ne-text">已知某系统在通信联络中只可能出现n种字符，其概率从键盘输入。试创建哈夫曼树。</span></p><p id="u14631b82" class="ne-p"><span class="ne-text"></span></p><h2 id="cozPM"><span class="ne-text">实验要求</span></h2><p id="2e4df6f34b851d957d20a58176fee7ae" class="ne-p"><span class="ne-text"> 1、从键盘输入n, 以及n个字符的概率。</span></p><p id="53159717888700928d3025e77865f9a9" class="ne-p"><span class="ne-text">例如：已知某系统在通信联络中只可能出现n种字符，其概率分别为   0.05, 0.29, 0.07, 0.08, 0.14, 0.23, 0.03, 0.11，试设计哈夫曼编码创建哈夫曼树。</span></p><p id="3f08e9ba77eae8c4d6729c3d06a2c7de" class="ne-p"><span class="ne-text">2、用顺序存储。</span></p><p id="8fa3ffb8da8d9047bbe0fcf4b26a8146" class="ne-p"><span class="ne-text">3、输出结果如下</span></p><p id="8ca76d9eebc14783ea80967a6eede7f6" class="ne-p"><span class="ne-text"> </span><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1620964210279-ee3848d0-d031-4dc0-a850-3ae179b7a317.png" width="312" id="lteAK" class="ne-image"></p><p id="0c54abe86060ef65be0dc82c893a755c" class="ne-p"><span class="ne-text">交作业时间：下次上机前</span></p><h2 id="z4tNS"><span class="ne-text">实验代码</span></h2>
 
-<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+<pre><code class="cpp">#include &amp;lt;bits/stdc++.h&amp;gt;
 using namespace std;
 
 int n, m, s1, s2;
 typedef struct HTNode
 &#123;
     int weight, parent, lchild, rchild, pos;
-    bool operator&lt;(const HTNode &amp;a)const
+    bool operator&amp;lt;(const HTNode &amp;amp;a)const
    &#123;
-       return a.weight &lt; weight;
+       return a.weight &amp;lt; weight;
    &#125;
 &#125;HTNode, *HuffmanTree;
 
-priority_queue&lt;HTNode&gt;P;
+priority_queue&amp;lt;HTNode&amp;gt;P;
 
-void Select(HuffmanTree &amp;HT, int ii, int &amp;s1, int &amp;s2)
+void Select(HuffmanTree &amp;amp;HT, int ii, int &amp;amp;s1, int &amp;amp;s2)
 &#123;
     HTNode t = P.top();
     s1 = t.pos;
@@ -350,25 +350,25 @@ void Select(HuffmanTree &amp;HT, int ii, int &amp;s1, int &amp;s2)
     P.pop();
 &#125;
 
-void CreateHuffmantree(HuffmanTree &amp;HT, int n)
+void CreateHuffmantree(HuffmanTree &amp;amp;HT, int n)
 &#123;
-    if(n &lt;= 1)
+    if(n &amp;lt;= 1)
         return;
     m = 2 * n - 1;
     HT = new HTNode[m + 1];
-    for(int i = 1; i &lt;= m; i++)
+    for(int i = 1; i &amp;lt;= m; i++)
     &#123;
         HT[i].parent = 0;
         HT[i].lchild = 0;
         HT[i].rchild = 0;
     &#125;
-    for(int i = 1; i &lt;= n; ++i)
+    for(int i = 1; i &amp;lt;= n; ++i)
     &#123;
-        cin &gt;&gt; HT[i].weight;
+        cin &amp;gt;&amp;gt; HT[i].weight;
         HT[i].pos = i;
         P.push(HT[i]);
     &#125;
-    for(int i = n + 1; i &lt;= m; i++)
+    for(int i = n + 1; i &amp;lt;= m; i++)
     &#123;
         Select(HT, i - 1, s1, s2);
         HT[s1].parent = i;
@@ -384,15 +384,15 @@ void CreateHuffmantree(HuffmanTree &amp;HT, int n)
 int main()
 &#123;
     HuffmanTree HT;
-    cout &lt;&lt; &quot;请输入哈夫曼树的叶子结点个数：&quot;;
-    cin &gt;&gt; n;
-    cout &lt;&lt; &quot;请输入每个叶子结点的权值：&quot; &lt;&lt; &#39;\n&#39;;
+    cout &amp;lt;&amp;lt; &amp;quot;请输入哈夫曼树的叶子结点个数：&amp;quot;;
+    cin &amp;gt;&amp;gt; n;
+    cout &amp;lt;&amp;lt; &amp;quot;请输入每个叶子结点的权值：&amp;quot; &amp;lt;&amp;lt; &#39;\n&#39;;
     CreateHuffmantree(HT, n);
-    for(int i = 1; i &lt;= 2 * n - 1; ++i)
+    for(int i = 1; i &amp;lt;= 2 * n - 1; ++i)
     &#123;
-        cout &lt;&lt; &quot;结点序号 &quot; &lt;&lt; i &lt;&lt; &quot; 权重 &quot; &lt;&lt; HT[i].weight
-        &lt;&lt; &quot; parent &quot; &lt;&lt; HT[i].parent &lt;&lt; &quot; lchild &quot; &lt;&lt; HT[i].lchild
-        &lt;&lt; &quot; rchild &quot; &lt;&lt; HT[i].rchild &lt;&lt; &#39;\n&#39;;
+        cout &amp;lt;&amp;lt; &amp;quot;结点序号 &amp;quot; &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &amp;quot; 权重 &amp;quot; &amp;lt;&amp;lt; HT[i].weight
+        &amp;lt;&amp;lt; &amp;quot; parent &amp;quot; &amp;lt;&amp;lt; HT[i].parent &amp;lt;&amp;lt; &amp;quot; lchild &amp;quot; &amp;lt;&amp;lt; HT[i].lchild
+        &amp;lt;&amp;lt; &amp;quot; rchild &amp;quot; &amp;lt;&amp;lt; HT[i].rchild &amp;lt;&amp;lt; &#39;\n&#39;;
     &#125;
 &#125;
 </code></pre>

@@ -434,47 +434,47 @@ app.get(&#39;/api/userinfo&#39;, userinfo.index)
 <h4 id="zzaxG"><span class="ne-text">js使用接口的一些方法</span></h4><ul class="ne-ul"><li id="u43b7106d"><span class="ne-text">用之前总结的使用接口一些方法：</span><a href="https://github.com/wztlink1013/web-learn-notes/tree/gh-pages/learn-interface" data-href="https://github.com/wztlink1013/web-learn-notes/tree/gh-pages/learn-interface" target="_blank" class="ne-link"><span class="ne-text">https://github.com/wztlink1013/web-learn-notes/tree/gh-pages/learn-interface</span></a></li></ul><h4 id="mwKb2"><span class="ne-text">跨域问题的解决</span></h4><p id="uf6998da1" class="ne-p"><span class="ne-text">解法一：手写（但是有看到网上说会有设备（iPhone6）不兼容等问题）</span></p>
 
 <pre><code class="javascript">// 跨域设置
-app.all(&quot;*&quot;, function(req, res, next) &#123;
-    res.header(&quot;Access-Control-Allow-Credentials&quot;, true);
-    res.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
-    res.header(&quot;Access-Control-Allow-Headers&quot;, &quot;X-Requested-With&quot;);
-    res.header(&quot;Access-Control-Allow-Methods&quot;, &quot;PUT,POST,GET,DELETE,OPTIONS&quot;);
-    res.header(&quot;Content-Type&quot;, &quot;application/json;charset=utf-8&quot;);
+app.all(&amp;quot;*&amp;quot;, function(req, res, next) &#123;
+    res.header(&amp;quot;Access-Control-Allow-Credentials&amp;quot;, true);
+    res.header(&amp;quot;Access-Control-Allow-Origin&amp;quot;, &amp;quot;*&amp;quot;);
+    res.header(&amp;quot;Access-Control-Allow-Headers&amp;quot;, &amp;quot;X-Requested-With&amp;quot;);
+    res.header(&amp;quot;Access-Control-Allow-Methods&amp;quot;, &amp;quot;PUT,POST,GET,DELETE,OPTIONS&amp;quot;);
+    res.header(&amp;quot;Content-Type&amp;quot;, &amp;quot;application/json;charset=utf-8&amp;quot;);
     next();
 &#125;);
 </code></pre>
 <p id="u3807f4e8" class="ne-p"><span class="ne-text">解法二：直接使用npm里面的cors包</span></p>
 
-<pre><code class="html">&lt;!--
+<pre><code class="html">&amp;lt;!--
  * @Descripttion: learn axios
  * @Date: 2021-12-21 09:40:36
  * @LastEditTime: 2022-01-11 11:25:28
---&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot; /&gt;
-    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
-    &lt;title&gt;Document&lt;/title&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js&quot;&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;script&gt;
+--&amp;gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot; /&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;X-UA-Compatible&amp;quot; content=&amp;quot;IE=edge&amp;quot; /&amp;gt;
+    &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot; /&amp;gt;
+    &amp;lt;title&amp;gt;Document&amp;lt;/title&amp;gt;
+    &amp;lt;script src=&amp;quot;https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;script&amp;gt;
       // 配置公共的请求头
       axios.defaults.baseURL = &#39;http://localhost:3000/&#39;
       // 配置 超时时间
       axios.defaults.timeout = 2500
       // 配置公共的请求头
-      // axios.defaults.headers.common[&quot;Authorization&quot;] =
-      //   &quot;token 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&quot;
-      // axios.defaults.headers.common[&quot;Accept&quot;] = &quot;application/vnd.github.v3+json&quot;
+      // axios.defaults.headers.common[&amp;quot;Authorization&amp;quot;] =
+      //   &amp;quot;token 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&amp;quot;
+      // axios.defaults.headers.common[&amp;quot;Accept&amp;quot;] = &amp;quot;application/vnd.github.v3+json&amp;quot;
       // 配置公共的 post 的 Content-Type
       axios.defaults.headers.post[&#39;Content-Type&#39;] = &#39;application/json&#39;
 
       // 请求/响应 拦截器的配置
       axios.interceptors.request.use(
-        config =&gt; &#123;
+        config =&amp;gt; &#123;
           console.log(&#39;请求拦截器: &#39;)
           config.headers.Accept = &#39;application/vnd.github.v3+json&#39;
           config.headers.Authorization =
@@ -482,29 +482,29 @@ app.all(&quot;*&quot;, function(req, res, next) &#123;
           console.log(config)
           return config
         &#125;,
-        err =&gt; &#123;
+        err =&amp;gt; &#123;
           console.log(err)
         &#125;
       )
 
       axios.interceptors.response.use(
-        data =&gt; &#123;
+        data =&amp;gt; &#123;
           console.log(&#39;响应拦截器: &#39;)
           console.log(data.data)
           return data.data
         &#125;,
-        err =&gt; &#123;
+        err =&amp;gt; &#123;
           console.log(err)
         &#125;
       )
 
       // 请求数据
-      axios.get(&#39;api/userinfo&#39;).then(data =&gt; &#123;
+      axios.get(&#39;api/userinfo&#39;).then(data =&amp;gt; &#123;
         console.log(data)
       &#125;)
-    &lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+    &amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
 </code></pre>
 <p id="ub187bf50" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1641872349891-229b5dc9-c17f-4a3b-bbef-98611971015f.png" width="569.5" id="g5VY5" class="ne-image"></p><h4 id="RIBJU"><span class="ne-text">Postman 测试API工具</span></h4><p id="u76413f3c" class="ne-p"><span class="ne-text">如果是本地写的接口，也就是localhost类的，在web postman上是不能测试的，只能下载Postman PC应用来测试。</span></p><h3 id="HdYAo"><span class="ne-text">body-parser模块</span></h3><p id="u3898d1c9" class="ne-p"><span class="ne-text">body-parser为express框架的中间件，其作用就是对post请求的请求体进行解析。</span></p><p id="u0ca951ed" class="ne-p"><span class="ne-text">下载使用：</span></p>
 

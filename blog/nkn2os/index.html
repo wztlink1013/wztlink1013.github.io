@@ -332,7 +332,7 @@
  *
  */
 
-public interface List&lt;E&gt; &#123;
+public interface List&amp;lt;E&amp;gt; &#123;
     static final int ELEMENT_NOT_FOUND = -1;
 
     /**
@@ -411,7 +411,7 @@ public interface List&lt;E&gt; &#123;
  *
  */
 
-public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; &#123;
+public abstract class AbstractList&amp;lt;E&amp;gt; implements List&amp;lt;E&amp;gt; &#123;
 
     protected int size;
     /**
@@ -451,17 +451,17 @@ public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; &#123;
      * 下面三个是ArrayList和LinkedList两个实现类中的公共代码
      * */
     protected void outOfBounds(int index) &#123;
-        throw new IndexOutOfBoundsException(&quot;Index:&quot; + index + &quot;, Size:&quot; + size);
+        throw new IndexOutOfBoundsException(&amp;quot;Index:&amp;quot; + index + &amp;quot;, Size:&amp;quot; + size);
     &#125;
 
     protected void rangeCheck(int index) &#123;
-        if (index &lt; 0 || index &gt;= size) &#123;
+        if (index &amp;lt; 0 || index &amp;gt;= size) &#123;
             outOfBounds(index);
         &#125;
     &#125;
 
     protected void rangeCheckForAdd(int index) &#123;
-        if (index &lt; 0 || index &gt; size) &#123;
+        if (index &amp;lt; 0 || index &amp;gt; size) &#123;
             outOfBounds(index);
         &#125;
     &#125;
@@ -474,14 +474,14 @@ public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; &#123;
 /**
  *fun：实现动态数组
  */
-@SuppressWarnings(&quot;unchecked&quot;)
-public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
+@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
+public class ArrayList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt; &#123;
     private E[] elements;
 
     private static final int DEFAULT_CAPACITY = 10;
 
     public ArrayList(int capaticy) &#123;
-        capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
+        capaticy = (capaticy &amp;lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
         elements = (E[]) new Object[capaticy];
     &#125;
 
@@ -492,7 +492,7 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
 
     @Override
     public void clear() &#123;
-        for (int i = 0; i &lt; size; i++) &#123;
+        for (int i = 0; i &amp;lt; size; i++) &#123;
             elements[i] = null;
         &#125;
         size = 0;
@@ -519,7 +519,7 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
 
         ensureCapacity(size + 1);
 
-        for (int i = size; i &gt; index; i--) &#123;
+        for (int i = size; i &amp;gt; index; i--) &#123;
             elements[i] = elements[i - 1];
         &#125;
         elements[index] = element;
@@ -531,7 +531,7 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
         rangeCheck(index);
 
         E old = elements[index];
-        for (int i = index + 1; i &lt; size; i++) &#123;
+        for (int i = index + 1; i &amp;lt; size; i++) &#123;
             elements[i - 1] = elements[i];
         &#125;
         elements[--size] = null;
@@ -541,11 +541,11 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
     @Override
     public int indexOf(E element) &#123;
         if (element == null) &#123;  // 1
-            for (int i = 0; i &lt; size; i++) &#123;
+            for (int i = 0; i &amp;lt; size; i++) &#123;
                 if (elements[i] == null) return i;
             &#125;
         &#125; else &#123;
-            for (int i = 0; i &lt; size; i++) &#123;
+            for (int i = 0; i &amp;lt; size; i++) &#123;
                 if (element.equals(elements[i])) return i; // n
             &#125;
         &#125;
@@ -559,33 +559,33 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
      */
     private void ensureCapacity(int capacity) &#123;
         int oldCapacity = elements.length;
-        if (oldCapacity &gt;= capacity) return;
+        if (oldCapacity &amp;gt;= capacity) return;
 
         // 新容量为旧容量的1.5倍
-        int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+        int newCapacity = oldCapacity + (oldCapacity &amp;gt;&amp;gt; 1);
         E[] newElements = (E[]) new Object[newCapacity];
-        for (int i = 0; i &lt; size; i++) &#123;
+        for (int i = 0; i &amp;lt; size; i++) &#123;
             newElements[i] = elements[i];
         &#125;
         elements = newElements;
 
-        System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
+        System.out.println(oldCapacity + &amp;quot;扩容为&amp;quot; + newCapacity);
     &#125;
 
     @Override
     public String toString() &#123;
         // size=3, [99, 88, 77]
         StringBuilder string = new StringBuilder();
-        string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
-        for (int i = 0; i &lt; size; i++) &#123;
+        string.append(&amp;quot;size=&amp;quot;).append(size).append(&amp;quot;, [&amp;quot;);
+        for (int i = 0; i &amp;lt; size; i++) &#123;
             if (i != 0) &#123;
-                string.append(&quot;, &quot;);
+                string.append(&amp;quot;, &amp;quot;);
             &#125;
 
             string.append(elements[i]);
 
         &#125;
-        string.append(&quot;]&quot;);
+        string.append(&amp;quot;]&amp;quot;);
         return string.toString();
     &#125;
 
@@ -593,7 +593,7 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
      * 新添加功能
      */
     public int search(E element)&#123;
-        for (int i = 0;i&lt;size;i++)&#123;
+        for (int i = 0;i&amp;lt;size;i++)&#123;
             if (element == elements[i])&#123;
                 return i;
             &#125;
@@ -610,16 +610,16 @@ public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
 /**
  *fun：链表的实现
  */
-@SuppressWarnings(&quot;unchecked&quot;)
-public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
-    private Node&lt;E&gt; first;
-    private Node&lt;E&gt; last;
+@SuppressWarnings(&amp;quot;unchecked&amp;quot;)
+public class LinkedList&amp;lt;E&amp;gt; extends AbstractList&amp;lt;E&amp;gt; &#123;
+    private Node&amp;lt;E&amp;gt; first;
+    private Node&amp;lt;E&amp;gt; last;
 
-    private static class Node&lt;E&gt; &#123;
+    private static class Node&amp;lt;E&amp;gt; &#123;
         E element;
-        Node&lt;E&gt; prev;
-        Node&lt;E&gt; next;
-        public Node(E element, Node&lt;E&gt; next) &#123;
+        Node&amp;lt;E&amp;gt; prev;
+        Node&amp;lt;E&amp;gt; next;
+        public Node(E element, Node&amp;lt;E&amp;gt; next) &#123;
             this.element = element;
             this.next = next;
         &#125;
@@ -639,7 +639,7 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
 
     @Override
     public E set(int index, E element) &#123;
-        Node&lt;E&gt; node = node(index);
+        Node&amp;lt;E&amp;gt; node = node(index);
         E old = node.element;
         node.element = element;
         return old;
@@ -648,29 +648,29 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
     @Override
     public void add(int index, E element) &#123;
         if (index == 0)&#123;
-            first = new Node&lt;&gt;(element, first);
+            first = new Node&amp;lt;&amp;gt;(element, first);
         &#125; else &#123;
-            Node&lt;E&gt; prev = node(index - 1);
-            prev.next = new Node&lt;&gt;(element, prev.next);
+            Node&amp;lt;E&amp;gt; prev = node(index - 1);
+            prev.next = new Node&amp;lt;&amp;gt;(element, prev.next);
         &#125;
         size++;
     &#125;
 
     @Override
     public E remove(int index) &#123;
-//        Node&lt;E&gt; node = first;
+//        Node&amp;lt;E&amp;gt; node = first;
 //        if (index == 0) &#123;
 //            first = first.next;
 //        &#125; else &#123;
-//            Node&lt;E&gt; prev = node(index -1);
+//            Node&amp;lt;E&amp;gt; prev = node(index -1);
 //            node = prev.next;
 //            prev.next = node.next;
 //        &#125;
         rangeCheck(index);
 
-        Node&lt;E&gt; node = node(index);
-        Node&lt;E&gt; prev = node.prev;
-        Node&lt;E&gt; next = node.next;
+        Node&amp;lt;E&amp;gt; node = node(index);
+        Node&amp;lt;E&amp;gt; prev = node.prev;
+        Node&amp;lt;E&amp;gt; next = node.next;
 
         if (prev == null) &#123; // index == 0
             first = next;
@@ -691,15 +691,15 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
     @Override
     public int indexOf(E element) &#123;
         if (element == null) &#123;
-            Node&lt;E&gt; node = first;
-            for (int i = 0; i &lt; size; i++) &#123;
+            Node&amp;lt;E&amp;gt; node = first;
+            for (int i = 0; i &amp;lt; size; i++) &#123;
                 if (node.element == null) return i;
 
                 node = node.next;
             &#125;
         &#125; else &#123;
-            Node&lt;E&gt; node = first;
-            for (int i = 0; i &lt; size; i++) &#123;
+            Node&amp;lt;E&amp;gt; node = first;
+            for (int i = 0; i &amp;lt; size; i++) &#123;
                 if (element.equals(node.element)) return i;
 
                 node = node.next;
@@ -713,18 +713,18 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
      * @param index
      * @return
      */
-    private Node&lt;E&gt; node(int index) &#123;
+    private Node&amp;lt;E&amp;gt; node(int index) &#123;
         rangeCheck(index);
 
-        if (index &lt; (size &gt;&gt; 1)) &#123;
-            Node&lt;E&gt; node = first;
-            for (int i = 0; i &lt; index; i++) &#123;
+        if (index &amp;lt; (size &amp;gt;&amp;gt; 1)) &#123;
+            Node&amp;lt;E&amp;gt; node = first;
+            for (int i = 0; i &amp;lt; index; i++) &#123;
                 node = node.next;
             &#125;
             return node;
         &#125; else &#123;
-            Node&lt;E&gt; node = last;
-            for (int i = size - 1; i &gt; index; i--) &#123;
+            Node&amp;lt;E&amp;gt; node = last;
+            for (int i = size - 1; i &amp;gt; index; i--) &#123;
                 node = node.prev;
             &#125;
             return node;
@@ -734,18 +734,18 @@ public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;
     @Override
     public String toString() &#123;
         StringBuilder string = new StringBuilder();
-        string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
-        Node&lt;E&gt; node = first;
-        for (int i = 0; i &lt; size; i++) &#123;
+        string.append(&amp;quot;size=&amp;quot;).append(size).append(&amp;quot;, [&amp;quot;);
+        Node&amp;lt;E&amp;gt; node = first;
+        for (int i = 0; i &amp;lt; size; i++) &#123;
             if (i != 0) &#123;
-                string.append(&quot;, &quot;);
+                string.append(&amp;quot;, &amp;quot;);
             &#125;
 
             string.append(node);
 
             node = node.next;
         &#125;
-        string.append(&quot;]&quot;);
+        string.append(&amp;quot;]&amp;quot;);
         return string.toString();
     &#125;
 &#125;

@@ -9,13 +9,13 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="前言：Vue项目中利用Axios封装接口的请求和响应过程中，请求的接口可能会出现本地网络情况抑或是服务端相关环境错误，如果需要接口配置重连机制，如下逻辑可以实现：···service.interceptors.response.use(  (response) =&amp;gt; &amp;#123;    try" />
+    <meta name="description" content="前言：Vue项目中利用Axios封装接口的请求和响应过程中，请求的接口可能会出现本地网络情况抑或是服务端相关环境错误，如果需要接口配置重连机制，如下逻辑可以实现：···service.interceptors.response.use(  (response) =&amp;amp;gt; &amp;#123;   " />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Axios实现重连机制 | 尼采般地抒情" />
     <meta property="og:url" content="https://www.wztlink1013.com/blog/urrudl/" />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="前言：Vue项目中利用Axios封装接口的请求和响应过程中，请求的接口可能会出现本地网络情况抑或是服务端相关环境错误，如果需要接口配置重连机制，如下逻辑可以实现：···service.interceptors.response.use(  (response) =&amp;gt; &amp;#123;    try" /> 
+    <meta property="og:description" content="前言：Vue项目中利用Axios封装接口的请求和响应过程中，请求的接口可能会出现本地网络情况抑或是服务端相关环境错误，如果需要接口配置重连机制，如下逻辑可以实现：···service.interceptors.response.use(  (response) =&amp;amp;gt; &amp;#123;   " /> 
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
     <!-- FIXME: 使用base64转义 -->
@@ -323,11 +323,11 @@
 
 <pre><code class="javascript">···
 service.interceptors.response.use(
-  (response) =&gt; &#123;
+  (response) =&amp;gt; &#123;
     tryCloseLoading();
-    return response &amp;&amp; response.data;
+    return response &amp;amp;&amp;amp; response.data;
   &#125;,
-  (err) =&gt; &#123;
+  (err) =&amp;gt; &#123;
     // 通用报错处理
     if (err.response) &#123;
       // 通用报错处理
@@ -340,7 +340,7 @@ service.interceptors.response.use(
       if (!config || !config.retry) return Promise.reject(err);
       config.retryCount = config.retryCount || 0;
       // 检查是否已经达到重连总数
-      if (config.retryCount &gt;= config.retry) &#123;
+      if (config.retryCount &amp;gt;= config.retry) &#123;
         message.error(&#39;当前网络异常&#39;);
         tryCloseLoading();
         return Promise.reject(err);
@@ -349,12 +349,12 @@ service.interceptors.response.use(
       // 自动计算每次重试的延时，重试次数越多，延时越大
       const retryDelay = (1 / 2) * (Math.pow(2, config.retryCount) - 1) * 1000;
       // 创建新的 Promise 来发起请求
-      const backoff = new Promise((resolve) =&gt; &#123;
-        setTimeout(() =&gt; &#123;
+      const backoff = new Promise((resolve) =&amp;gt; &#123;
+        setTimeout(() =&amp;gt; &#123;
           resolve();
         &#125;, retryDelay);
       &#125;);
-      return backoff.then(() =&gt; &#123;
+      return backoff.then(() =&amp;gt; &#123;
         tryCloseLoading();
         return service(config);
       &#125;);
