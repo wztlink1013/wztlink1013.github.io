@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -209,7 +209,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fc2260b5"><span class="toc-text">一、编写脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#c28e0ff6"><span class="toc-text">二、编写 GitHub Actions</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fc2260b5"><span class="toc-text">一、编写脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#c28e0ff6"><span class="toc-text">二、编写GitHub Actions</span></a></li></ol>
 </div>
 <div class="search_box">
     <div class="search">
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -321,8 +321,7 @@
     <div class="component article" id="article">
   <!doctype html><div class="lake-content" typography="classic"><p id="u5135cf9f" class="ne-p"><span class="ne-text">前言：每一个GitHub仓库都有GitHub Pages功能，虽然可以利用wztlink1013.github.io/test来访问，但是这种形式第一次访问还是会走github的cdn一步骤，所以为了其他仓库的gh-pages页面也能继承wztlink1013.github.io的速度，打算将test仓库下gh-pages分支下的所有文件复制到wztlink1013.github.io仓库主分支下的test文件夹中。</span></p><p id="ufe31a19e" class="ne-p"><span class="ne-text"></span></p><div data-type="danger" class="ne-alert"><p id="u0cf6d9a1" class="ne-p"><span class="ne-text">弃用：过于繁琐😆</span></p></div><h2 id="fc2260b5"><span class="ne-text">一、编写脚本</span></h2><p id="6841877c72e520141268f8eeb584a88e" class="ne-p"><span class="ne-text">配置git用户逻辑</span></p>
 
-<pre><code class="bash">git config --global user.name &#39;wztlink1013&#39;
-
+<pre><code class="bash">git config --global user.name &#39;wztlink1013&#39; 
 git config --global user.email &#39;wztlink1013@163.com&#39;
 git clone https://github.com/wztlink1013/test.git
 git clone https://github.com/wztlink1013/wztlink1013.github.io.git
@@ -340,29 +339,29 @@ xcopy .\test .\wztlink1013.github.io /e
 git status
 git add .
 git commit -m &quot;add gh-pages files&quot;
-git push &quot;https://$&#123;Github_Token&#125;@github.com/wztlink1013/wztlink1013.github.io&quot; master:master
+git push &quot;https://$&#123;Github_Token&#125;@github.com/wztlink1013/wztlink1013.github.io&quot;  master:master
 </code></pre>
-<p id="f1303e9a8bd8a36e2f3e660041c3c2c8" class="ne-p"><br></p><h2 id="c28e0ff6"><span class="ne-text">二、编写 GitHub Actions</span></h2><p id="f79a68536e8e8ad5aee3833f9ad2a40b" class="ne-p"><br></p>
+<p id="f1303e9a8bd8a36e2f3e660041c3c2c8" class="ne-p"><br></p><h2 id="c28e0ff6"><span class="ne-text">二、编写GitHub Actions</span></h2><p id="f79a68536e8e8ad5aee3833f9ad2a40b" class="ne-p"><br></p>
 
 <pre><code class="yaml">name: CI for wztlink1013.github.io
 
 on: [push, watch]
 
 jobs:
-build:
-runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
     - name: 配置Git
-      run: |
-        git config --global user.name &#39;wztlink1013&#39;
+      run: | 
+        git config --global user.name &#39;wztlink1013&#39; 
         git config --global user.email &#39;wztlink1013@163.com&#39;
     - name: 在云端进行复制文件夹操作
       env:
         Github_Token: $&#123;&#123; secrets.TOKEN_GITHUBAPI &#125;&#125;
-      run: |
+      run: | 
         git clone https://github.com/wztlink1013/visualization visualization
         git clone https://github.com/wztlink1013/wztlink1013.github.io .github_pages
         cd visualization
@@ -380,7 +379,6 @@ runs-on: ubuntu-latest
         git push --force --quiet &quot;https://$&#123;Github_Token&#125;@github.com/wztlink1013/wztlink1013.github.io&quot;  master:master
 </code></pre>
 </div>
-
 </div>
 
      

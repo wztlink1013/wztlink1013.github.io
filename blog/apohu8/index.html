@@ -9,13 +9,13 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="一、基本结构神经网络基本结构何为深度学习？二、感知器和激活函数感知器激活函数（其中w和x为向量点乘；b为偏置，w0）激活函数的选择三、感知器的训练四、简单代码实现from functools import reduceclass Perceptron(object):&amp;#39;&amp;#39;&amp;#39;构" />
+    <meta name="description" content="一、基本结构神经网络基本结构何为深度学习？二、感知器和激活函数感知器激活函数（其中w和x为向量点乘；b为偏置，w0）激活函数的选择三、感知器的训练四、简单代码实现from functools import reduceclass Perceptron(object):    &amp;#39;&amp;#39;&amp;#" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="ANN神经网络 | 尼采般地抒情" />
     <meta property="og:url" content="https://www.wztlink1013.com/blog/apohu8/" />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="一、基本结构神经网络基本结构何为深度学习？二、感知器和激活函数感知器激活函数（其中w和x为向量点乘；b为偏置，w0）激活函数的选择三、感知器的训练四、简单代码实现from functools import reduceclass Perceptron(object):&amp;#39;&amp;#39;&amp;#39;构" /> 
+    <meta property="og:description" content="一、基本结构神经网络基本结构何为深度学习？二、感知器和激活函数感知器激活函数（其中w和x为向量点乘；b为偏置，w0）激活函数的选择三、感知器的训练四、简单代码实现from functools import reduceclass Perceptron(object):    &amp;#39;&amp;#39;&amp;#" /> 
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
     <!-- FIXME: 使用base64转义 -->
@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -324,85 +324,84 @@
 <pre><code class="python">from functools import reduce
 
 class Perceptron(object):
-&#39;&#39;&#39;
-构造函数的初始化
-&#39;&#39;&#39;
-def **init**(self,input*num,activator):
-&#39;&#39;&#39;
-构造函数的初始化
-&#39;&#39;&#39;
-self.activator = activator
-self.weights = [0.0 for * in range(input_num)]
-self.bias = 0.0
-def **str**(self):
-&#39;&#39;&#39;
-打印学习后的权重值和偏置项
-&#39;&#39;&#39;
-return &#39;weights\t:%s\nbias\t:%f\n&#39; %(self.weights,self.bias)
-def predict(self,input_vec):
-&#39;&#39;&#39;
-输入向量，输出感知器的计算结果
-&#39;&#39;&#39;
-return self.activator(
-reduce(lambda a,b: a+b,
-list(map(lambda x,w: x*w,
-input_vec,self.weights)
-),0.0)+self.bias)
-def train(self,input_vecs,labels,iteration,rate):
-&#39;&#39;&#39;
-输入训练数据：一组向量、与每个向量对应的 label；以及训练轮数、学习率
-&#39;&#39;&#39;
-for i in range(iteration):
-self.\_one_iteration(input_vecs,labels,rate)
-def \_one_iteration(self,input_vecs,labels,rate):
-&#39;&#39;&#39;
-迭代，把所有的训练数据过一遍
-&#39;&#39;&#39;
-samples = zip(input_vecs,labels)
-for (input_vec,label) in samples:
-output = self.predict(input_vec)
-self.\_update_weights(input_vec,output,label,rate)
-def \_update_weights(self,input_vec,output,label,rate):
-&#39;&#39;&#39;
-按照感知器规则更新权重
-&#39;&#39;&#39;
-delta = label - output
-self.weights = map(
-lambda x, w:w+rate*delta*x,
-input_vec,self.weights)
-self.weights = list(self.weights)
-self.bias += rate*delta
+    &#39;&#39;&#39;
+    构造函数的初始化
+    &#39;&#39;&#39;
+    def __init__(self,input_num,activator):
+        &#39;&#39;&#39;
+        构造函数的初始化
+        &#39;&#39;&#39;
+        self.activator = activator
+        self.weights = [0.0 for _ in range(input_num)]
+        self.bias = 0.0
+    def __str__(self):
+        &#39;&#39;&#39;
+        打印学习后的权重值和偏置项
+        &#39;&#39;&#39;
+        return &#39;weights\t:%s\nbias\t:%f\n&#39; %(self.weights,self.bias)
+    def predict(self,input_vec):
+        &#39;&#39;&#39;
+        输入向量，输出感知器的计算结果
+        &#39;&#39;&#39;
+        return self.activator(
+            reduce(lambda a,b: a+b,
+                    list(map(lambda x,w: x*w,
+                        input_vec,self.weights)
+                 ),0.0)+self.bias)
+    def train(self,input_vecs,labels,iteration,rate):
+        &#39;&#39;&#39;
+        输入训练数据：一组向量、与每个向量对应的label；以及训练轮数、学习率
+        &#39;&#39;&#39;
+        for i in range(iteration):
+            self._one_iteration(input_vecs,labels,rate)
+    def _one_iteration(self,input_vecs,labels,rate):
+        &#39;&#39;&#39;
+        迭代，把所有的训练数据过一遍
+        &#39;&#39;&#39;
+        samples = zip(input_vecs,labels)
+        for (input_vec,label) in samples:
+            output = self.predict(input_vec)
+            self._update_weights(input_vec,output,label,rate)
+    def _update_weights(self,input_vec,output,label,rate):
+        &#39;&#39;&#39;
+        按照感知器规则更新权重
+        &#39;&#39;&#39;
+        delta = label - output
+        self.weights = map(
+            lambda x, w:w+rate*delta*x,
+            input_vec,self.weights)
+        self.weights = list(self.weights)
+        self.bias += rate*delta
 def f(x):
-&#39;&#39;&#39;
-定义激活函数
-&#39;&#39;&#39;
-return 1 if x&gt;0 else 0
+    &#39;&#39;&#39;
+    定义激活函数
+    &#39;&#39;&#39;
+    return 1 if x&gt;0 else 0
 def get_training_dataset():
-&#39;&#39;&#39;
-训练数据
-&#39;&#39;&#39;
-input_vecs = [[1,1],[0,0],[1,0],[0,1]]
-labels = [1,0,0,0]
-return input_vecs,labels
+    &#39;&#39;&#39;
+    训练数据
+    &#39;&#39;&#39;
+    input_vecs = [[1,1],[0,0],[1,0],[0,1]]
+    labels = [1,0,0,0]
+    return input_vecs,labels
 def train_and_perceptron():
-&#39;&#39;&#39;
-训练感知器
-&#39;&#39;&#39;
-p = Perceptron(2,f)
-input_vecs,labels = get_training_dataset()
-p.train(input_vecs,labels,10,0.1)
-return p
+    &#39;&#39;&#39;
+    训练感知器
+    &#39;&#39;&#39;
+    p = Perceptron(2,f)
+    input_vecs,labels = get_training_dataset()
+    p.train(input_vecs,labels,10,0.1)
+    return p
 
-if **name** == &#39;**main**&#39;:
-and_perception = train_and_perceptron()
-print(and_perception)
-print(&#39;1 and 1 = %d&#39; % and_perception.predict([1,1]))
-print(&#39;0 and 0 = %d&#39; % and_perception.predict([0,0]))
-print(&#39;1 and 0 = %d&#39; % and_perception.predict([1,0]))
-print(&#39;0 and 1 = %d&#39; % and_perception.predict([0,1]))
+if __name__ == &#39;__main__&#39;:
+    and_perception = train_and_perceptron()
+    print(and_perception)
+    print(&#39;1 and 1 = %d&#39; % and_perception.predict([1,1]))
+    print(&#39;0 and 0 = %d&#39; % and_perception.predict([0,0]))
+    print(&#39;1 and 0 = %d&#39; % and_perception.predict([1,0]))
+    print(&#39;0 and 1 = %d&#39; % and_perception.predict([0,1]))
 </code></pre>
 <p id="c000e4c215a32dd9babffd762600a81c" class="ne-p"><br></p><div class="ne-quote"><p id="48138431c23bb5cded564b12e3891d08" class="ne-p"><span class="ne-text">运行结果：</span></p><p id="9f488a9d49c8ac409e5b9b2a45ae23f7" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1598685949806-ba54dca5-89a6-474a-809c-0b0238184755.png" width="536" id="KN2eh" class="ne-image"></p></div></div>
-
 </div>
 
      

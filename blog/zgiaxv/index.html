@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,7 +326,6 @@
   <!doctype html><div class="lake-content" typography="classic"><h2 id="20T4y"><span class="ne-text">实验任务</span></h2><p id="9f9b98eac38d19e538b42d7746c04a9f" class="ne-p"><span class="ne-text">    实验4：队列的链式表示和实现</span></p><p id="7f5ef7b6fb7c14232a9d0715d945ae8e" class="ne-p"><span class="ne-text">    要求：某小超市有两个排队机，构建2个用带头结点的单链表队列QA和QB, 实现下列操作</span></p><p id="61513287fe3e2922bdd79107f0ef3355" class="ne-p"><span class="ne-text">        1、初始化队列(清空)；</span></p><p id="e318417a78d41bdc35b2fb51fea54408" class="ne-p"><span class="ne-text">        2、入队；</span></p><p id="66ab82335f33a8cb72f8a7d37f44777b" class="ne-p"><span class="ne-text">        3、出队;</span></p><p id="c16c943dd4288a72dd6b295bfa0377bf" class="ne-p"><span class="ne-text">        4、求队列长度；</span></p><p id="10fe96031b21a32c13c6097ae020e25f" class="ne-p"><span class="ne-text">        5、判断队列是否为空；</span></p><p id="ae0a391b09cffe7a9126f70818e56eda" class="ne-p"><span class="ne-text">        6、判断队列是否为满；</span></p><p id="9e5d1dae28859a8abeca1d0471446006" class="ne-p"><span class="ne-text">        7、对于队列QA和QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。</span></p><p id="5e9cc15a80111b6a597cc9e255190af3" class="ne-p"><span class="ne-text">截止日期：4月22日</span></p><p id="u7db2feae" class="ne-p"><span class="ne-text"></span></p><h2 id="14MhD"><span class="ne-text">实验讨论</span></h2><p id="2e010ce1f965a4edb43b07e76023f987" class="ne-p"><br></p><div data-type="info" class="ne-alert"><p id="87dfb2648de3a04b1bf58824421fe863" class="ne-p"><span class="ne-text">觉得问题里面有bug</span></p></div><p id="06843150f7061a5692c3cab91b34abaf" class="ne-p"><br></p><p id="d94608e0b1b127fba7a074eb3c24a11b" class="ne-p"><span class="ne-text">对问题判满的疑惑与解决，第六个问题对链对判满是否有意义，如果是链式存储，数据结构本身判断满没有意义，但是考虑到是小型超市，超市空间不大，所以对其进行一开始的用户自己输入两个队列的最大长度。</span></p><p id="b46ce36306c0795c661082ae93333276" class="ne-p"><br></p><p id="d1dc74f717ac959b4fe6f310f217fb61" class="ne-p"><span class="ne-text">但是这样又有一个问题，在问题7中，如果一个队列的售货员下班了，这个队列的所有人排到另一个队列中，那如果新队列的长度超出用户输入的队列最大长度呢？考虑到实际问题，这个问题不打算解决了，让他们挤挤……</span></p><h2 id="yLU1H"><span class="ne-text">代码代码</span></h2>
 
 <pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
-
 using namespace std;
 
 typedef int Status;
@@ -336,133 +335,134 @@ typedef int QElemType;
 #define ERROR 0
 #define OK 1
 
-/\*\*
-实验 4：队列的链式表示和实现
-要求：某小超市有两个排队机，构建 2 个用带头结点的单链表队列 QA 和 QB, 实现下列操作
-1、初始化队列(清空)；
-2、入队；
-3、出队;
-4、求队列长度；
-5、判断队列是否为空；
-6、判断队列是否为满；
-7、对于队列 QA 和 QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。
+/**
+    实验4：队列的链式表示和实现
+    要求：某小超市有两个排队机，构建2个用带头结点的单链表队列QA和QB, 实现下列操作
+        1、初始化队列(清空)；
+        2、入队；
+        3、出队;
+        4、求队列长度；
+        5、判断队列是否为空；
+        6、判断队列是否为满；
+        7、对于队列QA和QB，如果其中一个队列的售货员下班，则自动甩到另一个队列后面。
 
-\*/
+ */
 
-/_ 存储形式 _/
+/* 存储形式 */
 typedef struct QNode&#123; //链队用的结点
-QElemType data;
-struct QNode *next;
+    QElemType data;
+    struct QNode *next;
 &#125;QNode,*QueuePtr;
 
 typedef struct &#123;
-QueuePtr front;
-QueuePtr rear;
+    QueuePtr front;
+    QueuePtr rear;
 &#125;LinkQueue;
 
-/_ 初始化 _/
+/* 初始化 */
 Status InitQueue(LinkQueue &amp;queue) &#123;
-queue.front = queue.rear = new QNode;
-queue.front-&gt;next = NULL;
-return OK;
+    queue.front = queue.rear = new QNode;
+    queue.front-&gt;next = NULL;
+    return OK;
 &#125;
 
-/_ 求队列长度 _/
+/* 求队列长度 */
 Status QueueLength(LinkQueue &amp;queue) &#123;
-int count = 0;
-if (queue.rear == queue.front) &#123;
-return count;
-&#125;
-QueuePtr temp = queue.front;
-while (temp != queue.rear) &#123;
-count++;
-temp = temp-&gt;next;
-&#125;
-return count;
+    int count = 0;
+    if (queue.rear == queue.front) &#123;
+        return count;
+    &#125;
+    QueuePtr temp = queue.front;
+    while (temp != queue.rear) &#123;
+        count++;
+        temp = temp-&gt;next;
+    &#125;
+    return count;
 &#125;
 
-/_ 入队 _/
+/* 入队 */
 Status EnQueue(LinkQueue &amp;queue, QElemType e, int length) &#123;
-if (QueueLength(queue) &lt;length) &#123;
-QueuePtr temp = new QNode;
-temp-&gt;data = e;
-temp-&gt;next = NULL;
-queue.rear-&gt;next = temp;
-queue.rear = temp;
-return OK;
-&#125; else &#123;
-cout &lt;&lt; &quot;队已经满了，不能再入元素了&quot;&lt;&lt; &quot;\n&quot;;
-return ERROR;
-&#125;
+    if (QueueLength(queue) &lt;length) &#123;
+        QueuePtr temp = new QNode;
+        temp-&gt;data = e;
+        temp-&gt;next = NULL;
+        queue.rear-&gt;next = temp;
+        queue.rear = temp;
+        return OK;
+    &#125; else &#123;
+        cout &lt;&lt; &quot;队已经满了，不能再入元素了&quot;&lt;&lt; &quot;\n&quot;;
+        return ERROR;
+    &#125;
 &#125;
 
-/_ 出队 _/
+/* 出队 */
 Status DeQueue(LinkQueue &amp;queue) &#123;
-if (queue.front == queue.rear) &#123;
-return OVERFLOW;
-&#125;
-// 有必要定义一个 p，不然头结点会掉
-QueuePtr p = queue.front-&gt;next;
-QElemType e = p-&gt;data;
-queue.front-&gt;next = p-&gt;next;
-// 考虑最后一个元素被删，队尾指针指向头结点
-if (queue.rear == p) &#123;
-queue.rear = queue.front;
-&#125;
-return e;
+    if (queue.front == queue.rear) &#123;
+        return OVERFLOW;
+    &#125;
+    // 有必要定义一个p，不然头结点会掉
+    QueuePtr p = queue.front-&gt;next;
+    QElemType e = p-&gt;data;
+    queue.front-&gt;next = p-&gt;next;
+    // 考虑最后一个元素被删，队尾指针指向头结点
+    if (queue.rear == p) &#123;
+        queue.rear = queue.front;
+    &#125;
+    return e;
 &#125;
 
-/_ 取队头元素 _/
+/* 取队头元素 */
 // Status GetHead(LinkQueue &amp;queue) &#123;
-// if (queue.front != queue.rear)&#123;
-// return queue.front-&gt;next-&gt;data;
-// &#125;
+//     if (queue.front != queue.rear)&#123;
+//         return queue.front-&gt;next-&gt;data;
+//     &#125;
 // &#125;
 
-/_ 判断队列是否为空 _/
+
+
+/* 判断队列是否为空 */
 bool QueueIsEmpty(LinkQueue &amp;queue) &#123;
-if (queue.rear == queue.front) &#123;
-return true;
-&#125; else &#123;
-return false;
+    if (queue.rear == queue.front) &#123;
+        return true;
+    &#125; else &#123;
+        return false;
+    &#125;
 &#125;
+
+/**
+ * 判断队列是否为满
+ * 不是很理解为什么链队需要判断是否为满呢？
+ * 采用输入链队长度，利用链队函数来判断
+ * 那么入队的代码需要输入length参数来判断是否还能让元素入队
+ */
+bool QueueIsFull(LinkQueue &amp;queue, int length) &#123;
+    if (QueueLength(queue) == length) &#123;
+        return true;
+    &#125; else &#123;
+        return false;
+    &#125;
 &#125;
 
-/\*\*
-
-- 判断队列是否为满
-- 不是很理解为什么链队需要判断是否为满呢？
-- 采用输入链队长度，利用链队函数来判断
-- 那么入队的代码需要输入 length 参数来判断是否还能让元素入队
-  \*/
-  bool QueueIsFull(LinkQueue &amp;queue, int length) &#123;
-  if (QueueLength(queue) == length) &#123;
-  return true;
-  &#125; else &#123;
-  return false;
-  &#125;
-  &#125;
-
-/_ 一个队列甩到另一个队列 _/
+/* 一个队列甩到另一个队列 */
 Status QueueMove(LinkQueue &amp;queue_delete,LinkQueue &amp;queue_add) &#123;
-queue_add.rear-&gt;next = queue_delete.front-&gt;next;
-queue_add.rear = queue_delete.rear;
-return OK;
+    queue_add.rear-&gt;next = queue_delete.front-&gt;next;
+    queue_add.rear = queue_delete.rear;
+    return OK;
 &#125;
 
-/_ 遍历查看队列元素 _/
+/* 遍历查看队列元素 */
 Status DisplayQueue(LinkQueue &amp;queue) &#123;
-LinkQueue L = queue;
-while (L.front-&gt;next != NULL) &#123;
-cout &lt;&lt; L.front-&gt;next-&gt;data &lt;&lt; &quot; &quot;;
-L.front = L.front-&gt;next;
-&#125;
-cout &lt;&lt; &quot;\n&quot;;
-return OK;
+    LinkQueue L = queue;
+    while (L.front-&gt;next != NULL) &#123;
+        cout &lt;&lt; L.front-&gt;next-&gt;data &lt;&lt; &quot; &quot;;
+        L.front = L.front-&gt;next;
+    &#125;
+    cout &lt;&lt; &quot;\n&quot;;
+    return OK;
 &#125;
 
 int main() &#123;
-
+ 
     cout&lt;&lt;&quot;------------------------链队菜单----------------------&quot;&lt;&lt;&#39;\n&#39;;
     cout&lt;&lt;&quot;操作0：退出程序&quot;&lt;&lt;&#39;\n&#39;;
     cout&lt;&lt;&quot;操作1：初始化两队列&quot;&lt;&lt;&#39;\n&#39;;
@@ -609,11 +609,9 @@ int main() &#123;
             &#125;
         &#125;
     &#125;
-
 &#125;
 </code></pre>
 </div>
-
 </div>
 
      

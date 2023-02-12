@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,7 +326,6 @@
   <!doctype html><div class="lake-content" typography="classic"><p id="a20d224c568e48b9d67847a2c66a8c01_p_0" class="ne-p"><br></p><div data-type="info" class="ne-alert"><p id="179d6501b149bd3789fe38d726e29887" class="ne-p"><span class="ne-text">存储形式以及操作和顺序表和链表差不多，需要的操作也少，学栈和队列，感觉只是抽离出来这两种便于在应用层面使用</span></p></div><h2 id="GFKJm"><span class="ne-text">顺序栈</span></h2>
 
 <pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
-
 typedef int Status;
 typedef int SElemType;
 #define OVERFLOW -1
@@ -335,73 +334,72 @@ typedef int SElemType;
 #define MAXSIZE 100
 
 using namespace std;
-/\*\*
+/**
+ * 顺序栈
+ * 
+ * 顺序栈的基本操作：初始化、入栈、出栈、取栈顶元素
+ */
 
-- 顺序栈
--
-- 顺序栈的基本操作：初始化、入栈、出栈、取栈顶元素
-  \*/
-
-/_ 顺序栈的存储形式 _/
+/* 顺序栈的存储形式 */
 typedef struct &#123;
-SElemType *base;
-SElemType *top;
-int stacksize;
+    SElemType *base;
+    SElemType *top;
+    int stacksize;
 &#125; SqStack;
 
-/_ 初始化 _/
+/* 初始化 */
 Status InitSqStack(SqStack &amp;stack) &#123;
-// 为栈分配容量
-stack.base = new int[MAXSIZE];
-// 分配失败返回失败值
-if (!stack.base) &#123;
-return OVERFLOW;
-&#125;
-// 让栈顶地址初始为栈底地址
-stack.top = stack.base;
-// 初始化容量
-stack.stacksize = MAXSIZE;
-return OK;
+    // 为栈分配容量
+    stack.base = new int[MAXSIZE];
+    // 分配失败返回失败值
+    if (!stack.base) &#123;
+        return OVERFLOW;
+    &#125;
+    // 让栈顶地址初始为栈底地址
+    stack.top = stack.base;
+    // 初始化容量
+    stack.stacksize = MAXSIZE;
+    return OK;
 &#125;
 
-/_ 入栈 _/
+/* 入栈 */
 Status Push(SqStack &amp;stack, SElemType e) &#123;
-if (stack.top - stack.base == stack.stacksize) &#123;
-return OVERFLOW;
-&#125;
-\*stack.top = e; // 先在 top 位置赋值
-stack.top++; // 将 top 地址++
-return OK;
+    if (stack.top - stack.base == stack.stacksize) &#123;
+        return OVERFLOW;
+    &#125;
+    *stack.top = e; // 先在top位置赋值
+    stack.top++; // 将top地址++
+    return OK;
 &#125;
 
-/_ 出栈 _/
+/* 出栈 */
 Status Pop(SqStack &amp;stack) &#123;
-// 空栈返回异常
-if (stack.top == stack.base) &#123;
-return OVERFLOW;
-&#125;
-stack.top--; // 栈顶地址减 1
-return \*stack.top; // 返回此时“栈顶”元素
+    // 空栈返回异常
+    if (stack.top == stack.base) &#123;
+        return OVERFLOW;
+    &#125;
+    stack.top--; // 栈顶地址减1
+    return *stack.top; // 返回此时“栈顶”元素
 &#125;
 
-/_ 取栈顶元素 _/
+/* 取栈顶元素 */
 Status GetTop (SqStack &amp;stack) &#123;
-// 空栈返回异常
-if (stack.top == stack.base) &#123;
-return OVERFLOW;
-&#125;
-// stack.top--; // 栈顶地址减 1，这是和出栈的区别
-return \*(stack.top-1); // 返回此时“栈顶”元素
+    // 空栈返回异常
+    if (stack.top == stack.base) &#123;
+        return OVERFLOW;
+    &#125;
+    // stack.top--; // 栈顶地址减1，这是和出栈的区别
+    return *(stack.top-1); // 返回此时“栈顶”元素
 &#125;
 
 int main() &#123;
-SqStack test;
-InitSqStack(test);
-Push(test, 10);
-Push(test, 15);
-Push(test, 20);
-cout &lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
-cout &lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
+    SqStack test;
+    InitSqStack(test);
+    Push(test, 10);
+    Push(test, 15);
+    Push(test, 20);
+    cout &lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
+    cout &lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
 &#125;
 </code></pre>
 <h2 id="aheiA"><span class="ne-text">链栈</span></h2>
@@ -415,63 +413,61 @@ typedef int SElemType;
 #define MAXSIZE 100
 
 using namespace std;
-/\*\*
+/**
+ * 链栈
+ * 
+ * 链栈的基本操作：初始化、入栈、出栈、取栈顶元素
+ */
 
-- 链栈
--
-- 链栈的基本操作：初始化、入栈、出栈、取栈顶元素
-  \*/
-
-/_ 链栈的存储形式 _/
+/* 链栈的存储形式 */
 typedef struct StackNode&#123;
-SElemType data;
-struct StackNode *next;
+    SElemType data;
+    struct StackNode *next;
 &#125; StackNode, *LinkStack;
 
-/\*\*
+/**
+ * 初始化
+ * 不设头结点
+ */
+Status InitLinkStack(LinkStack &amp;stack) &#123;
+    stack = NULL; // 栈顶元素置空
+    return OK;
+&#125;
 
-- 初始化
-- 不设头结点
-  \*/
-  Status InitLinkStack(LinkStack &amp;stack) &#123;
-  stack = NULL; // 栈顶元素置空
-  return OK;
-  &#125;
-
-/_ 入栈 _/
+/* 入栈 */
 Status Push(LinkStack &amp;stack, SElemType e) &#123;
-// 不能用 LinkStack 这样声明结点变量，需要 new 一个内存空间
-LinkStack temp = new StackNode;
-temp-&gt;data = e;
-temp-&gt;next = stack;
-stack = temp;
-return OK;
+    // 不能用LinkStack这样声明结点变量，需要new一个内存空间
+    LinkStack temp = new StackNode;
+    temp-&gt;data = e;
+    temp-&gt;next = stack;
+    stack = temp;
+    return OK;
 &#125;
 
-/_ 出栈 _/
+/* 出栈 */
 Status Pop (LinkStack &amp;stack) &#123;
-SElemType i = stack-&gt;data;
-stack = stack-&gt;next;
-return i;
+    SElemType i = stack-&gt;data;
+    stack = stack-&gt;next;
+    return i;
 &#125;
 
-/_ 取栈顶元素 _/
+/* 取栈顶元素 */
 Status GetTop (LinkStack &amp;stack) &#123;
-return stack-&gt;data;
+    return stack-&gt;data;
 &#125;
+
 
 int main() &#123;
-LinkStack test;
-InitLinkStack(test);
-Push(test, 10);
-Push(test, 15);
-Push(test, 20);
-cout &lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
-cout &lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
+    LinkStack test;
+    InitLinkStack(test);
+    Push(test, 10);
+    Push(test, 15);
+    Push(test, 20);
+    cout &lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt; GetTop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
+    cout &lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt; Pop(test)&lt;&lt;&quot; &quot;&lt;&lt;&quot;\n&quot;;
 &#125;
 </code></pre>
 </div>
-
 </div>
 
      

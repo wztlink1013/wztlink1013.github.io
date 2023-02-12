@@ -9,13 +9,13 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="一、单例模式类只有一个实例，像BOM这个全局对象就是单例模式，还有单独创建一个对象字面量，也是单例模式，下面讲述单例模式的实现：class Aoteman &amp;#123;constructor(name, age) &amp;#123;this.name = namethis.age = age&amp;#125;/" />
+    <meta name="description" content="一、单例模式类只有一个实例，像BOM这个全局对象就是单例模式，还有单独创建一个对象字面量，也是单例模式，下面讲述单例模式的实现：class Aoteman &amp;#123;  constructor(name, age) &amp;#123;    this.name = name    this.age = " />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="14种设计模式 | 尼采般地抒情" />
     <meta property="og:url" content="https://www.wztlink1013.com/blog/figfyg/" />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="一、单例模式类只有一个实例，像BOM这个全局对象就是单例模式，还有单独创建一个对象字面量，也是单例模式，下面讲述单例模式的实现：class Aoteman &amp;#123;constructor(name, age) &amp;#123;this.name = namethis.age = age&amp;#125;/" /> 
+    <meta property="og:description" content="一、单例模式类只有一个实例，像BOM这个全局对象就是单例模式，还有单独创建一个对象字面量，也是单例模式，下面讲述单例模式的实现：class Aoteman &amp;#123;  constructor(name, age) &amp;#123;    this.name = name    this.age = " /> 
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
     <!-- FIXME: 使用base64转义 -->
@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -322,22 +322,21 @@
   <!doctype html><div class="lake-content" typography="classic"><h3 id="xAor6"><span class="ne-text">一、单例模式</span></h3><p id="u378e1e12" class="ne-p"><span class="ne-text">类只有一个实例，像BOM这个全局对象就是单例模式，还有单独创建一个对象字面量，也是单例模式，下面讲述单例模式的实现：</span></p>
 
 <pre><code class="javascript">class Aoteman &#123;
+  constructor(name, age) &#123;
+    this.name = name
+    this.age = age
+  &#125;
+  // 实现单例模式
+  static getInstance(name, age) &#123;
+    if (!this.instance) &#123;
+      this.instance = new Aoteman(name, age)
+    &#125;
+    return this.instance
+  &#125;
 
-constructor(name, age) &#123;
-this.name = name
-this.age = age
-&#125;
-// 实现单例模式
-static getInstance(name, age) &#123;
-if (!this.instance) &#123;
-this.instance = new Aoteman(name, age)
-&#125;
-return this.instance
-&#125;
-
-Ability = data =&gt; &#123;
-console.log(this.name + &#39; can &#39; + data)
-&#125;
+  Ability = data =&gt; &#123;
+    console.log(this.name + &#39; can &#39; + data)
+  &#125;
 &#125;
 
 const dijia = new Aoteman(&#39;dijia&#39;, &#39;2022&#39;)
@@ -354,92 +353,92 @@ console.log(&#39;---------------------&#39;)
 console.log(dijia === tailuo)
 console.log(tailuo === aidi)
 </code></pre>
-<p id="ufa71f4fa" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648729211906-1aa126ab-8ccc-4447-9037-1e1602122a19.png" width="380.8333182003769" id="u5e96591e" class="ne-image"></p><p id="u53d5a710" class="ne-p"><span class="ne-text">上面的方式实现，只能调用 getInstance 方法才能创建单例，如果用户再次使用 new 来创建实例，还是不可行，所以还需要对上述予以工厂模式封装：</span></p>
+<p id="ufa71f4fa" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648729211906-1aa126ab-8ccc-4447-9037-1e1602122a19.png" width="380.8333182003769" id="u5e96591e" class="ne-image"></p><p id="u53d5a710" class="ne-p"><span class="ne-text">上面的方式实现，只能调用getInstance方法才能创建单例，如果用户再次使用new来创建实例，还是不可行，所以还需要对上述予以工厂模式封装：</span></p>
 
 <pre><code class="javascript">const singleFactory = (...rest) =&gt; &#123;
-return Aoteman.getInstance(...rest)
+  return Aoteman.getInstance(...rest)
 &#125;
 </code></pre>
 <p id="u6bc8bfaf" class="ne-p"><span class="ne-text">使用场景：发布订阅场景，我们需要在一个地方进行订阅，在另一个地方进行发布，这样就需要保证在不同文件中访问到的是同一个实例。</span></p>
 
 <pre><code class="javascript">class PubSub &#123;
-constructor() &#123;
-this.listeners = &#123;&#125;
-&#125;
-publish(event, data) &#123;
-if (!this.listeners[event]) &#123;
-return;
-&#125;
-this.listeners[event].forEach(listener =&gt; &#123;
-listener(data);
-&#125;)
-&#125;
-subscribe(event, callback) &#123;
-if (!this.listeners[event]) &#123;
-this.listeners[event] = []
-&#125;
-this.listeners[event].push(callback);
-&#125;
+  constructor() &#123;
+    this.listeners = &#123;&#125;
+  &#125;
+  publish(event, data) &#123;
+    if (!this.listeners[event]) &#123;
+      return;
+    &#125;
+    this.listeners[event].forEach(listener =&gt; &#123;
+      listener(data);
+    &#125;)
+  &#125;
+  subscribe(event, callback) &#123;
+    if (!this.listeners[event]) &#123;
+      this.listeners[event] = []
+    &#125;
+    this.listeners[event].push(callback);
+  &#125;
 &#125;
 export default new PubSub
 </code></pre>
 <p id="u1b2d8d0d" class="ne-p"><span class="ne-text"></span></p><h3 id="VPoDB"><span class="ne-text">二、工厂模式</span></h3><ul class="ne-ul"><li id="ud8b852d2"><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px">优点：一个工厂创建同一类对象，更好的归类创建</span></li><li id="u6a38822c"><span class="ne-text" style="color: rgb(36, 41, 47); font-size: 14px">抽象工厂模式的缺点就是，如果需要增加新的产品，比如要生产可乐周边玩偶，这就需要对原有的抽象工厂接口进行改造，不符合开闭原则。</span></li></ul>
 
 <pre><code class="javascript">function CreateElement(type) &#123;
-switch (type) &#123;
-case &#39;Input&#39;:
-return new Input()
-break;
-case &#39;Div&#39;:
-return new Div()
-break;
-default:
-throw new Error(&#39;无当前产品&#39;)
-&#125;
+  switch (type) &#123;
+    case &#39;Input&#39;:
+      return new Input()
+      break;
+    case &#39;Div&#39;:
+      return new Div()
+      break;
+    default:
+      throw new Error(&#39;无当前产品&#39;)
+  &#125;
 &#125;
 
 function Input() &#123;
-return document.createElement(&#39;input&#39;)
+  return document.createElement(&#39;input&#39;)
 &#125;
 
 function Div() &#123;
-return document.createElement(&#39;div&#39;)
+  return document.createElement(&#39;div&#39;)
 &#125;
 
 //test
 const input = new CreateElement(&#39;Input&#39;);
 const div = new CreateElement(&#39;DIV&#39;);
-console.log(input) // input
-console.log(div) // div
+console.log(input)      // input
+console.log(div)        // div
 </code></pre>
 <pre><code class="javascript">class User &#123;
-constructor(name) &#123;
-this.name = name
-&#125;
-SetRoleType(type) &#123;
-switch (type) &#123;
-case &#39;Admin&#39;:
-return new UserAdmin()
-break
-case &#39;Member&#39;:
-return new UserMember()
-break
-default:
-throw new Error(&#39;Set Error!&#39;)
-&#125;
-&#125;
-GetName = () =&gt; &#123;
-console.log(&#39;this name is: &#39; + this.name)
-&#125;
+  constructor(name) &#123;
+    this.name = name
+  &#125;
+  SetRoleType(type) &#123;
+    switch (type) &#123;
+      case &#39;Admin&#39;:
+        return new UserAdmin()
+        break
+      case &#39;Member&#39;:
+        return new UserMember()
+        break
+      default:
+        throw new Error(&#39;Set Error!&#39;)
+    &#125;
+  &#125;
+  GetName = () =&gt; &#123;
+    console.log(&#39;this name is: &#39; + this.name)
+  &#125;
 &#125;
 class UserAdmin extends User &#123;
-constructor(name) &#123;
-super(name)
-this.name = name
-&#125;
-RoleInfo = () =&gt; &#123;
-console.log(&#39;Type is Admin &#39;)
-&#125;
+  constructor(name) &#123;
+    super(name)
+    this.name = name
+  &#125;
+  RoleInfo = () =&gt; &#123;
+    console.log(&#39;Type is Admin &#39;)
+  &#125;
 &#125;
 
 const zhangsan = new User(&#39;zhangsan&#39;)
@@ -448,74 +447,72 @@ zhangsan.SetRoleType(&#39;Admin&#39;).RoleInfo()
 </code></pre>
 <p id="u218de333" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1648731190936-4c3eb68a-b66b-486c-bd51-2d7137cb592b.png" width="245.8333235647947" id="u21180cde" class="ne-image"></p><h3 id="zP5cf"><span class="ne-text">建造者模式</span></h3>
 
-<pre><code class="javascript">/\*\*
+<pre><code class="javascript">/**
+ * 建造者模式
+ */
 
-- 建造者模式
-  \*/
-
-/_ 建造者 _/
+/* 建造者 */
 function ComputerBuilder(brand) &#123;
-this.brand = brand
+  this.brand = brand
 &#125;
 
 ComputerBuilder.prototype.buildCPU = function (type) &#123;
-switch (type) &#123;
-case &#39;inter&#39;:
-this.cpu = &#39;inter 处理器&#39;
-break;
-case &#39;AMD&#39;:
-this.cpu = &#39;AMD 处理器&#39;
-break;
-&#125;
+  switch (type) &#123;
+    case &#39;inter&#39;:
+      this.cpu = &#39;inter处理器&#39;
+      break;
+    case &#39;AMD&#39;:
+      this.cpu = &#39;AMD处理器&#39;
+      break;
+  &#125;
 
-return this
+  return this
 &#125;
 
 ComputerBuilder.prototype.buildMemory = function (mSize) &#123;
-thgis.mSize = &#39;内存&#39; + mSize + &#39;G&#39;
-return this
+  thgis.mSize = &#39;内存&#39; + mSize + &#39;G&#39;
+  return this
 &#125;
 
 ComputerBuilder.prototype.buildDisk = function (dSize) &#123;
-this.dSize = &#39;硬盘&#39; + dSize + &#39;G&#39;
-return this
+  this.dSize = &#39;硬盘&#39; + dSize + &#39;G&#39;
+  return this
 &#125;
 
-/_ 厂家，负责组装 _/
+/* 厂家，负责组装 */
 function computerDirector(brand, type, mSize, dSize) &#123;
-const \_computer = new ComputerBuilder(brand)
-\_computer.buildCPU(type)
-.buildMemory(mSize)
-.buildDisk(dSize)
+  const _computer = new ComputerBuilder(brand)
+  _computer.buildCPU(type)
+    .buildMemory(mSize)
+    .buildDisk(dSize)
 
-return \_computer
+  return _computer
 &#125;
 
 //test
 const com = computerDirector(&#39;联想&#39;, &#39;inter&#39;, 16, 500);
-console.log(com); // ComputerBuilder &#123;brand: &quot;联想&quot;, cpu: &quot;inter 处理器&quot;, mSize: &quot;内存 16G&quot;, dSize: &quot;硬盘 500G&quot;&#125;
+console.log(com); // ComputerBuilder &#123;brand: &quot;联想&quot;, cpu: &quot;inter 处理器&quot;, mSize: &quot;内存16G&quot;, dSize: &quot;硬盘500G&quot;&#125;
 </code></pre>
 <p id="ue1c744d7" class="ne-p"><span class="ne-text"></span></p><h3 id="HQMCN"><span class="ne-text">代理模式</span></h3>
 
-<pre><code class="javascript">/\*\*
+<pre><code class="javascript">/**
+ * 代理模式
+ */
 
-- 代理模式
-  \*/
-
-/_ 目标 _/
+ /* 目标 */
 function sendMsg(msg) &#123;
-console.log(msg)
+  console.log(msg)
 &#125;
 
-/_ 代理 _/
+/* 代理 */
 function ProxyMsg(msg) &#123;
-if (!msg) &#123;
-console.log(&#39;msg is empty&#39;)
-return
-&#125;
+  if (!msg) &#123;
+    console.log(&#39;msg is empty&#39;)
+    return
+  &#125;
 
-msg = &#39;我要发送的数据是&#39; + msg
-sendMsg(msg)
+  msg = &#39;我要发送的数据是&#39; + msg
+  sendMsg(msg)
 &#125;
 
 // test
@@ -523,102 +520,99 @@ ProxyMsg(&#39;您好!&#39;)
 </code></pre>
 <h3 id="PhIha"><span class="ne-text">享元模式</span></h3>
 
-<pre><code class="javascript">/\*\*
+<pre><code class="javascript">/**
+ * 享元模式
+ */
 
-- 享元模式
-  \*/
-
-/_ 享元对象 _/
+/* 享元对象 */
 function Shape(shape) &#123;
-this.shape = shape
+  this.shape = shape
 &#125;
 
 shape.prototype.draw = function () &#123;
-console.log(`画了一个$&#123;this.shape&#125;`)
+  console.log(`画了一个$&#123;this.shape&#125;`)
 &#125;
 
-/_ 享元工厂 _/
+/* 享元工厂 */
 const ShapeFactory = (function () &#123;
-const dataMap = &#123;&#125;
-return &#123;
-getShapeContext(shape) &#123;
-if (dataMap[shape]) return dataMap[shape]
-else &#123;
-const instance = new Shape(shape)
-dataMap[shape] = instance
-return instance
-&#125;
-&#125;
-&#125;
+  const dataMap = &#123;&#125;
+  return &#123;
+    getShapeContext(shape) &#123;
+      if (dataMap[shape]) return dataMap[shape]
+      else &#123;
+        const instance = new Shape(shape)
+        dataMap[shape] = instance
+        return instance
+      &#125;
+    &#125;
+  &#125;
 &#125;)()
 
 // test
 const rect = ShapeFactory.getShapeContext(&#39;rect&#39;);
 const circle = ShapeFactory.getShapeContext(&#39;circle&#39;);
 
-rect.draw(); // 画了一个 rect
-circle.draw(); // 画了一个 circle
+rect.draw();     // 画了一个 rect
+circle.draw();   // 画了一个 circle
 </code></pre>
 <h3 id="JKLzV"><span class="ne-text">适配器模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 适配器模式
-  \*/
+<pre><code class="javascript">/**
+ * 适配器模式
+ */
 
 const baiduMap = &#123;
-show: function () &#123;
-console.log(&#39;开始渲染百度地图&#39;)
-&#125;
+  show: function () &#123;
+    console.log(&#39;开始渲染百度地图&#39;)
+  &#125;
 &#125;
 
 const AMap = &#123;
-show: function () &#123;
-console.log(&#39;开始渲染高德地图&#39;)
-&#125;
+  show: function () &#123;
+    console.log(&#39;开始渲染高德地图&#39;)
+  &#125;
 &#125;
 
-/_ 适配器 _/
+/* 适配器 */
 const baiduAdapter = &#123;
-render: function () &#123;
-return baiduMap.show()
-&#125;
+  render: function () &#123;
+      return baiduMap.show()
+  &#125;
 &#125;
 
 function renderMap(map) &#123;
-if (typeof map.render === &#39;function&#39;) &#123;
-map.render()
-&#125;
+  if (typeof map.render === &#39;function&#39;) &#123;
+      map.render()
+  &#125;
 &#125;
 
 // test
-renderMap(AMap); // 开始渲染高德地图
-renderMap(baiduAdapter); // 开始渲染百度地图
+renderMap(AMap);            // 开始渲染高德地图
+renderMap(baiduAdapter);    // 开始渲染百度地图
 </code></pre>
 <h3 id="H22N6"><span class="ne-text">装饰器模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 装饰器模式
-  \*/
+<pre><code class="javascript">/**
+ * 装饰器模式
+ */
 
 const btn = document.querySelector(&#39;#btn&#39;)
 
 // 原绑定事件
 btn.onclick = function () &#123;
-console.log(&#39;按钮被点击了&#39;)
+  console.log(&#39;按钮被点击了&#39;)
 &#125;
 
 // 新增统计
 function ajaxToServer() &#123;
-console.log(&#39;数据统计&#39;)
+  console.log(&#39;数据统计&#39;)
 &#125;
 
 // 装饰器函数
 function decorator(target, eventName, cb) &#123;
-const originFn = target[&#39;on&#39; + eventName]
-originFn &amp;&amp; originFn()
-cb &amp;&amp; cb ()
+  const originFn = target[&#39;on&#39; + eventName]
+  originFn &amp;&amp; originFn()
+  cb &amp;&amp; cb ()
 &#125;
 
 // test
@@ -626,76 +620,74 @@ decorator(btn, &#39;click&#39;, ajaxToServer)
 </code></pre>
 <h3 id="N1ZoP"><span class="ne-text">外观模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 外观模式
-  \*/
+<pre><code class="javascript">/**
+ * 外观模式 
+ */
 
 // 事件绑定
 function addEvent(element, type, fn) &#123;
-if (element.addEventListener) &#123;
-element.addEventListener(type, fn, false)
-&#125; else if (element.attachEvent) &#123;
-element.attachEvent(&#39;on&#39; + type, fn)
-&#125; else &#123;
-element[&#39;on&#39; + type] = fn
-&#125;
+  if (element.addEventListener) &#123;
+    element.addEventListener(type, fn, false)
+  &#125; else if (element.attachEvent) &#123;
+    element.attachEvent(&#39;on&#39; + type, fn)
+  &#125; else &#123;
+    element[&#39;on&#39; + type] = fn
+  &#125;
 &#125;
 
 // 阻止事件冒泡
 function cancelBubble(event) &#123;
-if (event.stopPropagation) &#123;
-event.stopPropagation()
-&#125; else &#123;
-event.cancelBubble = true
-&#125;
+  if (event.stopPropagation) &#123;
+    event.stopPropagation()
+  &#125; else &#123;
+    event.cancelBubble = true
+  &#125;
 &#125;
 
 // axios 中 getDefaultAdapter
 function getDefaultAdapter() &#123;
-var baiduAdapter
-if (typeof process !== &#39;undefined&#39; &amp;&amp; Object.prototype.toString.call(process) === &#39;[object process]&#39;) &#123;
-adapter = &#39;a&#39;
-&#125; else if (typeof XMLHttpRequest !== &#39;undefined&#39;) &#123;
-adapter =&#39;b&#39;
-&#125;
+  var baiduAdapter
+  if (typeof process !== &#39;undefined&#39; &amp;&amp; Object.prototype.toString.call(process) === &#39;[object process]&#39;) &#123;
+    adapter = &#39;a&#39;
+  &#125; else if (typeof XMLHttpRequest !== &#39;undefined&#39;) &#123;
+    adapter =&#39;b&#39;
+  &#125;
 
-return adapter
+  return adapter
 &#125;
 </code></pre>
 <p id="u61e1541c" class="ne-p"><br></p><h3 id="n7oZA"><span class="ne-text">组合模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 组合模式
-  \*/
+<pre><code class="javascript">/**
+ * 组合模式
+ */
 
 // 创建部门
 function createApartment(name) &#123;
-return &#123;
-name,
-\_children: [],
-add(target) &#123;
-this.\_children.push(target)
-return this
-&#125;,
-show(cb) &#123;
-this.\_children.forEach(function(child) &#123;
-child.show(cb)
-&#125;)
-&#125;
-&#125;
+  return &#123;
+    name,
+    _children: [],
+    add(target) &#123;
+      this._children.push(target)
+      return this
+    &#125;,
+    show(cb) &#123;
+      this._children.forEach(function(child) &#123;
+        child.show(cb)
+      &#125;)
+    &#125;
+  &#125;
 &#125;
 
 // 创建员工
 function createEmp(num, name) &#123;
-return &#123;
-num,
-name,
-show(cb) &#123;
-cb(this)
-&#125;
-&#125;
+  return &#123;
+    num, 
+    name,
+    show(cb) &#123;
+      cb(this)
+    &#125;
+  &#125;
 &#125;
 
 // 创建部门
@@ -703,72 +695,71 @@ const techApartment = createApartment(&#39;技术部&#39;)
 
 // 创建子部门
 const proApartment = createApartment(&#39;产品组&#39;),
-devApartment = createApartment(&#39;开发组&#39;)
+  devApartment = createApartment(&#39;开发组&#39;)
 
 techApartment.add(proApartment).add(devApartment)
 
 proApartment.add(createEmp(100, &#39;张三&#39;))
-.add(createEmp(101, &#39;李四&#39;))
+  .add(createEmp(101, &#39;李四&#39;))
 
 techApartment.add(createEmp(201, &#39;小刘&#39;))
-.add(createEmp(202, &#39;小王&#39;))
-.add(createEmp(203, &#39;小陈&#39;))
-.add(createEmp(204, &#39;小亮&#39;))
+  .add(createEmp(202, &#39;小王&#39;))
+  .add(createEmp(203, &#39;小陈&#39;))
+  .add(createEmp(204, &#39;小亮&#39;))
 
 // 遍历
 techApartment.show(function (item) &#123;
-console.log(`工号：$&#123;item.num&#125;，姓名：$&#123;item.name&#125;`)
+  console.log(`工号：$&#123;item.num&#125;，姓名：$&#123;item.name&#125;`)
 &#125;)
 </code></pre>
 <p id="ue0737db5" class="ne-p"><br></p><h3 id="jya6o"><span class="ne-text">桥接模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 桥接模式
-  \*/
+<pre><code class="javascript">/**
+ * 桥接模式
+ */
 
 // 桥接方法
 function addEvent(ele, eventName, fn) &#123;
-document.querySelector(ele).addEventListener(eventName, fn, false)
+  document.querySelector(ele).addEventListener(eventName, fn, false)
 &#125;
 
 // 具体业务
 addEvent(&#39;#btn&#39;, &#39;click&#39;, function () &#123;
-console.log(&#39;hello world&#39;)
+  console.log(&#39;hello world&#39;)
 &#125;)
 </code></pre>
 <p id="ub2eaa9c6" class="ne-p"><span class="ne-text"></span></p><h3 id="usKNI"><span class="ne-text">发布-订阅模式</span></h3>
 
 <pre><code class="javascript">// 事件监听器
 const Emitter = (function () &#123;
-const \_events = &#123;&#125;
-return &#123;
-// 事件绑定
-on(type, cb) &#123;
-if (!\_events[type]) &#123;
-\_events[type] = []
-&#125;
-if (typeof cb === &#39;function&#39;) &#123;
-\_events[type].push(cb)
-&#125; else &#123;
-throw new Error(&#39;参数类型必须为函数&#39;)
-&#125;
-&#125;,
-// 事件解绑
-off(type, cb) &#123;
-if (!\_events[type] || !\_events[type].includes(cb)) return
-// 移除事件监听
-\_events[type].map((fn, index) =&gt; &#123;
-if (fn == cb) &#123;
-\_events[type].splice(index, 1)
-&#125;
-&#125;)
-&#125;,
-emit(type, ...args) &#123;
-if (!\_events[type]) return
-\_events[type].forEach(cb =&gt; cb(...args))
-&#125;
-&#125;
+  const _events = &#123;&#125;
+  return &#123;
+    // 事件绑定
+    on(type, cb) &#123;
+      if (!_events[type]) &#123;
+        _events[type] = []
+      &#125;
+      if (typeof cb === &#39;function&#39;) &#123;
+        _events[type].push(cb)
+      &#125; else &#123;
+        throw new Error(&#39;参数类型必须为函数&#39;)
+      &#125;
+    &#125;,
+    // 事件解绑
+    off(type, cb) &#123;
+      if (!_events[type] || !_events[type].includes(cb)) return 
+      // 移除事件监听
+      _events[type].map((fn, index) =&gt; &#123;
+        if (fn == cb) &#123;
+          _events[type].splice(index, 1)
+        &#125;
+      &#125;)
+    &#125;,
+    emit(type, ...args) &#123;
+      if (!_events[type]) return
+      _events[type].forEach(cb =&gt; cb(...args))
+    &#125;
+  &#125;
 &#125;)()
 
 // 事件订阅
@@ -777,7 +768,6 @@ Emitter.on(&#39;change&#39;, data =&gt; console.log(`我是第二条信息：$&#
 
 // 事件发布
 Emitter.emit(&#39;change&#39;, &#39;参数&#39;)
-
 </code></pre>
 <p id="udce49d72" class="ne-p"><span class="ne-text">发布-订阅模式和观察者模式相近，具体区别有：</span></p><p id="u61bde39e" class="ne-p"><img src="https://camo.githubusercontent.com/7fd692610ddad0b886a45d4f74099593899efbb0262ea18df3dca75a9f44eb6c/687474703a2f2f7374617469632e7a7962756c756f2e636f6d2f677979696e2f376e356830306d757861346f7930336d657372716a666c782f696d6167655f31653071623666746331646f6431376e6375346f66673176346d392e706e67" width="835" id="ncdsN" class="ne-image"></p><p id="ub7eb1648" class="ne-p"><span class="ne-text"></span></p><h3 id="eY1bH"><span class="ne-text">策略模式</span></h3>
 
@@ -787,24 +777,24 @@ Emitter.emit(&#39;change&#39;, &#39;参数&#39;)
 
 // 校验规则
 const strategyMap = &#123;
-// 校验手机号
-isMobile(mobile) &#123;
-return /^1\d&#123;10&#125;$/.test(mobile)
+  // 校验手机号
+  isMobile(mobile) &#123;
+    return /^1\d&#123;10&#125;$/.test(mobile)
   &#125;,
   // 校验是否必填
   isRequired(str) &#123;
     return str.replace(/(^\s*)|(\s*$)/g, &#39;&#39;) !== &#39;&#39;
-&#125;
+  &#125;
 &#125;
 
 // 校验方法
 function validate(formData) &#123;
-let valid
+  let valid
 
-for (let key in formData) &#123;
-const val = formData[key]?.value
-const rules = formData[key]?.rules
-
+  for (let key in formData) &#123;
+    const val = formData[key]?.value
+    const rules = formData[key]?.rules
+    
     for (let i = 0; i &lt; rules.length; i++) &#123;
       const result = strategyMap[rules[i][&#39;rule&#39;].call(null,val)]
       if (!result) &#123;
@@ -818,68 +808,66 @@ const rules = formData[key]?.rules
     &#125;
 
     if (valid) return valid
+  &#125;
 
-&#125;
-
-return valid
+  return valid
 &#125;
 
 // form 表单校验
 const formData = &#123;
-mobile: &#123;
-value: &#39;1380000000&#39;,
-rules: [
-&#123; rule: &#39;isRequired&#39;, message: &#39;手机号码不能为空&#39; &#125;,
-&#123; rule: &#39;isMobile&#39;, message: &#39;手机号码格式不正确&#39; &#125;
-]
-&#125;
+  mobile: &#123;
+    value: &#39;1380000000&#39;,
+    rules: [
+      &#123; rule: &#39;isRequired&#39;, message: &#39;手机号码不能为空&#39; &#125;,
+      &#123; rule: &#39;isMobile&#39;, message: &#39;手机号码格式不正确&#39; &#125;
+    ]
+  &#125;
 &#125;
 
 // 获取校验结果
 const valid = validate(formData)
 if (!valid) &#123;
-console.log(&#39;校验通过&#39;)
+  console.log(&#39;校验通过&#39;)
 &#125; else &#123;
-console.log(valid)
+  console.log(valid)
 &#125;
 </code></pre>
 <p id="u5d03555e" class="ne-p"><span class="ne-text"></span></p><h3 id="JI6jF"><span class="ne-text">状态模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 状态模式
-  \*/
+<pre><code class="javascript">/**
+ * 状态模式
+ */
 
 // 正常状态
 function NormalState() &#123;
-this.handleChange = function (context) &#123;
-console.log(&#39;正常状态&#39;)
-context.state = new ColorfulState()
-&#125;
+  this.handleChange = function (context) &#123;
+    console.log(&#39;正常状态&#39;)
+    context.state = new ColorfulState()
+  &#125;
 &#125;
 
 // 彩灯状态
 function ColorfulState() &#123;
-this.handleChange = function (context) &#123;
-console.log(&#39;彩灯状态&#39;)
-context.state = new CloseState()
-&#125;
+  this.handleChange = function (context) &#123;
+    console.log(&#39;彩灯状态&#39;)
+    context.state = new CloseState()
+  &#125;
 &#125;
 
 // 关闭状态
 function CloseState() &#123;
-this.handleChange = function (context) &#123;
-console.log(&#39;关闭状态&#39;)
-context.state = new NormalState()
-&#125;
+  this.handleChange = function (context) &#123;
+    console.log(&#39;关闭状态&#39;)
+    context.state = new NormalState()
+  &#125;
 &#125;
 
 // 灯
 function Light(state) &#123;
-this.state = state
-this.switch = function () &#123;
-this.state.handleChange(this)
-&#125;
+  this.state = state
+  this.switch = function () &#123;
+    this.state.handleChange(this)
+  &#125;
 &#125;
 
 // 设置灯光初始为关闭
@@ -887,46 +875,44 @@ const light = new Light(new CloseState())
 
 // 关闭状态--&gt;正常状态--&gt;彩灯状态--&gt;关闭状态...
 setInterval(() =&gt; &#123;
-light.switch()
+  light.switch()
 &#125;, 1000)
 </code></pre>
 <p id="u141d76c8" class="ne-p"><span class="ne-text"></span></p><h3 id="tVMWA"><span class="ne-text">命令模式</span></h3>
 
-<pre><code class="javascript">/\*\*
-
-- 命令模式
-  \*/
+<pre><code class="javascript">/**
+ * 命令模式
+ */
 
 const Manager = (function () &#123;
-// 命令
-const commander = &#123;
-open: function () &#123;
-console.log(&#39;打开电视&#39;)
-&#125;,
-close: function () &#123;
-console.log(&#39;关闭电视&#39;)
-&#125;,
-change: function (channel) &#123;
-console.log(&#39;更换频道&#39; + channel)
-&#125;
-&#125;
+  // 命令
+  const commander = &#123;
+    open: function () &#123;
+      console.log(&#39;打开电视&#39;)
+    &#125;,
+    close: function () &#123;
+      console.log(&#39;关闭电视&#39;)
+    &#125;,
+    change: function (channel) &#123;
+      console.log(&#39;更换频道&#39; + channel)
+    &#125;
+  &#125;
 
-return &#123;
-// 执行命令
-exec: function (cmd) &#123;
-const args = [].splice.call(arguments, 1)
-commander[cmd] &amp;&amp; commander[cmd][args]
-&#125;
-&#125;
+  return &#123;
+    // 执行命令
+    exec: function (cmd) &#123;
+      const args = [].splice.call(arguments, 1)
+      commander[cmd] &amp;&amp; commander[cmd][args]
+    &#125;
+  &#125;
 &#125;)
 
 // test
-Manager.exec(&#39;open&#39;) // 打开电视
-Manager.exec(&#39;change&#39;, 10) // 更换频道 10
-Manager.exec(&#39;close&#39;) // 关闭电视
+Manager.exec(&#39;open&#39;)        // 打开电视
+Manager.exec(&#39;change&#39;, 10)  // 更换频道 10
+Manager.exec(&#39;close&#39;)       // 关闭电视
 </code></pre>
 <h3 id="chwSO"><span class="ne-text">参考</span></h3><ul class="ne-ul"><li id="u9c4f5769"><a href="https://github.com/yinguangyao/blog/issues/64" data-href="https://github.com/yinguangyao/blog/issues/64" target="_blank" class="ne-link"><span class="ne-text">https://github.com/yinguangyao/blog/issues/64</span></a></li></ul></div>
-
 </div>
 
      

@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,43 +326,41 @@
 <p id="uf17ac2f5" class="ne-p"><span class="ne-text">设置上述referrer，可以在其他网站使用防盗链的图片，但是会存在一些副作用，比如对百度统计代码失效，因为百度统计需要携带请求网站的referr等信息才能进一步进行数据统计分析，所以这种解决办法属于取舍功能的方式。</span></p><p id="uaa9559de" class="ne-p"><br></p><p id="u41eb776c" class="ne-p"><span class="ne-text">最终解决思路：利用网页的代码执行顺序，动态对网站的referrer进行更改，设置网站初始referrer为</span><code class="ne-code"><span class="ne-text">no-referrer</span></code><span class="ne-text">，待网站所有外链防盗图片加载完成，再动态修改referrer为</span><code class="ne-code"><span class="ne-text">strict-origin-when-cross-origin</span></code><span class="ne-text">，再进行百度统计逻辑代码的执行。核心代码如下：</span></p>
 
 <pre><code class="javascript">// 防盗链图片共存
-
 const getImgLoadEd = (callback) =&gt; &#123;
-let images = document.getElementById(&quot;lyrics&quot;).querySelectorAll(&quot;img&quot;);
-const promises = Array.prototype.slice
-.call(images)
-.filter((img) =&gt; /^(https:\/\/cdn.xxx.com\/yuque)/.test(img.src))
-.map((node) =&gt; &#123;
-return new Promise((resolve, reject) =&gt; &#123;
-// 加一重保障
-node.setAttribute(&quot;referrerpolicy&quot;, &quot;no-referrer&quot;);
-let loadImg = new Image();
-loadImg.src = node.src;
-loadImg.onload = () =&gt; &#123;
-resolve(node);
-&#125;;
-&#125;);
-&#125;);
-Promise.all(promises)
-.then((data) =&gt; &#123;
-if (callback) callback();
-&#125;)
-.catch((e) =&gt; &#123;
-console.log(&quot;所拉取的文章图床访问失败!&quot;);
-&#125;);
+  let images = document.getElementById(&quot;lyrics&quot;).querySelectorAll(&quot;img&quot;);
+  const promises = Array.prototype.slice
+    .call(images)
+    .filter((img) =&gt; /^(https:\/\/cdn.xxx.com\/yuque)/.test(img.src))
+    .map((node) =&gt; &#123;
+      return new Promise((resolve, reject) =&gt; &#123;
+        // 加一重保障
+        node.setAttribute(&quot;referrerpolicy&quot;, &quot;no-referrer&quot;);
+        let loadImg = new Image();
+        loadImg.src = node.src;
+        loadImg.onload = () =&gt; &#123;
+          resolve(node);
+        &#125;;
+      &#125;);
+    &#125;);
+  Promise.all(promises)
+    .then((data) =&gt; &#123;
+      if (callback) callback();
+    &#125;)
+    .catch((e) =&gt; &#123;
+      console.log(&quot;所拉取的文章图床访问失败!&quot;);
+    &#125;);
 &#125;;
 const baidutongji = () =&gt; &#123;
-document
-.querySelector(&#39;meta[name=&quot;referrer&quot;]&#39;)
-.setAttribute(&quot;content&quot;, &quot;strict-origin-when-cross-origin&quot;);
-var hm = document.createElement(&quot;script&quot;);
-hm.src = &quot;https://hm.baidu.com/hm.js?bcxxxxxxxxxxxx1&quot;;
-var s = document.getElementsByTagName(&quot;script&quot;)[0];
-s.parentNode.insertBefore(hm, s);
+  document
+    .querySelector(&#39;meta[name=&quot;referrer&quot;]&#39;)
+    .setAttribute(&quot;content&quot;, &quot;strict-origin-when-cross-origin&quot;);
+  var hm = document.createElement(&quot;script&quot;);
+  hm.src = &quot;https://hm.baidu.com/hm.js?bcxxxxxxxxxxxx1&quot;;
+  var s = document.getElementsByTagName(&quot;script&quot;)[0];
+  s.parentNode.insertBefore(hm, s);
 &#125;;
 </code></pre>
 </div>
-
 </div>
 
      

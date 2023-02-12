@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,93 +326,93 @@
   <!doctype html><div class="lake-content" typography="classic"><h2 id="kfwKY"><span class="ne-text">实验要求</span></h2><p id="fc77a305509589eb8e57f5dfb40b0283" class="ne-p"><span class="ne-text" style="font-size: 16px">求两个集合</span><span class="ne-text" style="font-size: 16px">LA</span><span class="ne-text" style="font-size: 16px">和</span><span class="ne-text" style="font-size: 16px">LB(</span><span class="ne-text" style="font-size: 16px">用单链表表示</span><span class="ne-text" style="font-size: 16px">)</span><span class="ne-text" style="font-size: 16px">的并和交集</span></p><p id="97cde14d07d55927cbe8c267732498e8" class="ne-p"><span class="ne-text" style="font-size: 16px">要求：在实验二的基础上，使用单链表表示集合。编写两个算法（求交算法和求并算法），并输出最终的结果。</span></p><p id="ead1e8e70488c4fe4831812a1ca80cd6" class="ne-p"><span class="ne-text" style="font-size: 16px">测试用例：集合</span><span class="ne-text" style="font-size: 16px">A</span><span class="ne-text" style="font-size: 16px">为</span><span class="ne-text" style="font-size: 16px">{3</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">4</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">1</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">6}</span><span class="ne-text" style="font-size: 16px">，集合</span><span class="ne-text" style="font-size: 16px">A</span><span class="ne-text" style="font-size: 16px">为</span><span class="ne-text" style="font-size: 16px">{2</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">3</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">6</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">7}</span><span class="ne-text" style="font-size: 16px">，</span></p><p id="bb2a51a2d8dae453e9cee5530fc5cf09" class="ne-p"><span class="ne-text" style="font-size: 16px">           </span><span class="ne-text" style="font-size: 16px">交集为</span><span class="ne-text" style="font-size: 16px">{3</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">6}</span></p><p id="16107b01f015db18e9dad1c123c47f6f" class="ne-p"><span class="ne-text" style="font-size: 16px">           </span><span class="ne-text" style="font-size: 16px">并集为</span><span class="ne-text" style="font-size: 16px">{1</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">2</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">3</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">4</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">6</span><span class="ne-text" style="font-size: 16px">，</span><span class="ne-text" style="font-size: 16px">7}</span></p><p id="a985b06473d654b3af94e60d4faaecb5" class="ne-p"><span class="ne-text" style="font-size: 16px">交作业时间：4月16日</span></p><h2 id="bRCZx"><span class="ne-text">实验代码</span></h2>
 
 <pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
-
 using namespace std;
 
-/\*\*
+/**
+ * 求两个集合LA和LB(用单链表表示)的并和交集
+ */
 
-- 求两个集合 LA 和 LB(用单链表表示)的并和交集
-  \*/
 
-/_ 单链表的存储结构 _/
+/* 单链表的存储结构 */
 typedef struct LNode &#123;
-int data; //数据域
-struct LNode *next; //指针域
-&#125;Lnode, *LinkList; //LinkList 为指向结构体 LNode 的指针类型
+    int data; //数据域
+    struct LNode *next; //指针域
+&#125;Lnode, *LinkList; //LinkList为指向结构体LNode的指针类型
 
-/_ 初始化链表 _/
+
+/* 初始化链表 */
 void InitList(LinkList &amp;L) &#123;
-L = new LNode;
-L-&gt;next = NULL;
+    L = new LNode;
+    L-&gt;next = NULL;
 &#125;
 
-/_ 创建：后插 _/
+/* 创建：后插 */
 void CreateList_R(LinkList &amp;L, int n) &#123;
-cout &lt;&lt; &quot;请输入&quot; &lt;&lt; n &lt;&lt; &quot;个数字&quot;&lt;&lt; &quot;\n&quot;;
-InitList(L);
-// 定义一个在下面循环用来一直操作所加元素的结点 p 来指向头结点 L
-LinkList p = L;
-for (int i = 0; i &lt; n;i++) &#123;
-LinkList q = new Lnode;
-q-&gt;next = NULL;
-cin &gt;&gt; q-&gt;data;
-p-&gt;next = q;
-p = q; //为了下一次
-&#125;
+    cout &lt;&lt; &quot;请输入&quot; &lt;&lt; n &lt;&lt; &quot;个数字&quot;&lt;&lt; &quot;\n&quot;;
+    InitList(L);
+    // 定义一个在下面循环用来一直操作所加元素的结点p来指向头结点L
+    LinkList p = L;
+    for (int i = 0; i &lt; n;i++) &#123;
+        LinkList q = new Lnode;
+        q-&gt;next = NULL;
+        cin &gt;&gt; q-&gt;data;
+        p-&gt;next = q;
+        p = q; //为了下一次
+    &#125;
 &#125;
 
-/_ 打印 _/
+/* 打印 */
 void TraverseList(LinkList &amp; L)&#123;
-LinkList p = new LNode;
-p = L-&gt;next;
-cout &lt;&lt; &quot;此链表打印的结果为：&quot;&lt;&lt; &quot;\n&quot;;
-while (p != NULL)
-&#123;
-cout &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;
-p = p-&gt;next;
-&#125;
-cout &lt;&lt; &quot;\n&quot;;
+        LinkList p = new LNode;
+        p = L-&gt;next;
+        cout &lt;&lt; &quot;此链表打印的结果为：&quot;&lt;&lt; &quot;\n&quot;;
+        while (p != NULL)
+        &#123;
+            cout &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;
+            p = p-&gt;next;
+        &#125;
+        cout &lt;&lt; &quot;\n&quot;;
 &#125;
 
-/_ 排序单链表 _/
+/* 排序单链表 */
 void sort(LinkList &amp;L) &#123;
 
 &#125;
 
-/_ jiao 算法 _/
+/* jiao算法 */
 void jiao(LinkList &amp;A,LinkList &amp;B) &#123;
-// 用双循环得出共有的元素并输出
-LinkList p;
-InitList(p);
-A = A-&gt;next;
-B = B-&gt;next;
-while (A != NULL ) &#123;
-LinkList copy_b = B;
-while(copy_b != NULL) &#123;
-if (A-&gt;data == copy_b-&gt;data) &#123;
-LinkList temp = new Lnode;
-temp-&gt;data = copy_b-&gt;data;
-temp-&gt;next = p-&gt;next;
-p-&gt;next = temp;
-break;
-&#125; else &#123;
-copy_b = copy_b-&gt;next;
-&#125;
-&#125;
-A = A-&gt;next;
-&#125;
-
+    // 用双循环得出共有的元素并输出
+    LinkList p;
+    InitList(p);
+    A = A-&gt;next;
+    B = B-&gt;next;
+    while (A != NULL ) &#123;
+        LinkList copy_b = B;
+        while(copy_b != NULL) &#123;
+            if (A-&gt;data == copy_b-&gt;data) &#123;
+                LinkList temp = new Lnode;
+                temp-&gt;data = copy_b-&gt;data;
+                temp-&gt;next = p-&gt;next;
+                p-&gt;next = temp;
+                break;
+            &#125; else &#123;
+                copy_b = copy_b-&gt;next;
+            &#125;
+        &#125;
+        A = A-&gt;next;
+    &#125;
+    
     while(p-&gt;next != NULL) &#123;
         cout &lt;&lt; p-&gt;next-&gt;data &lt;&lt; &quot; &quot;;
         p = p-&gt;next;
     &#125;
-
 &#125;
 
-/_ bing 算法 _/
+
+/* bing算法 */
 void bing(LinkList &amp;A,LinkList &amp;B) &#123;
-LinkList p = A;
-LinkList s = B;
+    LinkList p = A;
+    LinkList s = B;
 
     A = A-&gt;next;
     B = B-&gt;next;
@@ -451,26 +451,24 @@ LinkList s = B;
         cout &lt;&lt; result-&gt;next-&gt;data &lt;&lt; &quot; &quot;;
         result = result-&gt;next;
     &#125;
-
 &#125;
 
 int main() &#123;
-LinkList list_A;
-LinkList list_B;
-InitList(list_A);
-InitList(list_B);
-CreateList_R(list_A, 6);
-CreateList_R(list_B, 6);
-LinkList list_C = list_A;
-LinkList list_D = list_B;
-cout &lt;&lt;&quot;A、B 交集的值为：&quot;;
-jiao(list_A, list_B);
-cout &lt;&lt;&quot;\n&quot;&lt;&lt;&quot;A、B 并集的值为：&quot;;
-bing(list_C, list_D);
+    LinkList list_A;
+    LinkList list_B;
+    InitList(list_A);
+    InitList(list_B);
+    CreateList_R(list_A, 6);
+    CreateList_R(list_B, 6);
+    LinkList list_C = list_A;
+    LinkList list_D = list_B;
+    cout &lt;&lt;&quot;A、B交集的值为：&quot;;
+    jiao(list_A, list_B);
+    cout &lt;&lt;&quot;\n&quot;&lt;&lt;&quot;A、B并集的值为：&quot;;
+    bing(list_C, list_D);
 &#125;
 </code></pre>
 </div>
-
 </div>
 
      

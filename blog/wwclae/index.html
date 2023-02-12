@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,26 +326,24 @@
   <!doctype html><div class="lake-content" typography="classic"><p id="u10d9e989" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1665141885929-afd0c3cb-bdd4-4e82-95b3-8b6d2f7964b5.png" width="696.6666389836216" id="ubd08e735" class="ne-image"></p><p id="u46c516f8" class="ne-p"><span class="ne-text">前言：对网站做移动端适配，点击左上角弹出抽屉布局，其实现为fixed绝对定位，对其进行鼠标的上下滚动会造成抽屉层下面的dom元素也随之滚动，本文目的旨在解决该</span><strong><span class="ne-text">滚动穿透</span></strong><span class="ne-text">问题。</span></p><p id="u9432b897" class="ne-p"><span class="ne-text"></span></p><p id="u22e19627" class="ne-p"><span class="ne-text">思路</span></p><ul class="ne-ul"><li id="ub7820cc9"><span class="ne-text">网上思路较多，鼠标滚动也好，手指滑动也好，都属于Event事件，而后抽屉弹出禁用底部dom的默认事件思路，该思路可行，不过有点大材小用。</span></li></ul><ul class="ne-tl"><li checked="true" id="uf52d49e9"><span class="ne-text">只利用css解决该问题，当抽屉弹出，记录</span><code class="ne-code"><span class="ne-text">window.scrollY</span></code><span class="ne-text">的值，同时对底部dom进行绝对定位，当抽屉层关闭，底部dom清楚绝对定位及其相关属性，并且跳转刚刚记录的</span><code class="ne-code"><span class="ne-text">window.scrollY</span></code><span class="ne-text">值。部分代码如下：</span></li></ul>
 
 <pre><code class="javascript">let top = 0;
-
 // 点击左按钮
 btn_app_sider.click(function () &#123;
-app_side_glass.css(&#123; display: &quot;block&quot; &#125;);
-app_side_content.css(&#123; display: &quot;block&quot; &#125;);
-// 阻止抽屉层下的滑动穿透
-top = window.scrollY;
-container.css(&#123; position: &quot;fixed&quot;, top: -top + &quot;px&quot; &#125;);
+  app_side_glass.css(&#123; display: &quot;block&quot; &#125;);
+  app_side_content.css(&#123; display: &quot;block&quot; &#125;);
+  // 阻止抽屉层下的滑动穿透
+  top = window.scrollY;
+  container.css(&#123; position: &quot;fixed&quot;, top: -top + &quot;px&quot; &#125;);
 &#125;);
 // 点击毛玻璃片
 app_side_glass.click(function () &#123;
-app_side_glass.css(&#123; display: &quot;none&quot; &#125;);
-app_side_content.css(&#123; display: &quot;none&quot; &#125;);
-// 阻止抽屉层下的滑动穿透
-container.css(&#123; position: &quot;&quot;, top: &quot;&quot; &#125;);
-window.scrollTo(0, top);
+  app_side_glass.css(&#123; display: &quot;none&quot; &#125;);
+  app_side_content.css(&#123; display: &quot;none&quot; &#125;);
+  // 阻止抽屉层下的滑动穿透
+  container.css(&#123; position: &quot;&quot;, top: &quot;&quot; &#125;);
+  window.scrollTo(0, top);
 &#125;);
 </code></pre>
 </div>
-
 </div>
 
      

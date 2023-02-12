@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,9 +326,9 @@
   <!doctype html><div class="lake-content" typography="classic"><h2 id="zNIHZ"><span class="ne-text">问题描述</span></h2><p id="62dc1f6eeaf4d085770a4b431580e59f" class="ne-p"><strong><span class="ne-text">校园最短路径实验</span></strong></p><p id="a73d6fe9137a449283e7e6174b9a8672" class="ne-p"><span class="ne-text">1、给出校园中常用的几个点，如教室550、文宗楼、三个食堂、大操场、宿舍楼（自定）、校门口、体育场；</span></p><p id="e872dd787b0659b0ba4e065a8d1304e5" class="ne-p"><span class="ne-text">2、画图并给出其邻接矩阵（请合作完成）；</span></p><p id="8dfdd4331fdd61b2225d6ae6be60e67c" class="ne-p"><span class="ne-text">3、用floyd算法求每对顶点间的最短路。</span></p><p id="695d4175097ade1b18ab44f07893e3d0" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622701735560-677cf8e1-e3f6-4c6a-9288-500eefaae6d4.png" width="545.5" id="VrPJt" class="ne-image"></p><hr id="RYp3i" class="ne-hr"><p id="f5896a514532e26e9ab4f424db11e700" class="ne-p"><br></p><div data-type="tips" class="ne-alert"><p id="a20d224c568e48b9d67847a2c66a8c01_p_0" class="ne-p"><span class="ne-text">迪杰斯特拉（Dijkstra）算法</span></p></div><p id="f5df7e9bae3edc596f0249ded448a799" class="ne-p"><br></p><p id="c0ace7f4bd10e006e360cc545ad23796" class="ne-p"><span class="ne-text">Dijkstra算法是经典的单源最短路径算法，用于计算源点到其它所有顶点的最短路径。在图 G=(V,E) 中，假设每条边 E[i] 的权值距离为 w[i]，找到由源点 v0 到其余各点的最短路径。</span></p><p id="c4eda4769b9382558e617e1d98192a33" class="ne-p"><span class="ne-text">适用：不含负权重的图</span></p><p id="f8c761d9834b36277f84b1f6b36ba85f" class="ne-p"><br></p><p id="660b2e6d53de278be77090da3cdff5f4" class="ne-p"><span class="ne-text">算法当中，对图的遍历方式为BFS（广度优先遍历）</span></p><h2 id="GgRFy"><span class="ne-text">代码</span></h2><p id="48d84c4d0710621d0f26ff9b37fc918b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622703321484-ea1fa3e2-34db-4827-8048-cd68231125cb.png" width="280.5" id="MRDfH" class="ne-image"></p>
 
 <pre><code class="cpp">/**
-
-- C++: Floyd 算法获取最短路径(邻接矩阵)
-- \*/
+ * C++: Floyd算法获取最短路径(邻接矩阵)
+ *
+ */
 
 #include &lt;iomanip&gt;
 #include &lt;iostream&gt;
@@ -339,25 +339,24 @@ using namespace std;
 // 边的结构体
 class EData
 &#123;
-public:
-char start; // 边的起点
-char end; // 边的终点
-int weight; // 边的权重
+    public:
+        char start; // 边的起点
+        char end;   // 边的终点
+        int weight; // 边的权重
 
     public:
         EData()&#123;&#125;
         EData(char s, char e, int w):start(s),end(e),weight(w)&#123;&#125;
-
 &#125;;
 
 class MatrixUDG &#123;
-#define MAX 100
-#define INF (~(0x1&lt;&lt;31)) // 无穷大(即 0X7FFFFFFF)
-private:
-char mVexs[MAX]; // 顶点集合
-int mVexNum; // 顶点数
-int mEdgNum; // 边数
-int mMatrix[MAX][MAX]; // 邻接矩阵
+    #define MAX    100
+    #define INF    (~(0x1&lt;&lt;31))        // 无穷大(即0X7FFFFFFF)
+    private:
+        char mVexs[MAX];    // 顶点集合
+        int mVexNum;             // 顶点数
+        int mEdgNum;             // 边数
+        int mMatrix[MAX][MAX];   // 邻接矩阵
 
     public:
         // 创建图(自己输入数据)
@@ -399,297 +398,274 @@ int mMatrix[MAX][MAX]; // 邻接矩阵
         void sortEdges(EData* edges, int elen);
         // 获取i的终点
         int getEnd(int vends[], int i);
-
 &#125;;
 
-/\*
+/* 
+ * 创建图(自己输入数据)
+ */
+MatrixUDG::MatrixUDG()
+&#123;
+    char c1, c2;
+    int i, j, weight, p1, p2;
+    
+    // 输入&quot;顶点数&quot;和&quot;边数&quot;
+    cout &lt;&lt; &quot;input vertex number: &quot;;
+    cin &gt;&gt; mVexNum;
+    cout &lt;&lt; &quot;input edge number: &quot;;
+    cin &gt;&gt; mEdgNum;
+    if ( mVexNum &lt; 1 || mEdgNum &lt; 1 || (mEdgNum &gt; (mVexNum * (mVexNum-1))))
+    &#123;
+        cout &lt;&lt; &quot;input error: invalid parameters!&quot; &lt;&lt; endl;
+        return ;
+    &#125;
+    
+    // 初始化&quot;顶点&quot;
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        cout &lt;&lt; &quot;vertex(&quot; &lt;&lt; i &lt;&lt; &quot;): &quot;;
+        mVexs[i] = readChar();
+    &#125;
 
-- 创建图(自己输入数据)
-  \*/
-  MatrixUDG::MatrixUDG()
-  &#123;
-  char c1, c2;
-  int i, j, weight, p1, p2;
+    // 1. 初始化&quot;边&quot;的权值
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        for (j = 0; j &lt; mVexNum; j++)
+        &#123;
+            if (i==j)
+                mMatrix[i][j] = 0;
+            else
+                mMatrix[i][j] = INF;
+        &#125;
+    &#125;
+    // 2. 初始化&quot;边&quot;的权值: 根据用户的输入进行初始化
+    for (i = 0; i &lt; mEdgNum; i++)
+    &#123;
+        // 读取边的起始顶点，结束顶点，权值
+        cout &lt;&lt; &quot;edge(&quot; &lt;&lt; i &lt;&lt; &quot;): &quot;;
+        c1 = readChar();
+        c2 = readChar();
+        cin &gt;&gt; weight;
 
-      // 输入&quot;顶点数&quot;和&quot;边数&quot;
-      cout &lt;&lt; &quot;input vertex number: &quot;;
-      cin &gt;&gt; mVexNum;
-      cout &lt;&lt; &quot;input edge number: &quot;;
-      cin &gt;&gt; mEdgNum;
-      if ( mVexNum &lt; 1 || mEdgNum &lt; 1 || (mEdgNum &gt; (mVexNum * (mVexNum-1))))
-      &#123;
-          cout &lt;&lt; &quot;input error: invalid parameters!&quot; &lt;&lt; endl;
-          return ;
-      &#125;
+        p1 = getPosition(c1);
+        p2 = getPosition(c2);
+        if (p1==-1 || p2==-1)
+        &#123;
+            cout &lt;&lt; &quot;input error: invalid edge!&quot; &lt;&lt; endl;
+            return ;
+        &#125;
 
-      // 初始化&quot;顶点&quot;
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          cout &lt;&lt; &quot;vertex(&quot; &lt;&lt; i &lt;&lt; &quot;): &quot;;
-          mVexs[i] = readChar();
-      &#125;
-
-      // 1. 初始化&quot;边&quot;的权值
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          for (j = 0; j &lt; mVexNum; j++)
-          &#123;
-              if (i==j)
-                  mMatrix[i][j] = 0;
-              else
-                  mMatrix[i][j] = INF;
-          &#125;
-      &#125;
-      // 2. 初始化&quot;边&quot;的权值: 根据用户的输入进行初始化
-      for (i = 0; i &lt; mEdgNum; i++)
-      &#123;
-          // 读取边的起始顶点，结束顶点，权值
-          cout &lt;&lt; &quot;edge(&quot; &lt;&lt; i &lt;&lt; &quot;): &quot;;
-          c1 = readChar();
-          c2 = readChar();
-          cin &gt;&gt; weight;
-
-          p1 = getPosition(c1);
-          p2 = getPosition(c2);
-          if (p1==-1 || p2==-1)
-          &#123;
-              cout &lt;&lt; &quot;input error: invalid edge!&quot; &lt;&lt; endl;
-              return ;
-          &#125;
-
-          mMatrix[p1][p2] = weight;
-          mMatrix[p2][p1] = weight;
-      &#125;
-
-  &#125;
-
-/\*
-
-- 创建图(用已提供的矩阵)
--
-- 参数说明：
--     vexs  -- 顶点数组
--     vlen  -- 顶点数组的长度
--     matrix-- 矩阵(数据)
-
-  \*/
-  MatrixUDG::MatrixUDG(char vexs[], int vlen, int matrix[][9])
-  &#123;
-  int i, j;
-
-      // 初始化&quot;顶点数&quot;和&quot;边数&quot;
-      mVexNum = vlen;
-      // 初始化&quot;顶点&quot;
-      for (i = 0; i &lt; mVexNum; i++)
-          mVexs[i] = vexs[i];
-
-      // 初始化&quot;边&quot;
-      for (i = 0; i &lt; mVexNum; i++)
-          for (j = 0; j &lt; mVexNum; j++)
-              mMatrix[i][j] = matrix[i][j];
-
-      // 统计边的数目
-      for (i = 0; i &lt; mVexNum; i++)
-          for (j = 0; j &lt; mVexNum; j++)
-              if (i!=j &amp;&amp; mMatrix[i][j]!=INF)
-                  mEdgNum++;
-      mEdgNum /= 2;
-
-  &#125;
-
-/\*
-
-- 析构函数
-  \*/
-  MatrixUDG::~MatrixUDG()
-  &#123;
-  &#125;
-
-/\*
-
-- 返回 ch 在 mMatrix 矩阵中的位置
-  \*/
-  int MatrixUDG::getPosition(char ch)
-  &#123;
-  int i;
-  for(i=0; i&lt;mVexNum; i++)
-  if(mVexs[i]==ch)
-  return i;
-  return -1;
-  &#125;
-
-/\*
-
-- 读取一个输入字符
-  \*/
-  char MatrixUDG::readChar()
-  &#123;
-  char ch;
-
-      do &#123;
-          cin &gt;&gt; ch;
-      &#125; while(!((ch&gt;=&#39;a&#39;&amp;&amp;ch&lt;=&#39;z&#39;) || (ch&gt;=&#39;A&#39;&amp;&amp;ch&lt;=&#39;Z&#39;)));
-
-      return ch;
-
-  &#125;
-
-/\*
-
-- 返回顶点 v 的第一个邻接顶点的索引，失败则返回-1
-  \*/
-  int MatrixUDG::firstVertex(int v)
-  &#123;
-  int i;
-
-      if (v&lt;0 || v&gt;(mVexNum-1))
-          return -1;
-
-      for (i = 0; i &lt; mVexNum; i++)
-          if (mMatrix[v][i]!=0 &amp;&amp; mMatrix[v][i]!=INF)
-              return i;
-
-      return -1;
-
-  &#125;
-
-/\*
-
-- 返回顶点 v 相对于 w 的下一个邻接顶点的索引，失败则返回-1
-  \*/
-  int MatrixUDG::nextVertex(int v, int w)
-  &#123;
-  int i;
-
-      if (v&lt;0 || v&gt;(mVexNum-1) || w&lt;0 || w&gt;(mVexNum-1))
-          return -1;
-
-      for (i = w + 1; i &lt; mVexNum; i++)
-          if (mMatrix[v][i]!=0 &amp;&amp; mMatrix[v][i]!=INF)
-              return i;
-
-      return -1;
-
-  &#125;
-
-/\*
-
-- 深度优先搜索遍历图的递归实现
-  */
-  void MatrixUDG::DFS(int i, int *visited)
-  &#123;
-  int w;
-
-      visited[i] = 1;
-      cout &lt;&lt; mVexs[i] &lt;&lt; &quot; &quot;;
-      // 遍历该顶点的所有邻接顶点。若是没有访问过，那么继续往下走
-      for (w = firstVertex(i); w &gt;= 0; w = nextVertex(i, w))
-      &#123;
-          if (!visited[w])
-              DFS(w, visited);
-      &#125;
-
-
+        mMatrix[p1][p2] = weight;
+        mMatrix[p2][p1] = weight;
+    &#125;
 &#125;
 
-/\*
+/*
+ * 创建图(用已提供的矩阵)
+ *
+ * 参数说明：
+ *     vexs  -- 顶点数组
+ *     vlen  -- 顶点数组的长度
+ *     matrix-- 矩阵(数据)
+ */
+MatrixUDG::MatrixUDG(char vexs[], int vlen, int matrix[][9])
+&#123;
+    int i, j;
+    
+    // 初始化&quot;顶点数&quot;和&quot;边数&quot;
+    mVexNum = vlen;
+    // 初始化&quot;顶点&quot;
+    for (i = 0; i &lt; mVexNum; i++)
+        mVexs[i] = vexs[i];
 
-- 深度优先搜索遍历图
-  \*/
-  void MatrixUDG::DFS()
-  &#123;
-  int i;
-  int visited[MAX]; // 顶点访问标记
+    // 初始化&quot;边&quot;
+    for (i = 0; i &lt; mVexNum; i++)
+        for (j = 0; j &lt; mVexNum; j++)
+            mMatrix[i][j] = matrix[i][j];
 
-      // 初始化所有顶点都没有被访问
-      for (i = 0; i &lt; mVexNum; i++)
-          visited[i] = 0;
+    // 统计边的数目
+    for (i = 0; i &lt; mVexNum; i++)
+        for (j = 0; j &lt; mVexNum; j++)
+            if (i!=j &amp;&amp; mMatrix[i][j]!=INF)
+                mEdgNum++;
+    mEdgNum /= 2;
+&#125;
 
-      cout &lt;&lt; &quot;DFS: &quot;;
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          //printf(&quot;\n== LOOP(%d)\n&quot;, i);
-          if (!visited[i])
-              DFS(i, visited);
-      &#125;
-      cout &lt;&lt; endl;
+/* 
+ * 析构函数
+ */
+MatrixUDG::~MatrixUDG() 
+&#123;
+&#125;
 
-  &#125;
+/*
+ * 返回ch在mMatrix矩阵中的位置
+ */
+int MatrixUDG::getPosition(char ch)
+&#123;
+    int i;
+    for(i=0; i&lt;mVexNum; i++)
+        if(mVexs[i]==ch)
+            return i;
+    return -1;
+&#125;
 
-/\*
+/*
+ * 读取一个输入字符
+ */
+char MatrixUDG::readChar()
+&#123;
+    char ch;
 
-- 广度优先搜索（类似于树的层次遍历）
-  \*/
-  void MatrixUDG::BFS()
-  &#123;
-  int head = 0;
-  int rear = 0;
-  int queue[MAX]; // 辅组队列
-  int visited[MAX]; // 顶点访问标记
-  int i, j, k;
+    do &#123;
+        cin &gt;&gt; ch;
+    &#125; while(!((ch&gt;=&#39;a&#39;&amp;&amp;ch&lt;=&#39;z&#39;) || (ch&gt;=&#39;A&#39;&amp;&amp;ch&lt;=&#39;Z&#39;)));
 
-      for (i = 0; i &lt; mVexNum; i++)
-          visited[i] = 0;
+    return ch;
+&#125;
 
-      cout &lt;&lt; &quot;BFS: &quot;;
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          if (!visited[i])
-          &#123;
-              visited[i] = 1;
-              cout &lt;&lt; mVexs[i] &lt;&lt; &quot; &quot;;
-              queue[rear++] = i;  // 入队列
-          &#125;
-          while (head != rear)
-          &#123;
-              j = queue[head++];  // 出队列
-              for (k = firstVertex(j); k &gt;= 0; k = nextVertex(j, k)) //k是为访问的邻接顶点
-              &#123;
-                  if (!visited[k])
-                  &#123;
-                      visited[k] = 1;
-                      cout &lt;&lt; mVexs[k] &lt;&lt; &quot; &quot;;
-                      queue[rear++] = k;
-                  &#125;
-              &#125;
-          &#125;
-      &#125;
-      cout &lt;&lt; endl;
 
-  &#125;
+/*
+ * 返回顶点v的第一个邻接顶点的索引，失败则返回-1
+ */
+int MatrixUDG::firstVertex(int v)
+&#123;
+    int i;
 
-/\*
+    if (v&lt;0 || v&gt;(mVexNum-1))
+        return -1;
 
-- 打印矩阵队列图
-  \*/
-  void MatrixUDG::print()
-  &#123;
-  int i,j;
+    for (i = 0; i &lt; mVexNum; i++)
+        if (mMatrix[v][i]!=0 &amp;&amp; mMatrix[v][i]!=INF)
+            return i;
 
-      cout &lt;&lt; &quot;Martix Graph:&quot; &lt;&lt; endl;
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          for (j = 0; j &lt; mVexNum; j++)
-              cout &lt;&lt; setw(10) &lt;&lt; mMatrix[i][j] &lt;&lt; &quot; &quot;;
-          cout &lt;&lt; endl;
-      &#125;
+    return -1;
+&#125;
 
-  &#125;
+/*
+ * 返回顶点v相对于w的下一个邻接顶点的索引，失败则返回-1
+ */
+int MatrixUDG::nextVertex(int v, int w)
+&#123;
+    int i;
 
-/\*
+    if (v&lt;0 || v&gt;(mVexNum-1) || w&lt;0 || w&gt;(mVexNum-1))
+        return -1;
 
-- prim 最小生成树
--
-- 参数说明：
-- start -- 从图中的第 start 个元素开始，生成最小树
-  \*/
-  void MatrixUDG::prim(int start)
-  &#123;
-  int min,i,j,k,m,n,sum;
-  int index=0; // prim 最小树的索引，即 prims 数组的索引
-  char prims[MAX]; // prim 最小树的结果数组
-  int weights[MAX]; // 顶点间边的权值
+    for (i = w + 1; i &lt; mVexNum; i++)
+        if (mMatrix[v][i]!=0 &amp;&amp; mMatrix[v][i]!=INF)
+            return i;
 
+    return -1;
+&#125;
+
+/*
+ * 深度优先搜索遍历图的递归实现
+ */
+void MatrixUDG::DFS(int i, int *visited)
+&#123;
+    int w;
+
+    visited[i] = 1;
+    cout &lt;&lt; mVexs[i] &lt;&lt; &quot; &quot;;
+    // 遍历该顶点的所有邻接顶点。若是没有访问过，那么继续往下走
+    for (w = firstVertex(i); w &gt;= 0; w = nextVertex(i, w))
+    &#123;
+        if (!visited[w])
+            DFS(w, visited);
+    &#125;
+       
+&#125;
+
+/*
+ * 深度优先搜索遍历图
+ */
+void MatrixUDG::DFS()
+&#123;
+    int i;
+    int visited[MAX];       // 顶点访问标记
+
+    // 初始化所有顶点都没有被访问
+    for (i = 0; i &lt; mVexNum; i++)
+        visited[i] = 0;
+
+    cout &lt;&lt; &quot;DFS: &quot;;
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        //printf(&quot;\n== LOOP(%d)\n&quot;, i);
+        if (!visited[i])
+            DFS(i, visited);
+    &#125;
+    cout &lt;&lt; endl;
+&#125;
+
+/*
+ * 广度优先搜索（类似于树的层次遍历）
+ */
+void MatrixUDG::BFS()
+&#123;
+    int head = 0;
+    int rear = 0;
+    int queue[MAX];     // 辅组队列
+    int visited[MAX];   // 顶点访问标记
+    int i, j, k;
+
+    for (i = 0; i &lt; mVexNum; i++)
+        visited[i] = 0;
+
+    cout &lt;&lt; &quot;BFS: &quot;;
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        if (!visited[i])
+        &#123;
+            visited[i] = 1;
+            cout &lt;&lt; mVexs[i] &lt;&lt; &quot; &quot;;
+            queue[rear++] = i;  // 入队列
+        &#125;
+        while (head != rear) 
+        &#123;
+            j = queue[head++];  // 出队列
+            for (k = firstVertex(j); k &gt;= 0; k = nextVertex(j, k)) //k是为访问的邻接顶点
+            &#123;
+                if (!visited[k])
+                &#123;
+                    visited[k] = 1;
+                    cout &lt;&lt; mVexs[k] &lt;&lt; &quot; &quot;;
+                    queue[rear++] = k;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    cout &lt;&lt; endl;
+&#125;
+
+/*
+ * 打印矩阵队列图
+ */
+void MatrixUDG::print()
+&#123;
+    int i,j;
+
+    cout &lt;&lt; &quot;Martix Graph:&quot; &lt;&lt; endl;
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        for (j = 0; j &lt; mVexNum; j++)
+            cout &lt;&lt; setw(10) &lt;&lt; mMatrix[i][j] &lt;&lt; &quot; &quot;;
+        cout &lt;&lt; endl;
+    &#125;
+&#125;
+
+/*
+ * prim最小生成树
+ *
+ * 参数说明：
+ *   start -- 从图中的第start个元素开始，生成最小树
+ */
+void MatrixUDG::prim(int start)
+&#123;
+    int min,i,j,k,m,n,sum;
+    int index=0;         // prim最小树的索引，即prims数组的索引
+    char prims[MAX];     // prim最小树的结果数组
+    int weights[MAX];    // 顶点间边的权值
 
     // prim最小生成树中第一个数是&quot;图中第start个顶点&quot;，因为是从start开始的。
     prims[index++] = mVexs[start];
@@ -758,264 +734,250 @@ int mMatrix[MAX][MAX]; // 邻接矩阵
     for (i = 0; i &lt; index; i++)
         cout &lt;&lt; prims[i] &lt;&lt; &quot; &quot;;
     cout &lt;&lt; endl;
-
 &#125;
 
-/\*
+/* 
+ * 获取图中的边
+ */
+EData* MatrixUDG::getEdges()
+&#123;
+    int i,j;
+    int index=0;
+    EData *edges;
 
-- 获取图中的边
-  _/
-  EData_ MatrixUDG::getEdges()
-  &#123;
-  int i,j;
-  int index=0;
-  EData \*edges;
+    edges = new EData[mEdgNum];
+    for (i=0; i &lt; mVexNum; i++)
+    &#123;
+        for (j=i+1; j &lt; mVexNum; j++)
+        &#123;
+            if (mMatrix[i][j]!=INF)
+            &#123;
+                edges[index].start  = mVexs[i];
+                edges[index].end    = mVexs[j];
+                edges[index].weight = mMatrix[i][j];
+                index++;
+            &#125;
+        &#125;
+    &#125;
 
-      edges = new EData[mEdgNum];
-      for (i=0; i &lt; mVexNum; i++)
-      &#123;
-          for (j=i+1; j &lt; mVexNum; j++)
-          &#123;
-              if (mMatrix[i][j]!=INF)
-              &#123;
-                  edges[index].start  = mVexs[i];
-                  edges[index].end    = mVexs[j];
-                  edges[index].weight = mMatrix[i][j];
-                  index++;
-              &#125;
-          &#125;
-      &#125;
+    return edges;
+&#125;
 
-      return edges;
+/* 
+ * 对边按照权值大小进行排序(由小到大)
+ */
+void MatrixUDG::sortEdges(EData* edges, int elen)
+&#123;
+    int i,j;
 
-  &#125;
+    for (i=0; i&lt;elen; i++)
+    &#123;
+        for (j=i+1; j&lt;elen; j++)
+        &#123;
+            if (edges[i].weight &gt; edges[j].weight)
+            &#123;
+                // 交换&quot;边i&quot;和&quot;边j&quot;
+                swap(edges[i], edges[j]);
+            &#125;
+        &#125;
+    &#125;
+&#125;
 
-/\*
+/*
+ * 获取i的终点
+ */
+int MatrixUDG::getEnd(int vends[], int i)
+&#123;
+    while (vends[i] != 0)
+        i = vends[i];
+    return i;
+&#125;
 
-- 对边按照权值大小进行排序(由小到大)
-  _/
-  void MatrixUDG::sortEdges(EData_ edges, int elen)
-  &#123;
-  int i,j;
+/*
+ * 克鲁斯卡尔（Kruskal)最小生成树
+ */
+void MatrixUDG::kruskal()
+&#123;
+    int i,m,n,p1,p2;
+    int length;
+    int index = 0;          // rets数组的索引
+    int vends[MAX]=&#123;0&#125;;     // 用于保存&quot;已有最小生成树&quot;中每个顶点在该最小树中的终点。
+    EData rets[MAX];        // 结果数组，保存kruskal最小生成树的边
+    EData *edges;           // 图对应的所有边
 
-      for (i=0; i&lt;elen; i++)
-      &#123;
-          for (j=i+1; j&lt;elen; j++)
-          &#123;
-              if (edges[i].weight &gt; edges[j].weight)
-              &#123;
-                  // 交换&quot;边i&quot;和&quot;边j&quot;
-                  swap(edges[i], edges[j]);
-              &#125;
-          &#125;
-      &#125;
+    // 获取&quot;图中所有的边&quot;
+    edges = getEdges();
+    // 将边按照&quot;权&quot;的大小进行排序(从小到大)
+    sortEdges(edges, mEdgNum);
 
-  &#125;
+    for (i=0; i&lt;mEdgNum; i++)
+    &#123;
+        p1 = getPosition(edges[i].start);      // 获取第i条边的&quot;起点&quot;的序号
+        p2 = getPosition(edges[i].end);        // 获取第i条边的&quot;终点&quot;的序号
 
-/\*
+        m = getEnd(vends, p1);                 // 获取p1在&quot;已有的最小生成树&quot;中的终点
+        n = getEnd(vends, p2);                 // 获取p2在&quot;已有的最小生成树&quot;中的终点
+        // 如果m!=n，意味着&quot;边i&quot;与&quot;已经添加到最小生成树中的顶点&quot;没有形成环路
+        if (m != n)
+        &#123;
+            vends[m] = n;                       // 设置m在&quot;已有的最小生成树&quot;中的终点为n
+            rets[index++] = edges[i];           // 保存结果
+        &#125;
+    &#125;
+    delete[] edges;
 
-- 获取 i 的终点
-  \*/
-  int MatrixUDG::getEnd(int vends[], int i)
-  &#123;
-  while (vends[i] != 0)
-  i = vends[i];
-  return i;
-  &#125;
+    // 统计并打印&quot;kruskal最小生成树&quot;的信息
+    length = 0;
+    for (i = 0; i &lt; index; i++)
+        length += rets[i].weight;
+    cout &lt;&lt; &quot;Kruskal=&quot; &lt;&lt; length &lt;&lt; &quot;: &quot;;
+    for (i = 0; i &lt; index; i++)
+        cout &lt;&lt; &quot;(&quot; &lt;&lt; rets[i].start &lt;&lt; &quot;,&quot; &lt;&lt; rets[i].end &lt;&lt; &quot;) &quot;;
+    cout &lt;&lt; endl;
+&#125;
 
-/\*
+/*
+ * Dijkstra最短路径。
+ * 即，统计图中&quot;顶点vs&quot;到其它各个顶点的最短路径。
+ *
+ * 参数说明：
+ *       vs -- 起始顶点(start vertex)。即计算&quot;顶点vs&quot;到其它顶点的最短路径。
+ *     prev -- 前驱顶点数组。即，prev[i]的值是&quot;顶点vs&quot;到&quot;顶点i&quot;的最短路径所经历的全部顶点中，位于&quot;顶点i&quot;之前的那个顶点。
+ *     dist -- 长度数组。即，dist[i]是&quot;顶点vs&quot;到&quot;顶点i&quot;的最短路径的长度。
+ */
+void MatrixUDG::dijkstra(int vs, int prev[], int dist[])
+&#123;
+    int i,j,k;
+    int min;
+    int tmp;
+    int flag[MAX];      // flag[i]=1表示&quot;顶点vs&quot;到&quot;顶点i&quot;的最短路径已成功获取。
+    
+    // 初始化
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        flag[i] = 0;              // 顶点i的最短路径还没获取到。
+        prev[i] = 0;              // 顶点i的前驱顶点为0。
+        dist[i] = mMatrix[vs][i]; // 顶点i的最短路径为&quot;顶点vs&quot;到&quot;顶点i&quot;的权。
+    &#125;
 
-- 克鲁斯卡尔（Kruskal)最小生成树
-  */
-  void MatrixUDG::kruskal()
-  &#123;
-  int i,m,n,p1,p2;
-  int length;
-  int index = 0; // rets 数组的索引
-  int vends[MAX]=&#123;0&#125;; // 用于保存&quot;已有最小生成树&quot;中每个顶点在该最小树中的终点。
-  EData rets[MAX]; // 结果数组，保存 kruskal 最小生成树的边
-  EData *edges; // 图对应的所有边
+    // 对&quot;顶点vs&quot;自身进行初始化
+    flag[vs] = 1;
+    dist[vs] = 0;
 
-      // 获取&quot;图中所有的边&quot;
-      edges = getEdges();
-      // 将边按照&quot;权&quot;的大小进行排序(从小到大)
-      sortEdges(edges, mEdgNum);
+    // 遍历mVexNum-1次；每次找出一个顶点的最短路径。
+    for (i = 1; i &lt; mVexNum; i++)
+    &#123;
+        // 寻找当前最小的路径；
+        // 即，在未获取最短路径的顶点中，找到离vs最近的顶点(k)。
+        min = INF;
+        for (j = 0; j &lt; mVexNum; j++)
+        &#123;
+            if (flag[j]==0 &amp;&amp; dist[j]&lt;min)
+            &#123;
+                min = dist[j];
+                k = j;
+            &#125;
+        &#125;
+        // 标记&quot;顶点k&quot;为已经获取到最短路径
+        flag[k] = 1;
 
-      for (i=0; i&lt;mEdgNum; i++)
-      &#123;
-          p1 = getPosition(edges[i].start);      // 获取第i条边的&quot;起点&quot;的序号
-          p2 = getPosition(edges[i].end);        // 获取第i条边的&quot;终点&quot;的序号
+        // 修正当前最短路径和前驱顶点
+        // 即，当已经&quot;顶点k的最短路径&quot;之后，更新&quot;未获取最短路径的顶点的最短路径和前驱顶点&quot;。
+        for (j = 0; j &lt; mVexNum; j++)
+        &#123;
+            tmp = (mMatrix[k][j]==INF ? INF : (min + mMatrix[k][j]));
+            if (flag[j] == 0 &amp;&amp; (tmp  &lt; dist[j]) )
+            &#123;
+                dist[j] = tmp;
+                prev[j] = k;
+            &#125;
+        &#125;
+    &#125;
 
-          m = getEnd(vends, p1);                 // 获取p1在&quot;已有的最小生成树&quot;中的终点
-          n = getEnd(vends, p2);                 // 获取p2在&quot;已有的最小生成树&quot;中的终点
-          // 如果m!=n，意味着&quot;边i&quot;与&quot;已经添加到最小生成树中的顶点&quot;没有形成环路
-          if (m != n)
-          &#123;
-              vends[m] = n;                       // 设置m在&quot;已有的最小生成树&quot;中的终点为n
-              rets[index++] = edges[i];           // 保存结果
-          &#125;
-      &#125;
-      delete[] edges;
+    // 打印dijkstra最短路径的结果
+    cout &lt;&lt; &quot;dijkstra(&quot; &lt;&lt; mVexs[vs] &lt;&lt; &quot;): &quot; &lt;&lt; endl;
+    for (i = 0; i &lt; mVexNum; i++)
+        cout &lt;&lt; &quot;  shortest(&quot; &lt;&lt; mVexs[vs] &lt;&lt; &quot;, &quot; &lt;&lt; mVexs[i] &lt;&lt; &quot;)=&quot; &lt;&lt; dist[i] &lt;&lt; endl;
+&#125;
 
-      // 统计并打印&quot;kruskal最小生成树&quot;的信息
-      length = 0;
-      for (i = 0; i &lt; index; i++)
-          length += rets[i].weight;
-      cout &lt;&lt; &quot;Kruskal=&quot; &lt;&lt; length &lt;&lt; &quot;: &quot;;
-      for (i = 0; i &lt; index; i++)
-          cout &lt;&lt; &quot;(&quot; &lt;&lt; rets[i].start &lt;&lt; &quot;,&quot; &lt;&lt; rets[i].end &lt;&lt; &quot;) &quot;;
-      cout &lt;&lt; endl;
+/*
+ * floyd最短路径。
+ * 即，统计图中各个顶点间的最短路径。
+ *
+ * 参数说明：
+ *     path -- 路径。path[i][j]=k表示，&quot;顶点i&quot;到&quot;顶点j&quot;的最短路径会经过顶点k。
+ *     dist -- 长度数组。即，dist[i][j]=sum表示，&quot;顶点i&quot;到&quot;顶点j&quot;的最短路径的长度是sum。
+ */
+void MatrixUDG::floyd(int path[][MAX], int dist[][MAX])
+&#123;
+    int i,j,k;
+    int tmp;
 
-  &#125;
+    // 初始化
+    for (i = 0; i &lt; mVexNum; i++)
+    &#123;
+        for (j = 0; j &lt; mVexNum; j++)
+        &#123;
+            dist[i][j] = mMatrix[i][j];    // &quot;顶点i&quot;到&quot;顶点j&quot;的路径长度为&quot;i到j的权值&quot;。
+            path[i][j] = j;                // &quot;顶点i&quot;到&quot;顶点j&quot;的最短路径是经过顶点j。
+        &#125;
+    &#125;
 
-/\*
-
-- Dijkstra 最短路径。
-- 即，统计图中&quot;顶点 vs&quot;到其它各个顶点的最短路径。
--
-- 参数说明：
--       vs -- 起始顶点(start vertex)。即计算&quot;顶点vs&quot;到其它顶点的最短路径。
--     prev -- 前驱顶点数组。即，prev[i]的值是&quot;顶点vs&quot;到&quot;顶点i&quot;的最短路径所经历的全部顶点中，位于&quot;顶点i&quot;之前的那个顶点。
--     dist -- 长度数组。即，dist[i]是&quot;顶点vs&quot;到&quot;顶点i&quot;的最短路径的长度。
-
-  \*/
-  void MatrixUDG::dijkstra(int vs, int prev[], int dist[])
-  &#123;
-  int i,j,k;
-  int min;
-  int tmp;
-  int flag[MAX]; // flag[i]=1 表示&quot;顶点 vs&quot;到&quot;顶点 i&quot;的最短路径已成功获取。
-
-      // 初始化
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          flag[i] = 0;              // 顶点i的最短路径还没获取到。
-          prev[i] = 0;              // 顶点i的前驱顶点为0。
-          dist[i] = mMatrix[vs][i]; // 顶点i的最短路径为&quot;顶点vs&quot;到&quot;顶点i&quot;的权。
-      &#125;
-
-      // 对&quot;顶点vs&quot;自身进行初始化
-      flag[vs] = 1;
-      dist[vs] = 0;
-
-      // 遍历mVexNum-1次；每次找出一个顶点的最短路径。
-      for (i = 1; i &lt; mVexNum; i++)
-      &#123;
-          // 寻找当前最小的路径；
-          // 即，在未获取最短路径的顶点中，找到离vs最近的顶点(k)。
-          min = INF;
-          for (j = 0; j &lt; mVexNum; j++)
-          &#123;
-              if (flag[j]==0 &amp;&amp; dist[j]&lt;min)
-              &#123;
-                  min = dist[j];
-                  k = j;
-              &#125;
-          &#125;
-          // 标记&quot;顶点k&quot;为已经获取到最短路径
-          flag[k] = 1;
-
-          // 修正当前最短路径和前驱顶点
-          // 即，当已经&quot;顶点k的最短路径&quot;之后，更新&quot;未获取最短路径的顶点的最短路径和前驱顶点&quot;。
-          for (j = 0; j &lt; mVexNum; j++)
-          &#123;
-              tmp = (mMatrix[k][j]==INF ? INF : (min + mMatrix[k][j]));
-              if (flag[j] == 0 &amp;&amp; (tmp  &lt; dist[j]) )
-              &#123;
-                  dist[j] = tmp;
-                  prev[j] = k;
-              &#125;
-          &#125;
-      &#125;
-
-      // 打印dijkstra最短路径的结果
-      cout &lt;&lt; &quot;dijkstra(&quot; &lt;&lt; mVexs[vs] &lt;&lt; &quot;): &quot; &lt;&lt; endl;
-      for (i = 0; i &lt; mVexNum; i++)
-          cout &lt;&lt; &quot;  shortest(&quot; &lt;&lt; mVexs[vs] &lt;&lt; &quot;, &quot; &lt;&lt; mVexs[i] &lt;&lt; &quot;)=&quot; &lt;&lt; dist[i] &lt;&lt; endl;
-
-  &#125;
-
-/\*
-
-- floyd 最短路径。
-- 即，统计图中各个顶点间的最短路径。
--
-- 参数说明：
--     path -- 路径。path[i][j]=k表示，&quot;顶点i&quot;到&quot;顶点j&quot;的最短路径会经过顶点k。
--     dist -- 长度数组。即，dist[i][j]=sum表示，&quot;顶点i&quot;到&quot;顶点j&quot;的最短路径的长度是sum。
-
-  \*/
-  void MatrixUDG::floyd(int path[][MAX], int dist[][MAX])
-  &#123;
-  int i,j,k;
-  int tmp;
-
-      // 初始化
-      for (i = 0; i &lt; mVexNum; i++)
-      &#123;
-          for (j = 0; j &lt; mVexNum; j++)
-          &#123;
-              dist[i][j] = mMatrix[i][j];    // &quot;顶点i&quot;到&quot;顶点j&quot;的路径长度为&quot;i到j的权值&quot;。
-              path[i][j] = j;                // &quot;顶点i&quot;到&quot;顶点j&quot;的最短路径是经过顶点j。
-          &#125;
-      &#125;
-
-      // 计算最短路径
-      for (k = 0; k &lt; mVexNum; k++)
-      &#123;
-          for (i = 0; i &lt; mVexNum; i++)
-          &#123;
-              for (j = 0; j &lt; mVexNum; j++)
-              &#123;
-                  // 如果经过下标为k顶点路径比原两点间路径更短，则更新dist[i][j]和path[i][j]
-                  tmp = (dist[i][k]==INF || dist[k][j]==INF) ? INF : (dist[i][k] + dist[k][j]);
-                  if (dist[i][j] &gt; tmp)
-                  &#123;
-                      // &quot;i到j最短路径&quot;对应的值设，为更小的一个(即经过k)
-                      dist[i][j] = tmp;
-                      // &quot;i到j最短路径&quot;对应的路径，经过k
-                      path[i][j] = path[i][k];
-                  &#125;
-              &#125;
-          &#125;
-      &#125;
-      char dot[] = &#123;&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;H&#39;, &#39;I&#39;&#125;;
-      // 打印floyd最短路径的结果
-      cout &lt;&lt; &quot;floyd各个地点的最短路径矩阵如下: &quot; &lt;&lt; endl;
-      cout &lt;&lt; &quot;    &quot;;
-      for (int k = 0;k&lt;9;k++)&#123;
-          cout &lt;&lt; dot[k] &lt;&lt; &quot;    &quot;;
-      &#125;
-      cout &lt;&lt; &quot;\n&quot;;
-      for (i = 0; i &lt; mVexNum; i++)&#123;
-          cout &lt;&lt; dot[i] &lt;&lt; &quot;: &quot;;
-          for (j = 0; j &lt; mVexNum; j++)
-              cout &lt;&lt; setw(2) &lt;&lt; dist[i][j] &lt;&lt; &quot;  &quot;;
-          cout &lt;&lt; endl;
-      &#125;
-
-  &#125;
+    // 计算最短路径
+    for (k = 0; k &lt; mVexNum; k++)
+    &#123;
+        for (i = 0; i &lt; mVexNum; i++)
+        &#123;
+            for (j = 0; j &lt; mVexNum; j++)
+            &#123;
+                // 如果经过下标为k顶点路径比原两点间路径更短，则更新dist[i][j]和path[i][j]
+                tmp = (dist[i][k]==INF || dist[k][j]==INF) ? INF : (dist[i][k] + dist[k][j]);
+                if (dist[i][j] &gt; tmp)
+                &#123;
+                    // &quot;i到j最短路径&quot;对应的值设，为更小的一个(即经过k)
+                    dist[i][j] = tmp;
+                    // &quot;i到j最短路径&quot;对应的路径，经过k
+                    path[i][j] = path[i][k];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    char dot[] = &#123;&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;H&#39;, &#39;I&#39;&#125;;
+    // 打印floyd最短路径的结果
+    cout &lt;&lt; &quot;floyd各个地点的最短路径矩阵如下: &quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot;    &quot;;
+    for (int k = 0;k&lt;9;k++)&#123;
+        cout &lt;&lt; dot[k] &lt;&lt; &quot;    &quot;;
+    &#125;
+    cout &lt;&lt; &quot;\n&quot;;
+    for (i = 0; i &lt; mVexNum; i++)&#123;
+        cout &lt;&lt; dot[i] &lt;&lt; &quot;: &quot;;
+        for (j = 0; j &lt; mVexNum; j++)
+            cout &lt;&lt; setw(2) &lt;&lt; dist[i][j] &lt;&lt; &quot;  &quot;;
+        cout &lt;&lt; endl;
+    &#125;
+&#125;
 
 int main()
 &#123;
-int prev[MAX] = &#123;0&#125;;
-int dist[MAX] = &#123;0&#125;;
-int path[MAX][MAX] = &#123;0&#125;; // 用于保存 floyd 路径
-int floy[MAX][MAX] = &#123;0&#125;; // 用于保存 floyd 长度
-char vexs[] = &#123;&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;H&#39;, &#39;I&#39;&#125;;
-int matrix[][9] = &#123;
-/_A_//_B_//_C_//_D_//_E_//_F_//_G_//_H_//_I_/
-/_A 西门_/ &#123; 0, 615, 435, 210, 790, INF, INF, INF, INF&#125;,
-/_B550 教室_/ &#123; 615, 0, 144, 620, 380, 822, INF, INF, INF&#125;,
-/_C 文宗楼_/ &#123; 435, 144, 0, INF, 265, INF, INF, INF, INF&#125;,
-/_D 二餐_/ &#123; 210, 620, INF, 0, 480, INF, INF, INF, 170&#125;,
-/_E 图书馆_/ &#123; 790, 380, 265, 480, 0, 620, 735, 310, 700&#125;,
-/_F 北门_/ &#123; INF, 822, INF, INF, 620, 0, 500, INF, INF&#125;,
-/_G 体育馆_/ &#123; INF, INF, INF, INF, 735, 500, 0, 556, INF&#125;,
-/_H 一餐_/ &#123; INF, INF, INF, INF, 310, INF, 556, 0, 420&#125;,
-/_I16 号楼_/ &#123; INF, INF, INF, 170, 700, INF, INF, 420, 0&#125;&#125;;
-int vlen = sizeof(vexs)/sizeof(vexs[0]);
-MatrixUDG\* pG;
+    int prev[MAX] = &#123;0&#125;;
+    int dist[MAX] = &#123;0&#125;;
+    int path[MAX][MAX] = &#123;0&#125;;    // 用于保存floyd路径
+    int floy[MAX][MAX] = &#123;0&#125;;    // 用于保存floyd长度
+    char vexs[] = &#123;&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;H&#39;, &#39;I&#39;&#125;;
+    int matrix[][9] = &#123;
+                      /*A*//*B*//*C*//*D*//*E*//*F*//*G*//*H*//*I*/
+      /*A西门*/     &#123;   0,  615, 435, 210, 790,  INF,  INF, INF, INF&#125;,
+      /*B550教室*/  &#123; 615,   0,  144, 620, 380,   822, INF, INF, INF&#125;,
+      /*C文宗楼*/   &#123; 435,  144,   0,   INF,   265,   INF, INF, INF, INF&#125;,
+      /*D二餐*/     &#123; 210, 620,   INF,   0,   480, INF, INF, INF, 170&#125;,
+      /*E图书馆*/   &#123; 790, 380,   265,   480,   0,   620,   735, 310, 700&#125;,
+      /*F北门*/     &#123; INF, 822,   INF,   INF,   620,   0,   500, INF, INF&#125;,
+      /*G体育馆*/   &#123; INF, INF,   INF,   INF,   735,   500,   0, 556, INF&#125;,
+      /*H一餐*/     &#123;  INF,   INF,   INF, INF,   310,   INF,   556, 0, 420&#125;,
+      /*I16号楼*/   &#123;  INF, INF, INF, 170,   700,   INF,   INF, 420, 0&#125;&#125;;
+    int vlen = sizeof(vexs)/sizeof(vexs[0]);
+    MatrixUDG* pG;
 
     // 自定义&quot;图&quot;(输入矩阵队列)
     //pG = new MatrixUDG();
@@ -1035,11 +997,9 @@ MatrixUDG\* pG;
     pG-&gt;floyd(path, floy);
 
     return 0;
-
 &#125;
 </code></pre>
-<p id="890d57e51a7141565ace3003b56e24c7" class="ne-p"><br></p><h2 id="UcdRQ"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="5086d9c56dadd125ba405e10f6379b06"><a href="https://houbb.github.io/2020/01/23/data-struct-learn-03-graph-dijkstra" data-href="https://houbb.github.io/2020/01/23/data-struct-learn-03-graph-dijkstra" target="_blank" class="ne-link"><span class="ne-text">图最短路径算法之迪杰斯特拉算法（Dijkstra）</span></a></li><li id="97fadfb9fac663e518e85ca92e948634"><a href="https://www.cnblogs.com/skywang12345/p/3711526.html" data-href="https://www.cnblogs.com/skywang12345/p/3711526.html" target="_blank" class="ne-link"><span class="ne-text">Floyd 算法(二)之 C++详解</span></a></li></ul></div>
-
+<p id="890d57e51a7141565ace3003b56e24c7" class="ne-p"><br></p><h2 id="UcdRQ"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="5086d9c56dadd125ba405e10f6379b06"><a href="https://houbb.github.io/2020/01/23/data-struct-learn-03-graph-dijkstra" data-href="https://houbb.github.io/2020/01/23/data-struct-learn-03-graph-dijkstra" target="_blank" class="ne-link"><span class="ne-text">图最短路径算法之迪杰斯特拉算法（Dijkstra）</span></a></li><li id="97fadfb9fac663e518e85ca92e948634"><a href="https://www.cnblogs.com/skywang12345/p/3711526.html" data-href="https://www.cnblogs.com/skywang12345/p/3711526.html" target="_blank" class="ne-link"><span class="ne-text">Floyd算法(二)之 C++详解</span></a></li></ul></div>
 </div>
 
      

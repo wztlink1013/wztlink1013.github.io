@@ -9,13 +9,13 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="仓库文件夹备份name: CIon: [watch]jobs:build:runs-on: ubuntu-lateststeps: - uses: actions/checkout@v2 - name: 配置 Gitrun: |git config --global user.name &amp;#39;w" />
+    <meta name="description" content="仓库文件夹备份name: CIon: [watch]jobs:  build:    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v2    - name: 配置Git      run: |         git co" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="GitHub Actions代码汇总 | 尼采般地抒情" />
     <meta property="og:url" content="https://www.wztlink1013.com/blog/uwpbn0/" />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="仓库文件夹备份name: CIon: [watch]jobs:build:runs-on: ubuntu-lateststeps: - uses: actions/checkout@v2 - name: 配置 Gitrun: |git config --global user.name &amp;#39;w" /> 
+    <meta property="og:description" content="仓库文件夹备份name: CIon: [watch]jobs:  build:    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v2    - name: 配置Git      run: |         git co" /> 
     <!-- 解决语雀图片不显示 -->
     <meta name="referrer" content="no-referrer" />
     <!-- FIXME: 使用base64转义 -->
@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -209,7 +209,7 @@
         <i class="fa fa-list" aria-hidden="true"></i>
         <span>目录</span>
     </div>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TEpBv"><span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MJWMh"><span class="toc-text">仓库文件夹备份</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vFzCL"><span class="toc-text">博客 CICD 腾讯云函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#b6DTs"><span class="toc-text">Python2.7 执行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#z3oLj"><span class="toc-text">触发器设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wQGMQ"><span class="toc-text">博客CICD阿里云函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#32bJh"><span class="toc-text">Python3执行环境</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TEpBv"><span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MJWMh"><span class="toc-text">仓库文件夹备份</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vFzCL"><span class="toc-text">博客CICD腾讯云函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#b6DTs"><span class="toc-text">Python2.7执行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#z3oLj"><span class="toc-text">触发器设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wQGMQ"><span class="toc-text">博客CICD阿里云函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#32bJh"><span class="toc-text">Python3执行环境</span></a></li></ol></li></ol>
 </div>
 <div class="search_box">
     <div class="search">
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -322,41 +322,43 @@
   <!doctype html><div class="lake-content" typography="classic"><h2 id="TEpBv"></h2><h2 id="MJWMh"><span class="ne-text">仓库文件夹备份</span></h2>
 
 <pre><code class="yaml">name: CI
-
 on: [watch]
 jobs:
-build:
-runs-on: ubuntu-latest
-steps: - uses: actions/checkout@v2 - name: 配置 Git
-run: |
-git config --global user.name &#39;wztlink1013&#39;
-git config --global user.email &#39;2550374815@qq.com&#39; - name: 在云端进行复制文件夹操作
-env:
-Github_Token: $&#123;&#123; secrets.TOKEN_GITHUBAPI &#125;&#125;
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 配置Git
+      run: | 
+        git config --global user.name &#39;wztlink1013&#39; 
+        git config --global user.email &#39;2550374815@qq.com&#39;
+    - name: 在云端进行复制文件夹操作
+      env:
+        Github_Token: $&#123;&#123; secrets.TOKEN_GITHUBAPI &#125;&#125;
       run: | 
         git clone https://$&#123;Github_Token&#125;@github.com/wztlink1013/website-source website-source
-cd website-source
-cp -r ./Secret 文集/ ./backup/
-git status
-git add .
-git commit -m &quot;backup&quot;
-git push --force --quiet &quot;https://$&#123;Github_Token&#125;@github.com/wztlink1013/website-source&quot; master:master
+        cd website-source
+        cp -r ./Secret文集/ ./backup/
+        git status
+        git add .
+        git commit -m &quot;backup&quot;
+        git push --force --quiet &quot;https://$&#123;Github_Token&#125;@github.com/wztlink1013/website-source&quot;  master:master
 </code></pre>
-<h2 id="vFzCL"><span class="ne-text">博客 CICD 腾讯云函数</span></h2><h3 id="b6DTs"><span class="ne-text">Python2.7 执行环境</span></h3>
+<h2 id="vFzCL"><span class="ne-text">博客CICD腾讯云函数</span></h2><h3 id="b6DTs"><span class="ne-text">Python2.7执行环境</span></h3>
 
-<pre><code class="python"># -_- coding: utf8 -_-
+<pre><code class="python"># -*- coding: utf8 -*-
 import requests
 
 def main_handler(event, context):
-r = requests.post(&quot;https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;,
-json=&#123;&#39;event_type&#39;: &quot;run-it&quot;&#125;,
-headers = &#123;&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
-&#39;Content-Type&#39;: &#39;application/json&#39;,
-&#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
-&#39;Authorization&#39;: &#39;token ****\*\*****&#39;&#125;)
+    r = requests.post(&quot;https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;,
+    json=&#123;&#39;event_type&#39;: &quot;run-it&quot;&#125;,
+    headers = &#123;&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
+              &#39;Content-Type&#39;: &#39;application/json&#39;,
+              &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
+              &#39;Authorization&#39;: &#39;token **********&#39;&#125;)
 
     if r.status_code == 204:
-        return &quot;This&#39;s OK!&quot;
+        return &quot;This&#39;s OK!&quot; 
     else:
         return r.status_code
 </code></pre>
@@ -369,22 +371,21 @@ import requests
 OK = b&#39;ok\n&#39;
 
 def handler(environ, start_response):
-status = &#39;200 OK&#39;
-response_headers = [(&#39;Content-type&#39;, &#39;text/plain&#39;)]
-sync_yuque()
-start_response(status, response_headers)
-return [OK]
+    status = &#39;200 OK&#39;
+    response_headers = [(&#39;Content-type&#39;, &#39;text/plain&#39;)]
+    sync_yuque()
+    start_response(status, response_headers)
+    return [OK]
 
 def sync_yuque():
-requests.post(&quot;https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;,
-json=&#123;&#39;event_type&#39;: &quot;run-it&quot;&#125;,
-headers=&#123;&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
-&#39;Content-Type&#39;: &#39;application/json&#39;,
-&#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
-&#39;Authorization&#39;: &#39;token ****\*****&#39;&#125;)
+    requests.post(&quot;https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;,
+    json=&#123;&#39;event_type&#39;: &quot;run-it&quot;&#125;,
+    headers=&#123;&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
+              &#39;Content-Type&#39;: &#39;application/json&#39;,
+              &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
+              &#39;Authorization&#39;: &#39;token *********&#39;&#125;)
 </code></pre>
 <p id="c4750975c712ab801472e9f18b54d795" class="ne-p"><br></p></div>
-
 </div>
 
      
@@ -422,8 +423,8 @@ headers=&#123;&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
           
           
             <span class="prev_next_right">
-                <a href="/blog/740ee349dcf540d24c44fd240dbbc87f/">
-                    <b>CSS引入和特性</b>
+                <a href="/essay/c47f3d9a749fd0229277f9e9604e69a2/">
+                    <b>《世界上所有的夜晚》——那段难忘的谈吐</b>
                     <span class="tips">下一篇<i class="fa fa-arrow-right" aria-hidden="true"></i></span> 
                 </a>
             </span>

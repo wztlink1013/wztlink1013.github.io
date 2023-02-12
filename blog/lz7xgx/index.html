@@ -153,7 +153,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -267,7 +267,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1134
+    1135
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -326,16 +326,15 @@
   <!doctype html><div class="lake-content" typography="classic"><p id="u47c8e8b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1653573417541-44275572-06ee-41fc-ab54-6683e2510450.png" width="1960" id="ude4d9e36" class="ne-image"></p><h2 id="bAXj8"><span class="ne-text">一、JS代码执行机制</span></h2><h3 id="YbZ5l"><span class="ne-text">JavaScript的单线程</span></h3><p id="b785073ad0b4241b17542f923c68bd89" class="ne-p"><span class="ne-text">单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。</span></p><h3 id="IF7ut"><span class="ne-text">同步任务和异步任务</span></h3><p id="175d9c82a2892ec08ad8c92559dfbb4e" class="ne-p"><span class="ne-text">单线程导致的问题就是后面的任务等待前面任务完成，如果前面任务很耗时（比如读取网络数据），后面任务不得不一直等待！！</span></p><p id="7c83c84c2c296316bc3f3c1cf7756e53" class="ne-p"><span class="ne-text" style="color: #F5222D">为了解决这个问题，利用</span><strong><span class="ne-text" style="color: #F5222D">多核 CPU 的计算能力</span></strong><span class="ne-text" style="color: #F5222D">，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制。于是，JS 中出现了</span><strong><span class="ne-text" style="color: #F5222D">同步任务</span></strong><span class="ne-text" style="color: #F5222D">和</span><strong><span class="ne-text" style="color: #F5222D">异步任务</span></strong><span class="ne-text" style="color: #F5222D">。</span></p><p id="117599905a41f3d8f10cacf311ff90ce" class="ne-p"><br></p><p id="u09384c3b" class="ne-p"><span class="ne-text">JS中所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。</span></p><ul class="ne-ul"><li id="ub267d26f"><strong><span class="ne-text">【同步任务】</span></strong><span class="ne-text">指的是：在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；</span></li><li id="u8624ac1a"><strong><span class="ne-text">【异步任务】</span></strong><span class="ne-text">指的是：不进入主线程、而进入</span><strong><span class="ne-text">“任务队列”</span></strong><span class="ne-text">的任务，当主线程中的任务运行完了，才会将异步任务相关的回调函数从”任务队列”取出异步任务放入主线程执行。</span></li></ul><p id="ud8b66a6f" class="ne-p"><span class="ne-text">异步任务又分为宏任务和微任务</span></p><p id="u058036d7" class="ne-p"><span class="ne-text">宏任务</span></p><ul class="ne-ul"><li id="ud688c363"><span class="ne-text">主代码块</span></li><li id="uc0b63834"><span class="ne-text">setTimeout</span></li><li id="u5966078e"><span class="ne-text">setInterval</span></li></ul><p id="ub77f1171" class="ne-p"><span class="ne-text">微任务</span></p><ul class="ne-ul"><li id="u335c6cec"><span class="ne-text">process.nextTick ()</span></li><li id="u4793fdc8"><span class="ne-text">Promise</span></li><li id="u178c2fe5"><span class="ne-text">Object.observe</span></li></ul><h3 id="tDUjC"><span class="ne-text">事件循环机制</span></h3><p id="ub559a1fb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/webp/1484158/1657425246544-000fdb98-cba1-4b29-83eb-97efba576a6c.webp" width="1280" id="u7367241e" class="ne-image"></p><ol class="ne-ol"><li id="u4bb87b57"><span class="ne-text">碰到同步任务，就先执行执行栈中的同步任务</span></li></ol><div class="ne-quote"><p id="ucec7015d" class="ne-p"><span class="ne-text">遇到函数的嵌套调用就把函数压入栈内再依次“剥洋葱”</span></p></div><ol start="2" class="ne-ol"><li id="u7048d5b0"><span class="ne-text">碰到异步任务就压入任务队列（异步任务分为宏任务和微任务）</span></li><li id="u8ac10e88"><span class="ne-text">当前执行栈中的所有同步任务执行完毕，就将执行异步任务，异步任务执行原则“先微后宏”</span></li></ol><p id="u245b5a71" class="ne-p"><strong><span class="ne-text" style="color: #E8323C">由于主线程不断地重复获得任务、执行任务、再获取任务、再执行……，这种机制被称为事件循环（Event Loop）</span></strong></p><h3 id="CkHxP"><span class="ne-text">实例</span></h3>
 
 <pre><code class="javascript">const promise = new Promise((resolve, reject) =&gt; &#123;
-
-// new 先行
-console.log(1);
-resolve(&quot;success&quot;);
-console.log(2);
+  // new 先行
+  console.log(1);
+  resolve(&quot;success&quot;);
+  console.log(2);
 &#125;);
 promise.then((data) =&gt; &#123;
-// 微任务
-console.log(data);
-console.log(3);
+  // 微任务
+  console.log(data);
+  console.log(3);
 &#125;);
 console.log(4);
 </code></pre>
@@ -346,11 +345,11 @@ success
 3
 </code></pre>
 <pre><code class="javascript">const promise1 = new Promise((resolve, reject) =&gt; &#123;
-console.log(&quot;promise1&quot;);
-resolve(&quot;resolve1&quot;);
+  console.log(&quot;promise1&quot;);
+  resolve(&quot;resolve1&quot;);
 &#125;);
 const promise2 = promise1.then((res) =&gt; &#123;
-console.log(res);
+  console.log(res);
 &#125;);
 console.log(&quot;1&quot;, promise1);
 console.log(&quot;2&quot;, promise2);
@@ -363,243 +362,241 @@ resolve1
 <details class="lake-collapse"><summary id="u0950fa51"><span class="ne-text">测试代码</span></summary>
 
 <pre><code class="javascript">// setTimeout(()=&gt;&#123;
-// console.log(1)
-// &#125;,0)
+//     console.log(1)
+//   &#125;,0)
 // new Promise((resolve) =&gt;&#123;
-// console.log(2)
-// resolve()
-// &#125;).then(()=&gt;&#123; // 此时将 then 的内容放到微任务队列，然后执行同步代码 5
-// console.log(3)
-// &#125;).then(()=&gt;&#123;
-// console.log(4)
-// &#125;)
-// console.log(5)
+//     console.log(2)
+//     resolve()
+//   &#125;).then(()=&gt;&#123; // 此时将then的内容放到微任务队列，然后执行同步代码 5
+//     console.log(3)
+//   &#125;).then(()=&gt;&#123;
+//     console.log(4)
+//   &#125;)
+//   console.log(5)
 
 // setTimeout(() =&gt; &#123;
-// console.log(&#39;timer1&#39;);
+//     console.log(&#39;timer1&#39;);
+//     setTimeout(() =&gt; &#123;
+//       console.log(&#39;timer3&#39;)
+//     &#125;, 0)
+//   &#125;, 0)
 // setTimeout(() =&gt; &#123;
-// console.log(&#39;timer3&#39;)
-// &#125;, 0)
-// &#125;, 0)
-// setTimeout(() =&gt; &#123;
-// console.log(&#39;timer2&#39;)
-// &#125;, 0)
+//     console.log(&#39;timer2&#39;)
+//   &#125;, 0)
 // console.log(&#39;start&#39;)
 
 // setTimeout(() =&gt; &#123;
-// console.log(&#39;timer1&#39;);
-// Promise.resolve().then(() =&gt; &#123;
-// console.log(&#39;promise&#39;)
-// &#125;)
-// &#125;, 0)
+//     console.log(&#39;timer1&#39;);
+//     Promise.resolve().then(() =&gt; &#123;
+//       console.log(&#39;promise&#39;)
+//     &#125;)
+//   &#125;, 0)
 // setTimeout(() =&gt; &#123;
-// console.log(&#39;timer2&#39;)
-// &#125;, 0)
+//     console.log(&#39;timer2&#39;)
+//   &#125;, 0)
 // console.log(&#39;start&#39;)
 
 // const first = () =&gt; (new Promise((resolve, reject) =&gt; &#123;
-// console.log(3)
+//     console.log(3)
 
-// let p = new Promise((resolve, reject) =&gt; &#123;
-// console.log(7)
-// setTimeout(() =&gt; &#123;
-// console.log(5)
-// resolve(6) // 状态只会改变一次
-// &#125;, 0)
-// resolve(1)
-// &#125;)
+//     let p = new Promise((resolve, reject) =&gt; &#123;
+//       console.log(7)
+//       setTimeout(() =&gt; &#123;
+//         console.log(5)
+//         resolve(6) // 状态只会改变一次
+//       &#125;, 0)
+//       resolve(1)
+//     &#125;)
 
-// resolve(2)
-// p.then((arg) =&gt; &#123;
-// console.log(arg)
-// &#125;)
-// &#125;))
+//     resolve(2)
+//     p.then((arg) =&gt; &#123;
+//       console.log(arg)
+//     &#125;)
+//   &#125;))
 
 // first().then((arg) =&gt; &#123;
-// console.log(arg)
-// &#125;)
+//     console.log(arg)
+//   &#125;)
 
-// console.log(4) // 在 1 2 之前执行，此时 1 2 都在微任务队列里面
+// console.log(4) // 在1 2 之前执行，此时1 2都在微任务队列里面
 
 // setTimeout(() =&gt; &#123;
-// console.log(&quot;0&quot;)
-// &#125;, 0)
+//     console.log(&quot;0&quot;)
+//   &#125;, 0)
 
 // new Promise((resolve,reject)=&gt;&#123;
-// console.log(&quot;1&quot;)
-// resolve()
-// &#125;).then(()=&gt;&#123; // then 碰到 then，就将其全部放到微任务队列，再细致考虑
-// console.log(&quot;2&quot;)
-// new Promise((resolve,reject)=&gt;&#123;
-// console.log(&quot;3&quot;)
-// resolve()
-// &#125;).then(()=&gt;&#123;
-// console.log(&quot;4&quot;) // 先 5 后 4 “队列”
-// &#125;).then(()=&gt;&#123;
-// console.log(&quot;5&quot;)
-// &#125;)
-// &#125;).then(()=&gt;&#123;
-// console.log(&quot;6&quot;)
-// &#125;)
+//     console.log(&quot;1&quot;)
+//     resolve()
+//   &#125;).then(()=&gt;&#123; // then碰到then，就将其全部放到微任务队列，再细致考虑
+//     console.log(&quot;2&quot;)
+//     new Promise((resolve,reject)=&gt;&#123;
+//       console.log(&quot;3&quot;)
+//       resolve()
+//     &#125;).then(()=&gt;&#123;
+//       console.log(&quot;4&quot;) // 先5后4 “队列”
+//     &#125;).then(()=&gt;&#123;
+//       console.log(&quot;5&quot;)
+//     &#125;)
+//   &#125;).then(()=&gt;&#123;
+//     console.log(&quot;6&quot;)
+//   &#125;)
 
 // new Promise((resolve,reject)=&gt;&#123;
-// console.log(&quot;7&quot;)
-// resolve() //2
-// &#125;).then(()=&gt;&#123;
-// console.log(&quot;8&quot;)
-// &#125;)
+//     console.log(&quot;7&quot;)
+//     resolve() //2
+//   &#125;).then(()=&gt;&#123;
+//     console.log(&quot;8&quot;)
+//   &#125;)
 
 // Promise.resolve().then(() =&gt; &#123;
-// console.log(&#39;promise1&#39;);
-// const timer2 = setTimeout(() =&gt; &#123;
-// console.log(&#39;timer2&#39;)
-// &#125;, 0)
-// &#125;);
+//     console.log(&#39;promise1&#39;);
+//     const timer2 = setTimeout(() =&gt; &#123;
+//       console.log(&#39;timer2&#39;)
+//     &#125;, 0)
+//   &#125;);
 
 // const timer1 = setTimeout(() =&gt; &#123;
-// console.log(&#39;timer1&#39;)
-// Promise.resolve().then(() =&gt; &#123;
-// console.log(&#39;promise2&#39;)
-// &#125;)
-// &#125;, 0)
+//     console.log(&#39;timer1&#39;)
+//     Promise.resolve().then(() =&gt; &#123;
+//       console.log(&#39;promise2&#39;)
+//     &#125;)
+//   &#125;, 0)
 
 // console.log(&#39;start&#39;);
 
 // const promise1 = new Promise((resolve, reject) =&gt; &#123;
-// setTimeout(() =&gt; &#123;
-// resolve(&#39;success&#39;)
-// &#125;, 1000)
-// &#125;)
+//     setTimeout(() =&gt; &#123;
+//       resolve(&#39;success&#39;)
+//     &#125;, 1000)
+//   &#125;)
 // const promise2 = promise1.then(() =&gt; &#123;
-// throw new Error(&#39;error!!!&#39;)
-// &#125;)
+//     throw new Error(&#39;error!!!&#39;)
+//   &#125;)
 
 // console.log(&#39;promise1&#39;, promise1)
 // console.log(&#39;promise2&#39;, promise2)
 
 // setTimeout(() =&gt; &#123;
-// console.log(&#39;promise1&#39;, promise1)
-// console.log(&#39;promise2&#39;, promise2)
+//     console.log(&#39;promise1&#39;, promise1)
+//     console.log(&#39;promise2&#39;, promise2)
 // &#125;, 2000)
 </code></pre>
-</details><h2 id="TmnIc"><span class="ne-text">异步编程</span></h2><ul class="ne-ul"><li id="ub668edc1"><span class="ne-text">参照这里面的题来测验：</span><a target="_blank" rel="noopener" href="https://juejin.cn/post/7050637649123475487" data-href="https://juejin.cn/post/7050637649123475487" class="ne-link"><span class="ne-text">靠做题 📝 来掌握 Promise/async/await</span></a></li><li id="u81ed278c"><span class="ne-text"></span><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/554682475/answer/2759371197" data-href="https://www.zhihu.com/question/554682475/answer/2759371197" class="ne-link"><span class="ne-text">请问为啥前端现在喜欢用 await 了？ - siki 学院的回答 - 知乎</span></a></li></ul><h3 id="UtGum"><span class="ne-text">Promise</span></h3><ul class="ne-tl"><li checked="true" id="u91c55651"><span class="ne-text">理解并能准确判断代码执行时机</span></li></ul><details class="lake-collapse"><summary id="u97ab30cf"><span class="ne-text">测试代码</span></summary>
+</details><h2 id="TmnIc"><span class="ne-text">异步编程</span></h2><ul class="ne-ul"><li id="ub668edc1"><span class="ne-text">参照这里面的题来测验：</span><a target="_blank" rel="noopener" href="https://juejin.cn/post/7050637649123475487" data-href="https://juejin.cn/post/7050637649123475487" class="ne-link"><span class="ne-text">靠做题📝来掌握Promise/async/await</span></a></li><li id="u81ed278c"><span class="ne-text"></span><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/554682475/answer/2759371197" data-href="https://www.zhihu.com/question/554682475/answer/2759371197" class="ne-link"><span class="ne-text">请问为啥前端现在喜欢用await了？ - siki学院的回答 - 知乎</span></a></li></ul><h3 id="UtGum"><span class="ne-text">Promise</span></h3><ul class="ne-tl"><li checked="true" id="u91c55651"><span class="ne-text">理解并能准确判断代码执行时机</span></li></ul><details class="lake-collapse"><summary id="u97ab30cf"><span class="ne-text">测试代码</span></summary>
 
-<pre><code class="javascript">/\*\*
-
-- Promise：resolve reject then catch finally
-  \*/
-  // let p1 = new Promise((resolve, reject) =&gt; &#123;
-  // setTimeout(() =&gt; &#123;
-  // resolve(&#39;success&#39;)
-  // &#125;,1000)
-  // &#125;)
-
-// let p2 = new Promise((resolve, reject) =&gt; &#123;
-// setTimeout(() =&gt; &#123;
-// reject(&#39;failed&#39;)
-// &#125;, 500)
-// &#125;)
-
-// Promise.race([p1, p2]).then((result) =&gt; &#123;
-// console.log(result)
-// &#125;).catch((error) =&gt; &#123;
-// console.log(error) // 打开的是 &#39;failed&#39;
+<pre><code class="javascript">/**
+ * Promise：resolve reject then catch finally
+ */
+// let p1 = new Promise((resolve, reject) =&gt; &#123;
+//     setTimeout(() =&gt; &#123;
+//       resolve(&#39;success&#39;)
+//     &#125;,1000)
+//   &#125;)
+  
+//   let p2 = new Promise((resolve, reject) =&gt; &#123;
+//     setTimeout(() =&gt; &#123;
+//       reject(&#39;failed&#39;)
+//     &#125;, 500)
+//   &#125;)
+  
+//   Promise.race([p1, p2]).then((result) =&gt; &#123;
+//     console.log(result)
+//   &#125;).catch((error) =&gt; &#123;
+//     console.log(error)  // 打开的是 &#39;failed&#39;
 // &#125;)
 
 // function test(resolve, reject) &#123;
-// let timeOut = Math.random() _ 2;
-// console.log(&#39;set timeout to: &#39; + timeOut + &#39; seconds.&#39;);
-// setTimeout(function () &#123;
-// if (timeOut &lt; 1) &#123;
-// console.log(&#39;call resolve()...&#39;);
-// resolve(&#39;200 OK&#39;);
-// &#125;
-// else &#123;
-// console.log(&#39;call reject()...&#39;);
-// reject(&#39;timeout in &#39; + timeOut + &#39; seconds.&#39;);
-// &#125;
-// &#125;, timeOut _ 1000);
+//   let timeOut = Math.random() * 2;
+//   console.log(&#39;set timeout to: &#39; + timeOut + &#39; seconds.&#39;);
+//   setTimeout(function () &#123;
+//       if (timeOut &lt; 1) &#123;
+//         console.log(&#39;call resolve()...&#39;);
+//         resolve(&#39;200 OK&#39;);
+//       &#125;
+//       else &#123;
+//         console.log(&#39;call reject()...&#39;);
+//         reject(&#39;timeout in &#39; + timeOut + &#39; seconds.&#39;);
+//       &#125;
+//   &#125;, timeOut * 1000);
 // &#125;
 
 // let p1 = new Promise(test);
 // let p2 = p1.then(function (result) &#123;
-// console.log(&#39;成功：&#39; + result);
+//     console.log(&#39;成功：&#39; + result);
 // &#125;);
 // let p3 = p2.catch(function (reason) &#123;
-// console.log(&#39;失败：&#39; + reason);
+//     console.log(&#39;失败：&#39; + reason);
 // &#125;);
 
 // function test(resolve, reject) &#123;
-// let timeOut = Math.random() _ 2;
-// console.log(&#39;set timeout to: &#39; + timeOut + &#39; seconds.&#39;);
-// setTimeout(function () &#123;
-// if (timeOut &lt; 1) &#123;
-// console.log(&#39;call resolve()...&#39;);
-// resolve(&#39;200 OK&#39;);
-// &#125;
-// else &#123;
-// console.log(&#39;call reject()...&#39;);
-// reject(&#39;timeout in &#39; + timeOut + &#39; seconds.&#39;);
-// &#125;
-// &#125;, timeOut _ 1000);
+//   let timeOut = Math.random() * 2;
+//   console.log(&#39;set timeout to: &#39; + timeOut + &#39; seconds.&#39;);
+//   setTimeout(function () &#123;
+//       if (timeOut &lt; 1) &#123;
+//         console.log(&#39;call resolve()...&#39;);
+//         resolve(&#39;200 OK&#39;);
+//       &#125;
+//       else &#123;
+//         console.log(&#39;call reject()...&#39;);
+//         reject(&#39;timeout in &#39; + timeOut + &#39; seconds.&#39;);
+//       &#125;
+//   &#125;, timeOut * 1000);
 // &#125;
 
 // new Promise(test)
 // .then(function (result) &#123;
-// console.log(&#39;成功：&#39; + result);
+//   console.log(&#39;成功：&#39; + result);
 // &#125;)
 // .catch(function (reason) &#123;
-// console.log(&#39;失败：&#39; + reason);
+//   console.log(&#39;失败：&#39; + reason);
 // &#125;)
 
 // const promise = new Promise((resolve, reject) =&gt; &#123;
-// reject(&quot;error&quot;);
-// resolve(&quot;success2&quot;); // 需要 return 才能传递结果
-// &#125;);
-// promise.then(res =&gt; &#123;
-// console.log(&quot;then1: &quot;, res); // 需要 return 才能往下传递结果
-// &#125;).then(res =&gt; &#123;
-// console.log(&quot;then2: &quot;, res);
-// &#125;).catch(err =&gt; &#123;
-// console.log(&quot;catch: &quot;, err);
-// &#125;).then(res =&gt; &#123;
-// console.log(&quot;then3: &quot;, res); // undefined catch 也会返回 promise 对象
-// &#125;)
+//     reject(&quot;error&quot;);
+//     resolve(&quot;success2&quot;); // 需要return才能传递结果
+//   &#125;);
+//   promise.then(res =&gt; &#123;
+//       console.log(&quot;then1: &quot;, res); // 需要return才能往下传递结果
+//   &#125;).then(res =&gt; &#123;
+//       console.log(&quot;then2: &quot;, res);
+//   &#125;).catch(err =&gt; &#123;
+//       console.log(&quot;catch: &quot;, err);
+//   &#125;).then(res =&gt; &#123;
+//       console.log(&quot;then3: &quot;, res); // undefined catch也会返回promise对象
+//   &#125;)
 
 // Promise.resolve(1)
-// .then(res =&gt; &#123;
-// console.log(res);
-// return 2; // return 2 会被包装成 resolve(2)
-// &#125;)
-// .catch(err =&gt; &#123;
-// return 3;
-// &#125;)
-// .then(res =&gt; &#123;
-// console.log(res);
-// &#125;);
+//   .then(res =&gt; &#123;
+//     console.log(res);
+//     return 2; // return 2会被包装成resolve(2)
+//   &#125;)
+//   .catch(err =&gt; &#123;
+//     return 3;
+//   &#125;)
+//   .then(res =&gt; &#123;
+//     console.log(res);
+//   &#125;);
 
 // const promise = new Promise((resolve, reject) =&gt; &#123;
-// setTimeout(() =&gt; &#123;
-// console.log(&#39;timer&#39;)
-// resolve(&#39;success&#39;)
-// &#125;, 1000)
-// &#125;)
-// const start = Date.now();
-// promise.then(res =&gt; &#123;
-// console.log(res, Date.now() - start)
-// &#125;)
-// promise.then(res =&gt; &#123;
-// console.log(res, Date.now() - start) // 两个字几乎一样，状态一旦改变，就不会在变动了
-// &#125;)
+//     setTimeout(() =&gt; &#123;
+//       console.log(&#39;timer&#39;)
+//       resolve(&#39;success&#39;)
+//     &#125;, 1000)
+//   &#125;)
+//   const start = Date.now();
+//   promise.then(res =&gt; &#123;
+//     console.log(res, Date.now() - start)
+//   &#125;)
+//   promise.then(res =&gt; &#123;
+//     console.log(res, Date.now() - start) // 两个字几乎一样，状态一旦改变，就不会在变动了
+//   &#125;)
 
-// Promise.resolve().then(() =&gt; &#123;
-// return new Error(&#39;error!!!&#39;) // 被包裹成了 return Promise.resolve(new Error(&#39;error!!!&#39;))
-// &#125;).then(res =&gt; &#123;
-// console.log(&quot;then: &quot;, res)
-// &#125;).catch(err =&gt; &#123;
-// console.log(&quot;catch: &quot;, err)
-// &#125;)
-
+//   Promise.resolve().then(() =&gt; &#123;
+//     return new Error(&#39;error!!!&#39;) // 被包裹成了return Promise.resolve(new Error(&#39;error!!!&#39;))
+//   &#125;).then(res =&gt; &#123;
+//     console.log(&quot;then: &quot;, res)
+//   &#125;).catch(err =&gt; &#123;
+//     console.log(&quot;catch: &quot;, err)
+//   &#125;)
 </code></pre>
 <p id="u3de07eae" class="ne-p"><br></p>
 
@@ -639,17 +636,16 @@ resolve1
 
 // runAsync1()
 // .then(function(data)&#123;
-// console.log(data);
-// return runAsync2();
+//     console.log(data);
+//     return runAsync2();
 // &#125;)
 // .then(function(data)&#123;
-// console.log(data);
-// return runAsync3();
+//     console.log(data);
+//     return runAsync3();
 // &#125;)
 // .then(function(data)&#123;
-// console.log(data);
+//     console.log(data);
 // &#125;);
-
 </code></pre>
 <p id="uda568f1f" class="ne-p"><br></p>
 
@@ -664,36 +660,35 @@ resolve1
 // Promise.all([runAsync(1), runAsync(2), runAsync(3)]) // 参数数组都是promise实例，如果不是强制包装
 //   .then(res =&gt; console.log(res))
 
-// function runAsync (x) &#123;
-// const p = new Promise(r =&gt; setTimeout(() =&gt; r(x, console.log(x)), 1000))
-// return p
-// &#125;
-// function runReject (x) &#123;
-// const p = new Promise((res, rej) =&gt; setTimeout(() =&gt; rej(`Error: $&#123;x&#125;`, console.log(x)), 1000 \* x))
-// return p
-// &#125;
-// Promise.all([runAsync(1), runReject(4), runAsync(3), runReject(2)])
-// .then(res =&gt; console.log(res))
-// .catch(err =&gt; console.log(err))
+//   function runAsync (x) &#123;
+//     const p = new Promise(r =&gt; setTimeout(() =&gt; r(x, console.log(x)), 1000))
+//     return p
+//   &#125;
+//   function runReject (x) &#123;
+//     const p = new Promise((res, rej) =&gt; setTimeout(() =&gt; rej(`Error: $&#123;x&#125;`, console.log(x)), 1000 * x))
+//     return p
+//   &#125;
+//   Promise.all([runAsync(1), runReject(4), runAsync(3), runReject(2)])
+//     .then(res =&gt; console.log(res))
+//     .catch(err =&gt; console.log(err))
 
 // let p1 = new Promise((resolve, reject) =&gt; &#123;
-// setTimeout(() =&gt; &#123;
-// resolve(&#39;success&#39;)
-// &#125;,1000)
-// &#125;)
+//     setTimeout(() =&gt; &#123;
+//       resolve(&#39;success&#39;)
+//     &#125;,1000)
+//   &#125;)
 
-// let p2 = new Promise((resolve, reject) =&gt; &#123;
-// setTimeout(() =&gt; &#123;
-// reject(&#39;failed&#39;)
-// &#125;, 3000)
-// &#125;)
+//   let p2 = new Promise((resolve, reject) =&gt; &#123;
+//     setTimeout(() =&gt; &#123;
+//       reject(&#39;failed&#39;)
+//     &#125;, 3000)
+//   &#125;)
 
-// Promise.race([p1, p2]).then((result) =&gt; &#123;
-// console.log(result)
-// &#125;).catch((error) =&gt; &#123;
-// console.log(error) // 打开的是 &#39;success&#39;
+//   Promise.race([p1, p2]).then((result) =&gt; &#123;
+//     console.log(result)
+//   &#125;).catch((error) =&gt; &#123;
+//     console.log(error)  // 打开的是 &#39;success&#39;
 // &#125;)
-
 </code></pre>
 </details><ul class="ne-tl"><li id="u390413e0"><span class="ne-text">手写Promise api</span></li></ul><h3 id="zCwWK"><span class="ne-text">Async、await</span></h3><p id="u7526ecaf" class="ne-p"><span class="ne-text">await可以看成是Promise的语法糖（实际上是Generate的语法糖），效果和Promise的回调地狱一样，只是代码看起来好看点。</span></p><details class="lake-collapse"><summary id="u7781ab15"><span class="ne-text">测试代码</span></summary>
 
@@ -701,63 +696,62 @@ resolve1
  * async await
  */
 
-// async function fn () &#123;
-// // return await 123
-// // 等同于
-// return 123
-// &#125;
-// fn().then(res =&gt; console.log(res))
-// console.log(fn)
+//  async function fn () &#123;
+//     // return await 123
+//     // 等同于
+//     return 123
+//   &#125;
+//   fn().then(res =&gt; console.log(res))
+//   console.log(fn)
 
 // async function async1() &#123;
-// console.log(&quot;async1 start&quot;);
-// await async2();
-// console.log(&quot;async1 end&quot;);
-// &#125;
+//     console.log(&quot;async1 start&quot;);
+//     await async2();
+//     console.log(&quot;async1 end&quot;);
+//   &#125;
 // async function async2() &#123;
-// console.log(&quot;async2&quot;);
-// &#125;
+//     console.log(&quot;async2&quot;);
+//   &#125;
 // async1();
 // console.log(&#39;start&#39;)
 
 // async function async1() &#123;
-// console.log(&quot;async1 start&quot;);
-// await async2(); // 紧跟着 await 后面的语句相当于放到了 new Promise 中，下一行及之后的语句相当于放在 Promise.then 中
-// console.log(&quot;async1 end&quot;);
-// &#125;
+//     console.log(&quot;async1 start&quot;);
+//     await async2(); // 紧跟着await后面的语句相当于放到了new Promise中，下一行及之后的语句相当于放在Promise.then中
+//     console.log(&quot;async1 end&quot;);
+//   &#125;
 // async function async2() &#123;
-// setTimeout(() =&gt; &#123;
-// console.log(&#39;timer&#39;)
-// &#125;, 0)
-// console.log(&quot;async2&quot;);
-// &#125;
+//     setTimeout(() =&gt; &#123;
+//       console.log(&#39;timer&#39;)
+//     &#125;, 0)
+//     console.log(&quot;async2&quot;);
+//   &#125;
 // async1();
 // console.log(&quot;start&quot;
 
 // async function async1() &#123;
-// console.log(&quot;async1 start&quot;);
-// await async2();
-// console.log(&quot;async1 end&quot;);
-// setTimeout(() =&gt; &#123;
-// console.log(&#39;timer1&#39;)
-// &#125;, 0)
+//   console.log(&quot;async1 start&quot;);
+//   await async2();
+//   console.log(&quot;async1 end&quot;);
+//   setTimeout(() =&gt; &#123;
+//     console.log(&#39;timer1&#39;)
+//   &#125;, 0)
 // &#125;
 
 // async function async2() &#123;
-// setTimeout(() =&gt; &#123;
-// console.log(&#39;timer2&#39;)
-// &#125;, 0)
-// console.log(&quot;async2&quot;);
+//   setTimeout(() =&gt; &#123;
+//     console.log(&#39;timer2&#39;)
+//   &#125;, 0)
+//   console.log(&quot;async2&quot;);
 // &#125;
 
 // async1();
 
 // setTimeout(() =&gt; &#123;
-// console.log(&#39;timer3&#39;)
+//   console.log(&#39;timer3&#39;)
 // &#125;, 0)
 
 // console.log(&quot;start&quot;)
-
 </code></pre>
 </details><h3 id="X8bdj"><span class="ne-text">综合</span></h3>
 
@@ -773,29 +767,29 @@ async function a2() &#123;
 console.log(&#39;script start&#39;)
 
 setTimeout(() =&gt; &#123;
-console.log(&#39;setTimeout&#39;)
+  console.log(&#39;setTimeout&#39;)
 &#125;, 0)
 
 Promise.resolve().then(() =&gt; &#123;
-console.log(&#39;promise1&#39;)
+  console.log(&#39;promise1&#39;)
 &#125;)
 
 a1()
 
 let promise2 = new Promise(resolve =&gt; &#123;
-resolve(&#39;promise2.then&#39;)
-console.log(&#39;promise2&#39;)
+  resolve(&#39;promise2.then&#39;)
+  console.log(&#39;promise2&#39;)
 &#125;)
 
 promise2.then(res =&gt; &#123;
-console.log(res)
-Promise.resolve().then(() =&gt; &#123;
-console.log(&#39;promise3&#39;)
-&#125;)
+  console.log(res)
+  Promise.resolve().then(() =&gt; &#123;
+    console.log(&#39;promise3&#39;)
+  &#125;)
 &#125;)
 console.log(&#39;script end&#39;)
 
-/\*_ 第一次做错的结果
+/** 第一次做错的结果
 script start
 a1 start
 a2
@@ -806,9 +800,9 @@ script end
 promise2.then
 promise3
 setTimeout
-_/
+ */
 
-/\*_ 正确结果
+/** 正确结果
 script start
 a1 start
 a2
@@ -819,10 +813,9 @@ a1 end
 promise2.then
 promise3
 setTimeout
-_/
+ */
 </code></pre>
-<h2 id="AaYEl"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="ud7d904d0"><a href="https://juejin.cn/post/6844903832388894727" data-href="https://juejin.cn/post/6844903832388894727" target="_blank" class="ne-link"><span class="ne-text">理解 JavaScript 概念系列--异步任务</span></a></li><li id="uf13c38a9"><a href="https://juejin.cn/post/6844903760280420366" data-href="https://juejin.cn/post/6844903760280420366" target="_blank" class="ne-link"><span class="ne-text">JS 异步编程六种方案</span></a></li><li id="u6f67f941"><a target="_blank" rel="noopener" href="https://juejin.cn/post/6962312899960242213" data-href="https://juejin.cn/post/6962312899960242213" class="ne-link"><span class="ne-text">微任务/宏任务和同步/异步之间的关系</span></a></li><li id="u8a1e4f3c"><a href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" data-href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" target="_blank" class="ne-link"><span class="ne-text">大白话讲解 Promise（一）</span></a></li><li id="u4f9ab938"><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1kf4y1U7Ln" data-href="https://www.bilibili.com/video/BV1kf4y1U7Ln" class="ne-link"><span class="ne-text">2 分钟了解 JavaScript Event Loop | 面试必备</span></a></li><li id="u4c2350d7"><a target="_blank" rel="noopener" href="https://juejin.cn/post/7050637649123475487" data-href="https://juejin.cn/post/7050637649123475487" class="ne-link"><span class="ne-text">靠做题 📝 来掌握 Promise/async/await</span></a></li><li id="ufa03a3cb"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/nana-share/p/9187997.html" data-href="https://www.cnblogs.com/nana-share/p/9187997.html" class="ne-link"><span class="ne-text">javascript 异步操作，串形执行，并行执行 - 小苏打 00 - 博客园</span></a></li></ul></div>
-
+<h2 id="AaYEl"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="ud7d904d0"><a href="https://juejin.cn/post/6844903832388894727" data-href="https://juejin.cn/post/6844903832388894727" target="_blank" class="ne-link"><span class="ne-text">理解JavaScript概念系列--异步任务</span></a></li><li id="uf13c38a9"><a href="https://juejin.cn/post/6844903760280420366" data-href="https://juejin.cn/post/6844903760280420366" target="_blank" class="ne-link"><span class="ne-text">JS 异步编程六种方案</span></a></li><li id="u6f67f941"><a target="_blank" rel="noopener" href="https://juejin.cn/post/6962312899960242213" data-href="https://juejin.cn/post/6962312899960242213" class="ne-link"><span class="ne-text">微任务/宏任务和同步/异步之间的关系</span></a></li><li id="u8a1e4f3c"><a href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" data-href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" target="_blank" class="ne-link"><span class="ne-text">大白话讲解Promise（一）</span></a></li><li id="u4f9ab938"><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1kf4y1U7Ln" data-href="https://www.bilibili.com/video/BV1kf4y1U7Ln" class="ne-link"><span class="ne-text">2分钟了解 JavaScript Event Loop | 面试必备</span></a></li><li id="u4c2350d7"><a target="_blank" rel="noopener" href="https://juejin.cn/post/7050637649123475487" data-href="https://juejin.cn/post/7050637649123475487" class="ne-link"><span class="ne-text">靠做题📝来掌握Promise/async/await</span></a></li><li id="ufa03a3cb"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/nana-share/p/9187997.html" data-href="https://www.cnblogs.com/nana-share/p/9187997.html" class="ne-link"><span class="ne-text">javascript 异步操作，串形执行，并行执行 - 小苏打00 - 博客园</span></a></li></ul></div>
 </div>
 
      
