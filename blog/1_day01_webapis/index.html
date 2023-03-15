@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DOM元素操作 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="API和Web API和SDK文档：https://developer.mozilla.org/zh-CN/docs/Web/APIAPI（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="DOM元素操作 | 尼采般地抒情" />
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/1_day01_webapis/" />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="API和Web API和SDK文档：https://developer.mozilla.org/zh-CN/docs/Web/APIAPI（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问" /> 
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- FIXME: 使用base64转义 -->
+    <!-- <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360222-db94e8d0-f9a7-459d-8a24-88b745237bd5.png" /> -->
+    <meta property="og:image" content="https://www.wztlink1013.com/public/img/avatar.png" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- 引入jQuery -->
+    
+<script src="/public/js/plugins/jquery/3.6.0/jquery.min.js"></script>
+
+    
+<script src="/public/js/plugins/jquery-pjax/jquery.pjax.js"></script>
+
+    <!-- 引入highlight -->
+    
+<script src="/public/js/plugins/highlight/10.7.1/highlight.min.js"></script>
+
+    <!-- twikoo 评论文件 -->
+    
+<script src="/public/js/plugins/twikoo/1.6.7/twikoo.all.min.js"></script>
+
+    <!-- axios 文件 -->
+    
+<script src="/public/js/plugins/axios/1.0.0/axios.min.js"></script>
+
+    <!-- 打字特效 -->
+    
+<script src="/public/js/plugins/typed.js/2.0.11.js"></script>
+
+    <!-- APlayer -->
+    
+<link rel="stylesheet" href="/public/css/aplayer.css">
+
+    
+<script src="/public/js/plugins/aplayer/APlayer.min.js"></script>
+
+    <!-- MetingJS -->
+    
+<script src="/public/js/plugins/meting/Meting.min.js"></script>
+
+  <link rel="alternate" href="/atom.xml" title="尼采般地抒情" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="尼采般地抒情" type="application/rss+xml">
+</head>
+  <body>
+    <div id="lyrics">
+      <div class="bg_color"></div>
+<header class="header">
+  <!-- PC端 -->
+  <div class="header_pc">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+  </div>
+  <!-- 移动端 -->
+  <div class="header_app">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+      <div id="search_btn">
+        <i class="fa fa-search" aria-hidden="true" id="search_btn"></i>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 移动端抽屉 -->
+<div class="app_side_glass" id="app_side_glass"></div>
+<div class="app_side_content" id="app_side_content">
+  <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+  <div class="component clearfix music_box">
+  <h3>音乐盒</h3>
+  <div class="aplayer-box">
+    <meting-js
+      server="netease"
+      type="playlist"
+      id="8027485922"
+      theme="#9cf"
+      lrc-type="1"
+    ></meting-js>
+  </div>
+</div>
+
+  <!-- <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+ -->
+  <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+   
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+</div>
+
+<div class="global_button">
+  <div
+    title="顶部"
+    class="global_button_item"
+    id="go_top"
+    style="display: none"
+  >
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+  </div>
+  <!-- <div title="搜索" class="global_button_item" id="search_btn">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </div> -->
+  <div
+    title="评论"
+    class="global_button_item"
+    id="go_comments"
+    style="display: none"
+  >
+    <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+  </div>
+  
+  <div
+    title="目录"
+    class="global_button_item"
+    id="toc_btn"
+    style="display: block"
+  >
+    <i class="fa fa-list" aria-hidden="true"></i>
+  </div>
+  
+
+  <div title="夜间" class="global_button_item">
+    <i class="fa fa-adjust" aria-hidden="true"></i>
+  </div>
+  <div
+    title="分享"
+    class="global_button_item btn-default need-share-button-default need-share-button"
+    data-share-position="topLeft"
+  >
+    <i class="fa fa-share-alt" aria-hidden="true"></i>
+  </div>
+</div>
+
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#kXvnu"><span class="toc-text">API和Web API和SDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#93oSV"><span class="toc-text">DOM总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#aSkft"><span class="toc-text">获取元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#y6ztq"><span class="toc-text">getElementById</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iE8k5"><span class="toc-text">getElementsByTagName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lOixS"><span class="toc-text">getElementsByClassName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nv6PV"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AIV4u"><span class="toc-text">querySelector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qVXpe"><span class="toc-text">querySelectorAll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#49WPY"><span class="toc-text">获取body&#x2F;html对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QPRCY"><span class="toc-text">操作元素内容&#x2F;属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#NABhf"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hufij"><span class="toc-text">innerText和innerHTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6Ju71"><span class="toc-text">改变元素属性操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9e57k"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1fiqy"><span class="toc-text">element.style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ebUmt"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1tNkf"><span class="toc-text">element.className</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wqS45"><span class="toc-text">自定义元素属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#38TpP"><span class="toc-text">element.getAttribute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ju7l1"><span class="toc-text">element.setAttribute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bw0TQ"><span class="toc-text">element.removeAttribute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8H5MW"><span class="toc-text">Demo：tab栏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A5dLE"><span class="toc-text">element.dataset</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+    <div class="search">
+        <i class="fa fa-search search_icon" aria-hidden="true"></i> 
+        <input type="text" autocomplete="off" name="search" placeholder="请输入关键词" id="local-search-input">
+        <i class="fa fa-times search_close" aria-hidden="true"></i>
+    </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+  <div class="ct_left">
+    <div class="component clearfix blogger">
+  <div class="blogger-header-bg">
+    <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
+  </div>
+  <h3 class="blogger-title">尼采般地抒情</h3>
+  <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
+  <span class="blogger-descript"></span>
+</div>
+
+    <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+     
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+  </div>
+  <div class="ct_center">
+    <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>DOM元素操作</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <img src="/public/img/avatar.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2021-02-05
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/Web开发/">
+                        Web开发
+                    </a>
+                
+                    <a href="/categories/Web开发/JavaScript/">
+                        JavaScript
+                    </a>
+                
+                    <a href="/categories/Web开发/JavaScript/DOM/">
+                        DOM
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+    <div class="component article" id="article">
+  <!doctype html><div class="lake-content" typography="classic"><h2 id="kXvnu"><span class="ne-text">API和Web API和SDK</span></h2><ul class="ne-ul"><li id="u558b1200"><span class="ne-text">文档：</span><a href="https://developer.mozilla.org/zh-CN/docs/Web/API" data-href="https://developer.mozilla.org/zh-CN/docs/Web/API" target="_blank" class="ne-link"><span class="ne-text">https://developer.mozilla.org/zh-CN/docs/Web/API</span></a></li></ul><p id="46a55321a1895c69fde7aeab23a2c28b" class="ne-p"><br></p><div data-type="color2" class="ne-alert"><p id="5291c3b97996b679982429fc3397629f" class="ne-p" style="text-indent: 2em"><span class="ne-text">API（Application Programming Interface，应用程序编程接口）是一些预先定义的函数，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力，而又无需访问源码，无需理解其内部工作机制细节，只需直接调用使用即可。</span></p><p id="ub0b15aa9" class="ne-p" style="text-indent: 2em"><span class="ne-text">Web API 是浏览器提供的一套操作浏览器功能和页面元素的 API ( BOM 和 DOM )。</span></p><p id="u84e7cb00" class="ne-p" style="text-indent: 2em"><a href="https://www.zhihu.com/question/21691705" data-href="https://www.zhihu.com/question/21691705" target="_blank" class="ne-link"><span class="ne-text">https://www.zhihu.com/question/21691705</span></a></p></div><p id="u40e389be" class="ne-p"><br></p><h2 id="93oSV"><span class="ne-text">DOM总结</span></h2><p id="d2dc6ed3d0cf7e566d27b3c1e4796553" class="ne-p"><span class="ne-text">关于dom操作，我们主要针对于元素的操作。主要有创建、增、删、改、查、属性操作、事件操作。</span></p><p id="e36c44b913505a074d5c2745fd5745ac" class="ne-p"><span class="ne-text">【1】创建</span></p><p id="4c7cd54fd8ba33513a77991fcd6544b4" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360222-db94e8d0-f9a7-459d-8a24-88b745237bd5.png" width="691" id="FDEjx" class="ne-image"></p><p id="9c3c4b00d6fd2ce9decc0d669bbf0f93" class="ne-p"><span class="ne-text">【2】增</span></p><p id="436b5b59f684285797cce52197a750d1" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360287-480d224a-a047-4ef5-8bba-92845d85b573.png" width="720" id="ITVoj" class="ne-image"></p><p id="bb9372eb5deae8f74ce73ee55ec42aeb" class="ne-p"><span class="ne-text">【3】删</span></p><p id="87d68c0fd85fae7f741af7d4d6778d1a" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360367-4e96254b-5fd8-4f7e-8fb3-29143718f08d.png" width="695" id="Y43N0" class="ne-image"></p><p id="4d144f96f196a9852cc6bd0e3ff55001" class="ne-p"><span class="ne-text">【4】改</span></p><p id="7a6028416e906114f423e37858dd2e3d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360436-7e94f916-24d1-4e97-84fe-6fc6ba6d68fb.png" width="731" id="Ex39g" class="ne-image"></p><p id="b062b8089a2b2862cea420f46547a800" class="ne-p"><span class="ne-text">【5】查</span></p><p id="8d43f07d6e7a91d895c47a6ad35de70d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360497-cfec4566-ac5b-46c6-995d-8db307167137.png" width="703" id="mmFdZ" class="ne-image"></p><p id="baa1abc359c4fffb9cbcdfa99aaf3ee7" class="ne-p"><span class="ne-text">【6】属性操作</span></p><p id="3f836afe6696cf03b355adb074be23f2" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518360564-6e2cf7dd-fa5e-48fe-bcdb-be69ea87065c.png" width="722" id="MIdFD" class="ne-image"></p><p id="f0172a463e96ea8908580ce1583d5829" class="ne-p"><span class="ne-text">【7】事件操作（重点）</span></p><h2 id="aSkft"><span class="ne-text">获取元素</span></h2><h3 id="y6ztq"><span class="ne-text">getElementById</span></h3><ul class="ne-ul"><li id="f1719c4402fcb59e9d3cf73ec34ba38a"><span class="ne-text">语法：document.getElementById(id)</span></li><li id="12217790a54ad508927771e6a7efdb6c"><span class="ne-text">作用：根据ID获取元素对象</span></li><li id="a23e203313e0d34ba7bf8c0bf1d839e6"><span class="ne-text">参数：id值，区分大小写的字符串</span></li><li id="3be95e2cc1b6817bda44d4fabb3d1d92"><span class="ne-text">返回值：元素对象 或 null</span></li></ul><p id="461243afee13281b53efe612e95b95d6" class="ne-p"><strong><span class="ne-text"></span></strong></p>
+
+<pre><code class="javascript">var test_id = document.getElementById(&#39;indexLogo&#39;);
+</code></pre>
+<p id="294ffa847e4baf68230cb7b07bbe1024" class="ne-p"><br></p><p id="3cb570bd77d18b6f22da38d9472c4acc" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616048539813-60fc22f6-0d07-482c-aaae-0227b1f55206.png" width="458" id="N8Ltb" class="ne-image"></p><h3 id="iE8k5"><span class="ne-text">getElementsByTagName</span></h3><ul class="ne-ul"><li id="569cbc6c9f38397aabc6b1f3c5f6fea3"><span class="ne-text">语法：document.getElementsByTagName('标签名') 或者 element.getElementsByTagName('标签名') </span></li><li id="a800fcae80700b9a1ba7a4cf1d64e137"><span class="ne-text">作用：根据标签名获取元素对象</span></li><li id="c257c843c80461ec8bc372fb600881b8"><span class="ne-text">参数：标签名</span></li><li id="a44919a3f9a2c3aae3b3ad67cadae8ec"><span class="ne-text">返回值：元素对象集合（伪数组，数组元素是元素对象）</span><strong><span class="ne-text"></span></strong></li></ul>
+
+<pre><code class="javascript">var test_tag = document.getElementsByTagName(&#39;p&#39;);
+</code></pre>
+<p id="40778211121366a71fcf19e632a0d747" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616048909454-bdfb7dbc-18e4-4449-abc6-800e87b42380.png" width="960" id="t8bGK" class="ne-image"></p><ul class="ne-ul"><li id="b34498ba8e1e1389a1109099ce7aaa2b"><span class="ne-text">getElementsByTagName()获取到是动态集合，即：当页面增加了标签，这个集合中也就增加了元素。</span></li><li id="07d484efcc0dcac5a6d9a9b02fed9ab6"><span class="ne-text">由上面的图可以知道，得到的不是一个对象，而是一个对象集合，所以要操作具体的一个p就要遍历，然后再进行操作（抑或是对其当作节点再进行操作）</span></li></ul><h3 id="lOixS"><span class="ne-text">getElementsByClassName</span></h3><h3 id="nv6PV"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049522946-8c892471-1b04-4b04-b56f-630420bdb654.png" width="960" id="Nlkk2" class="ne-image"></h3><h3 id="AIV4u"><span class="ne-text">querySelector</span></h3><p id="8f9179e82d91b48eb024cdac48bfb563" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049685312-55929307-c68b-4e1d-b6b5-1845c0d5a878.png" width="960" id="LgQYU" class="ne-image"></p><h3 id="qVXpe"><span class="ne-text">querySelectorAll</span></h3><p id="e6c4ba0c3da0bccddf51c8a37952abfe" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616049810063-ee5595dc-89bb-47cc-aa9a-c9446ed97d6f.png" width="960" id="KPxZC" class="ne-image"></p><ul class="ne-ul"><li id="ec916636cb33d1b8bb0ef59f878a566b"><span class="ne-text">如果是选择器，需要加符号 </span><code class="ne-code"><span class="ne-text">querySelectorAll('#box1')</span></code><span class="ne-text"> </span><strong><span class="ne-text"></span></strong></li></ul><h3 id="49WPY"><span class="ne-text">获取body/html对象</span></h3><p id="782093db7de09b389fac5ebf8f94ccda" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616050005999-ac944be2-9612-41ac-89f7-9fa04c4d3912.png" width="960" id="PNy3x" class="ne-image"></p><p id="818568300e29c7f77a38996b4784f6e7" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518355850-2e015c88-50b7-400e-9593-c7e21a9068b5.png" width="748" id="Z6YzO" class="ne-image"></p><h2 id="QPRCY"><span class="ne-text">操作元素内容/属性</span></h2><p id="231261464f3195f4bc5abf22621579ce" class="ne-p"><span class="ne-text">JavaScript的 DOM 操作可以改变网页内容、结构和样式，我们可以利用 DOM 操作元素来改变元素里面的内容、属性等。（注意：这些操作都是通过元素对象的属性实现的）</span></p><h4 id="NABhf" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518357274-e26496b9-3fdb-47de-85be-fd6aea949767.png" width="442" id="n2RiL" class="ne-image"></h4><h3 id="hufij"><span class="ne-text">innerText和innerHTML</span></h3><ul class="ne-ul"><li id="533564842a159c2f961d622684f8f626"><span class="ne-text">获取内容时的区别：innerText会去除空格和换行，而innerHTML会保留空格和换行</span></li><li id="c4044cc83ce8e36d708c42e5255f2e37"><span class="ne-text">设置内容时的区别：innerText不会识别html，而innerHTML会识别</span></li><li id="02a0603246a53e036ffbaacc4089267b"><span class="ne-text">小记：是属性，不是方法！要用赋值的形式，而不是带参数的形式</span></li></ul><p id="4f95198e0ef3a9d536ebc3577b7bd8b7" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053295394-7fe7d51d-3ce6-4f51-9898-9e0e62b207c4.png" width="960" id="JoltV" class="ne-image"></p><p id="2dcdbf74ff30faf3b96cdf4824622a6f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053546675-78ea1659-1dee-4b43-aa1a-82aad00e1795.png" width="960" id="t99V1" class="ne-image"></p><h3 id="6Ju71"><span class="ne-text">改变元素属性操作</span></h3><h3 id="9e57k"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053829361-6faff7b2-0d8f-41c6-b909-6b72ff3b5401.png" width="960" id="fZfug" class="ne-image"></h3><p id="600003b1cb57747b608f5712550f1236" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616054507713-8b717792-1d98-4477-a9e8-db7417b87f34.png" width="960" id="lu27B" class="ne-image"></p><h3 id="1fiqy"><span class="ne-text">element.style</span></h3><h3 id="ebUmt"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616053829361-6faff7b2-0d8f-41c6-b909-6b72ff3b5401.png" width="960" id="uXyKy" class="ne-image"></h3><ul class="ne-ul"><li id="e5f1f5c01ab77f9aa0bab0743b156bc7"><span class="ne-text">元素对象的style属性也是一个对象！</span></li><li id="c1c6acc991cf7cb26f48fc953fc73a6c"><span class="ne-text">元素对象.style.样式属性 = 值;</span></li><li id="4b0ab22a2c4e0de22a695a451e46a565"><span class="ne-text">其中样式属性的命名不再是中间有-的，而是驼峰命名，eg：backgroundColor</span></li><li id="f0e95dc00ab4260e2cd0822c77d61d1b"><span class="ne-text">js修改的style样式操作，产生的是行内样式，css权重较高</span></li></ul><h3 id="1tNkf"><span class="ne-text">element.className</span></h3><ul class="ne-ul"><li id="aaf7eadae2a32bd0e2669c62d7bd923d"><span class="ne-text">元素对象.className = 值;</span></li><li id="e3ea1781ca3cffb067c8621a4bc01551"><span class="ne-text">因为class是关键字，所有使用className，覆盖原先的类名</span></li></ul><p id="d4ad769ece313bfb45ebdf3a41e3f9b7" class="ne-p"><br></p>
+
+<pre><code class="html">&amp;lt;body&amp;gt;
+    &amp;lt;div class=&amp;quot;first&amp;quot;&amp;gt;文本&amp;lt;/div&amp;gt;
+    &amp;lt;script&amp;gt;
+        // 1. 使用 element.style 获得修改元素样式  如果样式比较少 或者 功能简单的情况下使用
+        var test = document.querySelector(&#39;div&#39;);
+        test.onclick = function() &#123;
+            // 2. 我们可以通过 修改元素的className更改元素的样式 适合于样式较多或者功能复杂的情况
+            // 3. 如果想要保留原先的类名，我们可以这么做 多类名选择器
+            // this.className = &#39;change&#39;;
+            this.className = &#39;first change&#39;;
+        &#125;
+    &amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+</code></pre>
+<h2 id="wqS45"><span class="ne-text">自定义元素属性</span></h2><h3 id="38TpP"><span class="ne-text">element.getAttribute</span></h3><ul class="ne-ul"><li id="7250277a59b030794fb03d75366e68d2"><span class="ne-text">和element.属性不同的是，获取的是自定义属性的值，而</span><span class="ne-text">element.属性获取的是内置的属性</span></li></ul>
+
+<pre><code class="html">&amp;lt;div id=&amp;quot;demo&amp;quot; index=&amp;quot;1&amp;quot; class=&amp;quot;nav&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+    &amp;lt;script&amp;gt;
+        var div = document.querySelector(&#39;div&#39;);
+        // 1. 获取元素的属性值
+        // (1) element.属性
+        console.log(div.id);
+        //(2) element.getAttribute(&#39;属性&#39;)  get得到获取 attribute 属性的意思 我们程序员自己添加的属性我们称为自定义属性 index
+        console.log(div.getAttribute(&#39;id&#39;));
+        console.log(div.getAttribute(&#39;index&#39;));
+    &amp;lt;/script&amp;gt;
+</code></pre>
+<h3 id="Ju7l1"><span class="ne-text">element.setAttribute</span></h3><ul class="ne-ul"><li id="d59a6ca897a739414fbc4aa61081127e"><span class="ne-text">element.setAttribute('属性','值')；</span></li></ul>
+
+<pre><code class="javascript">// 2. 设置元素属性值
+// (1) element.属性= &#39;值&#39;
+div.id = &#39;test&#39;;
+div.className = &#39;navs&#39;;
+// (2) element.setAttribute(&#39;属性&#39;, &#39;值&#39;);  主要针对于自定义属性
+div.setAttribute(&#39;index&#39;, 2);
+div.setAttribute(&#39;class&#39;, &#39;footer&#39;); // class 特殊  这里面写的就是
+</code></pre>
+<h3 id="Bw0TQ"><span class="ne-text">element.removeAttribute</span></h3>
+
+<pre><code class="javascript">// class 不是className
+// 3 移除属性 removeAttribute(属性)    
+div.removeAttribute(&#39;index&#39;);
+</code></pre>
+<h3 id="8H5MW"><span class="ne-text">Demo：tab栏</span></h3><p id="7d95c8cd54584a750b700f79681b518f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358239-8396b94f-cc87-4ff3-bc86-20c652a2fe8f.png" width="786" id="loWsi" class="ne-image"></p><p id="5bba20fb3e4554c5be1be14951844e58" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358314-a1d9f6be-a9c3-4693-8b11-eec0665df297.png" width="744" id="zrKHc" class="ne-image"></p>
+
+<pre><code class="html">&amp;lt;script&amp;gt;
+        // 获取元素
+        var tab_list = document.querySelector(&#39;.tab_list&#39;);
+        var lis = tab_list.querySelectorAll(&#39;li&#39;);
+        var items = document.querySelectorAll(&#39;.item&#39;);
+        // for循环，给选项卡绑定点击事件
+        for (var i = 0; i &amp;lt; lis.length; i++) &#123;
+            // 开始给5个小li 设置索引号 
+            lis[i].setAttribute(&#39;index&#39;, i);
+            lis[i].onclick = function() &#123;
+                // 1. 上的模块选项卡，当前这一个底色会是红色，其余不变（排他思想）
+                // 干掉所有人 其余的li清除 class 这个类
+                for (var i = 0; i &amp;lt; lis.length; i++) &#123;
+                    lis[i].className = &#39;&#39;;
+                &#125;
+                // 留下我自己 
+                this.className = &#39;current&#39;;
+                // 2. 下面的显示内容模块
+                var index = this.getAttribute(&#39;index&#39;);
+                console.log(index);
+                // 干掉所有人 让其余的item 这些div 隐藏
+                for (var i = 0; i &amp;lt; items.length; i++) &#123;
+                    items[i].style.display = &#39;none&#39;;
+                &#125;
+                // 留下我自己 让对应的item 显示出来
+                items[index].style.display = &#39;block&#39;;
+            &#125;
+        &#125;
+    &amp;lt;/script&amp;gt;
+</code></pre>
+<h3 id="A5dLE"><span class="ne-text">element.dataset</span></h3><p id="52bd4c3c970ebe6427840f35f75fdd30" class="ne-p"><span class="ne-text">自定义属性目的：是为了保存并使用数据。有些数据可以保存到页面中而不用保存到数据库中。</span></p><p id="31fafa53a2b0d3a98fc062f59ba54e0a" class="ne-p"><span class="ne-text">自定义属性获取是通过getAttribute(‘属性’) 获取。</span></p><p id="63a299636dc1440b67ea25d070e9cd83" class="ne-p"><span class="ne-text">但是有些自定义属性很容易引起歧义，不容易判断是元素的内置属性还是自定义属性。</span></p><p id="2244a4bc40652131415dc54d083183b6" class="ne-p"><span class="ne-text">H5给我们新增了自定义属性：</span></p><p id="45df4c9292145a8050e9f4e7eefe8cc4" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358371-b2d8cb33-5750-4e13-be06-27c86768b244.png" width="705" id="lLVY2" class="ne-image"></p><p id="52e2425c30b46fe0f3e38e022835773f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1612518358431-0a046321-c303-4333-9e0d-57875144f3e5.png" width="691" id="FSDEa" class="ne-image"></p>
+
+<pre><code class="html">&amp;lt;div getTime=&amp;quot;20&amp;quot; data-index=&amp;quot;2&amp;quot; data-list-name=&amp;quot;andy&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;script&amp;gt;
+  var div = document.querySelector(&#39;div&#39;);
+  // console.log(div.getTime);
+  console.log(div.getAttribute(&#39;getTime&#39;));
+  div.setAttribute(&#39;data-time&#39;, 20);
+  console.log(div.getAttribute(&#39;data-index&#39;));
+  console.log(div.getAttribute(&#39;data-list-name&#39;));
+  // h5新增的获取自定义属性的方法 它只能获取data-开头的
+  // dataset 是一个集合里面存放了所有以data开头的自定义属性
+  console.log(div.dataset);
+  console.log(div.dataset.index);
+  console.log(div.dataset[&#39;index&#39;]);
+  // 如果自定义属性里面有多个-链接的单词，我们获取的时候采取 驼峰命名法
+  console.log(div.dataset.listName);
+  console.log(div.dataset[&#39;listName&#39;]);
+&amp;lt;/script&amp;gt;
+</code></pre>
+</div>
+</div>
+
+     
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/1_day01_webapis/">https://www.wztlink1013.com/blog/1_day01_webapis/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/1_day01_webapis/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/blog/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="/atom.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+    <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/2_day02_webapis/">
+                    <span class="tips"><i class="fa fa-arrow-left" aria-hidden="true"></i>上一篇</span>
+                    <b>DOM节点操作</b>
+                </a>
+            </span>
+            <br>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/fc3rdkwoum2b/">
+                    <b>JavaScript内置对象和全局属性和函数</b>
+                    <span class="tips">下一篇<i class="fa fa-arrow-right" aria-hidden="true"></i></span> 
+                </a>
+            </span>
+          
+    
+</div>
+
+
+    <div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Twikoo</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">giscus</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- giscus评论区 -->
+    <div id="github_comment" style="display: block">
+      <script
+        src="https://giscus.wztlink1013.com/client.js"
+        data-repo="wztlink1013/comment"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMzkxNDA3MDQ="
+        data-category="General"
+        data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDU2NTcx"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: none">
+      <div id="tcomment"></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <div class="ct_right">
+    <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+    <div class="component clearfix new_comments">
+  <h3 class="title">最新评论</h3>
+  <div class="new_comments_loding">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="content">
+  <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+    <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
+  </a>
+  <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+  <div><a href="/about">联系方式</a></div>
+</div>
+
+</footer>
+
+      <div id="leaves"></div>
+    </div>
+    
+    
+      <!-- 非首页 -->
+      
+<script src="/public/js/Main.js"></script>
+ 
+    
+    <!-- 共用脚本 -->
+    
+<script src="/public/js/base.js"></script>
+
+  </body>
+</html>

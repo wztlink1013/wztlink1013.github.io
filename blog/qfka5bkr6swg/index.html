@@ -1,0 +1,573 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CSS定位 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="CSS 布局的三种机制网页布局的核心 —— 就是用 CSS 来摆放盒子位置。CSS 提供了 3 种机制来设置盒子的摆放位置，分别是普通流、浮动和定位【1】普通流（标准流）可以让盒子上下排列或者左右排列的块级元素会独占一行，从上向下顺序排列；常用元素：div、hr、p、h1~h6、ul、ol、dl、f" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="CSS定位 | 尼采般地抒情" />
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/qfka5bkr6swg/" />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="CSS 布局的三种机制网页布局的核心 —— 就是用 CSS 来摆放盒子位置。CSS 提供了 3 种机制来设置盒子的摆放位置，分别是普通流、浮动和定位【1】普通流（标准流）可以让盒子上下排列或者左右排列的块级元素会独占一行，从上向下顺序排列；常用元素：div、hr、p、h1~h6、ul、ol、dl、f" /> 
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- FIXME: 使用base64转义 -->
+    <!-- <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611552456483-b258a0b4-d5e2-43ab-af99-f6eef921bacb.png" /> -->
+    <meta property="og:image" content="https://www.wztlink1013.com/public/img/avatar.png" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- 引入jQuery -->
+    
+<script src="/public/js/plugins/jquery/3.6.0/jquery.min.js"></script>
+
+    
+<script src="/public/js/plugins/jquery-pjax/jquery.pjax.js"></script>
+
+    <!-- 引入highlight -->
+    
+<script src="/public/js/plugins/highlight/10.7.1/highlight.min.js"></script>
+
+    <!-- twikoo 评论文件 -->
+    
+<script src="/public/js/plugins/twikoo/1.6.7/twikoo.all.min.js"></script>
+
+    <!-- axios 文件 -->
+    
+<script src="/public/js/plugins/axios/1.0.0/axios.min.js"></script>
+
+    <!-- 打字特效 -->
+    
+<script src="/public/js/plugins/typed.js/2.0.11.js"></script>
+
+    <!-- APlayer -->
+    
+<link rel="stylesheet" href="/public/css/aplayer.css">
+
+    
+<script src="/public/js/plugins/aplayer/APlayer.min.js"></script>
+
+    <!-- MetingJS -->
+    
+<script src="/public/js/plugins/meting/Meting.min.js"></script>
+
+  <link rel="alternate" href="/atom.xml" title="尼采般地抒情" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="尼采般地抒情" type="application/rss+xml">
+</head>
+  <body>
+    <div id="lyrics">
+      <div class="bg_color"></div>
+<header class="header">
+  <!-- PC端 -->
+  <div class="header_pc">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+  </div>
+  <!-- 移动端 -->
+  <div class="header_app">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+      <div id="search_btn">
+        <i class="fa fa-search" aria-hidden="true" id="search_btn"></i>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 移动端抽屉 -->
+<div class="app_side_glass" id="app_side_glass"></div>
+<div class="app_side_content" id="app_side_content">
+  <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+  <div class="component clearfix music_box">
+  <h3>音乐盒</h3>
+  <div class="aplayer-box">
+    <meting-js
+      server="netease"
+      type="playlist"
+      id="8027485922"
+      theme="#9cf"
+      lrc-type="1"
+    ></meting-js>
+  </div>
+</div>
+
+  <!-- <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+ -->
+  <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+   
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+</div>
+
+<div class="global_button">
+  <div
+    title="顶部"
+    class="global_button_item"
+    id="go_top"
+    style="display: none"
+  >
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+  </div>
+  <!-- <div title="搜索" class="global_button_item" id="search_btn">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </div> -->
+  <div
+    title="评论"
+    class="global_button_item"
+    id="go_comments"
+    style="display: none"
+  >
+    <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+  </div>
+  
+  <div
+    title="目录"
+    class="global_button_item"
+    id="toc_btn"
+    style="display: block"
+  >
+    <i class="fa fa-list" aria-hidden="true"></i>
+  </div>
+  
+
+  <div title="夜间" class="global_button_item">
+    <i class="fa fa-adjust" aria-hidden="true"></i>
+  </div>
+  <div
+    title="分享"
+    class="global_button_item btn-default need-share-button-default need-share-button"
+    data-share-position="topLeft"
+  >
+    <i class="fa fa-share-alt" aria-hidden="true"></i>
+  </div>
+</div>
+
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#65gks"><span class="toc-text">CSS 布局的三种机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#d1Y7J"><span class="toc-text">定位详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1K2Ri"><span class="toc-text">边偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4A2UW"><span class="toc-text">static</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GFG3d"><span class="toc-text">relative</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HdfJM"><span class="toc-text">absolute</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1ngvh"><span class="toc-text">fixed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#t5NV1"><span class="toc-text">Demo：轮播图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#YIsso"><span class="toc-text">Demo：网站右下角快捷功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gHroO"><span class="toc-text">定位的相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VmeQ1"><span class="toc-text">绝对定位的盒子居中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lTMxE"><span class="toc-text">z-index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tElMM"><span class="toc-text">定位改变display属性</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+    <div class="search">
+        <i class="fa fa-search search_icon" aria-hidden="true"></i> 
+        <input type="text" autocomplete="off" name="search" placeholder="请输入关键词" id="local-search-input">
+        <i class="fa fa-times search_close" aria-hidden="true"></i>
+    </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+  <div class="ct_left">
+    <div class="component clearfix blogger">
+  <div class="blogger-header-bg">
+    <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
+  </div>
+  <h3 class="blogger-title">尼采般地抒情</h3>
+  <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
+  <span class="blogger-descript"></span>
+</div>
+
+    <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+     
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+  </div>
+  <div class="ct_center">
+    <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>CSS定位</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <img src="/public/img/avatar.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2021-01-24
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/Web开发/">
+                        Web开发
+                    </a>
+                
+                    <a href="/categories/Web开发/HTML-CSS/">
+                        HTML+CSS
+                    </a>
+                
+                    <a href="/categories/Web开发/HTML-CSS/布局/">
+                        布局
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+    <div class="component article" id="article">
+  <!doctype html><div class="lake-content" typography="classic"><h2 id="65gks"><span class="ne-text">CSS 布局的三种机制</span></h2><div class="ne-quote"><p id="724554c70ac42551b74ef2ad8d363e1b" class="ne-p"><span class="ne-text">网页布局的核心 —— 就是</span><strong><span class="ne-text">用 CSS 来摆放盒子位置</span></strong><span class="ne-text">。</span></p><p id="u7a88283e" class="ne-p"><span class="ne-text">CSS 提供了 </span><strong><span class="ne-text">3 种机制</span></strong><span class="ne-text">来设置盒子的摆放位置，分别是</span><strong><span class="ne-text">普通流</span></strong><span class="ne-text">、</span><strong><span class="ne-text">浮动</span></strong><span class="ne-text">和</span><strong><span class="ne-text">定位</span></strong></p></div><p id="edae316fcfc6158bd65d60d946024894" class="ne-p"><br></p><div class="ne-quote"><p id="fc10cf71c968792f8eb87c32b43e6f85" class="ne-p"><strong><span class="ne-text">【1】普通流</span></strong><span class="ne-text">（</span><strong><span class="ne-text">标准流</span></strong><span class="ne-text">）</span></p></div><p id="3f9dd38c6447fc6c09f3dd9500607afb" class="ne-p"><span class="ne-text">可以让盒子上下排列或者左右排列的</span></p><ul class="ne-ul"><li id="67c6f632b995ef4e73b5da3b8df402f4"><strong><span class="ne-text">块级元素</span></strong><span class="ne-text">会独占一行，</span><strong><span class="ne-text">从上向下</span></strong><span class="ne-text">顺序排列；</span></li></ul><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="236edbcb61b399e70ad3194cb8d9a86b"><span class="ne-text">常用元素：div、hr、p、h1~h6、ul、ol、dl、form、table</span></li></ul></ul><ul class="ne-ul"><li id="b00c5bdcfcc9cd9db53ec08d59915754"><strong><span class="ne-text">行内元素</span></strong><span class="ne-text">会按照顺序，</span><strong><span class="ne-text">从左到右</span></strong><span class="ne-text">顺序排列，碰到父元素边缘则自动换行；</span></li></ul><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="d9242960895707a6b9b775a1a1ad63ec"><span class="ne-text">常用元素：span、a、i、em等</span></li></ul></ul><div class="ne-quote"><p id="4f6393051ded8ff63cd5fd82a39ec378" class="ne-p"><strong><span class="ne-text">【2】浮动</span></strong></p></div><ul class="ne-ul"><li id="262eb5b768fb1615537d8abababdd540"><span class="ne-text">让盒子从普通流中</span><strong><span class="ne-text">浮</span></strong><span class="ne-text">起来 —— </span><strong><span class="ne-text">让多个盒子(div)水平排列成一行</span></strong><span class="ne-text">。</span></li><li id="66d451cdcf0680dd5cc3a742f884026b"><span class="ne-text">可以让多个块级元素一行显示  或者 左右对齐盒子   浮动的盒子就是按照顺序左右排列</span></li></ul><div class="ne-quote"><p id="021ee711bb151487bf712b1151a748ca" class="ne-p"><strong><span class="ne-text">【3】定位</span></strong></p></div><ul class="ne-ul"><li id="cb03fe93167fc6d2ec6dca88dcdfa83b"><span class="ne-text">将盒子</span><strong><span class="ne-text">定</span></strong><span class="ne-text">在某一个</span><strong><span class="ne-text">位</span></strong><span class="ne-text">置  自由的漂浮在其他盒子的上面  —— CSS 离不开定位，特别是后面的 js 特效。</span></li><li id="27aec920a4f380f1ed132b42a2a94692"><span class="ne-text">定位最大的特点是有层叠的概念，就是可以让多个盒子 前后 叠压来显示。 但是每个盒子需要测量数值。</span></li></ul><div class="ne-quote"><p id="0f2e6d737c0e906ac7244974bc7863f6" class="ne-p"><strong><span class="ne-text">【结论】</span></strong></p><ul class="ne-ul"><li id="346e0171743956d8d8b703fd72d6dd99"><span class="ne-text">标准流在最底层</span></li><li id="177921ad9727a25b32380ebf22ae4b17"><span class="ne-text">浮动的盒子在中间层</span></li><li id="4c29b0f39bc0ecb42d635fd4ef44d211"><span class="ne-text">定位的盒子在最上层</span></li></ul></div><h2 id="d1Y7J"><span class="ne-text">定位详解</span></h2><p id="f1fa9f746a60f81ef735ba80db36f1c6" class="ne-p"><span class="ne-text">定位也是用来布局的，它有两部分组成：</span></p><div class="ne-quote"><p id="7ecc134c80772b1ce6c928226e3c90d2" class="ne-p"><code class="ne-code"><span class="ne-text" style="background-color: #FADB14">定位 = 定位模式 + 边偏移</span></code></p></div><p id="455389d2b88fdf8ad77ac3ada964412c" class="ne-p" style="text-align: center"><span class="ne-text" style="background-color: #FADB14"><br /></span><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611552456483-b258a0b4-d5e2-43ab-af99-f6eef921bacb.png" width="301" id="tPuDD" class="ne-image"></p><h3 id="1K2Ri"><span class="ne-text">边偏移</span></h3><p id="fb261a241352e64819d572aaba30815c" class="ne-p"><span class="ne-text">简单说， 我们定位的盒子，是通过边偏移来移动位置的。</span></p><p id="1267830c67568ad54390c8d1384f4023" class="ne-p"><span class="ne-text">在 CSS 中，通过 </span><code class="ne-code"><span class="ne-text">top</span></code><span class="ne-text">、</span><code class="ne-code"><span class="ne-text">bottom</span></code><span class="ne-text">、</span><code class="ne-code"><span class="ne-text">left</span></code><span class="ne-text"> 和 </span><code class="ne-code"><span class="ne-text">right</span></code><span class="ne-text"> 属性定义元素的</span><strong><span class="ne-text">边偏移</span></strong><span class="ne-text">：（方位名词）</span></p><table id="kZb6M" class="ne-table" style="width: 750px"><tbody><tr style="height: 33px"><td width="250"><p id="uf0893d0e" class="ne-p"><span class="ne-text">边偏移属性</span></p></td><td width="250"><p id="u5b47e94c" class="ne-p" style="text-align: left"><span class="ne-text">示例</span></p></td><td width="250"><p id="u35c861a2" class="ne-p"><span class="ne-text">描述</span></p></td></tr><tr style="height: 33px"><td width="250"><p id="ueaaffd79" class="ne-p"><code class="ne-code"><span class="ne-text">top</span></code></p></td><td width="250"><p id="uf9b7c0f0" class="ne-p" style="text-align: left"><code class="ne-code"><span class="ne-text">top: 80px</span></code></p></td><td width="250"><p id="u3bfeb26f" class="ne-p"><strong><span class="ne-text">顶端</span></strong><span class="ne-text">偏移量，定义元素相对于其父元素</span><strong><span class="ne-text">上边线的距离</span></strong><span class="ne-text">。</span></p></td></tr><tr style="height: 33px"><td width="250"><p id="u0fae95fb" class="ne-p"><code class="ne-code"><span class="ne-text">bottom</span></code></p></td><td width="250"><p id="u366ababc" class="ne-p" style="text-align: left"><code class="ne-code"><span class="ne-text">bottom: 80px</span></code></p></td><td width="250"><p id="u41d2f3a2" class="ne-p"><strong><span class="ne-text">底部</span></strong><span class="ne-text">偏移量，定义元素相对于其父元素</span><strong><span class="ne-text">下边线的距离</span></strong><span class="ne-text">。</span></p></td></tr><tr style="height: 33px"><td width="250"><p id="u6fa5efd3" class="ne-p"><code class="ne-code"><span class="ne-text">left</span></code></p></td><td width="250"><p id="u321cec7e" class="ne-p" style="text-align: left"><code class="ne-code"><span class="ne-text">left: 80px</span></code></p></td><td width="250"><p id="u6b20a4a7" class="ne-p"><strong><span class="ne-text">左侧</span></strong><span class="ne-text">偏移量，定义元素相对于其父元素</span><strong><span class="ne-text">左边线的距离</span></strong><span class="ne-text">。</span></p></td></tr><tr style="height: 33px"><td width="250"><p id="ud83f9f2f" class="ne-p"><code class="ne-code"><span class="ne-text">right</span></code></p></td><td width="250"><p id="ube9a64bf" class="ne-p" style="text-align: left"><code class="ne-code"><span class="ne-text">right: 80px</span></code></p></td><td width="250"><p id="u7a671312" class="ne-p"><strong><span class="ne-text">右侧</span></strong><span class="ne-text">偏移量，定义元素相对于其父元素</span><strong><span class="ne-text">右边线的距离</span></strong></p></td></tr></tbody></table><p id="43af9b6612ed81f652b3287c153eb95b" class="ne-p"><span class="ne-text">定位的盒子有了边偏移才有价值。 一般情况下，凡是有定位地方必定有边偏移。</span></p><h3 id="4A2UW"><span class="ne-text">static</span></h3><ul class="ne-ul"><li id="331e4f6a35ce0d54170a1ee05026bdad"><strong><span class="ne-text">静态定位</span></strong><span class="ne-text">是元素的默认定位方式，无定位的意思。它相当于 border 里面的none， 不要定位的时候用。</span></li><li id="80ce23d3b66c7604285b97fe1b469aaa"><span class="ne-text">静态定位 按照标准流特性摆放位置，它没有边偏移。</span></li><li id="435fecf0c833a4e4cf3d3d29be4a3dfb"><span class="ne-text">静态定位在布局时我们几乎不用的</span></li></ul><h3 id="GFG3d"><span class="ne-text">relative</span></h3><ul class="ne-ul"><li id="dd42d137e5033eb61538e251049a13bb"><strong><span class="ne-text">相对定位</span></strong><span class="ne-text">是元素</span><strong><span class="ne-text" style="background-color: #FADB14">相对</span></strong><span class="ne-text" style="background-color: #FADB14">于它原来在标准流中的位置 </span><span class="ne-text">来说的。（自恋型）</span><strong><span class="ne-text"></span></strong></li></ul><p id="79bf9ba704f0110d328df135a7de910f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611552470167-bd2f5289-4670-4b1f-9b22-1361f8cd58d0.png" width="365" id="hJGMp" class="ne-image"></p><p id="c1d344c57d750307207fec2a4c93df18" class="ne-p"><span class="ne-text">相对定位的特点：（务必记住）</span></p><ul class="ne-ul"><li id="c2a9d82d9882e894f0665b319ea45e4e"><span class="ne-text">相对于 </span><span class="ne-text" style="background-color: #FADB14">自己原来在标准流中位置</span><span class="ne-text">来移动的</span></li><li id="4bbc08ef0de456d9d40eba1b4743a2bc"><span class="ne-text" style="background-color: #FADB14">原来</span><strong><span class="ne-text" style="background-color: #FADB14">在标准流的区域继续占有</span></strong><span class="ne-text">，后面的盒子仍然以标准流的方式对待它。</span></li></ul><h3 id="HdfJM"><span class="ne-text">absolute</span></h3><div class="ne-quote"><p id="4e4c61a9eda6b0d988624646a72d60d4" class="ne-p"><strong><span class="ne-text">【1】绝对定位</span></strong><span class="ne-text">是元素以</span><span class="ne-text" style="background-color: #FADB14">带有定位的父级元素</span><span class="ne-text">来移动位置 （拼爹型）</span></p></div><ul class="ne-ul"><li id="9575cff1d09fecb62c7624a84da41ff5"><strong><span class="ne-text">完全脱标</span></strong><span class="ne-text">：完全不占位置，完全镂空</span></li><li id="8bf51dee24b5b51b7bc4fae1dfe74ef1"><strong><span class="ne-text">父元素没有定位：</span></strong><span class="ne-text">则</span><span class="ne-text" style="background-color: #FADB14">以</span><strong><span class="ne-text" style="background-color: #FADB14">浏览器</span></strong><span class="ne-text" style="background-color: #FADB14">为准定位</span><span class="ne-text">（Document 文档）。</span></li><li id="ee0b69474d539a5bef37523d4679b5c7"><strong><span class="ne-text">父元素要有定位：</span></strong><span class="ne-text">将元素依据</span><span class="ne-text" style="background-color: #FADB14">最近的已经定位（绝对、固定或相对定位）的父元素</span><span class="ne-text">（祖先）进行定位。</span></li><li id="c2033b627f9b53d96424c366617b842a"><span class="ne-text" style="background-color: #FADB14">绝对是以带有定位的父级元素来移动位置， 如果父级都没有定位，则以浏览器文档为准移动位置</span></li><li id="8107c669dc33a33cd93a0866117e5b7f"><span class="ne-text">不保留原来的位置，完全是脱标的。</span></li></ul><p id="e0bfb2f31e6e5a4a75328ded17f972d3" class="ne-p"><br></p><div class="ne-quote"><p id="8e05428a270afb4dbb178db748d114c5" class="ne-p"><span class="ne-text">【2】子级元素使用绝对定位时，父级元素就要用相对定位</span></p></div><p id="26f0f4debd399214965f47acd79bfa1b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611552541033-59cb288a-ccb1-4ccb-aa4c-e4550e99edf0.png" width="617" id="Nzb9x" class="ne-image"></p><div class="ne-quote"><p id="b75da7bdce2e85eb000ecf30896d4fd9" class="ne-p"><strong><span class="ne-text">分析</span></strong></p></div><ul class="ne-ul"><li id="d618608aff39b7822f091431719bcedc"><strong><span class="ne-text">方向箭头</span></strong><span class="ne-text">叠加在其他图片上方，应该使用</span><strong><span class="ne-text">绝对定位</span></strong><span class="ne-text">，因为</span><strong><span class="ne-text">绝对定位完全脱标</span></strong><span class="ne-text">，完全不占位置。</span></li><li id="c076c7c69bba3cbf65c5ea9b70534bf2"><strong><span class="ne-text">父级盒子</span></strong><span class="ne-text">应该使用</span><strong><span class="ne-text">相对定位</span></strong><span class="ne-text">，因为</span><strong><span class="ne-text" style="background-color: #FADB14">相对定位不脱标</span></strong><span class="ne-text" style="background-color: #FADB14">，后续盒子仍然以标准流的方式对待它</span><span class="ne-text">。</span></li><li id="d054a418d38211b7819ce50c458f2fda"><span class="ne-text">如果父级盒子也使用</span><strong><span class="ne-text">绝对定位</span></strong><span class="ne-text">，会完全脱标，那么下方的</span><strong><span class="ne-text">广告盒子</span></strong><span class="ne-text">会上移，这显然不是我们想要的。</span></li></ul><h3 id="1ngvh"><span class="ne-text">fixed</span></h3><ul class="ne-ul"><li id="14e1df3d5ea13ae4e65b0ae6a7fae03f"><strong><span class="ne-text">固定定位</span></strong><span class="ne-text">是</span><strong><span class="ne-text">绝对定位</span></strong><span class="ne-text">的一种特殊形式： （认死理型）  </span></li><li id="1cac66d1bd321be37c94d60cd6a334b2"><strong><span class="ne-text">完全脱标</span></strong><span class="ne-text"> —— 完全不占位置；</span></li><li id="39c0532981c4ce636b3bc5a6fa8cb6f4"><span class="ne-text">只认</span><strong><span class="ne-text">浏览器的可视窗口</span></strong><span class="ne-text"> —— </span><code class="ne-code"><span class="ne-text">浏览器可视窗口 + 边偏移属性</span></code><span class="ne-text"> 来设置元素的位置；</span></li></ul><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="20e4fcadce41afb9b037c549d45d3c29"><span class="ne-text" style="background-color: #FADB14">跟父元素没有任何关系；单独使用的</span></li><li id="f35266c895be9f1023dd2e0e5f933c96"><span class="ne-text">不随滚动条滚动。</span></li></ul></ul><div class="ne-quote"><p id="23667b0e72a02c9503d0fc160e82c755" class="ne-p"><span class="ne-text">案例演练：固定定位案例。</span></p></div><p id="b552766fb43e413630fbfbb9c583338c" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611552558881-329f4f76-7ace-4fdd-840d-40a651c628ad.png" width="610.5" id="dVYeK" class="ne-image"></p><p id="5f3773a56e8eaff000ffb1fcf238c5fc" class="ne-p"><strong><span class="ne-text">提示</span></strong><span class="ne-text">：IE 6 等低版本浏览器不支持固定定位。</span></p><h3 id="t5NV1"><span class="ne-text">Demo：轮播图</span></h3><p id="fb46235baba689e57749b342fabae2d5" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616243009664-321f94d9-d92b-4503-9ff3-beaf87f2413e.png" width="960" id="RvrWd" class="ne-image"></p><div class="ne-quote"><p id="ff1b950566f10e46a24f5c420e8b970a" class="ne-p"><span class="ne-text">圆角矩形设置4个角</span></p></div><ul class="ne-ul"><li id="6d73e870c448f85b869d03b19b93958e"><span class="ne-text">圆角矩形可以为4个角分别设置圆度， 但是是有顺序的</span></li></ul>
+
+<pre><code class="css">border-top-left-radius:20px;
+border-top-right-radius:20px;
+border-bottom-right-radius:20px;
+border-bottom-left-radius:20px;
+</code></pre>
+<ul class="ne-ul"><li id="3009035cd1ebf3fad224902ec6fd7a0f"><span class="ne-text">如果4个角，数值相同</span></li></ul>
+
+<pre><code class="css">border-radius: 15px;
+</code></pre>
+<ul class="ne-ul"><li id="ffd12c25f9293674bc08021abb0391a7"><span class="ne-text">里面数值不同，我们也可以按照简写的形式，</span><span class="ne-text">还是遵循的顺时针。</span></li></ul>
+
+<pre><code class="css">border-radius: 左上角 右上角  右下角  左下角;
+</code></pre>
+<pre><code class="html">&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;X-UA-Compatible&amp;quot; content=&amp;quot;IE=edge&amp;quot;&amp;gt;
+    &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;Document&amp;lt;/title&amp;gt;
+    &amp;lt;style&amp;gt;
+        * &#123;
+            padding: 0;
+            margin: 0;
+        &#125;
+        li &#123;
+            list-style: none;
+        &#125;
+        .box &#123;
+            width: 400px;
+            height: 300px;
+            background-color: tan;
+            position: relative;
+            margin: 0 auto;
+        &#125;
+        .row_left &#123;
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            top: 50%;
+            left: 0;
+            margin-top: -15px;
+            border: 1px darkgoldenrod solid;
+            line-height: 30px;
+            border-top-right-radius:30px;
+            border-bottom-right-radius:30px;
+            text-align: left;
+        &#125;
+        .row_right &#123;
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            top: 50%;
+            right: 0;
+            margin-top: -15px;
+            border: 1px darkgoldenrod solid;
+            line-height: 30px;
+            border-top-left-radius:30px;
+            border-bottom-left-radius:30px;
+            text-align: right;
+        &#125;
+        .bottom_dots &#123;
+            position: absolute;
+            width: 110px;
+            height: 22px;
+            bottom: 10px;
+            left: 50%;
+            margin-left: -50px;
+            border: springgreen 1px solid;
+            border-radius: 10px;
+        &#125;
+        .row_left:hover,
+        .row_right:hover &#123;
+            background-color: yellowgreen;
+        &#125;
+
+
+        .bottom_dots li &#123;
+            float: left;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: steelblue solid 1px;
+        &#125;
+        .bottom_dots .current &#123;
+            background-color: tomato;
+        &#125;
+    &amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;div class=&amp;quot;box&amp;quot;&amp;gt;
+        &amp;lt;div class=&amp;quot;row_left&amp;quot;&amp;gt;&amp;lt;&amp;lt;/div&amp;gt;
+        &amp;lt;div class=&amp;quot;row_right&amp;quot;&amp;gt;&amp;gt;&amp;lt;/div&amp;gt;
+        &amp;lt;ul class=&amp;quot;bottom_dots&amp;quot;&amp;gt;
+            &amp;lt;li&amp;gt;&amp;lt;/li&amp;gt;
+            &amp;lt;li class=&amp;quot;current&amp;quot;&amp;gt;&amp;lt;/li&amp;gt;
+            &amp;lt;li&amp;gt;&amp;lt;/li&amp;gt;
+            &amp;lt;li&amp;gt;&amp;lt;/li&amp;gt;
+            &amp;lt;li&amp;gt;&amp;lt;/li&amp;gt;
+        &amp;lt;/ul&amp;gt;
+    &amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+</code></pre>
+<h3 id="YIsso"><span class="ne-text">Demo：网站右下角快捷功能</span></h3><ul class="ne-ul"><li id="cd3a0fa344613d8115a8f7296762ebb8"><strong><span class="ne-text">注意</span></strong><span class="ne-text">：不要同时使用 </span><code class="ne-code"><span class="ne-text">left</span></code><span class="ne-text"> 和 </span><code class="ne-code"><span class="ne-text">right</span></code><span class="ne-text"> 和边偏移属性。</span><strong><span class="ne-text"></span></strong></li><li id="9521ffcacff82408c09e4f640086213e"><strong><span class="ne-text">固定定位</span></strong><span class="ne-text">的应用场景：</span><strong><span class="ne-text">固定在浏览器可视窗口某个位置的布局</span></strong><span class="ne-text">；</span></li><li id="b35f8fc0ee97f3e5aa6ba71c095a8e99"><span class="ne-text">在使用固定和绝对定位时，如果盒子中没有内容，需要指定宽度，下面的例子又宽度</span></li></ul><p id="68d1de6a9c23d84ce731913b5c206789" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616239742720-28510068-3322-4b73-ad28-8a345ba5f8c6.png" width="960" id="pTRHC" class="ne-image"></p><h2 id="gHroO"><span class="ne-text">定位的相关问题</span></h2><h3 id="VmeQ1"><span class="ne-text">绝对定位的盒子居中</span></h3><div class="ne-quote"><p id="04b3a9f11f4b6bf0df3b853a3d5fdba7" class="ne-p"><strong><span class="ne-text" style="background-color: #FADB14">注意</span></strong><span class="ne-text" style="background-color: #FADB14">：</span><strong><span class="ne-text" style="background-color: #FADB14">绝对定位/固定定位的盒子</span></strong><span class="ne-text" style="background-color: #FADB14">不能通过设置 </span><code class="ne-code"><span class="ne-text" style="background-color: #FADB14">margin: auto</span></code><span class="ne-text" style="background-color: #FADB14"> 设置</span><strong><span class="ne-text" style="background-color: #FADB14">水平居中</span></strong><span class="ne-text" style="background-color: #FADB14">。</span></p></div><p id="2733432ec4c32d5473b9fa84161e3135" class="ne-p"><span class="ne-text">在使用</span><strong><span class="ne-text">绝对定位</span></strong><span class="ne-text">时要想实现水平居中，可以按照下面的方法：</span></p><ol class="ne-ol"><li id="8c06e18365b09613746b656e3013218c"><code class="ne-code"><span class="ne-text">left: 50%;</span></code><span class="ne-text">：让</span><strong><span class="ne-text">盒子的左侧</span></strong><span class="ne-text">移动到</span><strong><span class="ne-text">父级元素的水平中心位置</span></strong><span class="ne-text">；</span></li><li id="5639daa73293066eb95f618cd5596eb2"><code class="ne-code"><span class="ne-text">margin-left: -100px;</span></code><span class="ne-text">：让盒子</span><strong><span class="ne-text">向左</span></strong><span class="ne-text">移动</span><strong><span class="ne-text">自身宽度的一半</span></strong><span class="ne-text">。</span></li></ol><p id="0d83f3805ed7919c00bef9a3f04c9a68" class="ne-p"><span class="ne-text">整体居中如下设置</span></p><p id="e5be7eaec3cb956b3e7bdb2960681d11" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1616240730926-4415dd36-b842-4cc8-b0a2-49345b503a43.png" width="1920" id="U8COT" class="ne-image"></p><p id="dff5bbe7cdeb1d6ecfe6f49808ad8930" class="ne-p"><br></p><h3 id="lTMxE"><span class="ne-text">z-index</span></h3><ul class="ne-ul"><li id="cf5426f76cd1774030b9f8350f9d6a36"><span class="ne-text">在使用</span><strong><span class="ne-text">定位</span></strong><span class="ne-text">布局时，可能会</span><strong><span class="ne-text">出现盒子重叠的情况</span></strong><span class="ne-text">。</span></li><li id="b7474ae292e77bb67aa37b46fb54550c"><span class="ne-text">加了定位的盒子，默认</span><strong><span class="ne-text">后来者居上</span></strong><span class="ne-text">， 后面的盒子会压住前面的盒子。</span></li><li id="98b244a4b7393536e332be065c6bfdb9"><span class="ne-text">应用 </span><code class="ne-code"><span class="ne-text">z-index</span></code><span class="ne-text"> 层叠等级属性可以</span><strong><span class="ne-text">调整盒子的堆叠顺序</span></strong><span class="ne-text">。如下图所示：</span></li></ul><p id="25cd43f3aa4d88c6b4b97cbb30e93f1e" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1611552609219-135cc13d-9a4e-411e-bac1-3b3fcad55d5e.png" width="622.5" id="FpYQs" class="ne-image"></p><div class="ne-quote"><p id="063262891111d21d460e4da48a13cd72" class="ne-p"><code class="ne-code"><span class="ne-text">z-index</span></code><span class="ne-text"> 的特性如下：</span></p></div><ul class="ne-ul"><li id="5c1828638f0025f7546bc78b74336c22"><strong><span class="ne-text">属性值</span></strong><span class="ne-text">：</span><strong><span class="ne-text">正整数</span></strong><span class="ne-text">、</span><strong><span class="ne-text">负整数</span></strong><span class="ne-text">或 </span><strong><span class="ne-text">0</span></strong><span class="ne-text">，默认值是 0，</span><span class="ne-text" style="background-color: #FADB14">数值越大，盒子越靠上</span><span class="ne-text">；</span></li><li id="12acdffa2fed8e2fe09f2ff82ece7ca5"><span class="ne-text">如果</span><strong><span class="ne-text">属性值相同</span></strong><span class="ne-text">，则按照书写顺序，</span><strong><span class="ne-text">后来居上</span></strong><span class="ne-text">；</span></li><li id="10e253e2f66239d776cd64004a570b71"><strong><span class="ne-text">数字后面不能加单位</span></strong><span class="ne-text">。</span></li><li id="e1cf084fa0cdb11f0ab8e4e4952a17a0"><strong><span class="ne-text">注意</span></strong><span class="ne-text">：</span><code class="ne-code"><span class="ne-text">z-index</span></code><span class="ne-text"> 只能应用于</span><strong><span class="ne-text">相对定位</span></strong><span class="ne-text">、</span><strong><span class="ne-text">绝对定位</span></strong><span class="ne-text">和</span><strong><span class="ne-text">固定定位</span></strong><span class="ne-text">的元素，其他</span><strong><span class="ne-text">标准流</span></strong><span class="ne-text">、</span><strong><span class="ne-text">浮动</span></strong><span class="ne-text">和</span><strong><span class="ne-text">静态定位</span></strong><span class="ne-text">无效。</span></li></ul><h3 id="tElMM"><span class="ne-text">定位改变display属性</span></h3><p id="47a3b713314689865e3381fc8c0676d6" class="ne-p"><span class="ne-text">前面我们讲过，display是显示模式，可以改变显示模式有以下方式:</span></p><ul class="ne-ul"><li id="c61fb1545c072579bf87260f723645cf"><span class="ne-text">可以用inline-block  转换为行内块</span></li><li id="ab2a8ea79335be9dd1072c8217d1bbaa"><span class="ne-text">可以用浮动 float 默认转换为行内块（类似，并不完全一样，因为浮动是脱标的）</span></li><li id="98ae6ec17d21e910e10651e39347feab"><span class="ne-text">绝对定位和固定定位也和浮动类似， 默认转换的特性转换为行内块。</span></li></ul><p id="d8b740389eae7cb20a3e57c5d26aab4c" class="ne-p"><span class="ne-text">所以说， 一个行内的盒子，如果加了</span><strong><span class="ne-text">浮动</span></strong><span class="ne-text">、</span><strong><span class="ne-text">固定定位</span></strong><span class="ne-text">和</span><strong><span class="ne-text">绝对定位</span></strong><span class="ne-text">，不用转换，就可以给这个盒子直接设置宽度和高度等。</span></p><div class="ne-quote"><p id="a6f42af6bd0cf0a011eb36f1b069f922" class="ne-p"><strong><span class="ne-text">同时注意：</span></strong></p></div><p id="aafbd03eda2dfa99dcc0735091d3e864" class="ne-p"><span class="ne-text">浮动元素、绝对定位(固定定位）元素的都不会触发外边距合并的问题。 （我们以前是用padding border overflow解决的）</span></p><p id="7f815c6a0925a73b63dae3d21a5817ab" class="ne-p"><span class="ne-text">也就是说，我们给盒子改为了浮动或者定位，就不会有垂直外边距合并的问题了。</span></p><p id="f6b3a849d3b4e348a77a602292c88baa" class="ne-p"><br></p><p id="9cfb767413c757141c9c6f05ba097f84" class="ne-p"><br></p></div>
+</div>
+
+     
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/qfka5bkr6swg/">https://www.wztlink1013.com/blog/qfka5bkr6swg/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/qfka5bkr6swg/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/blog/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="/atom.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+    <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/uz1d072engtt/">
+                    <span class="tips"><i class="fa fa-arrow-left" aria-hidden="true"></i>上一篇</span>
+                    <b>JavaScript语言基本知识</b>
+                </a>
+            </span>
+            <br>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/vgixv5vex3i8/">
+                    <b>CSS浮动</b>
+                    <span class="tips">下一篇<i class="fa fa-arrow-right" aria-hidden="true"></i></span> 
+                </a>
+            </span>
+          
+    
+</div>
+
+
+    <div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Twikoo</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">giscus</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- giscus评论区 -->
+    <div id="github_comment" style="display: block">
+      <script
+        src="https://giscus.wztlink1013.com/client.js"
+        data-repo="wztlink1013/comment"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMzkxNDA3MDQ="
+        data-category="General"
+        data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDU2NTcx"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: none">
+      <div id="tcomment"></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <div class="ct_right">
+    <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+    <div class="component clearfix new_comments">
+  <h3 class="title">最新评论</h3>
+  <div class="new_comments_loding">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="content">
+  <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+    <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
+  </a>
+  <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+  <div><a href="/about">联系方式</a></div>
+</div>
+
+</footer>
+
+      <div id="leaves"></div>
+    </div>
+    
+    
+      <!-- 非首页 -->
+      
+<script src="/public/js/Main.js"></script>
+ 
+    
+    <!-- 共用脚本 -->
+    
+<script src="/public/js/base.js"></script>
+
+  </body>
+</html>

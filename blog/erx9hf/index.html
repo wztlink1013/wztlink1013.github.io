@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>jsDelivr+Github或NPM+国内镜像源两种方法构建免费CDN库 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="前言：此前一直使用jsDelivr+GitHub来构建免费的CDN服务，但是在2121.12.20左右，jsDelivr貌似崩了，究其原因是其在国内的备案失效了，导致网宿停止对该域名的服务，之后恢复之后，国内节点也不会像之前一样的解析得快了，具体体现就是网站中涉及jsDelivr静态资源CDN处打开" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="jsDelivr+Github或NPM+国内镜像源两种方法构建免费CDN库 | 尼采般地抒情" />
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/erx9hf/" />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="前言：此前一直使用jsDelivr+GitHub来构建免费的CDN服务，但是在2121.12.20左右，jsDelivr貌似崩了，究其原因是其在国内的备案失效了，导致网宿停止对该域名的服务，之后恢复之后，国内节点也不会像之前一样的解析得快了，具体体现就是网站中涉及jsDelivr静态资源CDN处打开" /> 
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- FIXME: 使用base64转义 -->
+    <!-- <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1484158/1641718461641-3811ef80-de8d-4fe8-adf5-1e80d9bc3a4f.png" /> -->
+    <meta property="og:image" content="https://www.wztlink1013.com/public/img/avatar.png" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- 引入jQuery -->
+    
+<script src="/public/js/plugins/jquery/3.6.0/jquery.min.js"></script>
+
+    
+<script src="/public/js/plugins/jquery-pjax/jquery.pjax.js"></script>
+
+    <!-- 引入highlight -->
+    
+<script src="/public/js/plugins/highlight/10.7.1/highlight.min.js"></script>
+
+    <!-- twikoo 评论文件 -->
+    
+<script src="/public/js/plugins/twikoo/1.6.7/twikoo.all.min.js"></script>
+
+    <!-- axios 文件 -->
+    
+<script src="/public/js/plugins/axios/1.0.0/axios.min.js"></script>
+
+    <!-- 打字特效 -->
+    
+<script src="/public/js/plugins/typed.js/2.0.11.js"></script>
+
+    <!-- APlayer -->
+    
+<link rel="stylesheet" href="/public/css/aplayer.css">
+
+    
+<script src="/public/js/plugins/aplayer/APlayer.min.js"></script>
+
+    <!-- MetingJS -->
+    
+<script src="/public/js/plugins/meting/Meting.min.js"></script>
+
+  <link rel="alternate" href="/atom.xml" title="尼采般地抒情" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="尼采般地抒情" type="application/rss+xml">
+</head>
+  <body>
+    <div id="lyrics">
+      <div class="bg_color"></div>
+<header class="header">
+  <!-- PC端 -->
+  <div class="header_pc">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+  </div>
+  <!-- 移动端 -->
+  <div class="header_app">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+      <div id="search_btn">
+        <i class="fa fa-search" aria-hidden="true" id="search_btn"></i>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 移动端抽屉 -->
+<div class="app_side_glass" id="app_side_glass"></div>
+<div class="app_side_content" id="app_side_content">
+  <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+  <div class="component clearfix music_box">
+  <h3>音乐盒</h3>
+  <div class="aplayer-box">
+    <meting-js
+      server="netease"
+      type="playlist"
+      id="8027485922"
+      theme="#9cf"
+      lrc-type="1"
+    ></meting-js>
+  </div>
+</div>
+
+  <!-- <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+ -->
+  <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+   
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+</div>
+
+<div class="global_button">
+  <div
+    title="顶部"
+    class="global_button_item"
+    id="go_top"
+    style="display: none"
+  >
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+  </div>
+  <!-- <div title="搜索" class="global_button_item" id="search_btn">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </div> -->
+  <div
+    title="评论"
+    class="global_button_item"
+    id="go_comments"
+    style="display: none"
+  >
+    <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+  </div>
+  
+  <div
+    title="目录"
+    class="global_button_item"
+    id="toc_btn"
+    style="display: block"
+  >
+    <i class="fa fa-list" aria-hidden="true"></i>
+  </div>
+  
+
+  <div title="夜间" class="global_button_item">
+    <i class="fa fa-adjust" aria-hidden="true"></i>
+  </div>
+  <div
+    title="分享"
+    class="global_button_item btn-default need-share-button-default need-share-button"
+    data-share-position="topLeft"
+  >
+    <i class="fa fa-share-alt" aria-hidden="true"></i>
+  </div>
+</div>
+
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#L1aek"><span class="toc-text">何为内容分发网络CDN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZAcHs"><span class="toc-text">方法一：NPM包+国内镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pvyK8"><span class="toc-text">CDN镜像源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WDSHp"><span class="toc-text">实现思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#m2ViF"><span class="toc-text">方法二：jsDelivr+GitHub仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ktjsG"><span class="toc-text">GitHub新建CDN仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zpcmm"><span class="toc-text">使用jsDelivr</span></a></li></ol>
+</div>
+<div class="search_box">
+    <div class="search">
+        <i class="fa fa-search search_icon" aria-hidden="true"></i> 
+        <input type="text" autocomplete="off" name="search" placeholder="请输入关键词" id="local-search-input">
+        <i class="fa fa-times search_close" aria-hidden="true"></i>
+    </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+  <div class="ct_left">
+    <div class="component clearfix blogger">
+  <div class="blogger-header-bg">
+    <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
+  </div>
+  <h3 class="blogger-title">尼采般地抒情</h3>
+  <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
+  <span class="blogger-descript"></span>
+</div>
+
+    <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+     
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+  </div>
+  <div class="ct_center">
+    <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>jsDelivr+Github或NPM+国内镜像源两种方法构建免费CDN库</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <img src="/public/img/avatar.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2020-10-17
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/其他/">
+                        其他
+                    </a>
+                
+                    <a href="/categories/其他/玩转博客/">
+                        玩转博客
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+    <div class="component article" id="article">
+  <!doctype html><div class="lake-content" typography="classic"><p id="ufff27c93" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1641718461641-3811ef80-de8d-4fe8-adf5-1e80d9bc3a4f.png" width="900" id="ue9c0ff30" class="ne-image"></p><p id="u2c6acca8" class="ne-p"><span class="ne-text">前言：此前一直使用jsDelivr+GitHub来构建免费的CDN服务，但是在2121.12.20左右，jsDelivr貌似崩了，究其原因是其在国内的备案失效了，导致网宿停止对该域名的服务，之后恢复之后，国内节点也不会像之前一样的解析得快了，具体体现就是网站中涉及jsDelivr静态资源CDN处打开会有卡顿的访问情况。</span></p><p id="uf2abdbbd" class="ne-p"><span class="ne-text"></span></p><p id="u9f61f891" class="ne-p"><span class="ne-text">所以本文介绍新一种搭建免费CDN的方案：将静态资源发布NPM包+国内镜像引用的方式，另一种是之前一直用的jsDelivr+GitHub仓库引用的方案。</span></p><h3 id="L1aek"><span class="ne-text">何为内容分发网络CDN</span></h3><div class="ne-quote"><p id="840ab83f70eedb9e6b563de4a14509fd" class="ne-p"><span class="ne-text">CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在网络之上的内容分发网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。——百度百科</span></p></div><p id="90ac18bee2af62f6e23446cfb8d2e32c" class="ne-p"><br></p><p id="5c8c490b737bbbf78164784095359219" class="ne-p"><span class="ne-text">通俗来说就是提取外链，同时加速访问的好处。Github的资源在国内加载速度比较慢，因此需要使用CDN加速来优化网站打开速度，</span><span class="ne-text" style="text-decoration: line-through">jsDelivr + Github便是免费且好用的CDN</span><span class="ne-text">（jsDelivr cdn 半挂状态），非常适合博客网站使用。</span></p><p id="u27dd36b3" class="ne-p"><span class="ne-text"></span></p><h2 id="ZAcHs"><span class="ne-text">方法一：NPM包+国内镜像</span></h2><p id="uaa8bcd1b" class="ne-p"><span class="ne-text">原因：</span></p><ul class="ne-ul"><li id="ucbee54c9"><span class="ne-text">网站引入的静态资源，如js、css、图片等资源，使用公共的CDN库来引入会更好地优化网站速度。</span></li><li id="u8bfdfc51"><span class="ne-text">不用jsDelivr+GitHub做CDN的缘由是，镜像没有npm的镜像多</span></li><li id="ufedf9993"><span class="ne-text">jsDelivr cdn 挂了（盲猜薅羊毛导致），备案证书过期，国内速度不再是从前的那般快了</span></li></ul><h3 id="pvyK8"><span class="ne-text">CDN镜像源</span></h3><ul class="ne-ul"><li id="uf1fcafcb"><span class="ne-text">饿了么做的：</span><a href="https://npm.elemecdn.com/" data-href="https://npm.elemecdn.com/" target="_blank" class="ne-link"><span class="ne-text">https://npm.elemecdn.com/</span></a></li></ul><p id="u9e6ee108" class="ne-p"><a href="https://unpkg.zhimg.com/yuque-hexo-lyrics@1.0.0/config.js" data-href="https://unpkg.zhimg.com/yuque-hexo-lyrics@1.0.0/config.js" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.zhimg.com/yuque-hexo-lyrics@1.0.0/config.js</span></a></p><ul class="ne-ul"><li id="u13b6279b"><span class="ne-text">知乎做的：</span><a href="https://unpkg.zhimg.com/" data-href="https://unpkg.zhimg.com/" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.zhimg.com/</span></a></li></ul><p id="uc65b504f" class="ne-p"><a href="https://npm.elemecdn.com/yuque-hexo-lyrics@1.0.0/config.js" data-href="https://npm.elemecdn.com/yuque-hexo-lyrics@1.0.0/config.js" target="_blank" class="ne-link"><span class="ne-text">https://npm.elemecdn.com/yuque-hexo-lyrics@1.0.0/config.js</span></a></p><ul class="ne-ul"><li id="ubdcd697e"><span class="ne-text">UNPKG（unpkg镜像用的是CloudFlare，国内加速效果不好）：</span><a href="https://unpkg.com/" data-href="https://unpkg.com/" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.com/</span></a></li></ul><p id="ua50cbc0a" class="ne-p"><a href="https://unpkg.com/yuque-hexo-lyrics@1.0.0/config.js" data-href="https://unpkg.com/yuque-hexo-lyrics@1.0.0/config.js" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.com/yuque-hexo-lyrics@1.0.0/config.js</span></a></p><ul class="ne-ul"><li id="u9206eec1"><span class="ne-text">……</span></li></ul><h3 id="WDSHp"><span class="ne-text">实现思路</span></h3><p id="u9f7905cb" class="ne-p"><span class="ne-text">将GitHub仓库私有化，同时配置GitHub Actions，如果发布版本/fork/star等操作，就将其pulish到npm包</span></p><p id="ua952998e" class="ne-p"><span class="ne-text"></span></p><p id="u7154484c" class="ne-p"><span class="ne-text">每次更新GitHub仓库之后，需要将package.json文件中的version字段的值指定，然后才能使用GitHub Actions进行自动化部署</span></p><p id="u16dd565c" class="ne-p"><span class="ne-text"></span></p><p id="u094e8964" class="ne-p"><span class="ne-text">具体使用形式：</span></p><ul class="ne-ul"><li id="u54d149a3"><a href="https://unpkg.zhimg.com/cdn-website@0.0.0/ico/heroes_villains/Totoro.ico" data-href="https://unpkg.zhimg.com/cdn-website@0.0.0/ico/heroes_villains/Totoro.ico" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.zhimg.com/cdn-website@0.0.0/ico/heroes_villains/Totoro.ico</span></a></li><li id="u146d4300"><a href="https://unpkg.zhimg.com/cdn-pictures@0.0.0/about/teacher.png" data-href="https://unpkg.zhimg.com/cdn-pictures@0.0.0/about/teacher.png" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.zhimg.com/cdn-pictures@0.0.0/about/teacher.png</span></a></li><li id="ud9f1bbfa"><a href="https://unpkg.zhimg.com/cdn-articles@0.0.0/article1/20200725094728.jpg" data-href="https://unpkg.zhimg.com/cdn-articles@0.0.0/article1/20200725094728.jpg" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.zhimg.com/cdn-articles@0.0.0/article1/20200725094728.jpg</span></a></li></ul><p id="u6ba2595e" class="ne-p"><span class="ne-text"></span></p><p id="ud0434ae6" class="ne-p"><span class="ne-text">其中，上述链接中的CDN链接</span><a href="https://unpkg.zhimg.com/" data-href="https://unpkg.zhimg.com/" target="_blank" class="ne-link"><span class="ne-text">https://unpkg.zhimg.com/</span></a><span class="ne-text">都可以用其他镜像源（unpkg、elemecdn、jsdelivr等）替换</span></p><h2 id="m2ViF"><span class="ne-text">方法二：jsDelivr+GitHub仓库</span></h2><h3 id="ktjsG"><span class="ne-text">GitHub新建CDN仓库</span></h3><p id="c284058895633e58a2ba2a3fe54eaafe" class="ne-p"><br></p><p id="0878494016df1c3e17d3b62b4207e8ac" class="ne-p"><span class="ne-text">在本地电脑进行一系列clone/pull等一系列操作，同时发布版本（最好上传一次就发布依次版本）</span></p><p id="15aac5478cfe89fc751f3736e48bcc10" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926808858-fcdea51e-42b2-4582-b46d-e9c105842039.png" width="1844" id="H2FW1" class="ne-image"></p><p id="db5bd10a52ba645c649a6ec2f84185e2" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1602926808290-99384f86-d857-415a-83e6-9be3b5bcf279.png" width="1832" id="nIJCg" class="ne-image"></p><p id="1832f2183d844a77a49e94a0eb6ee9db" class="ne-p"><br></p><h3 id="zpcmm"><span class="ne-text">使用jsDelivr</span></h3><p id="073ec0ba7b6f2f2cc3dba983ab009d5e" class="ne-p"><code class="ne-code"><a href="https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@" data-href="https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@" target="_blank" class="ne-link"><strong><span class="ne-text">https://cdn.jsdelivr.net/gh/wztlink1013/CDN-Volantis@</span></strong></a><strong><span class="ne-text">版本号/文件夹/文件名.文件后缀</span></strong></code></p><p id="2913f52497204ca38cfe2b79246d0eb4" class="ne-p"><strong><span class="ne-text">举个栗子</span></strong></p><ul class="ne-ul"><li id="b38f58c6e41dad0025a997b77e18a657"><a href="https://cdn.jsdelivr.net/gh/wztlink1013/CDN@2.4/Pictures/blogbackground/fengbaobao_1.jpg" data-href="https://cdn.jsdelivr.net/gh/wztlink1013/CDN@2.4/Pictures/blogbackground/fengbaobao_1.jpg" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/wztlink1013/CDN@2.4/Pictures/blogbackground/fengbaobao_1.jpg</span></a></li><li id="867dc0cd4fc6b6a4a46840eccf31d26a"><a href="https://cdn.jsdelivr.net/gh/moezx/cdn@3.1.3//The%20Pet%20Girl%20of%20Sakurasou.mp4" data-href="https://cdn.jsdelivr.net/gh/moezx/cdn@3.1.3//The%20Pet%20Girl%20of%20Sakurasou.mp4" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/moezx/cdn@3.1.3//The Pet Girl of Sakurasou.mp4</span></a></li></ul><p id="29df8afaa1feb78832fc9b8d0c811dcc" class="ne-p"><br></p><div class="ne-quote"><p id="3bf1ef921059d895947a569bd00904f1" class="ne-p"><span class="ne-text">0、具体使用教程</span></p></div><ul class="ne-ul"><li id="a6c07817ec1826e0ee0100c52ece3ae3"><a href="https://blog.wztlink1013.com/2020/02/25/Hexo/jsDelivr%E5%92%8CGitHub%E6%9E%84%E5%BB%BA%E5%85%8D%E8%B4%B9CDN/" data-href="https://blog.wztlink1013.com/2020/02/25/Hexo/jsDelivr%E5%92%8CGitHub%E6%9E%84%E5%BB%BA%E5%85%8D%E8%B4%B9CDN/" target="_blank" class="ne-link"><span class="ne-text">jsDelivr和Github构建免费CDN</span></a></li><li id="e987a4e3cecd805913c4fdc0056b7638"><a href="https://www.jsdelivr.com/" data-href="https://www.jsdelivr.com/" target="_blank" class="ne-link"><span class="ne-text">jsdelivr官网网站</span></a></li></ul><p id="434883797f9d5ce1690005e7bfa8529b" class="ne-p"><br></p><div class="ne-quote"><p id="1f4eb5777e6e48253a2f87cf2d1e7df6" class="ne-p"><span class="ne-text">1、加载任何Github发布、提交或分支</span></p></div><ul class="ne-ul"><li id="98e48520e5f0df70314dfa0803b9a20f"><a href="https://cdn.jsdelivr.net/gh/user/repo@version/file" data-href="https://cdn.jsdelivr.net/gh/user/repo@version/file" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/user/repo@version/file</span></a></li></ul><div class="ne-quote"><p id="5fc01cec3d879c6027c5b63e0cde73c9" class="ne-p"><span class="ne-text">2、加载 jQuery v3.2.1</span></p></div><ul class="ne-ul"><li id="8044a13c7fab2ec6bd5b09a50079aa7c"><a href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js" data-href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/dist/jquery.min.js</span></a></li></ul><p id="c1755bc347326be221542560d52c51f2" class="ne-p"><br></p><div class="ne-quote"><p id="3b840d7fe5df9b288c0dcbc6c7fe578b" class="ne-p"><span class="ne-text">3、使用版本范围而不是特定版本</span></p></div><ul class="ne-ul"><li id="155b258f84fed50dca398969efed1fe7"><a href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js" data-href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/jquery/jquery@3.2/dist/jquery.min.js</span></a></li><li id="df0286308c62fdea9a8e538cf9646bd7"><a href="https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js" data-href="https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js</span></a></li></ul><p id="ade19f7333fde57d4630be05ec397499" class="ne-p"><br></p><div class="ne-quote"><p id="fe85c27c0afda11a8e5ffa5e21865b20" class="ne-p"><span class="ne-text">4、完全省略该版本以获取最新版本</span></p></div><ul class="ne-ul"><li id="e532c26a90f4c8d77e48dc3bb0082cba"><a href="https://cdn.jsdelivr.net/gh/jquery/jquery/dist/jquery.min.js" data-href="https://cdn.jsdelivr.net/gh/jquery/jquery/dist/jquery.min.js" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/jquery/jquery/dist/jquery.min.js</span></a></li></ul><p id="1a0044b5faeb3f5f51e4a7c6cfbb7ef0" class="ne-p"><br></p><div class="ne-quote"><p id="9f8eece216416d831eeb0c388c3b42be" class="ne-p"><span class="ne-text">5、将“.min”添加到任何JS/CSS文件中以获取缩小版本，如果不存在，将为会自动生成</span></p></div><ul class="ne-ul"><li id="69446385cee77f5e9285ef32d4c3f386"><a href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/src/core.min.js" data-href="https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/src/core.min.js" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/jquery/jquery@3.2.1/src/core.min.js</span></a></li></ul><p id="ca071a7d9ea8bd378d666c79a5378eea" class="ne-p"><br></p><div class="ne-quote"><p id="4124ef81391f3dcca87546eacb99b342" class="ne-p"><span class="ne-text">6、在末尾添加 / 以获取资源目录列表</span></p></div><ul class="ne-ul"><li id="097bad980a01b3a8419b7ba208706950"><a href="https://cdn.jsdelivr.net/gh/jquery/jquery/" data-href="https://cdn.jsdelivr.net/gh/jquery/jquery/" target="_blank" class="ne-link"><span class="ne-text">https://cdn.jsdelivr.net/gh/jquery/jquery/</span></a></li></ul></div>
+</div>
+
+     
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/erx9hf/">https://www.wztlink1013.com/blog/erx9hf/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/erx9hf/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/blog/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="/atom.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+    <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/blog/bzf30z/">
+                    <span class="tips"><i class="fa fa-arrow-left" aria-hidden="true"></i>上一篇</span>
+                    <b>GitHub+PicGo构建免费图床及其高效使用</b>
+                </a>
+            </span>
+            <br>
+          
+          
+            <span class="prev_next_right">
+                <a href="/blog/wsmygb/">
+                    <b>yuque-未拉取成功</b>
+                    <span class="tips">下一篇<i class="fa fa-arrow-right" aria-hidden="true"></i></span> 
+                </a>
+            </span>
+          
+    
+</div>
+
+
+    <div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Twikoo</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">giscus</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- giscus评论区 -->
+    <div id="github_comment" style="display: block">
+      <script
+        src="https://giscus.wztlink1013.com/client.js"
+        data-repo="wztlink1013/comment"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMzkxNDA3MDQ="
+        data-category="General"
+        data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDU2NTcx"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: none">
+      <div id="tcomment"></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <div class="ct_right">
+    <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+    <div class="component clearfix new_comments">
+  <h3 class="title">最新评论</h3>
+  <div class="new_comments_loding">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="content">
+  <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+    <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
+  </a>
+  <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+  <div><a href="/about">联系方式</a></div>
+</div>
+
+</footer>
+
+      <div id="leaves"></div>
+    </div>
+    
+    
+      <!-- 非首页 -->
+      
+<script src="/public/js/Main.js"></script>
+ 
+    
+    <!-- 共用脚本 -->
+    
+<script src="/public/js/base.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PC端hevc编码的MOV格式视频无法查看 | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="前言：需求中有这么一个问题，部分mov格式的视频在移动端可以播放，但在pc客户端无法显示，对比能播放和不能播放的mov格式视频，发现是hevc编码的mov视频不能播放，对此在做需求过程中，寻求并尝试了一些方法来解决这个问题，在本文做个记录。MOV合适视频是苹果手机拍摄的视频格式苹果拍照的视频和苹果利" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="PC端hevc编码的MOV格式视频无法查看 | 尼采般地抒情" />
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/akf33e/" />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="前言：需求中有这么一个问题，部分mov格式的视频在移动端可以播放，但在pc客户端无法显示，对比能播放和不能播放的mov格式视频，发现是hevc编码的mov视频不能播放，对此在做需求过程中，寻求并尝试了一些方法来解决这个问题，在本文做个记录。MOV合适视频是苹果手机拍摄的视频格式苹果拍照的视频和苹果利" /> 
+    <!-- 解决语雀图片不显示 -->
+    <meta name="referrer" content="no-referrer" />
+    <!-- FIXME: 使用base64转义 -->
+    <!-- <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/1484158/1636168657171-19788f71-f632-44cc-9e62-0e6d9f206379.png" /> -->
+    <meta property="og:image" content="https://www.wztlink1013.com/public/img/avatar.png" />
+    <meta name="generator" content="https://hexo.io" />
+    <!-- 引入主CSS样式 -->
+    
+<link rel="stylesheet" href="/public/css/style.css">
+
+    <!-- 引入jQuery -->
+    
+<script src="/public/js/plugins/jquery/3.6.0/jquery.min.js"></script>
+
+    
+<script src="/public/js/plugins/jquery-pjax/jquery.pjax.js"></script>
+
+    <!-- 引入highlight -->
+    
+<script src="/public/js/plugins/highlight/10.7.1/highlight.min.js"></script>
+
+    <!-- twikoo 评论文件 -->
+    
+<script src="/public/js/plugins/twikoo/1.6.7/twikoo.all.min.js"></script>
+
+    <!-- axios 文件 -->
+    
+<script src="/public/js/plugins/axios/1.0.0/axios.min.js"></script>
+
+    <!-- 打字特效 -->
+    
+<script src="/public/js/plugins/typed.js/2.0.11.js"></script>
+
+    <!-- APlayer -->
+    
+<link rel="stylesheet" href="/public/css/aplayer.css">
+
+    
+<script src="/public/js/plugins/aplayer/APlayer.min.js"></script>
+
+    <!-- MetingJS -->
+    
+<script src="/public/js/plugins/meting/Meting.min.js"></script>
+
+  <link rel="alternate" href="/atom.xml" title="尼采般地抒情" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="尼采般地抒情" type="application/rss+xml">
+</head>
+  <body>
+    <div id="lyrics">
+      <div class="bg_color"></div>
+<header class="header">
+  <!-- PC端 -->
+  <div class="header_pc">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="arrow_left">
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="arrow_right">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </div>
+  </div>
+  <!-- 移动端 -->
+  <div class="header_app">
+    <a href="/">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+    <div class="hd_left" id="btn_app_sider">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="hd_right" id="btn_app_right">
+      <div id="search_btn">
+        <i class="fa fa-search" aria-hidden="true" id="search_btn"></i>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 移动端抽屉 -->
+<div class="app_side_glass" id="app_side_glass"></div>
+<div class="app_side_content" id="app_side_content">
+  <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+  <div class="component clearfix music_box">
+  <h3>音乐盒</h3>
+  <div class="aplayer-box">
+    <meting-js
+      server="netease"
+      type="playlist"
+      id="8027485922"
+      theme="#9cf"
+      lrc-type="1"
+    ></meting-js>
+  </div>
+</div>
+
+  <!-- <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+ -->
+  <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+   
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+</div>
+
+<div class="global_button">
+  <div
+    title="顶部"
+    class="global_button_item"
+    id="go_top"
+    style="display: none"
+  >
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+  </div>
+  <!-- <div title="搜索" class="global_button_item" id="search_btn">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </div> -->
+  <div
+    title="评论"
+    class="global_button_item"
+    id="go_comments"
+    style="display: none"
+  >
+    <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+  </div>
+  
+  <div
+    title="目录"
+    class="global_button_item"
+    id="toc_btn"
+    style="display: block"
+  >
+    <i class="fa fa-list" aria-hidden="true"></i>
+  </div>
+  
+
+  <div title="夜间" class="global_button_item">
+    <i class="fa fa-adjust" aria-hidden="true"></i>
+  </div>
+  <div
+    title="分享"
+    class="global_button_item btn-default need-share-button-default need-share-button"
+    data-share-position="topLeft"
+  >
+    <i class="fa fa-share-alt" aria-hidden="true"></i>
+  </div>
+</div>
+
+<div class="toc_container">
+    <div class="toc_title">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>目录</span>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#aCbsI"><span class="toc-text">一、两者视频元信息比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mg1QX"><span class="toc-text">二、HEVC、H.265兼容性支持情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nWppG"><span class="toc-text">三、解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fh8pH"><span class="toc-text">【弃】vue-h265-player插件使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gtJbk"><span class="toc-text">【弃】EasyPlayer.js插件使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ujwBQ"><span class="toc-text">【弃】libde265.JS解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qhc2n"><span class="toc-text">【弃】easywasmplayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pDCNT"><span class="toc-text">【取】ffmpeg方法</span></a></li></ol></li></ol>
+</div>
+<div class="search_box">
+    <div class="search">
+        <i class="fa fa-search search_icon" aria-hidden="true"></i> 
+        <input type="text" autocomplete="off" name="search" placeholder="请输入关键词" id="local-search-input">
+        <i class="fa fa-times search_close" aria-hidden="true"></i>
+    </div>
+    <div id="local-search-result">
+        请输入搜索词以便展示搜索结果……
+    </div>
+</div>
+<div class="clearfix container">
+  <div class="ct_left">
+    <div class="component clearfix blogger">
+  <div class="blogger-header-bg">
+    <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
+  </div>
+  <h3 class="blogger-title">尼采般地抒情</h3>
+  <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
+  <span class="blogger-descript"></span>
+</div>
+
+    <!--
+ * @Author: wztlink1013
+ * @Date: 2022-07-07 18:48:18
+ * @LastEditTime: 2022-07-10 22:06:22
+ * @Description:  
+-->
+<div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+
+    <div class="component clearfix links">
+    <h3>站内导航</h3>
+    <ul>
+        <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+    </ul>
+</div>
+
+     
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    307
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1166
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+
+  </div>
+  <div class="ct_center">
+    <div class="component article_meta">
+    <div class="article_meta_title">
+        <h1>PC端hevc编码的MOV格式视频无法查看</h1>
+    </div>
+    <div class="article_meta_other">
+        <span class="meta_item">
+            <img src="/public/img/avatar.png" class="meta_img">
+            <a href="/">尼采般地抒情</a>
+        </span>
+        <span class="meta_item">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            2021-10-10
+        </span>
+        
+        
+            <span class="meta_item">
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                
+                    <a href="/categories/Web开发/">
+                        Web开发
+                    </a>
+                
+                    <a href="/categories/Web开发/前端业务解决方案/">
+                        前端业务解决方案
+                    </a>
+                
+            </span>
+         
+
+         
+
+        <span class="meta_item">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span id="twikoo_visitors">loading</span>
+            次访问
+        </span>
+
+        <span class="meta_item">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <span id="twikoo_comments">loading</span>
+        </span>
+    </div>
+</div>
+    <div class="component article" id="article">
+  <!doctype html><div class="lake-content" typography="classic"><p id="u1b5b6b57" class="ne-p"><span class="ne-text">前言：需求中有这么一个问题，部分mov格式的视频在移动端可以播放，但在pc客户端无法显示，对比能播放和不能播放的mov格式视频，发现是hevc编码的mov视频不能播放，对此在做需求过程中，寻求并尝试了一些方法来解决这个问题，在本文做个记录。</span></p><p id="u39e05545" class="ne-p"><span class="ne-text"></span></p><div class="ne-quote"><ol class="ne-ol"><li id="u6ee0e089"><span class="ne-text">MOV合适视频是苹果手机拍摄的视频格式</span></li><li id="ucb6b1b39"><span class="ne-text">苹果拍照的视频和苹果利用api调用的拍照的视频，这两者拍的视频编码是有差异的</span></li></ol></div><h2 id="aCbsI"><span class="ne-text">一、两者视频元信息比较</span></h2><p id="u6cb5301e" class="ne-p"><span class="ne-text">所用例子：</span></p><ul class="ne-ul"><li id="uc9188c46"><a href="https://image.x7sy.com/oa_medias/65440114717__69E1A426-97B2-4832-95FC-7712D9D7A487-16327083586676.MOV" data-href="https://image.x7sy.com/oa_medias/65440114717__69E1A426-97B2-4832-95FC-7712D9D7A487-16327083586676.MOV" target="_blank" class="ne-link"><span class="ne-text">非hevc编码视频例子</span></a></li><li id="uee54ac6e"><a href="https://image.x7sy.com/oa_medias/IMG_0018-16327078428771.MOV" data-href="https://image.x7sy.com/oa_medias/IMG_0018-16327078428771.MOV" target="_blank" class="ne-link"><span class="ne-text">hevc编码视频例子</span></a></li></ul><p id="u35ea3340" class="ne-p"><br></p><p id="u9a3f6e9b" class="ne-p"><span class="ne-text">利用格式工厂查看两个视频的元信息：</span></p><p id="u26dd80de" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1636168657171-19788f71-f632-44cc-9e62-0e6d9f206379.png" width="825" id="u318798b8" class="ne-image"></p><p id="uefc9da5c" class="ne-p"><span class="ne-text">利用上面的信息以及实际的可播放效果得：</span></p><ul class="ne-ul"><li id="u66d4ca2a"><span class="ne-text">mobile：都能看（安卓和苹果）</span></li><li id="u37f0e1b2"><span class="ne-text">pc：不能看上传的，</span><strong><span class="ne-text">hevc编码的不能解码</span></strong><span class="ne-text">？移动端相较pc能处理hevc编码？</span></li></ul><h2 id="Mg1QX"><span class="ne-text">二、HEVC、H.265兼容性支持情况</span></h2><p id="uaa976dd2" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632730222885-c5d08df9-afdf-4b78-85fa-9003cb6b47b2.png" width="568.5" id="u07c0c94a" class="ne-image"></p><p id="u19280f6a" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632730253372-9f6e0c9d-03c5-4685-ada6-d68306266653.png" width="570.5" id="u940ac543" class="ne-image"></p><p id="uf59796a1" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1636168806126-ed5989be-ca1f-455c-a434-b0fbe89bca94.png" width="888.5" id="ue461184a" class="ne-image"></p><p id="u76eaa99a" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632885246692-38ce1a86-66eb-4d5e-8e91-ff2c48a65f4e.png" width="529" id="u48fdcb25" class="ne-image"></p><p id="u351c1cbd" class="ne-p"><span class="ne-text">参考方案：</span></p><ul class="ne-ul"><li id="ue429d104"><a href="https://blog.csdn.net/yanrx76/article/details/116238315" data-href="https://blog.csdn.net/yanrx76/article/details/116238315" target="_blank" class="ne-link"><strong><span class="ne-text">如何在浏览器中支持H265/HEVC</span></strong></a></li><li id="uc784faa2"><a href="https://www.fdbtech.com/webfrontend/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BEhevch265%E7%BC%96%E7%A0%81%E7%9A%84mp4%E8%A7%86%E9%A2%91" data-href="https://www.fdbtech.com/webfrontend/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BEhevch265%E7%BC%96%E7%A0%81%E7%9A%84mp4%E8%A7%86%E9%A2%91" target="_blank" class="ne-link"><span class="ne-text">前端web如何播放HEVC(h265)编码的MP4视频</span></a></li></ul><ul class="ne-ul"><li id="u9a15c27a"><a href="https://segmentfault.com/a/1190000017187346" data-href="https://segmentfault.com/a/1190000017187346" target="_blank" class="ne-link"><span class="ne-text">H.265/HEVC在Web视频播放的实践</span></a></li><li id="u464cd360"><a href="https://segmentfault.com/q/1010000020081504" data-href="https://segmentfault.com/q/1010000020081504" target="_blank" class="ne-link"><span class="ne-text">video播放mov文件问题</span></a></li></ul><h2 id="nWppG"><span class="ne-text">三、解决方案</span></h2><p id="u520e30a3" class="ne-p"><span class="ne-text">下面几种方法是解决过程中所尝试的几种方法，前四种都测试未能解决该问题，最后一个方法取之。</span></p><h3 id="Fh8pH"><span class="ne-text">【弃】vue-h265-player插件使用</span></h3><ul class="ne-ul"><li id="ubd7a8f37"><a href="https://www.npmjs.com/package/vue-h265-player" data-href="https://www.npmjs.com/package/vue-h265-player" target="_blank" class="ne-link"><span class="ne-text">https://www.npmjs.com/package/vue-h265-player</span></a></li><li id="u4226c89f"><span class="ne-text"></span><a href="https://blog.csdn.net/Nie2014/article/details/114651376" data-href="https://blog.csdn.net/Nie2014/article/details/114651376" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/Nie2014/article/details/114651376</span></a></li></ul><ul class="ne-ul"><li id="u3bbaae9f"><a href="https://blog.csdn.net/weixin_42274114/article/details/109490633" data-href="https://blog.csdn.net/weixin_42274114/article/details/109490633" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/weixin_42274114/article/details/109490633</span></a></li></ul><p id="uba12ae57" class="ne-p"><span class="ne-text" style="text-decoration: line-through">判断是否为h.265，如果是就将其用新的播放器（插件）播放</span></p><p id="u01016027" class="ne-p"><a href="https://github.com/buzz/mediainfo.js" data-href="https://github.com/buzz/mediainfo.js" target="_blank" class="ne-link"><span class="ne-text" style="text-decoration: line-through">https://github.com/buzz/mediainfo.js</span></a></p><p id="ufb9ecf27" class="ne-p"><span class="ne-text" style="text-decoration: line-through">项目中添加该api的判断代码</span></p><ul class="ne-ul"><li id="u9cebd4db"><a href="https://blog.csdn.net/weixin_42274114/article/details/109490633" data-href="https://blog.csdn.net/weixin_42274114/article/details/109490633" target="_blank" class="ne-link"><span class="ne-text" style="text-decoration: line-through">https://blog.csdn.net/weixin_42274114/article/details/109490633</span></a></li><li id="uccca4d9e"><a href="https://segmentfault.com/a/1190000039753551" data-href="https://segmentfault.com/a/1190000039753551" target="_blank" class="ne-link"><span class="ne-text" style="text-decoration: line-through">https://segmentfault.com/a/1190000039753551</span></a></li></ul><ul class="ne-ul"><li id="u0bcbeeab"><a href="https://blog.csdn.net/Nie2014/article/details/114651376" data-href="https://blog.csdn.net/Nie2014/article/details/114651376" target="_blank" class="ne-link"><span class="ne-text" style="text-decoration: line-through">https://blog.csdn.net/Nie2014/article/details/114651376</span></a></li></ul><div data-type="danger" class="ne-alert"><p id="u0f44f1f5" class="ne-p"><span class="ne-text">插件源代码本身有问题</span></p></div><h3 id="gtJbk"><span class="ne-text">【弃】EasyPlayer.js插件使用</span></h3><ul class="ne-ul"><li id="u46e2d2e4"><a href="https://my.oschina.net/u/4383286/blog/4496965" data-href="https://my.oschina.net/u/4383286/blog/4496965" target="_blank" class="ne-link"><span class="ne-text">https://my.oschina.net/u/4383286/blog/4496965</span></a></li><li id="uf0143acd"><a href="https://github.com/tsingsee/EasyPlayer.js" data-href="https://github.com/tsingsee/EasyPlayer.js" target="_blank" class="ne-link"><span class="ne-text">https://github.com/tsingsee/EasyPlayer.js</span></a></li></ul><ul class="ne-ul"><li id="u3a8703ea"><a href="https://blog.csdn.net/a843334549/article/details/117323709" data-href="https://blog.csdn.net/a843334549/article/details/117323709" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/a843334549/article/details/117323709</span></a></li><li id="ua7d9beb3"><a href="https://blog.csdn.net/u012848709/article/details/106291133" data-href="https://blog.csdn.net/u012848709/article/details/106291133" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/u012848709/article/details/106291133</span></a></li></ul><ul class="ne-ul"><li id="uee6b716b"><a href="https://www.liveqing.com/docs/manuals/LivePlayer.html#%E5%9C%A8-vue-%E4%B8%AD%E4%BD%BF%E7%94%A8" data-href="https://www.liveqing.com/docs/manuals/LivePlayer.html#%E5%9C%A8-vue-%E4%B8%AD%E4%BD%BF%E7%94%A8" target="_blank" class="ne-link"><span class="ne-text">https://www.liveqing.com/docs/manuals/LivePlayer.html#%E5%9C%A8-vue-%E4%B8%AD%E4%BD%BF%E7%94%A8</span></a></li><li id="uba291925"><a href="https://gitee.com/livegbs/liveplayer-vc" data-href="https://gitee.com/livegbs/liveplayer-vc" target="_blank" class="ne-link"><span class="ne-text">https://gitee.com/livegbs/liveplayer-vc</span></a></li></ul><div data-type="danger" class="ne-alert"><p id="u01bd2388" class="ne-p"><span class="ne-text">未能播放那个苹果上传mov文件</span></p><p id="u7863f7a7" class="ne-p"><span class="ne-text">可能原因是苹果上传的mov文件(hevc)不属于该插件所解码的h.265的范围。</span></p></div><p id="u28130e96" class="ne-p"><br></p><p id="u26393f1a" class="ne-p"><strong><span class="ne-text" style="color: #F5222D">只要是hevc的格式，不管是视频还是声音，都无法播放</span></strong></p><ul class="ne-ul"><li id="u41d3a275"><span class="ne-text">EasyPlayer.js插件：</span><a href="https://github.com/tsingsee/EasyPlayer.js/issues/45" data-href="https://github.com/tsingsee/EasyPlayer.js/issues/45" target="_blank" class="ne-link"><span class="ne-text">https://github.com/tsingsee/EasyPlayer.js/issues/45</span></a></li><li id="uf12732b9"><span class="ne-text">原项目issues（vue-video-player插件）：</span><a href="https://github.com/surmon-china/vue-video-player/issues/232" data-href="https://github.com/surmon-china/vue-video-player/issues/232" target="_blank" class="ne-link"><span class="ne-text">https://github.com/surmon-china/vue-video-player/issues/232</span></a></li></ul><p id="ua4eaf41b" class="ne-p"><br></p><h3 id="ujwBQ"><span class="ne-text">【弃】libde265.JS解决办法</span></h3><ul class="ne-ul"><li id="u73274506"><span class="ne-text"></span><a href="https://github.com/strukturag/libde265" data-href="https://github.com/strukturag/libde265" target="_blank" class="ne-link"><span class="ne-text">https://github.com/strukturag/libde265</span></a></li></ul><ul class="ne-ul"><li id="u8280a4d8"><span class="ne-text"></span><a href="https://www.fdbtech.com/webfrontend/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BEhevch265%E7%BC%96%E7%A0%81%E7%9A%84mp4%E8%A7%86%E9%A2%91" data-href="https://www.fdbtech.com/webfrontend/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E6%92%AD%E6%94%BEhevch265%E7%BC%96%E7%A0%81%E7%9A%84mp4%E8%A7%86%E9%A2%91" target="_blank" class="ne-link"><span class="ne-text">前端web如何播放HEVC(h265)编码的MP4视频</span></a></li><li id="u211af4cc"><a href="https://segmentfault.com/a/1190000017187346" data-href="https://segmentfault.com/a/1190000017187346" target="_blank" class="ne-link"><span class="ne-text">H.265/HEVC在Web视频播放的实践</span></a></li></ul><div data-type="danger" class="ne-alert"><p id="ud6c4dbc5" class="ne-p"><span class="ne-text">使用该js文件，能播放他自己提供的那个文件（改不改后缀都可以）</span></p><p id="u37c0c0dc" class="ne-p"><span class="ne-text">新上传的hevc编码的文件还是不能播放</span></p></div><h3 id="qhc2n"><span class="ne-text">【弃】easywasmplayer</span></h3><p id="ua907d3d3" class="ne-p"><span class="ne-text">测试地址：</span><a href="http://www.easydarwin.org/easywasmplayer/" data-href="http://www.easydarwin.org/easywasmplayer/" target="_blank" class="ne-link"><span class="ne-text">http://www.easydarwin.org/easywasmplayer/</span></a></p><div data-type="danger" class="ne-alert"><p id="ud3d554a5" class="ne-p"><span class="ne-text">不支持mov播放，mp4可以</span></p></div><h3 id="pDCNT"><span class="ne-text">【取】ffmpeg方法</span></h3><div data-type="success" class="ne-alert"><p id="u98bacc83" class="ne-p"><span class="ne-text">能否在后端利用ffmpeg将mov格式视频转换成mp4，转换之后的mp4格式是h.264编码的（目前只有部分mov格式视频是hevc编码的）</span></p></div><p id="ue3285a88" class="ne-p"><br></p><ul class="ne-ul"><li id="u01a2e3eb"><span class="ne-text"></span><a href="https://learnku.com/articles/50169" data-href="https://learnku.com/articles/50169" target="_blank" class="ne-link"><span class="ne-text">Web 端解码 H.265 视频可行性研究</span></a></li><li id="uda1c876b"><span class="ne-text"></span><a href="https://blog.csdn.net/qq_29931083/article/details/107758997" data-href="https://blog.csdn.net/qq_29931083/article/details/107758997" target="_blank" class="ne-link"><span class="ne-text">ffmpeg将mov格式的视频转换成mp4格式</span></a></li></ul><p id="u54631621" class="ne-p"><span class="ne-text"></span></p><p id="u5708f1f9" class="ne-p"><span class="ne-text">PS：ffmpeg安装方法：</span></p><p id="u6a3cb83b" class="ne-p"><a href="https://ffmpeg.org/download.html" data-href="https://ffmpeg.org/download.html" target="_blank" class="ne-link"><span class="ne-text">https://ffmpeg.org/download.html</span></a></p><p id="u22be7417" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632896302501-77e97ee6-c0fa-444d-a9c2-a34bec0d7493.png" width="491" id="u1938d594" class="ne-image"></p><p id="u7a13ec78" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632896323573-b3da95d2-dba7-42d0-b712-b2cfb5dbf82e.png" width="312.5" id="ud117ee8e" class="ne-image"></p><p id="uf4cb7c84" class="ne-p"><span class="ne-text">添加到环境变量</span></p><p id="uf41cab34" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1641181905373-20996222-6e15-43ee-9e2f-4ca7d62da401.png" width="355" id="ud78e85c0" class="ne-image"></p><p id="ue4c9d668" class="ne-p"><span class="ne-text">检测是否安装成功</span></p><p id="ubec3da53" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632896355552-9604ce17-2ff5-44dc-931e-73ebc2efede8.png" width="373.5" id="ubed8d8a3" class="ne-image"></p><p id="u221b2367" class="ne-p"><span class="ne-text">安装成功</span></p><p id="u00bbe596" class="ne-p"><span class="ne-text"></span></p><p id="u4e6bed12" class="ne-p"><strong><span class="ne-text">【ffmpeg转mov为mp4-命令】</span></strong></p>
+
+<pre><code class="powershell">ffmpeg -i test.mov -vcodec libx264 -preset fast -crf 20 -y -acodec libmp3lame -ab 128k test.mp4
+</code></pre>
+<p id="u7b747430" class="ne-p"><span class="ne-text"></span></p><p id="u36a66e9e" class="ne-p"><strong><span class="ne-text">【前端实现】</span></strong></p><p id="u4668101b" class="ne-p"><a href="https://download.csdn.net/download/weixin_42120997/19759493" data-href="https://download.csdn.net/download/weixin_42120997/19759493" target="_blank" class="ne-link"><span class="ne-text">https://download.csdn.net/download/weixin_42120997/19759493</span></a><span class="ne-text">【收费】</span></p><p id="u62303f43" class="ne-p"><a href="https://blog.csdn.net/dj513dj/article/details/60961970" data-href="https://blog.csdn.net/dj513dj/article/details/60961970" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/dj513dj/article/details/60961970</span></a></p><p id="u8e862f0f" class="ne-p"><a href="https://juejin.cn/post/6844903961942556685" data-href="https://juejin.cn/post/6844903961942556685" target="_blank" class="ne-link"><span class="ne-text">https://juejin.cn/post/6844903961942556685</span></a></p><p id="u5100a420" class="ne-p"><a href="https://github.com/damianociarla/node-ffmpeg" data-href="https://github.com/damianociarla/node-ffmpeg" target="_blank" class="ne-link"><span class="ne-text">https://github.com/damianociarla/node-ffmpeg</span></a></p><p id="ubc1e5279" class="ne-p"><a href="https://blog.csdn.net/dj513dj/article/details/60961970" data-href="https://blog.csdn.net/dj513dj/article/details/60961970" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/dj513dj/article/details/60961970</span></a></p><p id="u84fbaae2" class="ne-p"><span class="ne-text">还是需要电脑有ffmpeg环境</span></p><p id="uad061cd9" class="ne-p"><span class="ne-text"></span></p><p id="u70226f72" class="ne-p"><strong><span class="ne-text">【后端实现】</span></strong></p><p id="u34b02720" class="ne-p"><a href="https://blog.csdn.net/fareise/article/details/53188785" data-href="https://blog.csdn.net/fareise/article/details/53188785" target="_blank" class="ne-link"><span class="ne-text">NodeJS实现视频转码</span></a></p><p id="uf09e6507" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1632897980832-011bfd61-effc-47f9-a527-17b59644c4ae.png" width="695" id="lFosa" class="ne-image"></p><p id="u77922ea0" class="ne-p"><span class="ne-text">需要服务端有ffmpeg环境</span></p></div>
+</div>
+
+     
+
+<div class="component article_more">
+    <ul>
+        <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+        <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/akf33e/">https://www.wztlink1013.com/blog/akf33e/</a></li>
+        <li class="article_more_btn">
+            <span class="meta_item">
+                编辑：
+                <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/akf33e/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                部署：
+                <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/blog/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+            </span>
+            <span class="meta_item">
+                订阅：
+                <a href="/atom.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a>
+            </span>
+        </li>
+    </ul>
+</div>
+    <div class="prev_next component">
+    
+          
+            <span class="prev_next_left">
+                <a href="/essay/gqoawl/">
+                    <span class="tips"><i class="fa fa-arrow-left" aria-hidden="true"></i>上一篇</span>
+                    <b>国庆随笔：向死而生</b>
+                </a>
+            </span>
+            <br>
+          
+          
+            <span class="prev_next_right">
+                <a href="/essay/dqzalx/">
+                    <b>师者对技术的态度</b>
+                    <span class="tips">下一篇<i class="fa fa-arrow-right" aria-hidden="true"></i></span> 
+                </a>
+            </span>
+          
+    
+</div>
+
+
+    <div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <div class="comment-switch not-select">
+      <span class="first-comment">Twikoo</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">giscus</span>
+    </div>
+  </div>
+
+  <div class="comments_content">
+    <!-- giscus评论区 -->
+    <div id="github_comment" style="display: block">
+      <script
+        src="https://giscus.wztlink1013.com/client.js"
+        data-repo="wztlink1013/comment"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMzkxNDA3MDQ="
+        data-category="General"
+        data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDU2NTcx"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </div>
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: none">
+      <div id="tcomment"></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  <div class="ct_right">
+    <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">66</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%8A%A8%E7%94%BB/">动画</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/%E5%B8%83%E5%B1%80/">布局</a><span class="category-list-count">16</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/jQuery/">jQuery</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+
+    <div class="component clearfix new_comments">
+  <h3 class="title">最新评论</h3>
+  <div class="new_comments_loding">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="content">
+  <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+    <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
+  </a>
+  <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+  <div><a href="/about">联系方式</a></div>
+</div>
+
+</footer>
+
+      <div id="leaves"></div>
+    </div>
+    
+    
+      <!-- 非首页 -->
+      
+<script src="/public/js/Main.js"></script>
+ 
+    
+    <!-- 共用脚本 -->
+    
+<script src="/public/js/base.js"></script>
+
+  </body>
+</html>
