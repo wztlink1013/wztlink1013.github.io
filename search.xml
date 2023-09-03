@@ -8,7 +8,7 @@
       <link href="/blog/etxgze472uzh7t1i/"/>
       <url>/blog/etxgze472uzh7t1i/</url>
       
-        <content type="html"><![CDATA[<div class="yuque-hexo-lyrics-secret">这是加密文章！</div>]]></content>
+        <content type="html"><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="ub2dd044b" class="ne-p"><span class="ne-text">前言: 本文记录一下CSS3中逻辑选择器中的has和not, has相当于根据子代条件来选择父代, not类似过滤条件. </span><strong><span class="ne-text">使用前先检查代码运行的浏览器环境是否符合如下截图条件</span></strong></p><p id="u4debc8a1" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693729315664-7752ef04-8503-42b0-b271-a4adffed81ec.png" width="540.328125" id="u310bdcce" class="ne-image"></p><h3 id="C7n01"><span class="ne-text">not</span></h3><p id="u9b72f6e5" class="ne-p"><span class="ne-text">对当前节点的过滤筛选</span></p><pre><code class="html">&lt;code&gt;&amp;lt;html&amp;gt;  &amp;lt;head&amp;gt;    &amp;lt;title&amp;gt;css&amp;lt;/title&amp;gt;    &amp;lt;style&amp;gt;      div.parent:not(.not-parent) &#123;        border: 1px red solid;      &#125;    &amp;lt;/style&amp;gt;  &amp;lt;/head&amp;gt;  &amp;lt;body&amp;gt;    &amp;lt;div class=&amp;quot;parent not-parent&amp;quot;&amp;gt;0000&amp;lt;/div&amp;gt;    &amp;lt;div class=&amp;quot;parent&amp;quot;&amp;gt;      &amp;lt;div&amp;gt;1111&amp;lt;/div&amp;gt;      &amp;lt;div&amp;gt;        &amp;lt;div class=&amp;quot;active&amp;quot;&amp;gt;2222&amp;lt;/div&amp;gt;      &amp;lt;/div&amp;gt;    &amp;lt;/div&amp;gt;    &amp;lt;div class=&amp;quot;parent&amp;quot;&amp;gt;      &amp;lt;div&amp;gt;3333&amp;lt;/div&amp;gt;      &amp;lt;div&amp;gt;4444&amp;lt;/div&amp;gt;    &amp;lt;/div&amp;gt;    &amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;  &amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/code&gt;</code></pre><p id="ubf0f5013" class="ne-p" style="text-align: left"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693728187545-dc666922-bd28-4c9d-b63e-824c8b0476f0.png" width="257.03705519478797" id="u46b8367d" class="ne-image"></p><h3 id="bNc8z"><span class="ne-text">has</span></h3><p id="u11a3e0cd" class="ne-p"><span class="ne-text">has选择器: </span><strong><span class="ne-text">根据子是否符合条件来选择父级</span></strong></p><p id="uaf7bd836" class="ne-p"><span class="ne-text">设置子代中有active类的parent类名div的样式</span></p><pre><code class="html">&lt;code&gt;&amp;lt;html&amp;gt;  &amp;lt;head&amp;gt;    &amp;lt;title&amp;gt;css&amp;lt;/title&amp;gt;    &amp;lt;style&amp;gt;      div.parent:has(.active) &#123;        border: 1px red solid;      &#125;    &amp;lt;/style&amp;gt;  &amp;lt;/head&amp;gt;  &amp;lt;body&amp;gt;    &amp;lt;div class=&amp;quot;parent&amp;quot;&amp;gt;      &amp;lt;div&amp;gt;1111&amp;lt;/div&amp;gt;      &amp;lt;div&amp;gt;        &amp;lt;div class=&amp;quot;active&amp;quot;&amp;gt;2222&amp;lt;/div&amp;gt;      &amp;lt;/div&amp;gt;    &amp;lt;/div&amp;gt;    &amp;lt;div class=&amp;quot;parent&amp;quot;&amp;gt;      &amp;lt;div&amp;gt;3333&amp;lt;/div&amp;gt;      &amp;lt;div&amp;gt;4444&amp;lt;/div&amp;gt;    &amp;lt;/div&amp;gt;    &amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;  &amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/code&gt;</code></pre><p id="u1eafcd36" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693726768953-ae1aa08f-87bd-45d1-ad03-bf4a73538bdc.png" width="257.03705519478797" id="u1ceb6584" class="ne-image"></p><p id="ued6d7945" class="ne-p"><span class="ne-text">如果将上面css改为, 边框则消失</span></p><pre><code class="css">&lt;code&gt;div.parent:has(&amp;gt; .active) &#123;  border: 1px red solid;&#125;&lt;/code&gt;</code></pre><p id="u08a49d4c" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693727448672-f90d3002-6437-4d65-9b1b-ea889429bd06.png" width="257.03705519478797" id="udd9054cc" class="ne-image"></p><p id="u56d25e80" class="ne-p"><span class="ne-text">还可以表示兄弟跟随关系</span></p><pre><code class="css">&lt;code&gt;div.parent:has(+ p) &#123;  border: 1px red solid;&#125;&lt;/code&gt;</code></pre><p id="u3dc38aeb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693727414288-eb1381c5-ce55-44b2-bea6-0e7dad844aba.png" width="257.03705519478797" id="u977486b6" class="ne-image"></p><p id="u3b65a87a" class="ne-p"><span class="ne-text">和not搭配使用, 如下表示不包含active后代的div.parent的标签</span></p><pre><code class="css">&lt;code&gt;div.parent:not(:has(.active)) &#123;  border: 1px red solid;&#125;&lt;/code&gt;</code></pre><p id="u12be46f2" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693727684199-12da436d-df79-4580-ad37-527bb3a9dc48.png" width="257.03705519478797" id="u860533e4" class="ne-image"></p><p id="u0872252b" class="ne-p"><span class="ne-text">上述not和has位置互换表示的意思不一样</span></p><pre><code class="css">&lt;code&gt;div.parent:has(:not(.active)) &#123;  border: 1px red solid;&#125;&lt;/code&gt;</code></pre><p id="u65f722ad" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693727825016-f0ae7f89-7fb6-4e74-9d40-32e2727079d5.png" width="257.03705519478797" id="u3f9eacb2" class="ne-image"></p><p id="u0f0fe764" class="ne-p"><span class="ne-text">和表单一些元素搭配使用</span></p><pre><code class="html">&lt;code&gt;&amp;lt;html&amp;gt;  &amp;lt;head&amp;gt;    &amp;lt;title&amp;gt;css&amp;lt;/title&amp;gt;    &amp;lt;style&amp;gt;      div:has(input:focus) &#123;        border: 1px red solid;      &#125;    &amp;lt;/style&amp;gt;  &amp;lt;/head&amp;gt;  &amp;lt;body&amp;gt;    &amp;lt;div&amp;gt;      &amp;lt;input type=&amp;quot;text&amp;quot; value=&amp;quot;111&amp;quot; /&amp;gt;    &amp;lt;/div&amp;gt;    &amp;lt;div&amp;gt;      &amp;lt;input type=&amp;quot;text&amp;quot; value=&amp;quot;222&amp;quot; /&amp;gt;    &amp;lt;/div&amp;gt;  &amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/code&gt;</code></pre><p id="uda31529e" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2023/png/1484158/1693728587821-b90111c9-a13f-4ecc-907e-d1c5d26f3a3d.png" width="257.03705519478797" id="u17090981" class="ne-image"></p><hr id="nIJig" class="ne-hr"><p id="u5dcb7170" class="ne-p" style="text-align: center"><span class="ne-text">一些常规使用CSS选择器可以参考另一篇文章:  </span><a href="https://www.wztlink1013.com/blog/01_html5css3_day01/" data-href="https://www.wztlink1013.com/blog/01_html5css3_day01/" class="ne-link"><span class="ne-text">CSS/CSS3选择器总结 | 尼采般地抒情</span></a></p></div>]]></content>
       
       
       <categories>
@@ -16,8 +16,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 基础 </category>
           
       </categories>
       
@@ -302,8 +300,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -1246,8 +1242,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -1268,8 +1262,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 动画 </category>
           
       </categories>
       
@@ -2971,8 +2963,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -2993,8 +2983,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -3258,8 +3246,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -3280,8 +3266,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -3304,8 +3288,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -3327,8 +3309,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -3337,7 +3317,7 @@
     
     
     <entry>
-      <title>CSS3 2D动画animation+translate rotate scale</title>
+      <title>CSS中的2D动画</title>
       <link href="/blog/02_html5css3_day02/"/>
       <url>/blog/02_html5css3_day02/</url>
       
@@ -3349,8 +3329,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 动画 </category>
           
       </categories>
       
@@ -3372,8 +3350,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 动画 </category>
           
       </categories>
       
@@ -3788,8 +3764,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -3810,8 +3784,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -3834,8 +3806,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -3856,8 +3826,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -3880,8 +3848,6 @@
           
           <category> HTML+CSS </category>
           
-          <category> 布局 </category>
-          
       </categories>
       
       
@@ -3902,8 +3868,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -4030,8 +3994,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
@@ -6509,8 +6471,6 @@
           <category> Web开发 </category>
           
           <category> HTML+CSS </category>
-          
-          <category> 布局 </category>
           
       </categories>
       
