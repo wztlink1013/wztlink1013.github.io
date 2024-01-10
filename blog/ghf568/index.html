@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>最小生成树算法（Prim+Kruskal） | 尼采般地抒情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="https://hexo.io" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="尼采般地抒情" />
+    <meta name="email" content="wztlink1013@163.com" />
+    <meta name="description" content="贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是有向图，那" />
+    <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
+    <meta property="og:type" content="post" />
+    <meta property="og:title" content="最小生成树算法（Prim+Kruskal） | 尼采般地抒情" />
+    <meta property="og:url" content="https://www.wztlink1013.com/blog/ghf568/" />
+    <meta property="og:site_name" content="尼采般地抒情" />
+    <meta property="og:description" content="贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是有向图，那" />
+    <meta name="referrer" content="no-referrer" />
+    <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2021/png/1484158/1625102662437-05ab5a6e-fcc3-46d5-8c2d-666c9c23fa9a.png" />
+
+    
+    
+<link rel="stylesheet" href="/public/css/main.css">
+
+    
+  <link rel="alternate" href="/atom.xml" title="尼采般地抒情" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="尼采般地抒情" type="application/rss+xml">
+</head>
+
+  <body>
+    <div id="lyrics">
+      <header class="lyrics-header">
+  <!-- pc -->
+  <div class="header_pc">
+  <a href="/">
+    <i class="fa fa-home" aria-hidden="true"></i>
+  </a>
+  <div class="hd_left" id="arrow_left">
+    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+  </div>
+  <div class="hd_right" id="arrow_right">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+  </div>
+</div>
+  <!-- mobile -->
+  <div class="header_app">
+  <a href="/">
+    <i class="fa fa-home" aria-hidden="true"></i>
+  </a>
+  <div class="hd_left" id="btn_app_sider">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+  </div>
+  <div class="hd_right" id="btn_app_right">
+    <div id="search_btn">
+      <i class="fa fa-search" aria-hidden="true" id="search_btn"></i>
+    </div>
+  </div>
+</div>
+</header>
+<main class="lyrics-container">
+  <div class="ct_left">
+    
+    <div class="component clearfix blogger">
+  <div class="blogger-header-bg">
+    <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
+  </div>
+  <h3 class="blogger-title">尼采般地抒情</h3>
+  <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
+  <span class="blogger-descript"></span>
+</div>
+    
+    <div class="component clearfix music_box">
+  <h3>音乐盒</h3>
+  <div class="aplayer-box">
+    <meting-js server="netease" type="playlist" id="8027485922" theme="#9cf" lrc-type="1"></meting-js>
+  </div>
+</div>
+    
+    <div class="component clearfix links">
+  <h3>站内导航</h3>
+  <ul>
+    <li><a href="https://www.wztlink1013.com">尼采般地抒情</a></li>
+  </ul>
+</div>
+    
+    
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    321
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1467
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+    
+  </div>
+  <div class="ct_center">
+    
+    
+    <div class="component article_meta">
+  <div class="article_meta_title">
+    <h1>最小生成树算法（Prim+Kruskal）</h1>
+  </div>
+  <div class="article_meta_other">
+    <span class="meta_item">
+      <img src="/public/img/avatar.png" class="meta_img">
+      <a href="/">尼采般地抒情</a>
+    </span>
+    <span class="meta_item">
+      <i class="fa fa-clock-o" aria-hidden="true"></i>
+      2020-11-13
+    </span>
+
+    
+    <span class="meta_item">
+      <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+      
+      <a href="/categories/计算机素养/">
+        计算机素养
+      </a>
+      
+      <a href="/categories/计算机素养/数据结构与算法/">
+        数据结构与算法
+      </a>
+      
+      <a href="/categories/计算机素养/数据结构与算法/贪心算法/">
+        贪心算法
+      </a>
+      
+    </span>
+    
+
+    
+
+    <span class="meta_item">
+      <i class="fa fa-eye" aria-hidden="true"></i>
+      <span id="twikoo_visitors">loading</span>
+      次访问
+    </span>
+
+    <span class="meta_item">
+      <i class="fa fa-comments-o" aria-hidden="true"></i>
+      <span id="twikoo_comments">loading</span>
+    </span>
+  </div>
+</div>
+    
+    <div class="component article" id="article">
+  <!doctype html><div class="lake-content" typography="classic"><div data-type="info" class="ne-alert"><p id="5e0adbd3c4d03c372bc5bdbf949fc59c" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">贪心算法四个字总结：目前最优</span></p></div><h2 id="nHUEx"><span class="ne-text">图的一些概念</span></h2><p id="be7203f2c5e3cc70ac3430a06137165d" class="ne-p"><span class="ne-text">具体看先前的一篇文章</span><a href="https://www.wztlink1013.com/blog/gqpli5/" data-href="https://www.wztlink1013.com/blog/gqpli5/" target="_blank" class="ne-link"><span class="ne-text">https://www.wztlink1013.com/blog/gqpli5/</span></a></p><p id="5898cb029323a7e7bcde68a749655cea" class="ne-p"><span class="ne-text"></span></p><p id="0efe0efc44dc0dc883b9f397c6ac1ab9" class="ne-p"><strong><span class="ne-text">连通图</span></strong></p><div class="ne-quote"><p id="8380f5d22f1a9a91b06b0c585ee37581" class="ne-p"><span class="ne-text" style="color: #333333; font-size: 14px">在</span><a href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" data-href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" target="_blank" class="ne-link"><span class="ne-text">图论</span></a><span class="ne-text" style="color: #333333; font-size: 14px">中，连通图基于连通的概念。在一个</span><a href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" data-href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" target="_blank" class="ne-link"><span class="ne-text">无向图</span></a><span class="ne-text" style="color: #333333; font-size: 14px"> G 中，若从</span><a href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" data-href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" target="_blank" class="ne-link"><span class="ne-text">顶点</span></a><span class="ne-text" style="color: #333333; font-size: 14px">i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是</span><a href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" data-href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" target="_blank" class="ne-link"><span class="ne-text">有向图</span></a><span class="ne-text" style="color: #333333; font-size: 14px">，那么连接i和j的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的</span><a href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" data-href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" target="_blank" class="ne-link"><span class="ne-text">连通性</span></a><span class="ne-text" style="color: #333333; font-size: 14px">是图的基本性质。</span></p></div><p id="665951f6ed45e95795596091ea37cb43" class="ne-p"><strong><span class="ne-text">生成树</span></strong></p><div class="ne-quote"><p id="10112c33ae37e9de266d7dc9ad43da3e" class="ne-p"><span class="ne-text">包含图的全部顶点，边数最少的连通子图</span></p></div><p id="bf98f96271e09d1bf20e8fafda285603" class="ne-p"><strong><span class="ne-text">最小生成树</span></strong></p><div class="ne-quote"><p id="3826220ba76c178c35683068e2ab02a8" class="ne-p"><span class="ne-text">总权值最小的生成树</span></p></div><p id="b7c6c94ca874bae05cd003d128c1f69e" class="ne-p"><span class="ne-text">常见问题（该算法）就是求最小生成树。</span></p><p id="3ad4e5b28974402730ddf0a7a6c9a765" class="ne-p"><strong><span class="ne-text">并查集</span></strong></p><div class="ne-quote"><p id="fb49f1af56a20258b0994e05a5bd822f" class="ne-p"><span class="ne-text">是一个数据结构，功能有查找a和b是否为同一组；将a和b合并为同一组。</span></p></div><h2 id="Vz5Jg"><span class="ne-text">Prim算法思路</span></h2><p id="63b94f88c91d418b3a5ea7c1d40eb1c1" class="ne-p"><code class="ne-code"><span class="ne-text">Prim——普里姆算法</span></code></p><p id="57e1c39936058ab0cf89190777c671eb" class="ne-p"><span class="ne-text"></span></p><p id="65c9dddc9466daf1f87f622ae9013e7e" class="ne-p"><span class="ne-text">类似于图的深度优先遍历一样，在遍历到一个结点的时候，在此根据该节点所连通的各边权值，取最小的，以此往复</span></p><p id="cbff9ebe6415e49d40421bd46dcadcad" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1625102662437-05ab5a6e-fcc3-46d5-8c2d-666c9c23fa9a.png" width="388" id="Qjspy" class="ne-image"></p><h2 id="PFbmU"><span class="ne-text">Kruskal算法</span><span class="ne-text">思路</span></h2><p id="bc1fd8840968eaa8cd942c02348006fc" class="ne-p"><code class="ne-code"><span class="ne-text">Kruskal——克鲁斯卡尔算法</span></code></p><p id="5d99ae9579b08eceffe5b7ad59c14ee2" class="ne-p"><br></p><p id="7a889ea78b39c7c9c9904fcebe169343" class="ne-p"><span class="ne-text">把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</span></p><p id="26e6db5a49dd1bdcfc6be897e96f7c38" class="ne-p"><br></p><p id="bb2fe010dc25de5f292f2c92b428fe68" class="ne-p"><span class="ne-text">比如有如下这么一个图：</span></p><p id="6e2e9f3149f755d4f53fdad50964b38b" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png" width="219" id="Hx7aL" class="ne-image"></p><p id="aac64b9ab680edd476d18b367cb142ba" class="ne-p" style="text-align: left"><span class="ne-text">单独分析①②边和③④边情况下，两个不在一个集合里面，</span></p><p id="39ba58d75802638e8beb1aeb08e5f2b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png" width="384.5" id="PuNRa" class="ne-image"></p><p id="c55b6b173dedc37838a3ebc2021f673d" class="ne-p"><span class="ne-text">不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为3的时候，此时就需要将左右两个集合合并了</span></p><p id="90ebd57d6561894820dc28eb8dba77c2" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png" width="374" id="wsUam" class="ne-image"></p><p id="997a98f28e94a25540a4893a96c5098d" class="ne-p" style="text-align: left"><span class="ne-text">最后的结果样式就为如下</span></p><p id="fd9a3ee6d2a2bf0a101c0dfb8cb7eb03" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png" width="390" id="adOCr" class="ne-image"></p><p id="91b40a459460ec5d2efb79ae1d139a58" class="ne-p" style="text-align: center"><br></p><h2 id="9kZiP"><span class="ne-text">代码实现</span></h2><h3 id="YPhZh"><span class="ne-text">Kruskal算法代码</span></h3>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+namespace NS_KruskalMST &#123;
+using namespace std;
+void KruskalMST();
+int FindSet(int u);
+void UnionSets(int u, int v);
+void Initialization();
+void GenEdges();
+void MakeSets();
+void Output(int v0);
+#define INF INT_MAX
+static int n;
+static vector&lt;vector&lt;int&gt;&gt; WMatrix;
+static vector&lt;pair&lt;pair&lt;int, int&gt;, int&gt;&gt; Edges;
+//Node struct for the disjoint set
+struct DJSNode &#123;
+    int Parent; int Rank;
+    DJSNode(int p) : Parent(p), Rank(0) &#123;&#125;
+&#125;;
+static vector&lt;DJSNode&gt; DisjointSet;
+static vector&lt;pair&lt;int, int&gt;&gt; MST;
+//The adjacency list for MST
+static vector&lt;vector&lt;int&gt;&gt; MSTList;
+static vector&lt;int&gt; Prev;
+void KruskalMSTCaller(int an, 
+    vector&lt;vector&lt;int&gt;&gt; &amp;wMatrix, int v0)
+&#123;
+    n = an;
+    WMatrix = wMatrix;
+    Initialization();
+    KruskalMST();
+    Output(v0);
+&#125;
+void KruskalMST()
+&#123;
+    for (auto &amp;e: Edges)
+    &#123;
+        int u = e.first.first;
+        int v = e.first.second;
+        int setU = FindSet(u);
+        int setV = FindSet(v);
+        if (setU != setV)
+        &#123;
+            MST.push_back(e.first);
+            if (MST.size() == n - 1)
+                break;
+            UnionSets(setU, setV);
+        &#125;
+    &#125;
+&#125;
+int FindSet(int u)
+&#123;
+    while (u != DisjointSet[u].Parent)
+        u = DisjointSet[u].Parent;
+        //For path compression:
+        //DisjointSet[u].Parent = 
+        //    FindSet(DisjointSet[u].Parent);
+    return u;
+&#125;
+void UnionSets(int u, int v)
+&#123;
+    if (DisjointSet[u].Rank &gt;= DisjointSet[v].Rank)
+        DisjointSet[v].Parent = u;
+    else
+        DisjointSet[u].Parent = v;
+    if (DisjointSet[u].Rank == DisjointSet[v].Rank)
+        DisjointSet[u].Rank++;
+&#125;
+void Initialization()
+&#123;
+    GenEdges();
+    sort(Edges.begin(), Edges.end(), 
+        [](pair&lt;pair&lt;int, int&gt;, int&gt;a, 
+            pair&lt;pair&lt;int, int&gt;, int&gt;b)
+        &#123;return a.second &lt; b.second; &#125;);
+    MakeSets();
+    MST.clear();
+&#125;
+void GenEdges()
+&#123;
+    Edges.clear();
+    //Traverse the upper triangle of WMatrix
+    for (int i = 0; i &lt; n - 1; i++)
+    &#123;
+        for (int j = i + 1; j &lt; n; j++)
+            if (WMatrix[i][j] != INF)
+                Edges.push_back(&#123; &#123;i, j&#125;,
+                    WMatrix[i][j] &#125;);
+    &#125;
+&#125;
+void MakeSets()
+&#123;
+    DisjointSet.clear();
+    for (int i = 0; i &lt; n; i++)
+        DisjointSet.push_back(DJSNode(i));
+&#125;
+void OutputWMatrix()
+&#123;
+    printf(&quot;n = %d\n&quot;, n);
+    printf(&quot;The weight matrix:\n&quot;);
+    printf(&quot;%3c&quot;, ' ');
+    for (int j = 0; j &lt; n; j++)
+        printf(&quot;%3d&quot;, j + 1);
+    printf(&quot;\n&quot;);
+    for (int i = 0; i &lt; n; i++)
+    &#123;
+        printf(&quot;%3d&quot;, i + 1);
+        for (auto j : WMatrix[i])
+            if (j &lt; INF)
+                printf(&quot;%3d&quot;, j);
+            else
+                printf(&quot;%3c&quot;, '*');
+        printf(&quot;\n&quot;);
+    &#125;
+&#125;
+void OutputPath(int u)
+&#123;
+    if (Prev[u] == -1)
+        printf(&quot;%d&quot;, u + 1);
+    else
+    &#123;
+        OutputPath(Prev[u]);
+        printf(&quot;-%d&quot;, u + 1);
+    &#125;
+&#125;
+void GenMSTList()
+&#123;
+    MSTList.clear();
+    MSTList.resize(n);
+    for (auto &amp;e: MST)
+    &#123;
+        MSTList[e.first].push_back(e.second);
+        MSTList[e.second].push_back(e.first);
+    &#125;
+&#125;
+void GenPrev(int v)
+&#123;
+    for (auto &amp;u : MSTList[v])
+        if (u != -1)
+        &#123;
+            Prev[u] = v;
+            auto w = find(MSTList[u].begin(), 
+                MSTList[u].end(), v);
+            MSTList[u][w - MSTList[u].begin()] = -1;
+            GenPrev(u);
+        &#125;
+&#125;
+void Output(int v0)
+&#123;
+    printf(&quot;Kruskal's MST algorithm\n&quot;);
+    OutputWMatrix();
+    int wSum = 0;
+    for (int i = 0; i &lt; n - 1; i++)
+        wSum += WMatrix[MST[i].first][MST[i].second];
+    GenMSTList();
+    Prev.clear();
+    Prev.resize(n);
+    Prev[v0] = -1;
+    GenPrev(v0);
+    printf(&quot;The MST edges:\n&quot;);
+    printf(&quot;Edge Weight\n&quot;);
+    for (auto &amp;e : MST)
+        printf(&quot; %d-%d  %d\n&quot;, e.first + 1, e.second + 1,
+            WMatrix[e.first][e.second]);
+    printf(&quot;Total MST weight: %d\n&quot;, wSum);
+    printf(&quot;The MST paths from vertex %d:\n&quot;, v0 + 1);
+    for (int u = 0; u &lt; n; u++)
+        if (u != v0)
+        &#123;
+            printf(&quot;%3d: &quot;, u + 1);
+            OutputPath(u);
+            printf(&quot;\n&quot;);
+        &#125;
+    printf(&quot;\n&quot;);
+&#125;
+&#125; //namespace NS_KruskalMST
+using namespace NS_KruskalMST;
+void TestKruskalMST(int v0 = 0)
+&#123;
+    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; w = &#123;
+        //https://www.geeksforgeeks.org/
+        //prims-minimum-spanning-tree-mst-greedy-algo-5/
+        &#123;
+            &#123;   0,  2,INF,  6,INF &#125;,
+            &#123;   2,  0,  3,  8,  5 &#125;,
+            &#123; INF,  3,  0,INF,  7 &#125;,
+            &#123;   6,  8,INF,  0,  9 &#125;,
+            &#123; INF,  5,  7,  9,  0 &#125;
+        &#125;,
+        // Dijkstra's algorithm on Wikipedia
+        &#123;
+            &#123;   0,  7,  9,INF,INF, 14 &#125;,
+            &#123;   7,  0, 10, 15,INF,INF &#125;,
+            &#123;   9, 10,  0, 11,INF,  2 &#125;,
+            &#123; INF, 15, 11,  0,  6,INF &#125;,
+            &#123; INF,INF,INF,  6,  0,  9 &#125;,
+            &#123;  14,INF,  2,INF,  9,  0 &#125;,
+        &#125;,
+        //https://www.geeksforgeeks.org/
+        //kruskals-minimum-spanning-tree-using-stl-in-c/
+        &#123;
+            &#123;   0,  4,INF,INF,INF,INF,INF,  8,INF &#125;,
+            &#123;   4,  0,  8,INF,INF,INF,INF, 11,INF &#125;,
+            &#123; INF,  8,  0,  7,INF,  4,INF,INF,  2 &#125;,
+            &#123; INF,INF,  7,  0,  9, 14,INF,INF,INF &#125;,
+            &#123; INF,INF,INF,  9,  0, 10,INF,INF,INF &#125;,
+            &#123; INF,INF,  4, 14, 10,  0,  2,INF,INF &#125;,
+            &#123; INF,INF,INF,INF,INF,  2,  0,  1,  6 &#125;,
+            &#123;   8, 11,INF,INF,INF,INF,  1,  0,  7 &#125;,
+            &#123; INF,INF,  2,INF,INF,INF,  6,  7,  0 &#125;,
+        &#125;,
+    &#125;;
+    int k = w.size();
+    for (int i = 0; i &lt; k; i++)
+    &#123;
+      if (v0 &gt; w[i].size() - 1)
+        v0 = w[i].size() - 1;
+      KruskalMSTCaller(w[i].size(), w[i], v0);
+    &#125;
+&#125;
+</code></pre>
+</div>
+</div>
+    
+    
+
+<div class="component article_more">
+  <ul>
+    <li><i class="fa fa-cc" aria-hidden="true"></i> 博客内容遵循：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">署名-非商业性使用-禁止演绎 4.0 国际（CC BY-NC-ND 4.0）</a></li>
+    <li><i class="fa fa-link" aria-hidden="true"></i> 本文永久链接：<a href="https://www.wztlink1013.com/blog/ghf568/">https://www.wztlink1013.com/blog/ghf568/</a></li>
+    <li class="article_more_btn">
+      <span class="meta_item">
+        编辑：
+        <a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/ghf568/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+      </span>
+      <span class="meta_item">
+        部署：
+        <a target="_blank" rel="noopener" href="https://github.com/wztlink1013/blog/actions"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+      </span>
+      <span class="meta_item">
+        订阅：
+        <a href="/atom.xml"><i class="fa fa-rss-square" aria-hidden="true"></i></a>
+      </span>
+    </li>
+  </ul>
+</div>
+    
+    <div class="prev_next component">
+  
+  
+  <span class="prev_next_left">
+    <a href="/blog/ggu8v9/">
+      <span class="tips"><i class="fa fa-arrow-left" aria-hidden="true"></i>上一篇</span>
+      <b>Huffman编码算法</b>
+    </a>
+  </span>
+  <br>
+  
+  
+  <span class="prev_next_right">
+    <a href="/blog/lezklv/">
+      <b>Git提交规范</b>
+      <span class="tips">下一篇<i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+    </a>
+  </span>
+  
+  
+</div>
+    
+    
+    <div class="component clearfix comments" id="comments" style="display: block">
+  <div class="comments_title">
+    <h2>评论区</h2>
+    <!-- 转换评论按钮 -->
+    <!-- <div class="comment-switch not-select">
+      <span class="first-comment">Twikoo</span>
+      <span class="switch-btn move fix-cursor-pointer" id="switch_btn"></span>
+      <span class="second-comment">giscus</span>
+    </div> -->
+  </div>
+
+  <div class="comments_content">
+    <!-- giscus评论区 -->
+    <!-- <div id="github_comment" style="display: none">
+      <script src="https://giscus.wztlink1013.com/client.js" data-repo="wztlink1013/comment" data-repo-id="MDEwOlJlcG9zaXRvcnkyMzkxNDA3MDQ=" data-category="General" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyMDU2NTcx" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="zh-CN" crossorigin="anonymous" async></script>
+    </div> -->
+    <!-- twikoo评论区 -->
+    <div id="twikoo_comment" style="display: block">
+      <div id="tcomment"></div>
+    </div>
+  </div>
+</div>
+    
+    
+    <footer class="footer">
+      <div class="content">
+  <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
+    <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
+  </a>
+  <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
+  <div><a href="/about">联系方式</a></div>
+</div>
+    </footer>
+  </div>
+  <div class="ct_right">
+    
+    <div class="component clearfix search_widget">
+  <div class="search_widget" id="search_btn_pc">
+    <i class="fa fa-search" aria-hidden="true"></i>
+    <span>搜索</span>
+  </div>
+</div>
+    
+    <div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+    
+    <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">77</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">12</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+    
+    <div class="component clearfix new_comments">
+  <h3 class="title">最新评论</h3>
+  <div class="new_comments_loding">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <ul class="hot_articles_item"></ul>
+</div>
+
+<!-- 最新布局的文章列表布局 -->
+<!-- '<div class="item_up">
+        <img src="' + new_comments_avatar + '" class="avatar">
+        <div class="nick_name">
+            <span class="nick">' + new_comments_nick + '</span>
+            <span class="time">' + new_comments_time + '</span>
+        </div>
+    </div>
+    <div class="item_down">
+        <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
+    </div>'
+ -->
+    
+  </div>
+</main>
+<div class="lyrics-bg">
+  <div id="leaves"></div>
+</div>
+<div class="lyrics-global">
+  <!-- global_button -->
+  <div class="global_button">
+  <div title="顶部" class="global_button_item" id="go_top" style="display: none">
+    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+  </div>
+  <!-- <div title="搜索" class="global_button_item" id="search_btn">
+    <i class="fa fa-search" aria-hidden="true"></i>
+  </div> -->
+  <div title="评论" class="global_button_item" id="go_comments" style="display: none">
+    <a href="#comments"><i class="fa fa-comments" aria-hidden="true"></i></a>
+  </div>
+  
+  <div title="目录" class="global_button_item" id="toc_btn" style="display: block">
+    <i class="fa fa-list" aria-hidden="true"></i>
+  </div>
+  
+
+  <div title="夜间" class="global_button_item">
+    <i class="fa fa-adjust" aria-hidden="true"></i>
+  </div>
+  <div title="分享" class="global_button_item btn-default need-share-button-default need-share-button" data-share-position="topLeft">
+    <i class="fa fa-share-alt" aria-hidden="true"></i>
+  </div>
+</div>
+  <!-- search -->
+  <div class="search_box">
+  <div class="search">
+    <i class="fa fa-search search_icon" aria-hidden="true"></i>
+    <input type="text" autocomplete="off" name="search" placeholder="请输入关键词" id="local-search-input">
+    <i class="fa fa-times search_close" aria-hidden="true"></i>
+  </div>
+  <div id="local-search-result">
+    请输入搜索词以便展示搜索结果……
+  </div>
+</div>
+</div>
+<div class="lyrics-drawer">
+  <!-- mobile drawer glass -->
+  <div class="app_side_glass" id="app_side_glass"></div>
+  <!-- mobile drawer content -->
+  <div class="app_side_content" id="app_side_content">
+    <div class="component clearfix board">
+  <h3>公告栏</h3>
+  <div class="board_content">
+    <p>
+      <b>此网站主题为本人手写主题, 主题待开源···</b>
+
+      <!-- <hr> -->
+      <!-- <b>作者:尼采般地抒情</b><hr> -->
+    </p>
+  </div>
+</div>
+    <div class="component clearfix music_box">
+  <h3>音乐盒</h3>
+  <div class="aplayer-box">
+    <meting-js server="netease" type="playlist" id="8027485922" theme="#9cf" lrc-type="1"></meting-js>
+  </div>
+</div>
+    <div class="component clearfix categories">
+  <h3>文章分类</h3>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">77</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/Bug/">Bug</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E5%90%8E%E6%9C%9F%E5%88%B6%E4%BD%9C/">后期制作</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/%E7%8E%A9%E8%BD%AC%E5%8D%9A%E5%AE%A2/">玩转博客</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/">环境工具</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">12</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">120</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git-GitHub/">Git+GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/Problems/">Problems</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/RSA%E7%AE%97%E6%B3%95/">RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95/">其他算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">分治算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">穷举算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">算法综述</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8E%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">📎线结构：链表</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">非前端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/CPlusPlus/">CPlusPlus</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E9%9D%9E%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+</div>
+    
+<div class="component clearfix web_info">
+  <h3>站点信息</h3>
+  <div>
+    <span>文章总数目：</span>
+    321
+    <span>篇</span>
+  </div>
+  <div>
+    <span>已运行时间：</span>
+    1467
+    <span>天</span>
+  </div>
+  <img src="https://api.luvying.com/acgimg" />
+</div>
+  </div>
+</div>
+      <div id="lyrics-info" data-type="post"></div>
+    </div>
+    </div>
+
+    
+<script src="/public/js/plugins/jquery/3.6.0/jquery.min.js"></script>
+
+    
+    
+<script src="/public/js/plugins/pjax/index.js"></script>
+
+    
+<script src="/public/js/plugins/highlight/10.7.1/highlight.min.js"></script>
+
+    
+<script src="/public/js/plugins/twikoo/twikoo.all.min.js"></script>
+
+    
+<script src="/public/js/plugins/typed.js/2.0.11.js"></script>
+
+    
+<script src="/public/js/plugins/aplayer/APlayer.min.js"></script>
+
+    
+<script src="/public/js/plugins/meting/Meting.min.js"></script>
+
+    
+<script src="/public/js/main.js"></script>
+
+    
+
+  </body>
+
+</html>
