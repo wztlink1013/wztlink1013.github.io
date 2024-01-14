@@ -15,8 +15,37 @@
     <atom:link href="https://www.wztlink1013.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>尼采般地抒情个人网站，本科CS，大学期间开始撰写技术博客、个人生活随笔，这个兴趣爱好会一直延续下去……坚信什么都不舍弃，什么也改变不了！</description>
-    <pubDate>Sat, 13 Jan 2024 06:11:41 GMT</pubDate>
+    <pubDate>Sun, 14 Jan 2024 03:50:24 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Hexo优化网站SEO</title>
+      <link>https://www.wztlink1013.com/blog/ymz4rr2wyxrxktqd/</link>
+      <guid>https://www.wztlink1013.com/blog/ymz4rr2wyxrxktqd/</guid>
+      <pubDate>Sun, 14 Jan 2024 02:06:51 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;!doctype html&gt;&lt;div class=&quot;lake-content&quot; typography=&quot;classic&quot;&gt;&lt;p id=&quot;ub944b1e4&quot; class=&quot;ne-p&quot;&gt;&lt;span</description>
+          
+        
+      
+      
+      
+      <content:encoded><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="ub944b1e4" class="ne-p"><span class="ne-text">前言：提高搜索引擎对网站的抓取质量，从以下两个文件入手：</span></p><ol class="ne-ol"><li id="u9472c50c" data-lake-index-type="0"><span class="ne-text">sitemap文件</span></li><li id="u3a99adbb" data-lake-index-type="0"><span class="ne-text">Robots.txt</span></li></ol><h3 id="DwDU8"><span class="ne-text">sitemap</span></h3><p id="u88ae2110" class="ne-p"><span class="ne-text">sitemap是一种包含网站所有页面URL的文件，有助于搜索引擎更快地索引和发现您的网站，其格式有xml或txt。在Hexo中，可以利用</span><a href="https://github.com/hexojs/hexo-generator-sitemap" data-href="https://github.com/hexojs/hexo-generator-sitemap" target="_blank" class="ne-link"><span class="ne-text">hexo-generator-sitemap</span></a><span class="ne-text">插件生成sitemap文件。</span></p><h4 id="xAlnz"><span class="ne-text">基本使用</span></h4><pre><code><code>npm i hexo-generator-sitemap --save</code></code></pre><p id="ud9d657b1" class="ne-p"><span class="ne-text">参数配置，具体使用参考文档：</span><a href="https://github.com/hexojs/hexo-generator-sitemap/tree/master?tab=readme-ov-file#options" data-href="https://github.com/hexojs/hexo-generator-sitemap/tree/master?tab=readme-ov-file#options" target="_blank" class="ne-link"><span class="ne-text">https://github.com/hexojs/hexo-generator-sitemap/tree/master?tab=readme-ov-file#options</span></a></p><pre><code><code>sitemap:  path: sitemap.xml  tags: false  categories: false  template: ./template/sitemap.xml</code></code></pre><p id="u06f186d4" class="ne-p"><span class="ne-text">生成后的sitemap文件如下：</span></p><pre><code><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;  &lt;url&gt;    &lt;loc&gt;https://www.wztlink1013.com/blog/tttk33/&lt;/loc&gt;    &lt;lastmod&gt;2024-01-14&lt;/lastmod&gt;    &lt;changefreq&gt;weekly&lt;/changefreq&gt;    &lt;priority&gt;0.8&lt;/priority&gt;  &lt;/url&gt;  &lt;url&gt;    &lt;loc&gt;https://www.wztlink1013.com/&lt;/loc&gt;    &lt;lastmod&gt;2024-01-14&lt;/lastmod&gt;    &lt;changefreq&gt;daily&lt;/changefreq&gt;    &lt;priority&gt;1.0&lt;/priority&gt;  &lt;/url&gt;&lt;/urlset&gt;</code></code></pre><ul class="ne-ul"><li id="uca43eeff" data-lake-index-type="0"><span class="ne-text">loc：抓取的网站子页url</span></li><li id="u1b2973d2" data-lake-index-type="0"><span class="ne-text">lastmod：改子页最新一次更新时间</span></li><li id="uc5f01609" data-lake-index-type="0"><span class="ne-text">changefreq：改子页更新频率</span></li><li id="u77e95919" data-lake-index-type="0"><span class="ne-text">priority：在该站点的抓取优先级权重</span></li></ul><h4 id="SEC0C"><span class="ne-text">自定义生成模板</span></h4><p id="u44db15c2" class="ne-p"><span class="ne-text" style="background-color: #FBDE28"></span><span class="ne-text">在项目根路径创建</span><code class="ne-code"><span class="ne-text">template/sitemap.xml</span></code><span class="ne-text">文件，并写入下面代码</span></p><pre><code><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;&gt;  &#123;% for post in posts %&#125;  &lt;url&gt;    &lt;loc&gt;&#123;&#123; post.permalink | uriencode &#125;&#125;&lt;/loc&gt;&#123;% if post.updated %&#125;    &lt;lastmod&gt;&#123;&#123; post.updated | formatDate &#125;&#125;&lt;/lastmod&gt;&#123;% elif post.date %&#125;    &lt;lastmod&gt;&#123;&#123; post.date | formatDate &#125;&#125;&lt;/lastmod&gt;&#123;% endif %&#125;    &lt;changefreq&gt;weekly&lt;/changefreq&gt;    &lt;priority&gt;0.8&lt;/priority&gt;  &lt;/url&gt;  &#123;% endfor %&#125;<p>  &lt;url&gt;<br>    &lt;loc&gt;&#123;&#123; config.url | uriencode &#125;&#125;&lt;/loc&gt;<br>    &lt;lastmod&gt;&#123;&#123; sNow | formatDate &#125;&#125;&lt;/lastmod&gt;<br>    &lt;changefreq&gt;daily&lt;/changefreq&gt;<br>    &lt;priority&gt;1.0&lt;/priority&gt;<br>  &lt;/url&gt;</p>  &#123;% for tag in tags %&#125;  &lt;url&gt;    &lt;loc&gt;&#123;&#123; tag.permalink | uriencode &#125;&#125;&lt;/loc&gt;    &lt;lastmod&gt;&#123;&#123; sNow | formatDate &#125;&#125;&lt;/lastmod&gt;    &lt;changefreq&gt;weekly&lt;/changefreq&gt;    &lt;priority&gt;0.2&lt;/priority&gt;  &lt;/url&gt;  &#123;% endfor %&#125;  &#123;% for cat in categories %&#125;  &lt;url&gt;    &lt;loc&gt;&#123;&#123; cat.permalink | uriencode &#125;&#125;&lt;/loc&gt;    &lt;lastmod&gt;&#123;&#123; sNow | formatDate &#125;&#125;&lt;/lastmod&gt;    &lt;changefreq&gt;weekly&lt;/changefreq&gt;    &lt;priority&gt;0.2&lt;/priority&gt;  &lt;/url&gt;  &#123;% endfor %&#125;<p>&lt;/urlset&gt;</code><br></code></pre></p><h4 id="kvZtE"><span class="ne-text">指定页面跳过sitemap收录</span></h4><p id="u0be81d58" class="ne-p"><span class="ne-text">在hexo中的文章或是页面，可以如下配置：</span></p><pre><code><code>---title: 隐藏文章date: 2024-01-14sitemap: false---</code></code></pre><h3 id="qE3ji"><span class="ne-text">robots.txt</span></h3><p id="u9a756fc4" class="ne-p"><span class="ne-text">robots文件是一个文本文件，用于向搜索引擎指示哪些页面可以访问和索引，哪些页面应该被忽略。通过优化 robots文件，可以提高网站在搜索引擎中的排名和曝光度。</span></p><pre><code><code># https://www.wztlink1013.comUser-agent: *Disallow: /Sitemap: https://www.wztlink1013.com/sitemap.xml</code></code></pre><ul class="ne-ul"><li id="u7e1ac461" data-lake-index-type="0"><span class="ne-text">User-agent：* 表示允许所有搜索引擎访问您的网站，如果限定的话，则键入 </span><code class="ne-code"><span class="ne-text">[搜索引擎名称]</span></code></li><li id="ue346fd0f" data-lake-index-type="0"><span class="ne-text">Sitemap：说明sitemap文件url</span></li><li id="udac61ea6" data-lake-index-type="0"><span class="ne-text">Disallow：</span><code class="ne-code"><span class="ne-text">/</span></code><span class="ne-text">表示禁止该搜索引擎访问您的网站中所有页面和文件</span></li></ul><div class="ne-quote"><ul class="ne-ul"><li id="ub8c27d16" data-lake-index-type="0"><span class="ne-text">检测自己写的robots文件是否生效：</span><a href="https://ziyuan.baidu.com/robots/intro" data-href="https://ziyuan.baidu.com/robots/intro" target="_blank" class="ne-link"><span class="ne-text">https://ziyuan.baidu.com/robots/intro</span></a><span class="ne-text"></span></li><li id="ub1d1e5aa" data-lake-index-type="0"><span class="ne-text">语法规则：</span><a href="https://ziyuan.baidu.com/college/courseinfo?id=267&amp;page=13" data-href="https://ziyuan.baidu.com/college/courseinfo?id=267&amp;page=13" target="_blank" class="ne-link"><span class="ne-text">https://ziyuan.baidu.com/college/courseinfo?id=267&amp;page=13</span></a></li></ul></div><p id="ufb489ca3" class="ne-p"><br></p><h3 id="NzJnY"><span class="ne-text">❗</span><span class="ne-text">百度不再允许大多数站点提交sitemap文件</span></h3><p id="u7080f3da" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1705232927775-66b2b6e8-1f1c-40aa-a427-c3e9b59d680d.png" width="1098.3332896894897" id="u41efa066" class="ne-image"></p><p id="uadbf9159" class="ne-p"><span class="ne-text">如果之前没有提交过sitemap链接的，貌似没有办法提交sitemap链接了，如果之前提交过应该不受影响。。。</span></p></div>]]></content:encoded>
+      
+      
+      <category domain="https://www.wztlink1013.com/categories/Web%E5%BC%80%E5%8F%91/">Web开发</category>
+      
+      <category domain="https://www.wztlink1013.com/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</category>
+      
+      
+      
+      <comments>https://www.wztlink1013.com/blog/ymz4rr2wyxrxktqd/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>2645. 构造有效字符串的最少插入数🔖DP🔖穷举</title>
@@ -276,33 +305,6 @@
       
       
       <comments>https://www.wztlink1013.com/essay/lwozgzgirrhne6ro/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>《你的夏天还好吗》小记</title>
-      <link>https://www.wztlink1013.com/essay/wmsytg138tcz629a/</link>
-      <guid>https://www.wztlink1013.com/essay/wmsytg138tcz629a/</guid>
-      <pubDate>Wed, 07 Dec 2022 23:02:13 GMT</pubDate>
-      
-        
-        
-          
-          
-      <description>&lt;!doctype html&gt;&lt;div class=&quot;lake-content&quot; typography=&quot;classic&quot;&gt;&lt;p id=&quot;ua9751299&quot; class=&quot;ne-p&quot; style=&quot;text-align: center&quot;&gt;&lt;img</description>
-          
-        
-      
-      
-      
-      <content:encoded><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="ua9751299" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/1484158/1670483122786-7c51c1ab-5445-4adc-905b-4c5d407d25e0.jpeg" width="330" id="Igzgd" class="ne-image"></p><h2 id="O4mrv"><span class="ne-text">你的夏天还好吗？</span></h2><p id="u980df92f" class="ne-p"><span class="ne-text">青涩的喜欢和热烈的喜欢，或许在真心付出面前才能得出答案，你义无反顾去喜欢去爱去付出的人，可能在你意识到对方利用你的感情，那一瞬间让你突然想到多年前一个夏天护着你的那个人，普通且纯粹…以前有个问题：“一个你很喜欢的人和一个很喜欢你的人，你会选谁？”，成长可能就是一个人多多少少的经历而孕育出人潜意识选择的微妙变化。</span></p><h2 id="UGRKc"><span class="ne-text">虫子</span></h2><p id="uf08ebd89" class="ne-p"><span class="ne-text">一个男人对于一个女人有多爱，应该在女人怀有身孕的那个阶段，男人给予女人多少的照顾来衡量。</span></p><p id="u831af1b5" class="ne-p"><span class="ne-text">什么是照顾，可能就是半夜赶走妻子身边的蚊虫就是一种照顾…</span></p><h2 id="DgykL"><span class="ne-text">水中的歌利亚</span></h2><p id="ub455e1e9" class="ne-p"><span class="ne-text">不久前父亲的离去，再在一场大雨不断的天气下，母亲也糖尿休克了，一时间对于亲人的这般离去，作者只知道在洪水中把母亲的尸体绑在木板上作为小船拖去抢救，即便最后尸体也不知道飘向何处…作者最后在塔吊避雨，想起了父亲在工作时的焊接火花射到脸上，想起了父亲教作者游泳潜水，想起了将母亲缠绕在木板上的绿色胶带…</span></p><h2 id="CcIvf"><span class="ne-text">那里是夜，这里有歌</span></h2><p id="ud6ffdc42" class="ne-p"><span class="ne-text">龙大就像是『夏洛特烦恼』中的大傻春。</span></p><p id="u5a0352cf" class="ne-p"><span class="ne-text">“认识你很高兴”，我想这是明华对龙大寄托的另一种情感。</span></p><p id="ub0a131cf" class="ne-p"><span class="ne-text">这世界上总有一些简单纯粹的人活得那么用力。</span></p><h2 id="Uo58d"><span class="ne-text">一天的轴</span></h2><p id="u6ad2873d" class="ne-p"><span class="ne-text">机场是个很容易让人感伤的地方，无数来来往往的陌生面孔总会让你心里觉得平淡而又恍惚。琪玉女士只是个机场保洁工作的一名普通人，失去爱人，孩子也在退伍之际做出一些错事而入狱，想着儿子总想去国外进修…一天的轴或许就是念想里为了某个人总想去坚持做点什么的事。</span></p><p id="u3220ec89" class="ne-p"><span class="ne-text">机场和车站不一样，机场更多是让人感到感伤，而绿皮车和高铁给人以寄托。我还怀念每次回学校，下午四五点飞下机，夕阳洒满遥墙机场的每个角落，机场的边界是一些树，小森林一般，看着那些树，每次总让想起家乡的景色，安安静静的一个小城，安安静静的行人。求学的意义是什么呢？至今没有一个确切让我自己信服的借口，可能那也是我的轴罢了。</span></p><h2 id="X7XHC"><span class="ne-text">角质层</span></h2><p id="u229f9c29" class="ne-p"><span class="ne-text">受宠若惊般地小心翼翼，却也掩饰不了一个人的简单纯粹。</span></p><p id="u46db2972" class="ne-p"><span class="ne-text">可是谁又知道这样的小心翼翼，却是在一个在艰难环境下经历那个年纪本不该承受的经历换来的坚强。</span></p><h2 id="qOfeR"><span class="ne-text">尼克塔酒店</span></h2><p id="u96324f7f" class="ne-p"><span class="ne-text">一段旅行，从一开始就应该决定好同行的人，是否相处得来，否则很容易产生矛盾甚至中途散场，即便对方是曾经很要好的朋友或发小，随着时间的推移，人也是会变的。旅行和人生都是如此。</span></p><h2 id="hgsUN"><span class="ne-text">三十岁</span></h2><p id="ubb655d91" class="ne-p"><span class="ne-text">一个人的成长很多时候是这个世界上另一些生命的救赎，谁都应该努力地活着。</span></p></div>]]></content:encoded>
-      
-      
-      <category domain="https://www.wztlink1013.com/categories/%E9%98%85%E8%AF%BB/">阅读</category>
-      
-      
-      
-      <comments>https://www.wztlink1013.com/essay/wmsytg138tcz629a/#disqus_thread</comments>
       
     </item>
     
