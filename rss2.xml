@@ -15,8 +15,39 @@
     <atom:link href="https://www.wztlink1013.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>尼采般地抒情个人网站，本科CS，大学期间开始撰写技术博客、个人生活随笔，这个兴趣爱好会一直延续下去……坚信什么都不舍弃，什么也改变不了！</description>
-    <pubDate>Wed, 10 Jan 2024 21:12:03 GMT</pubDate>
+    <pubDate>Sat, 13 Jan 2024 06:11:41 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>2645. 构造有效字符串的最少插入数🔖DP🔖穷举</title>
+      <link>https://www.wztlink1013.com/blog/lk1vbtcuw7ox57do/</link>
+      <guid>https://www.wztlink1013.com/blog/lk1vbtcuw7ox57do/</guid>
+      <pubDate>Sat, 13 Jan 2024 04:20:10 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;!doctype html&gt;&lt;div class=&quot;lake-content&quot; typography=&quot;classic&quot;&gt;&lt;ul class=&quot;ne-ul&quot;&gt;&lt;li id=&quot;u8c63af56&quot; data-lake-index-type=&quot;0&quot;&gt;&lt;span</description>
+          
+        
+      
+      
+      
+      <content:encoded><![CDATA[<!doctype html><div class="lake-content" typography="classic"><ul class="ne-ul"><li id="u8c63af56" data-lake-index-type="0"><span class="ne-text">题目：</span><a href="https://leetcode.cn/problems/minimum-additions-to-make-valid-string/" data-href="https://leetcode.cn/problems/minimum-additions-to-make-valid-string/" target="_blank" class="ne-link"><span class="ne-text">https://leetcode.cn/problems/minimum-additions-to-make-valid-string/</span></a></li></ul><h3 id="gjP8I"><span class="ne-text">动态规划</span></h3><p id="u4c885b04" class="ne-p"><span class="ne-text">DP问题，两个步骤：</span></p><ol class="ne-ol"><li id="u67367468" data-lake-index-type="0"><span class="ne-text" style="background-color: #FBDE28">状态转移方程</span></li></ol><p id="u612b02d8" class="ne-p"><span class="ne-text">第一项作为边界情况，暂不考虑，从第二项往后看，三项之间的规律:</span></p><ul class="ne-ul"><li id="ue5e3da76" data-lake-index-type="0"><span class="ne-text">当</span><code class="ne-code"><span class="ne-text">i-1</span></code><span class="ne-text">项&gt;</span><code class="ne-code"><span class="ne-text">i-2</span></code><span class="ne-text">项：需要剪掉一个完整abc整体，即</span><code class="ne-code"><span class="ne-text">f(i) = f(i-1) - 1</span></code></li><li id="u303c6bc6" data-lake-index-type="0"><span class="ne-text">其余情况：</span><code class="ne-code"><span class="ne-text">f(i) = f(i-1) + 2</span></code></li></ul><ol start="2" class="ne-ol"><li id="u3bd15099" data-lake-index-type="0"><span class="ne-text" style="background-color: #FBDE28">初始状态</span></li></ol><p id="u10e133f3" class="ne-p"><span class="ne-text">第一项默认填充一个完整的abc</span></p><pre><code><code>function addMinimum(word: string): number &#123;  const n = word.length;  const arr = new Array(n + 1).fill(0);  for (let i = 1; i &lt;= n; i++)     arr[i] = i &gt; 1 &amp;&amp; word[i - 2] &lt; word[i - 1] ? arr[i - 1] - 1 : arr[i - 1] + 2  return arr[n]&#125;;</code></code></pre><h3 id="kXkn9"><span class="ne-text">穷举算法</span></h3><pre><code><code>function addMinimum(word: string): number &#123;  if (!word.replaceAll('abc', '').length) return 0  let count = 0;  for (let i = 0; i &lt; word.length; i++) &#123;    const curr = word[i]    const next = i + 1 !== word.length ? word[i + 1] : null    if (i === 0) &#123;      if (curr === 'b') &#123;        count = count + 1      &#125; else if (curr === 'c') &#123;        count = count + 2      &#125;    &#125;    if (next) &#123;      if (curr === 'a') &#123;        if (next === 'a')&#123;          count = count + 2        &#125; else if (next === 'c') &#123;          count = count + 1        &#125;      &#125; else if (curr === 'b') &#123;        if (next === 'a')&#123;          count = count + 1        &#125; else if (next === 'b') &#123;          count = count + 2        &#125;       &#125; else if (curr === 'c') &#123;        if (next === 'b') &#123;          count = count + 1        &#125; else if (next === 'c') &#123;          count = count + 2        &#125;      &#125;    &#125; else &#123;      if (curr === 'b') &#123;        count = count + 1      &#125; else if (curr === 'a') &#123;        count = count + 2      &#125;    &#125;  &#125;  return count&#125;;</code></code></pre></div>]]></content:encoded>
+      
+      
+      <category domain="https://www.wztlink1013.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</category>
+      
+      <category domain="https://www.wztlink1013.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</category>
+      
+      <category domain="https://www.wztlink1013.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</category>
+      
+      
+      
+      <comments>https://www.wztlink1013.com/blog/lk1vbtcuw7ox57do/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>React系统学习（三）组件通信</title>
@@ -272,33 +303,6 @@
       
       
       <comments>https://www.wztlink1013.com/essay/wmsytg138tcz629a/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>一个梦——新学期</title>
-      <link>https://www.wztlink1013.com/essay/shdnxh6ya6pgbh1n/</link>
-      <guid>https://www.wztlink1013.com/essay/shdnxh6ya6pgbh1n/</guid>
-      <pubDate>Wed, 23 Nov 2022 14:12:36 GMT</pubDate>
-      
-        
-        
-          
-          
-      <description>&lt;!doctype html&gt;&lt;div class=&quot;lake-content&quot; typography=&quot;classic&quot;&gt;&lt;p id=&quot;u3fe3baad&quot; class=&quot;ne-p&quot; style=&quot;text-align: center&quot;&gt;&lt;img</description>
-          
-        
-      
-      
-      
-      <content:encoded><![CDATA[<!doctype html><div class="lake-content" typography="classic"><p id="u3fe3baad" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/jpeg/1484158/1669244059061-5269cc7d-fa21-4467-a750-5aa43184f583.jpeg" width="600" id="ZLXlO" class="ne-image"></p><p id="uc8d73b3a" class="ne-p"><span class="ne-text">下学期开学了，位置是我初中的那个学校，教室是最初的靠近大门的高排宿舍那里，那里本来是一排宿舍，不知怎么改为教室了。</span></p><p id="u76d5ec95" class="ne-p"><span class="ne-text">新学期开学，我还是一如既往去的很晚，教室里面坐满了人，我看着第三排还是第四排边上有个空位，就坐了过去，第一堂课是数学，具体讲的我忘了，不过记得讲的是一种新型运算，打破传统运算的那种…</span></p><p id="ucb3b5036" class="ne-p"><span class="ne-text">我的同桌告诉我待会可能按照成绩分位置，我一脸懵，不知道有什么成绩…</span></p><p id="u1912f2dc" class="ne-p"><span class="ne-text">然后快下课的前十分钟，班主任进来了，她说报一下上次数学考试排名，我记得我排第五还是第六，分数是我高考数学成绩，同学把我的试卷递给我。老师说这次新班级数学超过1xx的有十个，讲完，我便醒了（冻醒）……</span></p><p id="u8a72d38f" class="ne-p"><span class="ne-text">后记:</span></p><p id="u727b7420" class="ne-p"><span class="ne-text">那个位置不是靠窗的，可我上课还是喜欢看着外面，看那个一排排自行车的地方。</span></p><p id="u62d08c65" class="ne-p"><span class="ne-text">新学期的第一堂课，一如既往般地身边所有同学都很聚精会神，但我却很出神……</span></p><p id="u6a799471" class="ne-p"><span class="ne-text">其实我一直都不喜欢新学期，特别是大学之前的小学初中，一切都太新了，那种氛围感有点让人窒息抑郁…直到大学，我几乎只坐最后一排靠窗，我喜欢在上课的时候看小说，尤其是所有人都在认真听课的时候，记得大三有一个学期中的两个礼拜的所有离散数学课，我全都用来看《平凡的世界》了……</span></p><p id="u4fc2e318" class="ne-p"><span class="ne-text">梦醒的那一刻，一大堆记忆涌入脑海:上大学了…大学毕业了…工作上班了…我还在睡觉…待会起来上班……</span></p></div>]]></content:encoded>
-      
-      
-      <category domain="https://www.wztlink1013.com/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</category>
-      
-      
-      
-      <comments>https://www.wztlink1013.com/essay/shdnxh6ya6pgbh1n/#disqus_thread</comments>
       
     </item>
     
