@@ -106,7 +106,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1519
+    1527
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -163,21 +163,21 @@
     <div class="component article" id="article">
   <div class="article-content">
     <!doctype html><div class="lake-content" typography="classic"><p id="42bd2d5ebf6401acbcfa2d5d5f734273" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854019765-b6022a63-5214-4d70-98b5-aec146cf1e6b.png" width="524" id="mqoXX" class="ne-image"></p><p id="4f10621b1ac85f0abd467b8356afb2ef" class="ne-p"><br></p><p id="1891e3f1aa952ffff092448715485f0c" class="ne-p"><span class="ne-text">前言：GitHub在提交代码的时候会出现是否验证的情况，如上图所示，出现这个机制的原因就是当利用name和email提交代码时，两个不同的人都可以提交（多人协同一个项目），为了代码更加的严密与可靠，就出现了GPG keys加重验证这一情况。</span></p><p id="0f41f994265f5f78f32a49bb7ba09225" class="ne-p"><span class="ne-text"></span></p><p id="762f0713131a16fd4cd18610c48d5d19" class="ne-p"><span class="ne-text">GPG密钥的具体逻辑应用到RSA算法，原理逻辑可参考之前写的一篇文章『</span><a href="https://www.wztlink1013.com/blog/ccd10c/" data-href="https://www.wztlink1013.com/blog/ccd10c/" target="_blank" class="ne-link"><span class="ne-text">RSA公钥密码算法 | 尼采般地抒情</span></a><span class="ne-text">』，该文也算是对该算法的一次应用。</span></p><hr id="krdEH" class="ne-hr"><h2 id="yF4YK"><span class="ne-text">一、创建gpg密钥</span></h2><p id="a05857b69218cdb73ac313e42c0d5441" class="ne-p"><span class="ne-text">在git Bash里面查看gpg版本</span></p><p id="e92b2e3f8a4a513b9a9def618c0df416" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854562240-df76109f-807c-46ec-93cc-eeb634181583.png" width="248" id="FSA2j" class="ne-image"></p><p id="uba621ea9" class="ne-p"><br></p><p id="4814b8f53b0b05e04def958672efc8d3" class="ne-p"><span class="ne-text">生成密钥</span></p>
-<pre><code>gpg --full-generate-key
+<pre><code><code>gpg --full-generate-key</code>
 </code></pre>
 <p id="0c36ae9d901510b238ceab439e01bd73" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854642828-9298534e-2470-4440-a5d3-a0b4eebf9267.png" width="290" id="GLArL" class="ne-image"></p><p id="uf126e970" class="ne-p"><br></p><p id="1ad037c776638cabfd1c45964b01bbbc" class="ne-p"><span class="ne-text">列举已经创建好的密钥id</span></p>
-<pre><code>gpg --list-secret-keys --keyid-format LONG
+<pre><code><code>gpg --list-secret-keys --keyid-format LONG</code>
 </code></pre>
-<p id="eadd38310d47c7777ee21a1d770ab12b" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854721166-1a7cf63a-8053-42aa-a365-9f4accc4cb40.png" width="246" id="fBUBe" class="ne-image"></p><p id="0edbc327c4a78841e4deab698907d237" class="ne-p"><br></p><div data-type="tips" class="ne-alert"><p id="8906efe46498590a79f058923b12f7fc" class="ne-p"><span class="ne-text" style="background-color: #FFF6B6">中途会弹出要设置密码，并且是两次弹出。</span></p></div><p id="u9962072f" class="ne-p"><br></p><p id="9237aa6bcdf488da490c35bbf9752d7f" class="ne-p"><span class="ne-text">查看密钥内容</span></p>
-<pre><code>gpg --armor --export 10A9巴拉巴拉
+<p id="eadd38310d47c7777ee21a1d770ab12b" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854721166-1a7cf63a-8053-42aa-a365-9f4accc4cb40.png" width="246" id="fBUBe" class="ne-image"></p><p id="0edbc327c4a78841e4deab698907d237" class="ne-p"><br></p><div data-type="tips" class="ne-alert"><p id="8906efe46498590a79f058923b12f7fc" class="ne-p"><span class="ne-text">中途会弹出要设置密码，并且是两次弹出。</span></p></div><p id="u9962072f" class="ne-p"><br></p><p id="9237aa6bcdf488da490c35bbf9752d7f" class="ne-p"><span class="ne-text">查看密钥内容</span></p>
+<pre><code><code>gpg --armor --export 10A9巴拉巴拉</code>
 </code></pre>
 <p id="16cd2775365117160f34038a1dd018ee" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854842847-28c1fb0a-ac3d-446b-b479-4c34a9d89d0d.png" width="235" id="jQgdw" class="ne-image"></p><h2 id="Divf6"><span class="ne-text">二、添加gpg密钥</span></h2><p id="022459be1af9049817901756d7835a0c" class="ne-p"><span class="ne-text">将上述控制台的密钥内容复制到GitHub的一下区域</span></p><p id="bb5883df540881786feeda6353e65ef0" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628854955321-8c0648b4-2ed8-472a-b9a9-58638bf12b61.png" width="837.5" id="al61T" class="ne-image"></p><hr id="q1wax" class="ne-hr"><p id="40bdd7dea884ce83e2493fc8ad5f35d7" class="ne-p"><span class="ne-text">以下就是公钥和密钥内容</span></p><p id="dbf1ab26d8bb9591d6b1ca7a8562e7c1" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628856682736-35e744c2-8f28-425f-8a4c-fe9236cd8616.png" width="586.5" id="naOHh" class="ne-image"></p><h2 id="BVLAu"><span class="ne-text">三、本地设置gpg密钥</span></h2><p id="107d83064cf0663d7f4ef54c584a98d0" class="ne-p"><span class="ne-text">将gpg密钥添加到本地设置中</span></p>
-<pre><code>git config --global user.signingkey 10A9巴拉巴拉
+<pre><code><code>git config --global user.signingkey 10A9巴拉巴拉</code>
 </code></pre>
 <p id="2d87149a54b40e9f642314b53646b674" class="ne-p"><span class="ne-text">在所有项目中设置签名验证</span></p>
-<pre><code>git config --global commit.gpgsign true
+<pre><code><code>git config --global commit.gpgsign true</code>
 </code></pre>
-<h2 id="DS7c2"><span class="ne-text">四、使用</span></h2><p id="718c79b7e92e6d61c7c03e22b9fdd800" class="ne-p"><span class="ne-text">在提交代码的时候，会弹出该提示框，这就是在设置密码时候的密码（密钥）。</span></p><p id="96527d4a09b6fe6dfd4eb2d3de6846ed" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628855341009-92cccb8c-0007-4361-8d42-778002d554e8.png" width="345.5" id="dLIY1" class="ne-image"></p><p id="50d998aabb61977a0236134dad953c61" class="ne-p"><br></p><h2 id="YU0Pr"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="0284af9faa553fbbd031f2a0067408dc"><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2013/07/gpg.html" data-href="https://www.ruanyifeng.com/blog/2013/07/gpg.html" class="ne-link"><span class="ne-text">GPG入门教程 作者： 阮一峰</span></a></li><li id="e2e39f1a038f5d13a6d69d6cabc56c0f"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/195cac3a2b2c" data-href="https://www.jianshu.com/p/195cac3a2b2c" class="ne-link"><span class="ne-text">使用gpg密钥验证github提交</span></a></li></ul></div>
+<h2 id="DS7c2"><span class="ne-text">四、使用</span></h2><p id="718c79b7e92e6d61c7c03e22b9fdd800" class="ne-p"><span class="ne-text">在提交代码的时候，会弹出该提示框，这就是在设置密码时候的密码（密钥）。</span></p><p id="96527d4a09b6fe6dfd4eb2d3de6846ed" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1628855341009-92cccb8c-0007-4361-8d42-778002d554e8.png" width="345.5" id="dLIY1" class="ne-image"></p><p id="50d998aabb61977a0236134dad953c61" class="ne-p"><br></p><h2 id="YU0Pr"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="0284af9faa553fbbd031f2a0067408dc" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2013/07/gpg.html" data-href="https://www.ruanyifeng.com/blog/2013/07/gpg.html" class="ne-link"><span class="ne-text">GPG入门教程 作者： 阮一峰</span></a></li><li id="e2e39f1a038f5d13a6d69d6cabc56c0f" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/195cac3a2b2c" data-href="https://www.jianshu.com/p/195cac3a2b2c" class="ne-link"><span class="ne-text">使用gpg密钥验证github提交</span></a></li></ul></div>
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -277,6 +277,9 @@
       <!-- <hr> -->
       <!-- <b>作者:尼采般地抒情</b><hr> -->
     </p>
+    <!-- <p>
+      <b>网站暂时关闭Pjax···</b>
+    </p> -->
   </div>
 </div>
     
