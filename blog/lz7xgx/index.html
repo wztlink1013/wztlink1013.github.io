@@ -4,20 +4,20 @@
 
   <head>
     <meta charset="UTF-8" />
-    <title>JavaScript事件循环和异步编程 | 尼采般地抒情</title>
+    <title>JavaScript事件循环机制和异步编程（Promise、async和await） | 尼采般地抒情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="https://hexo.io" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="author" content="尼采般地抒情" />
     <meta name="email" content="wztlink1013@163.com" />
-    <meta name="description" content="一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。同步任务和异步任务单线" />
+    <meta name="description" content="前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一个任务" />
     <meta name="keywords" content="技术,生活,博客,随笔,个人网站,感悟,思考,读书" />
     <meta property="og:type" content="post" />
-    <meta property="og:title" content="JavaScript事件循环和异步编程 | 尼采般地抒情" />
+    <meta property="og:title" content="JavaScript事件循环机制和异步编程（Promise、async和await） | 尼采般地抒情" />
     <meta property="og:url" content="https://www.wztlink1013.com/blog/lz7xgx/" />
     <meta property="og:site_name" content="尼采般地抒情" />
-    <meta property="og:description" content="一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。同步任务和异步任务单线" />
+    <meta property="og:description" content="前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一个任务" />
     <meta name="referrer" content="no-referrer" />
     <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1484158/1653573417541-44275572-06ee-41fc-ab54-6683e2510450.png" />
 
@@ -106,7 +106,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1529
+    1540
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -118,7 +118,7 @@
     
     <div class="component article_meta">
   <div class="article_meta_title">
-    <h1>JavaScript事件循环和异步编程</h1>
+    <h1>JavaScript事件循环机制和异步编程（Promise、async和await）</h1>
   </div>
   <div class="article_meta_other">
     <span class="meta_item">
@@ -166,28 +166,19 @@
     
     <div class="component article" id="article">
   <div class="article-content">
-    <!doctype html><div class="lake-content" typography="classic"><p id="u47c8e8b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1653573417541-44275572-06ee-41fc-ab54-6683e2510450.png" width="1960" id="ude4d9e36" class="ne-image"></p><h2 id="bAXj8"><span class="ne-text">一、JS代码执行机制</span></h2><h3 id="YbZ5l"><span class="ne-text">JavaScript的单线程</span></h3><p id="b785073ad0b4241b17542f923c68bd89" class="ne-p"><span class="ne-text">单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。</span></p><h3 id="IF7ut"><span class="ne-text">同步任务和异步任务</span></h3><p id="175d9c82a2892ec08ad8c92559dfbb4e" class="ne-p"><span class="ne-text">单线程导致的问题就是后面的任务等待前面任务完成，如果前面任务很耗时（比如读取网络数据），后面任务不得不一直等待！！</span></p><p id="7c83c84c2c296316bc3f3c1cf7756e53" class="ne-p"><span class="ne-text" style="color: #F5222D">为了解决这个问题，利用</span><strong><span class="ne-text" style="color: #F5222D">多核 CPU 的计算能力</span></strong><span class="ne-text" style="color: #F5222D">，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制。于是，JS 中出现了</span><strong><span class="ne-text" style="color: #F5222D">同步任务</span></strong><span class="ne-text" style="color: #F5222D">和</span><strong><span class="ne-text" style="color: #F5222D">异步任务</span></strong><span class="ne-text" style="color: #F5222D">。</span></p><p id="117599905a41f3d8f10cacf311ff90ce" class="ne-p"><br></p><p id="u09384c3b" class="ne-p"><span class="ne-text">JS中所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。</span></p><ul class="ne-ul"><li id="ub267d26f" data-lake-index-type="0"><strong><span class="ne-text">【同步任务】</span></strong><span class="ne-text">指的是：在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；</span></li><li id="u8624ac1a" data-lake-index-type="0"><strong><span class="ne-text">【异步任务】</span></strong><span class="ne-text">指的是：不进入主线程、而进入</span><strong><span class="ne-text">“任务队列”</span></strong><span class="ne-text">的任务，当主线程中的任务运行完了，才会将异步任务相关的回调函数从”任务队列”取出异步任务放入主线程执行。</span></li></ul><p id="ud8b66a6f" class="ne-p"><span class="ne-text">异步任务又分为宏任务和微任务</span></p><p id="u058036d7" class="ne-p"><span class="ne-text">宏任务</span></p><ul class="ne-ul"><li id="ud688c363" data-lake-index-type="0"><span class="ne-text">主代码块</span></li><li id="uc0b63834" data-lake-index-type="0"><span class="ne-text">setTimeout</span></li><li id="u5966078e" data-lake-index-type="0"><span class="ne-text">setInterval</span></li></ul><p id="ub77f1171" class="ne-p"><span class="ne-text">微任务</span></p><ul class="ne-ul"><li id="u335c6cec" data-lake-index-type="0"><span class="ne-text">process.nextTick ()</span></li><li id="u4793fdc8" data-lake-index-type="0"><span class="ne-text">Promise</span></li><li id="u178c2fe5" data-lake-index-type="0"><span class="ne-text">Object.observe</span></li></ul><h3 id="tDUjC"><span class="ne-text">事件循环机制</span></h3><p id="ub559a1fb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/webp/1484158/1657425246544-000fdb98-cba1-4b29-83eb-97efba576a6c.webp" width="1280" id="u7367241e" class="ne-image"></p><ol class="ne-ol"><li id="u4bb87b57" data-lake-index-type="0"><span class="ne-text">碰到同步任务，就先执行执行栈中的同步任务</span></li></ol><div class="ne-quote"><p id="ucec7015d" class="ne-p"><span class="ne-text">遇到函数的嵌套调用就把函数压入栈内再依次“剥洋葱”</span></p></div><ol start="2" class="ne-ol"><li id="u7048d5b0" data-lake-index-type="0"><span class="ne-text">碰到异步任务就压入任务队列（异步任务分为宏任务和微任务）</span></li><li id="u8ac10e88" data-lake-index-type="0"><span class="ne-text">当前执行栈中的所有同步任务执行完毕，就将执行异步任务，异步任务执行原则“先微后宏”</span></li></ol><p id="u245b5a71" class="ne-p"><strong><span class="ne-text" style="color: #E8323C">由于主线程不断地重复获得任务、执行任务、再获取任务、再执行……，这种机制被称为事件循环（Event Loop）</span></strong></p><h3 id="CkHxP"><span class="ne-text">实例</span></h3>
+    <!doctype html><div class="lake-content" typography="classic"><p id="u47c8e8b4" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1653573417541-44275572-06ee-41fc-ab54-6683e2510450.png" width="1960" id="ude4d9e36" class="ne-image"></p><p id="ud5f3a522" class="ne-p"><span class="ne-text">前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。</span></p><h2 id="bAXj8"><span class="ne-text">一、JS代码执行机制</span></h2><h3 id="YbZ5l"><span class="ne-text">JavaScript的单线程</span></h3><p id="b785073ad0b4241b17542f923c68bd89" class="ne-p"><span class="ne-text">单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。</span></p><h3 id="IF7ut"><span class="ne-text">同步任务和异步任务</span></h3><p id="175d9c82a2892ec08ad8c92559dfbb4e" class="ne-p"><span class="ne-text">单线程导致的问题就是后面的任务等待前面任务完成，如果前面任务很耗时（比如读取网络数据），后面任务不得不一直等待。为了解决这个问题，利用多核 CPU 的计算能力，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制。于是JS 中出现了同步任务和异步任务。</span></p><p id="u09384c3b" class="ne-p"><span class="ne-text">JS中所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。</span></p><ul class="ne-ul"><li id="ub267d26f" data-lake-index-type="0"><strong><span class="ne-text">【同步任务】</span></strong><span class="ne-text">指的是：在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；</span></li><li id="u8624ac1a" data-lake-index-type="0"><strong><span class="ne-text">【异步任务】</span></strong><span class="ne-text">指的是：不进入主线程、而进入</span><strong><span class="ne-text">“任务队列”</span></strong><span class="ne-text">的任务，当主线程中的任务运行完了，才会将异步任务相关的回调函数从”任务队列”取出异步任务放入主线程执行。</span></li></ul><div data-type="warning" class="ne-alert"><p id="ud8b66a6f" class="ne-p"><span class="ne-text">异步任务又分为宏任务和微任务</span></p><p id="u058036d7" class="ne-p"><strong><span class="ne-text">常见的宏任务有：</span></strong></p><ol class="ne-ol"><li id="u1652333c" data-lake-index-type="0"><span class="ne-text">setTimeout</span></li><li id="u30d4ea96" data-lake-index-type="0"><span class="ne-text">setInterval</span></li><li id="u2d340e59" data-lake-index-type="0"><span class="ne-text">I/O（磁盘读写、网络通信···）</span></li><li id="uf13a1bdb" data-lake-index-type="0"><span class="ne-text">setImmediate</span><span class="ne-text" style="text-decoration: underline">（浏览器环境没有、Nodejs环境有）</span></li><li id="u6a49c6b9" data-lake-index-type="0"><span class="ne-text">requestAnimationFrame</span><span class="ne-text" style="text-decoration: underline">（浏览器环境有、Nodejs环境没有）</span></li></ol><p id="ub77f1171" class="ne-p"><strong><span class="ne-text">常见的微任务有：</span></strong></p><ol class="ne-ol"><li id="ud152fcc2" data-lake-index-type="0"><span class="ne-text">Promise</span></li><li id="ua2074ecf" data-lake-index-type="0"><span class="ne-text">Object.observe</span></li><li id="ue17e45d8" data-lake-index-type="0"><span class="ne-text">process.nextTick </span><span class="ne-text" style="text-decoration: underline">（浏览器环境没有、Nodejs环境有）</span></li><li id="u0e1ffa38" data-lake-index-type="0"><span class="ne-text">MutationObserver</span><span class="ne-text" style="text-decoration: underline">（浏览器环境有、Nodejs环境没有）</span></li></ol></div><h3 id="tDUjC"><span class="ne-text">事件循环机制</span></h3><p id="u5553772e" class="ne-p"><span class="ne-text">事件循环机制则是按照上面所描述的JavaScript特性，当即有同步任务又有异步任务情况下，代码的执行先后顺序。</span></p><p id="ub559a1fb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/webp/1484158/1657425246544-000fdb98-cba1-4b29-83eb-97efba576a6c.webp" width="1280" id="u7367241e" class="ne-image"></p><ol class="ne-ol"><li id="u4bb87b57" data-lake-index-type="0"><span class="ne-text">碰到同步任务，就先执行执行栈中的同步任务</span></li></ol><div class="ne-quote"><p id="ucec7015d" class="ne-p"><span class="ne-text">遇到函数的嵌套调用就把函数压入栈内再依次“剥洋葱”</span></p></div><ol start="2" class="ne-ol"><li id="u7048d5b0" data-lake-index-type="0"><span class="ne-text">碰到异步任务就压入任务队列（异步任务分为宏任务和微任务）</span></li><li id="u8ac10e88" data-lake-index-type="0"><span class="ne-text">当前执行栈中的所有同步任务执行完毕，就将执行异步任务，异步任务执行原则“先微后宏”</span></li></ol><p id="u245b5a71" class="ne-p"><strong><span class="ne-text" style="color: #E8323C">由于主线程不断地重复获得任务、执行任务、再获取任务、再执行……，这种机制被称为事件循环（Event Loop）</span></strong></p><h2 id="IvbMB"><span class="ne-text">二、一些例子</span></h2><p id="u68b25ff2" class="ne-p"><span class="ne-text">通过一些实际代码例子及其运行的结果来加深对事件循环机制的理解</span></p><h3 id="TLtJm"><span class="ne-text">同步代码+Promise</span></h3>
 <pre><code><code>const promise = new Promise((resolve, reject) =&gt; &#123;
-  // new 先行
   console.log(1);
   resolve(&quot;success&quot;);
   console.log(2);
 &#125;);
 promise.then((data) =&gt; &#123;
-  // 微任务
   console.log(data);
   console.log(3);
 &#125;);
 console.log(4);</code>
 </code></pre>
-
-<pre><code><code>1
-2
-4
-success
-3</code>
-</code></pre>
-
+<p id="u4f52f25f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711177509945-b8a191e2-75b6-4ea8-ae12-cc5d4a6f1d9c.png" width="147.49999413887684" id="u60800e7b" class="ne-image"></p>
 <pre><code><code>const promise1 = new Promise((resolve, reject) =&gt; &#123;
   console.log(&quot;promise1&quot;);
   resolve(&quot;resolve1&quot;);
@@ -198,145 +189,136 @@ const promise2 = promise1.then((res) =&gt; &#123;
 console.log(&quot;1&quot;, promise1);
 console.log(&quot;2&quot;, promise2);</code>
 </code></pre>
-
-<pre><code><code>promise1
-1 Promise &#123; 'resolve1' &#125;
-2 Promise &#123; &lt;pending&gt; &#125;
-resolve1</code>
-</code></pre>
-<details class="lake-collapse"><summary id="u0950fa51"><span class="ne-text">测试代码</span></summary>
-<pre><code><code>// setTimeout(()=&gt;&#123;
-//     console.log(1)
-//   &#125;,0)
-// new Promise((resolve) =&gt;&#123;
-//     console.log(2)
-//     resolve()
-//   &#125;).then(()=&gt;&#123; // 此时将then的内容放到微任务队列，然后执行同步代码 5
-//     console.log(3)
-//   &#125;).then(()=&gt;&#123;
-//     console.log(4)
-//   &#125;)
-//   console.log(5)
-
-<p>// setTimeout(() =&gt; &#123;<br>//     console.log(‘timer1’);<br>//     setTimeout(() =&gt; &#123;<br>//       console.log(‘timer3’)<br>//     &#125;, 0)<br>//   &#125;, 0)<br>// setTimeout(() =&gt; &#123;<br>//     console.log(‘timer2’)<br>//   &#125;, 0)<br>// console.log(‘start’)</p>
-<p>// setTimeout(() =&gt; &#123;<br>//     console.log(‘timer1’);<br>//     Promise.resolve().then(() =&gt; &#123;<br>//       console.log(‘promise’)<br>//     &#125;)<br>//   &#125;, 0)<br>// setTimeout(() =&gt; &#123;<br>//     console.log(‘timer2’)<br>//   &#125;, 0)<br>// console.log(‘start’)</p>
-<p>// const first = () =&gt; (new Promise((resolve, reject) =&gt; &#123;<br>//     console.log(3)</p>
-<p>//     let p = new Promise((resolve, reject) =&gt; &#123;<br>//       console.log(7)<br>//       setTimeout(() =&gt; &#123;<br>//         console.log(5)<br>//         resolve(6) // 状态只会改变一次<br>//       &#125;, 0)<br>//       resolve(1)<br>//     &#125;)</p>
-<p>//     resolve(2)<br>//     p.then((arg) =&gt; &#123;<br>//       console.log(arg)<br>//     &#125;)<br>//   &#125;))</p>
-<p>// first().then((arg) =&gt; &#123;<br>//     console.log(arg)<br>//   &#125;)</p>
-<p>// console.log(4) // 在1 2 之前执行，此时1 2都在微任务队列里面</p>
-<p>// setTimeout(() =&gt; &#123;<br>//     console.log(&quot;0&quot;)<br>//   &#125;, 0)</p>
-<p>// new Promise((resolve,reject)=&gt;&#123;<br>//     console.log(&quot;1&quot;)<br>//     resolve()<br>//   &#125;).then(()=&gt;&#123; // then碰到then，就将其全部放到微任务队列，再细致考虑<br>//     console.log(&quot;2&quot;)<br>//     new Promise((resolve,reject)=&gt;&#123;<br>//       console.log(&quot;3&quot;)<br>//       resolve()<br>//     &#125;).then(()=&gt;&#123;<br>//       console.log(&quot;4&quot;) // 先5后4 “队列”<br>//     &#125;).then(()=&gt;&#123;<br>//       console.log(&quot;5&quot;)<br>//     &#125;)<br>//   &#125;).then(()=&gt;&#123;<br>//     console.log(&quot;6&quot;)<br>//   &#125;)</p>
-<p>// new Promise((resolve,reject)=&gt;&#123;<br>//     console.log(&quot;7&quot;)<br>//     resolve() //2<br>//   &#125;).then(()=&gt;&#123;<br>//     console.log(&quot;8&quot;)<br>//   &#125;)</p>
-<p>// Promise.resolve().then(() =&gt; &#123;<br>//     console.log(‘promise1’);<br>//     const timer2 = setTimeout(() =&gt; &#123;<br>//       console.log(‘timer2’)<br>//     &#125;, 0)<br>//   &#125;);</p>
-<p>// const timer1 = setTimeout(() =&gt; &#123;<br>//     console.log(‘timer1’)<br>//     Promise.resolve().then(() =&gt; &#123;<br>//       console.log(‘promise2’)<br>//     &#125;)<br>//   &#125;, 0)</p>
-<p>// console.log(‘start’);</p>
-<p>// const promise1 = new Promise((resolve, reject) =&gt; &#123;<br>//     setTimeout(() =&gt; &#123;<br>//       resolve(‘success’)<br>//     &#125;, 1000)<br>//   &#125;)<br>// const promise2 = promise1.then(() =&gt; &#123;<br>//     throw new Error(‘error!!!’)<br>//   &#125;)</p>
-<p>// console.log(‘promise1’, promise1)<br>// console.log(‘promise2’, promise2)</p>
-<p>// setTimeout(() =&gt; &#123;<br>//     console.log(‘promise1’, promise1)<br>//     console.log(‘promise2’, promise2)<br>// &#125;, 2000)</code><br></code></pre></p>
-</details><h2 id="TmnIc"><span class="ne-text">异步编程</span></h2><ul class="ne-ul"><li id="ub668edc1" data-lake-index-type="0"><span class="ne-text">参照这里面的题来测验：</span><a target="_blank" rel="noopener" href="https://juejin.cn/post/7050637649123475487" data-href="https://juejin.cn/post/7050637649123475487" class="ne-link"><span class="ne-text">靠做题</span><span class="ne-text">📝</span><span class="ne-text">来掌握Promise/async/await</span></a></li><li id="u81ed278c" data-lake-index-type="0"><span class="ne-text"></span><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/554682475/answer/2759371197" data-href="https://www.zhihu.com/question/554682475/answer/2759371197" class="ne-link"><span class="ne-text">请问为啥前端现在喜欢用await了？ - siki学院的回答 - 知乎</span></a></li></ul><h3 id="UtGum"><span class="ne-text">Promise</span></h3><ul class="ne-tl"><li checked="true" id="u91c55651" data-lake-index-type="0"><span class="ne-text">理解并能准确判断代码执行时机</span></li></ul><details class="lake-collapse"><summary id="u97ab30cf"><span class="ne-text">测试代码</span></summary>
-<pre><code><code>/**
- * Promise：resolve reject then catch finally
- */
-// let p1 = new Promise((resolve, reject) =&gt; &#123;
-//     setTimeout(() =&gt; &#123;
-//       resolve('success')
-//     &#125;,1000)
-//   &#125;)
-  
-<p>//   let p2 = new Promise((resolve, reject) =&gt; &#123;<br>//     setTimeout(() =&gt; &#123;<br>//       reject(‘failed’)<br>//     &#125;, 500)<br>//   &#125;)</p>
-<p>//   Promise.race([p1, p2]).then((result) =&gt; &#123;<br>//     console.log(result)<br>//   &#125;).catch((error) =&gt; &#123;<br>//     console.log(error)  // 打开的是 ‘failed’<br>// &#125;)</p>
-<p>// function test(resolve, reject) &#123;<br>//   let timeOut = Math.random() * 2;<br>//   console.log(‘set timeout to: ‘ + timeOut + ‘ seconds.’);<br>//   setTimeout(function () &#123;<br>//       if (timeOut &lt; 1) &#123;<br>//         console.log(‘call resolve()…’);<br>//         resolve(‘200 OK’);<br>//       &#125;<br>//       else &#123;<br>//         console.log(‘call reject()…’);<br>//         reject(‘timeout in ‘ + timeOut + ‘ seconds.’);<br>//       &#125;<br>//   &#125;, timeOut * 1000);<br>// &#125;</p>
-<p>// let p1 = new Promise(test);<br>// let p2 = p1.then(function (result) &#123;<br>//     console.log(‘成功：’ + result);<br>// &#125;);<br>// let p3 = p2.catch(function (reason) &#123;<br>//     console.log(‘失败：’ + reason);<br>// &#125;);</p>
-<p>// function test(resolve, reject) &#123;<br>//   let timeOut = Math.random() * 2;<br>//   console.log(‘set timeout to: ‘ + timeOut + ‘ seconds.’);<br>//   setTimeout(function () &#123;<br>//       if (timeOut &lt; 1) &#123;<br>//         console.log(‘call resolve()…’);<br>//         resolve(‘200 OK’);<br>//       &#125;<br>//       else &#123;<br>//         console.log(‘call reject()…’);<br>//         reject(‘timeout in ‘ + timeOut + ‘ seconds.’);<br>//       &#125;<br>//   &#125;, timeOut * 1000);<br>// &#125;</p>
-<p>// new Promise(test)<br>// .then(function (result) &#123;<br>//   console.log(‘成功：’ + result);<br>// &#125;)<br>// .catch(function (reason) &#123;<br>//   console.log(‘失败：’ + reason);<br>// &#125;)</p>
-<p>// const promise = new Promise((resolve, reject) =&gt; &#123;<br>//     reject(&quot;error&quot;);<br>//     resolve(&quot;success2&quot;); // 需要return才能传递结果<br>//   &#125;);<br>//   promise.then(res =&gt; &#123;<br>//       console.log(&quot;then1: &quot;, res); // 需要return才能往下传递结果<br>//   &#125;).then(res =&gt; &#123;<br>//       console.log(&quot;then2: &quot;, res);<br>//   &#125;).catch(err =&gt; &#123;<br>//       console.log(&quot;catch: &quot;, err);<br>//   &#125;).then(res =&gt; &#123;<br>//       console.log(&quot;then3: &quot;, res); // undefined catch也会返回promise对象<br>//   &#125;)</p>
-<p>// Promise.resolve(1)<br>//   .then(res =&gt; &#123;<br>//     console.log(res);<br>//     return 2; // return 2会被包装成resolve(2)<br>//   &#125;)<br>//   .catch(err =&gt; &#123;<br>//     return 3;<br>//   &#125;)<br>//   .then(res =&gt; &#123;<br>//     console.log(res);<br>//   &#125;);</p>
-<p>// const promise = new Promise((resolve, reject) =&gt; &#123;<br>//     setTimeout(() =&gt; &#123;<br>//       console.log(‘timer’)<br>//       resolve(‘success’)<br>//     &#125;, 1000)<br>//   &#125;)<br>//   const start = Date.now();<br>//   promise.then(res =&gt; &#123;<br>//     console.log(res, Date.now() - start)<br>//   &#125;)<br>//   promise.then(res =&gt; &#123;<br>//     console.log(res, Date.now() - start) // 两个字几乎一样，状态一旦改变，就不会在变动了<br>//   &#125;)</p>
-<p>//   Promise.resolve().then(() =&gt; &#123;<br>//     return new Error(‘error!!!’) // 被包裹成了return Promise.resolve(new Error(‘error!!!’))<br>//   &#125;).then(res =&gt; &#123;<br>//     console.log(&quot;then: &quot;, res)<br>//   &#125;).catch(err =&gt; &#123;<br>//     console.log(&quot;catch: &quot;, err)<br>//   &#125;)<br></code><br></code></pre></p>
-<p id="u3de07eae" class="ne-p"><br></p>
-<pre><code><code>/**
- * then链式调用
- */
-// function runAsync1()&#123;
-//   var p = new Promise(function(resolve, reject)&#123;
-//       //做一些异步操作
-//       setTimeout(function()&#123;
-//           console.log('异步任务1执行完成');
-//           resolve('随便什么数据1');
-//       &#125;, 2000);
-//   &#125;);
-//   return p;
-// &#125;
-// function runAsync2()&#123;
-//   var p = new Promise(function(resolve, reject)&#123;
-//       //做一些异步操作
-//       setTimeout(function()&#123;
-//           console.log('异步任务2执行完成');
-//           resolve('随便什么数据2');
-//       &#125;, 1000);
-//   &#125;);
-//   return p;
-// &#125;
-// function runAsync3()&#123;
-//   var p = new Promise(function(resolve, reject)&#123;
-//       //做一些异步操作
-//       setTimeout(function()&#123;
-//           console.log('异步任务3执行完成');
-//           resolve('随便什么数据3');
-//       &#125;, 1000);
-//   &#125;);
-//   return p;
-// &#125;
-
-<p>// runAsync1()<br>// .then(function(data)&#123;<br>//     console.log(data);<br>//     return runAsync2();<br>// &#125;)<br>// .then(function(data)&#123;<br>//     console.log(data);<br>//     return runAsync3();<br>// &#125;)<br>// .then(function(data)&#123;<br>//     console.log(data);<br>// &#125;);<br></code><br></code></pre></p>
-<p id="uda568f1f" class="ne-p"><br></p>
-<pre><code><code>/**
- * all: 所有异步任务完成执行then
- * race：执行快的直接跳出
- */
-//  function runAsync (x) &#123;
-//     const p = new Promise(r =&gt; setTimeout(() =&gt; r(x, console.log(x)), 1000))
-//     return p
-// &#125;
-// Promise.all([runAsync(1), runAsync(2), runAsync(3)]) // 参数数组都是promise实例，如果不是强制包装
-//   .then(res =&gt; console.log(res))
-
-<p>//   function runAsync (x) &#123;<br>//     const p = new Promise(r =&gt; setTimeout(() =&gt; r(x, console.log(x)), 1000))<br>//     return p<br>//   &#125;<br>//   function runReject (x) &#123;<br>//     const p = new Promise((res, rej) =&gt; setTimeout(() =&gt; rej(<code>Error: $&#123;x&#125;</code>, console.log(x)), 1000 * x))<br>//     return p<br>//   }<br>//   Promise.all([runAsync(1), runReject(4), runAsync(3), runReject(2)])<br>//     .then(res =&gt; console.log(res))<br>//     .catch(err =&gt; console.log(err))</p>
-<p>// let p1 = new Promise((resolve, reject) =&gt; {<br>//     setTimeout(() =&gt; {<br>//       resolve(‘success’)<br>//     },1000)<br>//   })</p>
-<p>//   let p2 = new Promise((resolve, reject) =&gt; {<br>//     setTimeout(() =&gt; {<br>//       reject(‘failed’)<br>//     }, 3000)<br>//   })</p>
-<p>//   Promise.race([p1, p2]).then((result) =&gt; {<br>//     console.log(result)<br>//   }).catch((error) =&gt; {<br>//     console.log(error)  // 打开的是 ‘success’<br>// })<br></code><br></code></pre></p>
-</details><ul class="ne-tl"><li id="u390413e0" data-lake-index-type="0"><span class="ne-text">手写Promise api</span></li></ul><h3 id="zCwWK"><span class="ne-text">Async、await</span></h3><p id="ub9abef9d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1665821781199-5e03f0f2-b6c3-405e-a5e9-6071e66be32d.png" width="1400" id="u884cd2d4" class="ne-image"></p><p id="u45cb7189" class="ne-p"><br></p><p id="u97cd96d5" class="ne-p"><span class="ne-text">前言：Vue请求接口多是异步操作数据，我们一般会用then、catch来进行链式获取接口数据，除此之外还可以使用Async、Await这个方式来执行异步代码，待接口数据请求完成，再进行下面的逻辑执行。但是上述情况一个是会陷入“回调地狱”，而且请求失败所获得的数据不好获取处理，这个时候使用Promise来封装返回的数据就很好用了，不仅如此，这种形式也有利于传递接口给SDK，具体代码如下：</span></p><p id="u8ecd33bf" class="ne-p"><span class="ne-text"></span></p>
-<pre><code><code>async getData(id) &#123;
-  ···
-  return new Promise((resolve, reject) =&gt; &#123;
-    getInterfaceData(&#123; param: id &#125;)
-      .then((res) =&gt; &#123;
-        ···
-        resolve(res.data);
-      &#125;)
-      .catch((err) =&gt; &#123;
-        ···
-        reject(new Error(err));
-      &#125;);
+<p id="u79e4c6cb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711177590883-9c151a19-b11f-40f8-9378-9f878c7e1b58.png" width="273.33332247204294" id="u3ae9bd10" class="ne-image"></p><h3 id="oa0ag"><span class="ne-text">同步代码+setTimeout+Promise</span></h3>
+<pre><code><code>console.log(1);
+setTimeout(() =&gt; &#123;
+  console.log(2);
+  Promise.resolve().then(() =&gt; &#123;
+    console.log(3);
   &#125;);
-&#125;,
-
-<p>const data = getData(‘xxx’);</code><br></code></pre></p>
-<p id="u7526ecaf" class="ne-p"><span class="ne-text">await可以看成是Promise的语法糖（实际上是Generate的语法糖），效果和Promise的回调地狱一样，只是代码看起来好看点。</span></p><details class="lake-collapse"><summary id="u7781ab15"><span class="ne-text">测试代码</span></summary>
-<pre><code><code>/**
- * async await
- */
-
-<p>//  async function fn () &#123;<br>//     // return await 123<br>//     // 等同于<br>//     return 123<br>//   &#125;<br>//   fn().then(res =&gt; console.log(res))<br>//   console.log(fn)</p>
-<p>// async function async1() &#123;<br>//     console.log(&quot;async1 start&quot;);<br>//     await async2();<br>//     console.log(&quot;async1 end&quot;);<br>//   &#125;<br>// async function async2() &#123;<br>//     console.log(&quot;async2&quot;);<br>//   &#125;<br>// async1();<br>// console.log(‘start’)</p>
-<p>// async function async1() &#123;<br>//     console.log(&quot;async1 start&quot;);<br>//     await async2(); // 紧跟着await后面的语句相当于放到了new Promise中，下一行及之后的语句相当于放在Promise.then中<br>//     console.log(&quot;async1 end&quot;);<br>//   &#125;<br>// async function async2() &#123;<br>//     setTimeout(() =&gt; &#123;<br>//       console.log(‘timer’)<br>//     &#125;, 0)<br>//     console.log(&quot;async2&quot;);<br>//   &#125;<br>// async1();<br>// console.log(&quot;start&quot;</p>
-<p>// async function async1() &#123;<br>//   console.log(&quot;async1 start&quot;);<br>//   await async2();<br>//   console.log(&quot;async1 end&quot;);<br>//   setTimeout(() =&gt; &#123;<br>//     console.log(‘timer1’)<br>//   &#125;, 0)<br>// &#125;</p>
-<p>// async function async2() &#123;<br>//   setTimeout(() =&gt; &#123;<br>//     console.log(‘timer2’)<br>//   &#125;, 0)<br>//   console.log(&quot;async2&quot;);<br>// &#125;</p>
-<p>// async1();</p>
-<p>// setTimeout(() =&gt; &#123;<br>//   console.log(‘timer3’)<br>// &#125;, 0)</p>
-<p>// console.log(&quot;start&quot;)<br></code><br></code></pre></p>
-</details><h3 id="X8bdj"><span class="ne-text">综合</span></h3>
+&#125;);
+console.log(4);
+new Promise((resolve, reject) =&gt; &#123;
+  console.log(5);
+  resolve();
+&#125;)
+  .then(() =&gt; &#123;
+    console.log(6);
+    setTimeout(() =&gt; &#123;
+      console.log(7);
+    &#125;);
+  &#125;)
+  .catch(() =&gt; &#123;
+    console.log(9);
+  &#125;);
+console.log(8);</code>
+</code></pre>
+<p id="uaadaee80" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711176750519-95ae6d7b-9aff-4713-80f3-eefc48238c22.png" width="231.6666574610608" id="u086e6f8d" class="ne-image"></p>
+<pre><code><code>setTimeout(() =&gt; &#123;
+  console.log(1);
+&#125;, 0);
+console.log(2);
+const p = new Promise((resolve) =&gt; &#123;
+  console.log(3);
+  resolve();
+&#125;)
+  .then(() =&gt; &#123;
+    console.log(4);
+  &#125;)
+  .then(() =&gt; &#123;
+    console.log(5);
+  &#125;);
+console.log(6);
+</code>
+</code></pre>
+<p id="ue162ba1c" class="ne-p"><strong><span class="ne-text">then的连续回调都属于一个微任务</span></strong></p><p id="u320ca539" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711177325508-9e71bcee-c292-4c9b-a389-5309e517b79d.png" width="275.83332237270184" id="u4e58c1af" class="ne-image"></p>
+<pre><code><code>new Promise((resolve,reject)=&gt;&#123;
+  console.log(1)
+  resolve()
+&#125;).then(()=&gt;&#123;
+  console.log(2)
+  new Promise((resolve,reject)=&gt;&#123;
+    console.log(3)
+    resolve()
+  &#125;).then(()=&gt;&#123;
+    console.log(4)
+  &#125;).then(()=&gt;&#123;
+    console.log(5)
+  &#125;)
+&#125;).then(()=&gt;&#123;
+  console.log(6)
+&#125;)</code>
+</code></pre>
+<p id="ucc5c1474" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711177827154-2f41dd48-96bc-4cf8-af9e-9693a46f6efc.png" width="299.9999880790715" id="h2U7V" class="ne-image"></p>
+<pre><code><code>new Promise((resolve, reject) =&gt; &#123;
+  console.log(1);
+  resolve();
+&#125;)
+  .then(() =&gt; &#123;
+    console.log(2);
+    return new Promise((resolve, reject) =&gt; &#123;
+      console.log(3);
+      resolve();
+    &#125;)
+      .then(() =&gt; &#123;
+        console.log(4);
+      &#125;)
+      .then(() =&gt; &#123;
+        console.log(5);
+      &#125;);
+  &#125;)
+  .then(() =&gt; &#123;
+    console.log(6);
+  &#125;);
+</code>
+</code></pre>
+<p id="ue19e7715" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711178047803-bdb99d1a-6071-4fe4-8a30-3896c37aea90.png" width="223.33332445886435" id="u487e8573" class="ne-image"></p>
+<pre><code><code>new Promise((resolve, reject) =&gt; &#123;
+  console.log(1)
+  resolve()
+&#125;).then(() =&gt; &#123;
+  console.log(2)
+  new Promise((resolve, reject) =&gt; &#123;
+    console.log(3)
+    resolve()
+  &#125;).then(() =&gt; &#123;
+    console.log(4)
+  &#125;).then(() =&gt; &#123;
+    console.log(5)
+  &#125;)
+&#125;).then(() =&gt; &#123;
+  console.log(6)
+&#125;)
+new Promise((resolve, reject) =&gt; &#123;
+  console.log(7)
+  resolve()
+&#125;).then(() =&gt; &#123;
+  console.log(8)
+&#125;)</code>
+</code></pre>
+<p id="udc697973" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711178391841-707dfb36-30a0-40e1-8e79-3cd07976f635.png" width="184.99999264876078" id="uc0fa6ac2" class="ne-image"></p><h3 id="zCwWK"><span class="ne-text">同步代码+async await+Promise</span></h3><p id="u7526ecaf" class="ne-p"><span class="ne-text">await可以看成是Promise的语法糖（实际上是Generate的语法糖），效果和Promise的回调地狱一样，只是代码书写起来类似同步执行代码。</span></p>
+<pre><code><code>async function async1() &#123;
+  console.log(1);
+  await async2();
+  console.log(2);
+&#125;
+async function async2() &#123;
+  console.log(3);
+&#125;
+console.log(4);
+setTimeout(function () &#123;
+  console.log(5);
+&#125;);
+async1();
+new Promise(function (resolve, reject) &#123;
+  console.log(6);
+  resolve();
+&#125;).then(function () &#123;
+  console.log(7);
+&#125;);
+console.log(8);</code>
+</code></pre>
+<p id="uccfecfa9" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711179143994-f25a4728-f05b-48bb-9d46-4fef205c4bcb.png" width="201.66665865315363" id="ue5d90719" class="ne-image"></p><h3 id="X8bdj"><span class="ne-text">综合例子</span></h3>
 <pre><code><code>async function a1() &#123;
   console.log('a1 start')
   await a2()
@@ -351,14 +333,12 @@ async function a2() &#123;
 <p>Promise.resolve().then(() =&gt; &#123;<br>  console.log(‘promise1’)<br>&#125;)</p>
 <p>a1()</p>
 <p>let promise2 = new Promise(resolve =&gt; &#123;<br>  resolve(‘promise2.then’)<br>  console.log(‘promise2’)<br>&#125;)</p>
-<p>promise2.then(res =&gt; &#123;<br>  console.log(res)<br>  Promise.resolve().then(() =&gt; &#123;<br>    console.log(‘promise3’)<br>  &#125;)<br>&#125;)<br>console.log(‘script end’)</p>
-<p>/** 第一次做错的结果<br>script start<br>a1 start<br>a2<br>promise1<br>a1 end<br>promise2<br>script end<br>promise2.then<br>promise3<br>setTimeout<br> */</p>
-<p>/** 正确结果<br>script start<br>a1 start<br>a2<br>promise2<br>script end<br>promise1<br>a1 end<br>promise2.then<br>promise3<br>setTimeout<br> */</code><br></code></pre></p>
-<h2 id="AaYEl"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="ud7d904d0" data-lake-index-type="0"><a href="https://juejin.cn/post/6844903832388894727" data-href="https://juejin.cn/post/6844903832388894727" target="_blank" class="ne-link"><span class="ne-text">理解JavaScript概念系列--异步任务</span></a></li><li id="uf13c38a9" data-lake-index-type="0"><a href="https://juejin.cn/post/6844903760280420366" data-href="https://juejin.cn/post/6844903760280420366" target="_blank" class="ne-link"><span class="ne-text">JS 异步编程六种方案</span></a></li><li id="u6f67f941" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://juejin.cn/post/6962312899960242213" data-href="https://juejin.cn/post/6962312899960242213" class="ne-link"><span class="ne-text">微任务/宏任务和同步/异步之间的关系</span></a></li><li id="u8a1e4f3c" data-lake-index-type="0"><a href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" data-href="https://www.cnblogs.com/lvdabao/p/es6-promise-1.html" target="_blank" class="ne-link"><span class="ne-text">大白话讲解Promise（一）</span></a></li><li id="u4f9ab938" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1kf4y1U7Ln" data-href="https://www.bilibili.com/video/BV1kf4y1U7Ln" class="ne-link"><span class="ne-text">2分钟了解 JavaScript Event Loop | 面试必备</span></a></li><li id="u4c2350d7" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://juejin.cn/post/7050637649123475487" data-href="https://juejin.cn/post/7050637649123475487" class="ne-link"><span class="ne-text">靠做题</span><span class="ne-text">📝</span><span class="ne-text">来掌握Promise/async/await</span></a></li><li id="ufa03a3cb" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/nana-share/p/9187997.html" data-href="https://www.cnblogs.com/nana-share/p/9187997.html" class="ne-link"><span class="ne-text">javascript 异步操作，串形执行，并行执行 - 小苏打00 - 博客园</span></a></li></ul></div>
+<p>promise2.then(res =&gt; &#123;<br>  console.log(res)<br>  Promise.resolve().then(() =&gt; &#123;<br>    console.log(‘promise3’)<br>  &#125;)<br>&#125;)<br>console.log(‘script end’)</code><br></code></pre></p>
+<p id="u7ad89b7d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1711179267786-9e7bf14c-58e3-4dae-811b-ac8fda627250.png" width="217.49999135732685" id="u8442b701" class="ne-image"></p></div>
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bAXj8"><span class="toc-text">一、JS代码执行机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#YbZ5l"><span class="toc-text">JavaScript的单线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IF7ut"><span class="toc-text">同步任务和异步任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tDUjC"><span class="toc-text">事件循环机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CkHxP"><span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TmnIc"><span class="toc-text">异步编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UtGum"><span class="toc-text">Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zCwWK"><span class="toc-text">Async、await</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#X8bdj"><span class="toc-text">综合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AaYEl"><span class="toc-text">参考</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#bAXj8"><span class="toc-text">一、JS代码执行机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#YbZ5l"><span class="toc-text">JavaScript的单线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IF7ut"><span class="toc-text">同步任务和异步任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tDUjC"><span class="toc-text">事件循环机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IvbMB"><span class="toc-text">二、一些例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TLtJm"><span class="toc-text">同步代码+Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#oa0ag"><span class="toc-text">同步代码+setTimeout+Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zCwWK"><span class="toc-text">同步代码+async await+Promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#X8bdj"><span class="toc-text">综合例子</span></a></li></ol></li></ol>
 </div>
   </div>
 </div>
