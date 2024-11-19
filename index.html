@@ -72,6 +72,36 @@
 
     
 
+    <script type="module">
+      import {
+        codeToHtml
+      } from 'https://esm.sh/shiki@1.0.0'
+
+      window.updateShiki = () => {
+        console.log('updateShiki');
+        Array.from(document.querySelectorAll('pre') || []).forEach(async (pre) => {
+          const language = pre.getAttribute('data-language') || 'text';
+          const code = pre.textContent;
+
+          try {
+            const highlighted = await codeToHtml(code, {
+              lang: language,
+              theme: 'ayu-dark',
+              transformers: [{
+                pre(node) {
+                  node.properties.class = ['shiki', 'rose-pine', `language-${language}`, 'line-numbers'];
+                  return node;
+                }
+              }],
+              showLineNumbers: true
+            });
+            pre.outerHTML = highlighted;
+          } catch (error) {
+            console.error('Code highlighting failed:', error);
+          }
+        });
+      }
+    </script>
   </body>
 
 </html>

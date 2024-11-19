@@ -45,13 +45,13 @@
     <a href="/blog/" class="header-link">文章</a>
   </div>
   <div  class="lyrics-header-pc-item" >
-    <a href="/message/" class="header-link">留言板</a>
+    <a href="/message/" class="header-link">留言</a>
   </div>
-  <div  class="lyrics-header-pc-item" >
+  <!-- <div  class="lyrics-header-pc-item" >
     <a href="/demo/" class="header-link">实验室</a>
-  </div>
+  </div> -->
   <div  class="lyrics-header-pc-item" >
-    <a href="/about/" class="header-link">关于我</a>
+    <a href="/about/" class="header-link">关于</a>
   </div>
   <div  class="lyrics-header-pc-item" >
     <a href="/friends/" class="header-link">友链</a>
@@ -102,7 +102,7 @@
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    313
+    321
     <span>篇</span>
   </div>
   <div>
@@ -163,79 +163,71 @@
       
       <div class="component article" id="article">
   <div class="article-content">
-    <div class="lake-content" typography="classic"><p id="u03591007" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640570522971-b4d4a696-55c0-496b-a81d-deeb3e83a111.png" width="900" id="u4339158d" class="ne-image"></p><p id="u2d28a016" class="ne-p"><span class="ne-text"></span></p><p id="ubbfe2e60" class="ne-p"><span class="ne-text">前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：</span></p><ul class="ne-ul"><li id="ucc09ec77"><span class="ne-text">commitizen：简单的 commit 规范</span></li><li id="ufbab311b"><span class="ne-text">cz-conventional-changelog：执行会将项目npm发布新版本，并自动生成CHANGELOG.md文件</span></li><li id="u82705670"><span class="ne-text">commitlint：格式校验工具</span></li><li id="u419914ec"><span class="ne-text">husky：Git的钩子，在此作用为代码的提交规范和规范的校验</span></li><li id="u1fd40f0a"><span class="ne-text">standard-version：辅助 cz-conventional-changelog 打 version 等功能</span></li></ul><h3 id="Ttl7l"><span class="ne-text">commitizen和cz-conventional-changelog</span></h3><p id="u6c3b2139" class="ne-p"><span class="ne-text">下载cz-conventional-changelog commitizen</span></p>
-<pre><code>cnpm i -D commitizen cz-conventional-changelog
-</code></pre>
-<p id="u65da1f08" class="ne-p"><span class="ne-text">package.json添加配置信息</span></p>
-<pre><code>"scripts": &#123;
+    
+
+<div class="lake-content" typography="classic"><p id="u03591007" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640570522971-b4d4a696-55c0-496b-a81d-deeb3e83a111.png" width="900" id="u4339158d" class="ne-image"></p><p id="u2d28a016" class="ne-p"><span class="ne-text"></span></p><p id="ubbfe2e60" class="ne-p"><span class="ne-text">前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：</span></p><ul class="ne-ul"><li id="ucc09ec77"><span class="ne-text">commitizen：简单的 commit 规范</span></li><li id="ufbab311b"><span class="ne-text">cz-conventional-changelog：执行会将项目npm发布新版本，并自动生成CHANGELOG.md文件</span></li><li id="u82705670"><span class="ne-text">commitlint：格式校验工具</span></li><li id="u419914ec"><span class="ne-text">husky：Git的钩子，在此作用为代码的提交规范和规范的校验</span></li><li id="u1fd40f0a"><span class="ne-text">standard-version：辅助 cz-conventional-changelog 打 version 等功能</span></li></ul><h3 id="Ttl7l"><span class="ne-text">commitizen和cz-conventional-changelog</span></h3><p id="u6c3b2139" class="ne-p"><span class="ne-text">下载cz-conventional-changelog commitizen</span></p><pre data-language="bash" id="lpbeV" class="ne-codeblock language-bash">cnpm i -D commitizen cz-conventional-changelog</pre><p id="u65da1f08" class="ne-p"><span class="ne-text">package.json添加配置信息</span></p><pre data-language="json" id="EWjvg" class="ne-codeblock language-json">"scripts": {
   ...,
     "commit": "git status &amp;&amp; git add . &amp;&amp; git-cz",
-  &#125;,
+  },
 ,
-  "config": &#123;
-    "commitizen": &#123;
+  "config": {
+    "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
-    &#125;
-  &#125;
-</code></pre>
-<p id="u37926c96" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510064091-ff75df38-e750-452f-8a16-6e6930f8505b.png" width="470.5" id="ua1b3c4e2" class="ne-image"></p><p id="u6b5ae494" class="ne-p"><span class="ne-text">成功提交之后</span></p><p id="u44e5300c" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510234956-c68282df-e059-4a8b-b118-0932250a7420.png" width="587" id="ue703c449" class="ne-image"></p><p id="uf283b9bd" class="ne-p"><br></p><h3 id="Ag1Il"><span class="ne-text">Commitlint及husky</span></h3>
-<pre><code>cnpm i -D husky @commitlint/config-conventional @commitlint/cli
-</code></pre>
-<p id="u14464e93" class="ne-p"><span class="ne-text">项目根目录新建commitlint.config.js</span></p>
-<pre><code>module.exports = &#123;  extends: ['@commitlint/config-conventional']&#125;
-</code></pre>
-<p id="u0d788f8b" class="ne-p"><span class="ne-text">package.json添加如下</span></p>
-<pre><code># package.json
+    }
+  }</pre><p id="u37926c96" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510064091-ff75df38-e750-452f-8a16-6e6930f8505b.png" width="470.5" id="ua1b3c4e2" class="ne-image"></p><p id="u6b5ae494" class="ne-p"><span class="ne-text">成功提交之后</span></p><p id="u44e5300c" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640510234956-c68282df-e059-4a8b-b118-0932250a7420.png" width="587" id="ue703c449" class="ne-image"></p><p id="uf283b9bd" class="ne-p"><br></p><h3 id="Ag1Il"><span class="ne-text">Commitlint及husky</span></h3><pre data-language="bash" id="I91lf" class="ne-codeblock language-bash">cnpm i -D husky @commitlint/config-conventional @commitlint/cli</pre><p id="u14464e93" class="ne-p"><span class="ne-text">项目根目录新建commitlint.config.js</span></p><pre data-language="javascript" id="BKunN" class="ne-codeblock language-javascript">module.exports = {  extends: ['@commitlint/config-conventional']}</pre><p id="u0d788f8b" class="ne-p"><span class="ne-text">package.json添加如下</span></p><pre data-language="json" id="SW0Pa" class="ne-codeblock language-json"># package.json
 
-<p>…,<br>“husky”: &#123;<br>    “hooks”: &#123;<br>      “commit-msg”: “commitlint -E $HUSKY_GIT_PARAMS”    &#125;<br>&#125;</p>
-<p></code></pre></p>
-<p id="u2563d439" class="ne-p"><span class="ne-text">执行命令 npm run commit</span></p>
-<pre><code>1.Select the type of change that you're committing 选择改动类型 (&lt;type&gt;)
+...,
+"husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E $HUSKY_GIT_PARAMS"    }
+}
+</pre><p id="u2563d439" class="ne-p"><span class="ne-text">执行命令 npm run commit</span></p><pre data-language="plain" id="dxbYZ" class="ne-codeblock language-plain">1.Select the type of change that you're committing 选择改动类型 (&lt;type&gt;)
 
-<p>2.What is the scope of this change (e.g. component or file name)? 填写改动范围 (&lt;scope&gt;)</p>
-<p>3.Write a short, imperative tense description of the change: 写一个精简的描述 (&lt;subject&gt;)</p>
-<p>4.Provide a longer description of the change: (press enter to skip) 对于改动写一段长描述 (&lt;body&gt;)</p>
-<p>5.Are there any breaking changes? (y/n) 是破坏性修改吗？默认n (&lt;footer&gt;)</p>
-<p>6.Does this change affect any openreve issues? (y/n) 改动修复了哪个问题？默认n (&lt;footer&gt;)<br></code></pre></p>
-<p id="u24586855" class="ne-p"><span class="ne-text">生成如下格式</span></p>
-<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+2.What is the scope of this change (e.g. component or file name)? 填写改动范围 (&lt;scope&gt;)
+
+3.Write a short, imperative tense description of the change: 写一个精简的描述 (&lt;subject&gt;)
+
+4.Provide a longer description of the change: (press enter to skip) 对于改动写一段长描述 (&lt;body&gt;)
+
+5.Are there any breaking changes? (y/n) 是破坏性修改吗？默认n (&lt;footer&gt;)
+
+6.Does this change affect any openreve issues? (y/n) 改动修复了哪个问题？默认n (&lt;footer&gt;)</pre><p id="u24586855" class="ne-p"><span class="ne-text">生成如下格式</span></p><pre data-language="plain" id="cQNro" class="ne-codeblock language-plain">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
 &lt;BLANK LINE&gt;
 &lt;body&gt;
 &lt;BLANK LINE&gt;
-&lt;footer&gt;
-</code></pre>
-<p id="uad666844" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515038577-11c2fbe0-0e7e-4ec4-8836-2c49553151c0.png" width="241.5" id="ub44884a1" class="ne-image"></p><p id="u915a5ef0" class="ne-p"><span class="ne-text">其中各自含义为</span></p><ul class="ne-ul"><li id="u6aada6e4"><span class="ne-text">scope 指 commit 的范围（哪些模块进行了修改）</span></li><li id="u54a150bc"><span class="ne-text">subject 指 commit 的简短描述</span></li><li id="u290da520"><span class="ne-text">body 指 commit 主体内容（长描述）</span></li><li id="u6a10d0a9"><span class="ne-text">footer 指 commit footer 信息</span></li><li id="ue4e2d962"><span class="ne-text">type 指当前 commit 类型，一般有下面几种可选类型：</span></li></ul><p id="u7e7f121a" class="ne-p"><br></p>
-<pre><code># 主要type
+&lt;footer&gt;</pre><p id="uad666844" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515038577-11c2fbe0-0e7e-4ec4-8836-2c49553151c0.png" width="241.5" id="ub44884a1" class="ne-image"></p><p id="u915a5ef0" class="ne-p"><span class="ne-text">其中各自含义为</span></p><ul class="ne-ul"><li id="u6aada6e4"><span class="ne-text">scope 指 commit 的范围（哪些模块进行了修改）</span></li><li id="u54a150bc"><span class="ne-text">subject 指 commit 的简短描述</span></li><li id="u290da520"><span class="ne-text">body 指 commit 主体内容（长描述）</span></li><li id="u6a10d0a9"><span class="ne-text">footer 指 commit footer 信息</span></li><li id="ue4e2d962"><span class="ne-text">type 指当前 commit 类型，一般有下面几种可选类型：</span></li></ul><p id="u7e7f121a" class="ne-p"><br></p><pre data-language="plain" id="c25Cc" class="ne-codeblock language-plain"># 主要type
 feat:     增加新功能
 fix:      修复bug
 
-<h1 id="特殊type"><a href="#特殊type" class="headerlink" title="特殊type"></a>特殊type</h1><p>docs:     只改动了文档相关的内容<br>style:    不影响代码含义的改动，例如去掉空格、改变缩进、增删分号<br>build:    构造工具的或者外部依赖的改动，例如webpack，npm<br>refactor: 代码重构时使用<br>revert:   执行git revert打印的message</p>
-<h1 id="暂不使用type"><a href="#暂不使用type" class="headerlink" title="暂不使用type"></a>暂不使用type</h1><p>test:     添加测试或者修改现有测试<br>perf:     提高性能的改动<br>ci:       与CI（持续集成服务）有关的改动<br>chore:    不修改src或者test的其余修改，例如构建过程或辅助工具的变动<br></code></pre></p>
-<h3 id="yQnaq"><span class="ne-text">standard-version: 自动生成 CHANGELOG</span></h3><p id="u109f02e4" class="ne-p"><span class="ne-text">下载插件</span></p>
-<pre><code>cnpm i --save-dev standard-version
-</code></pre>
-<p id="u9bbba48e" class="ne-p"><span class="ne-text">package.json添加如下</span></p>
-<pre><code>&#123;
-  "scripts": &#123;
+# 特殊type
+docs:     只改动了文档相关的内容
+style:    不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
+build:    构造工具的或者外部依赖的改动，例如webpack，npm
+refactor: 代码重构时使用
+revert:   执行git revert打印的message
+
+# 暂不使用type
+test:     添加测试或者修改现有测试
+perf:     提高性能的改动
+ci:       与CI（持续集成服务）有关的改动
+chore:    不修改src或者test的其余修改，例如构建过程或辅助工具的变动</pre><h3 id="yQnaq"><span class="ne-text">standard-version: 自动生成 CHANGELOG</span></h3><p id="u109f02e4" class="ne-p"><span class="ne-text">下载插件</span></p><pre data-language="bash" id="hsUqT" class="ne-codeblock language-bash">cnpm i --save-dev standard-version</pre><p id="u9bbba48e" class="ne-p"><span class="ne-text">package.json添加如下</span></p><pre data-language="json" id="E390b" class="ne-codeblock language-json">{
+  "scripts": {
     "release": "standard-version"
-  &#125;
-&#125;
-</code></pre>
-<p id="u453f6cbd" class="ne-p"><span class="ne-text">执行npm run release，在根目录会生成CHANGELOG.md文件</span></p><p id="u9255ba0b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515612285-57b296de-7def-4ef9-b022-286ac9ef1ac2.png" width="554.5" id="u715cd9c7" class="ne-image"></p><h3 id="zi86S"><span class="ne-text">总package.json</span></h3>
-<pre><code>&#123;
+  }
+}</pre><p id="u453f6cbd" class="ne-p"><span class="ne-text">执行npm run release，在根目录会生成CHANGELOG.md文件</span></p><p id="u9255ba0b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1640515612285-57b296de-7def-4ef9-b022-286ac9ef1ac2.png" width="554.5" id="u715cd9c7" class="ne-image"></p><h3 id="zi86S"><span class="ne-text">总package.json</span></h3><pre data-language="json" id="YlQL0" class="ne-codeblock language-json">{
   "name": "web-learn-notes",
   "version": "1.1.0",
   "description": "web学习笔记仓库",
   "main": "index.js",
-  "scripts": &#123;
+  "scripts": {
     "commit": "git status &amp;&amp; git add . &amp;&amp; git-cz",
     "release": "standard-version",
     "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"
-  &#125;,
-  "repository": &#123;
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/wztlink1013/web-learn-notes.git"
-  &#125;,
+  },
   "keywords": [
     "web",
     "学习",
@@ -243,31 +235,32 @@ fix:      修复bug
   ],
   "author": "wztlink1013",
   "license": "ISC",
-  "bugs": &#123;
+  "bugs": {
     "url": "https://github.com/wztlink1013/web-learn-notes/issues"
-  &#125;,
+  },
   "homepage": "https://github.com/wztlink1013/web-learn-notes#readme",
-  "devDependencies": &#123;
+  "devDependencies": {
     "@commitlint/cli": "^16.0.0",
     "@commitlint/config-conventional": "^16.0.0",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^7.0.4",
     "standard-version": "^9.3.2"
-  &#125;,
-  "config": &#123;
-    "commitizen": &#123;
+  },
+  "config": {
+    "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
-    &#125;
-  &#125;,
-  "husky": &#123;
-    "hooks": &#123;
+    }
+  },
+  "husky": {
+    "hooks": {
       "commit-msg": "commitlint -E $HUSKY_GIT_PARAMS"
-    &#125;
-  &#125;
-&#125;
-</code></pre>
-<p id="u6b0e1ffe" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="u74ff70f8"><span class="ne-text">commitizen：自动化提示工具【git-cz】</span></li><li id="u0a52a6ab"><span class="ne-text">commitlint</span></li><li id="u91f3fde8"><span class="ne-text">commitlint-config-cz</span></li><li id="u4d8f7655"><span class="ne-text">commitlint-config-git-commit-emoji </span></li><li id="u50603afd"><span class="ne-text">conventional-changelog</span></li><li id="u1eace2ab"><span class="ne-text">conventional-changelog-cli</span></li><li id="ue7a39465"><span class="ne-text">cz-conventional-changelog</span></li><li id="uf78109fb"><span class="ne-text">cz-customizable</span></li><li id="u5c453180"><span class="ne-text">husky</span></li><li id="ucadc0dab"><span class="ne-text">lint-staged</span></li></ul></div>
+    }
+  }
+}</pre><p id="u6b0e1ffe" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="u74ff70f8"><span class="ne-text">commitizen：自动化提示工具【git-cz】</span></li><li id="u0a52a6ab"><span class="ne-text">commitlint</span></li><li id="u91f3fde8"><span class="ne-text">commitlint-config-cz</span></li><li id="u4d8f7655"><span class="ne-text">commitlint-config-git-commit-emoji </span></li><li id="u50603afd"><span class="ne-text">conventional-changelog</span></li><li id="u1eace2ab"><span class="ne-text">conventional-changelog-cli</span></li><li id="ue7a39465"><span class="ne-text">cz-conventional-changelog</span></li><li id="uf78109fb"><span class="ne-text">cz-customizable</span></li><li id="u5c453180"><span class="ne-text">husky</span></li><li id="ucadc0dab"><span class="ne-text">lint-staged</span></li></ul></div>
+
+
+
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -379,7 +372,7 @@ fix:      修复bug
       
       <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">105</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Next-js/">Next.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
       
       <div class="component clearfix new_comments">
@@ -467,9 +460,9 @@ fix:      修复bug
   <ul class="asc-item asc-route-list">
     <li><a href="/" class="asc-link">首页</a></li>
     <li><a href="/blog/" class="asc-link">文章</a></li>
-    <li><a href="/message/" class="asc-link">留言板</a></li>
-    <li><a href="/demo/" class="asc-link">实验室</a></li>
-    <li><a href="/about/" class="asc-link">关于我</a></li>
+    <li><a href="/message/" class="asc-link">留言</a></li>
+    <!-- <li><a href="/demo/" class="asc-link">实验室</a></li> -->
+    <li><a href="/about/" class="asc-link">关于</a></li>
     <li><a href="/friends/" class="asc-link">友链</a></li>
   </ul>
 </div>
@@ -509,6 +502,36 @@ fix:      修复bug
 
     
 
+    <script type="module">
+      import {
+        codeToHtml
+      } from 'https://esm.sh/shiki@1.0.0'
+
+      window.updateShiki = () => {
+        console.log('updateShiki');
+        Array.from(document.querySelectorAll('pre') || []).forEach(async (pre) => {
+          const language = pre.getAttribute('data-language') || 'text';
+          const code = pre.textContent;
+
+          try {
+            const highlighted = await codeToHtml(code, {
+              lang: language,
+              theme: 'ayu-dark',
+              transformers: [{
+                pre(node) {
+                  node.properties.class = ['shiki', 'rose-pine', `language-${language}`, 'line-numbers'];
+                  return node;
+                }
+              }],
+              showLineNumbers: true
+            });
+            pre.outerHTML = highlighted;
+          } catch (error) {
+            console.error('Code highlighting failed:', error);
+          }
+        });
+      }
+    </script>
   </body>
 
 </html>

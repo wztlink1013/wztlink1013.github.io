@@ -45,13 +45,13 @@
     <a href="/blog/" class="header-link">文章</a>
   </div>
   <div  class="lyrics-header-pc-item" >
-    <a href="/message/" class="header-link">留言板</a>
+    <a href="/message/" class="header-link">留言</a>
   </div>
-  <div  class="lyrics-header-pc-item" >
+  <!-- <div  class="lyrics-header-pc-item" >
     <a href="/demo/" class="header-link">实验室</a>
-  </div>
+  </div> -->
   <div  class="lyrics-header-pc-item" >
-    <a href="/about/" class="header-link">关于我</a>
+    <a href="/about/" class="header-link">关于</a>
   </div>
   <div  class="lyrics-header-pc-item" >
     <a href="/friends/" class="header-link">友链</a>
@@ -102,7 +102,7 @@
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    313
+    321
     <span>篇</span>
   </div>
   <div>
@@ -167,306 +167,550 @@
       
       <div class="component article" id="article">
   <div class="article-content">
-    <div class="lake-content" typography="classic"><p id="c4377b9c5907fc32e4dd3a3ec889224d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621307069176-74d6900b-6edd-4e7a-b761-789df7a17cfe.png" width="563" id="W9sKH" class="ne-image"></p><p id="aeba3ae9fd44225e4bcdfd6b1387df74" class="ne-p"><br></p><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="8602641d8bcd30fd83b83906a84c1786" class="ne-p"><span class="ne-text">前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。</span></p><p id="a2a30595325972cce3bffd75dcc31f68" class="ne-p"><span class="ne-text">总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。</span></p></blockquote><p id="905ea7f782ba98d5a209da0f35f5c203" class="ne-p"><br></p><h2 id="QOJfe"><span class="ne-text">一、深度优先搜索算法（Depth-First-Search）</span></h2><h3 id="MZ0vA"><span class="ne-text">算法说明</span></h3><p id="4e097c10f9608f768b643efb77ddac9f" class="ne-p"><strong><span class="ne-text">访问步骤：</span></strong></p><div class="ne-quote"><ul class="ne-ul"><li id="7a87afee8efc50a1215b2c73dee1007c"><span class="ne-text">访问顶点v；</span></li><li id="75fd425f477a5edfe8e8f42d7362ada1"><span class="ne-text">依次从v的未被访问的邻接点出发，对图进行深度优先遍历；直至图中和v有路径相通的顶点都被访问；</span></li><li id="fd5afc9bef88cbee4ece89b7a4b042f5"><span class="ne-text">若此时图中尚有顶点未被访问，则从一个未被访问的顶点出发，重新进行深度优先遍历，直到图中所有顶点均被访问过为止。</span></li></ul></div><p id="ba6b093d11719b506938b7131380d8ac" class="ne-p"><br></p><p id="0aab1d1b162418f9bf49863d35a32fda" class="ne-p"><strong><span class="ne-text">核心代码就是利用递归，以及标志数组的设定，每次访问数组元素的那一行，对那行链表进行遍历，每遍历一个链表结点，就将“其”所在的那个数组元素“点亮”。如果标志数组里面的所有元素都被访问了，说明遍历完了</span></strong></p><p id="b12a3d4a70976459fc1d9bcab1a7ff25" class="ne-p" style="text-indent: 2em"><br></p><p id="ccdd034b8bc976b98a833b1b3a4480f7" class="ne-p"><strong><span class="ne-text">深度优先搜索类似于树里面遍历算法当中的先序遍历。</span></strong></p><h3 id="ZU5Ew"><span class="ne-text">邻接矩阵的DFS代码</span></h3><p id="0c7fc91bebbf033661b0d2f0e2755bb3" class="ne-p"><span class="ne-text">以这个无向图为例</span></p><p id="e91496d0133f08a7c583147a966ce5cb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png" width="197" id="Xvwlk" class="ne-image"></p><p id="f5a357efd0ac30dc1a34889c7258c8c8" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329584016-32d023fe-dc14-4c0d-90e1-7afe6fcc9cd2.png" width="227.5" id="XY5Cd" class="ne-image"></p>
-<pre><code>#include&lt;bits/stdc++.h&gt;
+    
+
+<div class="lake-content" typography="classic"><p id="c4377b9c5907fc32e4dd3a3ec889224d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621307069176-74d6900b-6edd-4e7a-b761-789df7a17cfe.png" width="563" id="W9sKH" class="ne-image"></p><p id="aeba3ae9fd44225e4bcdfd6b1387df74" class="ne-p"><br></p><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="8602641d8bcd30fd83b83906a84c1786" class="ne-p"><span class="ne-text">前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。</span></p><p id="a2a30595325972cce3bffd75dcc31f68" class="ne-p"><span class="ne-text">总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。</span></p></blockquote><p id="905ea7f782ba98d5a209da0f35f5c203" class="ne-p"><br></p><h2 id="QOJfe"><span class="ne-text">一、深度优先搜索算法（Depth-First-Search）</span></h2><h3 id="MZ0vA"><span class="ne-text">算法说明</span></h3><p id="4e097c10f9608f768b643efb77ddac9f" class="ne-p"><strong><span class="ne-text">访问步骤：</span></strong></p><div class="ne-quote"><ul class="ne-ul"><li id="7a87afee8efc50a1215b2c73dee1007c"><span class="ne-text">访问顶点v；</span></li><li id="75fd425f477a5edfe8e8f42d7362ada1"><span class="ne-text">依次从v的未被访问的邻接点出发，对图进行深度优先遍历；直至图中和v有路径相通的顶点都被访问；</span></li><li id="fd5afc9bef88cbee4ece89b7a4b042f5"><span class="ne-text">若此时图中尚有顶点未被访问，则从一个未被访问的顶点出发，重新进行深度优先遍历，直到图中所有顶点均被访问过为止。</span></li></ul></div><p id="ba6b093d11719b506938b7131380d8ac" class="ne-p"><br></p><p id="0aab1d1b162418f9bf49863d35a32fda" class="ne-p"><strong><span class="ne-text">核心代码就是利用递归，以及标志数组的设定，每次访问数组元素的那一行，对那行链表进行遍历，每遍历一个链表结点，就将“其”所在的那个数组元素“点亮”。如果标志数组里面的所有元素都被访问了，说明遍历完了</span></strong></p><p id="b12a3d4a70976459fc1d9bcab1a7ff25" class="ne-p" style="text-indent: 2em"><br></p><p id="ccdd034b8bc976b98a833b1b3a4480f7" class="ne-p"><strong><span class="ne-text">深度优先搜索类似于树里面遍历算法当中的先序遍历。</span></strong></p><h3 id="ZU5Ew"><span class="ne-text">邻接矩阵的DFS代码</span></h3><p id="0c7fc91bebbf033661b0d2f0e2755bb3" class="ne-p"><span class="ne-text">以这个无向图为例</span></p><p id="e91496d0133f08a7c583147a966ce5cb" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png" width="197" id="Xvwlk" class="ne-image"></p><p id="f5a357efd0ac30dc1a34889c7258c8c8" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329584016-32d023fe-dc14-4c0d-90e1-7afe6fcc9cd2.png" width="227.5" id="XY5Cd" class="ne-image"></p><pre data-language="cpp" id="Z8wpM" class="ne-codeblock language-cpp">#include&lt;bits/stdc++.h&gt;
 using namespace std;
 
-<p>#define MVNum 100<br>#define MaxInt 32767</p>
-<p>typedef char VerTexType;<br>typedef int ArcType;</p>
-<p>/**</p>
-<ul>
-<li>邻接矩阵存储形式</li>
-<li>/<br>typedef struct &#123;<br>  /* data */<br>  VerTexType vexs[MVNum]; //顶点表<br>  ArcType arcs[MVNum][MVNum]; //邻接矩阵<br>  int vexnum, arcnum; //图的当前顶点和边数<br>&#125;AMGraph;</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>确定v在G中的位置，即顶点数组的下标</li>
-<li>/<br>int LocateVex(AMGraph &amp;G, char v) &#123;<br>  for (int i = 0; i &lt; G.vexnum;i++) &#123;<pre><code>  if (v == G.vexs[i])&#123;
-      return i;
-  &#125;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>如果创建无向图   </li>
-<li>/<br>void CreateUDN(AMGraph &amp;G) {<br>  // 采用邻接矩阵表示法，创建无向图G<br>  cout &lt;&lt; “请输入顶点数和边数：” &lt;&lt; endl;<br>  cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数<br>  // 初始化顶点<br>  for (int i = 0; i &lt; G.vexnum;i++){<pre><code>  cout &amp;lt;&amp;lt; &quot;请输入第&quot; &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &quot;个顶点值&quot; &amp;lt;&amp;lt; endl;
-  cin &amp;gt;&amp;gt; G.vexs[i];
-</code></pre>
-  }<br>  // 初始化邻接矩阵的边的权值为最大值<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  for (int j = 0; j &amp;lt; G.vexnum;j++) &#123;
-      G.arcs[i][j] = 0;
-  &#125;
-</code></pre>
-  }<br>  // 构造邻接矩阵<br>  for (int k = 0; k &lt; G.arcnum;k++) {<pre><code>  cout &amp;lt;&amp;lt; &quot;请输入每条边所依附的顶点：&quot; &amp;lt;&amp;lt; endl;
-  char v1, v2;
-  int w = 1; //一条边所依附的顶点和权值
-  cin &amp;gt;&amp;gt; v1 &amp;gt;&amp;gt; v2;
-  int i = LocateVex(G, v1);
-  int j = LocateVex(G, v2);
-  G.arcs[i][j] = w;
-  G.arcs[j][i] = w;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>打印输出图</li>
-<li>/<br>void Display(AMGraph &amp;G) {<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  for (int j = 0; j &amp;lt; G.vexnum;j++) &#123;
-      cout &amp;lt;&amp;lt; G.arcs[i][j] &amp;lt;&amp;lt; &quot; &quot;;
-  &#125;
-  cout &amp;lt;&amp;lt; endl;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>//—-邻接矩阵的DFS遍历—-</p>
-<p>//访问标志数组，其初值为false<br>bool visited[MVNum]; </p>
-<p>/**</p>
-<ul>
-<li>图G为邻接矩阵类型，从第v个顶点出发深度优先搜索遍历图G</li>
-<li>/<br>void DFS_AM(AMGraph &amp;G, int v) {<br>  //访问第v个顶点，并置访问标志数组相应分量值为true<br>  cout&lt;&lt;v;<br>  visited[v] = true;<br>  //依次检查邻接矩阵v所在的行<br>  for(int w = 0; w &lt; G.vexnum; w++)  <pre><code>  //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到
-  if((G.arcs[v][w] != 0) &amp;amp;&amp;amp; (!visited[w]))  
-      DFS_AM(G, w);    //递归调用DFS_AM
-</code></pre>
-}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>图G的储存类型任意，对非连通图G做深度优先遍历</li>
-<li>/<br>void DFSTraverse(AMGraph &amp;G) {<br>  //访问标志数组初始化<br>  for(int v = 0; v &lt; G.vexnum; v++)  <pre><code>  visited[v] = false;
-</code></pre>
-  //循环调用DFS<br>  for(int v = 0; v &lt; G.vexnum; v++)  <pre><code>  if(!visited[v])
-      DFS_AM(G, v); //对尚未访问的顶点调用DFS
-</code></pre>
-}</li>
-</ul>
-<p>int main() {<br>    AMGraph test;<br>    CreateUDN(test);<br>    Display(test);<br>    DFSTraverse(test);<br>    return 0;<br>}</p>
-<p></code></pre></p>
-<h3 id="yoSIg"><span class="ne-text">邻接表的DFS代码</span></h3><p id="0185257cc5891b4779bd509a36e4bf08" class="ne-p"><span class="ne-text">举之前上课的一张PPT例子（元素插入为后插法）</span></p><p id="8f0f1b106f7dee1d8b9124d39e708517" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621333199678-46b6841b-415b-46e8-b0f6-0d0407284b15.png" width="554" id="HmOsr" class="ne-image"></p><p id="7d9b1ab0ddea1a0b1cc6919a63753b20" class="ne-p"><span class="ne-text">结果</span></p><p id="87a60371c70d6ef42ae0b5733953742a" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621333246481-117ec0ea-ab95-43be-ac13-75712fdf1e2b.png" width="222" id="KjOYY" class="ne-image"></p>
-<pre><code>#include &lt;bits/stdc++.h&gt;
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int ArcType;
+
+/**
+ * 邻接矩阵存储形式
+ */
+typedef struct {
+    /* data */
+    VerTexType vexs[MVNum]; //顶点表
+    ArcType arcs[MVNum][MVNum]; //邻接矩阵
+    int vexnum, arcnum; //图的当前顶点和边数
+}AMGraph;
+
+/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */
+int LocateVex(AMGraph &amp;G, char v) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        if (v == G.vexs[i]){
+            return i;
+        }
+    }
+}
+
+/**
+ * 如果创建无向图   
+ */
+void CreateUDN(AMGraph &amp;G) {
+    // 采用邻接矩阵表示法，创建无向图G
+    cout &lt;&lt; "请输入顶点数和边数：" &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数
+    // 初始化顶点
+    for (int i = 0; i &lt; G.vexnum;i++){
+        cout &lt;&lt; "请输入第" &lt;&lt; i &lt;&lt; "个顶点值" &lt;&lt; endl;
+        cin &gt;&gt; G.vexs[i];
+    }
+    // 初始化邻接矩阵的边的权值为最大值
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        for (int j = 0; j &lt; G.vexnum;j++) {
+            G.arcs[i][j] = 0;
+        }
+    }
+    // 构造邻接矩阵
+    for (int k = 0; k &lt; G.arcnum;k++) {
+        cout &lt;&lt; "请输入每条边所依附的顶点：" &lt;&lt; endl;
+        char v1, v2;
+        int w = 1; //一条边所依附的顶点和权值
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1);
+        int j = LocateVex(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    }
+}
+
+/**
+ * 打印输出图
+ */
+void Display(AMGraph &amp;G) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        for (int j = 0; j &lt; G.vexnum;j++) {
+            cout &lt;&lt; G.arcs[i][j] &lt;&lt; " ";
+        }
+        cout &lt;&lt; endl;
+    }
+}
+
+
+
+
+//----邻接矩阵的DFS遍历----
+
+//访问标志数组，其初值为false
+bool visited[MVNum]; 
+
+/**
+ * 图G为邻接矩阵类型，从第v个顶点出发深度优先搜索遍历图G
+ */
+void DFS_AM(AMGraph &amp;G, int v) {
+    //访问第v个顶点，并置访问标志数组相应分量值为true
+    cout&lt;&lt;v;  
+    visited[v] = true;
+    //依次检查邻接矩阵v所在的行
+    for(int w = 0; w &lt; G.vexnum; w++)  
+        //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到
+        if((G.arcs[v][w] != 0) &amp;&amp; (!visited[w]))  
+            DFS_AM(G, w);    //递归调用DFS_AM
+}
+
+/**
+ * 图G的储存类型任意，对非连通图G做深度优先遍历
+ */
+void DFSTraverse(AMGraph &amp;G) {
+    //访问标志数组初始化
+    for(int v = 0; v &lt; G.vexnum; v++)  
+        visited[v] = false;
+    //循环调用DFS
+    for(int v = 0; v &lt; G.vexnum; v++)  
+        if(!visited[v])
+            DFS_AM(G, v); //对尚未访问的顶点调用DFS
+}
+
+
+
+
+int main() {
+    AMGraph test;
+    CreateUDN(test);
+    Display(test);
+    DFSTraverse(test);
+    return 0;
+}
+</pre><h3 id="yoSIg"><span class="ne-text">邻接表的DFS代码</span></h3><p id="0185257cc5891b4779bd509a36e4bf08" class="ne-p"><span class="ne-text">举之前上课的一张PPT例子（元素插入为后插法）</span></p><p id="8f0f1b106f7dee1d8b9124d39e708517" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621333199678-46b6841b-415b-46e8-b0f6-0d0407284b15.png" width="554" id="HmOsr" class="ne-image"></p><p id="7d9b1ab0ddea1a0b1cc6919a63753b20" class="ne-p"><span class="ne-text">结果</span></p><p id="87a60371c70d6ef42ae0b5733953742a" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621333246481-117ec0ea-ab95-43be-ac13-75712fdf1e2b.png" width="222" id="KjOYY" class="ne-image"></p><pre data-language="cpp" id="5Kw5x" class="ne-codeblock language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
-<p>#define MVNum 100<br>#define MaxInt 32767</p>
-<p>typedef char VerTexType;<br>typedef int OtherInfo;</p>
-<p>/**</p>
-<ul>
-<li>邻接表存储</li>
-<li>/</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>存储结构</li>
-<li>/<br>typedef struct ArcNode &#123;  //边结点<br>  int adjvex;  //该边所指向的结点的位置<br>  struct ArcNode *nextarc; //指向下一条边的指针<br>  OtherInfo info;   //和边相关的其他信息<br>&#125;ArcNode;</li>
-</ul>
-<p>typedef struct VNode &#123;   //顶点信息<br>    VerTexType data;  //数据域，存放顶点vi的名称或其他有关信息<br>    ArcNode *firstarc;  //指向第一条依附该顶点的边的指针<br>&#125;VNode, AdjList[MVNum]; //AdjList表示邻接表的类型</p>
-<p>typedef struct &#123;<br>    AdjList vertices;<br>    int vexnum, arcnum; //图当前的顶点数和边数<br>&#125;ALGragh; //邻接表（Adjacency List）</p>
-<p>/**</p>
-<ul>
-<li>找到v顶点在图的顶点数组中的位置</li>
-<li>/<br>int LocateVex(ALGragh &amp;G, char v) &#123;<br>  for (int i = 0; i &lt; G.vexnum;i++) &#123;<pre><code>  if (v == G.vertices[i].data) &#123;
-      return i;
-  &#125;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>邻接表创建无向图</li>
-<li>/<br>void CreateUDG(ALGragh &amp;G) {<br>  cout &lt;&lt; “请输入顶点数和边数：” &lt;&lt; endl;<br>  cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数<br>  // 初始化顶点数组<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  cin &amp;gt;&amp;gt; G.vertices[i].data; // 初始化顶点数组里面的结点data
-  G.vertices[i].firstarc = NULL; // 初始化顶点数组里面的结点next域
-</code></pre>
-  }<br>  // 初始化所有的边<br>  for (int k = 0; k &lt; G.arcnum;k++) {<pre><code>  char v1, v2;
-  cout &amp;lt;&amp;lt; &quot;请输入每条边所依附的顶点：&quot; &amp;lt;&amp;lt; endl;
-  cin &amp;gt;&amp;gt; v1 &amp;gt;&amp;gt; v2;
-  int i = LocateVex(G, v1); // 找到v1在顶点数组的下标
-  int j = LocateVex(G, v2); // 找到v2在顶点数组的下标
-  // 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1
-  // 前插
-  ArcNode *p1 = new ArcNode;
-  p1-&amp;gt;adjvex = j;
-  p1-&amp;gt;nextarc = G.vertices[i].firstarc;
-  G.vertices[i].firstarc = p1;
-  ArcNode *p2 = new ArcNode;
-  p2-&amp;gt;adjvex = i;
-  p2-&amp;gt;nextarc = G.vertices[j].firstarc;
-  G.vertices[j].firstarc = p2;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>打印输出图</li>
-<li>/<br>void Display(ALGragh &amp;G) {<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  cout &amp;lt;&amp;lt; &quot;结点&quot; &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &quot;：&quot;;
-  // 复制选中的节点数组中的结点
-  VNode p;
-  p = G.vertices[i];
-  if (p.firstarc != NULL)&#123;
-      ArcNode *temp;
-      temp = G.vertices[i].firstarc;
-      while (temp != NULL) &#123;
-          cout &amp;lt;&amp;lt; temp-&amp;gt;adjvex&amp;lt;&amp;lt;&quot; &quot;;
-          temp = temp-&amp;gt;nextarc;
-      &#125;
-      cout &amp;lt;&amp;lt; &quot;\n&quot;;
-  &#125;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>//—-邻接表的DFS遍历—-<br>bool visited[MVNum];                                                    //访问标志数组，其初值为false</p>
-<p>void DFS_AL(ALGragh G, int v)<br>{//图G为邻接表类型，从从第v个顶点出发深度优先搜索遍历图G<br>    cout&lt;&lt;v;                                                            //访问第v个顶点，并置访问标志数组相应分量值为true<br>    visited[v] = true;<br>    ArcNode *p;<br>    p = G.vertices[v].firstarc;                                         //p指向v的边链表的第一个边结点<br>    while(p != NULL)<br>    {<br>       int w = p-&gt;adjvex;                                               //w是v的邻接点<br>        if(!visited[w])                                                 //如果w未访问<br>            DFS_AL(G, w);                                               //递归调用DFS_AL<br>        p = p-&gt;nextarc;                                                 //p指向下一个结点<br>    }<br>}</p>
-<p>void DFSTraverse(ALGragh G)<br>{//图G的储存类型任意，对非连通图G做深度优先遍历<br>    for(int v = 0; v &lt; G.vexnum; v++)                                   //访问标志数组初始化<br>        visited[v] = false;<br>    for(int v = 0; v &lt; G.vexnum; v++)                                   //循环调用DFS<br>        if(!visited[v])<br>            DFS_AL(G, v);                                                  //对尚未访问的顶点调用DFS<br>}</p>
-<p>int main() {<br>    ALGragh test;<br>    CreateUDG(test);<br>    // Display(test);<br>    DFSTraverse(test);<br>}<br></code></pre></p>
-<h2 id="QXnap"><span class="ne-text">二、广度优先搜索算法（Breadth-First-Search）</span></h2><h3 id="G0xbz"><span class="ne-text">算法说明</span></h3><p id="94b96fd18f6299a92edb0bbb0104497e" class="ne-p"><span class="ne-text">从某个顶点V0出发，并在访问此顶点之后依次访问V0的所有未被访问过的邻接点，之后按这些顶点被访问的先后次序依次访问它们的邻接点，直至图中所有和V0有路径相通的顶点都被访问到。</span></p><p id="79c6bc4660da95e5eb3a4d3b82f0c95d" class="ne-p"><span class="ne-text"></span></p><p id="7d0dd6f76b33ab2e7809089c7833daa9" class="ne-p"><span class="ne-text">若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</span></p><p id="c994dac6d6ea729bf4c53d5e56f6b638" class="ne-p"><br></p><p id="5603100122d38ec5f9e050b858b65d40" class="ne-p"><strong><span class="ne-text">在树遍历中类似层次遍历。</span></strong></p><p id="cec298b23684b1046e1e7ced82785774" class="ne-p"><strong><span class="ne-text"></span></strong></p><h3 id="tX0WF"><span class="ne-text">邻接矩阵的BFS代码</span></h3><p id="2c79fedd6fba3d1dc3fa877ec630c8b4" class="ne-p"><span class="ne-text">还是这个例子</span></p><p id="4182bef26913ccb9daaf8020669dfc2f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png" width="197" id="bbWIn" class="ne-image"></p><p id="aee9ada2779b6772f70229266531e473" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621338913834-3f2453f3-c56d-4401-9e26-2de805587a04.png" width="228.5" id="hRiOt" class="ne-image"></p>
-<pre><code>#include&lt;bits/stdc++.h&gt;
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int OtherInfo;
+
+/**
+ * 邻接表存储
+ */
+
+/**
+ * 存储结构
+ */
+typedef struct ArcNode {  //边结点                    
+    int adjvex;  //该边所指向的结点的位置
+    struct ArcNode *nextarc; //指向下一条边的指针
+    OtherInfo info;   //和边相关的其他信息
+}ArcNode;
+
+typedef struct VNode {   //顶点信息
+    VerTexType data;  //数据域，存放顶点vi的名称或其他有关信息
+    ArcNode *firstarc;  //指向第一条依附该顶点的边的指针
+}VNode, AdjList[MVNum]; //AdjList表示邻接表的类型
+
+typedef struct {
+    AdjList vertices;
+    int vexnum, arcnum; //图当前的顶点数和边数
+}ALGragh; //邻接表（Adjacency List）
+
+
+/**
+ * 找到v顶点在图的顶点数组中的位置
+ */
+int LocateVex(ALGragh &amp;G, char v) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        if (v == G.vertices[i].data) {
+            return i;
+        }
+    }
+}
+
+/**
+ * 邻接表创建无向图
+ */
+void CreateUDG(ALGragh &amp;G) {
+    cout &lt;&lt; "请输入顶点数和边数：" &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数
+    // 初始化顶点数组
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        cin &gt;&gt; G.vertices[i].data; // 初始化顶点数组里面的结点data
+        G.vertices[i].firstarc = NULL; // 初始化顶点数组里面的结点next域
+    }
+    // 初始化所有的边
+    for (int k = 0; k &lt; G.arcnum;k++) {
+        char v1, v2;
+        cout &lt;&lt; "请输入每条边所依附的顶点：" &lt;&lt; endl;
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1); // 找到v1在顶点数组的下标
+        int j = LocateVex(G, v2); // 找到v2在顶点数组的下标
+        // 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1
+        // 前插
+        ArcNode *p1 = new ArcNode;
+        p1-&gt;adjvex = j;
+        p1-&gt;nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = new ArcNode;
+        p2-&gt;adjvex = i;
+        p2-&gt;nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p2;
+    }
+}
+
+/**
+ * 打印输出图
+ */
+void Display(ALGragh &amp;G) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        cout &lt;&lt; "结点" &lt;&lt; i &lt;&lt; "：";
+        // 复制选中的节点数组中的结点
+        VNode p;
+        p = G.vertices[i];
+        if (p.firstarc != NULL){
+            ArcNode *temp;
+            temp = G.vertices[i].firstarc;
+            while (temp != NULL) {
+                cout &lt;&lt; temp-&gt;adjvex&lt;&lt;" ";
+                temp = temp-&gt;nextarc;
+            }
+            cout &lt;&lt; "\n";
+        }
+    }
+}
+
+
+
+//----邻接表的DFS遍历----
+bool visited[MVNum];                                                    //访问标志数组，其初值为false
+
+void DFS_AL(ALGragh G, int v)               
+{//图G为邻接表类型，从从第v个顶点出发深度优先搜索遍历图G
+    cout&lt;&lt;v;                                                            //访问第v个顶点，并置访问标志数组相应分量值为true
+    visited[v] = true;
+    ArcNode *p;                                                         
+    p = G.vertices[v].firstarc;                                         //p指向v的边链表的第一个边结点
+    while(p != NULL)
+    {
+       int w = p-&gt;adjvex;                                               //w是v的邻接点
+        if(!visited[w])                                                 //如果w未访问
+            DFS_AL(G, w);                                               //递归调用DFS_AL
+        p = p-&gt;nextarc;                                                 //p指向下一个结点
+    }
+}
+
+void DFSTraverse(ALGragh G)
+{//图G的储存类型任意，对非连通图G做深度优先遍历
+    for(int v = 0; v &lt; G.vexnum; v++)                                   //访问标志数组初始化
+        visited[v] = false;
+    for(int v = 0; v &lt; G.vexnum; v++)                                   //循环调用DFS
+        if(!visited[v])
+            DFS_AL(G, v);                                                  //对尚未访问的顶点调用DFS
+}
+
+
+int main() {
+    ALGragh test;
+    CreateUDG(test);
+    // Display(test);
+    DFSTraverse(test);
+}</pre><h2 id="QXnap"><span class="ne-text">二、广度优先搜索算法（Breadth-First-Search）</span></h2><h3 id="G0xbz"><span class="ne-text">算法说明</span></h3><p id="94b96fd18f6299a92edb0bbb0104497e" class="ne-p"><span class="ne-text">从某个顶点V0出发，并在访问此顶点之后依次访问V0的所有未被访问过的邻接点，之后按这些顶点被访问的先后次序依次访问它们的邻接点，直至图中所有和V0有路径相通的顶点都被访问到。</span></p><p id="79c6bc4660da95e5eb3a4d3b82f0c95d" class="ne-p"><span class="ne-text"></span></p><p id="7d0dd6f76b33ab2e7809089c7833daa9" class="ne-p"><span class="ne-text">若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</span></p><p id="c994dac6d6ea729bf4c53d5e56f6b638" class="ne-p"><br></p><p id="5603100122d38ec5f9e050b858b65d40" class="ne-p"><strong><span class="ne-text">在树遍历中类似层次遍历。</span></strong></p><p id="cec298b23684b1046e1e7ced82785774" class="ne-p"><strong><span class="ne-text"></span></strong></p><h3 id="tX0WF"><span class="ne-text">邻接矩阵的BFS代码</span></h3><p id="2c79fedd6fba3d1dc3fa877ec630c8b4" class="ne-p"><span class="ne-text">还是这个例子</span></p><p id="4182bef26913ccb9daaf8020669dfc2f" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png" width="197" id="bbWIn" class="ne-image"></p><p id="aee9ada2779b6772f70229266531e473" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621338913834-3f2453f3-c56d-4401-9e26-2de805587a04.png" width="228.5" id="hRiOt" class="ne-image"></p><pre data-language="cpp" id="yEEtQ" class="ne-codeblock language-cpp">#include&lt;bits/stdc++.h&gt;
 using namespace std;
 
-<p>#define MVNum 100<br>#define MaxInt 32767</p>
-<p>typedef char VerTexType;<br>typedef int ArcType;</p>
-<p>/**</p>
-<ul>
-<li>邻接矩阵的bfs代码</li>
-<li>/<br>typedef struct &#123;<br>  /* data */<br>  VerTexType vexs[MVNum]; //顶点表<br>  ArcType arcs[MVNum][MVNum]; //邻接矩阵<br>  int vexnum, arcnum; //图的当前顶点和边数<br>&#125;AMGraph;</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>确定v在G中的位置，即顶点数组的下标</li>
-<li>/<br>int LocateVex(AMGraph &amp;G, char v) &#123;<br>  for (int i = 0; i &lt; G.vexnum;i++) &#123;<pre><code>  if (v == G.vexs[i])&#123;
-      return i;
-  &#125;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>创建无向网</li>
-<li>如果创建无向图   </li>
-<li>/<br>void CreateUDN(AMGraph &amp;G) {<br>  // 采用邻接矩阵表示法，创建无向图G<br>  cout &lt;&lt; “请输入顶点数和边数：” &lt;&lt; endl;<br>  cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数<br>  // 初始化顶点<br>  for (int i = 0; i &lt; G.vexnum;i++){<pre><code>  cout &amp;lt;&amp;lt; &quot;请输入第&quot; &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &quot;个顶点值&quot; &amp;lt;&amp;lt; endl;
-  cin &amp;gt;&amp;gt; G.vexs[i];
-</code></pre>
-  }<br>  // 初始化邻接矩阵的边的权值为最大值<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  for (int j = 0; j &amp;lt; G.vexnum;j++) &#123;
-      G.arcs[i][j] = 0;
-  &#125;
-</code></pre>
-  }<br>  // 构造邻接矩阵<br>  for (int k = 0; k &lt; G.arcnum;k++) {<pre><code>  cout &amp;lt;&amp;lt; &quot;请输入每条边所依附的顶点：&quot; &amp;lt;&amp;lt; endl;
-  char v1, v2;
-  int w = 1; //一条边所依附的顶点和权值
-  cin &amp;gt;&amp;gt; v1 &amp;gt;&amp;gt; v2;
-  int i = LocateVex(G, v1);
-  int j = LocateVex(G, v2);
-  G.arcs[i][j] = w;
-  G.arcs[j][i] = w;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>打印输出图</li>
-<li>/<br>void Display(AMGraph &amp;G) {<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  for (int j = 0; j &amp;lt; G.vexnum;j++) &#123;
-      cout &amp;lt;&amp;lt; G.arcs[i][j] &amp;lt;&amp;lt; &quot; &quot;;
-  &#125;
-  cout &amp;lt;&amp;lt; endl;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>//—-邻接矩阵的BFS遍历—-</p>
-<p>bool visited[MVNum]; </p>
-<p>void BFS_AM(AMGraph G, int v)<br>{//按广度优先非递归遍历连通图G<br>    cout&lt;&lt;v;<br>    visited[v] = true; //访问第v个顶点，并置访问标志数组相应分量值为true<br>    queue&lt;int&gt; Q;<br>    Q.push(v);<br>    while(!Q.empty())<br>    {<br>        int u = Q.front(); //队头元素出队并置为u<br>        Q.pop();<br>        for(int w = 0; w &lt; G.vexnum; w++)<br>            if((G.arcs[u][w] != 0) &amp;&amp; (!visited[w])) //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到                                            //w为u的尚未访问的邻接顶点<br>            {<br>                cout&lt;&lt;w;<br>                visited[w] = true; //访问w，并置访问标志数组相应分量值为true<br>                Q.push(w); //w进队<br>            }<br>    }<br>}</p>
-<p>void BFSTraverse(AMGraph &amp;G) {<br>    //访问标志数组初始化<br>    for(int v = 0; v &lt; G.vexnum; v++)<br>        visited[v] = false;<br>    //循环调用BFS<br>    for(int v = 0; v &lt; G.vexnum; v++)<br>        if(!visited[v])<br>            BFS_AM(G, v); //对尚未访问的顶点调用BFS<br>}</p>
-<p>int main() {<br>    AMGraph test;<br>    CreateUDN(test);<br>    Display(test);<br>    // DFSTraverse(test);<br>    BFSTraverse(test);<br>    return 0;<br>}</p>
-<p></code></pre></p>
-<h3 id="1RjxQ"><span class="ne-text">邻接表的BFS代码</span></h3><p id="19d60bf6aae1fc1f2364707c8a4a32c7" class="ne-p"><span class="ne-text">还用和DFS一样的例子</span></p><p id="2f63b2855bb2a7ced47b120060177ab5" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621339344717-55530db9-253b-451d-af57-b591ff17353e.png" width="417" id="I73u9" class="ne-image"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621390194148-da12a2e4-1f85-491b-9e53-3848ac4e4a4c.png" width="167" id="iul50" class="ne-image"></p><p id="5b8a5022ed1fcec1eef4bd087d6293fa" class="ne-p"><br></p><p id="44e1f9ec1603ae99eb545fd108578a1c" class="ne-p"><br></p>
-<pre><code>#include &lt;bits/stdc++.h&gt;
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int ArcType;
+
+/**
+ * 邻接矩阵的bfs代码
+ */
+typedef struct {
+    /* data */
+    VerTexType vexs[MVNum]; //顶点表
+    ArcType arcs[MVNum][MVNum]; //邻接矩阵
+    int vexnum, arcnum; //图的当前顶点和边数
+}AMGraph;
+
+/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */
+int LocateVex(AMGraph &amp;G, char v) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        if (v == G.vexs[i]){
+            return i;
+        }
+    }
+}
+
+/**
+ * 创建无向网
+ * 如果创建无向图   
+ */
+void CreateUDN(AMGraph &amp;G) {
+    // 采用邻接矩阵表示法，创建无向图G
+    cout &lt;&lt; "请输入顶点数和边数：" &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数
+    // 初始化顶点
+    for (int i = 0; i &lt; G.vexnum;i++){
+        cout &lt;&lt; "请输入第" &lt;&lt; i &lt;&lt; "个顶点值" &lt;&lt; endl;
+        cin &gt;&gt; G.vexs[i];
+    }
+    // 初始化邻接矩阵的边的权值为最大值
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        for (int j = 0; j &lt; G.vexnum;j++) {
+            G.arcs[i][j] = 0;
+        }
+    }
+    // 构造邻接矩阵
+    for (int k = 0; k &lt; G.arcnum;k++) {
+        cout &lt;&lt; "请输入每条边所依附的顶点：" &lt;&lt; endl;
+        char v1, v2;
+        int w = 1; //一条边所依附的顶点和权值
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1);
+        int j = LocateVex(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    }
+}
+
+/**
+ * 打印输出图
+ */
+void Display(AMGraph &amp;G) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        for (int j = 0; j &lt; G.vexnum;j++) {
+            cout &lt;&lt; G.arcs[i][j] &lt;&lt; " ";
+        }
+        cout &lt;&lt; endl;
+    }
+}
+
+
+
+
+//----邻接矩阵的BFS遍历----
+
+bool visited[MVNum]; 
+
+void BFS_AM(AMGraph G, int v)
+{//按广度优先非递归遍历连通图G
+    cout&lt;&lt;v;
+    visited[v] = true; //访问第v个顶点，并置访问标志数组相应分量值为true
+    queue&lt;int&gt; Q;
+    Q.push(v);
+    while(!Q.empty())
+    {
+        int u = Q.front(); //队头元素出队并置为u
+        Q.pop();
+        for(int w = 0; w &lt; G.vexnum; w++)
+            if((G.arcs[u][w] != 0) &amp;&amp; (!visited[w])) //G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到                                            //w为u的尚未访问的邻接顶点
+            {
+                cout&lt;&lt;w;
+                visited[w] = true; //访问w，并置访问标志数组相应分量值为true
+                Q.push(w); //w进队
+            }
+    }
+}
+
+void BFSTraverse(AMGraph &amp;G) {
+    //访问标志数组初始化
+    for(int v = 0; v &lt; G.vexnum; v++)  
+        visited[v] = false;
+    //循环调用BFS
+    for(int v = 0; v &lt; G.vexnum; v++)  
+        if(!visited[v])
+            BFS_AM(G, v); //对尚未访问的顶点调用BFS
+}
+
+
+int main() {
+    AMGraph test;
+    CreateUDN(test);
+    Display(test);
+    // DFSTraverse(test);
+    BFSTraverse(test);
+    return 0;
+}
+</pre><h3 id="1RjxQ"><span class="ne-text">邻接表的BFS代码</span></h3><p id="19d60bf6aae1fc1f2364707c8a4a32c7" class="ne-p"><span class="ne-text">还用和DFS一样的例子</span></p><p id="2f63b2855bb2a7ced47b120060177ab5" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621339344717-55530db9-253b-451d-af57-b591ff17353e.png" width="417" id="I73u9" class="ne-image"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621390194148-da12a2e4-1f85-491b-9e53-3848ac4e4a4c.png" width="167" id="iul50" class="ne-image"></p><p id="5b8a5022ed1fcec1eef4bd087d6293fa" class="ne-p"><br></p><p id="44e1f9ec1603ae99eb545fd108578a1c" class="ne-p"><br></p><pre data-language="cpp" id="oXGJ9" class="ne-codeblock language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
-<p>#define MVNum 100<br>#define MaxInt 32767</p>
-<p>typedef char VerTexType;<br>typedef int OtherInfo;</p>
-<p>/**</p>
-<ul>
-<li>邻接表的bfs代码</li>
-<li>/</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>存储结构</li>
-<li>/<br>typedef struct ArcNode &#123;  //边结点<br>  int adjvex;  //该边所指向的结点的位置<br>  struct ArcNode *nextarc; //指向下一条边的指针<br>  OtherInfo info;   //和边相关的其他信息<br>&#125;ArcNode;</li>
-</ul>
-<p>typedef struct VNode &#123;   //顶点信息<br>    VerTexType data;  //数据域，存放顶点vi的名称或其他有关信息<br>    ArcNode *firstarc;  //指向第一条依附该顶点的边的指针<br>&#125;VNode, AdjList[MVNum]; //AdjList表示邻接表的类型</p>
-<p>typedef struct &#123;<br>    AdjList vertices;<br>    int vexnum, arcnum; //图当前的顶点数和边数<br>&#125;ALGraph; //邻接表（Adjacency List）</p>
-<p>/**</p>
-<ul>
-<li>找到v顶点在图的顶点数组中的位置</li>
-<li>/<br>int LocateVex(ALGraph &amp;G, char v) &#123;<br>  for (int i = 0; i &lt; G.vexnum;i++) &#123;<pre><code>  if (v == G.vertices[i].data) &#123;
-      return i;
-  &#125;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>邻接表创建无向图</li>
-<li>/<br>void CreateUDG(ALGraph &amp;G) {<br>  cout &lt;&lt; “请输入顶点数和边数：” &lt;&lt; endl;<br>  cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数<br>  // 初始化顶点数组<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  cin &amp;gt;&amp;gt; G.vertices[i].data; // 初始化顶点数组里面的结点data
-  G.vertices[i].firstarc = NULL; // 初始化顶点数组里面的结点next域
-</code></pre>
-  }<br>  // 初始化所有的边<br>  for (int k = 0; k &lt; G.arcnum;k++) {<pre><code>  char v1, v2;
-  cout &amp;lt;&amp;lt; &quot;请输入每条边所依附的顶点：&quot; &amp;lt;&amp;lt; endl;
-  cin &amp;gt;&amp;gt; v1 &amp;gt;&amp;gt; v2;
-  int i = LocateVex(G, v1); // 找到v1在顶点数组的下标
-  int j = LocateVex(G, v2); // 找到v2在顶点数组的下标
-  // 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1
-  // 前插
-  ArcNode *p1 = new ArcNode;
-  p1-&amp;gt;adjvex = j;
-  p1-&amp;gt;nextarc = G.vertices[i].firstarc;
-  G.vertices[i].firstarc = p1;
-  ArcNode *p2 = new ArcNode;
-  p2-&amp;gt;adjvex = i;
-  p2-&amp;gt;nextarc = G.vertices[j].firstarc;
-  G.vertices[j].firstarc = p2;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>/**</p>
-<ul>
-<li>打印输出图</li>
-<li>/<br>void Display(ALGraph &amp;G) {<br>  for (int i = 0; i &lt; G.vexnum;i++) {<pre><code>  cout &amp;lt;&amp;lt; &quot;结点&quot; &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &quot;：&quot;;
-  // 复制选中的节点数组中的结点
-  VNode p;
-  p = G.vertices[i];
-  if (p.firstarc != NULL)&#123;
-      ArcNode *temp;
-      temp = G.vertices[i].firstarc;
-      while (temp != NULL) &#123;
-          cout &amp;lt;&amp;lt; temp-&amp;gt;adjvex&amp;lt;&amp;lt;&quot; &quot;;
-          temp = temp-&amp;gt;nextarc;
-      &#125;
-      cout &amp;lt;&amp;lt; &quot;\n&quot;;
-  &#125;
-</code></pre>
-  }<br>}</li>
-</ul>
-<p>//—-邻接表的BFS遍历—-</p>
-<p>bool visited[MVNum];</p>
-<p>int FirstAdjvex(ALGraph&amp; G, int u)<br>{<br>    int w = G.vertices[u].firstarc-&gt;adjvex;<br>    return w;<br>}<br>int NextAdjVex(ALGraph&amp; G, int u, int w)<br>{<br>    ArcNode *temp = G.vertices[u].firstarc;<br>    while (temp-&gt;adjvex != w)<br>    {<br>        temp = temp-&gt;nextarc;<br>    }<br>    if (temp-&gt;nextarc)<br>        return temp-&gt;nextarc-&gt;adjvex;<br>    else<br>        return -1;<br>    delete temp;<br>}<br>void BFS_AL(ALGraph&amp; G, int v){<br>    cout &lt;&lt; v;<br>    visited[v] = true;<br>    queue&lt;int&gt; Q;<br>    Q.push(v);<br>    int u = v;<br>    while (!Q.empty()){<br>        u = Q.front();<br>        Q.pop();<br>        for (int w = FirstAdjvex(G, u); w &gt;= 0; w = NextAdjVex(G, u, w)){<br>            if (!visited[w]){<br>                cout &lt;&lt;w;<br>                visited[w] = true;<br>                Q.push(w);<br>            }<br>        }<br>    }<br>}</p>
-<p>void BFSTraverse(ALGraph &amp;G) {<br>    //访问标志数组初始化<br>    for(int v = 0; v &lt; G.vexnum; v++)<br>        visited[v] = false;<br>    //循环调用BFS<br>    for(int v = 0; v &lt; G.vexnum; v++)<br>        if(!visited[v])<br>            BFS_AL(G, v); //对尚未访问的顶点调用BFS<br>}</p>
-<p>int main() {<br>    ALGraph test;<br>    CreateUDG(test);<br>    Display(test);<br>    BFSTraverse(test);<br>}<br></code></pre></p>
-<p id="c606f86cc011bbd8daff4fdf8fde78ee" class="ne-p"><span class="ne-text"></span></p><blockquote data-type="danger" class="ne-alert" style="background-color: rgba(248, 206, 211, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="0ef6670727161ceae2b2fd7611579ede" class="ne-p"><span class="ne-text">【插眼】为啥我写的一个函数不需要队列也可以？？？直接将顶点数组的一个元素后面接的链表遍历不就好了，然后再遍历标志数组元素值部位true的不就好了。。。为啥要压队列呀？</span></p><p id="40e16d77d4f0ef5fa0dd607f4ef45ee1" class="ne-p"><span class="ne-text">莫不是哪里有隐藏的bug，插个眼！！！</span></p></blockquote><p id="e6f8995f72a0e332e6921816bb8d07b0" class="ne-p"><span class="ne-text"></span></p><p id="410e780ff2dc9b2b7265d7357bed6936" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1621340205400-d534997e-4b20-4f0e-8db6-4a91e39c68b6.gif" width="218" id="Ivn4n" class="ne-image"></p><p id="87461184d6165e71f83ee3ca2c47cee8" class="ne-p"><span class="ne-text"></span></p><blockquote data-type="success" class="ne-alert" style="background-color: rgba(219, 241, 183, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="4555a876fb667c46816df66773c5e6e1" class="ne-p"><span class="ne-text">【拔眼】这样是一种特殊情况，只适合图的各个结点是按照层次标号的，并且放入标志数组也是按照顺序放入的……</span></p></blockquote><p id="1cf117f18c823349567e5d7b36a5ff7b" class="ne-p"><br></p><p id="0f6e52a1f536ea9359c2494c19ca0529" class="ne-p"><span class="ne-text">插眼代码如下：</span></p>
-<pre><code>void BFS_AL(ALGraph &amp;G, int v)
-&#123;//按广度优先非递归遍历连通图G
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int OtherInfo;
+
+/**
+ * 邻接表的bfs代码
+ */
+
+/**
+ * 存储结构
+ */
+typedef struct ArcNode {  //边结点                    
+    int adjvex;  //该边所指向的结点的位置
+    struct ArcNode *nextarc; //指向下一条边的指针
+    OtherInfo info;   //和边相关的其他信息
+}ArcNode;
+
+typedef struct VNode {   //顶点信息
+    VerTexType data;  //数据域，存放顶点vi的名称或其他有关信息
+    ArcNode *firstarc;  //指向第一条依附该顶点的边的指针
+}VNode, AdjList[MVNum]; //AdjList表示邻接表的类型
+
+typedef struct {
+    AdjList vertices;
+    int vexnum, arcnum; //图当前的顶点数和边数
+}ALGraph; //邻接表（Adjacency List）
+
+
+/**
+ * 找到v顶点在图的顶点数组中的位置
+ */
+int LocateVex(ALGraph &amp;G, char v) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        if (v == G.vertices[i].data) {
+            return i;
+        }
+    }
+}
+
+/**
+ * 邻接表创建无向图
+ */
+void CreateUDG(ALGraph &amp;G) {
+    cout &lt;&lt; "请输入顶点数和边数：" &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数
+    // 初始化顶点数组
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        cin &gt;&gt; G.vertices[i].data; // 初始化顶点数组里面的结点data
+        G.vertices[i].firstarc = NULL; // 初始化顶点数组里面的结点next域
+    }
+    // 初始化所有的边
+    for (int k = 0; k &lt; G.arcnum;k++) {
+        char v1, v2;
+        cout &lt;&lt; "请输入每条边所依附的顶点：" &lt;&lt; endl;
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1); // 找到v1在顶点数组的下标
+        int j = LocateVex(G, v2); // 找到v2在顶点数组的下标
+        // 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1
+        // 前插
+        ArcNode *p1 = new ArcNode;
+        p1-&gt;adjvex = j;
+        p1-&gt;nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = new ArcNode;
+        p2-&gt;adjvex = i;
+        p2-&gt;nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p2;
+    }
+}
+
+/**
+ * 打印输出图
+ */
+void Display(ALGraph &amp;G) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        cout &lt;&lt; "结点" &lt;&lt; i &lt;&lt; "：";
+        // 复制选中的节点数组中的结点
+        VNode p;
+        p = G.vertices[i];
+        if (p.firstarc != NULL){
+            ArcNode *temp;
+            temp = G.vertices[i].firstarc;
+            while (temp != NULL) {
+                cout &lt;&lt; temp-&gt;adjvex&lt;&lt;" ";
+                temp = temp-&gt;nextarc;
+            }
+            cout &lt;&lt; "\n";
+        }
+    }
+}
+
+
+
+//----邻接表的BFS遍历----
+
+bool visited[MVNum];
+
+int FirstAdjvex(ALGraph&amp; G, int u)
+{
+    int w = G.vertices[u].firstarc-&gt;adjvex;
+    return w;
+}
+int NextAdjVex(ALGraph&amp; G, int u, int w)
+{
+    ArcNode *temp = G.vertices[u].firstarc;
+    while (temp-&gt;adjvex != w)
+    {
+        temp = temp-&gt;nextarc;
+    }
+    if (temp-&gt;nextarc)
+        return temp-&gt;nextarc-&gt;adjvex;
+    else 
+        return -1;
+    delete temp;
+}
+void BFS_AL(ALGraph&amp; G, int v){
+    cout &lt;&lt; v;
+    visited[v] = true;
+    queue&lt;int&gt; Q;
+    Q.push(v);
+    int u = v;
+    while (!Q.empty()){
+        u = Q.front();
+        Q.pop();
+        for (int w = FirstAdjvex(G, u); w &gt;= 0; w = NextAdjVex(G, u, w)){
+            if (!visited[w]){
+                cout &lt;&lt;w; 
+                visited[w] = true;
+                Q.push(w);
+            }
+        }
+    }
+}
+
+void BFSTraverse(ALGraph &amp;G) {
+    //访问标志数组初始化
+    for(int v = 0; v &lt; G.vexnum; v++)  
+        visited[v] = false;
+    //循环调用BFS
+    for(int v = 0; v &lt; G.vexnum; v++)  
+        if(!visited[v])
+            BFS_AL(G, v); //对尚未访问的顶点调用BFS
+}
+
+int main() {
+    ALGraph test;
+    CreateUDG(test);
+    Display(test);
+    BFSTraverse(test);
+}</pre><p id="c606f86cc011bbd8daff4fdf8fde78ee" class="ne-p"><span class="ne-text"></span></p><blockquote data-type="danger" class="ne-alert" style="background-color: rgba(248, 206, 211, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="0ef6670727161ceae2b2fd7611579ede" class="ne-p"><span class="ne-text">【插眼】为啥我写的一个函数不需要队列也可以？？？直接将顶点数组的一个元素后面接的链表遍历不就好了，然后再遍历标志数组元素值部位true的不就好了。。。为啥要压队列呀？</span></p><p id="40e16d77d4f0ef5fa0dd607f4ef45ee1" class="ne-p"><span class="ne-text">莫不是哪里有隐藏的bug，插个眼！！！</span></p></blockquote><p id="e6f8995f72a0e332e6921816bb8d07b0" class="ne-p"><span class="ne-text"></span></p><p id="410e780ff2dc9b2b7265d7357bed6936" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/gif/1484158/1621340205400-d534997e-4b20-4f0e-8db6-4a91e39c68b6.gif" width="218" id="Ivn4n" class="ne-image"></p><p id="87461184d6165e71f83ee3ca2c47cee8" class="ne-p"><span class="ne-text"></span></p><blockquote data-type="success" class="ne-alert" style="background-color: rgba(219, 241, 183, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="4555a876fb667c46816df66773c5e6e1" class="ne-p"><span class="ne-text">【拔眼】这样是一种特殊情况，只适合图的各个结点是按照层次标号的，并且放入标志数组也是按照顺序放入的……</span></p></blockquote><p id="1cf117f18c823349567e5d7b36a5ff7b" class="ne-p"><br></p><p id="0f6e52a1f536ea9359c2494c19ca0529" class="ne-p"><span class="ne-text">插眼代码如下：</span></p><pre data-language="cpp" id="8k1hc" class="ne-codeblock language-cpp">void BFS_AL(ALGraph &amp;G, int v)
+{//按广度优先非递归遍历连通图G
     cout&lt;&lt;v;
     visited[v] = true;    //访问第v个顶点，并置访问标志数组相应分量值为true
     ArcNode *p;
     p = G.vertices[v].firstarc;
-    if (p != NULL) &#123;
-        while(p != NULL) &#123;
-            if (!visited[p-&gt;adjvex])&#123;
+    if (p != NULL) {
+        while(p != NULL) {
+            if (!visited[p-&gt;adjvex]){
                 cout &lt;&lt; p-&gt;adjvex;
-            &#125;
+            }
             visited[p-&gt;adjvex] = true;
             p = p-&gt;nextarc;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p id="ae0f5d621f99ca5480d74bece56a5520" class="ne-p"><span class="ne-text"></span></p></div>
+        }
+    }
+}</pre><p id="ae0f5d621f99ca5480d74bece56a5520" class="ne-p"><span class="ne-text"></span></p></div>
+
+
+
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -578,7 +822,7 @@ using namespace std;
       
       <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">105</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Next-js/">Next.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
       
       <div class="component clearfix new_comments">
@@ -666,9 +910,9 @@ using namespace std;
   <ul class="asc-item asc-route-list">
     <li><a href="/" class="asc-link">首页</a></li>
     <li><a href="/blog/" class="asc-link">文章</a></li>
-    <li><a href="/message/" class="asc-link">留言板</a></li>
-    <li><a href="/demo/" class="asc-link">实验室</a></li>
-    <li><a href="/about/" class="asc-link">关于我</a></li>
+    <li><a href="/message/" class="asc-link">留言</a></li>
+    <!-- <li><a href="/demo/" class="asc-link">实验室</a></li> -->
+    <li><a href="/about/" class="asc-link">关于</a></li>
     <li><a href="/friends/" class="asc-link">友链</a></li>
   </ul>
 </div>
@@ -708,6 +952,36 @@ using namespace std;
 
     
 
+    <script type="module">
+      import {
+        codeToHtml
+      } from 'https://esm.sh/shiki@1.0.0'
+
+      window.updateShiki = () => {
+        console.log('updateShiki');
+        Array.from(document.querySelectorAll('pre') || []).forEach(async (pre) => {
+          const language = pre.getAttribute('data-language') || 'text';
+          const code = pre.textContent;
+
+          try {
+            const highlighted = await codeToHtml(code, {
+              lang: language,
+              theme: 'ayu-dark',
+              transformers: [{
+                pre(node) {
+                  node.properties.class = ['shiki', 'rose-pine', `language-${language}`, 'line-numbers'];
+                  return node;
+                }
+              }],
+              showLineNumbers: true
+            });
+            pre.outerHTML = highlighted;
+          } catch (error) {
+            console.error('Code highlighting failed:', error);
+          }
+        });
+      }
+    </script>
   </body>
 
 </html>

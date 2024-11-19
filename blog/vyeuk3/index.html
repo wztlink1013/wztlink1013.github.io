@@ -45,13 +45,13 @@
     <a href="/blog/" class="header-link">文章</a>
   </div>
   <div  class="lyrics-header-pc-item" >
-    <a href="/message/" class="header-link">留言板</a>
+    <a href="/message/" class="header-link">留言</a>
   </div>
-  <div  class="lyrics-header-pc-item" >
+  <!-- <div  class="lyrics-header-pc-item" >
     <a href="/demo/" class="header-link">实验室</a>
-  </div>
+  </div> -->
   <div  class="lyrics-header-pc-item" >
-    <a href="/about/" class="header-link">关于我</a>
+    <a href="/about/" class="header-link">关于</a>
   </div>
   <div  class="lyrics-header-pc-item" >
     <a href="/friends/" class="header-link">友链</a>
@@ -102,7 +102,7 @@
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    313
+    321
     <span>篇</span>
   </div>
   <div>
@@ -163,18 +163,10 @@
       
       <div class="component article" id="article">
   <div class="article-content">
-    <div class="lake-content" typography="classic"><h2 id="4XWuu"><span class="ne-text">一、整体思路</span></h2><p id="4016379116a379d18c4872818f1562f6" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg" width="2062" id="Rnqi1" class="ne-image"></p><p id="693f2b2afca1c9aa5067a9e02b334f9a" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="09333828093ed067f8cf43b2529f880b"><span class="ne-text">【1】利用</span><code class="ne-code"><span class="ne-text">npm</span></code><span class="ne-text">插件</span><code class="ne-code"><span class="ne-text">yuque-hexo-lyrics</span></code><span class="ne-text">将语雀云端的文章同步到博客源码</span><code class="ne-code"><span class="ne-text">source/_posts</span></code><span class="ne-text">文件夹下。</span></li><li id="f98575c94e60b37a4c4ab20e038d2d4a"><span class="ne-text">【2】再利用</span><code class="ne-code"><span class="ne-text">GitHub Actions</span></code><span class="ne-text">自动化部署将GitHub私有仓库（</span><code class="ne-code"><span class="ne-text">website</span></code><span class="ne-text">）的博客源文件编译成静态博客文件并部署push到静态博客仓库（</span><code class="ne-code"><span class="ne-text">wztlink1013.github.io</span></code><span class="ne-text">）下。</span></li></ul><p id="66dea340fdf3da51b3e3b42e36fd70aa" class="ne-p"><br></p><blockquote data-type="danger" class="ne-alert" style="background-color: rgba(248, 206, 211, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="1da0b75f62048cb4f4b43f7af57040f0" class="ne-p"><span class="ne-text">但是以上【1】【2】两种方式并不能解决语雀一发布文章就触发GitHub源码仓库的GitHub Actions</span></p></blockquote><p id="3f3fc78a27c6d2caaf3dca2614c8b662" class="ne-p"><br></p><ul class="ne-ul"><li id="22924826abb1ece2bead19ffb295172c"><span class="ne-text">【3】所以需要中间</span><code class="ne-code"><span class="ne-text">TencentCloud</span></code><span class="ne-text">云函数/</span><code class="ne-code"><span class="ne-text">Aliyun</span></code><span class="ne-text">云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发GitHub私有的源码仓库下的</span><code class="ne-code"><span class="ne-text">GitHub Actions</span></code><span class="ne-text">达到编译静态博客的效果。</span></li></ul><p id="u91493ea8" class="ne-p"><span class="ne-text"></span></p><h2 id="eaGqv"><span class="ne-text">二、网站源文件配置</span></h2><div class="ne-quote"><p id="e5d00f608777a6cde25ae914395657e3" class="ne-p"><span class="ne-text">插件npm地址【暂未GitHub开源】：</span><a href="https://www.npmjs.com/package/yuque-hexo-lyrics" data-href="https://www.npmjs.com/package/yuque-hexo-lyrics" target="_blank" class="ne-link"><span class="ne-text">https://www.npmjs.com/package/yuque-hexo-lyrics</span></a></p></div><h3 id="JEJYA"><span class="ne-text">yuque-hexo-lyrics插件使用</span></h3><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="5f4d6afaed5ca4bb0267ab435bef2350" class="ne-p"><span class="ne-text">本人基于yuque-hexo项目修改的进阶插件</span></p></blockquote><p id="1161c5b8fba91d60db113e23742b67f6" class="ne-p"><span class="ne-text"></span></p><div class="ne-quote"><p id="b3a80d03dcc9e48b50664d0230755a46" class="ne-p"><span class="ne-text">【1】在开发环境当中下载插件（全局安装）</span></p></div>
-<pre><code>npm i -g yuque-hexo-lyrics
-</code></pre>
-<div class="ne-quote"><p id="9635a3cf7afa8c353a1727941c51f828" class="ne-p"><span class="ne-text">【2】相关hexo命令</span></p></div>
-<pre><code>yuque-hexo-lyrics clean # 清缓存删除yuque文件夹 删除yuque.json文件(更新之后的插件不删除yuque.json)
-yuque-hexo-lyrics sync # 从云端拉取到本地
-</code></pre>
-<div class="ne-quote"><p id="9f6540e268430a36a567ca9563355a3a" class="ne-p"><span class="ne-text">【3】特别需要注意的是：开发环境语雀Token变量的传入</span></p></div><p id="b7022720188d7016f5822e3b3cb9f145" class="ne-p"><span class="ne-text">语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 </span><code class="ne-code"><span class="ne-text">YUQUE_TOKEN</span></code><span class="ne-text">，如果是本地使用建议使用环境变量，也可以是终端的方式输入</span><span class="ne-text">。</span></p><p id="99e2e3be707b30e19510c1232c92a67d" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png" width="484" id="vrXpA" class="ne-image"></p><p id="687a270681e92edb8f306ee46feebc8c" class="ne-p" style="text-align: left"><span class="ne-text">如果是在</span><code class="ne-code"><span class="ne-text">GitHub Actions</span></code><span class="ne-text">里面的环境执行</span><code class="ne-code"><span class="ne-text">yuque-hexo-lyrics sync</span></code><span class="ne-text">命令的时候，通过如下命令传入语雀的</span><code class="ne-code"><span class="ne-text">token</span></code></p>
-<pre><code>YUQUE_TOKEN=$&#123;&#123; secrets.YUQUE_TOKEN &#125;&#125; yuque-hexo sync
-</code></pre>
-<div class="ne-quote"><p id="a136077158d8c31393ed83ee1bed5e61" class="ne-p"><span class="ne-text">【4】最后的配置样式（本插件可以同时下载多个知识库）</span></p></div>
-<pre><code>  "yuqueConfig_blog": &#123;
+    
+
+<div class="lake-content" typography="classic"><h2 id="4XWuu"><span class="ne-text">一、整体思路</span></h2><p id="4016379116a379d18c4872818f1562f6" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1484158/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg" width="2062" id="Rnqi1" class="ne-image"></p><p id="693f2b2afca1c9aa5067a9e02b334f9a" class="ne-p"><span class="ne-text"></span></p><ul class="ne-ul"><li id="09333828093ed067f8cf43b2529f880b"><span class="ne-text">【1】利用</span><code class="ne-code"><span class="ne-text">npm</span></code><span class="ne-text">插件</span><code class="ne-code"><span class="ne-text">yuque-hexo-lyrics</span></code><span class="ne-text">将语雀云端的文章同步到博客源码</span><code class="ne-code"><span class="ne-text">source/_posts</span></code><span class="ne-text">文件夹下。</span></li><li id="f98575c94e60b37a4c4ab20e038d2d4a"><span class="ne-text">【2】再利用</span><code class="ne-code"><span class="ne-text">GitHub Actions</span></code><span class="ne-text">自动化部署将GitHub私有仓库（</span><code class="ne-code"><span class="ne-text">website</span></code><span class="ne-text">）的博客源文件编译成静态博客文件并部署push到静态博客仓库（</span><code class="ne-code"><span class="ne-text">wztlink1013.github.io</span></code><span class="ne-text">）下。</span></li></ul><p id="66dea340fdf3da51b3e3b42e36fd70aa" class="ne-p"><br></p><blockquote data-type="danger" class="ne-alert" style="background-color: rgba(248, 206, 211, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="1da0b75f62048cb4f4b43f7af57040f0" class="ne-p"><span class="ne-text">但是以上【1】【2】两种方式并不能解决语雀一发布文章就触发GitHub源码仓库的GitHub Actions</span></p></blockquote><p id="3f3fc78a27c6d2caaf3dca2614c8b662" class="ne-p"><br></p><ul class="ne-ul"><li id="22924826abb1ece2bead19ffb295172c"><span class="ne-text">【3】所以需要中间</span><code class="ne-code"><span class="ne-text">TencentCloud</span></code><span class="ne-text">云函数/</span><code class="ne-code"><span class="ne-text">Aliyun</span></code><span class="ne-text">云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发GitHub私有的源码仓库下的</span><code class="ne-code"><span class="ne-text">GitHub Actions</span></code><span class="ne-text">达到编译静态博客的效果。</span></li></ul><p id="u91493ea8" class="ne-p"><span class="ne-text"></span></p><h2 id="eaGqv"><span class="ne-text">二、网站源文件配置</span></h2><div class="ne-quote"><p id="e5d00f608777a6cde25ae914395657e3" class="ne-p"><span class="ne-text">插件npm地址【暂未GitHub开源】：</span><a href="https://www.npmjs.com/package/yuque-hexo-lyrics" data-href="https://www.npmjs.com/package/yuque-hexo-lyrics" target="_blank" class="ne-link"><span class="ne-text">https://www.npmjs.com/package/yuque-hexo-lyrics</span></a></p></div><h3 id="JEJYA"><span class="ne-text">yuque-hexo-lyrics插件使用</span></h3><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="5f4d6afaed5ca4bb0267ab435bef2350" class="ne-p"><span class="ne-text">本人基于yuque-hexo项目修改的进阶插件</span></p></blockquote><p id="1161c5b8fba91d60db113e23742b67f6" class="ne-p"><span class="ne-text"></span></p><div class="ne-quote"><p id="b3a80d03dcc9e48b50664d0230755a46" class="ne-p"><span class="ne-text">【1】在开发环境当中下载插件（全局安装）</span></p></div><pre data-language="bash" id="1ik1w" class="ne-codeblock language-bash">npm i -g yuque-hexo-lyrics</pre><div class="ne-quote"><p id="9635a3cf7afa8c353a1727941c51f828" class="ne-p"><span class="ne-text">【2】相关hexo命令</span></p></div><pre data-language="bash" id="Bzi4U" class="ne-codeblock language-bash">yuque-hexo-lyrics clean # 清缓存删除yuque文件夹 删除yuque.json文件(更新之后的插件不删除yuque.json)
+yuque-hexo-lyrics sync # 从云端拉取到本地</pre><div class="ne-quote"><p id="9f6540e268430a36a567ca9563355a3a" class="ne-p"><span class="ne-text">【3】特别需要注意的是：开发环境语雀Token变量的传入</span></p></div><p id="b7022720188d7016f5822e3b3cb9f145" class="ne-p"><span class="ne-text">语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 </span><code class="ne-code"><span class="ne-text">YUQUE_TOKEN</span></code><span class="ne-text">，如果是本地使用建议使用环境变量，也可以是终端的方式输入</span><span class="ne-text">。</span></p><p id="99e2e3be707b30e19510c1232c92a67d" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png" width="484" id="vrXpA" class="ne-image"></p><p id="687a270681e92edb8f306ee46feebc8c" class="ne-p" style="text-align: left"><span class="ne-text">如果是在</span><code class="ne-code"><span class="ne-text">GitHub Actions</span></code><span class="ne-text">里面的环境执行</span><code class="ne-code"><span class="ne-text">yuque-hexo-lyrics sync</span></code><span class="ne-text">命令的时候，通过如下命令传入语雀的</span><code class="ne-code"><span class="ne-text">token</span></code></p><pre data-language="yaml" id="x06xU" class="ne-codeblock language-yaml">YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo sync</pre><div class="ne-quote"><p id="a136077158d8c31393ed83ee1bed5e61" class="ne-p"><span class="ne-text">【4】最后的配置样式（本插件可以同时下载多个知识库）</span></p></div><pre data-language="json" id="jQDwv" class="ne-codeblock language-json">  "yuqueConfig_blog": {
     "baseUrl": "https://www.yuque.com/api/v2",
     "login": "wztlink1013",
     "repo": "blog",
@@ -185,8 +177,8 @@ yuque-hexo-lyrics sync # 从云端拉取到本地
     "onlyPublic": false,
     "adapter": "hexo",
     "timeout": "150s"
-  &#125;,
-  "yuqueConfig_essay": &#123;
+  },
+  "yuqueConfig_essay": {
     "baseUrl": "https://www.yuque.com/api/v2",
     "login": "wztlink1013",
     "repo": "essay",
@@ -197,8 +189,8 @@ yuque-hexo-lyrics sync # 从云端拉取到本地
     "onlyPublic": false,
     "adapter": "hexo",
     "timeout": "150s"
-  &#125;,
-  "yuqueConfig_dsal": &#123;
+  },
+  "yuqueConfig_dsal": {
     "baseUrl": "https://www.yuque.com/api/v2",
     "login": "wztlink1013",
     "repo": "dsal",
@@ -209,8 +201,8 @@ yuque-hexo-lyrics sync # 从云端拉取到本地
     "onlyPublic": false,
     "adapter": "hexo",
     "timeout": "150s"
-  &#125;,
-  "yuqueConfig_javascript": &#123;
+  },
+  "yuqueConfig_javascript": {
     "baseUrl": "https://www.yuque.com/api/v2",
     "login": "wztlink1013",
     "repo": "javascript",
@@ -221,106 +213,144 @@ yuque-hexo-lyrics sync # 从云端拉取到本地
     "onlyPublic": false,
     "adapter": "hexo",
     "timeout": "150s"
-  &#125;,
-  "scripts": &#123;
+  },
+  "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server"
-  &#125;
-</code></pre>
-<p id="2e220e29934e4caab7fbf25163b5b4df" class="ne-p"><span class="ne-text">更详细使用参考官方</span><a href="https://www.npmjs.com/package/yuque-hexo-lyrics" data-href="https://www.npmjs.com/package/yuque-hexo-lyrics" target="_blank" class="ne-link"><span class="ne-text">官方仓库</span></a><span class="ne-text">。</span></p><h3 id="rgoKe"><span class="ne-text">GitHub Actions文件的配置</span></h3><p id="a09e1a4fc7ecbc2b448cb31a3ad0a4d7" class="ne-p"><span class="ne-text">在博客源文件夹下新建如下</span><span class="ne-text">GitHub Actions</span><span class="ne-text">文件</span></p><p id="7a6c247e4896fc4886a41b459033f746" class="ne-p"><code class="ne-code"><span class="ne-text">.github/workflows/main.yml</span></code><span class="ne-text">&nbsp;</span></p><p id="8b2fb837e7f745e7c16e2910e3e9e4d3" class="ne-p"><br></p><div class="ne-quote"><p id="5fa3cfd52518e36e13ac83a1fb87d460" class="ne-p"><span class="ne-text">文件内容配置如下</span></p></div>
-<pre><code># workflow name
+  }</pre><p id="2e220e29934e4caab7fbf25163b5b4df" class="ne-p"><span class="ne-text">更详细使用参考官方</span><a href="https://www.npmjs.com/package/yuque-hexo-lyrics" data-href="https://www.npmjs.com/package/yuque-hexo-lyrics" target="_blank" class="ne-link"><span class="ne-text">官方仓库</span></a><span class="ne-text">。</span></p><h3 id="rgoKe"><span class="ne-text">GitHub Actions文件的配置</span></h3><p id="a09e1a4fc7ecbc2b448cb31a3ad0a4d7" class="ne-p"><span class="ne-text">在博客源文件夹下新建如下</span><span class="ne-text">GitHub Actions</span><span class="ne-text">文件</span></p><p id="7a6c247e4896fc4886a41b459033f746" class="ne-p"><code class="ne-code"><span class="ne-text">.github/workflows/main.yml</span></code><span class="ne-text">&nbsp;</span></p><p id="8b2fb837e7f745e7c16e2910e3e9e4d3" class="ne-p"><br></p><div class="ne-quote"><p id="5fa3cfd52518e36e13ac83a1fb87d460" class="ne-p"><span class="ne-text">文件内容配置如下</span></p></div><pre data-language="yaml" id="BbAH8" class="ne-codeblock language-yaml"># workflow name
 name: website to wztlink1013.github.io CI/CD
 
-<p>on: [repository_dispatch, watch]</p>
-<p>jobs:<br>  Deploy-Pages:<br>    name: website to wztlink1013.github.io<br>    runs-on: ubuntu-latest</p>
-<pre><code>steps:
-# check it to your workflow can access it
-# from: https://github.com/actions/checkout
-- name: Checkout Repository master branch
-  uses: actions/checkout@main 
-# from: https://github.com/actions/setup-node  
-- name: Setup Node.js 10.x 
-  uses: actions/setup-node@main
-  with:
-    node-version: &quot;10.x&quot;
+on: [repository_dispatch, watch]
 
-- name: add Git infomations
-  run: | 
-    git config --global user.name &#39;$&#123;&#123;secrets.GIT_NAME&#125;&#125;&#39; 
-    git config --global user.email &#39;$&#123;&#123;secrets.GIT_EMAIL&#125;&#125;&#39;
-
-- name: submit commit infomations
-  run: |
-    git log --pretty=format:&quot;%s from Github Actions at `date +&quot;%Y-%m-%d %H:%M:%S&quot;`&quot; --date=short -n 1  &amp;gt; commit-message.log
-
-- name: npm istall hexo-cli、yuque-hexo、*
-  env:
-    YUQUE_TOKEN: $&#123;&#123; secrets.YUQUE_TOKEN &#125;&#125;
-  run: |
-    npm install hexo-cli -g
-    npm install yuque-hexo-lyrics -g
-    npm install
-
-- name: generate articles
-  run: |
-    hexo clean
-    yuque-hexo-lyrics clean
-    YUQUE_TOKEN=$&#123;&#123; secrets.YUQUE_TOKEN &#125;&#125; yuque-hexo-lyrics sync
-    hexo generate 
+jobs:
+  Deploy-Pages: 
+    name: website to wztlink1013.github.io
+    runs-on: ubuntu-latest
     
-- name: push wztlink1013.github.io repository
-  env:
-    Github_Pages: github.com/wztlink1013/wztlink1013.github.io
-    Github_Token: $&#123;&#123; secrets.token_GithubAPI &#125;&#125;
-  run: |  
-    git clone https://$&#123;Github_Token&#125;@$&#123;Github_Pages&#125; .github_pages
-    mv .github_pages/.git/ ./public/
-    cd ./public/
-    git add .
-    git commit -F ../commit-message.log
-    git push --force --quiet &quot;https://$&#123;Github_Token&#125;@$&#123;Github_Pages&#125;&quot; master:master
+    steps:
+    # check it to your workflow can access it
+    # from: https://github.com/actions/checkout
+    - name: Checkout Repository master branch
+      uses: actions/checkout@main 
+    # from: https://github.com/actions/setup-node  
+    - name: Setup Node.js 10.x 
+      uses: actions/setup-node@main
+      with:
+        node-version: "10.x"
+
+    - name: add Git infomations
+      run: | 
+        git config --global user.name '${{secrets.GIT_NAME}}' 
+        git config --global user.email '${{secrets.GIT_EMAIL}}'
     
-</code></pre>
-<p></code></pre></p>
-<h2 id="CykMS"><span class="ne-text">三、Serverless云函数配置</span></h2><h3 id="C99fO"><span class="ne-text">腾讯云serverless</span></h3><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="12afe219166d95e94c34e1e96aaf4baf" class="ne-p"><span class="ne-text">python2.7的配置</span></p></blockquote>
-<pre><code># -*- coding: utf8 -*-
+    - name: submit commit infomations
+      run: |
+        git log --pretty=format:"%s from Github Actions at `date +"%Y-%m-%d %H:%M:%S"`" --date=short -n 1  &gt; commit-message.log
+    
+    - name: npm istall hexo-cli、yuque-hexo、*
+      env:
+        YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
+      run: |
+        npm install hexo-cli -g
+        npm install yuque-hexo-lyrics -g
+        npm install
+    
+    - name: generate articles
+      run: |
+        hexo clean
+        yuque-hexo-lyrics clean
+        YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo-lyrics sync
+        hexo generate 
+        
+    - name: push wztlink1013.github.io repository
+      env:
+        Github_Pages: github.com/wztlink1013/wztlink1013.github.io
+        Github_Token: ${{ secrets.token_GithubAPI }}
+      run: |  
+        git clone https://${Github_Token}@${Github_Pages} .github_pages
+        mv .github_pages/.git/ ./public/
+        cd ./public/
+        git add .
+        git commit -F ../commit-message.log
+        git push --force --quiet "https://${Github_Token}@${Github_Pages}" master:master
+        </pre><h2 id="CykMS"><span class="ne-text">三、Serverless云函数配置</span></h2><h3 id="C99fO"><span class="ne-text">腾讯云serverless</span></h3><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="12afe219166d95e94c34e1e96aaf4baf" class="ne-p"><span class="ne-text">python2.7的配置</span></p></blockquote><pre data-language="python" id="P2MOT" class="ne-codeblock language-python"># -*- coding: utf8 -*-
 import requests
 
-<p>def main_handler(event, context):<br>    r = requests.post(“<a target="_blank" rel="noopener" href="https://api.github.com/repos/wztlink1013/website/dispatches&quot;">https://api.github.com/repos/wztlink1013/website/dispatches&quot;</a>,<br>    json=&#123;‘event_type’: “run-it”&#125;,<br>    headers = &#123;“User-Agent”:’curl/7.52.1’,<br>              ‘Content-Type’: ‘application/json’,<br>              ‘Accept’: ‘application/vnd.github.everest-preview+json’,<br>              ‘Authorization’: ‘token ***********’&#125;)</p>
-<pre><code>if r.status_code == 204:
-    return &quot;This&#39;s OK!&quot; 
-else:
-    return r.status_code
-</code></pre>
-<p></code></pre></p>
-<blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="9ac47632c743de995059f4b422cb26c9" class="ne-p"><span class="ne-text">触发器的设置</span></p></blockquote><p id="358567e27aa5f5c43c465d6744659c9d" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594789179624-938bb8c2-ac15-4ece-a5f1-001563e4f08b.png" width="605" id="zNnuw" class="ne-image"></p><h3 id="aONRK"><span class="ne-text">阿里云serverless</span></h3><p id="8d5a1bbfadec86b9382b91a1c81b8769" class="ne-p"><span class="ne-text">记录一下Hexo自动化部署过程中阿里云平台的原函数配置的python代码</span></p><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="33dd79d73dc15f09e7f8fa5e5a8d5ca3" class="ne-p"><span class="ne-text">python2.7</span></p></blockquote>
-<pre><code># -*- coding: utf-8 -*-
+def main_handler(event, context):
+    r = requests.post("https://api.github.com/repos/wztlink1013/website/dispatches",
+    json={'event_type': "run-it"},
+    headers = {"User-Agent":'curl/7.52.1',
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.everest-preview+json',
+              'Authorization': 'token ***********'})
+
+    if r.status_code == 204:
+        return "This's OK!" 
+    else:
+        return r.status_code</pre><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="9ac47632c743de995059f4b422cb26c9" class="ne-p"><span class="ne-text">触发器的设置</span></p></blockquote><p id="358567e27aa5f5c43c465d6744659c9d" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1594789179624-938bb8c2-ac15-4ece-a5f1-001563e4f08b.png" width="605" id="zNnuw" class="ne-image"></p><h3 id="aONRK"><span class="ne-text">阿里云serverless</span></h3><p id="8d5a1bbfadec86b9382b91a1c81b8769" class="ne-p"><span class="ne-text">记录一下Hexo自动化部署过程中阿里云平台的原函数配置的python代码</span></p><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="33dd79d73dc15f09e7f8fa5e5a8d5ca3" class="ne-p"><span class="ne-text">python2.7</span></p></blockquote><pre data-language="python" id="NIyyF" class="ne-codeblock language-python"># -*- coding: utf-8 -*-
 import logging
 import requests
 
-<h1 id="To-enable-the-initializer-feature-https-help-aliyun-com-document-detail-158208-html"><a href="#To-enable-the-initializer-feature-https-help-aliyun-com-document-detail-158208-html" class="headerlink" title="To enable the initializer feature (https://help.aliyun.com/document_detail/158208.html)"></a>To enable the initializer feature (<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/158208.html">https://help.aliyun.com/document_detail/158208.html</a>)</h1><h1 id="please-implement-the-initializer-function-as-below："><a href="#please-implement-the-initializer-function-as-below：" class="headerlink" title="please implement the initializer function as below："></a>please implement the initializer function as below：</h1><h1 id="def-initializer-context"><a href="#def-initializer-context" class="headerlink" title="def initializer(context):"></a>def initializer(context):</h1><h1 id="logger-logging-getLogger"><a href="#logger-logging-getLogger" class="headerlink" title="logger = logging.getLogger()"></a>logger = logging.getLogger()</h1><h1 id="logger-info-‘initializing’"><a href="#logger-info-‘initializing’" class="headerlink" title="logger.info(‘initializing’)"></a>logger.info(‘initializing’)</h1><p>def handler(event, context):</p>
-<h1 id="logger-logging-getLogger-1"><a href="#logger-logging-getLogger-1" class="headerlink" title="logger = logging.getLogger()"></a>logger = logging.getLogger()</h1><h1 id="logger-info-‘hello-world’"><a href="#logger-info-‘hello-world’" class="headerlink" title="logger.info(‘hello world’)"></a>logger.info(‘hello world’)</h1><h1 id="return-‘hello-world’"><a href="#return-‘hello-world’" class="headerlink" title="return ‘hello world’"></a>return ‘hello world’</h1><pre><code>r = requests.post(&quot;https://api.github.com/repos/wztlink1013/blog-source/dispatches&quot;,
-json=&#123;&#39;event_type&#39;: &quot;run-it&quot;&#125;,
-headers = &#123;&quot;User-Agent&quot;:&#39;curl/7.52.1&#39;,
-          &#39;Content-Type&#39;: &#39;application/json&#39;,
-          &#39;Accept&#39;: &#39;application/vnd.github.everest-preview+json&#39;,
-          &#39;Authorization&#39;: &#39;token f43964836a33dce244385bc303c8c20adc1bd52194&#39;&#125;)
+# To enable the initializer feature (https://help.aliyun.com/document_detail/158208.html)
+# please implement the initializer function as below：
+# def initializer(context):
+#   logger = logging.getLogger()
+#   logger.info('initializing')
 
-if r.status_code == 204:
-    return &quot;This&#39;s OK!&quot; 
-else:
-    return r.status_code
-</code></pre>
-<h1 id="coding-utf8"><a href="#coding-utf8" class="headerlink" title="# -- coding: utf8 --"></a># -<em>- coding: utf8 -</em>-</h1><h1 id="import-requests"><a href="#import-requests" class="headerlink" title="import requests"></a>import requests</h1><h1 id="def-main-handler-event-context"><a href="#def-main-handler-event-context" class="headerlink" title="def main_handler(event, context):"></a>def main_handler(event, context):</h1><h1 id="r-requests-post-“https-api-github-com-repos-wztlink1013-blog-source-dispatches-quot"><a href="#r-requests-post-“https-api-github-com-repos-wztlink1013-blog-source-dispatches-quot" class="headerlink" title="r = requests.post(“https://api.github.com/repos/wztlink1013/blog-source/dispatches&quot;,"></a>r = requests.post(“<a target="_blank" rel="noopener" href="https://api.github.com/repos/wztlink1013/blog-source/dispatches&quot;">https://api.github.com/repos/wztlink1013/blog-source/dispatches&quot;</a>,</h1><h1 id="json-‘event-type’-“run-it”"><a href="#json-‘event-type’-“run-it”" class="headerlink" title="json={‘event_type’: “run-it”},"></a>json={‘event_type’: “run-it”},</h1><h1 id="headers-“User-Agent”-’curl-7-52-1’"><a href="#headers-“User-Agent”-’curl-7-52-1’" class="headerlink" title="headers = {“User-Agent”:’curl/7.52.1’,"></a>headers = {“User-Agent”:’curl/7.52.1’,</h1><h1 id="‘Content-Type’-‘application-json’"><a href="#‘Content-Type’-‘application-json’" class="headerlink" title="‘Content-Type’: ‘application/json’,"></a>‘Content-Type’: ‘application/json’,</h1><h1 id="‘Accept’-‘application-vnd-github-everest-preview-json’"><a href="#‘Accept’-‘application-vnd-github-everest-preview-json’" class="headerlink" title="‘Accept’: ‘application/vnd.github.everest-preview+json’,"></a>‘Accept’: ‘application/vnd.github.everest-preview+json’,</h1><h1 id="‘Authorization’-‘token-144a87bd45e62ff1cf30dc18880787917bc7865417’"><a href="#‘Authorization’-‘token-144a87bd45e62ff1cf30dc18880787917bc7865417’" class="headerlink" title="‘Authorization’: ‘token 144a87bd45e62ff1cf30dc18880787917bc7865417’})"></a>‘Authorization’: ‘token 144a87bd45e62ff1cf30dc18880787917bc7865417’})</h1><h1 id="if-r-status-code-204"><a href="#if-r-status-code-204" class="headerlink" title="if r.status_code == 204:"></a>if r.status_code == 204:</h1><h1 id="return-“This’s-OK-”"><a href="#return-“This’s-OK-”" class="headerlink" title="return “This’s OK!”"></a>return “This’s OK!”</h1><h1 id="else"><a href="#else" class="headerlink" title="else:"></a>else:</h1><h1 id="return-r-status-code"><a href="#return-r-status-code" class="headerlink" title="return r.status_code"></a>return r.status_code</h1><p></code></pre></p>
-<blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="c1219572cef3387be9ec32898bbfe0e5" class="ne-p"><span class="ne-text">python3版本</span></p></blockquote>
-<pre><code># -*- coding: utf-8 -*-
+def handler(event, context):
+#   logger = logging.getLogger()
+#   logger.info('hello world')
+#   return 'hello world'
+    r = requests.post("https://api.github.com/repos/wztlink1013/blog-source/dispatches",
+    json={'event_type': "run-it"},
+    headers = {"User-Agent":'curl/7.52.1',
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.everest-preview+json',
+              'Authorization': 'token f43964836a33dce244385bc303c8c20adc1bd52194'})
 
-<p>import logging<br>import requests<br>OK = b’ok\n’</p>
-<p>def handler(environ, start_response):<br>    status = ‘200 OK’<br>    response_headers = [(‘Content-type’, ‘text/plain’)]<br>    sync_yuque()<br>    start_response(status, response_headers)<br>    return [OK]</p>
-<p>def sync_yuque():<br>    requests.post(“<a target="_blank" rel="noopener" href="https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;">https://api.github.com/repos/wztlink1013/Blog3.0/dispatches&quot;</a>,<br>    json=&#123;‘event_type’: “run-it”&#125;,<br>    headers=&#123;“User-Agent”:’curl/7.52.1’,<br>              ‘Content-Type’: ‘application/json’,<br>              ‘Accept’: ‘application/vnd.github.everest-preview+json’,<br>              ‘Authorization’: ‘token f43964836a33dce415385bc303c8c20adc1bd52194’&#125;)<br></code></pre></p>
-<blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><ul class="ne-ul"><li id="3c600909972be4f842c6d28b9c9e78f9"><span class="ne-text">触发器配置</span></li></ul></blockquote><p id="2e5237f2bdcd6df56a544ceb0f6e7be9" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1608448464729-f5e542f2-0a6e-4817-bd93-b8cf6f67b8fa.png" width="773.5" id="V2THU" class="ne-image"></p><p id="8e9cf4466b6fd1baca7e130d23f326a6" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1608448488925-30baf354-0b23-490c-8b05-4b054ca1b868.png" width="522.5" id="vXRT1" class="ne-image"></p><h3 id="Ia0Tb"><span class="ne-text">【推荐】Vercel的serverless</span></h3><ul class="ne-ul"><li id="17ad4c77dd90f7c792974f75dd3a5c5f"><a href="https://github.com/wztlink1013/yuque-github-api" data-href="https://github.com/wztlink1013/yuque-github-api" target="_blank" class="ne-link"><span class="ne-text">https://github.com/wztlink1013/yuque-github-api</span></a></li></ul><h2 id="8LnNg"><span class="ne-text">四、语雀云端的配置</span></h2><p id="ba85c0f4a2299d376a43f55916f57c82" class="ne-p"><span class="ne-text">在所需要拉取的仓库中webhook中填入云函数所留下的那串网址，勾选所需要触发的选项即可。</span></p><p id="686a64a0b2b1b8cf91c94cc98d75ecda" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624971959931-874c6c43-8c51-4c56-9b32-e952f8c87f6c.png" width="555.5" id="TI4F3" class="ne-image"></p><h2 id="BLygZ"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="89c3356bf1b049a1bec201e225f16b30"><a href="https://github.com/x-cold/yuque-hexo" data-href="https://github.com/x-cold/yuque-hexo" target="_blank" class="ne-link"><span class="ne-text">yuque-hexo开发仓库</span></a></li><li id="74c1f2d07150fbd11374439ee411f94d"><a href="https://www.zhwei.cn/hexo-github-actions-yuque/" data-href="https://www.zhwei.cn/hexo-github-actions-yuque/" target="_blank" class="ne-link"><span class="ne-text">Hexo：语雀云端写作，Github Actions持续集成</span></a></li><li id="3e6686a9e74b880065e29a6141d20240"><a href="https://segmentfault.com/a/1190000017797561" data-href="https://segmentfault.com/a/1190000017797561" target="_blank" class="ne-link"><span class="ne-text">Hexo 博客终极玩法：云端写作，自动部署</span></a></li><li id="e30cf16dc70ad3935957ad81c54a9bd5"><a href="https://www.xiayinchang.top/post/b2362878.html" data-href="https://www.xiayinchang.top/post/b2362878.html" target="_blank" class="ne-link"><span class="ne-text">阿里云云函数使用用户</span></a></li><li id="f13bd285d7b7894c1ec10a631cf5be30"><a href="https://bbs.pediy.com/thread-260866.htm" data-href="https://bbs.pediy.com/thread-260866.htm" target="_blank" class="ne-link"><span class="ne-text">[原创]自动同步语雀文档到你的hexo博客</span></a></li><li id="b911ba9cb292fdbf0ee1067f802f15be"><a href="https://github.com/Zfour/yuque_vercel_webhook_api" data-href="https://github.com/Zfour/yuque_vercel_webhook_api" target="_blank" class="ne-link"><span class="ne-text">https://github.com/Zfour/yuque_vercel_webhook_api</span></a></li></ul></div>
+    if r.status_code == 204:
+        return "This's OK!" 
+    else:
+        return r.status_code
+# # -*- coding: utf8 -*-
+# import requests
+
+# def main_handler(event, context):
+#     r = requests.post("https://api.github.com/repos/wztlink1013/blog-source/dispatches",
+#     json={'event_type': "run-it"},
+#     headers = {"User-Agent":'curl/7.52.1',
+#               'Content-Type': 'application/json',
+#               'Accept': 'application/vnd.github.everest-preview+json',
+#               'Authorization': 'token 144a87bd45e62ff1cf30dc18880787917bc7865417'})
+
+#     if r.status_code == 204:
+#         return "This's OK!" 
+#     else:
+#         return r.status_code</pre><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="c1219572cef3387be9ec32898bbfe0e5" class="ne-p"><span class="ne-text">python3版本</span></p></blockquote><pre data-language="python" id="tWrdt" class="ne-codeblock language-python"># -*- coding: utf-8 -*-
+
+import logging
+import requests
+OK = b'ok\n'
+
+def handler(environ, start_response):
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    sync_yuque()
+    start_response(status, response_headers)
+    return [OK]
+
+def sync_yuque():
+    requests.post("https://api.github.com/repos/wztlink1013/Blog3.0/dispatches",
+    json={'event_type': "run-it"},
+    headers={"User-Agent":'curl/7.52.1',
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.everest-preview+json',
+              'Authorization': 'token f43964836a33dce415385bc303c8c20adc1bd52194'})</pre><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><ul class="ne-ul"><li id="3c600909972be4f842c6d28b9c9e78f9"><span class="ne-text">触发器配置</span></li></ul></blockquote><p id="2e5237f2bdcd6df56a544ceb0f6e7be9" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1608448464729-f5e542f2-0a6e-4817-bd93-b8cf6f67b8fa.png" width="773.5" id="V2THU" class="ne-image"></p><p id="8e9cf4466b6fd1baca7e130d23f326a6" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1608448488925-30baf354-0b23-490c-8b05-4b054ca1b868.png" width="522.5" id="vXRT1" class="ne-image"></p><h3 id="Ia0Tb"><span class="ne-text">【推荐】Vercel的serverless</span></h3><ul class="ne-ul"><li id="17ad4c77dd90f7c792974f75dd3a5c5f"><a href="https://github.com/wztlink1013/yuque-github-api" data-href="https://github.com/wztlink1013/yuque-github-api" target="_blank" class="ne-link"><span class="ne-text">https://github.com/wztlink1013/yuque-github-api</span></a></li></ul><h2 id="8LnNg"><span class="ne-text">四、语雀云端的配置</span></h2><p id="ba85c0f4a2299d376a43f55916f57c82" class="ne-p"><span class="ne-text">在所需要拉取的仓库中webhook中填入云函数所留下的那串网址，勾选所需要触发的选项即可。</span></p><p id="686a64a0b2b1b8cf91c94cc98d75ecda" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1624971959931-874c6c43-8c51-4c56-9b32-e952f8c87f6c.png" width="555.5" id="TI4F3" class="ne-image"></p><h2 id="BLygZ"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="89c3356bf1b049a1bec201e225f16b30"><a href="https://github.com/x-cold/yuque-hexo" data-href="https://github.com/x-cold/yuque-hexo" target="_blank" class="ne-link"><span class="ne-text">yuque-hexo开发仓库</span></a></li><li id="74c1f2d07150fbd11374439ee411f94d"><a href="https://www.zhwei.cn/hexo-github-actions-yuque/" data-href="https://www.zhwei.cn/hexo-github-actions-yuque/" target="_blank" class="ne-link"><span class="ne-text">Hexo：语雀云端写作，Github Actions持续集成</span></a></li><li id="3e6686a9e74b880065e29a6141d20240"><a href="https://segmentfault.com/a/1190000017797561" data-href="https://segmentfault.com/a/1190000017797561" target="_blank" class="ne-link"><span class="ne-text">Hexo 博客终极玩法：云端写作，自动部署</span></a></li><li id="e30cf16dc70ad3935957ad81c54a9bd5"><a href="https://www.xiayinchang.top/post/b2362878.html" data-href="https://www.xiayinchang.top/post/b2362878.html" target="_blank" class="ne-link"><span class="ne-text">阿里云云函数使用用户</span></a></li><li id="f13bd285d7b7894c1ec10a631cf5be30"><a href="https://bbs.pediy.com/thread-260866.htm" data-href="https://bbs.pediy.com/thread-260866.htm" target="_blank" class="ne-link"><span class="ne-text">[原创]自动同步语雀文档到你的hexo博客</span></a></li><li id="b911ba9cb292fdbf0ee1067f802f15be"><a href="https://github.com/Zfour/yuque_vercel_webhook_api" data-href="https://github.com/Zfour/yuque_vercel_webhook_api" target="_blank" class="ne-link"><span class="ne-text">https://github.com/Zfour/yuque_vercel_webhook_api</span></a></li></ul></div>
+
+
+
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -432,7 +462,7 @@ else:
       
       <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">105</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Next-js/">Next.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
       
       <div class="component clearfix new_comments">
@@ -520,9 +550,9 @@ else:
   <ul class="asc-item asc-route-list">
     <li><a href="/" class="asc-link">首页</a></li>
     <li><a href="/blog/" class="asc-link">文章</a></li>
-    <li><a href="/message/" class="asc-link">留言板</a></li>
-    <li><a href="/demo/" class="asc-link">实验室</a></li>
-    <li><a href="/about/" class="asc-link">关于我</a></li>
+    <li><a href="/message/" class="asc-link">留言</a></li>
+    <!-- <li><a href="/demo/" class="asc-link">实验室</a></li> -->
+    <li><a href="/about/" class="asc-link">关于</a></li>
     <li><a href="/friends/" class="asc-link">友链</a></li>
   </ul>
 </div>
@@ -562,6 +592,36 @@ else:
 
     
 
+    <script type="module">
+      import {
+        codeToHtml
+      } from 'https://esm.sh/shiki@1.0.0'
+
+      window.updateShiki = () => {
+        console.log('updateShiki');
+        Array.from(document.querySelectorAll('pre') || []).forEach(async (pre) => {
+          const language = pre.getAttribute('data-language') || 'text';
+          const code = pre.textContent;
+
+          try {
+            const highlighted = await codeToHtml(code, {
+              lang: language,
+              theme: 'ayu-dark',
+              transformers: [{
+                pre(node) {
+                  node.properties.class = ['shiki', 'rose-pine', `language-${language}`, 'line-numbers'];
+                  return node;
+                }
+              }],
+              showLineNumbers: true
+            });
+            pre.outerHTML = highlighted;
+          } catch (error) {
+            console.error('Code highlighting failed:', error);
+          }
+        });
+      }
+    </script>
   </body>
 
 </html>

@@ -45,13 +45,13 @@
     <a href="/blog/" class="header-link">文章</a>
   </div>
   <div  class="lyrics-header-pc-item" >
-    <a href="/message/" class="header-link">留言板</a>
+    <a href="/message/" class="header-link">留言</a>
   </div>
-  <div  class="lyrics-header-pc-item" >
+  <!-- <div  class="lyrics-header-pc-item" >
     <a href="/demo/" class="header-link">实验室</a>
-  </div>
+  </div> -->
   <div  class="lyrics-header-pc-item" >
-    <a href="/about/" class="header-link">关于我</a>
+    <a href="/about/" class="header-link">关于</a>
   </div>
   <div  class="lyrics-header-pc-item" >
     <a href="/friends/" class="header-link">友链</a>
@@ -102,7 +102,7 @@
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    313
+    321
     <span>篇</span>
   </div>
   <div>
@@ -163,8 +163,9 @@
       
       <div class="component article" id="article">
   <div class="article-content">
-    <div class="lake-content" typography="classic"><h3 id="Hp11O"><span class="ne-text">父传子（Props）</span></h3><p id="u33a79e2b" class="ne-p"><span class="ne-text">利用props传值</span></p><ol class="ne-ol"><li id="u1fc1373b" data-lake-index-type="0"><span class="ne-text">组件默认值的写法</span></li></ol><ol start="2" class="ne-ol"><li id="u65cf9e83" data-lake-index-type="0"><span class="ne-text">点标记写法就相当于组件作为一个对象值</span></li></ol>
-<pre><code><code>const Son = (props: any) =&gt; &#123;
+    
+
+<div class="lake-content" typography="classic"><h3 id="Hp11O"><span class="ne-text">父传子（Props）</span></h3><p id="u33a79e2b" class="ne-p"><span class="ne-text">利用props传值</span></p><ol class="ne-ol"><li id="u1fc1373b" data-lake-index-type="0"><span class="ne-text">组件默认值的写法</span></li></ol><ol start="2" class="ne-ol"><li id="u65cf9e83" data-lake-index-type="0"><span class="ne-text">点标记写法就相当于组件作为一个对象值</span></li></ol><pre data-language="tsx" id="RnbAl" class="ne-codeblock language-tsx"><code>const Son = (props: any) =&gt; &#123;
   console.log('parent to son: ', props);
   return &lt;div&gt;son&lt;/div&gt;;
 &#125;;
@@ -173,9 +174,17 @@ Son.defaultProps = &#123;
   msg: 'son-default-msg',
 &#125;;
 
-<p>export default () =&gt; &#123;<br>  const [parentMsg, setParentMsg] = useState(‘parent-msg’);<br>  return (<br>    &lt;&gt;<br>      &lt;h1&gt;react-message&lt;/h1&gt;<br>      parent<br>      &lt;Son msg=&#123;parentMsg&#125; /&gt;<br>    &lt;/&gt;<br>  );<br>&#125;;<br></code><br></code></pre></p>
-<h3 id="hSjM1"><span class="ne-text">子传父</span></h3><p id="u10d5d71a" class="ne-p"><span class="ne-text"> 在父组件定义响应式变量，同时传递一个回调函数参数给子组件，子组件再利用调用回调函数给便父组件所定义的响应式变量</span></p>
-<pre><code><code>const Son = (props: any) =&gt; &#123;
+export default () =&gt; &#123;
+  const [parentMsg, setParentMsg] = useState('parent-msg');
+  return (
+    &lt;&gt;
+      &lt;h1&gt;react-message&lt;/h1&gt;
+      parent
+      &lt;Son msg=&#123;parentMsg&#125; /&gt;
+    &lt;/&gt;
+  );
+&#125;;
+</code></pre><h3 id="hSjM1"><span class="ne-text">子传父</span></h3><p id="u10d5d71a" class="ne-p"><span class="ne-text"> 在父组件定义响应式变量，同时传递一个回调函数参数给子组件，子组件再利用调用回调函数给便父组件所定义的响应式变量</span></p><pre data-language="tsx" id="h7K5O" class="ne-codeblock language-tsx"><code>const Son = (props: any) =&gt; &#123;
   console.log('parent to son: ', props.msg);
   const sonToParentClick = () =&gt; &#123;
     props.getSonValue('son-to-parent-msg');
@@ -190,16 +199,66 @@ Son.defaultProps = &#123;
   msg: 'son-default-msg',
 &#125;;
 
-<p>export default () =&gt; &#123;<br>  const [parentToSonMsg, setParentToSonMsg] = useState(‘parent-to-son-msg’);<br>  const [getSonMsg, setGetSonMsg] = useState(‘’);<br>  const getSonValue = (msg: string) =&gt; &#123;<br>    console.log(‘son-to-parent-msg: ‘, msg);<br>    setGetSonMsg(msg);<br>  &#125;;<br>  return (<br>    &lt;&gt;<br>      &lt;h1&gt;react-message&lt;/h1&gt;<br>      parent<br>      &lt;Son msg=&#123;parentToSonMsg&#125; getSonValue=&#123;getSonValue&#125; /&gt;<br>    &lt;/&gt;<br>  );<br>&#125;;<br></code><br></code></pre></p>
-<h3 id="C0st3"><span class="ne-text">爷传后代</span></h3><h4 id="XjAnb"><span class="ne-text">爷传孙</span></h4><ol class="ne-ol"><li id="u2c9e1c20" data-lake-index-type="0"><span class="ne-text">第一种方式就是利用剩余参数爷传子，子再传孙，不过这种方式繁琐且不便维护</span></li><li id="ub393f0aa" data-lake-index-type="0"><span class="ne-text">利用下面的透传方式</span></li></ol><h4 id="NgI5A"><span class="ne-text">透传（Context）</span></h4>
-<pre><code><code>import &#123; createContext &#125; from 'react';
+export default () =&gt; &#123;
+  const [parentToSonMsg, setParentToSonMsg] = useState('parent-to-son-msg');
+  const [getSonMsg, setGetSonMsg] = useState('');
+  const getSonValue = (msg: string) =&gt; &#123;
+    console.log('son-to-parent-msg: ', msg);
+    setGetSonMsg(msg);
+  &#125;;
+  return (
+    &lt;&gt;
+      &lt;h1&gt;react-message&lt;/h1&gt;
+      parent
+      &lt;Son msg=&#123;parentToSonMsg&#125; getSonValue=&#123;getSonValue&#125; /&gt;
+    &lt;/&gt;
+  );
+&#125;;
+</code></pre><h3 id="C0st3"><span class="ne-text">爷传后代</span></h3><h4 id="XjAnb"><span class="ne-text">爷传孙</span></h4><ol class="ne-ol"><li id="u2c9e1c20" data-lake-index-type="0"><span class="ne-text">第一种方式就是利用剩余参数爷传子，子再传孙，不过这种方式繁琐且不便维护</span></li><li id="ub393f0aa" data-lake-index-type="0"><span class="ne-text">利用下面的透传方式</span></li></ol><h4 id="NgI5A"><span class="ne-text">透传（Context）</span></h4><pre data-language="tsx" id="TB9eJ" class="ne-codeblock language-tsx"><code>import &#123; createContext &#125; from 'react';
 
-<p>const Context = createContext(&#123;&#125;);</p>
-<p>const Son = (props: any) =&gt; &#123;<br>  console.log(‘parent to son: ‘, props.msg);<br>  const sonToParentClick = () =&gt; &#123;<br>    props.getSonValue(‘son-to-parent-msg’);<br>  &#125;;<br>  return (<br>    &lt;&gt;<br>      &lt;div&gt;<br>        son&lt;button onClick=&#123;sonToParentClick&#125;&gt;son-to-parent&lt;/button&gt;<br>      &lt;/div&gt;<br>      &lt;GradeSon /&gt;<br>    &lt;/&gt;<br>  );<br>&#125;;<br>Son.defaultProps = &#123;<br>  msg: ‘son-default-msg’,<br>&#125;;</p>
-<p>const GradeSon = () =&gt; &#123;<br>  const getGrandFather = useContext(Context);<br>  console.log(‘get-grand-father: ‘, getGrandFather);<br>  return &lt;div&gt;GradeSon&lt;/div&gt;;<br>&#125;;</p>
-<p>export default () =&gt; &#123;<br>  const [parentToSonMsg, setParentToSonMsg] = useState(‘parent-to-son-msg’);<br>  const [parentToGradeSonMsg, setParentToGradeSonMsg] = useState(&#123; a: 11, b: 22 &#125;);<br>  const [getSonMsg, setGetSonMsg] = useState(‘’);<br>  const getSonValue = (msg: string) =&gt; &#123;<br>    console.log(‘son-to-parent-msg: ‘, msg);<br>    setGetSonMsg(msg);<br>  &#125;;<br>  return (<br>    &lt;Context.Provider value=&#123;parentToGradeSonMsg&#125;&gt;<br>      &lt;h1&gt;react-message&lt;/h1&gt;<br>      parent<br>      &lt;Son msg=&#123;parentToSonMsg&#125; getSonValue=&#123;getSonValue&#125; /&gt;<br>    &lt;/Context.Provider&gt;<br>  );<br>&#125;;<br></code><br></code></pre></p>
-<h3 id="kPf70"><span class="ne-text">EventBus</span></h3><p id="u56c51230" class="ne-p"><span class="ne-text">事件总线的方式，其实这属于前端通用的一种设计模式，在线编辑器常用的一种代码设计模式</span></p><ol class="ne-ol"><li id="ue47632f0" data-lake-index-type="0"><span class="ne-text">事件封装：只封装了on、emit、off事件，实际上封装形式不一，也可以使用三方库等</span></li></ol>
-<pre><code><code>type StringKeyOf&lt;T&gt; = Extract&lt;keyof T, string&gt;;
+const Context = createContext(&#123;&#125;);
+
+const Son = (props: any) =&gt; &#123;
+  console.log('parent to son: ', props.msg);
+  const sonToParentClick = () =&gt; &#123;
+    props.getSonValue('son-to-parent-msg');
+  &#125;;
+  return (
+    &lt;&gt;
+      &lt;div&gt;
+        son&lt;button onClick=&#123;sonToParentClick&#125;&gt;son-to-parent&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;GradeSon /&gt;
+    &lt;/&gt;
+  );
+&#125;;
+Son.defaultProps = &#123;
+  msg: 'son-default-msg',
+&#125;;
+
+const GradeSon = () =&gt; &#123;
+  const getGrandFather = useContext(Context);
+  console.log('get-grand-father: ', getGrandFather);
+  return &lt;div&gt;GradeSon&lt;/div&gt;;
+&#125;;
+
+export default () =&gt; &#123;
+  const [parentToSonMsg, setParentToSonMsg] = useState('parent-to-son-msg');
+  const [parentToGradeSonMsg, setParentToGradeSonMsg] = useState(&#123; a: 11, b: 22 &#125;);
+  const [getSonMsg, setGetSonMsg] = useState('');
+  const getSonValue = (msg: string) =&gt; &#123;
+    console.log('son-to-parent-msg: ', msg);
+    setGetSonMsg(msg);
+  &#125;;
+  return (
+    &lt;Context.Provider value=&#123;parentToGradeSonMsg&#125;&gt;
+      &lt;h1&gt;react-message&lt;/h1&gt;
+      parent
+      &lt;Son msg=&#123;parentToSonMsg&#125; getSonValue=&#123;getSonValue&#125; /&gt;
+    &lt;/Context.Provider&gt;
+  );
+&#125;;
+</code></pre><h3 id="kPf70"><span class="ne-text">EventBus</span></h3><p id="u56c51230" class="ne-p"><span class="ne-text">事件总线的方式，其实这属于前端通用的一种设计模式，在线编辑器常用的一种代码设计模式</span></p><ol class="ne-ol"><li id="ue47632f0" data-lake-index-type="0"><span class="ne-text">事件封装：只封装了on、emit、off事件，实际上封装形式不一，也可以使用三方库等</span></li></ol><pre data-language="typescript" id="EFCqi" class="ne-codeblock language-typescript"><code>type StringKeyOf&lt;T&gt; = Extract&lt;keyof T, string&gt;;
 type CallbackType&lt;
   T extends Record&lt;string, any&gt;,
   EventName extends StringKeyOf&lt;T&gt;,
@@ -208,45 +267,126 @@ type CallbackFunction&lt;T extends Record&lt;string, any&gt;, EventName extends 
   ...props: CallbackType&lt;T, EventName&gt;
 ) =&gt; any;
 
-<p>export class EventEmitter&lt;T extends Record&lt;string, any&gt;&gt; &#123;<br>  private callbacks: &#123; [key: string]: Function[] &#125; = &#123;&#125;;</p>
-<p>  public on&lt;EventName extends StringKeyOf&lt;T&gt;&gt;(<br>    event: EventName,<br>    fn: CallbackFunction&lt;T, EventName&gt;,<br>  ): this &#123;<br>    if (!this.callbacks[event]) &#123;<br>      this.callbacks[event] = [];<br>    &#125;</p>
-<pre><code>this.callbacks[event].push(fn);
+export class EventEmitter&lt;T extends Record&lt;string, any&gt;&gt; &#123;
+  private callbacks: &#123; [key: string]: Function[] &#125; = &#123;&#125;;
 
-return this;
-</code></pre>
-<p>  }</p>
-<p>  public emit&lt;EventName extends StringKeyOf&lt;T&gt;&gt;(<br>    event: EventName,<br>    …args: CallbackType&lt;T, EventName&gt;<br>  ): this {<br>    const callbacks = this.callbacks[event];</p>
-<pre><code>if (callbacks) &#123;
-  callbacks.forEach(callback =&amp;gt; callback.apply(this, args));
-&#125;
+  public on&lt;EventName extends StringKeyOf&lt;T&gt;&gt;(
+    event: EventName,
+    fn: CallbackFunction&lt;T, EventName&gt;,
+  ): this &#123;
+    if (!this.callbacks[event]) &#123;
+      this.callbacks[event] = [];
+    &#125;
 
-return this;
-</code></pre>
-<p>  }</p>
-<p>  public off&lt;EventName extends StringKeyOf&lt;T&gt;&gt;(<br>    event: EventName,<br>    fn?: CallbackFunction&lt;T, EventName&gt;,<br>  ): this {<br>    const callbacks = this.callbacks[event];</p>
-<pre><code>if (callbacks) &#123;
-  if (fn) &#123;
-    this.callbacks[event] = callbacks.filter(callback =&amp;gt; callback !== fn);
-  &#125; else &#123;
-    delete this.callbacks[event];
+    this.callbacks[event].push(fn);
+
+    return this;
+  &#125;
+
+  public emit&lt;EventName extends StringKeyOf&lt;T&gt;&gt;(
+    event: EventName,
+    ...args: CallbackType&lt;T, EventName&gt;
+  ): this &#123;
+    const callbacks = this.callbacks[event];
+
+    if (callbacks) &#123;
+      callbacks.forEach(callback =&gt; callback.apply(this, args));
+    &#125;
+
+    return this;
+  &#125;
+
+  public off&lt;EventName extends StringKeyOf&lt;T&gt;&gt;(
+    event: EventName,
+    fn?: CallbackFunction&lt;T, EventName&gt;,
+  ): this &#123;
+    const callbacks = this.callbacks[event];
+
+    if (callbacks) &#123;
+      if (fn) &#123;
+        this.callbacks[event] = callbacks.filter(callback =&gt; callback !== fn);
+      &#125; else &#123;
+        delete this.callbacks[event];
+      &#125;
+    &#125;
+
+    return this;
+  &#125;
+
+  protected removeAllListeners(): void &#123;
+    this.callbacks = &#123;&#125;;
   &#125;
 &#125;
 
-return this;
-</code></pre>
-<p>  }</p>
-<p>  protected removeAllListeners(): void {<br>    this.callbacks = {};<br>  }<br>}</p>
-<p>const EventBus = new EventEmitter();<br>export default EventBus;</code><br></code></pre></p>
-<ol start="2" class="ne-ol"><li id="uc993bf4f" data-lake-index-type="0"><span class="ne-text">使用</span></li></ol><ol class="ne-list-wrap"><ol ne-level="1" class="ne-ol"><li id="uaaccabd0" data-lake-index-type="0"><span class="ne-text">Daughter组件定义，Son组件触发</span></li><li id="u16a192b3" data-lake-index-type="0"><span class="ne-text">有注册就要有注销，不然内存中会出现重复事件逻辑多次执行的问题</span></li></ol></ol>
-<pre><code><code>import &#123; createContext &#125; from 'react';
+const EventBus = new EventEmitter();
+export default EventBus;</code></pre><ol start="2" class="ne-ol"><li id="uc993bf4f" data-lake-index-type="0"><span class="ne-text">使用</span></li></ol><ol class="ne-list-wrap"><ol ne-level="1" class="ne-ol"><li id="uaaccabd0" data-lake-index-type="0"><span class="ne-text">Daughter组件定义，Son组件触发</span></li><li id="u16a192b3" data-lake-index-type="0"><span class="ne-text">有注册就要有注销，不然内存中会出现重复事件逻辑多次执行的问题</span></li></ol></ol><pre data-language="tsx" id="S46ty" class="ne-codeblock language-tsx"><code>import &#123; createContext &#125; from 'react';
 import EventBus from '@/utils/eventEmitter';
 
-<p>const Context = createContext(&#123;&#125;);</p>
-<p>const Son = (props: any) =&gt; &#123;<br>  console.log(‘parent to son: ‘, props.msg);<br>  const sonToParentClick = () =&gt; &#123;<br>    props.getSonValue(‘son-to-parent-msg’);<br>    EventBus.emit(‘daughterEvent’, &#123;<br>      msg: ‘son-to-daughter-msg’,<br>    &#125;);<br>  &#125;;<br>  return (<br>    &lt;&gt;<br>      &lt;div&gt;<br>        son&lt;button onClick=&#123;sonToParentClick&#125;&gt;son-to-parent&lt;/button&gt;<br>      &lt;/div&gt;<br>      &lt;GradeSon /&gt;<br>    &lt;/&gt;<br>  );<br>&#125;;<br>Son.defaultProps = &#123;<br>  msg: ‘son-default-msg’,<br>&#125;;</p>
-<p>const Daughter = () =&gt; &#123;<br>  useEffect(() =&gt; &#123;<br>    function daughterEvent(data: any) &#123;<br>      console.warn(‘daughter event: ‘, data);<br>    &#125;<br>    EventBus.on(‘daughterEvent’, daughterEvent);<br>    return () =&gt; &#123;<br>      EventBus.off(‘daughterEvent’, daughterEvent);<br>    &#125;;<br>  &#125;, []);<br>  return &lt;div&gt;Daughter&lt;/div&gt;;<br>&#125;;</p>
-<p>const GradeSon = () =&gt; &#123;<br>  const getGrandFather = useContext(Context);<br>  console.log(‘get-grand-father: ‘, getGrandFather);<br>  return &lt;div&gt;GradeSon&lt;/div&gt;;<br>&#125;;</p>
-<p>export default () =&gt; &#123;<br>  const [parentToSonMsg, setParentToSonMsg] = useState(‘parent-to-son-msg’);<br>  const [parentToGradeSonMsg, setParentToGradeSonMsg] = useState(&#123; a: 11, b: 22 &#125;);<br>  const [getSonMsg, setGetSonMsg] = useState(‘’);<br>  const getSonValue = (msg: string) =&gt; &#123;<br>    console.log(‘son-to-parent-msg: ‘, msg);<br>    setGetSonMsg(msg);<br>  &#125;;<br>  return (<br>    &lt;&gt;<br>      &lt;Context.Provider value=&#123;parentToGradeSonMsg&#125;&gt;<br>        &lt;h1&gt;react-message&lt;/h1&gt;<br>        parent<br>        &lt;Son msg=&#123;parentToSonMsg&#125; getSonValue=&#123;getSonValue&#125; /&gt;<br>      &lt;/Context.Provider&gt;<br>      &lt;Daughter /&gt;<br>    &lt;/&gt;<br>  );<br>&#125;;<br></code><br></code></pre></p>
-<h3 id="DYES7"><span class="ne-text">状态管理</span></h3><p id="u2c679f4e" class="ne-p"><span class="ne-text">状态管理所定义的Module变化，所使用到的组件也会响应式更新，不做详细记录。</span></p></div>
+const Context = createContext(&#123;&#125;);
+
+const Son = (props: any) =&gt; &#123;
+  console.log('parent to son: ', props.msg);
+  const sonToParentClick = () =&gt; &#123;
+    props.getSonValue('son-to-parent-msg');
+    EventBus.emit('daughterEvent', &#123;
+      msg: 'son-to-daughter-msg',
+    &#125;);
+  &#125;;
+  return (
+    &lt;&gt;
+      &lt;div&gt;
+        son&lt;button onClick=&#123;sonToParentClick&#125;&gt;son-to-parent&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;GradeSon /&gt;
+    &lt;/&gt;
+  );
+&#125;;
+Son.defaultProps = &#123;
+  msg: 'son-default-msg',
+&#125;;
+
+const Daughter = () =&gt; &#123;
+  useEffect(() =&gt; &#123;
+    function daughterEvent(data: any) &#123;
+      console.warn('daughter event: ', data);
+    &#125;
+    EventBus.on('daughterEvent', daughterEvent);
+    return () =&gt; &#123;
+      EventBus.off('daughterEvent', daughterEvent);
+    &#125;;
+  &#125;, []);
+  return &lt;div&gt;Daughter&lt;/div&gt;;
+&#125;;
+
+const GradeSon = () =&gt; &#123;
+  const getGrandFather = useContext(Context);
+  console.log('get-grand-father: ', getGrandFather);
+  return &lt;div&gt;GradeSon&lt;/div&gt;;
+&#125;;
+
+export default () =&gt; &#123;
+  const [parentToSonMsg, setParentToSonMsg] = useState('parent-to-son-msg');
+  const [parentToGradeSonMsg, setParentToGradeSonMsg] = useState(&#123; a: 11, b: 22 &#125;);
+  const [getSonMsg, setGetSonMsg] = useState('');
+  const getSonValue = (msg: string) =&gt; &#123;
+    console.log('son-to-parent-msg: ', msg);
+    setGetSonMsg(msg);
+  &#125;;
+  return (
+    &lt;&gt;
+      &lt;Context.Provider value=&#123;parentToGradeSonMsg&#125;&gt;
+        &lt;h1&gt;react-message&lt;/h1&gt;
+        parent
+        &lt;Son msg=&#123;parentToSonMsg&#125; getSonValue=&#123;getSonValue&#125; /&gt;
+      &lt;/Context.Provider&gt;
+      &lt;Daughter /&gt;
+    &lt;/&gt;
+  );
+&#125;;
+</code></pre><h3 id="DYES7"><span class="ne-text">状态管理</span></h3><p id="u2c679f4e" class="ne-p"><span class="ne-text">状态管理所定义的Module变化，所使用到的组件也会响应式更新，不做详细记录。</span></p></div>
+
+
+
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -358,7 +498,7 @@ import EventBus from '@/utils/eventEmitter';
       
       <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">105</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Next-js/">Next.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
       
       <div class="component clearfix new_comments">
@@ -446,9 +586,9 @@ import EventBus from '@/utils/eventEmitter';
   <ul class="asc-item asc-route-list">
     <li><a href="/" class="asc-link">首页</a></li>
     <li><a href="/blog/" class="asc-link">文章</a></li>
-    <li><a href="/message/" class="asc-link">留言板</a></li>
-    <li><a href="/demo/" class="asc-link">实验室</a></li>
-    <li><a href="/about/" class="asc-link">关于我</a></li>
+    <li><a href="/message/" class="asc-link">留言</a></li>
+    <!-- <li><a href="/demo/" class="asc-link">实验室</a></li> -->
+    <li><a href="/about/" class="asc-link">关于</a></li>
     <li><a href="/friends/" class="asc-link">友链</a></li>
   </ul>
 </div>
@@ -488,6 +628,36 @@ import EventBus from '@/utils/eventEmitter';
 
     
 
+    <script type="module">
+      import {
+        codeToHtml
+      } from 'https://esm.sh/shiki@1.0.0'
+
+      window.updateShiki = () => {
+        console.log('updateShiki');
+        Array.from(document.querySelectorAll('pre') || []).forEach(async (pre) => {
+          const language = pre.getAttribute('data-language') || 'text';
+          const code = pre.textContent;
+
+          try {
+            const highlighted = await codeToHtml(code, {
+              lang: language,
+              theme: 'ayu-dark',
+              transformers: [{
+                pre(node) {
+                  node.properties.class = ['shiki', 'rose-pine', `language-${language}`, 'line-numbers'];
+                  return node;
+                }
+              }],
+              showLineNumbers: true
+            });
+            pre.outerHTML = highlighted;
+          } catch (error) {
+            console.error('Code highlighting failed:', error);
+          }
+        });
+      }
+    </script>
   </body>
 
 </html>

@@ -45,13 +45,13 @@
     <a href="/blog/" class="header-link">文章</a>
   </div>
   <div  class="lyrics-header-pc-item" >
-    <a href="/message/" class="header-link">留言板</a>
+    <a href="/message/" class="header-link">留言</a>
   </div>
-  <div  class="lyrics-header-pc-item" >
+  <!-- <div  class="lyrics-header-pc-item" >
     <a href="/demo/" class="header-link">实验室</a>
-  </div>
+  </div> -->
   <div  class="lyrics-header-pc-item" >
-    <a href="/about/" class="header-link">关于我</a>
+    <a href="/about/" class="header-link">关于</a>
   </div>
   <div  class="lyrics-header-pc-item" >
     <a href="/friends/" class="header-link">友链</a>
@@ -102,7 +102,7 @@
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    313
+    321
     <span>篇</span>
   </div>
   <div>
@@ -167,410 +167,426 @@
       
       <div class="component article" id="article">
   <div class="article-content">
-    <div class="lake-content" typography="classic"><h2 id="87ed5342"><span class="ne-text">LinkedList和ArrayList的设计</span></h2><p id="u138158d0" class="ne-p"><br></p><p id="uec8e29a0" class="ne-p"><br></p><div class="ne-quote"><p id="06b3dd2f95b4188a76d895dc7d174e4f" class="ne-p"><span class="ne-text" style="color: #F5222D">同时设计LinkedList和ArrayList</span></p></div><ul class="ne-ul"><li id="57803a540903fc07605b8f82b8c92064"><strong><span class="ne-text">LinkedList</span></strong><span class="ne-text">不需要构造函数</span></li><li id="bc16b24596092dadd91267c5f6b7b794"><strong><span class="ne-text">ArrayList</span></strong><span class="ne-text">需要，后者需要一个容量的初始化。</span></li></ul><p id="094c1b843afa0d090e6c14fb0948ce50" class="ne-p"><br></p><p id="ff0c850e3ddf6f7d3e965268398eb025" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603191040309-0ed4b536-89c0-449d-85cc-e763afcb73ea.png" width="278.5" id="NZYUa" class="ne-image"></p><h3 id="9cXZd"><span class="ne-text">接口List设计</span></h3><div class="ne-quote"><p id="19863c3bb1cb0b3ed277ef3db37ea991" class="ne-p"><span class="ne-text">只用来</span><strong><span class="ne-text">声明对外接口</span></strong><span class="ne-text">，不能声明</span></p></div>
-<pre><code>package com.wztlink1013.ds.linkedlist;
+    
 
-<p>/**</p>
-<ul>
-<li>fun：实现ArrayList和LinkedList的接口</li>
-<li></li>
-<li>/</li>
-</ul>
-<p>public interface List&lt;E&gt; &#123;<br>    static final int ELEMENT_NOT_FOUND = -1;</p>
-<pre><code>/**
- * 元素的数量[抽象类中实现]
- * @return
- */
-int size();
+<div class="lake-content" typography="classic"><h2 id="87ed5342"><span class="ne-text">LinkedList和ArrayList的设计</span></h2><p id="u138158d0" class="ne-p"><br></p><p id="uec8e29a0" class="ne-p"><br></p><div class="ne-quote"><p id="06b3dd2f95b4188a76d895dc7d174e4f" class="ne-p"><span class="ne-text" style="color: #F5222D">同时设计LinkedList和ArrayList</span></p></div><ul class="ne-ul"><li id="57803a540903fc07605b8f82b8c92064"><strong><span class="ne-text">LinkedList</span></strong><span class="ne-text">不需要构造函数</span></li><li id="bc16b24596092dadd91267c5f6b7b794"><strong><span class="ne-text">ArrayList</span></strong><span class="ne-text">需要，后者需要一个容量的初始化。</span></li></ul><p id="094c1b843afa0d090e6c14fb0948ce50" class="ne-p"><br></p><p id="ff0c850e3ddf6f7d3e965268398eb025" class="ne-p" style="text-align: center"><img src="https://cdn.nlark.com/yuque/0/2020/png/1484158/1603191040309-0ed4b536-89c0-449d-85cc-e763afcb73ea.png" width="278.5" id="NZYUa" class="ne-image"></p><h3 id="9cXZd"><span class="ne-text">接口List设计</span></h3><div class="ne-quote"><p id="19863c3bb1cb0b3ed277ef3db37ea991" class="ne-p"><span class="ne-text">只用来</span><strong><span class="ne-text">声明对外接口</span></strong><span class="ne-text">，不能声明</span></p></div><pre data-language="java" id="4qE9A" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;
 
 /**
- * 是否为空[抽象类中实现]
- * @return
+ * fun：实现ArrayList和LinkedList的接口
+ *
  */
-boolean isEmpty();
+
+public interface List&lt;E&gt; {
+    static final int ELEMENT_NOT_FOUND = -1;
+
+    /**
+     * 元素的数量[抽象类中实现]
+     * @return
+     */
+    int size();
+
+    /**
+     * 是否为空[抽象类中实现]
+     * @return
+     */
+    boolean isEmpty();
+
+    /**
+     * 是否包含某个元素[抽象类中实现]
+     * @param element
+     * @return
+     */
+    boolean contains(E element);
+
+    /**
+     * 添加元素到尾部[抽象类中实现]
+     * @param element
+     */
+    void add(E element);
+
+    /**
+     * 清除所有元素[实现类中实现]
+     */
+    void clear();
+
+    /**
+     * 获取index位置的元素[实现类中实现]
+     * @param index
+     * @return
+     */
+    E get(int index);
+
+    /**
+     * 设置index位置的元素[实现类中实现]
+     * @param index
+     * @param element
+     * @return 原来的元素ֵ
+     */
+    E set(int index, E element);
+
+    /**
+     * 在index位置插入一个元素[实现类中实现]
+     * @param index
+     * @param element
+     */
+    void add(int index, E element);
+
+    /**
+     * 删除index位置的元素[实现类中实现]
+     * @param index
+     * @return
+     */
+    E remove(int index);
+
+    /**
+     * 查看元素的索引[实现类中实现]
+     * @param element
+     * @return
+     */
+    int indexOf(E element);
+}
+</pre><h3 id="SyVsT"><span class="ne-text">抽象类AbstractList设计</span></h3><div class="ne-quote"><p id="074137348dfb83ac851f92e3410c4d2b" class="ne-p"><span class="ne-text">放ArrayList和LinkedList的公共代码</span></p><ul class="ne-ul"><li id="bdc02f7dd192704b4f61a9702ec8910e"><strong><span class="ne-text">实现List接口类</span></strong><span class="ne-text">的共同代码</span></li><li id="c6aa6536ec4a4d325c86ece9d1eb3efa"><span class="ne-text">ArrayList和LinkedList都用得到但是不对外公开的代码</span></li></ul><p id="f18b25c51383375495aa35bafcf41c32" class="ne-p"><span class="ne-text">声明抽象类abstract，就意味着可以不用全部实现接口List里面的所有方法</span></p></div><pre data-language="java" id="Eh9BM" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;
 
 /**
- * 是否包含某个元素[抽象类中实现]
- * @param element
- * @return
+ * fun：放ArrayList和LinkedList公共代码的抽象类（父类）
+ *
  */
-boolean contains(E element);
+
+public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; {
+
+    protected int size;
+    /**
+     * 元素的数量
+     * @return
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
+     * 是否为空
+     * @return
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     * 是否包含某个元素
+     * @param element
+     * @return
+     */
+    public boolean contains(E element) {
+        return indexOf(element) != ELEMENT_NOT_FOUND;
+    }
+
+    /**
+     * 添加元素到尾部
+     * @param element
+     */
+    public void add(E element) {
+        add(size, element);
+    }
+
+    /**
+     * 下面三个是ArrayList和LinkedList两个实现类中的公共代码
+     * */
+    protected void outOfBounds(int index) {
+        throw new IndexOutOfBoundsException("Index:" + index + ", Size:" + size);
+    }
+
+    protected void rangeCheck(int index) {
+        if (index &lt; 0 || index &gt;= size) {
+            outOfBounds(index);
+        }
+    }
+
+    protected void rangeCheckForAdd(int index) {
+        if (index &lt; 0 || index &gt; size) {
+            outOfBounds(index);
+        }
+    }
+}
+</pre><h3 id="LHnfr"><span class="ne-text" style="color: #000000">ArrayList设计</span></h3><pre data-language="java" id="WvNpC" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;
 
 /**
- * 添加元素到尾部[抽象类中实现]
- * @param element
+ *fun：实现动态数组
  */
-void add(E element);
+@SuppressWarnings("unchecked")
+public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; {
+    private E[] elements;
+
+    private static final int DEFAULT_CAPACITY = 10;
+
+    public ArrayList(int capaticy) {
+        capaticy = (capaticy &lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
+        elements = (E[]) new Object[capaticy];
+    }
+
+    public ArrayList() {
+        this(DEFAULT_CAPACITY);
+    }
+
+
+    @Override
+    public void clear() {
+        for (int i = 0; i &lt; size; i++) {
+            elements[i] = null;
+        }
+        size = 0;
+    }
+
+    @Override
+    public E get(int index) {
+        rangeCheck(index);
+        return elements[index];
+    }
+
+    @Override
+    public E set(int index, E element) {
+        rangeCheck(index);
+
+        E old = elements[index];
+        elements[index] = element;
+        return old;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        rangeCheckForAdd(index);
+
+        ensureCapacity(size + 1);
+
+        for (int i = size; i &gt; index; i--) {
+            elements[i] = elements[i - 1];
+        }
+        elements[index] = element;
+        size++;
+    }
+
+    @Override
+    public E remove(int index) {
+        rangeCheck(index);
+
+        E old = elements[index];
+        for (int i = index + 1; i &lt; size; i++) {
+            elements[i - 1] = elements[i];
+        }
+        elements[--size] = null;
+        return old;
+    }
+
+    @Override
+    public int indexOf(E element) {
+        if (element == null) {  // 1
+            for (int i = 0; i &lt; size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            for (int i = 0; i &lt; size; i++) {
+                if (element.equals(elements[i])) return i; // n
+            }
+        }
+        return ELEMENT_NOT_FOUND;
+    }
+
+
+    /**
+     * 保证要有capacity的容量
+     * @param capacity
+     */
+    private void ensureCapacity(int capacity) {
+        int oldCapacity = elements.length;
+        if (oldCapacity &gt;= capacity) return;
+
+        // 新容量为旧容量的1.5倍
+        int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i &lt; size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+
+        System.out.println(oldCapacity + "扩容为" + newCapacity);
+    }
+
+    @Override
+    public String toString() {
+        // size=3, [99, 88, 77]
+        StringBuilder string = new StringBuilder();
+        string.append("size=").append(size).append(", [");
+        for (int i = 0; i &lt; size; i++) {
+            if (i != 0) {
+                string.append(", ");
+            }
+
+            string.append(elements[i]);
+
+        }
+        string.append("]");
+        return string.toString();
+    }
+
+    /**
+     * 新添加功能
+     */
+    public int search(E element){
+        for (int i = 0;i&lt;size;i++){
+            if (element == elements[i]){
+                return i;
+            }
+        }
+        return ELEMENT_NOT_FOUND;
+    }
+
+}
+</pre><p id="eef65beb7cc29a45fc39ce651b8ed461" class="ne-p"><br></p><h3 id="DCY67"><span class="ne-text">LinkedList设计</span></h3><pre data-language="java" id="mtOUT" class="ne-codeblock language-java">package com.wztlink1013.ds.linkedlist;
 
 /**
- * 清除所有元素[实现类中实现]
+ *fun：链表的实现
  */
-void clear();
+@SuppressWarnings("unchecked")
+public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; {
+    private Node&lt;E&gt; first;
+    private Node&lt;E&gt; last;
 
-/**
- * 获取index位置的元素[实现类中实现]
- * @param index
- * @return
- */
-E get(int index);
+    private static class Node&lt;E&gt; {
+        E element;
+        Node&lt;E&gt; prev;
+        Node&lt;E&gt; next;
+        public Node(E element, Node&lt;E&gt; next) {
+            this.element = element;
+            this.next = next;
+        }
+    }
 
-/**
- * 设置index位置的元素[实现类中实现]
- * @param index
- * @param element
- * @return 原来的元素ֵ
- */
-E set(int index, E element);
+    @Override
+    public void clear() {
+        size = 0;
+        first = null;
+        last = null;
+    }
 
-/**
- * 在index位置插入一个元素[实现类中实现]
- * @param index
- * @param element
- */
-void add(int index, E element);
+    @Override
+    public E get(int index) {
+        return node(index).element;
+    }
 
-/**
- * 删除index位置的元素[实现类中实现]
- * @param index
- * @return
- */
-E remove(int index);
+    @Override
+    public E set(int index, E element) {
+        Node&lt;E&gt; node = node(index);
+        E old = node.element;
+        node.element = element;
+        return old;
+    }
 
-/**
- * 查看元素的索引[实现类中实现]
- * @param element
- * @return
- */
-int indexOf(E element);
-</code></pre>
-<p>}</p>
-<p></code></pre></p>
-<h3 id="SyVsT"><span class="ne-text">抽象类AbstractList设计</span></h3><div class="ne-quote"><p id="074137348dfb83ac851f92e3410c4d2b" class="ne-p"><span class="ne-text">放ArrayList和LinkedList的公共代码</span></p><ul class="ne-ul"><li id="bdc02f7dd192704b4f61a9702ec8910e"><strong><span class="ne-text">实现List接口类</span></strong><span class="ne-text">的共同代码</span></li><li id="c6aa6536ec4a4d325c86ece9d1eb3efa"><span class="ne-text">ArrayList和LinkedList都用得到但是不对外公开的代码</span></li></ul><p id="f18b25c51383375495aa35bafcf41c32" class="ne-p"><span class="ne-text">声明抽象类abstract，就意味着可以不用全部实现接口List里面的所有方法</span></p></div>
-<pre><code>package com.wztlink1013.ds.linkedlist;
+    @Override
+    public void add(int index, E element) {
+        if (index == 0){
+            first = new Node&lt;&gt;(element, first);
+        } else {
+            Node&lt;E&gt; prev = node(index - 1);
+            prev.next = new Node&lt;&gt;(element, prev.next);
+        }
+        size++;
+    }
 
-<p>/**</p>
-<ul>
-<li>fun：放ArrayList和LinkedList公共代码的抽象类（父类）</li>
-<li></li>
-<li>/</li>
-</ul>
-<p>public abstract class AbstractList&lt;E&gt; implements List&lt;E&gt; &#123;</p>
-<pre><code>protected int size;
-/**
- * 元素的数量
- * @return
- */
-public int size() &#123;
-    return size;
-&#125;
+    @Override
+    public E remove(int index) {
+//        Node&lt;E&gt; node = first;
+//        if (index == 0) {
+//            first = first.next;
+//        } else {
+//            Node&lt;E&gt; prev = node(index -1);
+//            node = prev.next;
+//            prev.next = node.next;
+//        }
+        rangeCheck(index);
 
-/**
- * 是否为空
- * @return
- */
-public boolean isEmpty() &#123;
-    return size == 0;
-&#125;
+        Node&lt;E&gt; node = node(index);
+        Node&lt;E&gt; prev = node.prev;
+        Node&lt;E&gt; next = node.next;
 
-/**
- * 是否包含某个元素
- * @param element
- * @return
- */
-public boolean contains(E element) &#123;
-    return indexOf(element) != ELEMENT_NOT_FOUND;
-&#125;
+        if (prev == null) { // index == 0
+            first = next;
+        } else {
+            prev.next = next;
+        }
 
-/**
- * 添加元素到尾部
- * @param element
- */
-public void add(E element) &#123;
-    add(size, element);
-&#125;
+        if (next == null) { // index == size - 1
+            last = prev;
+        } else {
+            next.prev = prev;
+        }
 
-/**
- * 下面三个是ArrayList和LinkedList两个实现类中的公共代码
- * */
-protected void outOfBounds(int index) &#123;
-    throw new IndexOutOfBoundsException(&quot;Index:&quot; + index + &quot;, Size:&quot; + size);
-&#125;
+        size--;
+        return node.element;
+    }
 
-protected void rangeCheck(int index) &#123;
-    if (index &amp;lt; 0 || index &amp;gt;= size) &#123;
-        outOfBounds(index);
-    &#125;
-&#125;
+    @Override
+    public int indexOf(E element) {
+        if (element == null) {
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; size; i++) {
+                if (node.element == null) return i;
 
-protected void rangeCheckForAdd(int index) &#123;
-    if (index &amp;lt; 0 || index &amp;gt; size) &#123;
-        outOfBounds(index);
-    &#125;
-&#125;
-</code></pre>
-<p>}</p>
-<p></code></pre></p>
-<h3 id="LHnfr"><span class="ne-text" style="color: #000000">ArrayList设计</span></h3>
-<pre><code>package com.wztlink1013.ds.linkedlist;
+                node = node.next;
+            }
+        } else {
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; size; i++) {
+                if (element.equals(node.element)) return i;
 
-<p>/**<br> *fun：实现动态数组<br> */<br>@SuppressWarnings(“unchecked”)<br>public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;<br>    private E[] elements;</p>
-<pre><code>private static final int DEFAULT_CAPACITY = 10;
+                node = node.next;
+            }
+        }
+        return ELEMENT_NOT_FOUND;
+    }
 
-public ArrayList(int capaticy) &#123;
-    capaticy = (capaticy &amp;lt; DEFAULT_CAPACITY) ? DEFAULT_CAPACITY : capaticy;
-    elements = (E[]) new Object[capaticy];
-&#125;
+    /**
+     * 获取index位置对应的节点对象
+     * @param index
+     * @return
+     */
+    private Node&lt;E&gt; node(int index) {
+        rangeCheck(index);
 
-public ArrayList() &#123;
-    this(DEFAULT_CAPACITY);
-&#125;
+        if (index &lt; (size &gt;&gt; 1)) {
+            Node&lt;E&gt; node = first;
+            for (int i = 0; i &lt; index; i++) {
+                node = node.next;
+            }
+            return node;
+        } else {
+            Node&lt;E&gt; node = last;
+            for (int i = size - 1; i &gt; index; i--) {
+                node = node.prev;
+            }
+            return node;
+        }
+    }
 
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append("size=").append(size).append(", [");
+        Node&lt;E&gt; node = first;
+        for (int i = 0; i &lt; size; i++) {
+            if (i != 0) {
+                string.append(", ");
+            }
 
-@Override
-public void clear() &#123;
-    for (int i = 0; i &amp;lt; size; i++) &#123;
-        elements[i] = null;
-    &#125;
-    size = 0;
-&#125;
-
-@Override
-public E get(int index) &#123;
-    rangeCheck(index);
-    return elements[index];
-&#125;
-
-@Override
-public E set(int index, E element) &#123;
-    rangeCheck(index);
-
-    E old = elements[index];
-    elements[index] = element;
-    return old;
-&#125;
-
-@Override
-public void add(int index, E element) &#123;
-    rangeCheckForAdd(index);
-
-    ensureCapacity(size + 1);
-
-    for (int i = size; i &amp;gt; index; i--) &#123;
-        elements[i] = elements[i - 1];
-    &#125;
-    elements[index] = element;
-    size++;
-&#125;
-
-@Override
-public E remove(int index) &#123;
-    rangeCheck(index);
-
-    E old = elements[index];
-    for (int i = index + 1; i &amp;lt; size; i++) &#123;
-        elements[i - 1] = elements[i];
-    &#125;
-    elements[--size] = null;
-    return old;
-&#125;
-
-@Override
-public int indexOf(E element) &#123;
-    if (element == null) &#123;  // 1
-        for (int i = 0; i &amp;lt; size; i++) &#123;
-            if (elements[i] == null) return i;
-        &#125;
-    &#125; else &#123;
-        for (int i = 0; i &amp;lt; size; i++) &#123;
-            if (element.equals(elements[i])) return i; // n
-        &#125;
-    &#125;
-    return ELEMENT_NOT_FOUND;
-&#125;
-
-
-/**
- * 保证要有capacity的容量
- * @param capacity
- */
-private void ensureCapacity(int capacity) &#123;
-    int oldCapacity = elements.length;
-    if (oldCapacity &amp;gt;= capacity) return;
-
-    // 新容量为旧容量的1.5倍
-    int newCapacity = oldCapacity + (oldCapacity &amp;gt;&amp;gt; 1);
-    E[] newElements = (E[]) new Object[newCapacity];
-    for (int i = 0; i &amp;lt; size; i++) &#123;
-        newElements[i] = elements[i];
-    &#125;
-    elements = newElements;
-
-    System.out.println(oldCapacity + &quot;扩容为&quot; + newCapacity);
-&#125;
-
-@Override
-public String toString() &#123;
-    // size=3, [99, 88, 77]
-    StringBuilder string = new StringBuilder();
-    string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
-    for (int i = 0; i &amp;lt; size; i++) &#123;
-        if (i != 0) &#123;
-            string.append(&quot;, &quot;);
-        &#125;
-
-        string.append(elements[i]);
-
-    &#125;
-    string.append(&quot;]&quot;);
-    return string.toString();
-&#125;
-
-/**
- * 新添加功能
- */
-public int search(E element)&#123;
-    for (int i = 0;i&amp;lt;size;i++)&#123;
-        if (element == elements[i])&#123;
-            return i;
-        &#125;
-    &#125;
-    return ELEMENT_NOT_FOUND;
-&#125;
-</code></pre>
-<p>}</p>
-<p></code></pre></p>
-<p id="eef65beb7cc29a45fc39ce651b8ed461" class="ne-p"><br></p><h3 id="DCY67"><span class="ne-text">LinkedList设计</span></h3>
-<pre><code>package com.wztlink1013.ds.linkedlist;
-
-<p>/**<br> *fun：链表的实现<br> */<br>@SuppressWarnings(“unchecked”)<br>public class LinkedList&lt;E&gt; extends AbstractList&lt;E&gt; &#123;<br>    private Node&lt;E&gt; first;<br>    private Node&lt;E&gt; last;</p>
-<pre><code>private static class Node&amp;lt;E&amp;gt; &#123;
-    E element;
-    Node&amp;lt;E&amp;gt; prev;
-    Node&amp;lt;E&amp;gt; next;
-    public Node(E element, Node&amp;lt;E&amp;gt; next) &#123;
-        this.element = element;
-        this.next = next;
-    &#125;
-&#125;
-
-@Override
-public void clear() &#123;
-    size = 0;
-    first = null;
-    last = null;
-&#125;
-
-@Override
-public E get(int index) &#123;
-    return node(index).element;
-&#125;
-
-@Override
-public E set(int index, E element) &#123;
-    Node&amp;lt;E&amp;gt; node = node(index);
-    E old = node.element;
-    node.element = element;
-    return old;
-&#125;
-
-@Override
-public void add(int index, E element) &#123;
-    if (index == 0)&#123;
-        first = new Node&amp;lt;&amp;gt;(element, first);
-    &#125; else &#123;
-        Node&amp;lt;E&amp;gt; prev = node(index - 1);
-        prev.next = new Node&amp;lt;&amp;gt;(element, prev.next);
-    &#125;
-    size++;
-&#125;
-
-@Override
-public E remove(int index) &#123;
-</code></pre>
-<p>//        Node&lt;E&gt; node = first;<br>//        if (index == 0) {<br>//            first = first.next;<br>//        } else {<br>//            Node&lt;E&gt; prev = node(index -1);<br>//            node = prev.next;<br>//            prev.next = node.next;<br>//        }<br>        rangeCheck(index);</p>
-<pre><code>    Node&amp;lt;E&amp;gt; node = node(index);
-    Node&amp;lt;E&amp;gt; prev = node.prev;
-    Node&amp;lt;E&amp;gt; next = node.next;
-
-    if (prev == null) &#123; // index == 0
-        first = next;
-    &#125; else &#123;
-        prev.next = next;
-    &#125;
-
-    if (next == null) &#123; // index == size - 1
-        last = prev;
-    &#125; else &#123;
-        next.prev = prev;
-    &#125;
-
-    size--;
-    return node.element;
-&#125;
-
-@Override
-public int indexOf(E element) &#123;
-    if (element == null) &#123;
-        Node&amp;lt;E&amp;gt; node = first;
-        for (int i = 0; i &amp;lt; size; i++) &#123;
-            if (node.element == null) return i;
+            string.append(node);
 
             node = node.next;
-        &#125;
-    &#125; else &#123;
-        Node&amp;lt;E&amp;gt; node = first;
-        for (int i = 0; i &amp;lt; size; i++) &#123;
-            if (element.equals(node.element)) return i;
+        }
+        string.append("]");
+        return string.toString();
+    }
+}</pre><h2 id="mAZyd"></h2></div>
 
-            node = node.next;
-        &#125;
-    &#125;
-    return ELEMENT_NOT_FOUND;
-&#125;
 
-/**
- * 获取index位置对应的节点对象
- * @param index
- * @return
- */
-private Node&amp;lt;E&amp;gt; node(int index) &#123;
-    rangeCheck(index);
 
-    if (index &amp;lt; (size &amp;gt;&amp;gt; 1)) &#123;
-        Node&amp;lt;E&amp;gt; node = first;
-        for (int i = 0; i &amp;lt; index; i++) &#123;
-            node = node.next;
-        &#125;
-        return node;
-    &#125; else &#123;
-        Node&amp;lt;E&amp;gt; node = last;
-        for (int i = size - 1; i &amp;gt; index; i--) &#123;
-            node = node.prev;
-        &#125;
-        return node;
-    &#125;
-&#125;
-
-@Override
-public String toString() &#123;
-    StringBuilder string = new StringBuilder();
-    string.append(&quot;size=&quot;).append(size).append(&quot;, [&quot;);
-    Node&amp;lt;E&amp;gt; node = first;
-    for (int i = 0; i &amp;lt; size; i++) &#123;
-        if (i != 0) &#123;
-            string.append(&quot;, &quot;);
-        &#125;
-
-        string.append(node);
-
-        node = node.next;
-    &#125;
-    string.append(&quot;]&quot;);
-    return string.toString();
-&#125;
-</code></pre>
-<p>}<br></code></pre></p>
-<h2 id="mAZyd"></h2></div>
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -682,7 +698,7 @@ public String toString() &#123;
       
       <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">105</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Next-js/">Next.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
       
       <div class="component clearfix new_comments">
@@ -770,9 +786,9 @@ public String toString() &#123;
   <ul class="asc-item asc-route-list">
     <li><a href="/" class="asc-link">首页</a></li>
     <li><a href="/blog/" class="asc-link">文章</a></li>
-    <li><a href="/message/" class="asc-link">留言板</a></li>
-    <li><a href="/demo/" class="asc-link">实验室</a></li>
-    <li><a href="/about/" class="asc-link">关于我</a></li>
+    <li><a href="/message/" class="asc-link">留言</a></li>
+    <!-- <li><a href="/demo/" class="asc-link">实验室</a></li> -->
+    <li><a href="/about/" class="asc-link">关于</a></li>
     <li><a href="/friends/" class="asc-link">友链</a></li>
   </ul>
 </div>
@@ -812,6 +828,36 @@ public String toString() &#123;
 
     
 
+    <script type="module">
+      import {
+        codeToHtml
+      } from 'https://esm.sh/shiki@1.0.0'
+
+      window.updateShiki = () => {
+        console.log('updateShiki');
+        Array.from(document.querySelectorAll('pre') || []).forEach(async (pre) => {
+          const language = pre.getAttribute('data-language') || 'text';
+          const code = pre.textContent;
+
+          try {
+            const highlighted = await codeToHtml(code, {
+              lang: language,
+              theme: 'ayu-dark',
+              transformers: [{
+                pre(node) {
+                  node.properties.class = ['shiki', 'rose-pine', `language-${language}`, 'line-numbers'];
+                  return node;
+                }
+              }],
+              showLineNumbers: true
+            });
+            pre.outerHTML = highlighted;
+          } catch (error) {
+            console.error('Code highlighting failed:', error);
+          }
+        });
+      }
+    </script>
   </body>
 
 </html>
