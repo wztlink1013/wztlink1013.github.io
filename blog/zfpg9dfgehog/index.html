@@ -78,9 +78,10 @@
 </div>
 </header>
 <main class="lyrics-container">
-  <div class="ct_left">
-    
-    <div class="component clearfix blogger">
+  <div class="lyrics-container-inner">
+    <div class="ct_left">
+      
+      <div class="component clearfix blogger">
   <div class="blogger-header-bg">
     <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
   </div>
@@ -88,35 +89,35 @@
   <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
   <span class="blogger-descript"></span>
 </div>
-    
-    <div class="component clearfix music_box">
+      
+      <div class="component clearfix music_box">
   <h3>音乐盒</h3>
   <div class="aplayer-box">
     <meting-js server="netease" type="playlist" id="8027485922" theme="#9cf" lrc-type="1"></meting-js>
   </div>
 </div>
-    
-    
+      
+      
 <div class="component clearfix web_info">
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    316
+    313
     <span>篇</span>
   </div>
   <div>
     <span>已运行时间：</span>
-    1570
+    1781
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
 </div>
-    
-  </div>
-  <div class="ct_center">
-    
-    
-    <div class="component article_meta">
+      
+    </div>
+    <div class="ct_center">
+      
+      
+      <div class="component article_meta">
   <div class="article_meta_title">
     <h1>JavaScript面向对象体系及对象内置属性和方法</h1>
   </div>
@@ -163,11 +164,11 @@
     </span>
   </div>
 </div>
-    
-    <div class="component article" id="article">
+      
+      <div class="component article" id="article">
   <div class="article-content">
-    <!doctype html><div class="lake-content" typography="classic"><p id="u9f2794ef" class="ne-p" style="text-indent: 2em"><span class="ne-text">前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，但这里面的机制还是原型相关知识，记录学习一下。</span></p><p id="udc8e4c2c" class="ne-p" style="text-indent: 2em"><span class="ne-text">不管是原型也好，新加的class也罢，就一个目的——为了实现面向对象。从两个体系来展开详述。</span></p><h2 id="yj3wW"><span class="ne-text">体系一：原型+原型链</span></h2><ul class="ne-ul"><li id="u3d362539"><span class="ne-text">讲解的很透彻：</span><a href="https://www.bilibili.com/video/BV1Q64y1v7fW" data-href="https://www.bilibili.com/video/BV1Q64y1v7fW" target="_blank" class="ne-link"><span class="ne-text">https://www.bilibili.com/video/BV1Q64y1v7fW</span></a></li></ul><h3 id="LnxeQ"><span class="ne-text">隐式原型__proto__</span></h3><p id="ud0a1f80e" class="ne-p"><span class="ne-text" style="text-decoration: underline">每个对象里面都有__proto__属性</span><span class="ne-text">，这个叫对象原型，这个玩意指向</span><strong><span class="ne-text">构造函数的prototype对象</span></strong></p><div class="ne-quote"><p id="u5184b156" class="ne-p"><span class="ne-text">__proto__对象原型的意义就在于为对象的查找机制提供一个方向，或者说一条路线，但是它是一个非标准属性，因此实际开发中，不可以使用这个属性，它只是内部指向原型对象 prototype</span></p></div><p id="u9a75c883" class="ne-p"><span class="ne-text">比如说，有一个Person类，有一个Student类，Student类继承自Person类，Student有一个实例student_1，那么student_1会有__proto__对象属性，并且展开该__proto__，会发现里面是Person类的方法和属性</span></p><h3 id="CLRny"><span class="ne-text">显式原型prototype</span></h3><p id="7c59d55d4430a46b8ffc2c7b51f1e256" class="ne-p"><span class="ne-text" style="text-decoration: underline">每个构造函数里面都有一个属性，这个属性叫prototype，</span><strong><span class="ne-text" style="text-decoration: underline">指向另一个对象</span></strong><span class="ne-text" style="text-decoration: underline">（</span><span class="ne-text">有什么用？在后面原型链就会发现有用了），并且这个属性是一个对象，叫做构造函数原型</span></p><div class="ne-quote"><p id="66d8017956949710921f46829a08c3d8" class="ne-p"><span class="ne-text">这样可以解决一个问题，就是创建不同实例，这些事例所用的方法都是同一个内存下的方法，实现共享</span></p></div><h3 id="w9Uhl"><span class="ne-text">constructor构造函数</span></h3><ol class="ne-ol"><li id="fccf204ee8c9f63131ce572e4bd9135c"><span class="ne-text">对象原型（ __proto__）和构造函数（prototype）原型对象里面都有一个属性 constructor 属性 ，constructor 我们称为构造函数，因为它</span><strong><span class="ne-text" style="text-decoration: underline">指回构造函数本身</span></strong><span class="ne-text">。</span></li><li id="43bf14b0a19dae4f626eb4be000d8fce"><span class="ne-text">constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。</span></li><li id="052026097e14bd2660b57547591740ee"><span class="ne-text">一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor  就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。</span></li></ol><h3 id="zGyP9"><span class="ne-text">instanceof</span></h3><p id="ucbd81d9b" class="ne-p"><span class="ne-text">a instanceof b</span></p><p id="uff532746" class="ne-p"><span class="ne-text">判断是true还是false</span></p><p id="ub45967b4" class="ne-p"><span class="ne-text">看a的constructor是什么</span></p><p id="uea8ad4ec" class="ne-p"><span class="ne-text">当b为   a的constructor或a的__proto__的constructor……</span></p><p id="u574656e6" class="ne-p"><span class="ne-text">结果都是true</span></p><h3 id="y8vLN"><span class="ne-text">原型链和成员查找机制</span></h3><p id="u5702aa15" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1651672328368-25e71aa6-4015-4469-9a67-5d841645aebe.png" width="1268.333282934297" id="ue6601372" class="ne-image"></p><p id="4598fd72a5cc5f9d913bdf73126385d4" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622632967349-b2adf38c-b51f-445b-b4c8-7d0408e96390.png" width="501" id="B3Eo8" class="ne-image"></p><h3 id="V8jhV"><span class="ne-text">原型体系中的继承</span></h3><p id="512dd492c06f7b4ac69269f1b091b237" class="ne-p"><span class="ne-text">call方法可以改变一个函数的指向</span></p><ol class="ne-ol"><li id="344c83abd47ab0a088a47b2c6337455d"><span class="ne-text">继承父构造函数里面的属性</span></li></ol>
-<pre><code>// 1. 父构造函数
+    <div class="lake-content" typography="classic"><p id="u9f2794ef" class="ne-p" style="text-indent: 2em"><span class="ne-text">前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，但这里面的机制还是原型相关知识，记录学习一下。</span></p><p id="udc8e4c2c" class="ne-p" style="text-indent: 2em"><span class="ne-text">不管是原型也好，新加的class也罢，就一个目的——为了实现面向对象。从两个体系来展开详述。</span></p><h2 id="yj3wW"><span class="ne-text">体系一：原型+原型链</span></h2><ul class="ne-ul"><li id="u3d362539" data-lake-index-type="0"><span class="ne-text">讲解的很透彻：</span><a href="https://www.bilibili.com/video/BV1Q64y1v7fW" data-href="https://www.bilibili.com/video/BV1Q64y1v7fW" target="_blank" class="ne-link"><span class="ne-text">https://www.bilibili.com/video/BV1Q64y1v7fW</span></a></li></ul><h3 id="LnxeQ"><span class="ne-text">隐式原型__proto__</span></h3><p id="ud0a1f80e" class="ne-p"><span class="ne-text" style="text-decoration: underline">每个对象里面都有__proto__属性</span><span class="ne-text">，这个叫对象原型，这个玩意指向</span><strong><span class="ne-text">构造函数的prototype对象</span></strong></p><div class="ne-quote"><p id="u5184b156" class="ne-p"><span class="ne-text">__proto__对象原型的意义就在于为对象的查找机制提供一个方向，或者说一条路线，但是它是一个非标准属性，因此实际开发中，不可以使用这个属性，它只是内部指向原型对象 prototype</span></p></div><p id="u9a75c883" class="ne-p"><span class="ne-text">比如说，有一个Person类，有一个Student类，Student类继承自Person类，Student有一个实例student_1，那么student_1会有__proto__对象属性，并且展开该__proto__，会发现里面是Person类的方法和属性</span></p><h3 id="CLRny"><span class="ne-text">显式原型prototype</span></h3><p id="7c59d55d4430a46b8ffc2c7b51f1e256" class="ne-p"><span class="ne-text" style="text-decoration: underline">每个构造函数里面都有一个属性，这个属性叫prototype，</span><strong><span class="ne-text" style="text-decoration: underline">指向另一个对象</span></strong><span class="ne-text" style="text-decoration: underline">（</span><span class="ne-text">有什么用？在后面原型链就会发现有用了），并且这个属性是一个对象，叫做构造函数原型</span></p><div class="ne-quote"><p id="66d8017956949710921f46829a08c3d8" class="ne-p"><span class="ne-text">这样可以解决一个问题，就是创建不同实例，这些事例所用的方法都是同一个内存下的方法，实现共享</span></p></div><h3 id="w9Uhl"><span class="ne-text">constructor构造函数</span></h3><ol class="ne-ol"><li id="fccf204ee8c9f63131ce572e4bd9135c" data-lake-index-type="0"><span class="ne-text">对象原型（ __proto__）和构造函数（prototype）原型对象里面都有一个属性 constructor 属性 ，constructor 我们称为构造函数，因为它</span><strong><span class="ne-text" style="text-decoration: underline">指回构造函数本身</span></strong><span class="ne-text">。</span></li><li id="43bf14b0a19dae4f626eb4be000d8fce" data-lake-index-type="0"><span class="ne-text">constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。</span></li><li id="052026097e14bd2660b57547591740ee" data-lake-index-type="0"><span class="ne-text">一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor &nbsp;就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。</span></li></ol><h3 id="zGyP9"><span class="ne-text">instanceof</span></h3><p id="ucbd81d9b" class="ne-p"><span class="ne-text">a instanceof b</span></p><p id="uff532746" class="ne-p"><span class="ne-text">判断是true还是false</span></p><p id="ub45967b4" class="ne-p"><span class="ne-text">看a的constructor是什么</span></p><p id="uea8ad4ec" class="ne-p"><span class="ne-text">当b为   a的constructor或a的__proto__的constructor……</span></p><p id="u574656e6" class="ne-p"><span class="ne-text">结果都是true</span></p><h3 id="y8vLN"><span class="ne-text">原型链和成员查找机制</span></h3><p id="u5702aa15" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2022/png/1484158/1651672328368-25e71aa6-4015-4469-9a67-5d841645aebe.png" width="1268.333282934297" id="ue6601372" class="ne-image"></p><p id="4598fd72a5cc5f9d913bdf73126385d4" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622632967349-b2adf38c-b51f-445b-b4c8-7d0408e96390.png" width="501" id="B3Eo8" class="ne-image"></p><h3 id="V8jhV"><span class="ne-text">原型体系中的继承</span></h3><p id="512dd492c06f7b4ac69269f1b091b237" class="ne-p"><span class="ne-text">call方法可以改变一个函数的指向</span></p><ol class="ne-ol"><li id="344c83abd47ab0a088a47b2c6337455d" data-lake-index-type="0"><span class="ne-text">继承父构造函数里面的属性</span></li></ol>
+<pre><code><code>// 1. 父构造函数
  function Father(uname, age) &#123;
    // this 指向父构造函数的对象实例
    this.uname = uname;
@@ -181,10 +182,10 @@ function Son(uname, age, score) &#123;
   this.score = score;
 &#125;
 var son = new Son('刘德华', 18, 100);
-console.log(son);
+console.log(son);</code>
 </code></pre>
-<ol start="2" class="ne-ol"><li id="a3855cf3ab3a5f5c35c51d1dd654cb4f"><span class="ne-text">继承方法</span></li></ol>
-<pre><code>// 1. 父构造函数
+<ol start="2" class="ne-ol"><li id="a3855cf3ab3a5f5c35c51d1dd654cb4f" data-lake-index-type="0"><span class="ne-text">继承方法</span></li></ol>
+<pre><code><code>// 1. 父构造函数
 function Father(uname, age) &#123;
   // this 指向父构造函数的对象实例
   this.uname = uname;
@@ -208,10 +209,10 @@ Father.prototype.money = function() &#123;
     console.log('孩子要考试');
   &#125;
   var son = new Son('刘德华', 18, 100);
-  console.log(son);
+  console.log(son);</code>
 </code></pre>
-<h2 id="2AkCh"><span class="ne-text">体系二：类(class)【ES6】</span></h2><p id="cad140a8200f42428c7a238d32d88835" class="ne-p"><span class="ne-text">在 ES6 中新增加了类的概念，可以使用 class 关键字声明一个类，之后以这个类来实例化对象。类抽象了对象的公共部分，它泛指某一大类（class）对象特指某一个，通过类实例化一个具体的对象。其创建的方式和之前学过的语言很类似。</span></p><p id="u12d357f4" class="ne-p"><span class="ne-text"></span></p><p id="u0a5bbe48" class="ne-p"><span class="ne-text">在 ES6 中类没有变量或是函数提升概念，所以必须先定义类，才能通过类实例化对象，这也是类和函数最大的不同。</span></p><h3 id="cMF3s"><span class="ne-text">原型方法和原型字段声明</span></h3><p id="u87ac43e1" class="ne-p"><span class="ne-text">原型方法：</span></p><ol class="ne-ol"><li id="uba4c9294"><span class="ne-text">构造函数方法</span></li><li id="uc9b3df1c"><span class="ne-text">get set</span></li><li id="u04200080"><span class="ne-text">静态方法：通常作为类的工具函数</span></li><li id="u7247d342"><span class="ne-text">普通方法</span></li></ol><p id="uc6eb4120" class="ne-p"><br></p><p id="u29912692" class="ne-p"><span class="ne-text">原型字段：</span></p><ol class="ne-ol"><li id="u3bfea643"><span class="ne-text">私有字段</span></li><li id="u55109b6c"><span class="ne-text">公有字段</span></li></ol>
-<pre><code>class Tooltip &#123;
+<h2 id="2AkCh"><span class="ne-text">体系二：类(class)【ES6】</span></h2><p id="cad140a8200f42428c7a238d32d88835" class="ne-p"><span class="ne-text">在 ES6 中新增加了类的概念，可以使用 class 关键字声明一个类，之后以这个类来实例化对象。类抽象了对象的公共部分，它泛指某一大类（class）对象特指某一个，通过类实例化一个具体的对象。其创建的方式和之前学过的语言很类似。</span></p><p id="u12d357f4" class="ne-p"><span class="ne-text"></span></p><p id="u0a5bbe48" class="ne-p"><span class="ne-text">在 ES6 中类没有变量或是函数提升概念，所以必须先定义类，才能通过类实例化对象，这也是类和函数最大的不同。</span></p><h3 id="cMF3s"><span class="ne-text">原型方法和原型字段声明</span></h3><p id="u87ac43e1" class="ne-p"><span class="ne-text">原型方法：</span></p><ol class="ne-ol"><li id="uba4c9294" data-lake-index-type="0"><span class="ne-text">构造函数方法</span></li><li id="uc9b3df1c" data-lake-index-type="0"><span class="ne-text">get set</span></li><li id="u04200080" data-lake-index-type="0"><span class="ne-text">静态方法：通常作为类的工具函数</span></li><li id="u7247d342" data-lake-index-type="0"><span class="ne-text">普通方法</span></li></ol><p id="uc6eb4120" class="ne-p"><br></p><p id="u29912692" class="ne-p"><span class="ne-text">原型字段：</span></p><ol class="ne-ol"><li id="u3bfea643" data-lake-index-type="0"><span class="ne-text">私有字段</span></li><li id="u55109b6c" data-lake-index-type="0"><span class="ne-text">公有字段</span></li></ol>
+<pre><code><code>class Tooltip &#123;
   #test1 = 111; // 私有成员
   test2 = 222; // 公有成员
   static test3 = 333; // 静态成员（类内部不能访问 相当于类的属性）
@@ -228,10 +229,9 @@ Father.prototype.money = function() &#123;
 
 <p>class TextTooltip extends Tooltip &#123;<br>  constructor(quill, options) &#123;<br>    super(quill, options.bounds);<br>  &#125;<br>&#125;</p>
 <p>this.textToolTip = new TextTooltip(quill, options);<br>console.log(this.textToolTip,<br>            Tooltip.test3,<br>            TextTooltip.test3,<br>            TextTooltip.fun1(333, 333));</p>
-<p>export default TextTooltipToolbar;</p>
-<p></code></pre></p>
+<p>export default TextTooltipToolbar;<br></code><br></code></pre></p>
 <h3 id="EQmnS"><span class="ne-text">继承</span></h3>
-<pre><code>// 奥特曼类
+<pre><code><code>// 奥特曼类
 class Aoteman &#123;
     // 构造函数里面放共有属性、方法
     constructor(name, age) &#123;
@@ -239,20 +239,20 @@ class Aoteman &#123;
         this.age = age;
     &#125;
     Ability(abi) &#123;
-        console.log(this.name + &quot; can &quot; + abi);
+        console.log(this.name + " can " + abi);
     &#125;
 &#125;
 
-<p>// 假 继承 奥特曼<br>class Jia extends Aoteman &#123;<br>    constructor (x, y) &#123;<br>        // 继承父类的构造函数<br>        super(x,y);<br>        // 方便写自己的函数<br>        this.x = x;<br>        this.y = y;<br>    &#125;<br>    // 自己内部的函数<br>    Chuiniu() &#123;<br>        console.log(this.x + &quot; chuiniu&quot;);<br>    &#125;</p>
+<p>// 假 继承 奥特曼<br>class Jia extends Aoteman &#123;<br>    constructor (x, y) &#123;<br>        // 继承父类的构造函数<br>        super(x,y);<br>        // 方便写自己的函数<br>        this.x = x;<br>        this.y = y;<br>    &#125;<br>    // 自己内部的函数<br>    Chuiniu() &#123;<br>        console.log(this.x + “ chuiniu”);<br>    &#125;</p>
 <p>&#125;</p>
-<p>// 创建迪迦对象<br>let dijia = new Aoteman(‘dijia’, 100);<br>console.log(dijia);<br>dijia.Ability(&quot;X-ray&quot;);<br>let dijia_jia = new Jia(&quot;dijia_jia&quot;, 50);<br>dijia_jia.Ability(&quot;xxx&quot;);<br>dijia_jia.Chuiniu();<br></code></pre></p>
-<p id="cb14a18ef0b052581ff2c955bf1a0ffc" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622622728600-59f47873-c895-4686-b771-f1f538198f26.png" width="441" id="JN882" class="ne-image"></p><h3 id="UyaIK"><span class="ne-text">多重继承</span></h3><p id="u3310e98b" class="ne-p"><span class="ne-text">JavaScript对象的继承只能继承一个父类，因为继承的根本实现是基于原型链的，所以继承不能同时指向多个对象，所以实现多重继承有两个思路：</span></p><ol class="ne-ol"><li id="u52a6832e"><span class="ne-text">父类链式继承</span></li></ol>
-<pre><code>class Parent1 extends Parent2 &#123;&#125;
+<p>// 创建迪迦对象<br>let dijia = new Aoteman(‘dijia’, 100);<br>console.log(dijia);<br>dijia.Ability(“X-ray”);<br>let dijia_jia = new Jia(“dijia_jia”, 50);<br>dijia_jia.Ability(“xxx”);<br>dijia_jia.Chuiniu();</code><br></code></pre></p>
+<p id="cb14a18ef0b052581ff2c955bf1a0ffc" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622622728600-59f47873-c895-4686-b771-f1f538198f26.png" width="441" id="JN882" class="ne-image"></p><h3 id="UyaIK"><span class="ne-text">多重继承</span></h3><p id="u3310e98b" class="ne-p"><span class="ne-text">JavaScript对象的继承只能继承一个父类，因为继承的根本实现是基于原型链的，所以继承不能同时指向多个对象，所以实现多重继承有两个思路：</span></p><ol class="ne-ol"><li id="u52a6832e" data-lake-index-type="0"><span class="ne-text">父类链式继承</span></li></ol>
+<pre><code><code>class Parent1 extends Parent2 &#123;&#125;
 class Parent2 extends Parent3 &#123;&#125;
-class Child extends Parent1 &#123;&#125;
+class Child extends Parent1 &#123;&#125;</code>
 </code></pre>
-<ol start="2" class="ne-ol"><li id="ube418643"><span class="ne-text">实现Mixin来继承</span></li></ol>
-<pre><code>function mixin(...mixins) &#123;
+<ol start="2" class="ne-ol"><li id="ube418643" data-lake-index-type="0"><span class="ne-text">实现Mixin来继承</span></li></ol>
+<pre><code><code>function mixin(...mixins) &#123;
   class Mixin &#123;
     constructor(...args) &#123;
       mixins.forEach(
@@ -268,57 +268,59 @@ class Child extends Parent1 &#123;&#125;
   )
 
 <p>  return Mixin;<br>&#125;</p>
-<p>function copyProperties(target, source) &#123;<br>  for (let key of Reflect.ownKeys(source)) &#123;<br>    if ([‘constructor’, ‘prototype’, ‘name’].indexOf(key) &lt; 0) &#123;<br>      let desc = Object.getOwnPropertyDescriptor(source, key);<br>      Object.defineProperty(target, key, desc);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></p>
-<pre><code>class Child extends mixin(Parent1, Parent2, Parent3) &#123;&#125;
+<p>function copyProperties(target, source) &#123;<br>  for (let key of Reflect.ownKeys(source)) &#123;<br>    if ([‘constructor’, ‘prototype’, ‘name’].indexOf(key) &lt; 0) &#123;<br>      let desc = Object.getOwnPropertyDescriptor(source, key);<br>      Object.defineProperty(target, key, desc);<br>    &#125;<br>  &#125;<br>&#125;</code><br></code></pre></p>
+<pre><code><code>class Child extends mixin(Parent1, Parent2, Parent3) &#123;&#125;</code>
 </code></pre>
-<h2 id="Pieyx"><span class="ne-text">对象的各种创建方式</span></h2><h3 id="zit4E"><span class="ne-text">字面量</span></h3><p id="083a4934aac2b8be69b10cc6f6d4f323" class="ne-p"><span class="ne-text">属性和方法的调用：</span></p><p id="36235a6d55d24a73c9da43f5eef64605" class="ne-p"><span class="ne-text">属性可以用&quot;.&quot;和[&quot;属性名&quot;]来调用</span></p><p id="60c09abb79feb2bc609b8822c6ece536" class="ne-p"><span class="ne-text">方法用&quot;.&quot;来调用</span></p><h3 id="qieAE"><span class="ne-text">模式工厂</span></h3><p id="12f03a76db50bccfcb65ebd419d35599" class="ne-p"><span class="ne-text">new一个空对象，</span><code class="ne-code"><span class="ne-text">let obj = new Object();</span></code></p><p id="76e77acf462c0d5fc6711fe41458c5b8" class="ne-p"><span class="ne-text">然后利用&quot;.&quot;的方式给其添加属性和方法</span></p><p id="9a7c3df6d0ab8823ad10b9d56da71806" class="ne-p"><span class="ne-text">内置的Object()构造函数</span></p><p id="c1e35870ec274c5a60120cec9b6a71c8" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622623002064-1297005b-76a6-4d94-9b12-a83cf709e3a1.png" width="529.5" id="hDM2I" class="ne-image"></p><h3 id="6Kx17"><span class="ne-text">构造函数</span></h3><div class="ne-quote"><p id="4bb010f534c4432e61c5acfc8ed7f78d" class="ne-p"><span class="ne-text">构造函数：是一种特殊的函数，主要用来初始化对象，即为对象成员变量赋初始值，它总与 new 运算符一起使用。我们可以把对象中一些公共的属性和方法抽取出来，然后封装到这个函数里面。</span></p></div>
-<pre><code>function 构造函数名(形参1,形参2,形参3) &#123;
+<h2 id="Pieyx"><span class="ne-text">对象的各种创建方式</span></h2><h3 id="zit4E"><span class="ne-text">字面量</span></h3><p id="083a4934aac2b8be69b10cc6f6d4f323" class="ne-p"><span class="ne-text">属性和方法的调用：</span></p><p id="36235a6d55d24a73c9da43f5eef64605" class="ne-p"><span class="ne-text">属性可以用"."和["属性名"]来调用</span></p><p id="60c09abb79feb2bc609b8822c6ece536" class="ne-p"><span class="ne-text">方法用"."来调用</span></p><h3 id="qieAE"><span class="ne-text">模式工厂</span></h3><p id="12f03a76db50bccfcb65ebd419d35599" class="ne-p"><span class="ne-text">new一个空对象，</span><code class="ne-code"><span class="ne-text">let obj = new Object();</span></code></p><p id="76e77acf462c0d5fc6711fe41458c5b8" class="ne-p"><span class="ne-text">然后利用"."的方式给其添加属性和方法</span></p><p id="9a7c3df6d0ab8823ad10b9d56da71806" class="ne-p"><span class="ne-text">内置的Object()构造函数</span></p><p id="c1e35870ec274c5a60120cec9b6a71c8" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622623002064-1297005b-76a6-4d94-9b12-a83cf709e3a1.png" width="529.5" id="hDM2I" class="ne-image"></p><h3 id="6Kx17"><span class="ne-text">构造函数</span></h3><div class="ne-quote"><p id="4bb010f534c4432e61c5acfc8ed7f78d" class="ne-p"><span class="ne-text">构造函数：是一种特殊的函数，主要用来初始化对象，即为对象成员变量赋初始值，它总与 new 运算符一起使用。我们可以把对象中一些公共的属性和方法抽取出来，然后封装到这个函数里面。</span></p></div>
+<pre><code><code>function 构造函数名(形参1,形参2,形参3) &#123;
      this.属性名1 = 参数1;
      this.属性名2 = 参数2;
      this.属性名3 = 参数3;
      this.方法名 = 函数体;
 &#125;
 
-<p>let obj = new 构造函数名(实参1，实参2，实参3)<br></code></pre></p>
-<p id="4c6617820231460b3d1a5ba0052650cc" class="ne-p"><br></p><ul class="ne-ul"><li id="42ddfc91739b54f0db3ad2360bfa2a11"><span class="ne-text">构造函数约定</span><strong><span class="ne-text">首字母大写</span></strong><span class="ne-text">。</span></li><li id="107ab55d6bdb5fc8852a8ba09058c242"><span class="ne-text">函数内的属性和方法前面需要添加 </span><strong><span class="ne-text">this</span></strong><span class="ne-text"> ，表示当前对象的属性和方法。</span></li><li id="a40659a6a97972cbe2892ca3ba220606"><span class="ne-text">构造函数中</span><strong><span class="ne-text">不需要 return 返回结果</span></strong><span class="ne-text">。</span></li><li id="d5ada7fd51b068d3faab947354a6172c"><span class="ne-text">当我们创建对象的时候，</span><strong><span class="ne-text">必须用 new 来调用构造函数</span></strong><span class="ne-text">。</span></li></ul><h3 id="1QZhm"><span class="ne-text">原型模式</span></h3><p id="70c37cafa4ed06b8de783a9a800765ed" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622623181327-bd4b5d09-8525-4c59-b550-9af381526f23.png" width="529.5" id="qBvgN" class="ne-image"></p><p id="cab84c8c6b9a31635a96b6562e393404" class="ne-p"><span class="ne-text">下面详述什么是原型</span></p><h2 id="sxsBG"><span class="ne-text">对象的内置方法</span></h2><p id="u0e9e74a8" class="ne-p"><span class="ne-text">参考教程：</span></p><ul class="ne-ul"><li id="uc70efeef"><a href="https://zh.javascript.info/object-basics" data-href="https://zh.javascript.info/object-basics" target="_blank" class="ne-link"><span class="ne-text">https://zh.javascript.info/object-basics</span></a></li></ul><h3 id="7WtOk"><span class="ne-text">Object.defineProperty</span></h3><p id="e403193d89184c9e7039f12f52d5c627" class="ne-p"><span class="ne-text">Object.defineProperty设置或修改对象中的属性</span></p>
-<pre><code>Object.defineProperty(对象，修改或新增的属性名，&#123;
-        value:修改或新增的属性的值,
-        writable:true/false,//如果值为false 不允许修改这个属性值
-        enumerable: false,//enumerable 如果值为false 则不允许遍历
-    configurable: false  //configurable 如果为false 则不允许删除这个属性 属性是否可以被删除或是否可以再次修改特性
-&#125;)
+<p>let obj = new 构造函数名(实参1，实参2，实参3)</code><br></code></pre></p>
+<p id="4c6617820231460b3d1a5ba0052650cc" class="ne-p"><br></p><ul class="ne-ul"><li id="42ddfc91739b54f0db3ad2360bfa2a11" data-lake-index-type="0"><span class="ne-text">构造函数约定</span><strong><span class="ne-text">首字母大写</span></strong><span class="ne-text">。</span></li><li id="107ab55d6bdb5fc8852a8ba09058c242" data-lake-index-type="0"><span class="ne-text">函数内的属性和方法前面需要添加 </span><strong><span class="ne-text">this</span></strong><span class="ne-text"> ，表示当前对象的属性和方法。</span></li><li id="a40659a6a97972cbe2892ca3ba220606" data-lake-index-type="0"><span class="ne-text">构造函数中</span><strong><span class="ne-text">不需要 return 返回结果</span></strong><span class="ne-text">。</span></li><li id="d5ada7fd51b068d3faab947354a6172c" data-lake-index-type="0"><span class="ne-text">当我们创建对象的时候，</span><strong><span class="ne-text">必须用 new 来调用构造函数</span></strong><span class="ne-text">。</span></li></ul><h3 id="1QZhm"><span class="ne-text">原型模式</span></h3><p id="70c37cafa4ed06b8de783a9a800765ed" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1622623181327-bd4b5d09-8525-4c59-b550-9af381526f23.png" width="529.5" id="qBvgN" class="ne-image"></p><p id="cab84c8c6b9a31635a96b6562e393404" class="ne-p"><span class="ne-text">下面详述什么是原型</span></p><h2 id="sxsBG"><span class="ne-text">对象的内置方法</span></h2><p id="u82c051d5" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1723441463675-8c8b2161-e7f9-4ac1-b313-bb7fbd161fbd.png" width="962" id="u72e49db8" class="ne-image"></p><h3 id="Pe1XQ"><span class="ne-text">defineProperty</span></h3><p id="e403193d89184c9e7039f12f52d5c627" class="ne-p"><code class="ne-code"><span class="ne-text">Object.defineProperty</span></code><span class="ne-text">设置或修改对象中的属性</span></p>
+<pre><code><code>interface PropertyDescriptor &#123;
+  configurable?: boolean;
+  enumerable?: boolean;
+  value?: any;
+  writable?: boolean;
+  get?(): any;
+  set?(v: any): void;
+&#125;</code>
 </code></pre>
-<h3 id="lQpR4"><span class="ne-text">删除对象属性</span></h3><ul class="ne-ul"><li id="ue8b0d3cd"><span class="ne-text">直接用delete，暴力简单</span></li><li id="uc28fcad7"><span class="ne-text">也可以参考：</span><a href="https://segmentfault.com/q/1010000013891861" data-href="https://segmentfault.com/q/1010000013891861" target="_blank" class="ne-link"><span class="ne-text">如何优雅的删除对象中的指定属性？</span></a></li></ul><h3 id="Aliaq"><span class="ne-text">assign()</span></h3><ul class="ne-ul"><li id="u4c6a6bde"><span class="ne-text">Object.assign后者覆盖前者，再返回前者</span></li><li id="u33bd510a"><span class="ne-text">常用于深拷贝浅拷贝数据</span></li></ul><h2 id="vJuVU"><span class="ne-text">对象的遍历</span></h2><h3 id="yyCtR"><span class="ne-text">for...in </span></h3><div data-type="info" class="ne-alert"><p id="u49da1b9d" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">语句用于对数组或者对象的属性进行循环操作。</span></p></div><p id="uc155870c" class="ne-p"><span class="ne-text">其语法如下：</span></p>
-<pre><code>for (变量 in 对象名字) &#123;
+<h3 id="lQpR4"><span class="ne-text">删除对象属性</span></h3><ul class="ne-ul"><li id="ue8b0d3cd" data-lake-index-type="0"><span class="ne-text">直接用delete，暴力简单</span></li><li id="uc28fcad7" data-lake-index-type="0"><span class="ne-text">也可以参考：</span><a href="https://segmentfault.com/q/1010000013891861" data-href="https://segmentfault.com/q/1010000013891861" target="_blank" class="ne-link"><span class="ne-text">如何优雅的删除对象中的指定属性？</span></a></li></ul><h3 id="Aliaq"><span class="ne-text">assign()</span></h3><ul class="ne-ul"><li id="u4c6a6bde" data-lake-index-type="0"><span class="ne-text">Object.assign后者覆盖前者，再返回前者</span></li><li id="u33bd510a" data-lake-index-type="0"><span class="ne-text">常用于深拷贝浅拷贝数据，如果对象的值是引用类型的数据，那么是浅拷贝</span><a target="_blank" rel="noopener" href="https://www.yuque.com/wztlink1013/blog/lwi9wr" data-href="https://www.yuque.com/wztlink1013/blog/lwi9wr" class="ne-link"><span class="ne-text">https://www.yuque.com/wztlink1013/blog/lwi9wr</span></a></li></ul><h2 id="vJuVU"><span class="ne-text">对象的遍历</span></h2><p id="u9c1d2e21" class="ne-p"><a href="https://blog.csdn.net/loveoobaby/article/details/127165722" data-href="https://blog.csdn.net/loveoobaby/article/details/127165722" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/loveoobaby/article/details/127165722</span></a></p><p id="u757bb833" class="ne-p"><a href="https://blog.csdn.net/loveoobaby/article/details/127165722" data-href="https://blog.csdn.net/loveoobaby/article/details/127165722" target="_blank" class="ne-link"><span class="ne-text">https://blog.csdn.net/loveoobaby/article/details/127165722</span></a></p><h3 id="yyCtR"><span class="ne-text">for...in </span></h3><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="u49da1b9d" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">语句用于对数组或者对象的属性进行循环操作。</span></p></blockquote><p id="uc155870c" class="ne-p"><span class="ne-text">其语法如下：</span></p>
+<pre><code><code>for (变量 in 对象名字) &#123;
     // 在此执行代码
-&#125;
+&#125;</code>
 </code></pre>
-<ul class="ne-ul"><li id="ud155867e"><span class="ne-text">语法中的变量是自定义的，它需要符合命名规范，通常我们会将这个变量写为 k 或者 key。书里面建议用const来加持。</span></li></ul>
-<pre><code>for (let k in obj) &#123;
+<ul class="ne-ul"><li id="ud155867e" data-lake-index-type="0"><span class="ne-text">语法中的变量是自定义的，它需要符合命名规范，通常我们会将这个变量写为 k 或者 key。书里面建议用const来加持。</span></li></ul>
+<pre><code><code>for (let k in obj) &#123;
     console.log(k);      // 这里的 k 是属性名
     console.log(obj[k]); // 这里的 obj[k] 是属性值
-&#125;
+&#125;</code>
 </code></pre>
-<h3 id="Thzwk"><span class="ne-text">Object.keys(obj)</span></h3><div data-type="info" class="ne-alert"><p id="u1ab14861" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">获取属性名</span></p></div>
-<pre><code>var obj = &#123;
+<h3 id="Thzwk"><span class="ne-text">Object.keys(obj)</span></h3><blockquote data-type="info" class="ne-alert" style="background-color: rgba(192, 221, 252, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="u1ab14861" class="ne-p"><span class="ne-text" style="background-color: #E8F7FF">获取属性名</span></p></blockquote>
+<pre><code><code>var obj = &#123;
      id: 1,
      pname: '小米',
      price: 1999,
      num: 2000
 &#125;;
 var result = Object.keys(obj)
-console.log(result)//[id，pname,price,num]
+console.log(result)//[id，pname,price,num]</code>
 </code></pre>
-<h2 id="qrXFP"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="u63206bdc"><a target="_blank" rel="noopener" href="https://github.com/yinguangyao/blog" data-href="https://github.com/yinguangyao/blog" class="ne-link"><span class="ne-text">https://github.com/yinguangyao/blog</span></a></li></ul></div>
+<h2 id="qrXFP"><span class="ne-text">参考</span></h2><ul class="ne-ul"><li id="u63206bdc" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://github.com/yinguangyao/blog" data-href="https://github.com/yinguangyao/blog" class="ne-link"><span class="ne-text">https://github.com/yinguangyao/blog</span></a></li></ul></div>
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#yj3wW"><span class="toc-text">体系一：原型+原型链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LnxeQ"><span class="toc-text">隐式原型__proto__</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CLRny"><span class="toc-text">显式原型prototype</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#w9Uhl"><span class="toc-text">constructor构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zGyP9"><span class="toc-text">instanceof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#y8vLN"><span class="toc-text">原型链和成员查找机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#V8jhV"><span class="toc-text">原型体系中的继承</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2AkCh"><span class="toc-text">体系二：类(class)【ES6】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cMF3s"><span class="toc-text">原型方法和原型字段声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EQmnS"><span class="toc-text">继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UyaIK"><span class="toc-text">多重继承</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pieyx"><span class="toc-text">对象的各种创建方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zit4E"><span class="toc-text">字面量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qieAE"><span class="toc-text">模式工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6Kx17"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1QZhm"><span class="toc-text">原型模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sxsBG"><span class="toc-text">对象的内置方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7WtOk"><span class="toc-text">Object.defineProperty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lQpR4"><span class="toc-text">删除对象属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Aliaq"><span class="toc-text">assign()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vJuVU"><span class="toc-text">对象的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yyCtR"><span class="toc-text">for...in </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thzwk"><span class="toc-text">Object.keys(obj)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#qrXFP"><span class="toc-text">参考</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#yj3wW"><span class="toc-text">体系一：原型+原型链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LnxeQ"><span class="toc-text">隐式原型__proto__</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CLRny"><span class="toc-text">显式原型prototype</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#w9Uhl"><span class="toc-text">constructor构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zGyP9"><span class="toc-text">instanceof</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#y8vLN"><span class="toc-text">原型链和成员查找机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#V8jhV"><span class="toc-text">原型体系中的继承</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2AkCh"><span class="toc-text">体系二：类(class)【ES6】</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cMF3s"><span class="toc-text">原型方法和原型字段声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EQmnS"><span class="toc-text">继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UyaIK"><span class="toc-text">多重继承</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pieyx"><span class="toc-text">对象的各种创建方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zit4E"><span class="toc-text">字面量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qieAE"><span class="toc-text">模式工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6Kx17"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1QZhm"><span class="toc-text">原型模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sxsBG"><span class="toc-text">对象的内置方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pe1XQ"><span class="toc-text">defineProperty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lQpR4"><span class="toc-text">删除对象属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Aliaq"><span class="toc-text">assign()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vJuVU"><span class="toc-text">对象的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yyCtR"><span class="toc-text">for...in </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thzwk"><span class="toc-text">Object.keys(obj)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#qrXFP"><span class="toc-text">参考</span></a></li></ol>
 </div>
   </div>
 </div>
-    
-    
+      
+      
 
 <div class="component article_more">
   <ul>
@@ -344,8 +346,8 @@ console.log(result)//[id，pname,price,num]
     </li>
   </ul>
 </div>
-    
-    <div class="prev_next component">
+      
+      <div class="prev_next component">
   
   
   <span class="prev_next_left">
@@ -366,9 +368,9 @@ console.log(result)//[id，pname,price,num]
   
   
 </div>
-    
-    
-    <div class="component clearfix comments" id="comments" style="display: block">
+      
+      
+      <div class="component clearfix comments" id="comments" style="display: block">
   <div class="comments_title">
     <h2>评论区</h2>
     <!-- 转换评论按钮 -->
@@ -390,21 +392,21 @@ console.log(result)//[id，pname,price,num]
     </div>
   </div>
 </div>
-    
-    
-    <footer class="footer">
-      <div class="content">
+      
+      
+      <footer class="footer">
+        <div class="content">
   <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
     <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
   </a>
   <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
   <div><a href="/about">联系方式</a></div>
 </div>
-    </footer>
-  </div>
-  <div class="ct_right">
-    
-    <div class="component clearfix board">
+      </footer>
+    </div>
+    <div class="ct_right">
+      
+      <div class="component clearfix board">
   <h3>公告栏</h3>
   <div class="board_content">
     <p>
@@ -418,13 +420,13 @@ console.log(result)//[id，pname,price,num]
     </p> -->
   </div>
 </div>
-    
-    <div class="component clearfix categories">
+      
+      <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">101</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">138</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
-    
-    <div class="component clearfix new_comments">
+      
+      <div class="component clearfix new_comments">
   <h3 class="title">最新评论</h3>
   <div class="new_comments_loding">
     <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -445,7 +447,8 @@ console.log(result)//[id，pname,price,num]
         <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
     </div>'
  -->
-    
+      
+    </div>
   </div>
 </main>
 <div class="lyrics-bg">

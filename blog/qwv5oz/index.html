@@ -78,9 +78,10 @@
 </div>
 </header>
 <main class="lyrics-container">
-  <div class="ct_left">
-    
-    <div class="component clearfix blogger">
+  <div class="lyrics-container-inner">
+    <div class="ct_left">
+      
+      <div class="component clearfix blogger">
   <div class="blogger-header-bg">
     <img src="/public/img/blogger-header-bg.png" alt="尼采般地抒情" />
   </div>
@@ -88,35 +89,35 @@
   <img class="blogger-avatar" src="/public/img/avatar.png" alt="尼采般地抒情" />
   <span class="blogger-descript"></span>
 </div>
-    
-    <div class="component clearfix music_box">
+      
+      <div class="component clearfix music_box">
   <h3>音乐盒</h3>
   <div class="aplayer-box">
     <meting-js server="netease" type="playlist" id="8027485922" theme="#9cf" lrc-type="1"></meting-js>
   </div>
 </div>
-    
-    
+      
+      
 <div class="component clearfix web_info">
   <h3>站点信息</h3>
   <div>
     <span>文章总数目：</span>
-    316
+    313
     <span>篇</span>
   </div>
   <div>
     <span>已运行时间：</span>
-    1570
+    1781
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
 </div>
-    
-  </div>
-  <div class="ct_center">
-    
-    
-    <div class="component article_meta">
+      
+    </div>
+    <div class="ct_center">
+      
+      
+      <div class="component article_meta">
   <div class="article_meta_title">
     <h1>Vue系统学习（三）组件通信</h1>
   </div>
@@ -159,14 +160,14 @@
     </span>
   </div>
 </div>
-    
-    <div class="component article" id="article">
+      
+      <div class="component article" id="article">
   <div class="article-content">
-    <!doctype html><div class="lake-content" typography="classic"><p id="497144d8506882a2db679d679af2acea_p_4" class="ne-p"><span class="ne-text">前言：Vue 是数据驱动视图更新的框架，所以对于组件之间的数据通信非常重要，常见的Vue 组件关系如下：</span></p><img src="https://cdn.nlark.com/yuque/0/2024/jpeg/1484158/1704805890868-a605ebf8-3289-4311-b919-7a3bcfddc3ea.jpeg" id="Nu7KY" style="display: block; width: 100%"><p id="277ac1b9a01a26e550f334d2d650a2af_p_8" class="ne-p"><span class="ne-text">如上图所示, A 与 B、A 与 C、B 与 D、C 与 E 组件之间是父子关系； B 与 C 之间是兄弟关系；A 与 D、A 与 E 之间是隔代关系； D 与 E 是堂兄关系（非直系亲属） 针对以上关系我们归类为：</span></p><ul class="ne-ul"><li id="e921ea6da6315ea6a03b83b1fbdb45ce_li_0" data-lake-index-type="0"><span class="ne-text">父子组件之间通信</span></li></ul><ul class="ne-ul"><li id="afaa832eef1dad88d3692c9ee7c0cb23_li_1" data-lake-index-type="0"><span class="ne-text">非父子组件之间通信 (兄弟组件、隔代关系组件等)</span></li></ul><p id="95350d3f636bad4a4fd5424d38f13bf2_p_11" class="ne-p"><span class="ne-text">本文介绍组件间（Vue2和Vue3）通信的 8 种方式如下图目录所示：并介绍在不同的场景下如何选择有效方式实现的组件间通信方式。</span></p><h2 id="aokck"><span class="ne-text">一、props / $emit</span></h2><p id="aefd39de20827e7fa178830efd84d682_p_16" class="ne-p"><span class="ne-text">父组件通过</span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">的方式向子组件传递数据，而通过</span><code class="ne-code"><span class="ne-text">$emit</span></code><span class="ne-text"> 子组件可以向父组件通信。</span></p><h3 id="erDJy"><span class="ne-text">vue2</span></h3><h4 id="0695b088"><span class="ne-text">父传子</span></h4><ul class="ne-ul"><li id="u33e89348" data-lake-index-type="0"><span class="ne-text">prop 只可以从上一级组件传递到下一级组件（父子组件），即所谓的单向数据流。而且 prop 只读，不可被修改，所有修改都会失效并警告</span></li></ul>
+    <div class="lake-content" typography="classic"><p id="497144d8506882a2db679d679af2acea_p_4" class="ne-p"><span class="ne-text">前言：Vue 是数据驱动视图更新的框架，所以对于组件之间的数据通信非常重要，常见的Vue 组件关系如下：</span></p><img src="https://cdn.nlark.com/yuque/0/2024/jpeg/1484158/1704805890868-a605ebf8-3289-4311-b919-7a3bcfddc3ea.jpeg" id="Nu7KY" style="display: block; width: 100%"><p id="277ac1b9a01a26e550f334d2d650a2af_p_8" class="ne-p"><span class="ne-text">如上图所示, A 与 B、A 与 C、B 与 D、C 与 E 组件之间是父子关系； B 与 C 之间是兄弟关系；A 与 D、A 与 E 之间是隔代关系； D 与 E 是堂兄关系（非直系亲属） 针对以上关系我们归类为：</span></p><ul class="ne-ul"><li id="e921ea6da6315ea6a03b83b1fbdb45ce_li_0" data-lake-index-type="0"><span class="ne-text">父子组件之间通信</span></li></ul><ul class="ne-ul"><li id="afaa832eef1dad88d3692c9ee7c0cb23_li_1" data-lake-index-type="0"><span class="ne-text">非父子组件之间通信 (兄弟组件、隔代关系组件等)</span></li></ul><p id="95350d3f636bad4a4fd5424d38f13bf2_p_11" class="ne-p"><span class="ne-text">本文介绍组件间（Vue2和Vue3）通信的 8 种方式如下图目录所示：并介绍在不同的场景下如何选择有效方式实现的组件间通信方式。</span></p><h2 id="aokck"><span class="ne-text">一、props / $emit</span></h2><p id="aefd39de20827e7fa178830efd84d682_p_16" class="ne-p"><span class="ne-text">父组件通过</span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">的方式向子组件传递数据，而通过</span><code class="ne-code"><span class="ne-text">$emit</span></code><span class="ne-text"> 子组件可以向父组件通信。</span></p><h3 id="erDJy"><span class="ne-text">vue2</span></h3><h4 id="0695b088"><span class="ne-text">父传子</span></h4><ul class="ne-ul"><li id="u33e89348" data-lake-index-type="0"><span class="ne-text">prop 只可以从上一级组件传递到下一级组件（父子组件），即所谓的单向数据流。而且 prop 只读，不可被修改，所有修改都会失效并警告</span></li></ul>
 <pre><code><code>&lt;!-- section父组件 --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;section&quot;&gt;
-    &lt;com-article :articles=&quot;articleList&quot;&gt;&lt;/com-article&gt;
+  &lt;div class="section"&gt;
+    &lt;com-article :articles="articleList"&gt;&lt;/com-article&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
@@ -174,7 +175,7 @@
 <pre><code><code>&lt;!-- 子组件 article.vue --&gt;
 &lt;template&gt;
   &lt;div&gt;
-    &lt;span v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/span&gt;
+    &lt;span v-for="(item, index) in articles" :key="index"&gt;&#123;&#123;item&#125;&#125;&lt;/span&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
@@ -187,8 +188,8 @@ export default &#123;
 <h4 id="g6kt3"><span class="ne-text">子传父</span></h4>
 <pre><code><code>&lt;!-- 父组件 --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;section&quot;&gt;
-    &lt;com-article :articles=&quot;articleList&quot; @onEmitIndex=&quot;onEmitIndex&quot;&gt;&lt;/com-article&gt;
+  &lt;div class="section"&gt;
+    &lt;com-article :articles="articleList" @onEmitIndex="onEmitIndex"&gt;&lt;/com-article&gt;
     &lt;p&gt;&#123;&#123;currentIndex&#125;&#125;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/template&gt;
@@ -197,7 +198,7 @@ export default &#123;
 <pre><code><code>&lt;!-- 子组件 --&gt;
 &lt;template&gt;
   &lt;div&gt;
-    &lt;div v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot; @click=&quot;emitIndex(index)&quot;&gt;&#123;&#123;item&#125;&#125;&lt;/div&gt;
+    &lt;div v-for="(item, index) in articles" :key="index" @click="emitIndex(index)"&gt;&#123;&#123;item&#125;&#125;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
@@ -214,27 +215,27 @@ export default &#123;
 </code></pre>
 <h3 id="PZU1h"><span class="ne-text">vue3（选项式）</span></h3><ol class="ne-ol"><li id="u99b7ae1e" data-lake-index-type="0"><span class="ne-text">父传子</span></li><li id="u09bac83d" data-lake-index-type="0"><span class="ne-text">子传父</span></li><li id="u4739fa61" data-lake-index-type="0"><span class="ne-text">双向响应通信</span></li></ol>
 <pre><code><code>&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
+&lt;html lang="en"&gt;
   &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta charset="UTF-8" /&gt;
     &lt;title&gt;learn vue&lt;/title&gt;
-    &lt;script src=&quot;./vue.global.js&quot;&gt;&lt;/script&gt;
+    &lt;script src="./vue.global.js"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id=&quot;app&quot;&gt;
+    &lt;div id="app"&gt;
       &lt;div&gt;parent count: &#123;&#123;count&#125;&#125;&lt;/div&gt;
       &lt;my-head
-        :title=&quot;headerTitle&quot;
-        @custom-event=&quot;handleCustomEvent&quot;
-        v-model=&quot;count&quot;
+        :title="headerTitle"
+        @custom-event="handleCustomEvent"
+        v-model="count"
       &gt;&lt;/my-head&gt;
     &lt;/div&gt;
     &lt;script&gt;
       let app = Vue.createApp(&#123;
         data() &#123;
           return &#123;
-            headerTitle: &quot;header-title&quot;,
-            count: &quot;1&quot;,
+            headerTitle: "header-title",
+            count: "1",
           &#125;;
         &#125;,
         methods: &#123;
@@ -248,7 +249,7 @@ export default &#123;
         template: `header-local-component`,
       &#125;;
       // global component
-      app.component(&quot;my-head&quot;, &#123;
+      app.component("my-head", &#123;
         props: &#123;
           title: &#123;
             type: String,
@@ -256,15 +257,15 @@ export default &#123;
           modelValue: &#123;
             type: String,
           &#125;,
-        &#125;, // or props: [&quot;title&quot;]
-        emits: [&quot;custom-event&quot;, &quot;update:modelValue&quot;],
+        &#125;, // or props: ["title"]
+        emits: ["custom-event", "update:modelValue"],
         template: `
           &lt;header&gt;
             &lt;h1&gt;&#123;&#123;headTitle&#125;&#125;&lt;/h1&gt; 
             &lt;p&gt;description&lt;/p&gt;
             &lt;p&gt;&#123;&#123;message&#125;&#125;&lt;/p&gt; 
             &lt;header-local-component&gt;&lt;/header-local-component&gt;
-            &lt;input type=&quot;text&quot; :value=&quot;modelValue&quot; @input=&quot;handleInput&quot; /&gt;
+            &lt;input type="text" :value="modelValue" @input="handleInput" /&gt;
           &lt;/header&gt;
         `,
         components: &#123;
@@ -272,26 +273,26 @@ export default &#123;
         &#125;,
         data() &#123;
           return &#123;
-            message: &quot;hello world&quot;,
+            message: "hello world",
             headTitle: this.title, // props data -&gt; responsive...
           &#125;;
         &#125;,
         mounted() &#123;
           setTimeout(() =&gt; &#123;
-            this.message = &quot;hello world2&quot;;
-            this.headTitle = &quot;head change self title...&quot;;
-            this.$emit(&quot;custom-event&quot;, &#123;
-              info: &quot;child to parent.&quot;,
+            this.message = "hello world2";
+            this.headTitle = "head change self title...";
+            this.$emit("custom-event", &#123;
+              info: "child to parent.",
             &#125;);
           &#125;, 2000);
         &#125;,
         methods: &#123;
           handleInput(e) &#123;
-            this.$emit(&quot;update:modelValue&quot;, e.target.value);
+            this.$emit("update:modelValue", e.target.value);
           &#125;,
         &#125;,
       &#125;);
-      const vm = app.mount(&quot;#app&quot;);
+      const vm = app.mount("#app");
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;
@@ -300,36 +301,36 @@ export default &#123;
 <h3 id="B7Xr9"><span class="ne-text">vue3（组合式）</span></h3><h4 id="RIZba"><span class="ne-text">defineProps和defineEmits</span></h4>
 <pre><code><code>&lt;!-- parent --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;setup-component&quot;&gt;
+  &lt;div class="setup-component"&gt;
     &lt;setup-component-1
-      :propCount=&quot;count&quot;
-      @emitChangeCount=&quot;changeEmitCount&quot;
+      :propCount="count"
+      @emitChangeCount="changeEmitCount"
     &gt;&lt;/setup-component-1&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
-<p>&lt;script setup&gt;<br>import &#123; ref &#125; from &quot;vue&quot;;<br>import SetupComponent1 from &quot;./SetupComponent1.vue&quot;;<br>const count = ref(0);<br>const changeEmitCount = (data) =&gt; &#123;<br>  console.warn(&quot;value from defineEmits: &quot;, data);<br>&#125;;<br>&lt;/script&gt;</p>
+<p>&lt;script setup&gt;<br>import &#123; ref &#125; from “vue”;<br>import SetupComponent1 from “./SetupComponent1.vue”;<br>const count = ref(0);<br>const changeEmitCount = (data) =&gt; &#123;<br>  console.warn(“value from defineEmits: “, data);<br>&#125;;<br>&lt;/script&gt;</p>
 <p>&lt;style&gt;<br>.setup-component &#123;<br>  border: 1px solid red;<br>&#125;<br>&lt;/style&gt;<br></code><br></code></pre></p>
 <pre><code><code>&lt;!-- son --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;setup-component-1&quot;&gt;
+  &lt;div class="setup-component-1"&gt;
     defineProps: &#123;&#123; propCount &#125;&#125;,
-    &lt;button @click=&quot;changeEmitMethod&quot;&gt;defineEmits&lt;/button&gt;
+    &lt;button @click="changeEmitMethod"&gt;defineEmits&lt;/button&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
 &lt;script setup&gt;
-  import &#123; defineProps, defineEmits &#125; from &quot;vue&quot;;
+  import &#123; defineProps, defineEmits &#125; from "vue";
 
   const state = defineProps(&#123;
     propCount: &#123;
       type: Number,
     &#125;,
   &#125;);
-  const emit = defineEmits([&quot;emitChangeCount&quot;]);
-  console.log(&quot;setup component 1 state: &quot;, state.propCount);
+  const emit = defineEmits(["emitChangeCount"]);
+  console.log("setup component 1 state: ", state.propCount);
   const changeEmitMethod = () =&gt; &#123;
-    emit(&quot;emitChangeCount&quot;, 111);
+    emit("emitChangeCount", 111);
   &#125;;
 &lt;/script&gt;
 
@@ -341,7 +342,7 @@ export default &#123;
 </code>
 </code></pre>
 <p id="u52c1f5a1" class="ne-p"><br></p><ul class="ne-ul"><li id="u1e5a020c" data-lake-index-type="0"><span class="ne-text">父传子组件的props里面的变量失去响应式，解决办法</span></li></ul>
-<pre><code><code>&lt;script setup lang=&quot;ts&quot;&gt;
+<pre><code><code>&lt;script setup lang="ts"&gt;
   import &#123; watch &#125; from 'vue';
   const props = defineProps(&#123;
     menuList: &#123;
@@ -354,27 +355,27 @@ export default &#123;
 <h4 id="MIVx6"><span class="ne-text">defineExpose</span></h4><p id="u3ac27403" class="ne-p" style="text-align: left"><span class="ne-text">父组件使用子组件方法</span></p>
 <pre><code><code>&lt;!-- parent --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;setup-component&quot;&gt;
-    &lt;setup-component-1 ref=&quot;setupComponent1Ref&quot;&gt;&lt;/setup-component-1&gt;
+  &lt;div class="setup-component"&gt;
+    &lt;setup-component-1 ref="setupComponent1Ref"&gt;&lt;/setup-component-1&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
-<p>&lt;script setup&gt;<br>import &#123; ref &#125; from &quot;vue&quot;;<br>import SetupComponent1 from &quot;./SetupComponent1.vue&quot;;</p>
+<p>&lt;script setup&gt;<br>import &#123; ref &#125; from “vue”;<br>import SetupComponent1 from “./SetupComponent1.vue”;</p>
 <p>const setupComponent1Ref = ref();</p>
 <p>const changeCount = () =&gt; &#123;<br>  console.log(setupComponent1Ref.value); // Proxy<br>  setupComponent1Ref.value.setupComponent1Method();<br>&#125;;<br>&lt;/script&gt;</p>
 <p>&lt;style&gt;<br>.setup-component &#123;<br>  border: 1px solid red;<br>&#125;<br>&lt;/style&gt;<br></code><br></code></pre></p>
 <pre><code><code>&lt;!-- son --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;setup-component-1&quot;&gt;
+  &lt;div class="setup-component-1"&gt;
     ...
   &lt;/div&gt;
 &lt;/template&gt;
 
 &lt;script setup&gt;
-import &#123; defineExpose &#125; from &quot;vue&quot;;
+import &#123; defineExpose &#125; from "vue";
 
 const setupComponent1Method = () =&gt; &#123;
-  console.warn(&quot;run setup component 1 setupComponent1Method...&quot;);
+  console.warn("run setup component 1 setupComponent1Method...");
 &#125;;
 defineExpose(&#123;
   setupComponent1Method,
@@ -391,10 +392,10 @@ defineExpose(&#123;
 <h2 id="jjpSa"><span class="ne-text">二、 $children / $parent</span></h2><h3 id="fwpyE"><span class="ne-text">vue2</span></h3><p id="a53b13677e55fdbc670902cf2d24e401_p_31" class="ne-p"><span class="ne-text">通过</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">就可以访问组件的实例，拿到实例代表什么？代表可以访问此组件的所有方法和</span><code class="ne-code"><span class="ne-text">data</span></code><span class="ne-text">。接下来就是怎么实现拿到指定组件的实例。</span></p>
 <pre><code><code>&lt;!-- 父组件中 --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;hello_world&quot;&gt;
+  &lt;div class="hello_world"&gt;
     &lt;div&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;
     &lt;com-a&gt;&lt;/com-a&gt;
-    &lt;button @click=&quot;changeA&quot;&gt;点击改变子组件值&lt;/button&gt;
+    &lt;button @click="changeA"&gt;点击改变子组件值&lt;/button&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
@@ -402,7 +403,7 @@ defineExpose(&#123;
 <p>  methods: &#123;<br>    changeA() &#123;<br>      // 获取到子组件A<br>      this.$children[0].messageA = ‘this is new value’<br>    &#125;<br>  &#125;<br>&#125;<br>&lt;/script&gt;</code><br></code></pre></p>
 <pre><code><code>&lt;!-- 子组件中 --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;com_a&quot;&gt;
+  &lt;div class="com_a"&gt;
     &lt;span&gt;&#123;&#123;messageA&#125;&#125;&lt;/span&gt;
     &lt;p&gt;获取父组件的值为:  &#123;&#123;parentVal&#125;&#125;&lt;/p&gt;
   &lt;/div&gt;
@@ -430,7 +431,7 @@ export default &#123;
   &lt;/div&gt;
 &lt;/template&gt;
 
-<p>&lt;script&gt;<br>  import comB from ‘../components/test/comB.vue’<br>  export default &#123;<br>    name: &quot;A&quot;,<br>    provide: &#123;<br>      for: &quot;demo&quot;<br>    &#125;,<br>    components:&#123;<br>      comB<br>    &#125;<br>  &#125;<br>&lt;/script&gt;</code><br></code></pre></p>
+<p>&lt;script&gt;<br>  import comB from ‘../components/test/comB.vue’<br>  export default &#123;<br>    name: “A”,<br>    provide: &#123;<br>      for: “demo”<br>    &#125;,<br>    components:&#123;<br>      comB<br>    &#125;<br>  &#125;<br>&lt;/script&gt;</code><br></code></pre></p>
 <pre><code><code>&lt;!-- B.vue --&gt;
 &lt;template&gt;
   &lt;div&gt;
@@ -442,7 +443,7 @@ export default &#123;
 &lt;script&gt;
   import comC from '../components/test/comC.vue'
   export default &#123;
-    name: &quot;B&quot;,
+    name: "B",
     inject: ['for'],
     data() &#123;
       return &#123;
@@ -465,7 +466,7 @@ export default &#123;
 
 &lt;script&gt;
   export default &#123;
-    name: &quot;C&quot;,
+    name: "C",
     inject: ['for'],
     data() &#123;
       return &#123;
@@ -478,17 +479,17 @@ export default &#123;
 <h3 id="dK3MQ"><span class="ne-text">vue3（选项式）</span></h3>
 <pre><code><code>&lt;script&gt;
 export default &#123;
-  name: &quot;HelloWorld&quot;,
+  name: "HelloWorld",
   data() &#123;
     return &#123;
-      provideData: &quot;HelloWorldMsg&quot;,
+      provideData: "HelloWorldMsg",
     &#125;;
   &#125;,
   provide() &#123;
     return &#123;
       provideData: this.provideData,
       getData(data) &#123;
-        console.warn(&quot;getData: &quot;, data);
+        console.warn("getData: ", data);
       &#125;,
     &#125;;
   &#125;,
@@ -498,44 +499,44 @@ export default &#123;
 
 <pre><code><code>&lt;script&gt;
 export default &#123;
-  name: &quot;component-1&quot;,
-  inject: [&quot;provideData&quot;, &quot;getData&quot;],
+  name: "component-1",
+  inject: ["provideData", "getData"],
   mounted() &#123;
-    this.getData(&quot;3333333333&quot;);
+    this.getData("3333333333");
   &#125;,
 &#125;;
 &lt;/script&gt;</code>
 </code></pre>
 <h3 id="klrTS"><span class="ne-text">vue3（组合式）</span></h3><ul class="ne-ul"><li id="ud1348880" data-lake-index-type="0"><span class="ne-text">provide注入，inject接收，注入响应式数据，inject也同样响应式</span></li><li id="u1f1b6d3a" data-lake-index-type="0"><span class="ne-text">如果在inject接收的组件中修改响应式数据，也是生效的，但是不推荐，会造成通信数据混乱，如果要实现这种效果，推荐将</span><strong><span class="ne-text">响应式变量传入的时候加一个readonly同时注入一个修改响应式变量的回调函数</span></strong><span class="ne-text">来实现</span></li></ul>
 <pre><code><code>&lt;template&gt;
-  &lt;div class=&quot;setup-component&quot;&gt;
+  &lt;div class="setup-component"&gt;
     &lt;h3&gt;setup component:&lt;/h3&gt;
-    &lt;button @click=&quot;changeCount&quot;&gt;change&lt;/button&gt;
+    &lt;button @click="changeCount"&gt;change&lt;/button&gt;
     &lt;p&gt;count: &#123;&#123; count &#125;&#125;&lt;/p&gt;
     &lt;setup-component-1&gt;&lt;/setup-component-1&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
-<p>&lt;script setup&gt;<br>import &#123; ref, readonly &#125; from &quot;vue&quot;;<br>import SetupComponent1 from &quot;./SetupComponent1.vue&quot;;<br>const count = ref(0);<br>provide(&quot;count&quot;, readonly(count));<br>provide(&quot;changeCount&quot;, changeCount);<br>&lt;/script&gt;</p>
+<p>&lt;script setup&gt;<br>import &#123; ref, readonly &#125; from “vue”;<br>import SetupComponent1 from “./SetupComponent1.vue”;<br>const count = ref(0);<br>provide(“count”, readonly(count));<br>provide(“changeCount”, changeCount);<br>&lt;/script&gt;</p>
 <p>&lt;style&gt;<br>.setup-component &#123;<br>  border: 1px solid red;<br>&#125;<br>&lt;/style&gt;<br></code><br></code></pre></p>
 <p id="u6244a92a" class="ne-p"><br></p>
 <pre><code><code>&lt;template&gt;
-  &lt;div class=&quot;setup-component-1&quot;&gt;
-    &lt;button @click=&quot;changeCount&quot;&gt;change count from inject component&lt;/button&gt;
+  &lt;div class="setup-component-1"&gt;
+    &lt;button @click="changeCount"&gt;change count from inject component&lt;/button&gt;
     &#123;&#123; count &#125;&#125;
   &lt;/div&gt;
 &lt;/template&gt;
 
-<p>&lt;script setup&gt;<br>import &#123; inject &#125; from &quot;vue&quot;;</p>
-<p>const count = inject(&quot;count&quot;);<br>const changeCount = inject(&quot;changeCount&quot;);<br>&lt;/script&gt;</p>
+<p>&lt;script setup&gt;<br>import &#123; inject &#125; from “vue”;</p>
+<p>const count = inject(“count”);<br>const changeCount = inject(“changeCount”);<br>&lt;/script&gt;</p>
 <p>&lt;style&gt;<br>.setup-component-1 &#123;<br>  border: 1px blue solid;<br>&#125;<br>&lt;/style&gt;<br></code><br></code></pre></p>
 <h2 id="ZNDHX"><span class="ne-text">四、$ref / $refs</span></h2><ol class="ne-ol"><li id="u796b5746" data-lake-index-type="0"><span class="ne-text">v-for 用于元素或组件时,引用信息将是</span><strong><span class="ne-text">包含 DOM 节点或组件实例的数组，</span></strong><span class="ne-text">按照这个理解，可以直接利用$refs来获取dom元素</span></li></ol>
-<pre><code><code>this.$refs.addAlert.style.display = &quot;block&quot;;</code>
+<pre><code><code>this.$refs.addAlert.style.display = "block";</code>
 </code></pre>
 <ol start="2" class="ne-ol"><li id="u51830fc2" data-lake-index-type="0"><span class="ne-text">$refs只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问$refs。这是官方说法，提倡props来操作，缺点就是非响应式的</span></li><li id="ufbf03f96" data-lake-index-type="0"><span class="ne-text">ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</span></li></ol><h3 id="yutzL"><span class="ne-text">vue2</span></h3><p id="1072ea36c24eecae31028b57db98b711_p_51" class="ne-p"><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text">：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例，可以通过实例直接调用组件的方法或访问数据， 我们看一个</span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> 来访问组件的例子:</span></p>
 <pre><code><code>&lt;!-- 父组件 app.vue --&gt;
 &lt;template&gt;
-  &lt;component-a ref=&quot;comA&quot;&gt;&lt;/component-a&gt;
+  &lt;component-a ref="comA"&gt;&lt;/component-a&gt;
 &lt;/template&gt;
 
 <p>&lt;script&gt;<br>  export default &#123;<br>    mounted () &#123;<br>      const comA = this.$refs.comA;<br>      console.log(comA.name);  // Vue.js<br>      comA.sayHello();  // hello<br>    &#125;<br>  &#125;<br>&lt;/script&gt;</code><br></code></pre></p>
@@ -562,13 +563,13 @@ export default &#123;
 <h3 id="sqXaw"><span class="ne-text">和v-for共使用</span></h3><p id="u22aa1746" class="ne-p"><span class="ne-text">遇到过这个场景，在父组件里面需要多次渲染子组件</span></p>
 <pre><code><code>&lt;template&gt;
   &lt;!-- 直播绑定 --&gt;
-  &lt;div slot=&quot;liveBind&quot;&gt;
+  &lt;div slot="liveBind"&gt;
     &lt;AddLiveBindItem
-      v-for=&quot;(data, index) in datas&quot;
-      :key=&quot;data.id&quot;
-      :dataConfig=&quot;data.dataConfig&quot;
-      :isFirst=&quot;index === 0 ? true : false&quot;
-      :liveBindId=&quot;
+      v-for="(data, index) in datas"
+      :key="data.id"
+      :dataConfig="data.dataConfig"
+      :isFirst="index === 0 ? true : false"
+      :liveBindId="
       index === 0
       ? 1
       : index === 1
@@ -580,9 +581,9 @@ export default &#123;
       : index === 4
       ? 5
       : 6
-      &quot;
-      @toDeleteLiveBind=&quot;toDeleteLiveBind(index)&quot;
-      ref=&quot;addLiveBindRef&quot;
+      "
+      @toDeleteLiveBind="toDeleteLiveBind(index)"
+      ref="addLiveBindRef"
       /&gt;
   &lt;/div&gt;
 &lt;/template&gt;
@@ -617,7 +618,7 @@ export const EventBus = new Vue()</code>
 <pre><code><code>&lt;!-- addtionNum.vue 中发送事件 --&gt;
 &lt;template&gt;
   &lt;div&gt;
-    &lt;button @click=&quot;additionHandle&quot;&gt;+加法器&lt;/button&gt;    
+    &lt;button @click="additionHandle"&gt;+加法器&lt;/button&gt;    
   &lt;/div&gt;
 &lt;/template&gt;
 
@@ -637,7 +638,7 @@ EventBus.$off('addition', &#123;&#125;)</code>
 <h2 id="FvhVC"><span class="ne-text">六、Vuex</span></h2><h3 id="IAleg"><span class="ne-text">1. Vuex 介绍</span></h3><p id="f31764caf4edb6337889991729dab76f_p_79" class="ne-p"><span class="ne-text">Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化. Vuex 解决了</span><code class="ne-code"><span class="ne-text">多个视图依赖于同一状态</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">来自不同视图的行为需要变更同一状态</span></code><span class="ne-text">的问题，将开发者的精力聚焦于数据的更新而不是数据在组件之间的传递上</span></p><h3 id="NOLew"><span class="ne-text">2. Vuex 各个模块</span></h3><ol class="ne-ol"><li id="086fc566ad1f3e20b5c4075a7729ead3_li_2" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">state</span></code><span class="ne-text">：用于数据的存储，是 store 中的唯一数据源</span></li></ol><ol start="2" class="ne-ol"><li id="8f90ea99e20515a11d0d1c9f1f7e0553_li_3" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">getters</span></code><span class="ne-text">：如 vue 中的计算属性一样，基于 state 数据的二次包装，常用于数据的筛选和多个数据的相关性计算</span></li></ol><ol start="3" class="ne-ol"><li id="e6273b5a39a57288e5a1a89f2bc1fcfe_li_4" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">mutations</span></code><span class="ne-text">：类似函数，改变 state 数据的唯一途径，且不能用于处理异步事件</span></li></ol><ol start="4" class="ne-ol"><li id="a7a27b1b632925547190afbe9ad7fb4b_li_5" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">actions</span></code><span class="ne-text">：类似于</span><code class="ne-code"><span class="ne-text">mutation</span></code><span class="ne-text">，用于提交</span><code class="ne-code"><span class="ne-text">mutation</span></code><span class="ne-text">来改变状态，而不直接变更状态，可以包含任意异步操作</span></li></ol><ol start="5" class="ne-ol"><li id="d03ef67930c7afc0424138385fa658e8_li_6" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">modules</span></code><span class="ne-text">：类似于命名空间，用于项目中将各个模块的状态分开定义和操作，便于维护</span></li></ol><h3 id="UpZvv"><span class="ne-text">3. Vuex 实例应用</span></h3>
 <pre><code><code>&lt;!-- 父组件 --&gt;
 &lt;template&gt;
-  &lt;div id=&quot;app&quot;&gt;
+  &lt;div id="app"&gt;
     &lt;ChildA/&gt;
     &lt;ChildB/&gt;
   &lt;/div&gt;
@@ -647,9 +648,9 @@ EventBus.$off('addition', &#123;&#125;)</code>
 <p>  export default &#123;<br>    name: ‘App’,<br>    components: &#123;ChildA, ChildB&#125; // 注册A、B组件<br>  &#125;<br>&lt;/script&gt;</code><br></code></pre></p>
 <pre><code><code>&lt;!-- 子组件childA --&gt;
 &lt;template&gt;
-  &lt;div id=&quot;childA&quot;&gt;
+  &lt;div id="childA"&gt;
     &lt;h1&gt;我是A组件&lt;/h1&gt;
-    &lt;button @click=&quot;transform&quot;&gt;点我让B组件接收到数据&lt;/button&gt;
+    &lt;button @click="transform"&gt;点我让B组件接收到数据&lt;/button&gt;
     &lt;p&gt;因为你点了B，所以我的信息发生了变化：&#123;&#123;BMessage&#125;&#125;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/template&gt;
@@ -681,9 +682,9 @@ EventBus.$off('addition', &#123;&#125;)</code>
 
 <pre><code><code>&lt;!-- 子组件 childB --&gt;
 &lt;template&gt;
-  &lt;div id=&quot;childB&quot;&gt;
+  &lt;div id="childB"&gt;
     &lt;h1&gt;我是B组件&lt;/h1&gt;
-    &lt;button @click=&quot;transform&quot;&gt;点我让A组件接收到数据&lt;/button&gt;
+    &lt;button @click="transform"&gt;点我让A组件接收到数据&lt;/button&gt;
     &lt;p&gt;因为你点了A，所以我的信息发生了变化：&#123;&#123;AMessage&#125;&#125;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/template&gt;
@@ -738,27 +739,27 @@ sessionStorage.setItem(
 &lt;template&gt;
   &lt;div&gt;
     &lt;child-com1
-      :name=&quot;name&quot;
-      :age=&quot;age&quot;
-      :gender=&quot;gender&quot;
-      :height=&quot;height&quot;
-      title=&quot;程序员成长指北&quot;
+      :name="name"
+      :age="age"
+      :gender="gender"
+      :height="height"
+      title="程序员成长指北"
     &gt;&lt;/child-com1&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
-<p>&lt;script&gt;<br>const childCom1 = () =&gt; import(&quot;./childCom1.vue&quot;);<br>export default &#123;<br>  components: &#123; childCom1 &#125;,<br>  data() &#123;<br>    return &#123;<br>      name: &quot;zhang&quot;,<br>      age: &quot;18&quot;,<br>      gender: &quot;女&quot;,<br>      height: &quot;158&quot;<br>    &#125;;<br>  &#125;<br>&#125;;<br>&lt;/script&gt;</code><br></code></pre></p>
+<p>&lt;script&gt;<br>const childCom1 = () =&gt; import(“./childCom1.vue”);<br>export default &#123;<br>  components: &#123; childCom1 &#125;,<br>  data() &#123;<br>    return &#123;<br>      name: “zhang”,<br>      age: “18”,<br>      gender: “女”,<br>      height: “158”<br>    &#125;;<br>  &#125;<br>&#125;;<br>&lt;/script&gt;</code><br></code></pre></p>
 <pre><code><code>&lt;!-- childCom1.vue --&gt;
-&lt;template class=&quot;border&quot;&gt;
+&lt;template class="border"&gt;
   &lt;div&gt;
     &lt;p&gt;name: &#123;&#123; name&#125;&#125;&lt;/p&gt;
     &lt;p&gt;childCom1的$attrs: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;
-    &lt;child-com2 v-bind=&quot;$attrs&quot;&gt;&lt;/child-com2&gt;
+    &lt;child-com2 v-bind="$attrs"&gt;&lt;/child-com2&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 
 &lt;script&gt;
-  const childCom2 = () =&gt; import(&quot;./childCom2.vue&quot;);
+  const childCom2 = () =&gt; import("./childCom2.vue");
   export default &#123;
     components: &#123;
       childCom2
@@ -769,7 +770,7 @@ sessionStorage.setItem(
     &#125;,
     created() &#123;
       console.log(this.$attrs);
-      // &#123; &quot;age&quot;: &quot;18&quot;, &quot;gender&quot;: &quot;女&quot;, &quot;height&quot;: &quot;158&quot;, &quot;title&quot;: &quot;程序员成长指北&quot; &#125;
+      // &#123; "age": "18", "gender": "女", "height": "158", "title": "程序员成长指北" &#125;
     &#125;
   &#125;;
 &lt;/script&gt;</code>
@@ -777,7 +778,7 @@ sessionStorage.setItem(
 
 <pre><code><code>&lt;!-- childCom2.vue --&gt;
 &lt;template&gt;
-  &lt;div class=&quot;border&quot;&gt;
+  &lt;div class="border"&gt;
     &lt;p&gt;age: &#123;&#123; age&#125;&#125;&lt;/p&gt;
     &lt;p&gt;childCom2: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;
   &lt;/div&gt;
@@ -791,12 +792,12 @@ sessionStorage.setItem(
     &#125;,
     created() &#123;
       console.log(this.$attrs); 
-      // &#123; &quot;gender&quot;: &quot;女&quot;, &quot;height&quot;: &quot;158&quot;, &quot;title&quot;: &quot;程序员成长指北&quot; &#125;
+      // &#123; "gender": "女", "height": "158", "title": "程序员成长指北" &#125;
     &#125;
   &#125;;
 &lt;/script&gt;</code>
 </code></pre>
-<h2 id="d3gur"><span class="ne-text">总结</span></h2><p id="d1dd1ab4b6c9dd3f0d10d775396b2c46_p_101" class="ne-p"><span class="ne-text">常见使用场景可以分为三类:</span></p><ul class="ne-ul"><li id="38d84b7f285f00e4e99192b24cdc3891_li_10" data-lake-index-type="0"><span class="ne-text">父子组件通信: </span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><ul class="ne-ul"><li id="3e789b8578fdd7d181db9f576fa76889_li_11" data-lake-index-type="0"><span class="ne-text">兄弟组件通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> ; vuex</span></li></ul><ul class="ne-ul"><li id="e10c2c9737bf8956c62733553c8b2e96_li_12" data-lake-index-type="0"><span class="ne-text">跨级通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">；Vuex；</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 、</span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><h3 id="Slz4b"><span class="ne-text">Conference</span></h3><ul class="ne-ul"><li id="uf0c5f17a" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903887162310669" data-href="https://juejin.cn/post/6844903887162310669" class="ne-link"><span class="ne-text">vue中8种组件通信方式, 值得收藏! - 掘金</span></a></li></ul><p id="de46638becbf26f6c7e35f22ece99363_p_108" class="ne-p"><span class="ne-text"><br /></span></p></div>
+<h2 id="d3gur"><span class="ne-text">总结</span></h2><p id="d1dd1ab4b6c9dd3f0d10d775396b2c46_p_101" class="ne-p"><span class="ne-text">常见使用场景可以分为三类:</span></p><ul class="ne-ul"><li id="38d84b7f285f00e4e99192b24cdc3891_li_10" data-lake-index-type="0"><span class="ne-text">父子组件通信: </span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><ul class="ne-ul"><li id="3e789b8578fdd7d181db9f576fa76889_li_11" data-lake-index-type="0"><span class="ne-text">兄弟组件通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> ; vuex</span></li></ul><ul class="ne-ul"><li id="e10c2c9737bf8956c62733553c8b2e96_li_12" data-lake-index-type="0"><span class="ne-text">跨级通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">；Vuex；</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 、</span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><h3 id="Slz4b"><span class="ne-text">Conference</span></h3><ul class="ne-ul"><li id="uf0c5f17a" data-lake-index-type="0"><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903887162310669" data-href="https://juejin.cn/post/6844903887162310669" class="ne-link"><span class="ne-text">vue中8种组件通信方式, 值得收藏! - 掘金</span></a></li></ul><p id="de46638becbf26f6c7e35f22ece99363_p_108" class="ne-p"><span class="ne-text"><br></span></p></div>
   </div>
   <div class="article-toc-content">
     <div class="toc_container">
@@ -804,8 +805,8 @@ sessionStorage.setItem(
 </div>
   </div>
 </div>
-    
-    
+      
+      
 
 <div class="component article_more">
   <ul>
@@ -831,8 +832,8 @@ sessionStorage.setItem(
     </li>
   </ul>
 </div>
-    
-    <div class="prev_next component">
+      
+      <div class="prev_next component">
   
   
   <span class="prev_next_left">
@@ -853,9 +854,9 @@ sessionStorage.setItem(
   
   
 </div>
-    
-    
-    <div class="component clearfix comments" id="comments" style="display: block">
+      
+      
+      <div class="component clearfix comments" id="comments" style="display: block">
   <div class="comments_title">
     <h2>评论区</h2>
     <!-- 转换评论按钮 -->
@@ -877,21 +878,21 @@ sessionStorage.setItem(
     </div>
   </div>
 </div>
-    
-    
-    <footer class="footer">
-      <div class="content">
+      
+      
+      <footer class="footer">
+        <div class="content">
   <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">
     <img src="https://s1.ax1x.com/2022/10/19/xyiAH0.png" style="height: 50px" />
   </a>
   <div><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">赣ICP备20002826号-1</a></div>
   <div><a href="/about">联系方式</a></div>
 </div>
-    </footer>
-  </div>
-  <div class="ct_right">
-    
-    <div class="component clearfix board">
+      </footer>
+    </div>
+    <div class="ct_right">
+      
+      <div class="component clearfix board">
   <h3>公告栏</h3>
   <div class="board_content">
     <p>
@@ -905,13 +906,13 @@ sessionStorage.setItem(
     </p> -->
   </div>
 </div>
-    
-    <div class="component clearfix categories">
+      
+      <div class="component clearfix categories">
   <h3>文章分类</h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">101</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">138</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
+  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/">Web开发</a><span class="category-list-count">96</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Bug%E8%AE%B0%E5%BD%95/">Bug记录</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DataBase/">DataBase</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/DevOps/">DevOps</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/HTML-CSS/">HTML+CSS</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/">JavaScript</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/BOM/">BOM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/DOM/">DOM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/ECMAScript/">ECMAScript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/JavaScript/jQuery/">jQuery</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Node-js/">Node.js</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/React/">React</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/TypeScript/">TypeScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/Vue/">Vue</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">前端业务解决方案</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">前端性能优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web%E5%BC%80%E5%8F%91/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/">博客技术</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%82%E4%B8%96%E7%95%8C/">异世界</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%B1%E8%A7%86/">影视</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%99%E7%90%86/">料理</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/">计算机素养</a><span class="category-list-count">140</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/Git%E5%92%8CGitHub/">Git和GitHub</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">代码调试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">后端编程语言</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/">C++</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JAVA/">JAVA</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%90%8E%E7%AB%AF%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/">Python</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E2%9A%99%EF%B8%8F%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95/">⚙️计算算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%8C%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/">🌌递归算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%8C%B2%E6%A0%91%E7%BB%93%E6%9E%84%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">🌲树结构：二叉树-哈夫曼树</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">💕贪心算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/">📉图结构：无向图-有向图</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8A%E6%9F%A5%E6%89%BE%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">📊查找排序算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">📌数据结构和算法综述</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/">📶线结构：字符串-数组-栈-队列</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%90RSA%E7%AE%97%E6%B3%95/">🔐RSA算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%97%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E9%93%BE%E8%A1%A8/">🔗线结构：链表</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">🔢动态规划算法</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%94%A4%E7%A9%B7%E4%B8%BE%E7%AE%97%E6%B3%95/">🔤穷举算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A5%A2KMP%E7%B1%BB%E7%AE%97%E6%B3%95/">🥢KMP类算法</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%F0%9F%A7%AE%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95/">🧮分治算法</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B4%A0%E5%85%BB/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%85%E8%AF%BB/">阅读</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">26</span></li></ul>
 </div>
-    
-    <div class="component clearfix new_comments">
+      
+      <div class="component clearfix new_comments">
   <h3 class="title">最新评论</h3>
   <div class="new_comments_loding">
     <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -932,7 +933,8 @@ sessionStorage.setItem(
         <a href="' + new_comments_url + new_comments_id + '">' + new_comments_content + '</a>
     </div>'
  -->
-    
+      
+    </div>
   </div>
 </main>
 <div class="lyrics-bg">
