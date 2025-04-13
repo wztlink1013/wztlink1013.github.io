@@ -252,9 +252,9 @@ public class ArrayDequeStack {
   
   
   <span class="prev_next_left">
-    <a href="/blog/02_html5css3_day02/">
+    <a href="/blog/03_html5css3_day03/">
       <span class="tips"><i class="fa fa-arrow-left" aria-hidden="true"></i>上一篇</span>
-      <b>CSS中的2D动画</b>
+      <b>CSS中的3D效果</b>
     </a>
   </span>
   <br>
@@ -438,7 +438,7 @@ public class ArrayDequeStack {
 <script src="/public/js/plugins/highlight/10.7.1/highlight.min.js"></script>
 
     
-<script src="/public/js/plugins/twikoo/twikoo.all.min.js"></script>
+<script src="/public/js/plugins/twikoo/1.6.42/twikoo.all.min.js"></script>
 
     
 <script src="/public/js/plugins/typed.js/2.0.11.js"></script>
@@ -454,6 +454,43 @@ public class ArrayDequeStack {
 
     
 
+    <script>
+      if ('serviceWorker' in navigator) {
+        const SW_DISABLED_KEY = 'wztlink1013_disable';
+        if (/sw=disable/.test(window.location.search)) {
+          localStorage.setItem(SW_DISABLED_KEY, 'true');
+        } else if (/sw=enable/.test(window.location.search)) {
+          localStorage.removeItem(SW_DISABLED_KEY);
+        }
+        const isSWDisabled = localStorage.getItem(SW_DISABLED_KEY) === 'true';
+        try {
+          if (!isSWDisabled) {
+            navigator.serviceWorker
+              .register('/sw.min.js')
+              .then(() => {
+                console.info('✅ [s] r s');
+              })
+              .catch(error => {
+                console.error('⛔ [s] r f: ', error);
+              });
+          } else {
+            navigator.serviceWorker
+              .getRegistration()
+              .then(registration => {
+                if (registration) {
+                  registration.unregister();
+                  console.info('✅ [s] ur s');
+                }
+              })
+              .catch(error => {
+                console.error('⛔ [s] ur f: ', error);
+              });
+          }
+        } catch (error) {
+          console.error('❓ [s] e', error);
+        }
+      }
+    </script>
     <script type="module">
       import {
         codeToHtml
