@@ -107,7 +107,7 @@
   </div>
   <div>
     <span>已运行时间：</span>
-    1949
+    2001
     <span>天</span>
   </div>
   <img src="https://api.luvying.com/acgimg" />
@@ -169,7 +169,7 @@
   <div class="article-content">
     
 
-<div class="lake-content" typography="classic"><p id="ue2cb4a43" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1709186151285-0873ba2c-2ec2-49c1-a9f7-91971c51460f.png" width="1579.1666039162237" id="uc3d67a17" class="ne-image"></p><p id="uf4d7e961" class="ne-p"><span class="ne-text">前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。</span></p><h3 id="ikwbc"><span class="ne-text">一、GitHub Actions环境准备</span></h3><p id="uf7143646" class="ne-p"><span class="ne-text">GitHub Actions脚本的执行涉及一些敏感变量，在GitHub仓库中可以设置隐形变量防止暴露在外，只有在 GitHub Actions 中才能使用到</span></p><p id="ua08b3c13" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1709183847317-5c3b51ab-6524-4443-88eb-3c361a32e1cc.png" width="1111.6666224930038" id="u294f3f6d" class="ne-image"></p><p id="u197af0e8" class="ne-p"><span class="ne-text">环境变量含义：</span></p><ol class="ne-ol"><li id="uf855a872" data-lake-index-type="0"><span class="ne-text">KEY（密钥）</span></li><li id="ub493d228" data-lake-index-type="0"><span class="ne-text">PASSPHRASE（加密私钥的密码）</span></li><li id="udd55ac46" data-lake-index-type="0"><span class="ne-text">SERVER_IP（云服务器公网IP）</span></li><li id="udc38e6a5" data-lake-index-type="0"><span class="ne-text">USERNAME（云服务器登录用户名， 通常为root）</span></li></ol><blockquote data-type="color2" class="ne-alert" style="background-color: rgba(199, 240, 223, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="u75ef5804" class="ne-p"><span class="ne-text">📌</span><span class="ne-text"> </span><code class="ne-code"><span class="ne-text">KEY</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">PASSPHRASE</span></code><span class="ne-text">分别为下面截图中的2和1</span></p></blockquote><p id="u99f5b2c5" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1708961842486-da9a4392-86a2-4f32-92ef-06702be0a712.png" width="986.9921875" id="ub4020674" class="ne-image"></p><h3 id="LqgtN"><span class="ne-text">二、GitHub Actions脚本编写</span></h3><p id="uda06d594" class="ne-p"><span class="ne-text">脚本需要做的事情有如下几点：</span></p><ol class="ne-ol"><li id="uf66054c0" data-lake-index-type="0"><span class="ne-text">项目打包成静态文件</span></li><li id="u3e5cf593" data-lake-index-type="0"><span class="ne-text">将打包后的静态文件上传至云服务器指定文件夹</span></li></ol><h4 id="liMcO"><span class="ne-text">打包成静态文件</span></h4><p id="u5407fa59" class="ne-p"><span class="ne-text">执行项目打包命令</span></p><pre data-language="yaml" id="KycI5" class="ne-codeblock language-yaml"><code>- name: Use Node.js $&#123;&#123; matrix.node-version &#125;&#125;
+<div class="lake-content" typography="classic"><p id="ue2cb4a43" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1709186151285-0873ba2c-2ec2-49c1-a9f7-91971c51460f.png" width="1579.1666039162237" title="" crop="0,0,1,1" id="uc3d67a17" class="ne-image"></p><p id="uf4d7e961" class="ne-p"><span class="ne-text">前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。</span></p><h3 id="ikwbc"><span class="ne-text">一、GitHub Actions环境准备</span></h3><p id="uf7143646" class="ne-p"><span class="ne-text">GitHub Actions脚本的执行涉及一些敏感变量，在GitHub仓库中可以设置隐形变量防止暴露在外，只有在 GitHub Actions 中才能使用到</span></p><p id="ua08b3c13" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1709183847317-5c3b51ab-6524-4443-88eb-3c361a32e1cc.png" width="1111.6666224930038" title="" crop="0,0,1,1" id="u294f3f6d" class="ne-image"></p><p id="u197af0e8" class="ne-p"><span class="ne-text">环境变量含义：</span></p><ol class="ne-ol"><li id="ub493d228" data-lake-index-type="0"><span class="ne-text">PASSPHRASE（加密私钥的密码）</span></li><li id="uf855a872" data-lake-index-type="0"><span class="ne-text">KEY（密钥）</span></li><li id="udd55ac46" data-lake-index-type="0"><span class="ne-text">SERVER_IP（云服务器公网IP）</span></li><li id="udc38e6a5" data-lake-index-type="0"><span class="ne-text">USERNAME（云服务器登录用户名， 通常为root）</span></li></ol><blockquote data-type="color2" class="ne-alert" style="background-color: rgba(199, 240, 223, 0.5); border: 1px solid transparent; margin: 4px 0px; padding: 10px; border-radius: 4px;"><p id="u75ef5804" class="ne-p"><span class="ne-text">📌</span><span class="ne-text"> </span><code class="ne-code"><span class="ne-text">PASSPHRASE</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">KEY</span></code><span class="ne-text">分别为下面截图中的1和2</span></p></blockquote><p id="u99f5b2c5" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1708961842486-da9a4392-86a2-4f32-92ef-06702be0a712.png" width="986.9921875" title="" crop="0,0,1,1" id="ub4020674" class="ne-image"></p><h3 id="LqgtN"><span class="ne-text">二、GitHub Actions脚本编写</span></h3><p id="uda06d594" class="ne-p"><span class="ne-text">脚本需要做的事情有如下几点：</span></p><ol class="ne-ol"><li id="uf66054c0" data-lake-index-type="0"><span class="ne-text">项目打包成静态文件</span></li><li id="u3e5cf593" data-lake-index-type="0"><span class="ne-text">将打包后的静态文件上传至云服务器指定文件夹</span></li></ol><h4 id="liMcO"><span class="ne-text">打包成静态文件</span></h4><p id="u5407fa59" class="ne-p"><span class="ne-text">执行项目打包命令</span></p><pre data-language="yaml" id="KycI5" class="ne-codeblock language-yaml"><code>- name: Use Node.js $&#123;&#123; matrix.node-version &#125;&#125;
   uses: actions/setup-node@v4
   with:
     node-version: $&#123;&#123; matrix.node-version &#125;&#125;
@@ -522,6 +522,44 @@ jobs:
         }
       }
     </script>
+<script>
+  const d1 = ['w','z','t','l','i','n','k'];
+  const d2 = ['1','0','1','3'];          
+  const dot = '.';
+  const com = ['c','o','m'];
+  const gh = ['g','i','t','h','u','b'];
+  const io = ['i','o'];
+
+  const domain1 = d1.join('') + d2.join('') + dot + com.join('');           
+  const domain2 = 'www.' + d1.join('') + d2.join('') + dot + com.join('');     
+  const domain3 = d1.join('') + d2.join('') + dot + gh.join('') + dot + io.join(''); 
+
+  const allowedHostnames = [domain1, domain2, domain3];
+  const currentHost = window.location.hostname;
+  const isTrusted = allowedHostnames.includes(currentHost);
+
+  if (!isTrusted) {
+    try {
+      if (window.top !== window.self) {
+        window.top.location = window.self.location;
+      }
+    } catch (e) {}
+
+    const msg = [
+      '<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:sans-serif;text-align:center;padding:2rem;">',
+      '<h2>⚠️ 非法镜像站已被拦截</h2>',
+      '<p>本页面复制自原创网站 <a href="https://' + domain1 + '" target="_blank">https://' + domain1 + '</a>，内容已受到版权保护。</p>',
+      '<p>请访问官方网站以获取原始内容。</p>',
+      '<a href="https://' + domain1 + '" style="margin-top:20px;padding:10px 20px;background:#09b1e8;color:white;text-decoration:none;border-radius:5px;">前往官网</a>',
+      '</div>'
+    ].join('');
+
+    document.documentElement.innerHTML = '';
+    document.write(msg);
+    document.close();
+  }
+</script>
+
     <script type="module">
       import {
         codeToHtml
