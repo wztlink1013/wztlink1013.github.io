@@ -1,0 +1,587 @@
+1:"$Sreact.fragment"
+2:I[99897,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"MotionPreset"]
+3:I[22016,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],""]
+4:I[85437,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Image"]
+5:I[48347,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"default"]
+6:I[72436,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Separator"]
+d:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+e:"$Sreact.suspense"
+7:T8fbd,<!doctype html><div class="lake-content" typography="classic"><p id="497144d8506882a2db679d679af2acea_p_4" class="ne-p"><span class="ne-text">前言：Vue 是数据驱动视图更新的框架，所以对于组件之间的数据通信非常重要，常见的Vue 组件关系如下：</span></p><img src="https://cdn.nlark.com/yuque/0/2025/jpeg/1484158/1742954523073-7ee0d51d-48ad-4b43-bcea-c619f42fd23f.jpeg" id="Nu7KY" style="display: block; width: 100%"><p id="277ac1b9a01a26e550f334d2d650a2af_p_8" class="ne-p"><span class="ne-text">如上图所示, A 与 B、A 与 C、B 与 D、C 与 E 组件之间是父子关系； B 与 C 之间是兄弟关系；A 与 D、A 与 E 之间是隔代关系； D 与 E 是堂兄关系（非直系亲属） 针对以上关系我们归类为：</span></p><ul class="ne-ul"><li id="e921ea6da6315ea6a03b83b1fbdb45ce_li_0" data-lake-index-type="0"><span class="ne-text">父子组件之间通信</span></li></ul><ul class="ne-ul"><li id="afaa832eef1dad88d3692c9ee7c0cb23_li_1" data-lake-index-type="0"><span class="ne-text">非父子组件之间通信 (兄弟组件、隔代关系组件等)</span></li></ul><p id="95350d3f636bad4a4fd5424d38f13bf2_p_11" class="ne-p"><span class="ne-text">本文介绍组件间（Vue2和Vue3）通信的 8 种方式如下图目录所示：并介绍在不同的场景下如何选择有效方式实现的组件间通信方式。</span></p><h2 id="aokck"><span class="ne-text">props和emit</span></h2><p id="aefd39de20827e7fa178830efd84d682_p_16" class="ne-p"><span class="ne-text">父组件通过</span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">的方式向子组件传递数据，而通过</span><code class="ne-code"><span class="ne-text">$emit</span></code><span class="ne-text"> 子组件可以向父组件通信。</span></p><h3 id="erDJy"><span class="ne-text">vue2</span></h3><p id="ufbfea627" class="ne-p"><span class="ne-text">父传子</span></p><ul class="ne-ul"><li id="u33e89348" data-lake-index-type="0"><span class="ne-text">prop 只可以从上一级组件传递到下一级组件（父子组件），即所谓的单向数据流。而且 prop 只读，不可被修改，所有修改都会失效并警告</span></li></ul><pre data-language="vue" id="ebb9fd34" class="ne-codeblock language-vue"><code>&lt;!-- section父组件 --&gt;
+&lt;template&gt;
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;com-article :articles=&quot;articleList&quot;&gt;&lt;/com-article&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import comArticle from './test/article.vue'
+export default {
+  name: 'HelloWorld',
+  components: { comArticle },
+  data() {
+    return {
+      articleList: ['红楼梦', '西游记', '三国演义']
+    }
+  }
+}
+&lt;/script&gt;</code></pre><pre data-language="vue" id="yr7NL" class="ne-codeblock language-vue"><code>&lt;!-- 子组件 article.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;span v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot;&gt;{{item}}&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  props: ['articles']
+}
+&lt;/script&gt;</code></pre><p id="u223dad61" class="ne-p"><span class="ne-text">子传父</span></p><pre data-language="vue" id="3d7164b6" class="ne-codeblock language-vue"><code>&lt;!-- 父组件 --&gt;
+&lt;template&gt;
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;com-article :articles=&quot;articleList&quot; @onEmitIndex=&quot;onEmitIndex&quot;&gt;&lt;/com-article&gt;
+    &lt;p&gt;{{currentIndex}}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import comArticle from './test/article.vue'
+export default {
+  name: 'HelloWorld',
+  components: { comArticle },
+  data() {
+    return {
+      currentIndex: -1,
+      articleList: ['红楼梦', '西游记', '三国演义']
+    }
+  },
+  methods: {
+    onEmitIndex(idx) {
+      this.currentIndex = idx
+    }
+  }
+}
+&lt;/script&gt;</code></pre><pre data-language="vue" id="fe0aM" class="ne-codeblock language-vue"><code>&lt;!-- 子组件 --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;div v-for=&quot;(item, index) in articles&quot; :key=&quot;index&quot; @click=&quot;emitIndex(index)&quot;&gt;{{item}}&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  props: ['articles'],
+  methods: {
+    emitIndex(index) {
+      this.$emit('onEmitIndex', index)
+    }
+  }
+}
+&lt;/script&gt;</code></pre><h3 id="PZU1h"><span class="ne-text">vue3（setup选项式）</span></h3><pre data-language="javascript" id="MFgv9" class="ne-codeblock language-javascript"><code>const SonOne = defineComponent({
+  name: 'SonOne',
+  props: {
+    rootMessage: {
+      type: String,
+      retuired: true,
+      default: '',
+    },
+  },
+  emits: ['send-root'],
+  template: /*html*/`
+    &lt;div&gt;
+      [SonOne] root msg: {{ rootMessage }}
+      &lt;button @click='sendToRoot'&gt;emit to root&lt;/button&gt;
+    &lt;/div&gt;
+  `,
+  setup(props, extraProps) {
+    console.info('&gt;&gt;&gt; SonOne setup &lt;&lt;&lt;', props, extraProps)
+    const { emit } = extraProps
+    const sonOneMessage = ref('sonOne msg');
+    const sendToRoot = () =&gt; emit(&quot;send-root&quot;, sonOneMessage)
+    return {
+      sonOneMessage,
+      sendToRoot,
+    }
+  }
+})</code></pre><pre data-language="html" id="e0QUr" class="ne-codeblock language-html"><code>&lt;son-one :rootMessage='rootMessage' @sendRoot='sonOneSendRoot'&gt;&lt;/son-one&gt;</code></pre><h2 id="xvUaQ"><span class="ne-text">provide / inject</span></h2><h3 id="ffMJn"><span class="ne-text">vue2</span></h3><ol class="ne-ol"><li id="u59164427" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">/ </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 是</span><code class="ne-code"><span class="ne-text">vue2.2.0</span></code><span class="ne-text">新增的 api, 简单来说就是父组件中通过</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">来提供变量, 然后再子组件中通过</span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text">来注入变量。</span></li><li id="uc3d534b9" data-lake-index-type="0"><span class="ne-text">这里不论子组件嵌套有多深, 只要调用了</span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 那么就可以注入</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text">中的数据，而不局限于只能从当前父组件的 props 属性中回去数据</span></li></ol><p id="u22204121" class="ne-p"><span class="ne-text"></span></p><p id="u2bcf027c" class="ne-p"><span class="ne-text">假设有三个组件: A.vue、B.vue、C.vue 其中 C 是 B 的子组件，B 是 A 的子组件</span></p><pre data-language="vue" id="pTH9D" class="ne-codeblock language-vue"><code>&lt;!-- A.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+	&lt;comB&gt;&lt;/comB&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import comB from '../components/test/comB.vue'
+  export default {
+    name: &quot;A&quot;,
+    provide: {
+      for: &quot;demo&quot;
+    },
+    components:{
+      comB
+    }
+  }
+&lt;/script&gt;</code></pre><pre data-language="vue" id="Cr32B" class="ne-codeblock language-vue"><code>&lt;!-- B.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    {{demo}}
+    &lt;comC&gt;&lt;/comC&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import comC from '../components/test/comC.vue'
+  export default {
+    name: &quot;B&quot;,
+    inject: ['for'],
+    data() {
+      return {
+        demo: this.for
+      }
+    },
+    components: {
+      comC
+    }
+  }
+&lt;/script&gt;</code></pre><pre data-language="vue" id="f7mBn" class="ne-codeblock language-vue"><code>&lt;!-- C.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    {{demo}}
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    name: &quot;C&quot;,
+    inject: ['for'],
+    data() {
+      return {
+        demo: this.for
+      }
+    }
+  }
+&lt;/script&gt;</code></pre><h3 id="KIDUK"><span class="ne-text">vue3（选项式）</span></h3><pre data-language="vue" id="uUG8W" class="ne-codeblock language-vue"><code>&lt;script&gt;
+export default {
+  name: &quot;HelloWorld&quot;,
+  data() {
+    return {
+      provideData: &quot;HelloWorldMsg&quot;,
+    };
+  },
+  provide() {
+    return {
+      provideData: this.provideData,
+      getData(data) {
+        console.warn(&quot;getData: &quot;, data);
+      },
+    };
+  },
+};
+&lt;/script&gt;</code></pre><pre data-language="vue" id="Hg1qE" class="ne-codeblock language-vue"><code>&lt;script&gt;
+export default {
+  name: &quot;component-1&quot;,
+  inject: [&quot;provideData&quot;, &quot;getData&quot;],
+  mounted() {
+    this.getData(&quot;3333333333&quot;);
+  },
+};
+&lt;/script&gt;</code></pre><h3 id="klrTS"><span class="ne-text">vue3（组合式）</span></h3><ul class="ne-ul"><li id="ud1348880" data-lake-index-type="0"><span class="ne-text">provide注入，inject接收，注入响应式数据，inject也同样响应式</span></li><li id="u1f1b6d3a" data-lake-index-type="0"><span class="ne-text" style="text-decoration: underline">如果在inject接收的组件中修改响应式数据，也是生效的，但是不推荐，会造成通信数据混乱，如果要实现这种效果，推荐将响应式变量传入的时候加一个readonly同时注入一个修改响应式变量的回调函数来实现</span></li></ul><pre data-language="vue" id="l1gSH" class="ne-codeblock language-vue"><code>&lt;template&gt;
+  &lt;div class=&quot;setup-component&quot;&gt;
+    &lt;h3&gt;setup component:&lt;/h3&gt;
+    &lt;button @click=&quot;changeCount&quot;&gt;change&lt;/button&gt;
+    &lt;p&gt;count: {{ count }}&lt;/p&gt;
+    &lt;setup-component-1&gt;&lt;/setup-component-1&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref, readonly, provide } from &quot;vue&quot;;
+import SetupComponent1 from &quot;./SetupComponent1.vue&quot;;
+const count = ref(0);
+provide(&quot;count&quot;, readonly(count));
+provide(&quot;changeCount&quot;, changeCount);
+&lt;/script&gt;
+
+&lt;style&gt;
+.setup-component {
+  border: 1px solid red;
+}
+&lt;/style&gt;
+</code></pre><pre data-language="vue" id="ta9JY" class="ne-codeblock language-vue"><code>&lt;template&gt;
+  &lt;div class=&quot;setup-component-1&quot;&gt;
+    &lt;button @click=&quot;changeCount&quot;&gt;change count from inject component&lt;/button&gt;
+    {{ count }}
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { inject } from &quot;vue&quot;;
+
+const count = inject(&quot;count&quot;);
+const changeCount = inject(&quot;changeCount&quot;);
+&lt;/script&gt;
+
+&lt;style&gt;
+.setup-component-1 {
+  border: 1px blue solid;
+}
+&lt;/style&gt;
+</code></pre><h2 id="jjpSa"><span class="ne-text">二、 $children / $parent</span></h2><h3 id="fwpyE"><span class="ne-text">vue2</span></h3><p id="a53b13677e55fdbc670902cf2d24e401_p_31" class="ne-p"><span class="ne-text">通过</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">就可以访问组件的实例，拿到实例代表什么？代表可以访问此组件的所有方法和</span><code class="ne-code"><span class="ne-text">data</span></code><span class="ne-text">。接下来就是怎么实现拿到指定组件的实例。</span></p><pre data-language="vue" id="7a587fd5" class="ne-codeblock language-vue"><code>&lt;!-- 父组件中 --&gt;
+&lt;template&gt;
+  &lt;div class=&quot;hello_world&quot;&gt;
+    &lt;div&gt;{{msg}}&lt;/div&gt;
+    &lt;com-a&gt;&lt;/com-a&gt;
+    &lt;button @click=&quot;changeA&quot;&gt;点击改变子组件值&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import ComA from './test/comA.vue'
+export default {
+  name: 'HelloWorld',
+  components: { ComA },
+  data() {
+    return {
+      msg: 'Welcome'
+    }
+  },
+
+  methods: {
+    changeA() {
+      // 获取到子组件A
+      this.$children[0].messageA = 'this is new value'
+    }
+  }
+}
+&lt;/script&gt;</code></pre><pre data-language="vue" id="rCHYu" class="ne-codeblock language-vue"><code>&lt;!-- 子组件中 --&gt;
+&lt;template&gt;
+  &lt;div class=&quot;com_a&quot;&gt;
+    &lt;span&gt;{{messageA}}&lt;/span&gt;
+    &lt;p&gt;获取父组件的值为:  {{parentVal}}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  data() {
+    return {
+      messageA: 'this is old'
+    }
+  },
+  computed:{
+    parentVal(){
+      return this.$parent.msg;
+    }
+  }
+}
+&lt;/script&gt;</code></pre><div class="ne-quote"><p id="baca8b35b9df69242628141ffca869a0_p_35" class="ne-p"><span class="ne-text">要注意边界情况，如在</span><code class="ne-code"><span class="ne-text">#app</span></code><span class="ne-text">上拿</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">得到的是</span><code class="ne-code"><span class="ne-text">new Vue()</span></code><span class="ne-text">的实例，在这实例上再拿</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">得到的是</span><code class="ne-code"><span class="ne-text">undefined</span></code><span class="ne-text">，而在最底层的子组件拿</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">是个空数组。也要注意得到</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">的值不一样，</span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text"> 的值是数组，而</span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text">是个对象</span></p></div><p id="udfabfdab" class="ne-p"><br></p><p id="c9f98fb68f54448a9f9adec409bc4cbe_p_38" class="ne-p"><span class="ne-text">上面两种方式用于父子组件之间的通信， 而使用 props 进行父子组件通信更加普遍；二者皆不能用于非父子组件之间的通信。</span></p><h2 id="ZNDHX"><span class="ne-text">ref和refs</span></h2><ol class="ne-ol"><li id="u796b5746" data-lake-index-type="0"><span class="ne-text">v-for 用于元素或组件时,引用信息将是</span><strong><span class="ne-text">包含 DOM 节点或组件实例的数组，</span></strong><span class="ne-text">按照这个理解，可以直接利用$refs来获取dom元素</span></li></ol><pre data-language="javascript" id="HOvjc" class="ne-codeblock language-javascript"><code>this.$refs.addAlert.style.display = &quot;block&quot;;</code></pre><ol start="2" class="ne-ol"><li id="u51830fc2" data-lake-index-type="0"><span class="ne-text">$refs只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问$refs。这是官方说法，提倡props来操作，缺点就是非响应式的</span></li><li id="ufbf03f96" data-lake-index-type="0"><span class="ne-text">ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</span></li></ol><p id="u6b584cc2" class="ne-p"><br></p><p id="1072ea36c24eecae31028b57db98b711_p_51" class="ne-p"><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text">：</span><span class="ne-text" style="text-decoration: underline">如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例，可以通过实例直接调用组件的方法或访问数据</span><span class="ne-text">， 我们看一个</span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> 来访问组件的例子:</span></p><pre data-language="vue" id="f9KEp" class="ne-codeblock language-vue"><code>&lt;!-- 父组件 app.vue --&gt;
+&lt;template&gt;
+  &lt;component-a ref=&quot;comA&quot;&gt;&lt;/component-a&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    mounted () {
+      const comA = this.$refs.comA;
+      console.log(comA.name);  // Vue.js
+      comA.sayHello();  // hello
+    }
+  }
+&lt;/script&gt;</code></pre><pre data-language="vue" id="c49a6949" class="ne-codeblock language-vue"><code>&lt;!-- 子组件 A.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    data () {
+      return {
+        name: 'Vue.js'
+      }
+    },
+    methods: {
+      sayHello () {
+        console.log('hello')
+      }
+    }
+  }
+&lt;/script&gt;</code></pre><p id="u96d7045d" class="ne-p"><span class="ne-text" style="background-color: rgba(255, 255, 255, 0); color: #DF2A3F">和v-for共使用</span></p><p id="u22aa1746" class="ne-p"><span class="ne-text">在父组件里面需要多次渲染子组件</span></p><pre data-language="vue" id="MjLX6" class="ne-codeblock language-vue"><code>&lt;template&gt;
+  &lt;!-- 直播绑定 --&gt;
+  &lt;div slot=&quot;liveBind&quot;&gt;
+    &lt;AddLiveBindItem
+      v-for=&quot;(data, index) in datas&quot;
+      :key=&quot;data.id&quot;
+      :dataConfig=&quot;data.dataConfig&quot;
+      :isFirst=&quot;index === 0 ? true : false&quot;
+      :liveBindId=&quot;
+      index === 0
+      ? 1
+      : index === 1
+      ? 2
+      : index === 2
+      ? 3
+      : index === 3
+      ? 4
+      : index === 4
+      ? 5
+      : 6
+      &quot;
+      @toDeleteLiveBind=&quot;toDeleteLiveBind(index)&quot;
+      ref=&quot;addLiveBindRef&quot;
+      /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre><p id="uae784a6c" class="ne-p"><span class="ne-text">具体使用：下面第四行代码</span></p><pre data-language="javascript" id="RlGsr" class="ne-codeblock language-javascript"><code>this.datas.forEach((_it, index) =&gt; {
+  // 当前表单的配置项遍历上传
+  liveRelationList.push(
+    this.$refs.addLiveBindRef[index].liveBindApiParams
+  )
+  // 上传sort参数
+  liveRelationList[liveRelationList.length - 1].sort = _it.id
+})
+</code></pre><h2 id="jtyCK"><span class="ne-text">EventBus</span></h2><p id="u27130965" class="ne-p"><span class="ne-text" style="color: #DF2A3F">Vue3不再使用new Vue()来进行初始化了，可以自定义一个EventEmitter</span></p><ol class="ne-ol"><li id="u417d0889" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> 又称为事件总线，在 vue 中可以使用它来作为沟通桥梁的概念, 就像是所有组件共用相同的事件中心，可以向该中心</span><strong><span class="ne-text">注册发送事件</span></strong><span class="ne-text">或</span><strong><span class="ne-text">接收事件</span></strong><span class="ne-text">， 所以</span><strong><span class="ne-text">组件都可以通知其他组件</span></strong><span class="ne-text">。</span></li><li id="u4f7f3b1e" data-lake-index-type="0"><span class="ne-text">eventBus 也有不方便之处, 当项目较大, 就容易造成难以维护的灾难</span></li></ol><p id="u937ad716" class="ne-p"><span class="ne-text">1. 初始化</span></p><p id="ubd85a9c9" class="ne-p"><span class="ne-text">首先需要创建一个事件总线并将其导出, 以便其他模块可以使用或者监听它.</span></p><pre data-language="javascript" id="E8rnA" class="ne-codeblock language-javascript"><code>// event-bus.js
+import Vue from 'vue'
+export const EventBus = new Vue()</code></pre><p id="u46c7ff9b" class="ne-p"><br></p><p id="uac4649ef" class="ne-p"><span class="ne-text">假设你有两个组件: </span><code class="ne-code"><span class="ne-text">additionNum</span></code><span class="ne-text"> 和 </span><code class="ne-code"><span class="ne-text">showNum</span></code><span class="ne-text">, 这两个组件可以是兄弟组件也可以是父子组件；这里我们以兄弟组件为例:</span></p><pre data-language="vue" id="ZApOa" class="ne-codeblock language-vue"><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;show-num-com&gt;&lt;/show-num-com&gt;
+    &lt;addition-num-com&gt;&lt;/addition-num-com&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import showNumCom from './showNum.vue'
+import additionNumCom from './additionNum.vue'
+export default {
+  components: { showNumCom, additionNumCom }
+}
+&lt;/script&gt;
+</code></pre><p id="u302671c0" class="ne-p"><span class="ne-text">2. 发送事件</span></p><pre data-language="vue" id="yIPPj" class="ne-codeblock language-vue"><code>&lt;!-- addtionNum.vue 中发送事件 --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;button @click=&quot;additionHandle&quot;&gt;+加法器&lt;/button&gt;    
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import {EventBus} from './event-bus.js'
+console.log(EventBus)
+export default {
+  data(){
+    return{
+      num:1
+    }
+  },
+
+  methods:{
+    additionHandle(){
+      EventBus.$emit('addition', {
+        num:this.num++
+      })
+    }
+  }
+}
+&lt;/script&gt;</code></pre><p id="ue4944955" class="ne-p"><span class="ne-text">3. 接收事件</span></p><pre data-language="vue" id="tvRyO" class="ne-codeblock language-vue"><code>&lt;!-- showNum.vue 中接收事件 --&gt;
+&lt;template&gt;
+  &lt;div&gt;计算和: {{count}}&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import { EventBus } from './event-bus.js'
+export default {
+  data() {
+    return {
+      count: 0
+    }
+  },
+  mounted() {
+    EventBus.$on('addition', param =&gt; {
+      this.count = this.count + param.num;
+    })
+  }
+}
+&lt;/script&gt;</code></pre><p id="u53019d76" class="ne-p"><span class="ne-text">这样就实现了在组件</span><code class="ne-code"><span class="ne-text">addtionNum.vue</span></code><span class="ne-text">中点击相加按钮, 在</span><code class="ne-code"><span class="ne-text">showNum.vue</span></code><span class="ne-text">中利用传递来的 </span><code class="ne-code"><span class="ne-text">num</span></code><span class="ne-text"> 展示求和的结果.</span></p><p id="u75098cf2" class="ne-p"><span class="ne-text">4. 移除事件监听者</span></p><p id="u6525db6b" class="ne-p"><span class="ne-text">如果想移除事件的监听, 可以像下面这样操作:</span></p><pre data-language="vue" id="MSpbt" class="ne-codeblock language-vue"><code>import { eventBus } from 'event-bus.js'
+EventBus.$off('addition', {})</code></pre><h2 id="FvhVC"><span class="ne-text">六、Vuex</span></h2><h3 id="IAleg"><span class="ne-text">1. Vuex 介绍</span></h3><p id="f31764caf4edb6337889991729dab76f_p_79" class="ne-p"><span class="ne-text">Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化. Vuex 解决了</span><code class="ne-code"><span class="ne-text">多个视图依赖于同一状态</span></code><span class="ne-text">和</span><code class="ne-code"><span class="ne-text">来自不同视图的行为需要变更同一状态</span></code><span class="ne-text">的问题，将开发者的精力聚焦于数据的更新而不是数据在组件之间的传递上</span></p><h3 id="NOLew"><span class="ne-text">2. Vuex 各个模块</span></h3><ol class="ne-ol"><li id="086fc566ad1f3e20b5c4075a7729ead3_li_2" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">state</span></code><span class="ne-text">：用于数据的存储，是 store 中的唯一数据源</span></li></ol><ol start="2" class="ne-ol"><li id="8f90ea99e20515a11d0d1c9f1f7e0553_li_3" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">getters</span></code><span class="ne-text">：如 vue 中的计算属性一样，基于 state 数据的二次包装，常用于数据的筛选和多个数据的相关性计算</span></li></ol><ol start="3" class="ne-ol"><li id="e6273b5a39a57288e5a1a89f2bc1fcfe_li_4" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">mutations</span></code><span class="ne-text">：类似函数，改变 state 数据的唯一途径，且不能用于处理异步事件</span></li></ol><ol start="4" class="ne-ol"><li id="a7a27b1b632925547190afbe9ad7fb4b_li_5" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">actions</span></code><span class="ne-text">：类似于</span><code class="ne-code"><span class="ne-text">mutation</span></code><span class="ne-text">，用于提交</span><code class="ne-code"><span class="ne-text">mutation</span></code><span class="ne-text">来改变状态，而不直接变更状态，可以包含任意异步操作</span></li></ol><ol start="5" class="ne-ol"><li id="d03ef67930c7afc0424138385fa658e8_li_6" data-lake-index-type="0"><code class="ne-code"><span class="ne-text">modules</span></code><span class="ne-text">：类似于命名空间，用于项目中将各个模块的状态分开定义和操作，便于维护</span></li></ol><h3 id="UpZvv"><span class="ne-text">3. Vuex 实例应用</span></h3><pre data-language="vue" id="e46f446f" class="ne-codeblock language-vue"><code>&lt;!-- 父组件 --&gt;
+&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;ChildA/&gt;
+    &lt;ChildB/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import ChildA from './components/ChildA' // 导入A组件
+  import ChildB from './components/ChildB' // 导入B组件
+
+  export default {
+    name: 'App',
+    components: {ChildA, ChildB} // 注册A、B组件
+  }
+&lt;/script&gt;</code></pre><pre data-language="vue" id="PKLnQ" class="ne-codeblock language-vue"><code>&lt;!-- 子组件childA --&gt;
+&lt;template&gt;
+  &lt;div id=&quot;childA&quot;&gt;
+    &lt;h1&gt;我是A组件&lt;/h1&gt;
+    &lt;button @click=&quot;transform&quot;&gt;点我让B组件接收到数据&lt;/button&gt;
+    &lt;p&gt;因为你点了B，所以我的信息发生了变化：{{BMessage}}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    data() {
+      return {
+        AMessage: 'Hello，B组件，我是A组件'
+      }
+    },
+    computed: {
+      BMessage() {
+        // 这里存储从store里获取的B组件的数据
+        return this.$store.state.BMsg
+      }
+    },
+    methods: {
+      transform() {
+        // 触发receiveAMsg，将A组件的数据存放到store里去
+        this.$store.commit('receiveAMsg', {
+          AMsg: this.AMessage
+        })
+      }
+    }
+  }
+&lt;/script&gt;</code></pre><pre data-language="vue" id="a9Da8" class="ne-codeblock language-vue"><code>&lt;!-- 子组件 childB --&gt;
+&lt;template&gt;
+  &lt;div id=&quot;childB&quot;&gt;
+    &lt;h1&gt;我是B组件&lt;/h1&gt;
+    &lt;button @click=&quot;transform&quot;&gt;点我让A组件接收到数据&lt;/button&gt;
+    &lt;p&gt;因为你点了A，所以我的信息发生了变化：{{AMessage}}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    data() {
+      return {
+        BMessage: 'Hello，A组件，我是B组件'
+      }
+    },
+    computed: {
+      AMessage() {
+        // 这里存储从store里获取的A组件的数据
+        return this.$store.state.AMsg
+      }
+    },
+    methods: {
+      transform() {
+        // 触发receiveBMsg，将B组件的数据存放到store里去
+        this.$store.commit('receiveBMsg', {
+          BMsg: this.BMessage
+        })
+      }
+    }
+  }
+&lt;/script&gt;</code></pre><p id="d2ef17a7a18d8c7e67af8d1ea686174e_p_85" class="ne-p"><span class="ne-text">vuex 的</span><code class="ne-code"><span class="ne-text">store,js</span></code></p><pre data-language="javascript" id="f958524d" class="ne-codeblock language-javascript"><code>import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
+const state = {
+  // 初始化A和B组件的数据，等待获取
+  AMsg: '',
+  BMsg: ''
+}
+
+const mutations = {
+  receiveAMsg(state, payload) {
+    // 将A组件的数据存放于state
+    state.AMsg = payload.AMsg
+  },
+  receiveBMsg(state, payload) {
+    // 将B组件的数据存放于state
+    state.BMsg = payload.BMsg
+  }
+}
+
+export default new Vuex.Store({
+  state,
+  mutations
+})</code></pre><h2 id="PCidf"><span class="ne-text">七、localStorage / sessionStorage</span></h2><p id="uecdfce57" class="ne-p"><span class="ne-text">这种通信比较简单, 缺点是数据和状态比较混乱, 不太容易维护。 通过</span><code class="ne-code"><span class="ne-text">window.localStorage.getItem(key)</span></code><span class="ne-text">获取数据 通过</span><code class="ne-code"><span class="ne-text">window.localStorage.setItem(key,value)</span></code><span class="ne-text">存储数据</span></p><div class="ne-quote"><p id="5f8a28e0e191bf5002124d4728a6494d_p_91" class="ne-p"><span class="ne-text">注意用</span><code class="ne-code"><span class="ne-text">JSON.parse()</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">JSON.stringify()</span></code><span class="ne-text"> 做数据格式转换（localStorage和sessionStorage只能存字符串，会自动调用对象的toString方法）</span></p><p id="udd314bb5" class="ne-p"><span class="ne-text"> </span><code class="ne-code"><span class="ne-text">localStorage</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">sessionStorage</span></code><span class="ne-text">可以结合</span><code class="ne-code"><span class="ne-text">vuex</span></code><span class="ne-text">, 实现数据的持久保存, 同时使用 </span><code class="ne-code"><span class="ne-text">vuex</span></code><span class="ne-text">解决数据和状态混乱问题.</span></p></div><pre data-language="javascript" id="juYGQ" class="ne-codeblock language-javascript"><code>// 存取
+sessionStorage.setItem(
+  'sortColumn',
+  JSON.stringify({ prop: column.prop, order: column.order })
+)
+
+// 使用
+this.sortColumnSession = JSON.parse(
+	sessionStorage.getItem('sortColumn')
+)</code></pre><h2 id="tVBCj"><span class="ne-text">八 $attrs与 $listeners</span></h2><p id="5ee232d8069a64f0310d67c6cba2c264_p_94" class="ne-p"><span class="ne-text">现在我们来讨论一种情况， 我们一开始给出的组件关系图中 A 组件与 D 组件是隔代关系， 那它们之前进行通信有哪些方式呢？</span></p><ol class="ne-ol"><li id="83215d9ee7c1694d1bc3e76f305d7e9e_li_7" data-lake-index-type="0"><span class="ne-text">使用</span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">绑定来进行一级一级的信息传递, 如果 D 组件中状态改变需要传递数据给 A, 使用事件系统一级级往上传递</span></li></ol><ol start="2" class="ne-ol"><li id="2c686f3d4e49b6f903a7a060cca635e2_li_8" data-lake-index-type="0"><span class="ne-text">使用</span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">, 这种情况下还是比较适合使用, 但是碰到多人合作开发时, 代码维护性较低, 可读性也低</span></li></ol><ol start="3" class="ne-ol"><li id="1adc8d2e29da201c9f819b96e079ce85_li_9" data-lake-index-type="0"><span class="ne-text">使用 Vuex 来进行数据管理, 但是如果仅仅是传递数据, 而不做中间处理, 使用 Vuex 处理感觉有点大材小用了.</span></li></ol><p id="1660fc758c7e386ee6c1caa5c0ba61fd_p_97" class="ne-p"><span class="ne-text">在</span><code class="ne-code"><span class="ne-text">vue2.4</span></code><span class="ne-text">中，为了解决该需求，引入了</span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> 和</span><code class="ne-code"><span class="ne-text">$listeners</span></code><span class="ne-text"> ， 新增了</span><code class="ne-code"><span class="ne-text">inheritAttrs</span></code><span class="ne-text"> 选项。 在版本 2.4 以前，默认情况下, 父作用域中不作为 prop 被识别 (且获取) 的特性绑定 (class 和 style 除外)，将会 “回退” 且作为普通的 HTML 特性应用在子组件的根元素上。接下来看一个跨级通信的例子:</span></p><pre data-language="vue" id="e9b0c8ad" class="ne-codeblock language-vue"><code>&lt;!-- app.vue --&gt;
+&lt;!-- index.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;child-com1
+      :name=&quot;name&quot;
+      :age=&quot;age&quot;
+      :gender=&quot;gender&quot;
+      :height=&quot;height&quot;
+      title=&quot;程序员成长指北&quot;
+    &gt;&lt;/child-com1&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+const childCom1 = () =&gt; import(&quot;./childCom1.vue&quot;);
+export default {
+  components: { childCom1 },
+  data() {
+    return {
+      name: &quot;zhang&quot;,
+      age: &quot;18&quot;,
+      gender: &quot;女&quot;,
+      height: &quot;158&quot;
+    };
+  }
+};
+&lt;/script&gt;</code></pre><pre data-language="vue" id="nSfDK" class="ne-codeblock language-vue"><code>&lt;!-- childCom1.vue --&gt;
+&lt;template class=&quot;border&quot;&gt;
+  &lt;div&gt;
+    &lt;p&gt;name: {{ name}}&lt;/p&gt;
+    &lt;p&gt;childCom1的$attrs: {{ $attrs }}&lt;/p&gt;
+    &lt;child-com2 v-bind=&quot;$attrs&quot;&gt;&lt;/child-com2&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  const childCom2 = () =&gt; import(&quot;./childCom2.vue&quot;);
+  export default {
+    components: {
+      childCom2
+    },
+    inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+    props: {
+      name: String // name作为props属性绑定
+    },
+    created() {
+      console.log(this.$attrs);
+      // { &quot;age&quot;: &quot;18&quot;, &quot;gender&quot;: &quot;女&quot;, &quot;height&quot;: &quot;158&quot;, &quot;title&quot;: &quot;程序员成长指北&quot; }
+    }
+  };
+&lt;/script&gt;</code></pre><pre data-language="vue" id="Yi0SC" class="ne-codeblock language-vue"><code>&lt;!-- childCom2.vue --&gt;
+&lt;template&gt;
+  &lt;div class=&quot;border&quot;&gt;
+    &lt;p&gt;age: {{ age}}&lt;/p&gt;
+    &lt;p&gt;childCom2: {{ $attrs }}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default {
+    inheritAttrs: false,
+    props: {
+      age: String
+    },
+    created() {
+      console.log(this.$attrs); 
+      // { &quot;gender&quot;: &quot;女&quot;, &quot;height&quot;: &quot;158&quot;, &quot;title&quot;: &quot;程序员成长指北&quot; }
+    }
+  };
+&lt;/script&gt;</code></pre><h2 id="d3gur"><span class="ne-text">总结</span></h2><p id="d1dd1ab4b6c9dd3f0d10d775396b2c46_p_101" class="ne-p"><span class="ne-text">常见使用场景可以分为三类:</span></p><ul class="ne-ul"><li id="38d84b7f285f00e4e99192b24cdc3891_li_10" data-lake-index-type="0"><span class="ne-text">父子组件通信: </span><code class="ne-code"><span class="ne-text">props</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">$parent</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$children</span></code><span class="ne-text">; </span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">ref</span></code><span class="ne-text"> ; </span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><ul class="ne-ul"><li id="3e789b8578fdd7d181db9f576fa76889_li_11" data-lake-index-type="0"><span class="ne-text">兄弟组件通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text"> ; vuex</span></li></ul><ul class="ne-ul"><li id="e10c2c9737bf8956c62733553c8b2e96_li_12" data-lake-index-type="0"><span class="ne-text">跨级通信: </span><code class="ne-code"><span class="ne-text">eventBus</span></code><span class="ne-text">；Vuex；</span><code class="ne-code"><span class="ne-text">provide</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">inject</span></code><span class="ne-text"> 、</span><code class="ne-code"><span class="ne-text">$attrs</span></code><span class="ne-text"> / </span><code class="ne-code"><span class="ne-text">$listeners</span></code></li></ul><h3 id="Slz4b"><span class="ne-text">Conference</span></h3><ul class="ne-ul"><li id="uf0c5f17a" data-lake-index-type="0"><a href="https://juejin.cn/post/6844903887162310669" data-href="https://juejin.cn/post/6844903887162310669" class="ne-link"><span class="ne-text">vue中8种组件通信方式, 值得收藏! - 掘金</span></a></li></ul><p id="de46638becbf26f6c7e35f22ece99363_p_108" class="ne-p"><span class="ne-text"><br /></span></p></div>0:{"buildId":"fgnevoCcv3TjAYBn9b4Wj","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"relative","children":["$","$L2",null,{"fade":true,"blur":true,"transition":{"duration":0.5},"delay":0.1,"className":"relative overflow-hidden border-y xl:flex","children":[["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}],["$","div",null,{"className":"mx-auto w-full max-w-6xl flex-none space-y-8 px-4 py-8 min-[1158px]:border-x sm:px-6 sm:py-12 lg:px-8","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"transition":{"duration":0.4},"children":["$","$L3",null,{"href":"/blog","className":"text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"返回","技术博客"]}]}],["$","article",null,{"className":"mx-auto max-w-4xl","children":[["$","header",null,{"className":"mb-8 space-y-6","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.2,"transition":{"duration":0.6},"children":["$","div",null,{"className":"relative aspect-video overflow-hidden rounded-xl","children":["$","$L4",null,{"src":"https://cdn.nlark.com/yuque/0/2022/png/1484158/1651984670702-e9344438-e8f1-4b84-801d-e4d82c989caa.png","alt":"Vue组件通信","fill":true,"className":"object-cover","unoptimized":true}]}]}],["$","$L2",null,{"delay":0.3,"transition":{"duration":0.5},"children":["$","h1",null,{"className":"text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl","children":["$","$L5",null,{"text":"Vue组件通信","delay":30,"animateBy":"words","direction":"bottom"}]}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.4,"transition":{"duration":0.5},"children":["$","p",null,{"className":"text-muted-foreground text-lg","children":"之前写了一篇关于 vue 面试总结的文章, 有不少网友提出组件之间通信方式还有很多, 这篇文章便是专门总结组件之间通信的作者简介：koala，专注完整的 Node.js 技术栈分享，从 JavaScript 到 Node.js, 再到后端数据库，祝您成为优秀的高级 Node.js 工程师。【程..."}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.5,"transition":{"duration":0.5},"children":["$","div",null,{"className":"text-muted-foreground flex flex-wrap items-center gap-4 text-sm","children":[["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-calendar h-4 w-4","aria-hidden":"true","children":[["$","path","1cmpym",{"d":"M8 2v4"}],["$","path","4m81vk",{"d":"M16 2v4"}],["$","rect","1hopcy",{"width":"18","height":"18","x":"3","y":"4","rx":"2"}],["$","path","8toen8",{"d":"M3 10h18"}],"$undefined"]}],["$","span",null,{"children":"2025年3月26日"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock h-4 w-4","aria-hidden":"true","children":[["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],"$undefined"]}],["$","span",null,{"children":"3.7千字"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-eye h-4 w-4","aria-hidden":"true","children":[["$","path","1nclc0",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["$","circle","1v7zrd",{"cx":"12","cy":"12","r":"3"}],"$undefined"]}],["$","span",null,{"children":[12," 阅读"]}]]}],false,false]}]}],false]}],["$","$L2",null,{"delay":0.6,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 sm:-mx-6 lg:-mx-8","children":["$","$L6",null,{}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.7,"transition":{"duration":0.6},"children":["$","div",null,{"className":"prose prose-neutral dark:prose-invert mt-8 max-w-none","dangerouslySetInnerHTML":{"__html":"$7"}}]}],"$L8","$L9"]}]]}],"$La"]}]}],["$Lb"],"$Lc"]}],"loading":null,"isPartial":false}
+8:["$","$L2",null,{"delay":0.8,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 mt-12 sm:-mx-6 lg:-mx-8","children":["$","$L6",null,{}]}]
+9:["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":30},"delay":0.9,"transition":{"duration":0.5},"children":["$","nav",null,{"className":"mt-8 grid gap-4 md:grid-cols-2","children":[["$","$L3",null,{"href":"/blog/na8588","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 transition-colors","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"上一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"跨域以及非跨域下载指定url图片方案"}]]}],["$","$L3",null,{"href":"/blog/akf33e","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 text-right transition-colors md:text-right","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"下一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"PC端hevc编码的MOV格式视频无法查看"}]]}]]}]}]
+a:["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/11dff99839ab5ba0.js","async":true}]
+c:["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]
+f:null

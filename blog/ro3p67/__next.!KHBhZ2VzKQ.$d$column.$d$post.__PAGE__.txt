@@ -1,0 +1,86 @@
+1:"$Sreact.fragment"
+2:I[99897,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"MotionPreset"]
+3:I[22016,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],""]
+4:I[48347,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"default"]
+5:I[72436,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Separator"]
+c:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+d:"$Sreact.suspense"
+6:T1646,<!doctype html><div class="lake-content" typography="classic"><h2 id="o04Pl"><span class="ne-text">一、官方文档</span></h2><p id="22f49c2d869c21f5dea0ff3f73ebbbef" class="ne-p"><a href="https://pypi.org/project/qrcode/" data-href="https://pypi.org/project/qrcode/" target="_blank" class="ne-link"><span class="ne-text">https://pypi.org/project/qrcode/</span></a></p><p id="51136b0b262d1382694cd480ee80bc44" class="ne-p"><a href="https://pypi.org/project/MyQR/" data-href="https://pypi.org/project/MyQR/" target="_blank" class="ne-link"><span class="ne-text">https://pypi.org/project/MyQR/</span></a></p><h2 id="045e782b"><span class="ne-text">二、下载包</span></h2><p id="bf430b601d035b96fa7ec8618ffb486d" class="ne-p"><br></p><p id="ae8e789952f0e5ee6f06a634e0c4ef73" class="ne-p"><span class="ne-text">pip install qrcode  #方法多，体量小</span></p><p id="a2246ccdf64f749c73b4a664b63eb5db" class="ne-p"><br></p><p id="a20fedc429c3810eb0b738bbec0fc21a" class="ne-p"><span class="ne-text">pip install myqr    #操作简单，功能强大</span></p><p id="8bca71033f49365a128b86ef3613f0e4" class="ne-p"><br></p><h2 id="dd4077aa"><span class="ne-text">三、代码</span></h2><p id="97ec651e48d286b5dced3be63fca9788" class="ne-p"><br></p><h3 id="6ef799f7"><span class="ne-text">qrcode一行字二维码</span></h3><p id="4a76cabfeaffb73b04126c636c7dd260" class="ne-p"><br></p><pre data-language="python" id="92d8e405" class="ne-codeblock language-python">import qrcode
+
+qrcode.make(&quot;不睡觉干嘛呢&quot;).get_image().show()   #设置URL必须添加http://</pre><p id="90d8f3edb17610adee15dcc81d8f59ee" class="ne-p"><br></p><h3 id="6ef799f7-1"><span class="ne-text">qrcode一行字二维码</span></h3><p id="6b21b559a6eec9276922d3b9fead3f9b" class="ne-p"><br></p><pre data-language="python" id="1f424315" class="ne-codeblock language-python">import qrcode
+ 
+text = input(&quot;输入文字或URL：&quot;)
+img =qrcode.make(text)
+img.save()                            #保存图片至本地目录，可以设定路径
+img.show()</pre><p id="ed7556b5eb110f98fd4c55c438bbb372" class="ne-p"><br></p><h3 id="2915ed48"><span class="ne-text">qrcode生成logo二维码</span></h3><p id="c551995531d4811dc8aea45b124a88af" class="ne-p"><br></p><pre data-language="python" id="9e7a0317" class="ne-codeblock language-python">from PIL import Image
+import qrcode,os
+ 
+def create_qrcode(url,qrcodename):
+    qr = qrcode.QRCode(
+        version=1,  # 设置容错率为最高
+        error_correction=qrcode.ERROR_CORRECT_H, # 用于控制二维码的错误纠正程度
+        box_size=8, # 控制二维码中每个格子的像素数，默认为10
+        border=1, # 二维码四周留白，包含的格子数，默认为4
+        #image_factory=None,  保存在模块根目录的image文件夹下
+        #mask_pattern=None
+    )
+ 
+    qr.add_data(url) # QRCode.add_data(data)函数添加数据
+    qr.make(fit=True)  # QRCode.make(fit=True)函数生成图片
+ 
+    img = qr.make_image()
+    img = img.convert(&quot;RGBA&quot;) # 二维码设为彩色
+    logo = Image.open('xx.jpg') # 传gif生成的二维码也是没有动态效果的
+ 
+    w , h = img.size
+    logo_w , logo_h = logo.size
+    factor = 4   # 默认logo最大设为图片的四分之一
+    s_w = int(w / factor)
+    s_h = int(h / factor)
+    if logo_w &gt; s_w or logo_h &gt; s_h:
+        logo_w = s_w
+        logo_h = s_h
+ 
+    logo = logo.resize((logo_w, logo_h), Image.ANTIALIAS)
+    l_w = int((w - logo_w) / 2)
+    l_h = int((h - logo_h) / 2)
+    logo = logo.convert(&quot;RGBA&quot;)
+    img.paste(logo, (l_w, l_h), logo)
+    img.show()
+    img.save(os.getcwd()+'/' + qrcodename + '.png', quality=100)</pre><p id="1cceb12f9d94fae140f68e18060de1ef" class="ne-p"><br></p><h3 id="68412b23"><span class="ne-text">myqr动态二维码</span></h3><p id="8b4531183dec82761497329f38f5b2ee" class="ne-p"><br></p><pre data-language="plain" id="ab8d3156" class="ne-codeblock language-plain">相关参数：
+    words：二维码内容，链接或者句子
+    version：二维码大小，范围为[1,40]
+    level：二维码纠错级别，范围为{L,M,Q,H}，H为最高级，默认。
+    picture：自定义二维码背景图，支持格式为 .jpg，.png，.bmp，.gif，默认为黑白色
+    colorized：二维码背景颜色，默认为 False，即黑白色
+    contrast：对比度，值越高对比度越高，默认为 1.0
+    brightness：亮度，值越高亮度越高，默认为 1.0，值常和对比度相同
+    save_name：二维码名称，默认为 qrcode.png
+    save_dir：二维码路径，默认为程序工作路径</pre><p id="56fd137fc8a2f287c0e0b04341f81231" class="ne-p"><br></p><pre data-language="python" id="2873793f" class="ne-codeblock language-python"># 调用库
+from MyQR import myqr
+
+# 函数部分
+myqr.run(
+    # 网址
+    words='https://wztlink1013.com',
+    # 控制边长，范围是1到40，数字越大边长越大，默认边长是取决于你输入的信息的长度和使用的纠错等级
+    version=5,
+    # 控制纠错水平，范围是L、M、Q、H，从左到右依次升高
+    level='H',
+    # 将QR二维码图像与一张同目录下的图片相结合，此处设置该图片，可以是gif
+    picture='./input/girl.gif',
+    # 默认是黑白(False)，可以选择彩色(True)
+    colorized=True,
+    # 调节图片的对比度，1.0 表示原始图片，更小的值表示更低对比度，更大反之。默认为1.0。
+    contrast=1.0,
+    # 调节图片的亮度，用法与contrast相同
+    brightness=1.0,
+    # 输出文件名，格式可以是jpg，png，bmp，gif
+    save_name='girl.gif',
+    save_dir='./output')</pre></div>0:{"buildId":"fgnevoCcv3TjAYBn9b4Wj","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"relative","children":["$","$L2",null,{"fade":true,"blur":true,"transition":{"duration":0.5},"delay":0.1,"className":"relative overflow-hidden border-y xl:flex","children":[["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}],["$","div",null,{"className":"mx-auto w-full max-w-6xl flex-none space-y-8 px-4 py-8 min-[1158px]:border-x sm:px-6 sm:py-12 lg:px-8","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"transition":{"duration":0.4},"children":["$","$L3",null,{"href":"/blog","className":"text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"返回","技术博客"]}]}],["$","article",null,{"className":"mx-auto max-w-4xl","children":[["$","header",null,{"className":"mb-8 space-y-6","children":["",["$","$L2",null,{"delay":0.3,"transition":{"duration":0.5},"children":["$","h1",null,{"className":"text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl","children":["$","$L4",null,{"text":"qrcode和myqr花式二维码","delay":30,"animateBy":"words","direction":"bottom"}]}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.4,"transition":{"duration":0.5},"children":["$","p",null,{"className":"text-muted-foreground text-lg","children":"一、官方文档https://pypi.org/project/qrcode/https://pypi.org/project/MyQR/二、下载包pip install qrcode  #方法多，体量小pip install myqr    #操作简单，功能强大三、代码qrcode一行字二维码..."}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.5,"transition":{"duration":0.5},"children":["$","div",null,{"className":"text-muted-foreground flex flex-wrap items-center gap-4 text-sm","children":[["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-calendar h-4 w-4","aria-hidden":"true","children":[["$","path","1cmpym",{"d":"M8 2v4"}],["$","path","4m81vk",{"d":"M16 2v4"}],["$","rect","1hopcy",{"width":"18","height":"18","x":"3","y":"4","rx":"2"}],["$","path","8toen8",{"d":"M3 10h18"}],"$undefined"]}],["$","span",null,{"children":"2022年7月9日"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock h-4 w-4","aria-hidden":"true","children":[["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],"$undefined"]}],["$","span",null,{"children":"757字"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-eye h-4 w-4","aria-hidden":"true","children":[["$","path","1nclc0",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["$","circle","1v7zrd",{"cx":"12","cy":"12","r":"3"}],"$undefined"]}],["$","span",null,{"children":[61," 阅读"]}]]}],false,false]}]}],false]}],["$","$L2",null,{"delay":0.6,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 sm:-mx-6 lg:-mx-8","children":["$","$L5",null,{}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.7,"transition":{"duration":0.6},"children":["$","div",null,{"className":"prose prose-neutral dark:prose-invert mt-8 max-w-none","dangerouslySetInnerHTML":{"__html":"$6"}}]}],"$L7","$L8"]}]]}],"$L9"]}]}],["$La"],"$Lb"]}],"loading":null,"isPartial":false}
+7:["$","$L2",null,{"delay":0.8,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 mt-12 sm:-mx-6 lg:-mx-8","children":["$","$L5",null,{}]}]
+8:["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":30},"delay":0.9,"transition":{"duration":0.5},"children":["$","nav",null,{"className":"mt-8 grid gap-4 md:grid-cols-2","children":[["$","$L3",null,{"href":"/blog/hy14ic","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 transition-colors","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"上一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"apply函数和入口函数"}]]}],["$","$L3",null,{"href":"/blog/eywygo","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 text-right transition-colors md:text-right","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"下一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"面向对象"}]]}]]}]}]
+9:["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/11dff99839ab5ba0.js","async":true}]
+b:["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]
+e:null

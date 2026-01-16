@@ -1,0 +1,133 @@
+1:"$Sreact.fragment"
+2:I[99897,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"MotionPreset"]
+3:I[22016,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],""]
+4:I[48347,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"default"]
+5:I[72436,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Separator"]
+c:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+d:"$Sreact.suspense"
+6:T1270,<!doctype html><div class="lake-content" typography="classic"><h2 id="vi7Gj"><span class="ne-text">问题分析</span></h2><p id="eb6bae56e307e499aa83c1b2931e1693" class="ne-p"><span class="ne-text">对所给字符串进行遍历，遇到数字字符就压入栈stack内，遇到+-*/符号就pop处栈的两个元素，进行该字符运算处理</span></p><p id="u854f3b3d" class="ne-p"><span class="ne-text"></span></p><h2 id="gnNEL"><span class="ne-text">代码实现</span></h2><pre data-language="java" id="sx7ex" class="ne-codeblock language-java">package com.wztlink1013.problems.leetcode.editor.cn;
+
+// P150.逆波兰表达式求值
+// P150.evaluate-reverse-polish-notation
+//根据 逆波兰表示法，求表达式的值。 
+//
+// 有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。 
+//
+// 
+//
+// 说明： 
+//
+// 
+// 整数除法只保留整数部分。 
+// 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。 
+// 
+//
+// 
+//
+// 示例 1： 
+//
+// 输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]
+//输出: 9
+//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
+// 
+//
+// 示例 2： 
+//
+// 输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;]
+//输出: 6
+//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
+// 
+//
+// 示例 3： 
+//
+// 输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]
+//输出: 22
+//解释: 
+//该算式转化为常见的中缀算术表达式为：
+//  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+//= ((10 * (6 / (12 * -11))) + 17) + 5
+//= ((10 * (6 / -132)) + 17) + 5
+//= ((10 * 0) + 17) + 5
+//= (0 + 17) + 5
+//= 17 + 5
+//= 22 
+//
+// 
+//
+// 逆波兰表达式： 
+//
+// 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。 
+//
+// 
+// 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。 
+// 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。 
+// 
+//
+// 逆波兰表达式主要有以下两个优点： 
+//
+// 
+// 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。 
+// 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。 
+// 
+// Related Topics 栈 
+// 👍 213 👎 0
+
+
+import java.util.Stack;
+
+public class P150EvaluateReversePolishNotation{
+    public static void main(String[] args) {
+        Solution solution = new P150EvaluateReversePolishNotation().new Solution();
+        String[] tokens_1 = {&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;};
+        int temp = solution.evalRPN(tokens_1);
+        System.out.println(temp);
+        
+    }
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack&lt;String&gt; stack = new Stack&lt;&gt;();
+
+        String temp = &quot;0&quot;;
+        stack.push(temp);
+
+        for (String token : tokens) {
+            int sum = 0;
+            if (token.equals(&quot;+&quot;)) {
+                sum += Integer.parseInt(stack.pop()) + Integer.parseInt(stack.pop());
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else if (token.equals(&quot;-&quot;)) {
+                int i = Integer.parseInt(stack.pop());
+                int j = Integer.parseInt(stack.pop());
+                sum += j-i;
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else if (token.equals(&quot;*&quot;)) {
+                sum += Integer.parseInt(stack.pop()) * Integer.parseInt(stack.pop());
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else if (token.equals(&quot;/&quot;)) {
+                int i = Integer.parseInt(stack.pop());
+                int j = Integer.parseInt(stack.pop());
+                sum += j / i;
+                String str = String.valueOf(sum);
+                stack.push(str);
+            } else {
+                stack.push(token);
+            }
+        }
+        int result = Integer.parseInt(stack.pop());
+        return result;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+}</pre></div>0:{"buildId":"fgnevoCcv3TjAYBn9b4Wj","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"relative","children":["$","$L2",null,{"fade":true,"blur":true,"transition":{"duration":0.5},"delay":0.1,"className":"relative overflow-hidden border-y xl:flex","children":[["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}],["$","div",null,{"className":"mx-auto w-full max-w-6xl flex-none space-y-8 px-4 py-8 min-[1158px]:border-x sm:px-6 sm:py-12 lg:px-8","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"transition":{"duration":0.4},"children":["$","$L3",null,{"href":"/blog","className":"text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"返回","技术博客"]}]}],["$","article",null,{"className":"mx-auto max-w-4xl","children":[["$","header",null,{"className":"mb-8 space-y-6","children":["",["$","$L2",null,{"delay":0.3,"transition":{"duration":0.5},"children":["$","h1",null,{"className":"text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl","children":["$","$L4",null,{"text":"150.逆波兰表达式求值🔖栈","delay":30,"animateBy":"words","direction":"bottom"}]}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.4,"transition":{"duration":0.5},"children":["$","p",null,{"className":"text-muted-foreground text-lg","children":"问题分析对所给字符串进行遍历，遇到数字字符就压入栈stack内，遇到+-*/符号就pop处栈的两个元素，进行该字符运算处理代码实现package com.wztlink1013.problems.leetcode.editor.cn;  // P150.逆波兰表达式求值 // P150.eva..."}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.5,"transition":{"duration":0.5},"children":["$","div",null,{"className":"text-muted-foreground flex flex-wrap items-center gap-4 text-sm","children":[["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-calendar h-4 w-4","aria-hidden":"true","children":[["$","path","1cmpym",{"d":"M8 2v4"}],["$","path","4m81vk",{"d":"M16 2v4"}],["$","rect","1hopcy",{"width":"18","height":"18","x":"3","y":"4","rx":"2"}],["$","path","8toen8",{"d":"M3 10h18"}],"$undefined"]}],["$","span",null,{"children":"2022年7月9日"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock h-4 w-4","aria-hidden":"true","children":[["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],"$undefined"]}],["$","span",null,{"children":"794字"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-eye h-4 w-4","aria-hidden":"true","children":[["$","path","1nclc0",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["$","circle","1v7zrd",{"cx":"12","cy":"12","r":"3"}],"$undefined"]}],["$","span",null,{"children":[5," 阅读"]}]]}],false,false]}]}],false]}],["$","$L2",null,{"delay":0.6,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 sm:-mx-6 lg:-mx-8","children":["$","$L5",null,{}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.7,"transition":{"duration":0.6},"children":["$","div",null,{"className":"prose prose-neutral dark:prose-invert mt-8 max-w-none","dangerouslySetInnerHTML":{"__html":"$6"}}]}],"$L7","$L8"]}]]}],"$L9"]}]}],["$La"],"$Lb"]}],"loading":null,"isPartial":false}
+7:["$","$L2",null,{"delay":0.8,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 mt-12 sm:-mx-6 lg:-mx-8","children":["$","$L5",null,{}]}]
+8:["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":30},"delay":0.9,"transition":{"duration":0.5},"children":["$","nav",null,{"className":"mt-8 grid gap-4 md:grid-cols-2","children":[["$","$L3",null,{"href":"/blog/yhxiep","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 transition-colors","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"上一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"搭建“文本三巨头”环境"}]]}],["$","$L3",null,{"href":"/blog/gw1d4z","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 text-right transition-colors md:text-right","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"下一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"Hexo报错at formatNunjucksError"}]]}]]}]}]
+9:["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/11dff99839ab5ba0.js","async":true}]
+b:["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]
+e:null

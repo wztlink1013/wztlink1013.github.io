@@ -1,0 +1,219 @@
+1:"$Sreact.fragment"
+2:I[99897,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"MotionPreset"]
+3:I[22016,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],""]
+4:I[85437,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Image"]
+5:I[48347,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"default"]
+6:I[72436,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Separator"]
+d:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+e:"$Sreact.suspense"
+7:T29c6,<!doctype html><div class="lake-content" typography="classic"><p id="a20d224c568e48b9d67847a2c66a8c01_p_0" class="ne-p"><span class="ne-text">前言：</span><strong><span class="ne-text">数据结构一般就四种关系：集合、线性、树、图</span></strong><span class="ne-text">。这篇文章打算对图这类数据结构做一个概览。先介绍图的一些术语（复制粘贴：））；然后讲解一下图的各种存储形式；最后把图的应用记录一下，具体应用算法放在算法分类里面。</span></p><p id="u15a4556b" class="ne-p"><span class="ne-text"></span></p><h2 id="Xftp7"><span class="ne-text">一、图的一些术语</span></h2><p id="u7b8fcc5d" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621256644397-9e2a9a9a-c3f9-4bfe-af9d-d3eec44c16b2.png" width="499" id="ue0b15b96" class="ne-image"></p><p id="u054df83b" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621256670453-caccc927-2510-4119-9452-a588b6f590e5.png" width="476" id="u1e1a40e2" class="ne-image"></p><p id="u5c8e2bbc" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2021/png/1484158/1621256694543-32b41537-3bc7-4515-b8e9-eb56b026d2a7.png" width="470" id="uee62fe0a" class="ne-image"></p><h2 id="YcmB4"><span class="ne-text">二、图存储</span></h2><h3 id="bKChi"><span class="ne-text">邻接矩阵</span></h3><div data-type="info" class="ne-alert"><p id="04fc687e04e1d5533771232c89922a29" class="ne-p"><span class="ne-text">创建无向网</span></p></div><p id="u7562b828" class="ne-p"><br></p><pre data-language="cpp" id="xA3Md" class="ne-codeblock language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int ArcType;
+
+/**
+ * 邻接矩阵存储形式
+ */
+typedef struct {
+    /* data */
+    VerTexType vexs[MVNum]; //顶点表
+    ArcType arcs[MVNum][MVNum]; //邻接矩阵
+    int vexnum, arcnum; //图的当前顶点和边数
+}AMGraph;
+
+/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */
+int LocateVex(AMGraph &amp;G, char v) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        if (v == G.vexs[i]){
+            return i;
+        }
+    }
+}
+
+/**
+ * 创建无向网
+ * 如果创建无向图   
+ */
+void CreateUDN(AMGraph &amp;G) {
+    // 采用邻接矩阵表示法，创建无向图G
+    cout &lt;&lt; &quot;请输入顶点数和边数：&quot; &lt;&lt; endl;
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; //输入顶点数和边数
+    // 初始化顶点
+    for (int i = 0; i &lt; G.vexnum;i++){
+        cout &lt;&lt; &quot;请输入第&quot; &lt;&lt; i &lt;&lt; &quot;个顶点值&quot; &lt;&lt; endl;
+        cin &gt;&gt; G.vexs[i];
+    }
+    // 初始化邻接矩阵的边的权值为最大值
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        for (int j = 0; j &lt; G.vexnum;j++) {
+            G.arcs[i][j] = MaxInt;
+        }
+    }
+    // 构造邻接矩阵
+    for (int k = 0; k &lt; G.arcnum;k++) {
+        cout &lt;&lt; &quot;请输入每条边所依附的顶点和权值：&quot; &lt;&lt; endl;
+        char v1, v2;
+        int w; //一条边所依附的顶点和权值
+        cin &gt;&gt; v1 &gt;&gt; v2 &gt;&gt; w;
+        int i = LocateVex(G, v1);
+        int j = LocateVex(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    }
+}
+
+void Display(AMGraph &amp;G) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        for (int j = 0; j &lt; G.vexnum;j++) {
+            cout &lt;&lt; G.arcs[i][j] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+}
+
+
+int main() {
+    AMGraph test;
+    // CreateUDN(test);
+    Display(test);
+}</pre><p id="u449d1a79" class="ne-p"><br></p><div data-type="tips" class="ne-alert"><p id="ubfd95f3b" class="ne-p"><span class="ne-text">创建无向图</span></p></div><p id="ue2d1f836" class="ne-p"><span class="ne-text">对</span><code class="ne-code"><span class="ne-text">CreateUDN</span></code><span class="ne-text"> 进行处理：</span></p><ul class="ne-ul"><li id="u86393495"><span class="ne-text">G.arcs[i][j] = MaxInt;改为G.arcs[i][j] = 0;</span></li><li id="uf0d4b0c7"><span class="ne-text">将w改为常量1即可  </span></li></ul><p id="ubf2f1771" class="ne-p"><br></p><div data-type="tips" class="ne-alert"><p id="ud4631bb3" class="ne-p"><span class="ne-text">创建有向网</span></p></div><p id="u6d3051a6" class="ne-p"><span class="ne-text">对</span><code class="ne-code"><span class="ne-text">CreateUDN</span></code><span class="ne-text"> 进行处理：</span></p><ul class="ne-ul"><li id="ua516c49e"><span class="ne-text">删除G.arcs[j][i] = w;</span></li></ul><p id="u46ec0f2b" class="ne-p"><br></p><div data-type="tips" class="ne-alert"><p id="ub07dff75" class="ne-p"><span class="ne-text">创建有向图</span></p></div><p id="ua2fdba0d" class="ne-p"><span class="ne-text">对</span><code class="ne-code"><span class="ne-text">CreateUDN</span></code><span class="ne-text"> 进行处理：</span></p><ul class="ne-ul"><li id="u13aeacb4"><span class="ne-text">删除G.arcs[j][i] = w;</span></li></ul><h3 id="Au8am"><span class="ne-text">邻接表</span></h3><pre data-language="cpp" id="OKNzG" class="ne-codeblock language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define MVNum 100
+#define MaxInt 32767
+
+typedef char VerTexType;
+typedef int OtherInfo;
+
+/**
+ * 邻接表存储
+ */
+
+/**
+ * 存储结构
+ */
+typedef struct ArcNode {                      //边结点                    
+    int adjvex;                             //该边所指向的结点的位置
+    struct ArcNode *nextarc;                //指向下一条边的指针
+    OtherInfo info;                         //和边相关的其他信息
+}ArcNode;
+
+typedef struct VNode {                        //顶点信息
+    VerTexType data;                        //数据域，存放顶点vi的名称或其他有关信息
+    ArcNode *firstarc;                      //指向第一条依附该顶点的边的指针
+}VNode, AdjList[MVNum];                     //AdjList表示邻接表的类型
+
+typedef struct {
+    AdjList vertices;
+    int vexnum, arcnum;                     //图当前的顶点数和边数
+}ALGragh;                                   //邻接表（Adjacency List）
+
+
+/**
+ * 找到v顶点在图中的位置
+ */
+int LocateVex(ALGragh &amp;G, char v) {
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        if (v == G.vertices[i].data) {
+            return i;
+        }
+    }
+}
+
+/**
+ * 邻接表创建无向图
+ */
+void CreateUDG(ALGragh &amp;G) {
+    cin &gt;&gt; G.vexnum &gt;&gt; G.arcnum; // 邻接表的顶点数和边数
+    for (int i = 0; i &lt; G.vexnum;i++) {
+        cin &gt;&gt; G.vertices[i].data;
+        G.vertices[i].firstarc = NULL;
+    }
+    
+    for (int k = 0; k &lt; G.arcnum;k++) {
+        char v1, v2;
+        cin &gt;&gt; v1 &gt;&gt; v2;
+        int i = LocateVex(G, v1);
+        int j = LocateVex(G, v2);
+        ArcNode *p1 = new ArcNode;
+        p1-&gt;adjvex = j;
+        p1-&gt;nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = new ArcNode;
+        p2-&gt;adjvex = i;
+        p2-&gt;nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p1;
+    }
+}</pre><h3 id="leRQZ"><span class="ne-text">有向图：十字链表存储</span></h3><pre data-language="cpp" id="ElVVW" class="ne-codeblock language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef int Status;
+#define OK 1;
+
+//----有向图的十字链表储存表示----
+#define MAX_VERTEX_NUM 20
+typedef char VerTexType;
+typedef int InfoType;
+typedef struct ArcBox
+{
+    int tailvex, headvex;                   //该弧的头尾和头顶点的位置
+    struct ArcBox *hlink, *tlink;            //分别为弧头相同和弧尾相同的链域
+    InfoType *info;                         //该弧相关信息的指针
+}ArcBox;
+
+typedef struct VexNode
+{
+    VerTexType data;
+    ArcBox *firstin, *firstout;             //分别指向该顶点的第一项入弧和出弧
+}VexNode;
+
+typedef struct 
+{
+    VexNode xlist[MAX_VERTEX_NUM];          //表头向量
+    int vexnum, arcnum;                     //有向图的当前顶点数和弧数
+}OLGraph;                                   //十字链表（Orthogonal List）
+</pre><h3 id="vsryl"><span class="ne-text">无向图：邻接多重表存储</span></h3><pre data-language="cpp" id="jbSnZ" class="ne-codeblock language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef int Status;
+#define OK 1;
+
+//----无向图的邻接多重表储存表示----
+#define MAX_VERTEX_NUM 20
+typedef char VerTexType;
+typedef int InfoType;
+
+typedef enum
+{
+    unvisited, visited                     //枚举unvisited是0，visited是1，注意没有分号
+}VisitIf;
+
+typedef struct EBox
+{
+    VisitIf mark;                           //访问标记
+    int ivex, jvex;                         //该边依附的两个顶点的位置
+    struct EBox *ilink, *jlink;             //分别指向依附这两个顶点的下一条边
+    InfoType *info;                         //该边的信息指针
+}EBox;
+
+typedef struct VexBox
+{
+    VerTexType data;
+    EBox *firstedge;                        //指向第一条依附该顶点的边
+}VexBox;
+
+typedef struct 
+{
+    VexBox adjmulist[MAX_VERTEX_NUM];
+    int vexnum, arcnum;                     //无向图当前的顶点数和边数
+}AMLGraph;                                  //邻接多重表(Adjacency Multilist)</pre><h3 id="yIN8s"><span class="ne-text">其他：边集数组</span></h3><p id="f7caa591865821073c01be60256a98d5" class="ne-p"><br></p><h3 id="EYiXl"><span class="ne-text">其他：链式前向星</span></h3><p id="37b365ee016545bff4ec27eb3f6afd50" class="ne-p"><br></p><h2 id="GJZzj"><span class="ne-text">三、图的应用</span></h2><ul class="ne-ul"><li id="1853f2f02796d7f84065b7f0802239d1"><span class="ne-text">最小生成树</span></li><li id="3d0e7c3bba57f2e22cb08454d8351cf9"><span class="ne-text">最短路径</span></li><li id="974b0e776d1250a371152cff90420be4"><span class="ne-text">环路</span></li><li id="ebe95ecfd4e0f08b0581a7cfdf5fd876"><span class="ne-text">关键路径</span></li></ul><p id="9d3c089ab3cd581998d3b22fa4c644db" class="ne-p"><br></p><p id="827d80a13d6f97ce4d10e4dcf0ed2b9a" class="ne-p"><span class="ne-text">具体这几类问题都是算法中的贪心算法所属，故将其放到算法分类里面了。</span></p><p id="88bb9f458aac1f0aa89a861c39b131f6" class="ne-p"><br></p><p id="26dd6339706b64d9f617cf5e571ec4bf" class="ne-p"><br></p><p id="4dccc396ba4ee721ad76b490e08c8486" class="ne-p"><br></p><p id="2722e61c51c854135f8ad27e4594a933" class="ne-p"><br></p><p id="a4f7ffd8a89771e03642e1dd3e60709e" class="ne-p"><br></p></div>0:{"buildId":"fgnevoCcv3TjAYBn9b4Wj","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"relative","children":["$","$L2",null,{"fade":true,"blur":true,"transition":{"duration":0.5},"delay":0.1,"className":"relative overflow-hidden border-y xl:flex","children":[["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}],["$","div",null,{"className":"mx-auto w-full max-w-6xl flex-none space-y-8 px-4 py-8 min-[1158px]:border-x sm:px-6 sm:py-12 lg:px-8","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"transition":{"duration":0.4},"children":["$","$L3",null,{"href":"/blog","className":"text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"返回","技术博客"]}]}],["$","article",null,{"className":"mx-auto max-w-4xl","children":[["$","header",null,{"className":"mb-8 space-y-6","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.2,"transition":{"duration":0.6},"children":["$","div",null,{"className":"relative aspect-video overflow-hidden rounded-xl","children":["$","$L4",null,{"src":"https://cdn.nlark.com/yuque/0/2021/png/1484158/1621256644397-9e2a9a9a-c3f9-4bfe-af9d-d3eec44c16b2.png","alt":"图的术语、存储、应用综述","fill":true,"className":"object-cover","unoptimized":true}]}]}],["$","$L2",null,{"delay":0.3,"transition":{"duration":0.5},"children":["$","h1",null,{"className":"text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl","children":["$","$L5",null,{"text":"图的术语、存储、应用综述","delay":30,"animateBy":"words","direction":"bottom"}]}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.4,"transition":{"duration":0.5},"children":["$","p",null,{"className":"text-muted-foreground text-lg","children":"数据结构一般就四种关系集合线性树图图存储：邻接矩阵图存储：邻接表"}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.5,"transition":{"duration":0.5},"children":["$","div",null,{"className":"text-muted-foreground flex flex-wrap items-center gap-4 text-sm","children":[["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-calendar h-4 w-4","aria-hidden":"true","children":[["$","path","1cmpym",{"d":"M8 2v4"}],["$","path","4m81vk",{"d":"M16 2v4"}],["$","rect","1hopcy",{"width":"18","height":"18","x":"3","y":"4","rx":"2"}],["$","path","8toen8",{"d":"M3 10h18"}],"$undefined"]}],["$","span",null,{"children":"2022年7月9日"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock h-4 w-4","aria-hidden":"true","children":[["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],"$undefined"]}],["$","span",null,{"children":"1.3千字"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-eye h-4 w-4","aria-hidden":"true","children":[["$","path","1nclc0",{"d":"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"}],["$","circle","1v7zrd",{"cx":"12","cy":"12","r":"3"}],"$undefined"]}],["$","span",null,{"children":[9," 阅读"]}]]}],false,false]}]}],false]}],["$","$L2",null,{"delay":0.6,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 sm:-mx-6 lg:-mx-8","children":["$","$L6",null,{}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.7,"transition":{"duration":0.6},"children":["$","div",null,{"className":"prose prose-neutral dark:prose-invert mt-8 max-w-none","dangerouslySetInnerHTML":{"__html":"$7"}}]}],"$L8","$L9"]}]]}],"$La"]}]}],["$Lb"],"$Lc"]}],"loading":null,"isPartial":false}
+8:["$","$L2",null,{"delay":0.8,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 mt-12 sm:-mx-6 lg:-mx-8","children":["$","$L6",null,{}]}]
+9:["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":30},"delay":0.9,"transition":{"duration":0.5},"children":["$","nav",null,{"className":"mt-8 grid gap-4 md:grid-cols-2","children":[["$","$L3",null,{"href":"/blog/ztiag3","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 transition-colors","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"上一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"图的遍历——DFS（深度优先）、BFS（广度优先）"}]]}],["$","$L3",null,{"href":"/blog/porzdi","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 text-right transition-colors md:text-right","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"下一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"[转]竞赛常用STL容器详解"}]]}]]}]}]
+a:["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/11dff99839ab5ba0.js","async":true}]
+c:["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]
+f:null

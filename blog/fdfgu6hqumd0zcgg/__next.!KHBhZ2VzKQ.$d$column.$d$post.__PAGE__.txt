@@ -1,0 +1,158 @@
+1:"$Sreact.fragment"
+2:I[99897,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"MotionPreset"]
+3:I[22016,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],""]
+4:I[85437,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Image"]
+5:I[48347,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"default"]
+6:I[72436,["/_next/static/chunks/4eaa70fe861e9598.js","/_next/static/chunks/946bdd2e6c9b7c49.js","/_next/static/chunks/6dd6809ee42e252f.js","/_next/static/chunks/f2b800ca7ae14e96.js","/_next/static/chunks/e121db38c98deeb4.js","/_next/static/chunks/0973dd923ca2781d.js","/_next/static/chunks/b397c2fd2abb1207.js","/_next/static/chunks/11dff99839ab5ba0.js"],"Separator"]
+d:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+e:"$Sreact.suspense"
+7:T350c,<!doctype html><div class="lake-content" typography="classic"><pre data-language="vue" id="mptaE" class="ne-codeblock language-vue"><code>track(debugInfo?: DebuggerEventExtraInfo): Link | undefined {
+  if (!activeSub || !shouldTrack || activeSub === this.computed) {
+    return
+  }
+
+  let link = this.activeLink
+  if (link === undefined || link.sub !== activeSub) {
+    link = this.activeLink = new Link(activeSub, this)
+
+    // add the link to the activeEffect as a dep (as tail)
+    if (!activeSub.deps) {
+      activeSub.deps = activeSub.depsTail = link
+    } else {
+      link.prevDep = activeSub.depsTail
+      activeSub.depsTail!.nextDep = link
+      activeSub.depsTail = link
+    }
+
+    addSub(link)
+  } else if (link.version === -1) {
+    // reused from last run - already a sub, just sync version
+    link.version = this.version
+
+    // If this dep has a next, it means it's not at the tail - move it to the
+    // tail. This ensures the effect's dep list is in the order they are
+    // accessed during evaluation.
+    if (link.nextDep) {
+      const next = link.nextDep
+      next.prevDep = link.prevDep
+      if (link.prevDep) {
+        link.prevDep.nextDep = next
+      }
+
+      link.prevDep = activeSub.depsTail
+      link.nextDep = undefined
+      activeSub.depsTail!.nextDep = link
+      activeSub.depsTail = link
+
+      // this was the head - point to the new head
+      if (activeSub.deps === link) {
+        activeSub.deps = next
+      }
+    }
+  }
+
+  if (__DEV__ &amp;&amp; activeSub.onTrack) {
+    activeSub.onTrack(
+      extend(
+        {
+          effect: activeSub,
+        },
+        debugInfo,
+      ),
+    )
+  }
+
+  return link
+}</code></pre><ul class="ne-ul"><li id="uaeea05a7" data-lake-index-type="0"><span class="ne-text">activeSub是一个effect文件中的全局变量，用来记录所有的副作用映射关系</span></li></ul><p id="u11cf4e7e" class="ne-p"><img src="https://cdn.nlark.com/yuque/0/2024/png/1484158/1734068193886-ebff8ef0-c8d0-4f14-8c54-95059adae9df.png" width="329" id="uf08bbc37" class="ne-image"></p><p id="ubffdddc7" class="ne-p"><br></p><p id="u13f5a0b8" class="ne-p"><br></p><h3 id="wBQEv"><span class="ne-text">eg</span></h3><pre data-language="vue" id="YRlaP" class="ne-codeblock language-vue"><code>&lt;script setup&gt;
+import { ref } from 'vue'
+
+const count = ref(0)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click=&quot;count++&quot;&gt;{{ count }}&lt;/button&gt;
+  &lt;div id=&quot;count-2&quot;&gt;{{ count }}&lt;/div&gt;
+  &lt;div id=&quot;count-3&quot;&gt;{{ count }}&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;style&gt;
+button {
+  color: red;
+}
+&lt;/style&gt;
+</code></pre><p id="uda06a96c" class="ne-p"><span class="ne-text">这个例子中，count变量会触发依赖追踪三次。</span></p><h3 id="RlqrU"><span class="ne-text">这三次触发依赖追踪，都有什么样的区别</span></h3><p id="u95b7dd9d" class="ne-p"><span class="ne-text">这三次触发依赖追踪本质上是相同的，但它们属于同一个渲染效果（render effect）中的不同访问点。让我详细解释一下：</span></p><p id="ub5ebe8f2" class="ne-p"><span class="ne-text">对于这个模板：</span></p><pre data-language="vue" id="ixKJh" class="ne-codeblock language-vue"><code>&lt;template&gt;
+  &lt;button @click=&quot;count++&quot;&gt;{{ count }}&lt;/button&gt;
+  &lt;div id=&quot;count-2&quot;&gt;{{ count }}&lt;/div&gt;
+  &lt;div id=&quot;count-3&quot;&gt;{{ count }}&lt;/div&gt;
+&lt;/template&gt;</code></pre><p id="uc8b2c955" class="ne-p"><span class="ne-text">这三次 track 的执行顺序是从上到下的，它们的主要区别在于：</span></p><ol class="ne-ol"><li id="u0f2b7622" data-lake-index-type="0"><strong><span class="ne-text">第一次 track</span></strong><span class="ne-text">（button 中的 count）</span></li></ol><pre data-language="typescript" id="katMF" class="ne-codeblock language-typescript"><code>// 第一次 track 时
+link = this.activeLink = new Link(activeSub, this)
+// 此时 activeSub.deps 为空，所以这个 link 会成为 deps 链表的第一个节点
+if (!activeSub.deps) {
+  activeSub.deps = activeSub.depsTail = link
+}</code></pre><ol start="2" class="ne-ol"><li id="uc2949eb8" data-lake-index-type="0"><strong><span class="ne-text">第二次 track</span></strong><span class="ne-text">（count-2 div 中的 count）</span></li></ol><pre data-language="typescript" id="TdnCc" class="ne-codeblock language-typescript"><code>// 第二次 track 时
+link = this.activeLink = new Link(activeSub, this)
+// 此时 activeSub.deps 已存在，新的 link 会被添加到链表尾部
+link.prevDep = activeSub.depsTail
+activeSub.depsTail!.nextDep = link
+activeSub.depsTail = link</code></pre><ol start="3" class="ne-ol"><li id="ueca06f13" data-lake-index-type="0"><strong><span class="ne-text">第三次 track</span></strong><span class="ne-text">（count-3 div 中的 count）</span></li></ol><pre data-language="typescript" id="rcSBX" class="ne-codeblock language-typescript"><code>// 第三次 track 时
+// 与第二次类似，继续添加到链表尾部
+link = this.activeLink = new Link(activeSub, this)
+link.prevDep = activeSub.depsTail
+activeSub.depsTail!.nextDep = link
+activeSub.depsTail = link</code></pre><p id="u4262d057" class="ne-p"><span class="ne-text">主要区别点：</span></p><ol class="ne-ol"><li id="u9c0b7eb0" data-lake-index-type="0"><strong><span class="ne-text">依赖链表的位置不同</span></strong><span class="ne-text">：</span></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u8b69ee4d" data-lake-index-type="0"><span class="ne-text">第一个成为头节点（deps）</span></li><li id="u7047b55a" data-lake-index-type="0"><span class="ne-text">第二个和第三个分别追加到尾部（depsTail）</span></li></ul></ul><ol start="2" class="ne-ol"><li id="uca28c4cf" data-lake-index-type="0"><strong><span class="ne-text">Link 对象的关联关系不同</span></strong><span class="ne-text">：</span></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u1ae68147" data-lake-index-type="0"><span class="ne-text">第一个 link 的 prevDep 为 undefined</span></li><li id="u3dbba41e" data-lake-index-type="0"><span class="ne-text">后续的 link 会与前一个 link 建立双向链接</span></li></ul></ul><ol start="3" class="ne-ol"><li id="u32a6a724" data-lake-index-type="0"><strong><span class="ne-text">在开发环境下的调试信息</span></strong><span class="ne-text">：</span></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u7d297bdf" data-lake-index-type="0"><span class="ne-text">每次 track 时的调用栈位置不同</span></li><li id="ueee0cb6f" data-lake-index-type="0"><span class="ne-text">对应的模板位置不同</span></li></ul></ul><p id="u1559a351" class="ne-p"><span class="ne-text">但它们有以下共同点：</span></p><ol class="ne-ol"><li id="ud75badc1" data-lake-index-type="0"><span class="ne-text">都属于同一个渲染效果（同一个 activeSub）</span></li><li id="u8c9244f8" data-lake-index-type="0"><span class="ne-text">都追踪同一个响应式数据（count）</span></li><li id="u25910e04" data-lake-index-type="0"><span class="ne-text">当 count 发生变化时，这三个位置都会触发更新</span></li></ol><p id="u794c6d5d" class="ne-p"><span class="ne-text">这种依赖追踪的设计使得：</span></p><ul class="ne-ul"><li id="ud2ec2a05" data-lake-index-type="0"><span class="ne-text">Vue 能够精确知道哪些模板位置依赖了这个响应式数据</span></li><li id="u817e73f3" data-lake-index-type="0"><span class="ne-text">当数据变化时能够精确地更新相关的 DOM 节点</span></li><li id="u80f03865" data-lake-index-type="0"><span class="ne-text">通过双向链表结构，可以高效地管理和清理依赖关系</span></li></ul><h3 id="ecMRO"><span class="ne-text">Vue是如何知道那些模板位置依赖了这个响应式数据的？它是怎么讲两者联系起来的？</span></h3><p id="ud1374741" class="ne-p"><span class="ne-text">让我解释 Vue 是如何将模板位置和响应式数据关联起来的：</span></p><p id="u69b7e155" class="ne-p"><span class="ne-text">核心机制是通过&quot;副作用（Effect）&quot;作为桥梁。当 Vue 编译模板时，会为整个组件创建一个渲染函数，这个渲染函数会被包装在一个 Effect 中。</span></p><p id="u3b0e5851" class="ne-p"><span class="ne-text">让我们通过一个简化的例子来说明：</span></p><pre data-language="vue" id="feW0Z" class="ne-codeblock language-vue"><code>&lt;template&gt;
+  &lt;button&gt;{{ count }}&lt;/button&gt;
+&lt;/template&gt;
+</code></pre><p id="uf58e4c8e" class="ne-p"><span class="ne-text">Vue 会将这个模板编译成类似这样的渲染函数：</span></p><pre data-language="typescript" id="O3OxD" class="ne-codeblock language-typescript"><code>// 简化的渲染函数示意
+function render() {
+  return h('button', null, count.value)  // 访问 count.value 时会触发 track
+}
+
+// 创建渲染 effect
+const effect = new ReactiveEffect(render, {
+  scheduler: queueJob,
+  scope: componentScope,
+  // ...其他配置
+})</code></pre><p id="u1fbeb1e8" class="ne-p"><span class="ne-text">关联过程如下：</span></p><ol class="ne-ol"><li id="u38858ee2" data-lake-index-type="0"><strong><span class="ne-text">创建依赖关系</span></strong><span class="ne-text">：</span></li></ol><pre data-language="typescript" id="nmzW6" class="ne-codeblock language-typescript"><code>// 当执行 render 函数时
+count.value  // 触发 get 操作
+↓
+track(target, TrackOpTypes.GET, 'value')  // 进入 track 函数
+↓
+dep.track()  // dep 是与 count.value 关联的 Dep 实例
+↓
+// 在 Dep 类中创建 Link
+link = new Link(activeSub, this)  // activeSub 就是当前的渲染 effect</code></pre><ol start="2" class="ne-ol"><li id="u3b104f92" data-lake-index-type="0"><strong><span class="ne-text">双向链接</span></strong><span class="ne-text">：</span></li></ol><pre data-language="typescript" id="p6dbf" class="ne-codeblock language-typescript"><code>// Dep 和 Effect 之间建立双向链接
+// Effect 侧
+effect.deps = link        // effect 记录它依赖了哪些响应式数据
+effect.depsTail = link
+
+// Dep 侧
+dep.subs = link          // dep 记录哪些 effect 依赖了它</code></pre><ol start="3" class="ne-ol"><li id="u48e5e895" data-lake-index-type="0"><strong><span class="ne-text">更新触发</span></strong><span class="ne-text">：</span></li></ol><pre data-language="typescript" id="QtQzM" class="ne-codeblock language-typescript"><code>// 当 count.value 改变时
+count.value = newValue
+↓
+trigger(target, TriggerOpTypes.SET, 'value')
+↓
+dep.notify()  // 通知所有依赖的 effects
+↓
+// 遍历所有 links，调用对应的 effect
+for (let link = this.subs; link; link = link.prevSub) {
+  link.sub.notify()  // sub 就是 effect
+}</code></pre><p id="u7620bb4e" class="ne-p"><span class="ne-text">关键点：</span></p><ol class="ne-ol"><li id="udd21e3d0" data-lake-index-type="0"><strong><span class="ne-text">位置追踪</span></strong><span class="ne-text">：</span></li></ol><ul class="ne-ul"><li id="ue3fea5ee" data-lake-index-type="0"><span class="ne-text">渲染函数本身就包含了模板位置信息</span></li><li id="u008e29b3" data-lake-index-type="0"><span class="ne-text">Effect 在执行时会建立与具体 DOM 节点的关联</span></li><li id="uc695d159" data-lake-index-type="0"><span class="ne-text">当数据变化触发重渲染时，会更新对应的 DOM 节点</span></li></ul><ol start="2" class="ne-ol"><li id="u4cfa68a1" data-lake-index-type="0"><strong><span class="ne-text">依赖管理</span></strong><span class="ne-text">：</span></li></ol><pre data-language="typescript" id="i3DwA" class="ne-codeblock language-typescript"><code>class Link {
+  version: number
+  nextDep?: Link   // 用于 Effect 的依赖链表
+  prevDep?: Link
+  nextSub?: Link   // 用于 Dep 的订阅者链表
+  prevSub?: Link
+  
+  constructor(
+    public sub: Subscriber,  // Effect
+    public dep: Dep         // 响应式数据的 dep
+  ) {
+    // ...
+  }
+}</code></pre><ol start="3" class="ne-ol"><li id="u93bb4601" data-lake-index-type="0"><strong><span class="ne-text">精确更新</span></strong><span class="ne-text">：</span></li></ol><ul class="ne-ul"><li id="u4660e240" data-lake-index-type="0"><span class="ne-text">每个响应式数据都知道哪些 Effect 依赖它（通过 dep.subs）</span></li><li id="u0861553d" data-lake-index-type="0"><span class="ne-text">每个 Effect 都知道它依赖哪些数据（通过 effect.deps）</span></li><li id="u2712eaf8" data-lake-index-type="0"><span class="ne-text">数据变化时，只会触发相关的 Effect 更新</span></li></ul><p id="ud96068ea" class="ne-p"><span class="ne-text">这种机制确保了：</span></p><ul class="ne-ul"><li id="u36fa4ad6" data-lake-index-type="0"><span class="ne-text">响应式数据和模板位置之间的精确关联</span></li><li id="ubac65440" data-lake-index-type="0"><span class="ne-text">高效的依赖追踪和更新</span></li><li id="ua8fa0be6" data-lake-index-type="0"><span class="ne-text">最小化不必要的重渲染</span></li></ul><p id="u1aa77b9d" class="ne-p"><br></p><p id="ua345709b" class="ne-p"><br></p><p id="udfb2d33a" class="ne-p"><br></p><p id="ua14d8599" class="ne-p"><br></p><p id="uc55e56b4" class="ne-p"><br></p><p id="u9cae2fe2" class="ne-p"><br></p><p id="ub350451c" class="ne-p"><br></p><p id="u82a21e67" class="ne-p"><br></p></div>0:{"buildId":"fgnevoCcv3TjAYBn9b4Wj","rsc":["$","$1","c",{"children":[["$","section",null,{"className":"relative","children":["$","$L2",null,{"fade":true,"blur":true,"transition":{"duration":0.5},"delay":0.1,"className":"relative overflow-hidden border-y xl:flex","children":[["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}],["$","div",null,{"className":"mx-auto w-full max-w-6xl flex-none space-y-8 px-4 py-8 min-[1158px]:border-x sm:px-6 sm:py-12 lg:px-8","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"transition":{"duration":0.4},"children":["$","$L3",null,{"href":"/blog","className":"text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"返回","技术博客"]}]}],["$","article",null,{"className":"mx-auto max-w-4xl","children":[["$","header",null,{"className":"mb-8 space-y-6","children":[["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.2,"transition":{"duration":0.6},"children":["$","div",null,{"className":"relative aspect-video overflow-hidden rounded-xl","children":["$","$L4",null,{"src":"https://cdn.nlark.com/yuque/0/2024/png/1484158/1734068193886-ebff8ef0-c8d0-4f14-8c54-95059adae9df.png","alt":"Vue3源码：track依赖追踪原理","fill":true,"className":"object-cover","unoptimized":true}]}]}],["$","$L2",null,{"delay":0.3,"transition":{"duration":0.5},"children":["$","h1",null,{"className":"text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl","children":["$","$L5",null,{"text":"Vue3源码：track依赖追踪原理","delay":30,"animateBy":"words","direction":"bottom"}]}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.4,"transition":{"duration":0.5},"children":["$","p",null,{"className":"text-muted-foreground text-lg","children":"track(debugInfo?: DebuggerEventExtraInfo): Link | undefined {   if (!activeSub || !shouldTrack || activeSub === this.computed) {     return   }    ..."}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"down","offset":30},"delay":0.5,"transition":{"duration":0.5},"children":["$","div",null,{"className":"text-muted-foreground flex flex-wrap items-center gap-4 text-sm","children":[["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-calendar h-4 w-4","aria-hidden":"true","children":[["$","path","1cmpym",{"d":"M8 2v4"}],["$","path","4m81vk",{"d":"M16 2v4"}],["$","rect","1hopcy",{"width":"18","height":"18","x":"3","y":"4","rx":"2"}],["$","path","8toen8",{"d":"M3 10h18"}],"$undefined"]}],["$","span",null,{"children":"2024年12月13日"}]]}],["$","div",null,{"className":"flex items-center gap-1","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock h-4 w-4","aria-hidden":"true","children":[["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],"$undefined"]}],["$","span",null,{"children":"1.4千字"}]]}],false,false,false]}]}],false]}],["$","$L2",null,{"delay":0.6,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 sm:-mx-6 lg:-mx-8","children":["$","$L6",null,{}]}],["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":50},"delay":0.7,"transition":{"duration":0.6},"children":["$","div",null,{"className":"prose prose-neutral dark:prose-invert mt-8 max-w-none","dangerouslySetInnerHTML":{"__html":"$7"}}]}],"$L8","$L9"]}]]}],"$La"]}]}],["$Lb"],"$Lc"]}],"loading":null,"isPartial":false}
+8:["$","$L2",null,{"delay":0.8,"fade":true,"blur":true,"transition":{"duration":0.6},"className":"-mx-4 mt-12 sm:-mx-6 lg:-mx-8","children":["$","$L6",null,{}]}]
+9:["$","$L2",null,{"fade":true,"blur":true,"slide":{"direction":"up","offset":30},"delay":0.9,"transition":{"duration":0.5},"children":["$","nav",null,{"className":"mt-8 grid gap-4 md:grid-cols-2","children":[["$","$L3",null,{"href":"/blog/pg4g4w2ep56a0cef","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 transition-colors","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"上一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"[AI]Vue编译阶段和运行时"}]]}],["$","$L3",null,{"href":"/blog/uya97aofqa40nnow","className":"hover:bg-muted group flex flex-col rounded-lg border p-4 text-right transition-colors md:text-right","children":[["$","span",null,{"className":"text-muted-foreground mb-2 text-sm","children":"下一篇"}],["$","span",null,{"className":"group-hover:text-primary line-clamp-2 font-medium transition-colors","children":"组合式API"}]]}]]}]}]
+a:["$","div",null,{"className":"m-6 w-full flex-1 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--primary)_15%,transparent)_2px,transparent_2px)] bg-size-[18px_18px] max-xl:hidden"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/11dff99839ab5ba0.js","async":true}]
+c:["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]
+f:null
