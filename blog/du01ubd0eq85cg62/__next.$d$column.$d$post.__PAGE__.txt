@@ -1,0 +1,333 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T7105,<p>前言：测试模块是 vibe coding 过程中不可忽视的一环，能够显著提升代码的稳定性与可维护性。本文系统介绍三种主流测试方式——<strong>API 测试</strong>、<strong>单元测试</strong>、<strong>e2e 测试</strong>，并结合 MuseMVP 项目的真实集成方式逐一演示，帮助你在快速迭代的同时建立可靠的质量防线。</p>
+<h2 id="项目集成">项目集成</h2>
+<ul>
+<li>安装<code>@playwright/test</code>、<code>vitest</code>、<code>@vitest/ui</code>三个依赖</li>
+<li>vitest配置</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { fileURLToPath } <span class="hljs-keyword">from</span> <span class="hljs-string">"node:url"</span>;
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vitest/config"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">"@"</span>: <span class="hljs-title function_">fileURLToPath</span>(<span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">"./src"</span>, <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>)),
+    },
+  },
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">environment</span>: <span class="hljs-string">"node"</span>,
+    <span class="hljs-attr">globals</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">include</span>: [<span class="hljs-string">"tests/unit/**/*.test.ts"</span>],
+  },
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>playwright配置</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { defineConfig, devices } <span class="hljs-keyword">from</span> <span class="hljs-string">"@playwright/test"</span>;
+
+<span class="hljs-keyword">const</span> baseURL =
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">E2E_BASE_URL</span> ||
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">NEXT_PUBLIC_SITE_URL</span> ||
+  <span class="hljs-string">"http://localhost:3000"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">testDir</span>: <span class="hljs-string">"./journeys"</span>,
+  <span class="hljs-attr">fullyParallel</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">forbidOnly</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">retries</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">workers</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">reporter</span>: [
+    [<span class="hljs-string">"list"</span>],
+    [
+      <span class="hljs-string">"html"</span>,
+      { <span class="hljs-attr">open</span>: <span class="hljs-string">"never"</span>, <span class="hljs-attr">outputFolder</span>: <span class="hljs-string">"../../.test-artifacts/browser-report"</span> },
+    ],
+  ],
+  <span class="hljs-attr">outputDir</span>: <span class="hljs-string">"../../.test-artifacts/browser-output"</span>,
+  <span class="hljs-attr">globalTeardown</span>: <span class="hljs-string">"./cleanup.ts"</span>,
+  <span class="hljs-attr">use</span>: {
+    baseURL,
+    <span class="hljs-attr">trace</span>: <span class="hljs-string">"on-first-retry"</span>,
+    <span class="hljs-attr">screenshot</span>: <span class="hljs-string">"only-on-failure"</span>,
+    <span class="hljs-attr">video</span>: <span class="hljs-string">"retain-on-failure"</span>,
+  },
+  <span class="hljs-attr">projects</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">"desktop-chromium"</span>,
+      <span class="hljs-attr">use</span>: {
+        ...devices[<span class="hljs-string">"Desktop Chrome"</span>],
+      },
+    },
+  ],
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="单元测试">单元测试</h2>
+<p>用于验证纯逻辑层的行为，例如促销码的格式处理。以下示例测试了账单模块中 schema 对输入的修剪与空值转换逻辑，无需启动完整应用即可快速执行。</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { describe, expect, test } <span class="hljs-keyword">from</span> <span class="hljs-string">"vitest"</span>;
+<span class="hljs-keyword">import</span> {
+  createCustomerHubSchema,
+  createLaunchSchema,
+  museBillingGatewayParamSchema,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"@/backend/api/routes/muse-billing/types"</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">"muse-billing route schemas"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"trims discount codes and converts blanks to undefined"</span>, <span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">const</span> parsed = createLaunchSchema.<span class="hljs-title function_">parse</span>({
+      <span class="hljs-attr">planProductId</span>: <span class="hljs-string">"plan_pro_monthly"</span>,
+      <span class="hljs-attr">discountCode</span>: <span class="hljs-string">" SAVE20 "</span>,
+    });
+    <span class="hljs-keyword">const</span> blankParsed = createLaunchSchema.<span class="hljs-title function_">parse</span>({
+      <span class="hljs-attr">planProductId</span>: <span class="hljs-string">"plan_pro_monthly"</span>,
+      <span class="hljs-attr">discountCode</span>: <span class="hljs-string">"   "</span>,
+    });
+
+    <span class="hljs-title function_">expect</span>(parsed.<span class="hljs-property">discountCode</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">"SAVE20"</span>);
+    <span class="hljs-title function_">expect</span>(blankParsed.<span class="hljs-property">discountCode</span>).<span class="hljs-title function_">toBeUndefined</span>();
+  });
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/du01ubd0eq85cg62/1776222660417-eb740029-8c88-4856-bdd0-0d1bff677dd2.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="e2e测试">e2e测试</h2>
+<p>使用<code>Playwright</code>框架测试真实浏览器环境下的公共页、认证页和受保护页面</p>
+<p>playwright添加<code>--ui</code>参数进行可视化验证</p>
+<div class="code-block"><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"scripts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"test:e2e"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"playwright test --config=tests/e2e/playwright.muse.config.ts"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"test:e2e:ui"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"playwright test --config=tests/e2e/playwright.muse.config.ts --ui"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="落地页可见性">落地页可见性</h3>
+<p>对公开页面进行基础冒烟测试，验证页面能够正常打开、响应状态正常、DOM 可见。</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { expect, test } <span class="hljs-keyword">from</span> <span class="hljs-string">"@playwright/test"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">ROUTE_BOOK</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils/routes"</span>;
+
+test.<span class="hljs-title function_">describe</span>(<span class="hljs-string">"guest-facing route smoke"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"home page renders"</span>, <span class="hljs-title function_">async</span> ({ page }) => {
+    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-variable constant_">ROUTE_BOOK</span>.<span class="hljs-property">home</span>);
+
+    <span class="hljs-title function_">expect</span>(response?.<span class="hljs-title function_">ok</span>()).<span class="hljs-title function_">toBeTruthy</span>();
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">locator</span>(<span class="hljs-string">"body"</span>)).<span class="hljs-title function_">toBeVisible</span>();
+  });
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/du01ubd0eq85cg62/1776219802515-c73dfef4-c365-4406-927f-0b2c2a61e3d9.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="埋点测试">埋点测试</h3>
+<p>对于需要精确验证渲染结果的页面（例如定价页），可在前端组件中添加<code>data-testid</code>属性作为测试锚点，无需侵入业务逻辑，即可实现精准断言。</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { expect, test } <span class="hljs-keyword">from</span> <span class="hljs-string">"@playwright/test"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">ROUTE_BOOK</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils/routes"</span>;
+
+test.<span class="hljs-title function_">describe</span>(<span class="hljs-string">"guest-facing route smoke"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"pricing page renders critical pricing UI"</span>, <span class="hljs-title function_">async</span> ({ page }) => {
+    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-variable constant_">ROUTE_BOOK</span>.<span class="hljs-property">pricing</span>);
+
+    <span class="hljs-title function_">expect</span>(response?.<span class="hljs-title function_">ok</span>()).<span class="hljs-title function_">toBeTruthy</span>();
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">"pricing-section"</span>)).<span class="hljs-title function_">toBeVisible</span>();
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(
+      page.<span class="hljs-title function_">locator</span>(<span class="hljs-string">'[data-testid^="pricing-plan-cta-"]'</span>).<span class="hljs-title function_">first</span>(),
+    ).<span class="hljs-title function_">toBeVisible</span>();
+  });
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">PricingSection</span>(<span class="hljs-params"></span>) {
+
+  <span class="hljs-comment">// ···</span>
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">section</span>
+      <span class="hljs-attr">id</span>=<span class="hljs-string">"pricing"</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{cn(</span>"<span class="hljs-attr">bg-muted</span>/<span class="hljs-attr">40</span>", <span class="hljs-attr">className</span>)}
+      <span class="hljs-attr">data-testid</span>=<span class="hljs-string">"pricing-section"</span>
+    ></span>
+      {/* ··· */}
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">section</span>></span></span>
+  );
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/du01ubd0eq85cg62/1776219823645-e31424b1-af78-4b7f-ada5-994e69bf302d.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="后台页面">后台页面</h3>
+<p>对于需要身份验证的后台页面，测试流程分两步：首先通过辅助工具创建测试用户并完成登录，再像操作真实浏览器一样验证页面内容。后续断言逻辑与公共落地页测试保持一致，复用性强。</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { expect, test } <span class="hljs-keyword">from</span> <span class="hljs-string">"@playwright/test"</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">ROUTE_BOOK</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils/routes"</span>;
+<span class="hljs-keyword">import</span> { establishSession, makePasswordUser } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils/session"</span>;
+
+test.<span class="hljs-title function_">describe</span>(<span class="hljs-string">"entry and account shell smoke"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"unauthenticated users are redirected to login"</span>, <span class="hljs-title function_">async</span> ({ page }) => {
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-variable constant_">ROUTE_BOOK</span>.<span class="hljs-property">app</span>);
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page).<span class="hljs-title function_">toHaveURL</span>(<span class="hljs-regexp">/\/auth\/login/</span>);
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"password login reaches the app home page"</span>, <span class="hljs-title function_">async</span> ({ page }) => {
+    <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">makePasswordUser</span>({
+      <span class="hljs-attr">prefix</span>: <span class="hljs-string">"e2e-login-ui"</span>,
+      <span class="hljs-attr">role</span>: <span class="hljs-string">"user"</span>,
+    });
+
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-variable constant_">ROUTE_BOOK</span>.<span class="hljs-property">login</span>);
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">"login-email"</span>).<span class="hljs-title function_">fill</span>(user.<span class="hljs-property">email</span>);
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">"login-password"</span>).<span class="hljs-title function_">fill</span>(user.<span class="hljs-property">password</span>);
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">"login-submit"</span>).<span class="hljs-title function_">click</span>();
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page).<span class="hljs-title function_">toHaveURL</span>(<span class="hljs-regexp">/\/app(?:\?.*)?$/</span>);
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">"app-home-ready"</span>)).<span class="hljs-title function_">toBeVisible</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"authenticated users can open general settings"</span>, <span class="hljs-title function_">async</span> ({ page }) => {
+    <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-title function_">makePasswordUser</span>({
+      <span class="hljs-attr">prefix</span>: <span class="hljs-string">"e2e-settings"</span>,
+      <span class="hljs-attr">role</span>: <span class="hljs-string">"user"</span>,
+    });
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">establishSession</span>(page, user);
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-variable constant_">ROUTE_BOOK</span>.<span class="hljs-property">settingsGeneral</span>);
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page).<span class="hljs-title function_">toHaveURL</span>(<span class="hljs-regexp">/\/app\/settings\/general(?:\?.*)?$/</span>);
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">"settings-general-page"</span>)).<span class="hljs-title function_">toBeVisible</span>();
+  });
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/du01ubd0eq85cg62/1776220622626-398bf972-490e-44b0-874c-8143450ba4ce.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>以上均为带 UI 的交互式测试。去掉<code>--ui</code>参数后，测试将在<code>headless</code>模式下静默运行，适合在<code>CI</code>环境中使用，结果如下：</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-plain">PS D:\project\___test> pnpm test:e2e
+[dotenv@17.2.4] injecting env (20) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+
+[browser cleanup] Removed 3 browser scenario user(s).
+
+> musemvp@0.0.0 test:e2e D:\project\___test
+> playwright test --config=tests/e2e/playwright.muse.config.ts
+
+[dotenv@17.2.4] injecting env (20) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+
+Running 7 tests using 1 worker
+
+[dotenv@17.2.4] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+  ✓  1 …nt-entry.smoke.spec.ts:6:7 › entry and account shell smoke › unauthenticated users are redirected to login (772ms)  ✓  2 …account-entry.smoke.spec.ts:12:7 › entry and account shell smoke › password login reaches the app home page (1.8s)ℹ [DB] runtime=node source=database_url strategy=database_url_first NODE_ENV=unknown POOL_MAX=5
+  ✓  3 …t-entry.smoke.spec.ts:27:7 › entry and account shell smoke › authenticated users can open general settings (949ms)  ✓  4 …um] › tests\e2e\journeys\admin-console.smoke.spec.ts:5:5 › admin users can access the users management page (1.2s)  ✓  5 …omium] › tests\e2e\journeys\public-routes.smoke.spec.ts:5:7 › guest-facing route smoke › home page renders (732ms)  ✓  6 …eys\public-routes.smoke.spec.ts:12:7 › guest-facing route smoke › pricing page renders critical pricing UI (789ms)  ✓  7 …] › tests\e2e\journeys\public-routes.smoke.spec.ts:22:7 › guest-facing route smoke › features page renders (694ms)
+
+[browser cleanup] Removed 3 browser scenario user(s).
+
+  7 passed (15.1s)
+
+To open last HTML report run:
+
+  pnpm exec playwright show-report test-results\browser-report
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="api测试">API测试</h2>
+<p>用于验证 AI chat 对话接口的权限隔离行为。以下示例测试了多用户场景下的会话归属：确保用户 A 创建的会话对用户 B 不可见，同时验证所有者自身的读取权限正常工作。</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { afterAll, beforeAll, describe, expect, test } <span class="hljs-keyword">from</span> <span class="hljs-string">"vitest"</span>;
+<span class="hljs-keyword">import</span> { purgeScenarioUsers } <span class="hljs-keyword">from</span> <span class="hljs-string">"../utils/accounts"</span>;
+<span class="hljs-keyword">import</span> {
+  ensureLocalAppReady,
+  issueSignedInSession,
+  sendContractRequest,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">"./request-utils"</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">"conversation ownership stays isolated across member sessions"</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-title function_">beforeAll</span>(<span class="hljs-title function_">async</span> () => {
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">ensureLocalAppReady</span>();
+  });
+
+  <span class="hljs-title function_">afterAll</span>(<span class="hljs-title function_">async</span> () => {
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">purgeScenarioUsers</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">"one user cannot fetch or delete another user's conversation"</span>, <span class="hljs-title function_">async</span> () => {
+    <span class="hljs-keyword">const</span> userA = <span class="hljs-keyword">await</span> <span class="hljs-title function_">issueSignedInSession</span>({
+      <span class="hljs-attr">prefix</span>: <span class="hljs-string">"ownership-a"</span>,
+    });
+    <span class="hljs-keyword">const</span> userB = <span class="hljs-keyword">await</span> <span class="hljs-title function_">issueSignedInSession</span>({
+      <span class="hljs-attr">prefix</span>: <span class="hljs-string">"ownership-b"</span>,
+    });
+
+    <span class="hljs-keyword">const</span> createResponse = <span class="hljs-keyword">await</span> <span class="hljs-title function_">sendContractRequest</span>(
+      <span class="hljs-string">"POST"</span>,
+      <span class="hljs-string">"/api/aichat/conversations"</span>,
+      {
+        <span class="hljs-attr">cookies</span>: userA.<span class="hljs-property">cookies</span>,
+      },
+    );
+
+    <span class="hljs-title function_">expect</span>(createResponse.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">200</span>);
+
+    <span class="hljs-keyword">const</span> createdPayload = (<span class="hljs-keyword">await</span> createResponse.<span class="hljs-title function_">json</span>()) <span class="hljs-keyword">as</span> {
+      <span class="hljs-attr">conversation</span>: { <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span> };
+    };
+    <span class="hljs-keyword">const</span> conversationId = createdPayload.<span class="hljs-property">conversation</span>.<span class="hljs-property">id</span>;
+
+    <span class="hljs-keyword">const</span> foreignRead = <span class="hljs-keyword">await</span> <span class="hljs-title function_">sendContractRequest</span>(
+      <span class="hljs-string">"GET"</span>,
+      <span class="hljs-string">`/api/aichat/conversations/<span class="hljs-subst">${conversationId}</span>`</span>,
+      {
+        <span class="hljs-attr">cookies</span>: userB.<span class="hljs-property">cookies</span>,
+      },
+    );
+    <span class="hljs-title function_">expect</span>(foreignRead.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">404</span>);
+
+    <span class="hljs-keyword">const</span> foreignDelete = <span class="hljs-keyword">await</span> <span class="hljs-title function_">sendContractRequest</span>(
+      <span class="hljs-string">"DELETE"</span>,
+      <span class="hljs-string">`/api/aichat/conversations/<span class="hljs-subst">${conversationId}</span>`</span>,
+      {
+        <span class="hljs-attr">cookies</span>: userB.<span class="hljs-property">cookies</span>,
+      },
+    );
+    <span class="hljs-title function_">expect</span>(foreignDelete.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">404</span>);
+
+    <span class="hljs-keyword">const</span> ownerRead = <span class="hljs-keyword">await</span> <span class="hljs-title function_">sendContractRequest</span>(
+      <span class="hljs-string">"GET"</span>,
+      <span class="hljs-string">`/api/aichat/conversations/<span class="hljs-subst">${conversationId}</span>`</span>,
+      {
+        <span class="hljs-attr">cookies</span>: userA.<span class="hljs-property">cookies</span>,
+      },
+    );
+    <span class="hljs-title function_">expect</span>(ownerRead.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">200</span>);
+  });
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<hr>
+<p><strong>测试是 vibe coding 稳定运行的最后一道保障。</strong></p>
+<p><strong>API 测试、单元测试、e2e 测试三层覆盖，缺一不可。希望本文的实战示例能直接用进你的项目中。</strong></p>
+<p>MuseMVP SaaS 模板已将上述三种测试模块完整集成，开箱即用，无需从零搭建。</p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vibe Coding 测试体系：API 测试、单元测试与 e2e 测试实战指南\",\"description\":\"测试模块是 vibe coding 过程中不可忽视的一环，能够显著提升代码的稳定性与可维护性。本文系统介绍三种主流测试方式——API 测试、单元测试、e2e 测试，并结合 MuseMVP 项目的真实集成方式逐一演示，帮助你在快速迭代的同时建立可靠的质量防线。\",\"datePublished\":\"2026-04-15\",\"dateModified\":\"2026-04-15\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/du01ubd0eq85cg62/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Test",{"href":"/categories/Test/","children":"Test"}]]]}],["$","h1",null,{"children":"Vibe Coding 测试体系：API 测试、单元测试与 e2e 测试实战指南"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2026-04-15"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/du01ubd0eq85cg62/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2026-04-15"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/mokx00nsiy3lq2n4/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Cursor编辑器同步VSCode配置"}]]}],"$undefined"]}]
+8:["$","$L1b",null,{"slug":"/blog/du01ubd0eq85cg62/","title":"Vibe Coding 测试体系：API 测试、单元测试与 e2e 测试实战指南"}]
+9:["$","$L1c",null,{"headings":[{"id":"项目集成","text":"项目集成","depth":2},{"id":"单元测试","text":"单元测试","depth":2},{"id":"e2e测试","text":"e2e测试","depth":2},{"id":"落地页可见性","text":"落地页可见性","depth":3},{"id":"埋点测试","text":"埋点测试","depth":3},{"id":"后台页面","text":"后台页面","depth":3},{"id":"api测试","text":"API测试","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vibe Coding 测试体系：API 测试、单元测试与 e2e 测试实战指南 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"测试模块是 vibe coding 过程中不可忽视的一环，能够显著提升代码的稳定性与可维护性。本文系统介绍三种主流测试方式——API 测试、单元测试、e2e 测试，并结合 MuseMVP 项目的真实集成方式逐一演示，帮助你在快速迭代的同时建立可靠的质量防线。"}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/du01ubd0eq85cg62/"}],["$","meta","3",{"property":"og:title","content":"Vibe Coding 测试体系：API 测试、单元测试与 e2e 测试实战指南"}],["$","meta","4",{"property":"og:description","content":"测试模块是 vibe coding 过程中不可忽视的一环，能够显著提升代码的稳定性与可维护性。本文系统介绍三种主流测试方式——API 测试、单元测试、e2e 测试，并结合 MuseMVP 项目的真实集成方式逐一演示，帮助你在快速迭代的同时建立可靠的质量防线。"}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/du01ubd0eq85cg62/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2026-04-15"}],["$","meta","8",{"property":"article:modified_time","content":"2026-04-15"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vibe Coding 测试体系：API 测试、单元测试与 e2e 测试实战指南"}],["$","meta","11",{"name":"twitter:description","content":"测试模块是 vibe coding 过程中不可忽视的一环，能够显著提升代码的稳定性与可维护性。本文系统介绍三种主流测试方式——API 测试、单元测试、e2e 测试，并结合 MuseMVP 项目的真实集成方式逐一演示，帮助你在快速迭代的同时建立可靠的质量防线。"}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

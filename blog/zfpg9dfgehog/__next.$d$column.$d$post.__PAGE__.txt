@@ -1,0 +1,341 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T771e,<p>前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，但这里面的机制还是原型相关知识，记录学习一下。</p>
+<p>不管是原型也好，新加的class也罢，就一个目的——为了实现面向对象。从两个体系来展开详述。</p>
+<h2 id="体系一原型原型链">体系一：原型+原型链</h2>
+<ul>
+<li>讲解的很透彻：<a href="https://www.bilibili.com/video/BV1Q64y1v7fW" rel="noopener noreferrer">https://www.bilibili.com/video/BV1Q64y1v7fW</a></li>
+</ul>
+<h3 id="隐式原型__proto__">隐式原型__proto__</h3>
+<p>每个对象里面都有__proto__属性，这个叫对象原型，这个玩意指向<strong>构造函数的prototype对象</strong></p>
+<blockquote>
+<p>__proto__对象原型的意义就在于为对象的查找机制提供一个方向，或者说一条路线，但是它是一个非标准属性，因此实际开发中，不可以使用这个属性，它只是内部指向原型对象 prototype</p>
+</blockquote>
+<p>比如说，有一个Person类，有一个Student类，Student类继承自Person类，Student有一个实例student_1，那么student_1会有__proto__对象属性，并且展开该__proto__，会发现里面是Person类的方法和属性</p>
+<h3 id="显式原型prototype">显式原型prototype</h3>
+<p>每个构造函数里面都有一个属性，这个属性叫prototype，<strong>指向另一个对象</strong>（有什么用？在后面原型链就会发现有用了），并且这个属性是一个对象，叫做构造函数原型</p>
+<blockquote>
+<p>这样可以解决一个问题，就是创建不同实例，这些事例所用的方法都是同一个内存下的方法，实现共享</p>
+</blockquote>
+<h3 id="constructor构造函数">constructor构造函数</h3>
+<ol>
+<li>对象原型（ __proto__）和构造函数（prototype）原型对象里面都有一个属性 constructor 属性 ，constructor 我们称为构造函数，因为它<strong>指回构造函数本身</strong>。</li>
+<li>constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。</li>
+<li>一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor  就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。</li>
+</ol>
+<h3 id="instanceof">instanceof</h3>
+<p>a instanceof b</p>
+<p>判断是true还是false</p>
+<p>看a的constructor是什么</p>
+<p>当b为 a的constructor或a的__proto__的constructor……</p>
+<p>结果都是true</p>
+<h3 id="原型链和成员查找机制">原型链和成员查找机制</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zfpg9dfgehog/1651672328368-25e71aa6-4015-4469-9a67-5d841645aebe.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zfpg9dfgehog/1622632967349-b2adf38c-b51f-445b-b4c8-7d0408e96390.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="原型体系中的继承">原型体系中的继承</h3>
+<p>call方法可以改变一个函数的指向</p>
+<ol>
+<li>继承父构造函数里面的属性</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 1. 父构造函数</span>
+ <span class="hljs-keyword">function</span> <span class="hljs-title function_">Father</span>(<span class="hljs-params">uname, age</span>) {
+   <span class="hljs-comment">// this 指向父构造函数的对象实例</span>
+   <span class="hljs-variable language_">this</span>.<span class="hljs-property">uname</span> = uname;
+   <span class="hljs-variable language_">this</span>.<span class="hljs-property">age</span> = age;
+ }
+  <span class="hljs-comment">// 2 .子构造函数 </span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Son</span>(<span class="hljs-params">uname, age, score</span>) {
+  <span class="hljs-comment">// this 指向子构造函数的对象实例</span>
+  <span class="hljs-comment">// 3.使用call方式实现子继承父的属性</span>
+  <span class="hljs-title class_">Father</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>, uname, age);
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">score</span> = score;
+}
+<span class="hljs-keyword">var</span> son = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Son</span>(<span class="hljs-string">'刘德华'</span>, <span class="hljs-number">18</span>, <span class="hljs-number">100</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(son);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>继承方法</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 1. 父构造函数</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Father</span>(<span class="hljs-params">uname, age</span>) {
+  <span class="hljs-comment">// this 指向父构造函数的对象实例</span>
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">uname</span> = uname;
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">age</span> = age;
+}
+<span class="hljs-title class_">Father</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">money</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">100000</span>);
+ };
+ <span class="hljs-comment">// 2 .子构造函数 </span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">Son</span>(<span class="hljs-params">uname, age, score</span>) {
+      <span class="hljs-comment">// this 指向子构造函数的对象实例</span>
+      <span class="hljs-title class_">Father</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>, uname, age);
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">score</span> = score;
+  }
+<span class="hljs-comment">// Son.prototype = Father.prototype;  这样直接赋值会有问题,如果修改了子原型对象,父原型对象也会跟着一起变化</span>
+  <span class="hljs-title class_">Son</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Father</span>();
+  <span class="hljs-comment">// 如果利用对象的形式修改了原型对象,别忘了利用constructor 指回原来的构造函数</span>
+  <span class="hljs-title class_">Son</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">constructor</span> = <span class="hljs-title class_">Son</span>;
+  <span class="hljs-comment">// 这个是子构造函数专门的方法</span>
+  <span class="hljs-title class_">Son</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">exam</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'孩子要考试'</span>);
+  }
+  <span class="hljs-keyword">var</span> son = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Son</span>(<span class="hljs-string">'刘德华'</span>, <span class="hljs-number">18</span>, <span class="hljs-number">100</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(son);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="体系二类classes6">体系二：类(class)【ES6】</h2>
+<p>在 ES6 中新增加了类的概念，可以使用 class 关键字声明一个类，之后以这个类来实例化对象。类抽象了对象的公共部分，它泛指某一大类（class）对象特指某一个，通过类实例化一个具体的对象。其创建的方式和之前学过的语言很类似。</p>
+<p>在 ES6 中类没有变量或是函数提升概念，所以必须先定义类，才能通过类实例化对象，这也是类和函数最大的不同。</p>
+<h3 id="原型方法和原型字段声明">原型方法和原型字段声明</h3>
+<p>原型方法：</p>
+<ol>
+<li>构造函数方法</li>
+<li>get set</li>
+<li>静态方法：通常作为类的工具函数</li>
+<li>普通方法</li>
+</ol>
+<p>原型字段：</p>
+<ol>
+<li>私有字段</li>
+<li>公有字段</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tooltip</span> {
+  #test1 = <span class="hljs-number">111</span>; <span class="hljs-comment">// 私有成员</span>
+  test2 = <span class="hljs-number">222</span>; <span class="hljs-comment">// 公有成员</span>
+  <span class="hljs-keyword">static</span> test3 = <span class="hljs-number">333</span>; <span class="hljs-comment">// 静态成员（类内部不能访问 相当于类的属性）</span>
+  <span class="hljs-keyword">static</span> <span class="hljs-title function_">fun1</span>(<span class="hljs-params">a, b</span>) {
+    <span class="hljs-comment">// 静态方法（类内部不能访问 相当于类的属性）</span>
+    <span class="hljs-keyword">return</span> a + b;
+  }
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'private member test1: '</span>, ++<span class="hljs-variable language_">this</span>.#test1);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'public member test2: '</span>, ++<span class="hljs-variable language_">this</span>.<span class="hljs-property">test2</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'origin class: '</span>, <span class="hljs-variable language_">this</span>);
+  }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TextTooltip</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Tooltip</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">quill, options</span>) {
+    <span class="hljs-variable language_">super</span>(quill, options.<span class="hljs-property">bounds</span>);
+  }
+}
+
+<span class="hljs-variable language_">this</span>.<span class="hljs-property">textToolTip</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextTooltip</span>(quill, options);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">textToolTip</span>, 
+            <span class="hljs-title class_">Tooltip</span>.<span class="hljs-property">test3</span>,
+            <span class="hljs-title class_">TextTooltip</span>.<span class="hljs-property">test3</span>, 
+            <span class="hljs-title class_">TextTooltip</span>.<span class="hljs-title function_">fun1</span>(<span class="hljs-number">333</span>, <span class="hljs-number">333</span>));
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">TextTooltipToolbar</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="继承">继承</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 奥特曼类</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Aoteman</span> {
+    <span class="hljs-comment">// 构造函数里面放共有属性、方法</span>
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name, age</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">age</span> = age;
+    }
+    <span class="hljs-title class_">Ability</span>(abi) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> + <span class="hljs-string">" can "</span> + abi);
+    }
+}
+
+<span class="hljs-comment">// 假 继承 奥特曼</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Jia</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Aoteman</span> {
+    <span class="hljs-title function_">constructor</span> (<span class="hljs-params">x, y</span>) {
+        <span class="hljs-comment">// 继承父类的构造函数</span>
+        <span class="hljs-variable language_">super</span>(x,y); 
+        <span class="hljs-comment">// 方便写自己的函数</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">x</span> = x;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">y</span> = y;
+    }
+    <span class="hljs-comment">// 自己内部的函数</span>
+    <span class="hljs-title class_">Chuiniu</span>() {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">x</span> + <span class="hljs-string">" chuiniu"</span>);
+    }
+
+}
+
+<span class="hljs-comment">// 创建迪迦对象</span>
+<span class="hljs-keyword">let</span> dijia = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Aoteman</span>(<span class="hljs-string">'dijia'</span>, <span class="hljs-number">100</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(dijia);
+dijia.<span class="hljs-title class_">Ability</span>(<span class="hljs-string">"X-ray"</span>);
+<span class="hljs-keyword">let</span> dijia_jia = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Jia</span>(<span class="hljs-string">"dijia_jia"</span>, <span class="hljs-number">50</span>);
+dijia_jia.<span class="hljs-title class_">Ability</span>(<span class="hljs-string">"xxx"</span>);
+dijia_jia.<span class="hljs-title class_">Chuiniu</span>();
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zfpg9dfgehog/1622622728600-59f47873-c895-4686-b771-f1f538198f26.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="多重继承">多重继承</h3>
+<p>JavaScript对象的继承只能继承一个父类，因为继承的根本实现是基于原型链的，所以继承不能同时指向多个对象，所以实现多重继承有两个思路：</p>
+<ol>
+<li>父类链式继承</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent2</span> {}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent3</span> {}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent1</span> {}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>实现Mixin来继承</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">mixin</span>(<span class="hljs-params">...mixins</span>) {
+  <span class="hljs-keyword">class</span> <span class="hljs-title class_">Mixin</span> {
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">...args</span>) {
+      mixins.<span class="hljs-title function_">forEach</span>(
+        <span class="hljs-function"><span class="hljs-params">mixin</span> =></span> <span class="hljs-title function_">copyProperties</span>(<span class="hljs-variable language_">this</span>, <span class="hljs-keyword">new</span> <span class="hljs-title function_">mixin</span>(...args)) <span class="hljs-comment">// 拷贝实例属性</span>
+      ) 
+    }
+  }
+  mixins.<span class="hljs-title function_">forEach</span>(
+    <span class="hljs-function"><span class="hljs-params">mixin</span> =></span> {
+      <span class="hljs-title function_">copyProperties</span>(<span class="hljs-title class_">Mixin</span>, mixin); <span class="hljs-comment">// 拷贝静态属性</span>
+      <span class="hljs-title function_">copyProperties</span>(<span class="hljs-title class_">Mixin</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>, mixin.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>); <span class="hljs-comment">// 拷贝原型属性</span>
+    }
+  )
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Mixin</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">copyProperties</span>(<span class="hljs-params">target, source</span>) {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">of</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">ownKeys</span>(source)) {
+    <span class="hljs-keyword">if</span> ([<span class="hljs-string">'constructor'</span>, <span class="hljs-string">'prototype'</span>, <span class="hljs-string">'name'</span>].<span class="hljs-title function_">indexOf</span>(key) &#x3C; <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">let</span> desc = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getOwnPropertyDescriptor</span>(source, key);
+      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(target, key, desc);
+    }
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">mixin</span>(<span class="hljs-title class_">Parent1</span>, <span class="hljs-title class_">Parent2</span>, <span class="hljs-title class_">Parent3</span>) {}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="对象的各种创建方式">对象的各种创建方式</h2>
+<h3 id="字面量">字面量</h3>
+<p>属性和方法的调用：</p>
+<p>属性可以用"."和["属性名"]来调用</p>
+<p>方法用"."来调用</p>
+<h3 id="模式工厂">模式工厂</h3>
+<p>new一个空对象，<code>let obj = new Object();</code></p>
+<p>然后利用"."的方式给其添加属性和方法</p>
+<p>内置的Object()构造函数</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zfpg9dfgehog/1622623002064-1297005b-76a6-4d94-9b12-a83cf709e3a1.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="构造函数">构造函数</h3>
+<blockquote>
+<p>构造函数：是一种特殊的函数，主要用来初始化对象，即为对象成员变量赋初始值，它总与 new 运算符一起使用。我们可以把对象中一些公共的属性和方法抽取出来，然后封装到这个函数里面。</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> 构造函数名(形参<span class="hljs-number">1</span>,形参<span class="hljs-number">2</span>,形参<span class="hljs-number">3</span>) {
+     <span class="hljs-variable language_">this</span>.属性名<span class="hljs-number">1</span> = 参数<span class="hljs-number">1</span>;
+     <span class="hljs-variable language_">this</span>.属性名<span class="hljs-number">2</span> = 参数<span class="hljs-number">2</span>;
+     <span class="hljs-variable language_">this</span>.属性名<span class="hljs-number">3</span> = 参数<span class="hljs-number">3</span>;
+     <span class="hljs-variable language_">this</span>.方法名 = 函数体;
+}
+
+<span class="hljs-keyword">let</span> obj = <span class="hljs-keyword">new</span> 构造函数名(实参<span class="hljs-number">1</span>，实参<span class="hljs-number">2</span>，实参<span class="hljs-number">3</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>构造函数约定<strong>首字母大写</strong>。</li>
+<li>函数内的属性和方法前面需要添加 <strong>this</strong> ，表示当前对象的属性和方法。</li>
+<li>构造函数中<strong>不需要 return 返回结果</strong>。</li>
+<li>当我们创建对象的时候，<strong>必须用 new 来调用构造函数</strong>。</li>
+</ul>
+<h3 id="原型模式">原型模式</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zfpg9dfgehog/1622623181327-bd4b5d09-8525-4c59-b550-9af381526f23.png" alt="" loading="lazy" decoding="async"></p>
+<p>下面详述什么是原型</p>
+<h2 id="对象的内置方法">对象的内置方法</h2>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zfpg9dfgehog/1723441463675-8c8b2161-e7f9-4ac1-b313-bb7fbd161fbd.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="defineproperty">defineProperty</h3>
+<p><code>Object.defineProperty</code>设置或修改对象中的属性</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">PropertyDescriptor</span> {
+  <span class="hljs-attr">configurable</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">enumerable</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">value</span>?: <span class="hljs-built_in">any</span>;
+  <span class="hljs-attr">writable</span>?: <span class="hljs-built_in">boolean</span>;
+  get?(): <span class="hljs-built_in">any</span>;
+  set?(<span class="hljs-attr">v</span>: <span class="hljs-built_in">any</span>): <span class="hljs-built_in">void</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="删除对象属性">删除对象属性</h3>
+<ul>
+<li>直接用delete，暴力简单</li>
+<li>也可以参考：<a href="https://segmentfault.com/q/1010000013891861" rel="noopener noreferrer">如何优雅的删除对象中的指定属性？</a></li>
+</ul>
+<h3 id="assign">assign()</h3>
+<ul>
+<li>Object.assign后者覆盖前者，再返回前者</li>
+<li>常用于深拷贝浅拷贝数据，如果对象的值是引用类型的数据，那么是浅拷贝<a href="https://www.yuque.com/wztlink1013/blog/lwi9wr" rel="noopener noreferrer">https://www.yuque.com/wztlink1013/blog/lwi9wr</a></li>
+</ul>
+<h2 id="对象的遍历">对象的遍历</h2>
+<p><a href="https://blog.csdn.net/loveoobaby/article/details/127165722" rel="noopener noreferrer">https://blog.csdn.net/loveoobaby/article/details/127165722</a></p>
+<p><a href="https://blog.csdn.net/loveoobaby/article/details/127165722" rel="noopener noreferrer">https://blog.csdn.net/loveoobaby/article/details/127165722</a></p>
+<h3 id="forin">for...in</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>语句用于对数组或者对象的属性进行循环操作。</p>
+</blockquote>
+<p>其语法如下：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">for</span> (变量 <span class="hljs-keyword">in</span> 对象名字) {
+    <span class="hljs-comment">// 在此执行代码</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>语法中的变量是自定义的，它需要符合命名规范，通常我们会将这个变量写为 k 或者 key。书里面建议用const来加持。</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> k <span class="hljs-keyword">in</span> obj) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(k);      <span class="hljs-comment">// 这里的 k 是属性名</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj[k]); <span class="hljs-comment">// 这里的 obj[k] 是属性值</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="objectkeysobj">Object.keys(obj)</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>获取属性名</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">var</span> obj = {
+     <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>,
+     <span class="hljs-attr">pname</span>: <span class="hljs-string">'小米'</span>,
+     <span class="hljs-attr">price</span>: <span class="hljs-number">1999</span>,
+     <span class="hljs-attr">num</span>: <span class="hljs-number">2000</span>
+};
+<span class="hljs-keyword">var</span> result = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(obj)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result)<span class="hljs-comment">//[id，pname,price,num]</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://github.com/yinguangyao/blog" rel="noopener noreferrer">https://github.com/yinguangyao/blog</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"JavaScript面向对象体系及对象内置属性和方法\",\"description\":\"前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，...\",\"datePublished\":\"2021-03-18\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/zfpg9dfgehog/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","JavaScript",{"href":"/categories/JavaScript/","children":"JavaScript"}],["$","$L2","ECMAScript",{"href":"/categories/ECMAScript/","children":"ECMAScript"}]]]}],["$","h1",null,{"children":"JavaScript面向对象体系及对象内置属性和方法"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-03-18"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[6," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/zfpg9dfgehog/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/hizlew/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"计算方法数学部分解法算法"}]]}],["$","$L2",null,{"href":"/blog/wgzidzz85o76/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"DOM事件"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/zfpg9dfgehog/","title":"JavaScript面向对象体系及对象内置属性和方法"}]
+9:["$","$L1c",null,{"headings":[{"id":"体系一原型原型链","text":"体系一：原型+原型链","depth":2},{"id":"隐式原型__proto__","text":"隐式原型__proto__","depth":3},{"id":"显式原型prototype","text":"显式原型prototype","depth":3},{"id":"constructor构造函数","text":"constructor构造函数","depth":3},{"id":"instanceof","text":"instanceof","depth":3},{"id":"原型链和成员查找机制","text":"原型链和成员查找机制","depth":3},{"id":"原型体系中的继承","text":"原型体系中的继承","depth":3},{"id":"体系二类classes6","text":"体系二：类(class)【ES6】","depth":2},{"id":"原型方法和原型字段声明","text":"原型方法和原型字段声明","depth":3},{"id":"继承","text":"继承","depth":3},{"id":"多重继承","text":"多重继承","depth":3},{"id":"对象的各种创建方式","text":"对象的各种创建方式","depth":2},{"id":"字面量","text":"字面量","depth":3},{"id":"模式工厂","text":"模式工厂","depth":3},{"id":"构造函数","text":"构造函数","depth":3},{"id":"原型模式","text":"原型模式","depth":3},{"id":"对象的内置方法","text":"对象的内置方法","depth":2},{"id":"defineproperty","text":"defineProperty","depth":3},{"id":"删除对象属性","text":"删除对象属性","depth":3},{"id":"assign","text":"assign()","depth":3},{"id":"对象的遍历","text":"对象的遍历","depth":2},{"id":"forin","text":"for...in","depth":3},{"id":"objectkeysobj","text":"Object.keys(obj)","depth":3},{"id":"参考","text":"参考","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"JavaScript面向对象体系及对象内置属性和方法 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/zfpg9dfgehog/"}],["$","meta","3",{"property":"og:title","content":"JavaScript面向对象体系及对象内置属性和方法"}],["$","meta","4",{"property":"og:description","content":"前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/zfpg9dfgehog/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-03-18"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"JavaScript面向对象体系及对象内置属性和方法"}],["$","meta","11",{"name":"twitter:description","content":"前言：JavaScript首先在ES6没有出来之前，利用一个叫原型的一系列机制来用一段很长的代码来实现类的继承，说白了就是在函数里面默认给你加个一个叫原型的对象属性，再利用一系列指向来完成继承。在ES6之后，才有了形式上的类class及其对象，以及一个单词extends就搞定的继承，虽说搞定，..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

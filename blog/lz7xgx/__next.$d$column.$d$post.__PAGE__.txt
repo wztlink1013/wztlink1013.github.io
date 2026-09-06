@@ -1,0 +1,268 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T65c6,<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1653573417541-44275572-06ee-41fc-ab54-6683e2510450.png" alt="" loading="lazy" decoding="async"></p>
+<p>前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。</p>
+<h2 id="一js代码执行机制">一、JS代码执行机制</h2>
+<h3 id="javascript的单线程">JavaScript的单线程</h3>
+<p>单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等着。这样所导致的问题是： 如果 JS 执行的时间过长，这样就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。</p>
+<h3 id="同步任务和异步任务">同步任务和异步任务</h3>
+<p>单线程导致的问题就是后面的任务等待前面任务完成，如果前面任务很耗时（比如读取网络数据），后面任务不得不一直等待。为了解决这个问题，利用多核 CPU 的计算能力，HTML5 提出 Web Worker 标准，允许 JavaScript 脚本创建多个线程，但是子线程完全受主线程控制。于是JS 中出现了同步任务和异步任务。</p>
+<p>JS中所有任务可以分成两种，一种是同步任务（synchronous），另一种是异步任务（asynchronous）。</p>
+<ul>
+<li>**【同步任务】**指的是：在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；</li>
+<li>**【异步任务】<strong>指的是：不进入主线程、而进入</strong>“任务队列”**的任务，当主线程中的任务运行完了，才会将异步任务相关的回调函数从”任务队列”取出异步任务放入主线程执行。</li>
+</ul>
+<blockquote>
+<p>[!WARNING]</p>
+<p>异步任务又分为宏任务和微任务常见的宏任务有：setTimeoutsetIntervalI/O（磁盘读写、网络通信···）setImmediate（浏览器环境没有、Nodejs环境有）requestAnimationFrame（浏览器环境有、Nodejs环境没有）常见的微任务有：PromiseObject.observeprocess.nextTick （浏览器环境没有、Nodejs环境有）MutationObserver（浏览器环境有、Nodejs环境没有）</p>
+</blockquote>
+<h3 id="事件循环机制">事件循环机制</h3>
+<p>事件循环机制则是按照上面所描述的JavaScript特性，当即有同步任务又有异步任务情况下，代码的执行先后顺序。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711193306174-b481a2cd-57aa-4d8c-af84-274a9ef13aff.jpeg" alt="" loading="lazy" decoding="async"></p>
+<ol>
+<li>碰到同步任务，就先执行执行栈中的同步任务</li>
+</ol>
+<blockquote>
+<p>遇到函数的嵌套调用就把函数压入栈内再依次“剥洋葱”</p>
+</blockquote>
+<ol start="2">
+<li>碰到异步任务就压入任务队列（异步任务分为宏任务和微任务）</li>
+<li>当前执行栈中的所有同步任务执行完毕，就将执行异步任务，异步任务执行原则“先微后宏”</li>
+</ol>
+<p><strong>由于主线程不断地重复获得任务、执行任务、再获取任务、再执行……，这种机制被称为事件循环（Event Loop）</strong></p>
+<h2 id="二一些例子">二、一些例子</h2>
+<p>通过一些实际代码例子及其运行的结果来加深对事件循环机制的理解</p>
+<h3 id="同步代码promise">同步代码+Promise</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> promise = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>);
+  <span class="hljs-title function_">resolve</span>(<span class="hljs-string">"success"</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>);
+});
+promise.<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">data</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>);
+});
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711177509945-b8a191e2-75b6-4ea8-ae12-cc5d4a6f1d9c.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> promise1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"promise1"</span>);
+  <span class="hljs-title function_">resolve</span>(<span class="hljs-string">"resolve1"</span>);
+});
+<span class="hljs-keyword">const</span> promise2 = promise1.<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res);
+});
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"1"</span>, promise1);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"2"</span>, promise2);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711177590883-9c151a19-b11f-40f8-9378-9f878c7e1b58.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="同步代码settimeoutpromise">同步代码+setTimeout+Promise</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>);
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>);
+  <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>);
+  });
+});
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>);
+<span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span>);
+  <span class="hljs-title function_">resolve</span>();
+})
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">6</span>);
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">7</span>);
+    });
+  })
+  .<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">9</span>);
+  });
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">8</span>);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711176750519-95ae6d7b-9aff-4713-80f3-eefc48238c22.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>);
+}, <span class="hljs-number">0</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>);
+<span class="hljs-keyword">const</span> p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>);
+  <span class="hljs-title function_">resolve</span>();
+})
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>);
+  })
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span>);
+  });
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">6</span>);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><strong>then的连续回调都属于一个微任务</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711177325508-9e71bcee-c292-4c9b-a389-5309e517b79d.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve,reject</span>)=></span>{
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)
+  <span class="hljs-title function_">resolve</span>()
+}).<span class="hljs-title function_">then</span>(<span class="hljs-function">()=></span>{
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>)
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve,reject</span>)=></span>{
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>)
+    <span class="hljs-title function_">resolve</span>()
+  }).<span class="hljs-title function_">then</span>(<span class="hljs-function">()=></span>{
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>)
+  }).<span class="hljs-title function_">then</span>(<span class="hljs-function">()=></span>{
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span>)
+  })
+}).<span class="hljs-title function_">then</span>(<span class="hljs-function">()=></span>{
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">6</span>)
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711177827154-2f41dd48-96bc-4cf8-af9e-9693a46f6efc.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>);
+  <span class="hljs-title function_">resolve</span>();
+})
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>);
+      <span class="hljs-title function_">resolve</span>();
+    })
+      .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>);
+      })
+      .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span>);
+      });
+  })
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">6</span>);
+  });
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711178047803-bdb99d1a-6071-4fe4-8a30-3896c37aea90.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)
+  <span class="hljs-title function_">resolve</span>()
+}).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>)
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>)
+    <span class="hljs-title function_">resolve</span>()
+  }).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>)
+  }).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span>)
+  })
+}).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">6</span>)
+})
+<span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">7</span>)
+  <span class="hljs-title function_">resolve</span>()
+}).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">8</span>)
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711178391841-707dfb36-30a0-40e1-8e79-3cd07976f635.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="同步代码async-awaitpromise">同步代码+async await+Promise</h3>
+<p>await可以看成是Promise的语法糖（实际上是Generate的语法糖），效果和Promise的回调地狱一样，只是代码书写起来类似同步执行代码。</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async1</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>);
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">async2</span>();
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>);
+}
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async2</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">3</span>);
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">4</span>);
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">5</span>);
+});
+<span class="hljs-title function_">async1</span>();
+<span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params">resolve, reject</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">6</span>);
+  <span class="hljs-title function_">resolve</span>();
+}).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">7</span>);
+});
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">8</span>);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711179143994-f25a4728-f05b-48bb-9d46-4fef205c4bcb.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="综合例子">综合例子</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">a1</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'a1 start'</span>)
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">a2</span>()
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'a1 end'</span>)
+}
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">a2</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'a2'</span>)
+}
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'script start'</span>)
+
+<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'setTimeout'</span>)
+}, <span class="hljs-number">0</span>)
+
+<span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'promise1'</span>)
+})
+
+<span class="hljs-title function_">a1</span>()
+
+<span class="hljs-keyword">let</span> promise2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =></span> {
+  <span class="hljs-title function_">resolve</span>(<span class="hljs-string">'promise2.then'</span>)
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'promise2'</span>)
+})
+
+promise2.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res)
+  <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'promise3'</span>)
+  })
+})
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'script end'</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/lz7xgx/1711179267786-9e7bf14c-58e3-4dae-811b-ac8fda627250.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="可视化工具">可视化工具</h2>
+<ul>
+<li><a href="https://www.jsv9000.app/" rel="noopener noreferrer">https://www.jsv9000.app/</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"JavaScript事件循环机制\",\"description\":\"前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一...\",\"datePublished\":\"2024-03-23\",\"dateModified\":\"2025-01-02\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/lz7xgx/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","JavaScript",{"href":"/categories/JavaScript/","children":"JavaScript"}],["$","$L2","ECMAScript",{"href":"/categories/ECMAScript/","children":"ECMAScript"}]]]}],["$","h1",null,{"children":"JavaScript事件循环机制"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-03-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/lz7xgx/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-01-02"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/ywgyk067zbsx46io/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"JS中事件冒泡、捕获机制和事件委托设计模式"}]]}],["$","$L2",null,{"href":"/blog/qgal86h5p9molvfm/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"JavaScript函数柯里化"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/lz7xgx/","title":"JavaScript事件循环机制"}]
+9:["$","$L1c",null,{"headings":[{"id":"一js代码执行机制","text":"一、JS代码执行机制","depth":2},{"id":"javascript的单线程","text":"JavaScript的单线程","depth":3},{"id":"同步任务和异步任务","text":"同步任务和异步任务","depth":3},{"id":"事件循环机制","text":"事件循环机制","depth":3},{"id":"二一些例子","text":"二、一些例子","depth":2},{"id":"同步代码promise","text":"同步代码+Promise","depth":3},{"id":"同步代码settimeoutpromise","text":"同步代码+setTimeout+Promise","depth":3},{"id":"同步代码async-awaitpromise","text":"同步代码+async await+Promise","depth":3},{"id":"综合例子","text":"综合例子","depth":3},{"id":"可视化工具","text":"可视化工具","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"JavaScript事件循环机制 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/lz7xgx/"}],["$","meta","3",{"property":"og:title","content":"JavaScript事件循环机制"}],["$","meta","4",{"property":"og:description","content":"前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/lz7xgx/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-03-23"}],["$","meta","8",{"property":"article:modified_time","content":"2025-01-02"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"JavaScript事件循环机制"}],["$","meta","11",{"name":"twitter:description","content":"前言：JavaScript的事件循环机制或是异步编程是具体代码编写的重点，JavaScript语言的单线程执行特点以及同步任务和异步任务，由这些语言特性共同有一套事件循环执行机制也就是异步代码的预期执行效果。一、JS代码执行机制JavaScript的单线程单线程就意味着，所有任务需要排队，前一..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

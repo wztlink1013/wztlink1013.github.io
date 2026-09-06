@@ -1,0 +1,215 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T2793,<p>前言：本文探讨<code>Vue3</code>框架中<code>createApp</code>函数与<code>mount</code>方法的大致工作机制。首先介绍深入源码的工具和方式，而后介绍<code>vue</code>源码项目架构，最后详述<code>vue</code>创建实例应用的大致流程。</p>
+<h2 id="一前序">一、前序</h2>
+<h3 id="调试准备工作">调试准备工作</h3>
+<p>通过浏览器debugger调试的第一视角，了解代码的执行机制：</p>
+<ol>
+<li>vue3源码地址：<a href="https://github.com/vuejs/core" rel="noopener noreferrer">https://github.com/vuejs/core</a>，<code>git clone</code>到本地，然后执行下面命令即可</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-html">pnpm i
+pnpm dev
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li><code>Live Server</code>：vscode下这个插件，目的是运行html文件并提供热更新作用</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712371463292-ef435c64-0cc5-4c23-9151-f3fd932699ca.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="3">
+<li>
+<p>会使用浏览器debugger功能，比较常用的有以下几点</p>
+</li>
+<li>
+<p>定位源码区域，可以自行设置断点</p>
+</li>
+<li>
+<p>变量区域，可以了解执行区域函数里面的具体变量值</p>
+</li>
+<li>
+<p>调用栈，可以回溯调用</p>
+</li>
+<li>
+<p>命令调试</p>
+</li>
+</ol>
+<blockquote>
+<p>[!NOTE]</p>
+<p>F8：下一个断点处F9：下一步如果是调用函数，则进入函数内F10：下一步如果是调用函数，则跳过函数F11：和F9作用几乎一致，执行异步代码会进入，F9不会Shift+F11：跳出当前函数</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712371618094-f1eacbc7-8667-48f9-97ba-07e3810ffb21.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="源码结构">源码结构</h3>
+<p>项目结构为<code>monorepo</code>架构方式，更加合理组织项目核心模块</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712216905265-36301738-43aa-445e-b377-064c3ea501c9.png" alt="" loading="lazy" decoding="async"></p>
+<ol>
+<li>
+<p>compiler模块：编译</p>
+</li>
+<li>
+<p>compiler-core：核心编译模块</p>
+</li>
+<li>
+<p>compiler-dom：依赖compiler-core，处理template标签的，将template内容编译成render函数</p>
+</li>
+<li>
+<p>compiler-sfc：解析vue文件</p>
+</li>
+<li>
+<p>compiler-ssr：服务端编译相关</p>
+</li>
+<li>
+<p>reactivity模块：响应式核心。（通过子包的形式，可以脱离vue环境，单独使用）</p>
+</li>
+<li>
+<p>runtime模块：运行时</p>
+</li>
+<li>
+<p>server-renderer：服务端渲染相关</p>
+</li>
+<li>
+<p>temaplate-explorer：查看模板编译结果</p>
+</li>
+<li>
+<p>shared：公共方法</p>
+</li>
+<li>
+<p>vue：框架集成入口</p>
+</li>
+</ol>
+<h2 id="二createapp">二、createApp</h2>
+<p>vue选项式api创建一个应用</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712126896383-f745e671-d552-4063-9fe7-0c82b12813bc.png" alt="" loading="lazy" decoding="async"></p>
+<p>Vue通过<code>createApp</code>初始化一个Vue实例，然后通过实例方法<code>mount</code>挂载组件。</p>
+<p>通过debugger可以走到该部分代码</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661279-67a212a3-7055-4047-9870-258311886d02.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="ensurerenderer">ensureRenderer</h3>
+<p>F9进入<code>ensureRenderer</code>函数内部：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661237-4175bb01-c00e-4ba1-932d-fe888212f4f0.png" alt="" loading="lazy" decoding="async"></p>
+<p>其主要功能就是核心渲染相关，负责根据当前运行环境创建一个适合的渲染器：</p>
+<ul>
+<li>39行和46行代码：<code>ensureRenderer</code>方法只初始化一次</li>
+<li>60行和68行也就是<code>ensureRenderer</code>方法向外暴露出去的接口（<code>render</code>和<code>createApp</code>）</li>
+</ul>
+<h3 id="createappapiensurerenderer所暴露出来的">createAppAPI（ensureRenderer所暴露出来的）</h3>
+<p>根据<code>ensureRenderer</code>所返回的渲染器执行<code>createAppAPI</code>方法创建一个实例，也就是创建Vue实例对象的核心逻辑所在。</p>
+<p>F9进入<code>createAppAPI</code>函数内部：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661299-de3e049b-1998-473a-b363-f0f4e323cae0.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>
+<p>参数部分：</p>
+</li>
+<li>
+<p><code>rootComponent</code>：也就是我们所写的选项式API的“选项”</p>
+</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1722241942873-876321bb-ca37-465c-8f47-123c645539bf.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!TIP]</p>
+<p>为什么data属性是一个函数而不是一个对象？避免对象数据污染：如果是对象的话，只是单纯的引用值（通用同一个内存地址，一处修改，其他所有敌方都会改变），如果是函数的话，则是原始值这部分的data如何响应化？</p>
+</blockquote>
+<ul>
+<li>215行代码：<code>context</code>是用于记录组件的属性</li>
+<li>238行代码到384行代码：定义了我们常见的一些<code>API</code></li>
+</ul>
+<h3 id="mount方法的重写">mount方法的重写</h3>
+<p>经过<code>ensureRenderer</code>方法和<code>createApp</code>方法所得到的实例对象<code>app</code>，还会经过一次mount的重写，这是为什么呢？</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712127167542-ff98d5b1-c242-48b8-bcf5-1ed2f5190081.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!TIP]</p>
+<p>通过解构出上述返回的app对象中的mount，重写了app.mount方法，这个和不同类型的渲染有关，比如说服务端渲染可能需要不同的挂载逻辑。通过重写mount，可以提供一个统一的API接口，这一点也体现了Vue的灵活所在。</p>
+</blockquote>
+<ul>
+<li>77行到103行代码：根据传进的需要挂载的<code>DOM</code> <code>id</code>值，读取<code>DOM</code>处理前的内容将其编译为供后续生成<code>DOM</code>需要的<code>component</code>对象</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661643-9446aac2-3b83-4e5e-bb35-2b0ad75051a3.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="深入应用实例mount方法">深入应用实例mount方法</h4>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1722243100056-af210712-d824-4588-8f6e-eec741884728.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1722243348658-44081c6c-b12c-4cfc-bf38-a51ab152946f.png" alt="" loading="lazy" decoding="async"></p>
+<p><code>mount</code>内部，了解一下<code>mount</code>挂载全过程：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661261-480a9012-955b-479f-8588-22fb226de988.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>310行代码：实例挂载只能挂载一次</li>
+<li>319行代码：根据“选项” 生成虚拟节点（<code>vnode</code>），同时将上述的<code>context</code>赋值给虚拟节点，至此，我们常说的虚拟节点到渲染真是节点的虚拟节点部分完成了</li>
+</ul>
+<p>响应式也在该部分内部完成</p>
+<ul>
+<li>
+<p>_createVNode</p>
+</li>
+<li>
+<p>createBaseVNode：这里有了vnode，但是没有实例（app._instance）</p>
+</li>
+<li>
+<p>343行代码：<code>if</code>条件里面是服务端渲染相关，暂不考虑，走到<code>else</code>的真实<code>DOM</code>渲染逻辑，也就是<code>render</code>逻辑</p>
+</li>
+<li>
+<p>346行代码：渲染</p>
+</li>
+<li>
+<p>349行代码：最后记录挂载的容器信息：<code>_container</code></p>
+</li>
+</ul>
+<h4 id="render">render</h4>
+<p><code>mount</code>方法内部会调用<code>render</code>函数来将传入的模板（<code>template</code>或者<code>render</code>函数构建）生成虚拟<code>DOM</code>，然后通过对虚拟<code>DOM</code>的处理将其转换成实际的<code>DOM</code>结构并插入到页面中</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712128485525-3606db5d-6644-4554-874c-9347ccef01a3.png" alt="" loading="lazy" decoding="async"></p>
+<p><code>F9</code>走进<code>render</code>函数内部：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712130343377-55542f8c-fb3f-4bf8-a8ef-6c32230b324a.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>
+<p>参数部分</p>
+</li>
+<li>
+<p>vnode：待渲染的虚拟节点</p>
+</li>
+<li>
+<p>container：页面挂载容器</p>
+</li>
+<li>
+<p>namespace</p>
+</li>
+<li>
+<p>2362行代码：<strong>转换的核心逻辑，其主要逻辑就是对两个虚拟节点进行</strong><code>**diff**</code><strong>比较，比较出差异部分再按需更新真实</strong><code>**DOM**</code><strong>节点</strong>。</p>
+</li>
+</ul>
+<h3 id="挂载前后对比">挂载前后对比</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1722244210360-10c1179f-78cd-4a77-8a5d-f5843fa191de.png" alt="" loading="lazy" decoding="async"></p>
+<p>以下就是通过vue渲染前后的对比页面</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661225-f4c751f7-9bc3-47d6-987c-6757f6502dce.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wfb1ntb84h9g0g67/1712066661619-70258131-b2aa-4877-9060-fff5b76249bd.png" alt="" loading="lazy" decoding="async"></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue3源码：createApp以及mount挂载\",\"description\":\"前言：本文探讨Vue3框架中createApp函数与mount方法的大致工作机制。首先介绍深入源码的工具和方式，而后介绍vue源码项目架构，最后详述vue创建实例应用的大致流程。一、前序调试准备工作通过浏览器debugger调试的第一视角，了解代码的执行机制：vue3源码地址：https://...\",\"datePublished\":\"2024-04-02\",\"dateModified\":\"2024-12-13\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/wfb1ntb84h9g0g67/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Vue",{"href":"/categories/Vue/","children":"Vue"}]]]}],["$","h1",null,{"children":"Vue3源码：createApp以及mount挂载"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-04-02"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/wfb1ntb84h9g0g67/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-12-13"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/qgal86h5p9molvfm/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"JavaScript函数柯里化"}]]}],["$","$L2",null,{"href":"/blog/iy7gxmvmskcnwupd/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Vue3源码：reactivity响应式原理"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/wfb1ntb84h9g0g67/","title":"Vue3源码：createApp以及mount挂载"}]
+9:["$","$L1c",null,{"headings":[{"id":"一前序","text":"一、前序","depth":2},{"id":"调试准备工作","text":"调试准备工作","depth":3},{"id":"源码结构","text":"源码结构","depth":3},{"id":"二createapp","text":"二、createApp","depth":2},{"id":"ensurerenderer","text":"ensureRenderer","depth":3},{"id":"createappapiensurerenderer所暴露出来的","text":"createAppAPI（ensureRenderer所暴露出来的）","depth":3},{"id":"mount方法的重写","text":"mount方法的重写","depth":3},{"id":"深入应用实例mount方法","text":"深入应用实例mount方法","depth":4},{"id":"render","text":"render","depth":4},{"id":"挂载前后对比","text":"挂载前后对比","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue3源码：createApp以及mount挂载 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：本文探讨Vue3框架中createApp函数与mount方法的大致工作机制。首先介绍深入源码的工具和方式，而后介绍vue源码项目架构，最后详述vue创建实例应用的大致流程。一、前序调试准备工作通过浏览器debugger调试的第一视角，了解代码的执行机制：vue3源码地址：https://..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/wfb1ntb84h9g0g67/"}],["$","meta","3",{"property":"og:title","content":"Vue3源码：createApp以及mount挂载"}],["$","meta","4",{"property":"og:description","content":"前言：本文探讨Vue3框架中createApp函数与mount方法的大致工作机制。首先介绍深入源码的工具和方式，而后介绍vue源码项目架构，最后详述vue创建实例应用的大致流程。一、前序调试准备工作通过浏览器debugger调试的第一视角，了解代码的执行机制：vue3源码地址：https://..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/wfb1ntb84h9g0g67/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-04-02"}],["$","meta","8",{"property":"article:modified_time","content":"2024-12-13"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue3源码：createApp以及mount挂载"}],["$","meta","11",{"name":"twitter:description","content":"前言：本文探讨Vue3框架中createApp函数与mount方法的大致工作机制。首先介绍深入源码的工具和方式，而后介绍vue源码项目架构，最后详述vue创建实例应用的大致流程。一、前序调试准备工作通过浏览器debugger调试的第一视角，了解代码的执行机制：vue3源码地址：https://..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

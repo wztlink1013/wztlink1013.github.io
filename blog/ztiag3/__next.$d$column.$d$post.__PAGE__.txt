@@ -1,0 +1,618 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:Ta063,<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621307069176-74d6900b-6edd-4e7a-b761-789df7a17cfe.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。</p>
+</blockquote>
+<h2 id="一深度优先搜索算法depth-first-search">一、深度优先搜索算法（Depth-First-Search）</h2>
+<h3 id="算法说明">算法说明</h3>
+<p><strong>访问步骤：</strong></p>
+<blockquote>
+<ul>
+<li>访问顶点v；</li>
+<li>依次从v的未被访问的邻接点出发，对图进行深度优先遍历；直至图中和v有路径相通的顶点都被访问；</li>
+<li>若此时图中尚有顶点未被访问，则从一个未被访问的顶点出发，重新进行深度优先遍历，直到图中所有顶点均被访问过为止。</li>
+</ul>
+</blockquote>
+<p><strong>核心代码就是利用递归，以及标志数组的设定，每次访问数组元素的那一行，对那行链表进行遍历，每遍历一个链表结点，就将“其”所在的那个数组元素“点亮”。如果标志数组里面的所有元素都被访问了，说明遍历完了</strong></p>
+<p><strong>深度优先搜索类似于树里面遍历算法当中的先序遍历。</strong></p>
+<h3 id="邻接矩阵的dfs代码">邻接矩阵的DFS代码</h3>
+<p>以这个无向图为例</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621329584016-32d023fe-dc14-4c0d-90e1-7afe6fcc9cd2.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MVNum 100</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MaxInt 32767</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">char</span> VerTexType;
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> ArcType;
+
+<span class="hljs-comment">/**
+ * 邻接矩阵存储形式
+ */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-comment">/* data */</span>
+    VerTexType vexs[MVNum]; <span class="hljs-comment">//顶点表</span>
+    ArcType arcs[MVNum][MVNum]; <span class="hljs-comment">//邻接矩阵</span>
+    <span class="hljs-type">int</span> vexnum, arcnum; <span class="hljs-comment">//图的当前顶点和边数</span>
+}AMGraph;
+
+<span class="hljs-comment">/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">LocateVex</span><span class="hljs-params">(AMGraph &#x26;G, <span class="hljs-type">char</span> v)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">if</span> (v == G.vexs[i]){
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * 如果创建无向图   
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateUDN</span><span class="hljs-params">(AMGraph &#x26;G)</span> </span>{
+    <span class="hljs-comment">// 采用邻接矩阵表示法，创建无向图G</span>
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入顶点数和边数："</span> &#x3C;&#x3C; endl;
+    cin >> G.vexnum >> G.arcnum; <span class="hljs-comment">//输入顶点数和边数</span>
+    <span class="hljs-comment">// 初始化顶点</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++){
+        cout &#x3C;&#x3C; <span class="hljs-string">"请输入第"</span> &#x3C;&#x3C; i &#x3C;&#x3C; <span class="hljs-string">"个顶点值"</span> &#x3C;&#x3C; endl;
+        cin >> G.vexs[i];
+    }
+    <span class="hljs-comment">// 初始化邻接矩阵的边的权值为最大值</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; G.vexnum;j++) {
+            G.arcs[i][j] = <span class="hljs-number">0</span>;
+        }
+    }
+    <span class="hljs-comment">// 构造邻接矩阵</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &#x3C; G.arcnum;k++) {
+        cout &#x3C;&#x3C; <span class="hljs-string">"请输入每条边所依附的顶点："</span> &#x3C;&#x3C; endl;
+        <span class="hljs-type">char</span> v1, v2;
+        <span class="hljs-type">int</span> w = <span class="hljs-number">1</span>; <span class="hljs-comment">//一条边所依附的顶点和权值</span>
+        cin >> v1 >> v2;
+        <span class="hljs-type">int</span> i = <span class="hljs-built_in">LocateVex</span>(G, v1);
+        <span class="hljs-type">int</span> j = <span class="hljs-built_in">LocateVex</span>(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    }
+}
+
+<span class="hljs-comment">/**
+ * 打印输出图
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Display</span><span class="hljs-params">(AMGraph &#x26;G)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; G.vexnum;j++) {
+            cout &#x3C;&#x3C; G.arcs[i][j] &#x3C;&#x3C; <span class="hljs-string">" "</span>;
+        }
+        cout &#x3C;&#x3C; endl;
+    }
+}
+
+<span class="hljs-comment">//----邻接矩阵的DFS遍历----</span>
+
+<span class="hljs-comment">//访问标志数组，其初值为false</span>
+<span class="hljs-type">bool</span> visited[MVNum]; 
+
+<span class="hljs-comment">/**
+ * 图G为邻接矩阵类型，从第v个顶点出发深度优先搜索遍历图G
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">DFS_AM</span><span class="hljs-params">(AMGraph &#x26;G, <span class="hljs-type">int</span> v)</span> </span>{
+    <span class="hljs-comment">//访问第v个顶点，并置访问标志数组相应分量值为true</span>
+    cout&#x3C;&#x3C;v;  
+    visited[v] = <span class="hljs-literal">true</span>;
+    <span class="hljs-comment">//依次检查邻接矩阵v所在的行</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> w = <span class="hljs-number">0</span>; w &#x3C; G.vexnum; w++)  
+        <span class="hljs-comment">//G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到</span>
+        <span class="hljs-keyword">if</span>((G.arcs[v][w] != <span class="hljs-number">0</span>) &#x26;&#x26; (!visited[w]))  
+            <span class="hljs-built_in">DFS_AM</span>(G, w);    <span class="hljs-comment">//递归调用DFS_AM</span>
+}
+
+<span class="hljs-comment">/**
+ * 图G的储存类型任意，对非连通图G做深度优先遍历
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">DFSTraverse</span><span class="hljs-params">(AMGraph &#x26;G)</span> </span>{
+    <span class="hljs-comment">//访问标志数组初始化</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)  
+        visited[v] = <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">//循环调用DFS</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)  
+        <span class="hljs-keyword">if</span>(!visited[v])
+            <span class="hljs-built_in">DFS_AM</span>(G, v); <span class="hljs-comment">//对尚未访问的顶点调用DFS</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    AMGraph test;
+    <span class="hljs-built_in">CreateUDN</span>(test);
+    <span class="hljs-built_in">Display</span>(test);
+    <span class="hljs-built_in">DFSTraverse</span>(test);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="邻接表的dfs代码">邻接表的DFS代码</h3>
+<p>举之前上课的一张PPT例子（元素插入为后插法）</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621333199678-46b6841b-415b-46e8-b0f6-0d0407284b15.png" alt="" loading="lazy" decoding="async"></p>
+<p>结果</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621333246481-117ec0ea-ab95-43be-ac13-75712fdf1e2b.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MVNum 100</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MaxInt 32767</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">char</span> VerTexType;
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> OtherInfo;
+
+<span class="hljs-comment">/**
+ * 邻接表存储
+ */</span>
+
+<span class="hljs-comment">/**
+ * 存储结构
+ */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">ArcNode</span> {  <span class="hljs-comment">//边结点                    </span>
+    <span class="hljs-type">int</span> adjvex;  <span class="hljs-comment">//该边所指向的结点的位置</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">ArcNode</span> *nextarc; <span class="hljs-comment">//指向下一条边的指针</span>
+    OtherInfo info;   <span class="hljs-comment">//和边相关的其他信息</span>
+}ArcNode;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">VNode</span> {   <span class="hljs-comment">//顶点信息</span>
+    VerTexType data;  <span class="hljs-comment">//数据域，存放顶点vi的名称或其他有关信息</span>
+    ArcNode *firstarc;  <span class="hljs-comment">//指向第一条依附该顶点的边的指针</span>
+}VNode, AdjList[MVNum]; <span class="hljs-comment">//AdjList表示邻接表的类型</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    AdjList vertices;
+    <span class="hljs-type">int</span> vexnum, arcnum; <span class="hljs-comment">//图当前的顶点数和边数</span>
+}ALGragh; <span class="hljs-comment">//邻接表（Adjacency List）</span>
+
+<span class="hljs-comment">/**
+ * 找到v顶点在图的顶点数组中的位置
+ */</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">LocateVex</span><span class="hljs-params">(ALGragh &#x26;G, <span class="hljs-type">char</span> v)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">if</span> (v == G.vertices[i].data) {
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * 邻接表创建无向图
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateUDG</span><span class="hljs-params">(ALGragh &#x26;G)</span> </span>{
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入顶点数和边数："</span> &#x3C;&#x3C; endl;
+    cin >> G.vexnum >> G.arcnum; <span class="hljs-comment">// 邻接表的顶点数和边数</span>
+    <span class="hljs-comment">// 初始化顶点数组</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        cin >> G.vertices[i].data; <span class="hljs-comment">// 初始化顶点数组里面的结点data</span>
+        G.vertices[i].firstarc = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">// 初始化顶点数组里面的结点next域</span>
+    }
+    <span class="hljs-comment">// 初始化所有的边</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &#x3C; G.arcnum;k++) {
+        <span class="hljs-type">char</span> v1, v2;
+        cout &#x3C;&#x3C; <span class="hljs-string">"请输入每条边所依附的顶点："</span> &#x3C;&#x3C; endl;
+        cin >> v1 >> v2;
+        <span class="hljs-type">int</span> i = <span class="hljs-built_in">LocateVex</span>(G, v1); <span class="hljs-comment">// 找到v1在顶点数组的下标</span>
+        <span class="hljs-type">int</span> j = <span class="hljs-built_in">LocateVex</span>(G, v2); <span class="hljs-comment">// 找到v2在顶点数组的下标</span>
+        <span class="hljs-comment">// 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1</span>
+        <span class="hljs-comment">// 前插</span>
+        ArcNode *p1 = <span class="hljs-keyword">new</span> ArcNode;
+        p1->adjvex = j;
+        p1->nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = <span class="hljs-keyword">new</span> ArcNode;
+        p2->adjvex = i;
+        p2->nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p2;
+    }
+}
+
+<span class="hljs-comment">/**
+ * 打印输出图
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Display</span><span class="hljs-params">(ALGragh &#x26;G)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        cout &#x3C;&#x3C; <span class="hljs-string">"结点"</span> &#x3C;&#x3C; i &#x3C;&#x3C; <span class="hljs-string">"："</span>;
+        <span class="hljs-comment">// 复制选中的节点数组中的结点</span>
+        VNode p;
+        p = G.vertices[i];
+        <span class="hljs-keyword">if</span> (p.firstarc != <span class="hljs-literal">NULL</span>){
+            ArcNode *temp;
+            temp = G.vertices[i].firstarc;
+            <span class="hljs-keyword">while</span> (temp != <span class="hljs-literal">NULL</span>) {
+                cout &#x3C;&#x3C; temp->adjvex&#x3C;&#x3C;<span class="hljs-string">" "</span>;
+                temp = temp->nextarc;
+            }
+            cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+        }
+    }
+}
+
+<span class="hljs-comment">//----邻接表的DFS遍历----</span>
+<span class="hljs-type">bool</span> visited[MVNum];                                                    <span class="hljs-comment">//访问标志数组，其初值为false</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">DFS_AL</span><span class="hljs-params">(ALGragh G, <span class="hljs-type">int</span> v)</span>               
+</span>{<span class="hljs-comment">//图G为邻接表类型，从从第v个顶点出发深度优先搜索遍历图G</span>
+    cout&#x3C;&#x3C;v;                                                            <span class="hljs-comment">//访问第v个顶点，并置访问标志数组相应分量值为true</span>
+    visited[v] = <span class="hljs-literal">true</span>;
+    ArcNode *p;                                                         
+    p = G.vertices[v].firstarc;                                         <span class="hljs-comment">//p指向v的边链表的第一个边结点</span>
+    <span class="hljs-keyword">while</span>(p != <span class="hljs-literal">NULL</span>)
+    {
+       <span class="hljs-type">int</span> w = p->adjvex;                                               <span class="hljs-comment">//w是v的邻接点</span>
+        <span class="hljs-keyword">if</span>(!visited[w])                                                 <span class="hljs-comment">//如果w未访问</span>
+            <span class="hljs-built_in">DFS_AL</span>(G, w);                                               <span class="hljs-comment">//递归调用DFS_AL</span>
+        p = p->nextarc;                                                 <span class="hljs-comment">//p指向下一个结点</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">DFSTraverse</span><span class="hljs-params">(ALGragh G)</span>
+</span>{<span class="hljs-comment">//图G的储存类型任意，对非连通图G做深度优先遍历</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)                                   <span class="hljs-comment">//访问标志数组初始化</span>
+        visited[v] = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)                                   <span class="hljs-comment">//循环调用DFS</span>
+        <span class="hljs-keyword">if</span>(!visited[v])
+            <span class="hljs-built_in">DFS_AL</span>(G, v);                                                  <span class="hljs-comment">//对尚未访问的顶点调用DFS</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ALGragh test;
+    <span class="hljs-built_in">CreateUDG</span>(test);
+    <span class="hljs-comment">// Display(test);</span>
+    <span class="hljs-built_in">DFSTraverse</span>(test);
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="二广度优先搜索算法breadth-first-search">二、广度优先搜索算法（Breadth-First-Search）</h2>
+<h3 id="算法说明-1">算法说明</h3>
+<p>从某个顶点V0出发，并在访问此顶点之后依次访问V0的所有未被访问过的邻接点，之后按这些顶点被访问的先后次序依次访问它们的邻接点，直至图中所有和V0有路径相通的顶点都被访问到。</p>
+<p>若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
+<p><strong>在树遍历中类似层次遍历。</strong></p>
+<h3 id="邻接矩阵的bfs代码">邻接矩阵的BFS代码</h3>
+<p>还是这个例子</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621329549870-b2fd8a63-a532-4860-8e46-a79cc52a7e0f.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621338913834-3f2453f3-c56d-4401-9e26-2de805587a04.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MVNum 100</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MaxInt 32767</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">char</span> VerTexType;
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> ArcType;
+
+<span class="hljs-comment">/**
+ * 邻接矩阵的bfs代码
+ */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    <span class="hljs-comment">/* data */</span>
+    VerTexType vexs[MVNum]; <span class="hljs-comment">//顶点表</span>
+    ArcType arcs[MVNum][MVNum]; <span class="hljs-comment">//邻接矩阵</span>
+    <span class="hljs-type">int</span> vexnum, arcnum; <span class="hljs-comment">//图的当前顶点和边数</span>
+}AMGraph;
+
+<span class="hljs-comment">/**
+ * 确定v在G中的位置，即顶点数组的下标
+ */</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">LocateVex</span><span class="hljs-params">(AMGraph &#x26;G, <span class="hljs-type">char</span> v)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">if</span> (v == G.vexs[i]){
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * 创建无向网
+ * 如果创建无向图   
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateUDN</span><span class="hljs-params">(AMGraph &#x26;G)</span> </span>{
+    <span class="hljs-comment">// 采用邻接矩阵表示法，创建无向图G</span>
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入顶点数和边数："</span> &#x3C;&#x3C; endl;
+    cin >> G.vexnum >> G.arcnum; <span class="hljs-comment">//输入顶点数和边数</span>
+    <span class="hljs-comment">// 初始化顶点</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++){
+        cout &#x3C;&#x3C; <span class="hljs-string">"请输入第"</span> &#x3C;&#x3C; i &#x3C;&#x3C; <span class="hljs-string">"个顶点值"</span> &#x3C;&#x3C; endl;
+        cin >> G.vexs[i];
+    }
+    <span class="hljs-comment">// 初始化邻接矩阵的边的权值为最大值</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; G.vexnum;j++) {
+            G.arcs[i][j] = <span class="hljs-number">0</span>;
+        }
+    }
+    <span class="hljs-comment">// 构造邻接矩阵</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &#x3C; G.arcnum;k++) {
+        cout &#x3C;&#x3C; <span class="hljs-string">"请输入每条边所依附的顶点："</span> &#x3C;&#x3C; endl;
+        <span class="hljs-type">char</span> v1, v2;
+        <span class="hljs-type">int</span> w = <span class="hljs-number">1</span>; <span class="hljs-comment">//一条边所依附的顶点和权值</span>
+        cin >> v1 >> v2;
+        <span class="hljs-type">int</span> i = <span class="hljs-built_in">LocateVex</span>(G, v1);
+        <span class="hljs-type">int</span> j = <span class="hljs-built_in">LocateVex</span>(G, v2);
+        G.arcs[i][j] = w;
+        G.arcs[j][i] = w;
+    }
+}
+
+<span class="hljs-comment">/**
+ * 打印输出图
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Display</span><span class="hljs-params">(AMGraph &#x26;G)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; G.vexnum;j++) {
+            cout &#x3C;&#x3C; G.arcs[i][j] &#x3C;&#x3C; <span class="hljs-string">" "</span>;
+        }
+        cout &#x3C;&#x3C; endl;
+    }
+}
+
+<span class="hljs-comment">//----邻接矩阵的BFS遍历----</span>
+
+<span class="hljs-type">bool</span> visited[MVNum]; 
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">BFS_AM</span><span class="hljs-params">(AMGraph G, <span class="hljs-type">int</span> v)</span>
+</span>{<span class="hljs-comment">//按广度优先非递归遍历连通图G</span>
+    cout&#x3C;&#x3C;v;
+    visited[v] = <span class="hljs-literal">true</span>; <span class="hljs-comment">//访问第v个顶点，并置访问标志数组相应分量值为true</span>
+    queue&#x3C;<span class="hljs-type">int</span>> Q;
+    Q.<span class="hljs-built_in">push</span>(v);
+    <span class="hljs-keyword">while</span>(!Q.<span class="hljs-built_in">empty</span>())
+    {
+        <span class="hljs-type">int</span> u = Q.<span class="hljs-built_in">front</span>(); <span class="hljs-comment">//队头元素出队并置为u</span>
+        Q.<span class="hljs-built_in">pop</span>();
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> w = <span class="hljs-number">0</span>; w &#x3C; G.vexnum; w++)
+            <span class="hljs-keyword">if</span>((G.arcs[u][w] != <span class="hljs-number">0</span>) &#x26;&#x26; (!visited[w])) <span class="hljs-comment">//G.arcs[v][w] != 0表示w是v的邻接点，!visited[w]表示未访问到                                            //w为u的尚未访问的邻接顶点</span>
+            {
+                cout&#x3C;&#x3C;w;
+                visited[w] = <span class="hljs-literal">true</span>; <span class="hljs-comment">//访问w，并置访问标志数组相应分量值为true</span>
+                Q.<span class="hljs-built_in">push</span>(w); <span class="hljs-comment">//w进队</span>
+            }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">BFSTraverse</span><span class="hljs-params">(AMGraph &#x26;G)</span> </span>{
+    <span class="hljs-comment">//访问标志数组初始化</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)  
+        visited[v] = <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">//循环调用BFS</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)  
+        <span class="hljs-keyword">if</span>(!visited[v])
+            <span class="hljs-built_in">BFS_AM</span>(G, v); <span class="hljs-comment">//对尚未访问的顶点调用BFS</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    AMGraph test;
+    <span class="hljs-built_in">CreateUDN</span>(test);
+    <span class="hljs-built_in">Display</span>(test);
+    <span class="hljs-comment">// DFSTraverse(test);</span>
+    <span class="hljs-built_in">BFSTraverse</span>(test);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="邻接表的bfs代码">邻接表的BFS代码</h3>
+<p>还用和DFS一样的例子</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621339344717-55530db9-253b-451d-af57-b591ff17353e.png" alt="" loading="lazy" decoding="async"><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621390194148-da12a2e4-1f85-491b-9e53-3848ac4e4a4c.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MVNum 100</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> MaxInt 32767</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">char</span> VerTexType;
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> OtherInfo;
+
+<span class="hljs-comment">/**
+ * 邻接表的bfs代码
+ */</span>
+
+<span class="hljs-comment">/**
+ * 存储结构
+ */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">ArcNode</span> {  <span class="hljs-comment">//边结点                    </span>
+    <span class="hljs-type">int</span> adjvex;  <span class="hljs-comment">//该边所指向的结点的位置</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">ArcNode</span> *nextarc; <span class="hljs-comment">//指向下一条边的指针</span>
+    OtherInfo info;   <span class="hljs-comment">//和边相关的其他信息</span>
+}ArcNode;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">VNode</span> {   <span class="hljs-comment">//顶点信息</span>
+    VerTexType data;  <span class="hljs-comment">//数据域，存放顶点vi的名称或其他有关信息</span>
+    ArcNode *firstarc;  <span class="hljs-comment">//指向第一条依附该顶点的边的指针</span>
+}VNode, AdjList[MVNum]; <span class="hljs-comment">//AdjList表示邻接表的类型</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> {
+    AdjList vertices;
+    <span class="hljs-type">int</span> vexnum, arcnum; <span class="hljs-comment">//图当前的顶点数和边数</span>
+}ALGraph; <span class="hljs-comment">//邻接表（Adjacency List）</span>
+
+<span class="hljs-comment">/**
+ * 找到v顶点在图的顶点数组中的位置
+ */</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">LocateVex</span><span class="hljs-params">(ALGraph &#x26;G, <span class="hljs-type">char</span> v)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        <span class="hljs-keyword">if</span> (v == G.vertices[i].data) {
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * 邻接表创建无向图
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateUDG</span><span class="hljs-params">(ALGraph &#x26;G)</span> </span>{
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入顶点数和边数："</span> &#x3C;&#x3C; endl;
+    cin >> G.vexnum >> G.arcnum; <span class="hljs-comment">// 邻接表的顶点数和边数</span>
+    <span class="hljs-comment">// 初始化顶点数组</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        cin >> G.vertices[i].data; <span class="hljs-comment">// 初始化顶点数组里面的结点data</span>
+        G.vertices[i].firstarc = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">// 初始化顶点数组里面的结点next域</span>
+    }
+    <span class="hljs-comment">// 初始化所有的边</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &#x3C; G.arcnum;k++) {
+        <span class="hljs-type">char</span> v1, v2;
+        cout &#x3C;&#x3C; <span class="hljs-string">"请输入每条边所依附的顶点："</span> &#x3C;&#x3C; endl;
+        cin >> v1 >> v2;
+        <span class="hljs-type">int</span> i = <span class="hljs-built_in">LocateVex</span>(G, v1); <span class="hljs-comment">// 找到v1在顶点数组的下标</span>
+        <span class="hljs-type">int</span> j = <span class="hljs-built_in">LocateVex</span>(G, v2); <span class="hljs-comment">// 找到v2在顶点数组的下标</span>
+        <span class="hljs-comment">// 下面建立p1和p2是因为无向图，如果是有向图就没必要了只需要p1</span>
+        <span class="hljs-comment">// 前插</span>
+        ArcNode *p1 = <span class="hljs-keyword">new</span> ArcNode;
+        p1->adjvex = j;
+        p1->nextarc = G.vertices[i].firstarc;
+        G.vertices[i].firstarc = p1;
+        ArcNode *p2 = <span class="hljs-keyword">new</span> ArcNode;
+        p2->adjvex = i;
+        p2->nextarc = G.vertices[j].firstarc;
+        G.vertices[j].firstarc = p2;
+    }
+}
+
+<span class="hljs-comment">/**
+ * 打印输出图
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Display</span><span class="hljs-params">(ALGraph &#x26;G)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; G.vexnum;i++) {
+        cout &#x3C;&#x3C; <span class="hljs-string">"结点"</span> &#x3C;&#x3C; i &#x3C;&#x3C; <span class="hljs-string">"："</span>;
+        <span class="hljs-comment">// 复制选中的节点数组中的结点</span>
+        VNode p;
+        p = G.vertices[i];
+        <span class="hljs-keyword">if</span> (p.firstarc != <span class="hljs-literal">NULL</span>){
+            ArcNode *temp;
+            temp = G.vertices[i].firstarc;
+            <span class="hljs-keyword">while</span> (temp != <span class="hljs-literal">NULL</span>) {
+                cout &#x3C;&#x3C; temp->adjvex&#x3C;&#x3C;<span class="hljs-string">" "</span>;
+                temp = temp->nextarc;
+            }
+            cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+        }
+    }
+}
+
+<span class="hljs-comment">//----邻接表的BFS遍历----</span>
+
+<span class="hljs-type">bool</span> visited[MVNum];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">FirstAdjvex</span><span class="hljs-params">(ALGraph&#x26; G, <span class="hljs-type">int</span> u)</span>
+</span>{
+    <span class="hljs-type">int</span> w = G.vertices[u].firstarc->adjvex;
+    <span class="hljs-keyword">return</span> w;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">NextAdjVex</span><span class="hljs-params">(ALGraph&#x26; G, <span class="hljs-type">int</span> u, <span class="hljs-type">int</span> w)</span>
+</span>{
+    ArcNode *temp = G.vertices[u].firstarc;
+    <span class="hljs-keyword">while</span> (temp->adjvex != w)
+    {
+        temp = temp->nextarc;
+    }
+    <span class="hljs-keyword">if</span> (temp->nextarc)
+        <span class="hljs-keyword">return</span> temp->nextarc->adjvex;
+    <span class="hljs-keyword">else</span> 
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">delete</span> temp;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">BFS_AL</span><span class="hljs-params">(ALGraph&#x26; G, <span class="hljs-type">int</span> v)</span></span>{
+    cout &#x3C;&#x3C; v;
+    visited[v] = <span class="hljs-literal">true</span>;
+    queue&#x3C;<span class="hljs-type">int</span>> Q;
+    Q.<span class="hljs-built_in">push</span>(v);
+    <span class="hljs-type">int</span> u = v;
+    <span class="hljs-keyword">while</span> (!Q.<span class="hljs-built_in">empty</span>()){
+        u = Q.<span class="hljs-built_in">front</span>();
+        Q.<span class="hljs-built_in">pop</span>();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> w = <span class="hljs-built_in">FirstAdjvex</span>(G, u); w >= <span class="hljs-number">0</span>; w = <span class="hljs-built_in">NextAdjVex</span>(G, u, w)){
+            <span class="hljs-keyword">if</span> (!visited[w]){
+                cout &#x3C;&#x3C;w; 
+                visited[w] = <span class="hljs-literal">true</span>;
+                Q.<span class="hljs-built_in">push</span>(w);
+            }
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">BFSTraverse</span><span class="hljs-params">(ALGraph &#x26;G)</span> </span>{
+    <span class="hljs-comment">//访问标志数组初始化</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)  
+        visited[v] = <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">//循环调用BFS</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> v = <span class="hljs-number">0</span>; v &#x3C; G.vexnum; v++)  
+        <span class="hljs-keyword">if</span>(!visited[v])
+            <span class="hljs-built_in">BFS_AL</span>(G, v); <span class="hljs-comment">//对尚未访问的顶点调用BFS</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ALGraph test;
+    <span class="hljs-built_in">CreateUDG</span>(test);
+    <span class="hljs-built_in">Display</span>(test);
+    <span class="hljs-built_in">BFSTraverse</span>(test);
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>【插眼】为啥我写的一个函数不需要队列也可以？？？直接将顶点数组的一个元素后面接的链表遍历不就好了，然后再遍历标志数组元素值部位true的不就好了。。。为啥要压队列呀？莫不是哪里有隐藏的bug，插个眼！！！</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ztiag3/1621340205400-d534997e-4b20-4f0e-8db6-4a91e39c68b6.gif" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!TIP]</p>
+<p>【拔眼】这样是一种特殊情况，只适合图的各个结点是按照层次标号的，并且放入标志数组也是按照顺序放入的……</p>
+</blockquote>
+<p>插眼代码如下：</p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">BFS_AL</span><span class="hljs-params">(ALGraph &#x26;G, <span class="hljs-type">int</span> v)</span>
+</span>{<span class="hljs-comment">//按广度优先非递归遍历连通图G</span>
+    cout&#x3C;&#x3C;v;
+    visited[v] = <span class="hljs-literal">true</span>;    <span class="hljs-comment">//访问第v个顶点，并置访问标志数组相应分量值为true</span>
+    ArcNode *p;
+    p = G.vertices[v].firstarc;
+    <span class="hljs-keyword">if</span> (p != <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-keyword">while</span>(p != <span class="hljs-literal">NULL</span>) {
+            <span class="hljs-keyword">if</span> (!visited[p->adjvex]){
+                cout &#x3C;&#x3C; p->adjvex;
+            }
+            visited[p->adjvex] = <span class="hljs-literal">true</span>;
+            p = p->nextarc;
+        }
+    }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"图的遍历——DFS（深度优先）、BFS（广度优先）\",\"description\":\"前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。一、深度优先搜索算法（Depth-First-Search）算法说明访问步骤：访问顶点v；依次从v的未被访...\",\"datePublished\":\"2021-05-18\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/ztiag3/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","📉图结构：无向图-有向图",{"href":"/categories/%F0%9F%93%89%E5%9B%BE%E7%BB%93%E6%9E%84%EF%BC%9A%E6%97%A0%E5%90%91%E5%9B%BE-%E6%9C%89%E5%90%91%E5%9B%BE/","children":"📉图结构：无向图-有向图"}]]]}],["$","h1",null,{"children":"图的遍历——DFS（深度优先）、BFS（广度优先）"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-05-18"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[8," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/ztiag3/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/gqpli5/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"图的术语、存储、应用综述"}]]}],["$","$L2",null,{"href":"/blog/rxx0ab/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"最短路径算法（Dijkstra+Floyd）"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/ztiag3/","title":"图的遍历——DFS（深度优先）、BFS（广度优先）"}]
+9:["$","$L1c",null,{"headings":[{"id":"一深度优先搜索算法depth-first-search","text":"一、深度优先搜索算法（Depth-First-Search）","depth":2},{"id":"算法说明","text":"算法说明","depth":3},{"id":"邻接矩阵的dfs代码","text":"邻接矩阵的DFS代码","depth":3},{"id":"邻接表的dfs代码","text":"邻接表的DFS代码","depth":3},{"id":"二广度优先搜索算法breadth-first-search","text":"二、广度优先搜索算法（Breadth-First-Search）","depth":2},{"id":"算法说明-1","text":"算法说明","depth":3},{"id":"邻接矩阵的bfs代码","text":"邻接矩阵的BFS代码","depth":3},{"id":"邻接表的bfs代码","text":"邻接表的BFS代码","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"图的遍历——DFS（深度优先）、BFS（广度优先） · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。一、深度优先搜索算法（Depth-First-Search）算法说明访问步骤：访问顶点v；依次从v的未被访..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/ztiag3/"}],["$","meta","3",{"property":"og:title","content":"图的遍历——DFS（深度优先）、BFS（广度优先）"}],["$","meta","4",{"property":"og:description","content":"前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。一、深度优先搜索算法（Depth-First-Search）算法说明访问步骤：访问顶点v；依次从v的未被访..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/ztiag3/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-05-18"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"图的遍历——DFS（深度优先）、BFS（广度优先）"}],["$","meta","11",{"name":"twitter:description","content":"前言：用邻接矩阵和邻接表两种图的存储形式实现DFS、BFS算法，并附例子实现。总的来说，邻接矩阵比较好处理，没有邻接表处理那么复杂，但是数组永远不能规避的一个缺点就是内存的占用较邻接表高。一、深度优先搜索算法（Depth-First-Search）算法说明访问步骤：访问顶点v；依次从v的未被访..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

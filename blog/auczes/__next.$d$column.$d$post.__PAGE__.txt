@@ -1,0 +1,178 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T380e,<p>前言：介绍Node.js包的几种管理工具（Rush， NPM，Yarn，PNPM），同时介绍完整发布一个NPM包的流程，最后介绍相关Nodejs包相关知识：</p>
+<ul>
+<li>package.json和package-lock.json文件</li>
+<li>两种本地调试包的方式</li>
+<li>npm账户开启二次验证情况下发布包需要注意的事项</li>
+</ul>
+<h2 id="一nodejs包管理">一、Nodejs包管理</h2>
+<ul>
+<li><a href="https://rushjs.io/zh-cn/" rel="noopener noreferrer">Rush</a>：提高性能，提出“中心”包管理</li>
+<li><a href="https://docs.npmjs.com/getting-started/what-is-npm" rel="noopener noreferrer">NPM</a>: 它是当今最广泛的 JavaScript 包管理工具，它开创了包管理标准，其开发者还维护了世界上最多人使用的分布式开源 JavaScript 包管理网站 npmjs.com.</li>
+<li><a href="https://yarnpkg.com/en/" rel="noopener noreferrer">Yarn</a>: 它重新实现了 NPM, 与之相比，Yarn 具有相同的管理方式，但是安装速度更快，稳定性更好，而且提供了一些新特性（例如 Yarn workspaces），用于大型开发。</li>
+<li><a href="https://rushjs.io/zh-cn/pages/maintainer/package_managers/pnpm.js.org/" rel="noopener noreferrer">PNPM</a>: 它提供了一个全新的包管理模式，该模式解决了<a href="https://rushjs.io/zh-cn/pages/advanced/phantom_deps/" rel="noopener noreferrer">“幻影依赖”和“ NPM 分身”</a>的问题，同时<a href="https://en.wikipedia.org/wiki/Symbolic_link" rel="noopener noreferrer">符号链接</a>使之与 NodeJS 模块解析标准保持 100% 兼容。</li>
+</ul>
+<h2 id="二注册并发布一个包">二、注册并发布一个包</h2>
+<h3 id="注册npm账号">注册npm账号</h3>
+<ul>
+<li>在官网<a href="https://www.npmjs.com/" rel="noopener noreferrer">https://www.npmjs.com/</a>注册用户账号</li>
+</ul>
+<p>新建一个文件夹<code>npm-wzutao</code>在此文件夹下进入bash终端键入下面命令：</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm login
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>登录自己的npm账号，后面发布包就会发布在该账号下。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1612782412366-aeecc92e-a5e0-4f3d-9172-c607a5c06199.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="初始化项目">初始化项目</h3>
+<p>键入下面命令初始化一个空项目：</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm init
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>也可以快速初始化创建 <code>npm init -y</code></p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1612782805229-e691af8b-0440-4fdb-baa6-63f5089017bb.png" alt="" loading="lazy" decoding="async"></p>
+<p>然后在该文件夹下新建index.js文件，写入如下测试代码</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-built_in">exports</span>.<span class="hljs-property">sum</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">var</span> res = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&#x3C;<span class="hljs-variable language_">arguments</span>.<span class="hljs-property">length</span>; i++) {
+    res+=<span class="hljs-variable language_">arguments</span>[i];
+  }
+
+  <span class="hljs-keyword">return</span> res;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="发布包">发布包</h3>
+<p>每一个npm包都有一个版本号，发布包也需要有一个明确的版本号才能予以发布。</p>
+<h3 id="包版本更新">包版本更新</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>npm包发布/版本更新，都需要包的版本明确，而更新包的版本，有两种方式，第一种是更改package.json文件中的version字段为指定版本号，再进行npm publish更新第二种就是通过命令来更新新版本号，进而npm publish更新</p>
+</blockquote>
+<p>通过命令来更新版本号</p>
+<p>1.0.1版本，注意，是最后一位修改了增1</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm version patch
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>1.1.0版本，注意，是第二位修改了增1</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm version minor
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>2.0.0版本，注意，是第一位修改了增1</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm version major 
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="包发布">包发布</h3>
+<p>最后再提交到远端npm中</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm publish 
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1612782959102-a6d78720-76a0-472a-b0d9-430c83ce7c8b.png" alt="" loading="lazy" decoding="async"></p>
+<p>去官网可以搜索到</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1612783041850-acf55586-80aa-4cf5-b19a-7f538396fadd.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!WARNING]</p>
+<p>如果是作用域包@username/xxx类似这种，必须要paivate设置为false，并且命令添加access参数：npm publish --access public</p>
+</blockquote>
+<h2 id="三package-lockjson">三、package-lock.json</h2>
+<p>不同包管理工具生成的锁定文件都不一样。</p>
+<ul>
+<li> 锁定包的版本，确保再次下载时不会因为包版本不同而产生问题</li>
+<li>加快下载速度，因为该文件中已经记录了项目所依赖第三方包的树状结构和包的下载地址，重新安装时只需下载即可，不需要做额外的工作</li>
+</ul>
+<h2 id="四packagejson">四、package.json</h2>
+<p>项目依赖和开发依赖</p>
+<ul>
+<li>项目依赖就是这个产品线上运营所依赖的模块，在文件的dependencies字段</li>
+</ul>
+<p>npm install 包名</p>
+<ul>
+<li>开发依赖就是项目的开发阶段需要依赖，线上运营阶段不需要依赖的第三方包，称为开发依赖，devDependencies字段    </li>
+</ul>
+<p>npm install 包名 --save-dev</p>
+<ul>
+<li>npm install --production，在本地下载依赖的包</li>
+<li>里面的script使用：npm run XXX</li>
+</ul>
+<h3 id="scripts">scripts</h3>
+<p>大型项目中，npm run xxx 运行命令常常是自行来编写相应的命令脚本</p>
+<p>参考：<a href="https://www.ruanyifeng.com/blog/2016/10/npm_scripts.html" rel="noopener noreferrer">npm scripts 使用指南-阮一峰的网络日志</a></p>
+<div class="code-block"><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"learn-scripts"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"1.0.0"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"description"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">""</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"main"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"index.js"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"scripts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"test"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"echo \"Error: no test specified\" &#x26;&#x26; exit 1"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"runFile"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"node index.js"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"commit"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"git status &#x26;&#x26; git add . &#x26;&#x26; git-cz"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"runBashCommand"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"git --version &#x26;&#x26; git help -a"</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"keywords"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"author"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">""</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"license"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ISC"</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="五本地调试npm包的问题">五、本地调试npm包的问题</h2>
+<h3 id="相对路径测试所开发的npm包">相对路径测试所开发的npm包</h3>
+<blockquote>
+<p>适合项目所需的某一个npm包</p>
+</blockquote>
+<p>比如a文件夹下有npm包b文件夹和测试插件的c文件夹，那么在c文件夹下使用<code>npm i ../b</code>命令来下载本地开发的npm包。</p>
+<h3 id="npm-link链接全局测试">npm link链接全局测试</h3>
+<blockquote>
+<p>适合脚手架类型的npm包</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1644571675015-971bcbde-3119-43dd-90ed-8ef33c5bb478.png" alt="" loading="lazy" decoding="async"></p>
+<p>node全局包目录如下：其实就是链接使用一下而已</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1644571733855-7615cfb8-8648-4468-ad35-199c95161160.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="六其他">六、其他</h2>
+<h3 id="npm账户开启two-factor-authentication">npm账户开启Two-Factor Authentication</h3>
+<p>现在很多应用软件都有二级验证的功能，如果npm开启二级验证，可以提高安全性，开启后为如下：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1668916685382-4234ae1e-68c5-4612-8576-ed7cb8f5177d.png" alt="" loading="lazy" decoding="async"></p>
+<p>开启了二级验证，如果发布包有如下报错：</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm ERR! code E403
+npm ERR! 403 403 Forbidden - PUT https://registry.npmjs.org/@clem_b%2fweather - Forbidden
+npm ERR! 403 In most cases, you or one of your dependencies are requesting
+npm ERR! 403 a package version that is forbidden by your security policy, or
+npm ERR! 403 on a server you <span class="hljs-keyword">do</span> not have access to.
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>重新npm login登录</p>
+<p>然后npm publish会需要输入一个Recovery Codes，在账户如下位置获取输入即可：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1668916914523-57cac265-c530-4a2c-b34d-9bb449ce8cb0.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/auczes/1668916885408-b2f805cc-8934-4ce9-9cea-d73e1c6e899f.png" alt="" loading="lazy" decoding="async"></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Nodejs包管理工具以及NPM的包发布\",\"description\":\"前言：介绍Node.js包的几种管理工具（Rush， NPM，Yarn，PNPM），同时介绍完整发布一个NPM包的流程，最后介绍相关Nodejs包相关知识：package.json和package-lock.json文件两种本地调试包的方式npm账户开启二次验证情况下发布包需要注意的事项一、N...\",\"datePublished\":\"2021-02-08\",\"dateModified\":\"2025-02-12\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/auczes/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Node.js",{"href":"/categories/Node.js/","children":"Node.js"}]]]}],["$","h1",null,{"children":"Nodejs包管理工具以及NPM的包发布"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-02-08"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/auczes/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-02-12"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/qi1ddv/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"IDEA创建JavaWeb项目"}]]}],["$","$L2",null,{"href":"/blog/aiuif3/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"IDEA环境下的Javaweb开发bug汇总"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/auczes/","title":"Nodejs包管理工具以及NPM的包发布"}]
+9:["$","$L1c",null,{"headings":[{"id":"一nodejs包管理","text":"一、Nodejs包管理","depth":2},{"id":"二注册并发布一个包","text":"二、注册并发布一个包","depth":2},{"id":"注册npm账号","text":"注册npm账号","depth":3},{"id":"初始化项目","text":"初始化项目","depth":3},{"id":"发布包","text":"发布包","depth":3},{"id":"包版本更新","text":"包版本更新","depth":3},{"id":"包发布","text":"包发布","depth":3},{"id":"三package-lockjson","text":"三、package-lock.json","depth":2},{"id":"四packagejson","text":"四、package.json","depth":2},{"id":"scripts","text":"scripts","depth":3},{"id":"五本地调试npm包的问题","text":"五、本地调试npm包的问题","depth":2},{"id":"相对路径测试所开发的npm包","text":"相对路径测试所开发的npm包","depth":3},{"id":"npm-link链接全局测试","text":"npm link链接全局测试","depth":3},{"id":"六其他","text":"六、其他","depth":2},{"id":"npm账户开启two-factor-authentication","text":"npm账户开启Two-Factor Authentication","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Nodejs包管理工具以及NPM的包发布 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：介绍Node.js包的几种管理工具（Rush， NPM，Yarn，PNPM），同时介绍完整发布一个NPM包的流程，最后介绍相关Nodejs包相关知识：package.json和package-lock.json文件两种本地调试包的方式npm账户开启二次验证情况下发布包需要注意的事项一、N..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/auczes/"}],["$","meta","3",{"property":"og:title","content":"Nodejs包管理工具以及NPM的包发布"}],["$","meta","4",{"property":"og:description","content":"前言：介绍Node.js包的几种管理工具（Rush， NPM，Yarn，PNPM），同时介绍完整发布一个NPM包的流程，最后介绍相关Nodejs包相关知识：package.json和package-lock.json文件两种本地调试包的方式npm账户开启二次验证情况下发布包需要注意的事项一、N..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/auczes/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-02-08"}],["$","meta","8",{"property":"article:modified_time","content":"2025-02-12"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Nodejs包管理工具以及NPM的包发布"}],["$","meta","11",{"name":"twitter:description","content":"前言：介绍Node.js包的几种管理工具（Rush， NPM，Yarn，PNPM），同时介绍完整发布一个NPM包的流程，最后介绍相关Nodejs包相关知识：package.json和package-lock.json文件两种本地调试包的方式npm账户开启二次验证情况下发布包需要注意的事项一、N..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,521 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T7efc,<blockquote>
+<p>[!NOTE]</p>
+<p>前言：这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）</p>
+</blockquote>
+<h2 id="实验要求">实验要求</h2>
+<blockquote>
+<p>1、创建一个带头结点的单链表（头指针为head），且遍历此链表（输出链表中各结点的值）；</p>
+<p>2、查找单链表中的第i个结点，并输出结点元素的值；</p>
+</blockquote>
+<blockquote>
+<p>3、在单链表中的第i个结点前插入一个结点值为e的正整数(从外部输入);</p>
+</blockquote>
+<blockquote>
+<p>4、删除单链表中的第j个结点；</p>
+</blockquote>
+<blockquote>
+<p>*5、将单链表中的各结点就地逆序（不允许另建一个链表）；</p>
+</blockquote>
+<h2 id="概念理解">概念理解</h2>
+<h3 id="链表数据结构">链表数据结构</h3>
+<p>链表是一种数据结构，和<strong>数组同级</strong>。之前JAVA里面的ArrayList数据结构，其实现原理是数组，而JAVA的LinkedList的实现原理就是链表了。链表在进行循环遍历时效率不高，但是插入和删除时优势明显，其实C/C++抑或是JAVA这些数据结构都一样——地址……引用……</p>
+<p>单向链表是一种线性表，实际上是由<strong>节点（Node）<strong>组成的，一个链表拥有不定数量的节点。其数据在</strong>内存中存储是不连续的</strong>，它存储的数据分散在内存中，每个结点只能也只有它能知道下一个结点的存储位置。由N各节点（Node）组成单向链表，每一个Node记录本Node的数据及下一个Node。向外暴露的只有一个头节点（Head），<strong>我们对链表的所有操作，都是直接或者间接地通过其头节点来进行的。</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1603194076184-195f3044-1083-4244-9eeb-d86c96a37e6f.png" alt="" loading="lazy" decoding="async"></p>
+<p>上图中最左边的节点即为头结点（Head），但是添加节点的顺序是从右向左的，添加的新节点会被作为新节点。最先添加的节点对下一节点的引用可以为空。引用是引用下一个节点而非下一个节点的对象。因为有着不断的引用，所以<strong>头节点就可以操作所有节点</strong>了。</p>
+<p>下图描述了单向链表存储情况。存储是分散的，每一个节点只要记录下一节点，就把所有数据串了起来，形成了一个单向链表。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1603194105521-d31f8e78-7f2a-4c60-8838-57e15707e27b.png" alt="" loading="lazy" decoding="async"></p>
+<p>节点（Node）是由一个需要储存的对象及对下一个节点的引用组成的。也就是说，节点拥有两个成员：储存的对象、对下一个节点的引用。下面图是具体的说明：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1603194124335-fc6fc00c-35fb-44e1-a01c-de4b8b5531af.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="关于链表的指向">关于链表的指向</h3>
+<blockquote>
+<p>【1】何为指向？</p>
+</blockquote>
+<p>个人觉得链表的相关问题及操作就是理解链表的**“指向”**这么个概念，先明确以下几点</p>
+<ul>
+<li>每个节点的<strong>next</strong>用来存放<strong>下一个节点的“地址”</strong></li>
+<li><strong>每个节点的自身就是地址</strong>，相当于C语言中数组的数组名就是本数组的地址</li>
+</ul>
+<blockquote>
+<p>【2】谁指向谁？</p>
+</blockquote>
+<p><strong>总结：做题用下面总结的方法，绝对好使</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1616501415627-ee5d1008-a07d-4acb-821b-e227b5cb7ad8.jpeg" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li><strong>读的时候：从左往右读，一般左边是某某的next域，右边是具体的结点</strong></li>
+<li><strong>画的时候：在图中表示为等号左边指向等号右边</strong></li>
+</ul>
+<p>例子：</p>
+<p>① <code>node.next = prev.next;</code></p>
+<p>② <code>prev.next = node</code></p>
+<p>读法：</p>
+<p>①“node的next指向prev的下一个结点”</p>
+<p>（用指针的概念通俗地说，其实就是prev的下一个结点的地址由prev的指针域里面赋值给了node的next指针域里面）</p>
+<p>②“prev的next指向node这个结点”</p>
+<p>（还可以这么说：将node赋值给prev的next，也就是说prev的下一个结点是node）</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1599309003706-ad779a14-1678-4d0c-86f2-b147752bd252.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1599309003751-ffeee4d8-9662-416e-8f46-5cf5edf03114.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1599309003658-46b3e7db-e6dc-4d13-baea-e7e44075e8bc.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>【3】指向错位？</p>
+</blockquote>
+<p><strong>关注第一个元素节点是不是head，因为有的链表不声明头节点（head），直接就是第一个结点就是元素结点</strong></p>
+<h3 id="关于pl的理解">关于p=L的理解</h3>
+<p>写代码的时候，还经常遇到下面的情况</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1616501697301-b63e6312-d8f9-4130-8d25-2d3becd75038.png" alt="" loading="lazy" decoding="async"></p>
+<p>p、L就是指向结点的指针类型，将L的值赋给p，也就是p、L指向同一个结点。具体理解可以用下面一个例子来说明：</p>
+<p>下面图片这个函数就是在一个单链表中，功能就是指定i位置插入e值。下图箭头处如果TraverseList返回的是p那么得出的链表结果就是从插入的那个元素往后这样一个部分链表，返回的是L就是想要的结果，p的功能有点类似在L的中间做了手脚……</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1616501856348-955542eb-258d-473f-b003-c53881275937.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="各种代码">各种代码</h2>
+<h3 id="实验报告代码">实验报告代码</h3>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> {
+    <span class="hljs-type">int</span> data;
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> *next;
+}Lnode, *LinkList;
+
+LinkList L;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">InitList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    L = <span class="hljs-keyword">new</span> LNode;
+    L->next = <span class="hljs-literal">NULL</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateList_H</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    <span class="hljs-built_in">InitList</span>(L);
+    <span class="hljs-type">int</span> n;
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入要使用前插法插入的元素个数："</span>;
+    cin >> n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n; i++){
+        LNode *p = <span class="hljs-keyword">new</span> LNode;
+        cin >> p->data;
+        p->next = L->next;
+        L->next = p;
+    }
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TraverseList</span><span class="hljs-params">(LinkList &#x26;L)</span></span>{
+    LNode *p = <span class="hljs-keyword">new</span> LNode;
+    p = L->next;
+    cout &#x3C;&#x3C; <span class="hljs-string">"此链表打印的结果为："</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+    <span class="hljs-keyword">while</span> (p != <span class="hljs-literal">NULL</span>){
+        cout &#x3C;&#x3C; p->data &#x3C;&#x3C; <span class="hljs-string">" "</span>;
+        p = p->next;
+    }
+    cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetElem</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入要查询的链表中第i个数："</span>;
+    cin >> n;
+    LNode *p = <span class="hljs-keyword">new</span> LNode;
+    p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n;i++){
+        p = p->next;
+    }
+    cout &#x3C;&#x3C; <span class="hljs-string">"查询的结果为："</span> &#x3C;&#x3C; p->data&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ListInsert</span><span class="hljs-params">(LinkList &#x26;L)</span></span>{
+    LNode *p = <span class="hljs-keyword">new</span> LNode;
+    p = L;
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-type">int</span> e;
+    cout &#x3C;&#x3C; <span class="hljs-string">"请分别输入要在第n个位置插入的e值："</span>;
+    cin >> n>> e ;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n;i++) {
+        <span class="hljs-keyword">if</span> (n == i<span class="hljs-number">+1</span>){
+            LNode *temp = <span class="hljs-keyword">new</span> LNode;
+            temp->data = e;
+            temp->next = p->next;
+            p->next = temp;
+            <span class="hljs-keyword">break</span>;
+        }
+        p = p->next;
+    }
+    <span class="hljs-built_in">TraverseList</span>(L); <span class="hljs-comment">// 直接返回L就可以了，之前返回p是不可以的！！！唉，大意了~</span>
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ListDelete</span><span class="hljs-params">(LinkList &#x26;L)</span></span>{
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入要删除的第j个位置的j值："</span>;
+    LNode *p = <span class="hljs-keyword">new</span> LNode;
+    p = L;
+    <span class="hljs-type">int</span> j;
+    cin >> j;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; j;i++) {
+        <span class="hljs-keyword">if</span> (j == i<span class="hljs-number">+1</span>) {
+            p->next = p->next->next;
+            <span class="hljs-keyword">break</span>;
+        }
+        p = p->next;
+    }
+    <span class="hljs-built_in">TraverseList</span>(L);
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ReverseList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    LNode *p = L->next;             
+    L->next = <span class="hljs-literal">NULL</span>;                
+    <span class="hljs-keyword">while</span>(p)                        
+    {
+        LNode *q = p->next;         
+        p->next = L->next;          
+        L->next = p;                
+        p = q;                      
+    }
+    cout &#x3C;&#x3C; <span class="hljs-string">"通过逆置之后……"</span>;
+    <span class="hljs-built_in">TraverseList</span>(L);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    LNode *test = <span class="hljs-keyword">new</span> LNode;
+    <span class="hljs-built_in">CreateList_H</span>(test);<span class="hljs-comment">//1</span>
+    <span class="hljs-built_in">TraverseList</span>(test);<span class="hljs-comment">//1</span>
+    <span class="hljs-built_in">GetElem</span>(test);<span class="hljs-comment">//2</span>
+    <span class="hljs-built_in">ListInsert</span>(test);<span class="hljs-comment">//3</span>
+    <span class="hljs-built_in">ListDelete</span>(test);<span class="hljs-comment">//4</span>
+    <span class="hljs-built_in">ReverseList</span>(test);<span class="hljs-comment">//5</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="单链表各种操作代码总结">单链表各种操作代码总结</h3>
+<ul>
+<li>单链表存储形式</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> {
+    <span class="hljs-type">int</span> data; <span class="hljs-comment">//数据域</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> *next; <span class="hljs-comment">//指针域</span>
+}Lnode, *LinkList; <span class="hljs-comment">//LinkList为指向结构体LNode的指针类型</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>初始化</li>
+<li>创建：前插法</li>
+<li>创建：后插法</li>
+<li>取值</li>
+<li>插值</li>
+<li>删除</li>
+<li>打印</li>
+<li><strong>逆置</strong></li>
+</ul>
+<p>逆置多用前插的思想</p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ReverseList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    LNode *p = L->next;             
+    L->next = <span class="hljs-literal">NULL</span>;                
+    <span class="hljs-keyword">while</span>(p) {
+        LinkList q = p->next;         
+        p->next = L->next;          
+        L->next = p;                
+        p = q;                      
+    }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>所有操作如下</p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/**
+ * 单链表
+ * 
+ * 链表的基本操作：初始化、创建（前插、后插）、取值、查找、插值、删除、打印、逆置
+ */</span>
+
+<span class="hljs-comment">/* 单链表的存储结构 */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> {
+    <span class="hljs-type">int</span> data; <span class="hljs-comment">//数据域</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> *next; <span class="hljs-comment">//指针域</span>
+}Lnode, *LinkList; <span class="hljs-comment">//LinkList为指向结构体LNode的指针类型</span>
+
+<span class="hljs-comment">/* 初始化链表 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">InitList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    L = <span class="hljs-keyword">new</span> LNode;
+    L->next = <span class="hljs-literal">NULL</span>;
+}
+
+<span class="hljs-comment">/* 创建：前插 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateList_H</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-built_in">InitList</span>(L);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n; i++){
+        LNode *p = <span class="hljs-keyword">new</span> LNode;
+        cin >> p->data;
+        p->next = L->next;
+        L->next = p;
+    }
+}
+
+<span class="hljs-comment">/* 创建：后插 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CreateList_R</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> n)</span> </span>{
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入"</span> &#x3C;&#x3C; n &#x3C;&#x3C; <span class="hljs-string">"个数字"</span>&#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+    <span class="hljs-built_in">InitList</span>(L);
+    <span class="hljs-comment">// 定义一个在下面循环用来一直操作所加元素的结点p来指向头结点L</span>
+    LinkList p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n;i++) {
+        LinkList q = <span class="hljs-keyword">new</span> Lnode;
+        q->next = <span class="hljs-literal">NULL</span>;
+        cin >> q->data;
+        p->next = q;
+        p = q; <span class="hljs-comment">//为了下一次</span>
+    }
+}
+
+<span class="hljs-comment">/* 取值 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetElem</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> n)</span> </span>{
+    LinkList p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n;i++){
+        p = p->next;
+    }
+    cout &#x3C;&#x3C;n&#x3C;&#x3C;<span class="hljs-string">"的值为："</span> &#x3C;&#x3C; p->data&#x3C;&#x3C;<span class="hljs-string">"\n"</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+}
+
+<span class="hljs-comment">/* 查找 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SearchElem</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> ele)</span> </span>{
+    LinkList p = L;
+    <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (p->data != ele) {
+        p = p->next;
+        count++;
+    }
+    cout &#x3C;&#x3C;ele&#x3C;&#x3C;<span class="hljs-string">"这个值的索引位置是："</span>&#x3C;&#x3C; count&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+}
+
+<span class="hljs-comment">/* 插值：在第n个位置插入ele值*/</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ListInsert</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> ele)</span></span>{
+    LinkList p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n;i++) {
+        <span class="hljs-keyword">if</span> (n == i<span class="hljs-number">+1</span>){
+            LinkList temp = <span class="hljs-keyword">new</span> LNode;
+            temp->data = ele;
+            temp->next = p->next;
+            p->next = temp;
+            <span class="hljs-keyword">break</span>;
+        }
+        p = p->next;
+    }
+    <span class="hljs-built_in">TraverseList</span>(L); 
+}
+
+<span class="hljs-comment">/* 删除：删除第j个位置的值 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ListDelete</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> j)</span></span>{
+    LinkList p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; j;i++) {
+        <span class="hljs-keyword">if</span> (j == i<span class="hljs-number">+1</span>) {
+            p->next = p->next->next;
+            <span class="hljs-keyword">break</span>;
+        }
+        p = p->next;
+    }
+    <span class="hljs-built_in">TraverseList</span>(L);
+}
+
+<span class="hljs-comment">/* 打印 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TraverseList</span><span class="hljs-params">(LinkList &#x26; L)</span></span>{
+        LNode *p = <span class="hljs-keyword">new</span> LNode;
+        p = L->next;
+        cout &#x3C;&#x3C; <span class="hljs-string">"此链表打印的结果为："</span>
+             &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+        <span class="hljs-keyword">while</span> (p != <span class="hljs-literal">NULL</span>)
+        {
+            cout &#x3C;&#x3C; p->data &#x3C;&#x3C; <span class="hljs-string">" "</span>;
+            p = p->next;
+        }
+        cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+}
+<span class="hljs-comment">/* 逆置 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ReverseList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    LNode *p = L->next;             
+    L->next = <span class="hljs-literal">NULL</span>;                
+    <span class="hljs-keyword">while</span>(p)                        
+    {
+        LNode *q = p->next;         
+        p->next = L->next;          
+        L->next = p;                
+        p = q;                      
+    }
+    cout &#x3C;&#x3C; <span class="hljs-string">"通过逆置之后……"</span>;
+    <span class="hljs-built_in">TraverseList</span>(L);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// LNode *test = new LNode;</span>
+    LinkList test;
+    <span class="hljs-comment">// struct LNode *test;</span>
+    <span class="hljs-built_in">CreateList_R</span>(test,<span class="hljs-number">4</span>);
+    <span class="hljs-built_in">SearchElem</span>(test, <span class="hljs-number">3</span>);
+    <span class="hljs-comment">// cout &#x3C;&#x3C; GetEle(test, 2);</span>
+    <span class="hljs-comment">// TraverseList(test);</span>
+    <span class="hljs-comment">// GetElem(test,2);</span>
+    <span class="hljs-comment">// ListInsert(test);</span>
+    <span class="hljs-comment">// ListDelete(test);</span>
+    <span class="hljs-comment">// ReverseList(test);</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="循环链表代码">循环链表代码</h3>
+<p> * 循环链表其实只需要注意最后一个结点所指向的下一个结点为头结点L就好了</p>
+<p>* 还要注意头结点存不存元素</p>
+<p>* 还有判断的时候条件不是单链表那样判断是否为空了，而是是否为头结点的值了</p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/**
+ * 循环链表
+ * 
+ * 循环链表其实只需要注意最后一个结点所指向的下一个结点为头结点L就好了
+ * 还要注意头结点存不存元素
+ * 还有判断的时候条件不是单链表那样判断是否为空了，而是是否为头结点的值了
+ */</span>
+
+<span class="hljs-comment">/* 定义一个单链表 */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> {
+    <span class="hljs-type">int</span> data;
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> *next;
+}Lnode, *LinkList;
+
+<span class="hljs-comment">/**
+ * 初始化单链表
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">InitList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    L = <span class="hljs-keyword">new</span> LNode;
+    L->next = <span class="hljs-literal">NULL</span>;
+}
+
+<span class="hljs-comment">/**
+ * 初始化单链表并将其变成循环链表
+ */</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CircleList</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-built_in">InitList</span>(L);
+    <span class="hljs-comment">// 初始化第一个结点的值</span>
+    L->data = <span class="hljs-number">1</span>;
+    LinkList p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &#x3C;= n; i++) {
+        LinkList temp = <span class="hljs-keyword">new</span> Lnode;
+        temp->data = i;
+        <span class="hljs-keyword">if</span> (i == n) {
+            temp->next = L;
+            p->next = temp;
+            <span class="hljs-keyword">break</span>;
+        }
+        temp->next = <span class="hljs-literal">NULL</span>;
+        p->next = temp;
+        p = p->next;
+    }
+}
+
+<span class="hljs-comment">/**
+ * 打印输出用来测试是否为循环链表
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PrintList</span><span class="hljs-params">(LinkList &#x26;L, <span class="hljs-type">int</span> n)</span> </span>{
+    LinkList p = L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n;i++) {
+        cout &#x3C;&#x3C; p->data &#x3C;&#x3C; <span class="hljs-string">" "</span>;
+        p = p->next;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    LinkList test;
+    <span class="hljs-built_in">CircleList</span>(test,<span class="hljs-number">5</span>);
+    <span class="hljs-built_in">PrintList</span>(test, <span class="hljs-number">12</span>);
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1618307254729-8f60bc5d-be41-47fe-a2ad-466715cc740e.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="双向链表代码">双向链表代码</h3>
+<ul>
+<li>双向链表从某种意义上来说，更加简单了，因为可操作的“指向更多了”，但正因为这样，所以每次指向操作之后，检查一下有没有“落单的指向”</li>
+<li>删除某个结点的时候，一定要记得删除哪个结点，就操作哪个结点</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/**
+ * 双向链表
+ */</span>
+
+<span class="hljs-comment">/* 双向链表的存储结构 */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">DuLNode</span> {
+    <span class="hljs-type">int</span> data; 
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">DuLNode</span> *prior; 
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">DuLNode</span> *next; 
+}DuLnode, *DuLinkList; 
+
+<span class="hljs-comment">/* 双向链表的初始化 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">InitDuLinkList</span><span class="hljs-params">(DuLinkList &#x26;L)</span> </span>{
+    L = <span class="hljs-keyword">new</span> DuLNode;
+    L->prior = <span class="hljs-literal">NULL</span>;
+    L->next = <span class="hljs-literal">NULL</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    DuLinkList L;
+    <span class="hljs-built_in">InitDuLinkList</span>(L);
+    <span class="hljs-comment">// 初始化初始节点值为100</span>
+    L->data = <span class="hljs-number">100</span>;
+    <span class="hljs-comment">// 在L结点前面插值50</span>
+    DuLinkList L_prior;
+    L_prior->data = <span class="hljs-number">50</span>;
+    L_prior->next = L;
+    L->prior = <span class="hljs-literal">NULL</span>;
+    L->prior = L_prior;
+    <span class="hljs-comment">// 在L结点后面插值150</span>
+    DuLinkList L_next;
+    L_next->data = <span class="hljs-number">150</span>;
+    L_next->prior = L;
+    L_next->next = <span class="hljs-literal">NULL</span>;
+    L->next = L_next;
+    cout &#x3C;&#x3C; L_prior->data &#x3C;&#x3C; <span class="hljs-string">" "</span> &#x3C;&#x3C; L_prior->next->data &#x3C;&#x3C; <span class="hljs-string">" "</span> &#x3C;&#x3C; L_prior->next->next->data&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+    <span class="hljs-comment">// 在50和100之间插值75（只操作L结点）</span>
+    DuLinkList L_prior_L;
+    L_prior_L->data = <span class="hljs-number">75</span>;
+    L_prior_L->prior = L->prior;
+    L->prior->next = L_prior_L;
+    L_prior_L->next = L;
+    L->prior = L_prior_L;
+    cout &#x3C;&#x3C; L->prior->prior->data &#x3C;&#x3C; <span class="hljs-string">" "</span> &#x3C;&#x3C; L->prior->data &#x3C;&#x3C; <span class="hljs-string">" "</span> &#x3C;&#x3C; L->data &#x3C;&#x3C;<span class="hljs-string">" "</span>&#x3C;&#x3C; L->next->data&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+    <span class="hljs-comment">// 删除75这个值的结点(记住一点，删除哪个结点就操作哪个结点)</span>
+    L_prior_L->next->prior = L_prior_L->prior;
+    L_prior_L->prior->next = L_prior_L->next;
+    cout &#x3C;&#x3C; L->prior->data &#x3C;&#x3C; <span class="hljs-string">" "</span> &#x3C;&#x3C; L->data &#x3C;&#x3C; <span class="hljs-string">" "</span> &#x3C;&#x3C; L->next->data &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gu92gu/1618309282126-1ad3d5c4-1d3e-425f-b474-27f33261ead6.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://shangdixinxi.com/detail-1507915.html" rel="noopener noreferrer">链表p->next=q->next,q->next=p,q=p;的一些解释</a></li>
+<li><a href="https://blog.csdn.net/weixin_44135282/article/details/90348885" rel="noopener noreferrer">p->next=q与q=p->next区分</a></li>
+<li><a href="https://www.jianshu.com/p/73d56c3d228c" rel="noopener noreferrer">数据结构：链表</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"C++链表(单、循环、双向)设计及操作\",\"description\":\"前言：这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验要求1、创建一个带头结点的单链表（头指针为head），且遍历此链表（输出链表中各结点的...\",\"datePublished\":\"2021-03-23\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/gu92gu/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","📶线结构：字符串-数组-栈-队列",{"href":"/categories/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/","children":"📶线结构：字符串-数组-栈-队列"}]]]}],["$","h1",null,{"children":"C++链表(单、循环、双向)设计及操作"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-03-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[8," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/gu92gu/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/1_day01_jquery/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"jQuery选择器+样式操作+动画效果"}]]}],["$","$L2",null,{"href":"/blog/tttk33/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Git push出(10054)/(port 443：time out)错"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/gu92gu/","title":"C++链表(单、循环、双向)设计及操作"}]
+9:["$","$L1c",null,{"headings":[{"id":"实验要求","text":"实验要求","depth":2},{"id":"概念理解","text":"概念理解","depth":2},{"id":"链表数据结构","text":"链表数据结构","depth":3},{"id":"关于链表的指向","text":"关于链表的指向","depth":3},{"id":"关于pl的理解","text":"关于p=L的理解","depth":3},{"id":"各种代码","text":"各种代码","depth":2},{"id":"实验报告代码","text":"实验报告代码","depth":3},{"id":"单链表各种操作代码总结","text":"单链表各种操作代码总结","depth":3},{"id":"循环链表代码","text":"循环链表代码","depth":3},{"id":"双向链表代码","text":"双向链表代码","depth":3},{"id":"参考","text":"参考","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"C++链表(单、循环、双向)设计及操作 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验要求1、创建一个带头结点的单链表（头指针为head），且遍历此链表（输出链表中各结点的..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/gu92gu/"}],["$","meta","3",{"property":"og:title","content":"C++链表(单、循环、双向)设计及操作"}],["$","meta","4",{"property":"og:description","content":"前言：这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验要求1、创建一个带头结点的单链表（头指针为head），且遍历此链表（输出链表中各结点的..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/gu92gu/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-03-23"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"C++链表(单、循环、双向)设计及操作"}],["$","meta","11",{"name":"twitter:description","content":"前言：这篇文章，打算详细记录下链表的相关知识，毕竟是基础中的基础。首先是先记录下在一开始学习过程中的些许疑惑/C的遗忘，然后记录各种代码（实验报告代码，单链表各种操作代码总结，循环链表代码，双向链表代码）实验要求1、创建一个带头结点的单链表（头指针为head），且遍历此链表（输出链表中各结点的..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

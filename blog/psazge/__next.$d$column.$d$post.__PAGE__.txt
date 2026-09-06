@@ -1,0 +1,289 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T6e1e,<p>前言：本文讲述前端代码从脚本全局函数时代到现代化模块引入时代的发展历程，再介绍构建工具对代码予以指定条件下的打包构建，最后利用vite打包工具打包一个可供多个环境使用的SDK的例子。</p>
+<h2 id="一模块化演变历程">一、模块化演变历程</h2>
+<h3 id="11-脚本全局函数">1.1 脚本全局函数</h3>
+<blockquote>
+<p>[!TIP]</p>
+<p>在HTML页面所引入的脚本中定义函数，在浏览器执行脚本则可以使用脚本中所定义的全局函数</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">globalFun</span> = (<span class="hljs-params"></span>) => {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">'this is globalFun'</span>);
+    };
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713682888934-ccbdc852-0125-4796-becb-deca844aad58.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>缺点： 污染全局命名空间, 容易引起命名冲突或数据不安全，而且模块成员之间看不出直接关系</p>
+</blockquote>
+<h3 id="12-namespace模式">1.2 namespace模式</h3>
+<blockquote>
+<p>[!TIP]</p>
+<p>通过命名空间来解决上述命名冲突的问题</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    <span class="hljs-keyword">const</span> globalNameSpaceTest = {
+      <span class="hljs-attr">fun</span>: <span class="hljs-function">() =></span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">'this is globalNameSpaceTest'</span>);
+      },
+    };
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713683164533-8a11c85b-caf3-48f1-a0d8-d3634a06ff87.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>缺点：外部可以更改内部状态所有模块代码都被暴露在外</p>
+</blockquote>
+<h3 id="13-iife-立即调用的函数表达式">1.3 IIFE (立即调用的函数表达式)</h3>
+<p>在JavaScript语言中，有一个立即执行函数，当脚本加载成功则执行所定义的函数。</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    (<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">'IIFE code...'</span>);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(<span class="hljs-variable language_">this</span>);
+      globalThis.<span class="hljs-property">IIFETestMoudle</span> = {
+        <span class="hljs-attr">fun</span>: <span class="hljs-function">() =></span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">'some logic...'</span>);
+        },
+      };
+    })();
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713683818953-4b3c0b5f-fab8-4877-8b3a-4ec34ab5f5b6.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!TIP]</p>
+<p>通过这种形式创建的模块可以自己独立的私有作用域</p>
+</blockquote>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>缺点：模块之间的依赖依旧不明确，依旧是挂载到全局宿主环境上</p>
+</blockquote>
+<h3 id="14-commonjs">1.4 Commonjs</h3>
+<p>CommonJS是Node.js环境下的模块化规范</p>
+<h4 id="两种导出方式">两种导出方式</h4>
+<p>第一种导出方式：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">fun</span> = (<span class="hljs-params"></span>) => {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">"cjs fun..."</span>);
+};
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = fun;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> moduleTest = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./module-test"</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(moduleTest);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713684727768-49bf85de-e18b-4246-8533-e7425833b351.png" alt="" loading="lazy" decoding="async"></p>
+<p>第二种方式：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">fun</span> = (<span class="hljs-params"></span>) => {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">"cjs fun..."</span>);
+};
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>.<span class="hljs-property">fun</span> = fun;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713684784746-a07ea600-35ce-4c6c-b3a3-ebd64f5fd551.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>上述两种方式都是对module.exports赋值或是添加属性的形式来进行模块导出，那么对于在nodejs当中，module是什么呢？由截图可以看出当前文件模块可以依赖的nodejs模块及其一些其他信息，其中：exports：当前模块导出的部分loaded：当前模块是否加载完毕paths：模块查找路径</p>
+</blockquote>
+<h4 id="特点">特点</h4>
+<ul>
+<li>模块的加载是运行时同步加载的，所以在导入时会阻塞执行</li>
+<li>模块的加载实际上对是所引入对象的一种深拷贝</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713686002849-f16325a6-7e91-4ac9-8fa5-9d835ce2ad42.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="模块加载机制">模块加载机制</h4>
+<ol>
+<li>模块定义：在 CommonJS 规范中，每个文件被视为一个独立的模块。模块内部的变量都是局部变量，不会泄露到全局作用域。一个模块可以通过 <strong>require</strong> 函数来加载另一个模块，并通过 <strong>module.exports</strong> 或 <strong>exports</strong> 对象来导出功能。</li>
+<li>模块加载：当一个模块需要使用另一个模块时，它会使用 <strong>require</strong> 函数来加载目标模块。<strong>require</strong> 函数接受一个模块标识符（通常是文件的路径或者模块的名称）作为参数，并返回该模块导出的对象。</li>
+<li>模块解析：当调用 <strong>require</strong> 函数时，Node.js 会按照以下步骤解析和加载模块：</li>
+</ol>
+<ul>
+<li>路径分析：首先检查模块标识符是否是内置模块（如 fs、http 等）。如果不是，Node.js 会解析相对或绝对路径。</li>
+<li>文件定位：Node.js 会根据路径查找 <strong>.js</strong>、<strong>.json</strong> 或 <strong>.node</strong> 文件。如果路径没有文件扩展名，Node.js 会尝试加载支持的文件类型。</li>
+<li>目录分析和包处理：如果模块标识符是一个目录，Node.js 将查找该目录下的 <strong>package.json</strong> 文件，解析它并查找 <strong>main</strong> 属性指定的文件。如果没有 <strong>package.json</strong> 或 <strong>main</strong> 属性，Node.js 将尝试加载目录下的 <strong>index.js</strong>。</li>
+</ul>
+<ol start="4">
+<li><strong>模块缓存：<strong><strong>每个模块在第一次加载后都会被缓存</strong></strong>。这意味着无论</strong> <strong>require</strong> <strong>函数被调用多少次，模块都只会被执行一次，之后每次调用</strong> <strong>require</strong> <strong>都会返回相同的导出对象。这可以提高模块加载的效率并避免重复执行。</strong></li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713686856056-e09f1385-f077-41ce-9654-35df227642e8.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!TIP]</p>
+<p>如果真有这种情况，可以手动清除缓存</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713687108307-31bb50b5-e8a7-408c-bff9-e0ba303edfdc.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="15-esm">1.5 ESM</h3>
+<p>ES模块（<code>ECMAScript Modules</code>），通常简称为<code>ESM</code>，是<code>JavaScript</code>的官方标准模块系统。自<code>ES6</code>（<code>ECMAScript 2015</code>）开始，<code>JavaScript</code>语言本身就内置了对模块的支持。</p>
+<h4 id="导入导出">导入导出</h4>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">sum</span> = (<span class="hljs-params">a, b</span>) => a + b;
+<span class="hljs-keyword">export</span> { sum };
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span>></span><span class="javascript">
+    <span class="hljs-keyword">import</span> { sum } <span class="hljs-keyword">from</span> <span class="hljs-string">"./module-es.js"</span>;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-title function_">sum</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="模块加载机制-1">模块加载机制</h4>
+<ul>
+<li>静态结构：ES模块的一个关键特点是它们具有静态结构。这意味着import和export语句必须位于模块的顶层作用域，且不能动态生成或条件性地执行。这种静态结构使得模块的依赖关系在代码运行之前就已经确定，允许JavaScript引擎优化模块加载、解析和编译。</li>
+<li>加载：浏览器环境，如果是结构化项目，可以直接引入，如果是script脚本引入需要添加type字段如上述例子；如果在nodejs环境，也需要在package.json文件中设置type字段，才能识别es模块的加载语法</li>
+<li>ES模块的加载是异步的。当模块被import时，它并不会立即执行，而是首先完成加载和解析过程，然后按照需要的顺序执行。这种方式适用于浏览器环境，因为它允许非阻塞的并行加载。</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 报错</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-string">'f'</span> + <span class="hljs-string">'oo'</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'my_module'</span>;
+<span class="hljs-comment">// 报错</span>
+<span class="hljs-keyword">let</span> <span class="hljs-variable language_">module</span> = <span class="hljs-string">'my_module'</span>;
+<span class="hljs-keyword">import</span> { foo } <span class="hljs-keyword">from</span> <span class="hljs-variable language_">module</span>;
+<span class="hljs-comment">// 报错</span>
+<span class="hljs-keyword">if</span> (x === <span class="hljs-number">1</span>) {
+  <span class="hljs-keyword">import</span> { foo } <span class="hljs-keyword">from</span> <span class="hljs-string">'module1'</span>;
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">import</span> { foo } <span class="hljs-keyword">from</span> <span class="hljs-string">'module2'</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>那么怎么才能实现动态加载呢？</p>
+<h4 id="动态引入">动态引入</h4>
+<ol>
+<li>条件加载：可以根据运行时条件来决定是否导入某个模块，这对于减少首次加载时间和优化性能非常有用。</li>
+<li>代码分割和懒加载：结合现代前端构建工具（如Webpack、Rollup或Parcel），import()可以用于实现代码分割，按需加载模块，从而提高应用的启动速度和响应性。</li>
+<li>与其他API和模块化功能集成：import()函数可以和其他Web API结合使用，如Service Workers、Web Workers、caches等。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span>></span><span class="javascript">
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">loadModule</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) => {
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> <span class="hljs-variable language_">module</span> = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">"./module-es.js"</span>);
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-variable language_">module</span>.<span class="hljs-title function_">sum</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));
+      } <span class="hljs-keyword">catch</span> (error) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">"Module loading failed: "</span>, error);
+      }
+    };
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> <span class="hljs-title function_">loadModule</span>(), <span class="hljs-number">3000</span>);
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="16-esm-与-commonjs-的差异">1.6 ESM 与 CommonJS 的差异</h3>
+<ol>
+<li>
+<p>CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。</p>
+</li>
+<li>
+<p>CommonJS 模块输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。</p>
+</li>
+<li>
+<p>ES6 模块的运行机制与 CommonJS 不一样。JS 引擎对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。因此，ES6 模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。</p>
+</li>
+<li>
+<p>CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。</p>
+</li>
+<li>
+<p>运行时加载: CommonJS 模块就是对象；即在输入时是先加载整个模块，生成一个对象，然后再从这个对象上面读取方法，这种加载称为“运行时加载”。</p>
+</li>
+<li>
+<p>编译时加载: ES6 模块不是对象，而是通过 export 命令显式指定输出的代码， import 时采用静态命令的形式。即在 import 时可以指定加载某个输出值，而不是加载整个模块，这种加载称为“编译时加载”。</p>
+</li>
+</ol>
+<p>CommonJS 加载的是一个对象（即 module.exports 属性），该对象只有在脚本运行完才会生成。而ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。</p>
+<h2 id="二打包构建">二、打包构建</h2>
+<h3 id="21-构建工具">2.1 构建工具</h3>
+<p>实现各种环境下都能使用模块化代码，需要使用打包工具来对一套代码进行打包，打包工具主流有：</p>
+<ol>
+<li>webpack：适合应用类打包，可以进行详细配置和复杂构建过程的大型项目</li>
+<li>vite：适合工具类以及SDK打包，更加适合现代化web应用</li>
+</ol>
+<p>本文暂不详述webpack和vite的差异，只针对模块化构建目标做一个概括，所以选用vite来构建一个在所有环境可使用的一个SDK。</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>UMD：并不是一种全新的模块系统，而是整合了无模块化、AMD、CommonJS三种模块规范，其可以在任何环境下工作</p>
+</blockquote>
+<h3 id="22-利用vite构建一个sdk">2.2 利用Vite构建一个SDK</h3>
+<p>目标构建一个node环境和浏览器环境都可以使用的sdk</p>
+<p><code>src/inde.js</code></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">sum</span> = (<span class="hljs-params">a, b</span>) => a + b;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> sum;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><code>vite.config.js</code></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vite"</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">"path"</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">build</span>: {
+    <span class="hljs-attr">lib</span>: {
+      <span class="hljs-attr">entry</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">"src/index.js"</span>),
+      <span class="hljs-attr">formats</span>: [<span class="hljs-string">"es"</span>, <span class="hljs-string">"cjs"</span>, <span class="hljs-string">"umd"</span>],
+      <span class="hljs-attr">name</span>: <span class="hljs-string">"sdk"</span>,
+      <span class="hljs-attr">fileName</span>: <span class="hljs-function">(<span class="hljs-params">format</span>) =></span> <span class="hljs-string">`sdk.<span class="hljs-subst">${format}</span>.js`</span>,
+    },
+  },
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!NOTE]</p>
+<p>在vite中构建多环境依赖只需要上述少量代码即可配置，配置了输出sdk的全局命名以及文件命名等配置，更多配置：<a href="https://cn.vitejs.dev/config/build-options.html" rel="noopener noreferrer">https://cn.vitejs.dev/config/build-options.html</a></p>
+</blockquote>
+<p>上述代码打包后的结果：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713692148011-07df10e5-bdee-497e-b34e-6567dcbdeccf.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="23-在不同环境使用sdk">2.3 在不同环境使用SDK</h3>
+<p>浏览器环境使用：</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./dist/sdk.umd.js"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(sdk);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-title function_">sdk</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>));
+  </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713692332909-7b8a8817-4d75-4d6c-96e6-c533b07278b8.png" alt="" loading="lazy" decoding="async"></p>
+<p><code>node</code>环境使用：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> sum = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./dist/sdk.cjs.js"</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-title function_">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>));
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713692473725-cf5a5b43-38f1-4b73-ac8e-683f72e521cb.png" alt="" loading="lazy" decoding="async"></p>
+<p><code>node</code>环境（根目录package.json文件中指定<code>type</code>字段为<code>module</code>）使用：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> sum <span class="hljs-keyword">from</span> <span class="hljs-string">"./dist/sdk.es.js"</span>;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-title function_">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>));
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/psazge/1713692593519-9b05da4c-323a-4dfb-b2b8-61d97506aab3.png" alt="" loading="lazy" decoding="async"></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"前端工程化：模块化基础\",\"description\":\"前言：本文讲述前端代码从脚本全局函数时代到现代化模块引入时代的发展历程，再介绍构建工具对代码予以指定条件下的打包构建，最后利用vite打包工具打包一个可供多个环境使用的SDK的例子。一、模块化演变历程1.1 脚本全局函数在HTML页面所引入的脚本中定义函数，在浏览器执行脚本则可以使用脚本中所定...\",\"datePublished\":\"2024-04-21\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/psazge/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Node.js",{"href":"/categories/Node.js/","children":"Node.js"}]]]}],["$","h1",null,{"children":"前端工程化：模块化基础"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-04-21"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[6," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/psazge/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/yawga9knlo5bx731/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"双token鉴权校验"}]]}],["$","$L2",null,{"href":"/blog/2024-04-21-16-20-30/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"前后端实现简单上传功能"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/psazge/","title":"前端工程化：模块化基础"}]
+9:["$","$L1c",null,{"headings":[{"id":"一模块化演变历程","text":"一、模块化演变历程","depth":2},{"id":"11-脚本全局函数","text":"1.1 脚本全局函数","depth":3},{"id":"12-namespace模式","text":"1.2 namespace模式","depth":3},{"id":"13-iife-立即调用的函数表达式","text":"1.3 IIFE (立即调用的函数表达式)","depth":3},{"id":"14-commonjs","text":"1.4 Commonjs","depth":3},{"id":"两种导出方式","text":"两种导出方式","depth":4},{"id":"特点","text":"特点","depth":4},{"id":"模块加载机制","text":"模块加载机制","depth":4},{"id":"15-esm","text":"1.5 ESM","depth":3},{"id":"导入导出","text":"导入导出","depth":4},{"id":"模块加载机制-1","text":"模块加载机制","depth":4},{"id":"动态引入","text":"动态引入","depth":4},{"id":"16-esm-与-commonjs-的差异","text":"1.6 ESM 与 CommonJS 的差异","depth":3},{"id":"二打包构建","text":"二、打包构建","depth":2},{"id":"21-构建工具","text":"2.1 构建工具","depth":3},{"id":"22-利用vite构建一个sdk","text":"2.2 利用Vite构建一个SDK","depth":3},{"id":"23-在不同环境使用sdk","text":"2.3 在不同环境使用SDK","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"前端工程化：模块化基础 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：本文讲述前端代码从脚本全局函数时代到现代化模块引入时代的发展历程，再介绍构建工具对代码予以指定条件下的打包构建，最后利用vite打包工具打包一个可供多个环境使用的SDK的例子。一、模块化演变历程1.1 脚本全局函数在HTML页面所引入的脚本中定义函数，在浏览器执行脚本则可以使用脚本中所定..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/psazge/"}],["$","meta","3",{"property":"og:title","content":"前端工程化：模块化基础"}],["$","meta","4",{"property":"og:description","content":"前言：本文讲述前端代码从脚本全局函数时代到现代化模块引入时代的发展历程，再介绍构建工具对代码予以指定条件下的打包构建，最后利用vite打包工具打包一个可供多个环境使用的SDK的例子。一、模块化演变历程1.1 脚本全局函数在HTML页面所引入的脚本中定义函数，在浏览器执行脚本则可以使用脚本中所定..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/psazge/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-04-21"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"前端工程化：模块化基础"}],["$","meta","11",{"name":"twitter:description","content":"前言：本文讲述前端代码从脚本全局函数时代到现代化模块引入时代的发展历程，再介绍构建工具对代码予以指定条件下的打包构建，最后利用vite打包工具打包一个可供多个环境使用的SDK的例子。一、模块化演变历程1.1 脚本全局函数在HTML页面所引入的脚本中定义函数，在浏览器执行脚本则可以使用脚本中所定..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

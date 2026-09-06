@@ -1,0 +1,192 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T2f0b,<p><img src="https://blogimage.musemvp.com/v1.0.0/gf5tiw/1665070666704-a55506d2-ea9e-4b25-b3f9-ecf371d0d453.jpeg" alt="" loading="lazy" decoding="async"></p>
+<p>前言：第三方模块的两种存在形式</p>
+<ol>
+<li>以js文件的形式存在，提供实现项目具体功能的API接口。比如使用jQuery，html中引入CDN超链接即可使用。</li>
+<li>以命令行工具形式存在，辅助项目开发。</li>
+</ol>
+<p>比如VUE-CLI工具。</p>
+<blockquote>
+<p>npm是用来管理模块的一个node工具，它会伴随着node的下载而一同下载。</p>
+</blockquote>
+<p>node生态的繁荣多益于很多优秀的三方模块的存在，具体可以查看 <a href="https://nodersurvey.github.io/reporters/index.html" rel="noopener noreferrer">NoderSurvey 2021 年度报告</a> 的相关统计与调研。在此记录一下在学习以及实际开发过程中自己所学习到的三方模块，特别地，express三方模块是一个web应用框架，需要学习的点较多，单独拿出来详细学习。</p>
+<h3 id="cnpm">cnpm</h3>
+<p>因为npm是处于国外的服务器，下载模块有时候可能会较慢，特别是文件比较多的模块。</p>
+<ol>
+<li>方法1: 临时使用淘宝镜像下载的命令。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-bash">npm install --registry https://registry.npm.taobao.org
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>方法2: 更改npm镜像下载源</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-bash"><span class="hljs-comment"># 配置镜像源</span>
+npm config <span class="hljs-built_in">set</span> registry https://registry.npmmirror.com
+<span class="hljs-comment"># 下载</span>
+npm i
+
+<span class="hljs-comment">######################################################</span>
+<span class="hljs-comment"># 解除镜像源</span>
+npm config <span class="hljs-built_in">set</span> registry https://registry.npmjs.org/
+
+<span class="hljs-comment"># 其他包管理也是一样</span>
+npm config <span class="hljs-built_in">set</span> registry https://registry.npmmirror.com
+yarn config <span class="hljs-built_in">set</span> registry https://registry.npmmirror.com
+pnpm config <span class="hljs-built_in">set</span> registry https://registry.npmmirror.com
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li>方法3: 如果不想改变npm镜像源，可以使用cnpm（推荐）</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-bash">// download cnpm
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+cnpm install
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<hr>
+<p>查看镜像源</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm config get registry
+pnpm config get registry
+cnpm config get registry
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gf5tiw/1693721898134-21b4ba2b-4179-4cfb-9502-3b63cacd9902.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="nodemon">nodemon</h3>
+<div class="code-block"><pre><code class="hljs language-bash">cnpm install nodemon –g
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>作用：在开发过程中，修改了文件，控制台命令行就会根据文件的修改自动运行</p>
+<p>使用方法：将运行命令中的node换成nodemon</p>
+<h3 id="gulp">gulp</h3>
+<p>基于node平台开发的前端构建工具，将机械化操作编写成任务，想要执行机械化操作时执行一个命令行命令任务就能自动执行了，用机器代替手工，提高开发效率。</p>
+<p>具体的还有webpack，后续继续学习。</p>
+<p>作用：</p>
+<ul>
+<li>项目上线，HTML、CSS、JS文件压缩合并</li>
+<li>语法转换（es6、less ...）</li>
+<li>公共文件抽离</li>
+<li>修改文件浏览器自动刷新</li>
+</ul>
+<p>glup本身提供的api函数很少，官网到目前更新只有下面几个，具体使用方法，使用的时候去查</p>
+<ul>
+<li><a href="https://github.com/gulpjs/gulp" rel="noopener noreferrer">https://github.com/gulpjs/gulp</a></li>
+<li><a href="https://gulpjs.com/docs/en/getting-started/quick-start" rel="noopener noreferrer">https://gulpjs.com/docs/en/getting-started/quick-start</a></li>
+</ul>
+<p>gulp生态也有很多插件，根据插件下载相应需要的功能插件</p>
+<ul>
+<li>gulp-htmlmin ：html文件压缩</li>
+<li>gulp-csso ：压缩css</li>
+<li>gulp-babel ：JavaScript语法转化</li>
+<li>gulp-less: less语法转化</li>
+<li>gulp-uglify ：压缩混淆JavaScript</li>
+<li>gulp-file-include 公共文件包含</li>
+<li>browsersync 浏览器实时同步</li>
+</ul>
+<h3 id="cross-env">cross-env</h3>
+<p>windows不支持NODE_ENV=development的设置方式</p>
+<p>所以使用该模块来进行跨平台地使用环境变量，兼容各平台使用</p>
+<h3 id="sharedb">sharedb</h3>
+<p>ShareDB 是一个整合了前后端的 OT 框架，可以很方便地自行搭建服务端和客户端。框架基于 Node.JS 实现。</p>
+<blockquote>
+<p>OT（Operational transformation）是一种支持高级协作软件系统中的一系列协作功能的技术。OT 最初是为了在纯文本文档的协作编辑中实现一致性维护和并发控制而发明的。它的功能已得到扩展，其应用程序已扩展至包括组撤消、锁定、冲突解决、操作通知和压缩、组感知、HTML/XML 和树状结构文档编辑、协作办公生产力工具、应用程序共享和协作计算机- 辅助媒体设计工具。[1] 2009 年，OT 被采用为Apache Wave协作功能背后的核心技术和谷歌文档。</p>
+</blockquote>
+<h3 id="sharedb-mongo">sharedb-mongo</h3>
+<h3 id="uuid">uuid</h3>
+<p>生成唯一的一个字符串</p>
+<ul>
+<li>v3：基于名字的 用相同的名字，会生成相同的uuid出来</li>
+</ul>
+<p><a href="https://juejin.cn/post/6844903708799533064" rel="noopener noreferrer">npm的node-uuid和uuid</a></p>
+<ul>
+<li>官网配置教程：<a href="https://editor.aomao.com/zh-CN/config/ot#%E5%8D%8F%E5%90%8C%E6%95%B0%E6%8D%AE" rel="noopener noreferrer">https://editor.aomao.com/zh-CN/config/ot</a></li>
+<li>运行方式：将<code>ot-server</code>文件夹复制到项目根目录，将其处于运行状态，然后再运行主项目（localhost实质上就是指向127.0.0.1这个本地IP地址。）</li>
+</ul>
+<h3 id="nanoid">nanoid</h3>
+<p>因为uuid生成的字符串太长，不便于作为url路径使用，所以使用nanoid来作为随机url路径</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/nanoid" rel="noopener noreferrer">https://www.npmjs.com/package/nanoid</a></li>
+<li><a href="https://github.com/ai/nanoid/blob/HEAD/README.zh-CN.md" rel="noopener noreferrer">https://github.com/ai/nanoid/blob/HEAD/README.zh-CN.md</a></li>
+</ul>
+<h3 id="mkdirp">mkdirp</h3>
+<ul>
+<li><a href="https://www.npmjs.com/package/mkdirp" rel="noopener noreferrer">mkdirp</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> mkdirp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mkdirp'</span>)
+ 
+<span class="hljs-comment">// return value is a Promise resolving to the first directory created</span>
+<span class="hljs-title function_">mkdirp</span>(<span class="hljs-string">'/tmp/foo/bar/baz'</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">made</span> =></span>
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`made directories, starting with <span class="hljs-subst">${made}</span>`</span>))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="ws">ws</h3>
+<p>详见： <a href="https://www.wztlink1013.com/blog/wwclae" rel="noopener noreferrer">https://www.wztlink1013.com/blog/wwclae</a></p>
+<h3 id="lodash">lodash</h3>
+<div class="code-block"><pre><code class="hljs language-bash">npm i @types/lodash
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="clipboard">clipboard</h3>
+<ul>
+<li><a href="https://blog.csdn.net/weixin_44440116/article/details/115398717" rel="noopener noreferrer">vue3使用clipboard进行复制_weixin_44440116的博客-CSDN博客</a></li>
+</ul>
+<h3 id="vueuse">vueuse</h3>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;h3>Mouse: {{ x }} x {{ y }}&#x3C;/h3>
+&#x3C;/template>
+
+&#x3C;script lang="ts">
+  import { defineComponent } from 'vue';
+  import { useMouse } from '@vueuse/core';
+
+  export default defineComponent({
+    name: 'VueUse',
+    setup() {
+      const { x, y } = useMouse();
+
+      return {
+        x,
+        y
+      };
+    }
+  });
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="js-base64">js-base64</h3>
+<div class="code-block"><pre><code class="hljs language-bash">pnpm install --save js-base64
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="moment">moment</h3>
+<h3 id="html2canvas">html2canvas</h3>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Nodejs三方模块使用汇总\",\"description\":\"前言：第三方模块的两种存在形式以js文件的形式存在，提供实现项目具体功能的API接口。比如使用jQuery，html中引入CDN超链接即可使用。以命令行工具形式存在，辅助项目开发。比如VUE-CLI工具。npm是用来管理模块的一个node工具，它会伴随着node的下载而一同下载。node生态的...\",\"datePublished\":\"2022-07-10\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/gf5tiw/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Node.js",{"href":"/categories/Node.js/","children":"Node.js"}]]]}],["$","h1",null,{"children":"Nodejs三方模块使用汇总"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-07-10"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/gf5tiw/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/he31vw/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Vscode Debugger使用"}]]}],["$","$L2",null,{"href":"/blog/wwclae/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"阻止固定定位下的DOM滚动"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/gf5tiw/","title":"Nodejs三方模块使用汇总"}]
+9:["$","$L1c",null,{"headings":[{"id":"cnpm","text":"cnpm","depth":3},{"id":"nodemon","text":"nodemon","depth":3},{"id":"gulp","text":"gulp","depth":3},{"id":"cross-env","text":"cross-env","depth":3},{"id":"sharedb","text":"sharedb","depth":3},{"id":"sharedb-mongo","text":"sharedb-mongo","depth":3},{"id":"uuid","text":"uuid","depth":3},{"id":"nanoid","text":"nanoid","depth":3},{"id":"mkdirp","text":"mkdirp","depth":3},{"id":"ws","text":"ws","depth":3},{"id":"lodash","text":"lodash","depth":3},{"id":"clipboard","text":"clipboard","depth":3},{"id":"vueuse","text":"vueuse","depth":3},{"id":"js-base64","text":"js-base64","depth":3},{"id":"moment","text":"moment","depth":3},{"id":"html2canvas","text":"html2canvas","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Nodejs三方模块使用汇总 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：第三方模块的两种存在形式以js文件的形式存在，提供实现项目具体功能的API接口。比如使用jQuery，html中引入CDN超链接即可使用。以命令行工具形式存在，辅助项目开发。比如VUE-CLI工具。npm是用来管理模块的一个node工具，它会伴随着node的下载而一同下载。node生态的..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/gf5tiw/"}],["$","meta","3",{"property":"og:title","content":"Nodejs三方模块使用汇总"}],["$","meta","4",{"property":"og:description","content":"前言：第三方模块的两种存在形式以js文件的形式存在，提供实现项目具体功能的API接口。比如使用jQuery，html中引入CDN超链接即可使用。以命令行工具形式存在，辅助项目开发。比如VUE-CLI工具。npm是用来管理模块的一个node工具，它会伴随着node的下载而一同下载。node生态的..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/gf5tiw/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-07-10"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Nodejs三方模块使用汇总"}],["$","meta","11",{"name":"twitter:description","content":"前言：第三方模块的两种存在形式以js文件的形式存在，提供实现项目具体功能的API接口。比如使用jQuery，html中引入CDN超链接即可使用。以命令行工具形式存在，辅助项目开发。比如VUE-CLI工具。npm是用来管理模块的一个node工具，它会伴随着node的下载而一同下载。node生态的..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

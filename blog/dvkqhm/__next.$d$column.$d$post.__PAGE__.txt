@@ -1,0 +1,488 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T82a7,<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1640570522971-b4d4a696-55c0-496b-a81d-deeb3e83a111.png" alt="" loading="lazy" decoding="async"></p>
+<p>前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：</p>
+<ul>
+<li>commitizen：简单的 commit 规范</li>
+<li>cz-conventional-changelog：执行会将项目npm发布新版本，并自动生成CHANGELOG.md文件</li>
+<li>husky：Git的钩子，在此作用为代码的提交规范和规范的校验</li>
+<li>commitlint：格式校验工具</li>
+<li>standard-version：辅助 cz-conventional-changelog 打 version 等功能</li>
+</ul>
+<h2 id="eslint">eslint</h2>
+<ul>
+<li>下载：<a href="https://eslint.org/docs/latest/use/getting-started#quick-start" rel="noopener noreferrer">https://eslint.org/docs/latest/use/getting-started#quick-start</a></li>
+<li>package.json中配置命令：<code>"lint": "eslint .",</code></li>
+</ul>
+<h2 id="prettier">prettier</h2>
+<ul>
+<li>下载：<a href="https://prettier.io/docs/en/install" rel="noopener noreferrer">https://prettier.io/docs/en/install</a></li>
+<li>package.json中配置命令：<code>"format": "prettier --write .",</code></li>
+</ul>
+<h3 id="prettier-plugin-tailwindcss">prettier-plugin-tailwindcss</h3>
+<ul>
+<li>格式化tailwindcss的排序</li>
+<li>下载：<a href="https://github.com/tailwindlabs/prettier-plugin-tailwindcss" rel="noopener noreferrer">https://github.com/tailwindlabs/prettier-plugin-tailwindcss</a></li>
+<li>官方提供的排序方式：<a href="https://tailwindcss.com/blog/automatic-class-sorting-with-prettier#how-classes-are-sorted" rel="noopener noreferrer">https://tailwindcss.com/blog/automatic-class-sorting-with-prettier#how-classes-are-sorted</a></li>
+</ul>
+<h3 id="prettier-plugin-merge">prettier-plugin-merge</h3>
+<ul>
+<li>prettier可以合并多个插件</li>
+<li>下载：<a href="https://github.com/ony3000/prettier-plugin-merge" rel="noopener noreferrer">https://github.com/ony3000/prettier-plugin-merge</a></li>
+</ul>
+<h2 id="husky">husky</h2>
+<ul>
+<li>下载：<a href="https://typicode.github.io/husky/get-started.html" rel="noopener noreferrer">https://typicode.github.io/husky/get-started.html</a></li>
+</ul>
+<h2 id="commitlint">commitlint</h2>
+<ul>
+<li>下载：<a href="https://commitlint.js.org/guides/getting-started.html" rel="noopener noreferrer">https://commitlint.js.org/guides/getting-started.html</a></li>
+</ul>
+<p>eg：react版本的问题</p>
+<div class="code-block"><pre><code class="hljs language-powershell">> git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file -
+
+  > vite-react-typescript-starter@0.0.0 lint
+  > eslint .
+
+  Warning: React version not specified in eslint-plugin-react settings. See https://github.com/jsx-eslint/eslint-plugin-react#configuration .
+
+D:\project\DF.JackYun.Web.Common\core-r\commitlint.config.js
+1:0  error  Parsing error: File appears to be binary
+
+✖ 1 problem (1 error, 0 warnings)
+
+husky - pre-commit script failed (code 1)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732080934079-0f246c72-d485-48d3-ba3b-377220560321.png" alt="" loading="lazy" decoding="async"></p>
+<p>eg：文件格式的问题</p>
+<div class="code-block"><pre><code class="hljs language-plain">D:\project\DF.JackYun.Web.Common\core-r\commitlint.config.js
+  1:0  error  Parsing error: File appears to be binary
+
+✖ 1 problem (1 error, 0 warnings)
+
+PS D:\project\DF.JackYun.Web.Common\npm run lint
+
+> vite-react-typescript-starter@0.0.0 lint
+> eslint .
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>文件编码要改为UTF-8</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732080481273-ef50a68f-f3a0-489c-883c-5c2431c6e57a.png" alt="" loading="lazy" decoding="async"></p>
+<p>eg：如果没有按照规则提交commit会报以下错</p>
+<div class="code-block"><pre><code class="hljs language-plain">> git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file -
+
+> vite-react-typescript-starter@0.0.0 lint
+> eslint src
+
+> vite-react-typescript-starter@0.0.0 commitlint
+> commitlint --edit
+
+⧗   input: husky commitlint
+✖   subject may not be empty [subject-empty]
+✖   type may not be empty [type-empty]
+
+✖   found 2 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+husky - commit-msg script failed (code 1)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>commitlint默认配置：<a href="https://github.com/conventional-changelog/commitlint/blob/master/%40commitlint/config-conventional/src/index.ts" rel="noopener noreferrer">https://github.com/conventional-changelog/commitlint/blob/master/%40commitlint/config-conventional/src/index.ts</a></li>
+</ul>
+<h2 id="commitlint-with-prompt">commitlint with prompt</h2>
+<h3 id="commitlintprompt-cli">@commitlint/prompt-cli</h3>
+<ul>
+<li>下载：<a href="https://commitlint.js.org/guides/use-prompt.html" rel="noopener noreferrer">https://commitlint.js.org/guides/use-prompt.html</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-plain">PS D:\project\DF.JackYun.Web.Common\core-r> npm run commit
+
+> vite-react-typescript-starter@0.0.0 commit
+> commit
+
+Please enter a type: [required] [tab-completion] [header]
+&#x3C;type> holds information about the goal of a change.
+
+&#x3C;type>(&#x3C;scope>): &#x3C;subject>
+&#x3C;body>
+&#x3C;footer>
+
+? type: feat
+Please enter a scope: [optional] [header]
+&#x3C;scope> marks which sub-component of the project is affected
+
+feat(&#x3C;scope>): &#x3C;subject>
+&#x3C;body>
+&#x3C;footer>
+
+? scope: all
+Please enter a subject: [required] [header]
+&#x3C;subject> is a short, high-level description of the change
+
+feat(all): &#x3C;subject>
+&#x3C;body>
+&#x3C;footer>
+
+? subject: add commitlint prompt
+Please enter a body: [optional] [multi-line]
+&#x3C;body> holds additional information about the change
+
+feat(all): add commitlint prompt
+&#x3C;body>
+&#x3C;footer>
+
+? body: 
+use origin commitlint prompt feature.
+Please enter a footer: [optional] [multi-line]
+&#x3C;footer> holds further meta data, such as breaking changes and issue ids
+
+feat(all): add commitlint prompt
+
+use origin commitlint prompt feature.
+&#x3C;footer>
+
+? footer: 
+footer some info
+
+> vite-react-typescript-starter@0.0.0 lint
+> eslint src
+
+> vite-react-typescript-starter@0.0.0 commitlint
+> commitlint --edit
+
+[main 9ccb26e] feat(all): add commitlint prompt
+ 2 files changed, 637 insertions(+), 1 deletion(-)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732082078790-ade41c0a-ae27-4012-9b0f-ca6644d5a10d.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>官网也列举其他prompt工具：<a href="https://commitlint.js.org/guides/use-prompt.html#an-alternative-to-commitlint-prompt-cli-commitizen" rel="noopener noreferrer">https://commitlint.js.org/guides/use-prompt.html#an-alternative-to-commitlint-prompt-cli-commitizen</a></li>
+</ul>
+<h3 id="commitlintprompt">⛔@commitlint/prompt</h3>
+<ul>
+<li>下载：<a href="https://www.npmjs.com/package/@commitlint/prompt" rel="noopener noreferrer">https://www.npmjs.com/package/@commitlint/prompt</a></li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732082625015-c7aca5d8-a27f-49b8-9461-4d638f5b561e.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>
+<p>是由于 @commitlint/prompt 模块使用了 ES Module 格式，而 commitizen 还在使用 CommonJS 的 require() 方式导入模块所导致的兼容性问题。</p>
+</li>
+<li>
+<p>社区解决方案：<a href="https://github.com/conventional-changelog/commitlint/issues/3949" rel="noopener noreferrer">https://github.com/conventional-changelog/commitlint/issues/3949</a></p>
+</li>
+<li>
+<p>参考<a href="https://github.com/conventional-changelog/commitlint/issues/3949#issuecomment-1993735126" rel="noopener noreferrer">https://github.com/conventional-changelog/commitlint/issues/3949#issuecomment-1993735126</a>，不再使用@commitlint/prompt（需要添加一个额外adapt脚本），转而使用第二种prompt方案————@commitlint/cz-commitlint。</p>
+</li>
+</ul>
+<h3 id="commitlintcz-commitlint">✅@commitlint/cz-commitlint</h3>
+<ul>
+<li>下载：<a href="https://www.npmjs.com/package/@commitlint/cz-commitlint" rel="noopener noreferrer">https://www.npmjs.com/package/@commitlint/cz-commitlint</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-plain">PS D:\project\DF.JackYun.Web.Common\core-r> npm run commit
+
+> vite-react-typescript-starter@0.0.0 commit
+> git-cz
+
+cz-cli@4.3.1, @commitlint/cz-commitlint@19.5.0
+
+? Select the type of change that you're committing: feat
+? What is the scope of this change (e.g. component or file name) (press enter to skip): (max 96 chars)
+ (12) package.json
+? Write a short, imperative tense description of the change: (max 82 chars)
+ (29) add @commitlint/cz-commitlint
+? Provide a longer description of the change (press enter to skip):
+ add other prompt method
+? Are there any breaking changes?: No
+? Does this change affect any open issues?: No
+
+> vite-react-typescript-starter@0.0.0 lint
+> eslint src
+
+> vite-react-typescript-starter@0.0.0 commitlint
+> commitlint --edit
+
+[main b1bc10b] feat(package.json): add @commitlint/cz-commitlint
+ 2 files changed, 648 insertions(+), 1 deletion(-)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732083728305-761780e8-b8ad-458d-92c8-1f949bdb4974.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732083684924-f88c4239-b575-43f8-92a9-3a192f673d37.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="commitlint-with-emoji">commitlint with emoji</h2>
+<p>修改<code>commitlint.config.js</code>配置，自定义header正则规则</p>
+<ul>
+<li>emoji 渲染和编码符：<a href="https://gitmoji.dev/" rel="noopener noreferrer">https://gitmoji.dev/</a></li>
+<li><a href="https://emojipedia.org/" rel="noopener noreferrer">https://emojipedia.org/</a></li>
+<li><a href="https://juejin.cn/post/6844903805499375630" rel="noopener noreferrer">https://juejin.cn/post/6844903805499375630</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">RuleConfigSeverity</span> = {
+  <span class="hljs-title class_">Disabled</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-title class_">Warning</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-title class_">Error</span>: <span class="hljs-number">2</span>
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">extends</span>: [<span class="hljs-string">'@commitlint/config-conventional'</span>],
+  <span class="hljs-attr">parserPreset</span>: {
+    <span class="hljs-attr">parserOpts</span>: {
+      <span class="hljs-attr">headerPattern</span>: <span class="hljs-regexp">/^(?&#x3C;type>:[a-z_]+:\s\w+)(?:\((?&#x3C;scope>.*)\))?!?:\s(?&#x3C;subject>(?:(?!#).)*(?:(?!\s).))$/</span>,
+      <span class="hljs-attr">headerCorrespondence</span>: [<span class="hljs-string">'type'</span>, <span class="hljs-string">'scope'</span>, <span class="hljs-string">'subject'</span>]
+    }
+  },
+  <span class="hljs-attr">rules</span>: {
+      <span class="hljs-string">'body-leading-blank'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Warning</span>, <span class="hljs-string">'always'</span>],
+      <span class="hljs-string">'body-max-line-length'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'always'</span>, <span class="hljs-number">100</span>],
+      <span class="hljs-string">'footer-leading-blank'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Warning</span>, <span class="hljs-string">'always'</span>],
+      <span class="hljs-string">'footer-max-line-length'</span>: [
+          <span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>,
+          <span class="hljs-string">'always'</span>,
+          <span class="hljs-number">1</span>,
+      ],
+      <span class="hljs-string">'header-max-length'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'always'</span>, <span class="hljs-number">100</span>],
+      <span class="hljs-string">'header-trim'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'always'</span>],
+      <span class="hljs-string">'subject-case'</span>: [
+          <span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>,
+          <span class="hljs-string">'never'</span>,
+          [<span class="hljs-string">'sentence-case'</span>, <span class="hljs-string">'start-case'</span>, <span class="hljs-string">'pascal-case'</span>, <span class="hljs-string">'upper-case'</span>],
+      ],
+      <span class="hljs-string">'subject-empty'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'never'</span>],
+      <span class="hljs-string">'subject-full-stop'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'never'</span>, <span class="hljs-string">'.'</span>],
+      <span class="hljs-string">'type-case'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'always'</span>, <span class="hljs-string">'lower-case'</span>],
+      <span class="hljs-string">'type-empty'</span>: [<span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>, <span class="hljs-string">'never'</span>],
+      <span class="hljs-string">'type-enum'</span>: [
+          <span class="hljs-title class_">RuleConfigSeverity</span>.<span class="hljs-property">Error</span>,
+          <span class="hljs-string">'always'</span>,
+          [
+            <span class="hljs-string">':sparkles: feat'</span>, 
+            <span class="hljs-string">':bug: fix'</span>,     
+            <span class="hljs-string">':pencil2: docs'</span>,   
+            <span class="hljs-string">':lipstick: style'</span>,   
+            <span class="hljs-string">':recycle: refactor'</span>,
+            <span class="hljs-string">':zap: perf'</span>,  
+            <span class="hljs-string">':white_check_mark: test'</span>,  
+            <span class="hljs-string">':rocket: chore'</span>,   
+            <span class="hljs-string">':rewind: revert'</span>,  
+            <span class="hljs-string">':package: build'</span>,   
+            <span class="hljs-string">':construction_worker: ci'</span>,      
+          ],
+      ],
+  },
+  <span class="hljs-attr">prompt</span>: {
+      <span class="hljs-attr">questions</span>: {
+          <span class="hljs-attr">type</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">"Select the type of change that you're committing"</span>,
+              <span class="hljs-attr">enum</span>: {
+                  <span class="hljs-string">':sparkles: feat'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'✨ feat -> A new feature'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Features'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'✨'</span>,
+                  },
+                  <span class="hljs-string">':bug: fix'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'🐛 fix -> A bug fix'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Bug Fixes'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'🐛'</span>,
+                  },
+                  <span class="hljs-string">':pencil2: docs'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'📚 docs -> Documentation only changes'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Documentation'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'📚'</span>,
+                  },
+                  <span class="hljs-string">':lipstick: style'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'💎 style -> Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Styles'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'💎'</span>,
+                  },
+                  <span class="hljs-string">':recycle: refactor'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'📦 refactor -> A code change that neither fixes a bug nor adds a feature'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Code Refactoring'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'📦'</span>,
+                  },
+                  <span class="hljs-string">':zap: perf'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'🚀 perf -> A code change that improves performance'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Performance Improvements'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'🚀'</span>,
+                  },
+                  <span class="hljs-string">':white_check_mark: test'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'🚨 test -> Adding missing tests or correcting existing tests'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Tests'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'🚨'</span>,
+                  },
+                  <span class="hljs-string">':package: build'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'🛠 build -> Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Builds'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'🛠'</span>,
+                  },
+                  <span class="hljs-string">':construction_worker: ci'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'⚙️ ci -> Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Continuous Integrations'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'⚙️'</span>,
+                  },
+                  <span class="hljs-string">':rocket: chore'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'♻️ chore -> Other changes that don\'t modify src or test files'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Chores'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'♻️'</span>,
+                  },
+                  <span class="hljs-string">':rewind: revert'</span>: {
+                      <span class="hljs-attr">description</span>: <span class="hljs-string">'🗑 revert -> Reverts a previous commit'</span>,
+                      <span class="hljs-attr">title</span>: <span class="hljs-string">'Reverts'</span>,
+                      <span class="hljs-attr">emoji</span>: <span class="hljs-string">'🗑'</span>,
+                  },
+              },
+          },
+          <span class="hljs-attr">scope</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'What is the scope of this change (e.g. component or file name)'</span>,
+          },
+          <span class="hljs-attr">subject</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Write a short, imperative tense description of the change'</span>,
+          },
+          <span class="hljs-attr">body</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Provide a longer description of the change'</span>,
+          },
+          <span class="hljs-attr">isBreaking</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Are there any breaking changes?'</span>,
+          },
+          <span class="hljs-attr">breakingBody</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself'</span>,
+          },
+          <span class="hljs-attr">breaking</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Describe the breaking changes'</span>,
+          },
+          <span class="hljs-attr">isIssueAffected</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Does this change affect any open issues?'</span>,
+          },
+          <span class="hljs-attr">issuesBody</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'If issues are closed, the commit requires a body. Please enter a longer description of the commit itself'</span>,
+          },
+          <span class="hljs-attr">issues</span>: {
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Add issue references (e.g. "fix #123", "re #123".)'</span>,
+          },
+      },
+  },
+};;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="semantic-release">semantic-release</h2>
+<ul>
+<li>下载：<a href="https://semantic-release.gitbook.io/semantic-release/usage/installation" rel="noopener noreferrer">https://semantic-release.gitbook.io/semantic-release/usage/installation</a></li>
+</ul>
+<p>⛔node环境要求</p>
+<ul>
+<li>对node环境有要求，需要<code>20.8.1+</code></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-plain">[semantic-release]: node version >=20.8.1 is required. Found v18.20.2.
+
+See https://github.com/semantic-release/semantic-release/blob/master/docs/support/node-version.md for more details and solutions.
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>⛔本地执行</p>
+<ul>
+<li>
+<p>执行<code>npx semantic-release</code></p>
+</li>
+<li>
+<p>报错(没有权限)</p>
+</li>
+<li>
+<p>GitHub Token未设置报错</p>
+</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-plain">[09:44:44] [semantic-release] » ℹ  Start step "verifyConditions" of plugin "@semantic-release/github"   
+[09:44:44] [semantic-release] [@semantic-release/github] » ℹ  Verify GitHub authentication
+[09:44:44] [semantic-release] » ✘  Failed step "verifyConditions" of plugin "@semantic-release/github"  
+[09:44:44] [semantic-release] » ⚠  Skip step "fail" of plugin "@semantic-release/github" in dry-run mode
+[09:44:44] [semantic-release] » ✘  ENOGHTOKEN No GitHub token specified.
+A GitHub personal token (https://github.com/semantic-release/github/blob/master/README.md#github-authentication) must be created and set in the GH_TOKEN or GITHUB_TOKEN environment variable on your CI environment.
+
+Please make sure to create a GitHub personal token (https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line) and to set it in the GH_TOKEN or GITHUB_TOKEN environment variable on your CI environment. The token must allow 
+to push to the repository wztlink1013/vite-react.
+
+AggregateError: 
+    SemanticReleaseError: No GitHub token specified.
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>使用ci执行自动让GitHub打标签发版</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Release</span>
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">main</span>
+<span class="hljs-attr">permissions:</span>
+  <span class="hljs-attr">contents:</span> <span class="hljs-string">read</span> <span class="hljs-comment"># for checkout</span>
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">release:</span>
+    <span class="hljs-attr">permissions:</span>
+      <span class="hljs-attr">contents:</span> <span class="hljs-string">write</span> <span class="hljs-comment"># to be able to publish a GitHub release</span>
+      <span class="hljs-attr">issues:</span> <span class="hljs-string">write</span> <span class="hljs-comment"># to be able to comment on released issues</span>
+      <span class="hljs-attr">pull-requests:</span> <span class="hljs-string">write</span> <span class="hljs-comment"># to be able to comment on released pull requests</span>
+      <span class="hljs-attr">id-token:</span> <span class="hljs-string">write</span> <span class="hljs-comment"># to enable use of OIDC for npm provenance</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">release</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683</span> <span class="hljs-comment"># v4.2.2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af</span> <span class="hljs-comment"># v4.1.0</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">cache:</span> <span class="hljs-string">npm</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-string">lts/*</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">clean-install</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">corepack</span> <span class="hljs-string">npm</span> <span class="hljs-string">audit</span> <span class="hljs-string">signatures</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npx</span> <span class="hljs-string">semantic-release</span>
+        <span class="hljs-attr">env:</span>
+          <span class="hljs-attr">GITHUB_TOKEN:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GH_TOKEN</span> <span class="hljs-string">}}</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1732155699924-7a2cfb34-ad55-4fb3-b41f-3e069993357a.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>相关：<a href="https://juejin.cn/post/7055958932933574669" rel="noopener noreferrer">https://juejin.cn/post/7055958932933574669</a></li>
+</ul>
+<h2 id="others">Others</h2>
+<p>others</p>
+<ul>
+<li>版本构建：standard-version: 自动生成 CHANGELOG</li>
+</ul>
+<p>下载插件</p>
+<div class="code-block"><pre><code class="hljs language-bash">cnpm i --save-dev standard-version
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>package.json添加如下</p>
+<div class="code-block"><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"scripts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"release"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"standard-version"</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>执行npm run release，在根目录会生成CHANGELOG.md文件</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/dvkqhm/1640515612285-57b296de-7def-4ef9-b022-286ac9ef1ac2.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>commit内容输入打开编辑器的文本内容编辑：<a href="https://cz-git.qbb.sh/zh/faq/#githooks-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%89%93%E5%BC%80%E4%BA%86%E5%83%8F-vim-%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8" rel="noopener noreferrer">https://cz-git.qbb.sh/zh/faq/#githooks-%E6%A8%A1%E5%BC%8F%E4%B8%8B%E6%89%93%E5%BC%80%E4%BA%86%E5%83%8F-vim-%E7%9A%84%E7%BC%96%E8%BE%91%E5%99%A8</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"项目工程化Git Commit和代码格式化的优化\",\"description\":\"前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：commitizen：简单的 commit 规范cz-conventio...\",\"datePublished\":\"2021-12-27\",\"dateModified\":\"2024-11-25\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/dvkqhm/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","项目工程化",{"href":"/categories/%E9%A1%B9%E7%9B%AE%E5%B7%A5%E7%A8%8B%E5%8C%96/","children":"项目工程化"}]]]}],["$","h1",null,{"children":"项目工程化Git Commit和代码格式化的优化"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-12-27"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/dvkqhm/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-25"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/figfyg/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"14种设计模式"}]]}],["$","$L2",null,{"href":"/blog/blhxct/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Vue-CLI搭建Vue3.x+TypeScript项目"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/dvkqhm/","title":"项目工程化Git Commit和代码格式化的优化"}]
+9:["$","$L1c",null,{"headings":[{"id":"eslint","text":"eslint","depth":2},{"id":"prettier","text":"prettier","depth":2},{"id":"prettier-plugin-tailwindcss","text":"prettier-plugin-tailwindcss","depth":3},{"id":"prettier-plugin-merge","text":"prettier-plugin-merge","depth":3},{"id":"husky","text":"husky","depth":2},{"id":"commitlint","text":"commitlint","depth":2},{"id":"commitlint-with-prompt","text":"commitlint with prompt","depth":2},{"id":"commitlintprompt-cli","text":"@commitlint/prompt-cli","depth":3},{"id":"commitlintprompt","text":"⛔@commitlint/prompt","depth":3},{"id":"commitlintcz-commitlint","text":"✅@commitlint/cz-commitlint","depth":3},{"id":"commitlint-with-emoji","text":"commitlint with emoji","depth":2},{"id":"semantic-release","text":"semantic-release","depth":2},{"id":"others","text":"Others","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"项目工程化Git Commit和代码格式化的优化 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：commitizen：简单的 commit 规范cz-conventio..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/dvkqhm/"}],["$","meta","3",{"property":"og:title","content":"项目工程化Git Commit和代码格式化的优化"}],["$","meta","4",{"property":"og:description","content":"前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：commitizen：简单的 commit 规范cz-conventio..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/dvkqhm/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-12-27"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-25"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"项目工程化Git Commit和代码格式化的优化"}],["$","meta","11",{"name":"twitter:description","content":"前言：在使用git提交代码过程中，git commit的规范常不被大多数人注意，然而版本管理工具中，代码的提交规范对项目的后续维护有着很重要的作用。故本文从以下几个方面展开述说工程开发中git commit优化的几个工具：commitizen：简单的 commit 规范cz-conventio..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

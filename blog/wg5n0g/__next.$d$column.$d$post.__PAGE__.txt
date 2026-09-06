@@ -1,0 +1,488 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T89a1,<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1662219960321-86e09edc-e993-4ce0-88db-bebea0da263e.png" alt="" loading="lazy" decoding="async"></p>
+<p>前言：对Vue3的初次接触是使用Vue3（<a href="https://cn.vuejs.org/" rel="noopener noreferrer">Vue.js - 渐进式 JavaScript 框架 | Vue.js</a>）的 <a href="https://cn.vuejs.org/guide/introduction.html#api-styles" rel="noopener noreferrer">组合式API</a> 编程风格来进行Vue2旧项目的重构。</p>
+<p>基础变动：</p>
+<ul>
+<li>setup：Vue3.1版本是作为选项式的方法，Vue3.2之后才是作为属性放到script上的</li>
+<li>data methods 都不再需要，也不再需要return出变量或是函数</li>
+<li>路由相关知识，只注意useRoute() useRouter()其余的，和之前自己写的lyrics前端路由就够用了</li>
+<li>Vue3 异步编程</li>
+<li>provide 和 inject</li>
+<li>······</li>
+</ul>
+<h2 id="响应式数据">响应式数据</h2>
+<h3 id="ref">ref</h3>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;a-modal
+    v-model:visible="visible"
+    />
+&#x3C;/template>
+&#x3C;script setup lang="ts">
+  import {ref} from 'vue'
+  const visible = ref&#x3C;boolean>(false)
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>结合DOM或者组件上的ref属性</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="setup-component">
+    &#x3C;button @click="changeCount">change&#x3C;/button>
+    &#x3C;div ref="divRef">&#x3C;/div>
+    &#x3C;setup-component-1 ref="setupComponent1Ref" >&#x3C;/setup-component-1>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script setup>
+import { ref } from "vue";
+import SetupComponent1 from "./SetupComponent1.vue";
+
+const divRef = ref();
+const setupComponent1Ref = ref();
+
+const changeCount = () => {
+  console.log("divRef: ", divRef);
+  console.log("divRef.value: ", divRef.value);
+  console.log("setupComponent1Ref: ", setupComponent1Ref);
+  console.log("setupComponent1Ref.value: ", setupComponent1Ref.value);
+};
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1705637176767-2b866164-50e0-4101-80c8-7326696e23b6.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="reactive">reactive</h3>
+<ul>
+<li><code>reactive</code>这个更多使用在对象类型的响应式定义数据</li>
+<li><code>toRefs</code>和<code>toRef</code>将<code>reactive</code>响应式转为<code>ref</code>响应式</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;button @click="changeVar2">改变var2的值&#x3C;/button>
+  &#x3C;div>toRefs: {{ roRefsVar }}&#x3C;/div>
+  &#x3C;div>toRef: {{ var2_1Toref }}&#x3C;/div>
+&#x3C;/template>
+&#x3C;script setup>
+import { reactive, toRef, toRefs } from 'vue'
+// reactive
+const var2 = reactive({
+  var2_1: 'var2_1 string'
+})
+const { var2_1: roRefsVar } = toRefs(var2)
+const var2_1Toref = toRef(var2, 'var2_1')
+const changeVar2 = () => {
+  var2.var2_1 += '1'
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="计算属性和方法">计算属性和方法</h2>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="box1">计算属性&#x3C;/div>
+  &#x3C;button @click="changeVar3">改变var3的值&#x3C;/button>
+  &#x3C;div>var3: {{ var3 }}&#x3C;/div>
+  &#x3C;div>var4: {{ var4 }}&#x3C;/div>
+&#x3C;/template>
+&#x3C;script setup>
+import { ref, computed } from 'vue'
+// computed
+const var3 = ref(1)
+const var4 = computed(() => var3.value * 2)
+const changeVar3 = () => (var3.value += 1)
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="生命周期">生命周期</h2>
+<ol>
+<li>api：选项式生命周期API前面加on（eg：onBeforeMount，onMounted···）</li>
+<li>没有onBeforeCreate，onCreated</li>
+<li>可以多次调用，不用将逻辑写在一个里面</li>
+</ol>
+<p>在Vue3组合式API的生命周期里面，没有created阶段了，直接在setup里面了，也就是setup阶段是没有挂载真实DOM的，如果需要操作真实dom需要在onMounetd里面进行相应逻辑</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =></span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'test'</span>)) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'exist #test DOM...'</span>);
+  }
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;script>
+  setup() {
+    console.log('----setup第一个执行----')
+    // vue3.x生命周期写在setup中
+    onBeforeMount(() => {
+      console.log('------vue3中onBeforeMount-----')
+    })
+    onMounted(() => {
+      console.log('------vue3中onMounted-----')
+    })
+    onRenderTriggered((event) => {
+      console.log('------vue3中onRenderTriggered-----', event)
+    })
+  },
+  // vue2当中的
+  beforeCreate() {
+    console.log('----vue2中beforeCreate第二个执行----')
+  },
+  // vue2当中的
+  created() {
+    console.log('----vue2中created第三个执行----')
+  },
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>执行结果如下：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1644646841871-0aaeece1-c5dd-493e-bbfc-41f52925931a.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="watch">watch</h2>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-title function_">watch</span>(count, <span class="hljs-function">(<span class="hljs-params">newVal, oldVal</span>) =></span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"watch count: "</span>, newVal, oldVal);
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="watcheffect">watchEffect</h2>
+<ol>
+<li>所依赖的变量发生改变，就会执行，再次写相关逻辑代码</li>
+<li>执行时机：数据更新后，DOM更新前；通过第二个参数<code>flush: post</code>可以改变至数据更新后，DOM更新后触发</li>
+<li>返回的是一个函数，执行该函数，可以停止watchEffect监听</li>
+<li>传入一个形参，该形参函数所执行时机为更新前和组件卸载前，在此可以写一些清除逻辑</li>
+</ol>
+<p><strong>watch和watchEffect</strong></p>
+<ul>
+<li>warchEffect初始化会执行一遍</li>
+<li>想要明确使用变化前后值</li>
+</ul>
+<h2 id="hook">hook</h2>
+<ul>
+<li>use函数（通常以use开头命名）封装优于mixins，可以自定义传参等</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { ref, computed } <span class="hljs-keyword">from</span> <span class="hljs-string">"vue"</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">useXY</span> = (<span class="hljs-params"></span>) => {
+  <span class="hljs-keyword">const</span> x = <span class="hljs-title function_">ref</span>(<span class="hljs-number">12</span>);
+  <span class="hljs-keyword">const</span> y = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =></span> x.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>);
+  <span class="hljs-keyword">return</span> { x, y };
+};
+<span class="hljs-keyword">export</span> { useXY };
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;p>useXY x: {{ x }}; y: {{ y }}&#x3C;/p>
+&#x3C;/template>
+&#x3C;script setup>
+  import { useXY } from "./usseXY";
+  const { x, y } = useXY();
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="生态链">生态链</h2>
+<h3 id="router">Router</h3>
+<ol>
+<li>
+<p>SPA单页面应用，以及路径模式和哈希模式下的路由</p>
+</li>
+<li>
+<p>hash模式</p>
+</li>
+<li>
+<p>history模式，和前端较为古老的ajax局部刷新页面类似，都是利用pushState相关技术</p>
+</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-comment">&#x3C;!-- hash模式 --></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+    <span class="hljs-comment">&#x3C;!-- 定义路由 --></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#/home"</span>></span>home<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#/about"</span>></span>about<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-comment">&#x3C;!-- 渲染路由对应的 UI --></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"routerView"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'hashchange'</span>, onHashChange)
+  <span class="hljs-title function_">onHashChange</span>()
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">onHashChange</span> (<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">switch</span> (location.<span class="hljs-property">hash</span>) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'#/home'</span>:
+        routerView.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'Home'</span>
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'#/about'</span>:
+        routerView.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'About'</span>
+        <span class="hljs-keyword">break</span>;
+    }
+  }
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-comment">&#x3C;!-- history模式 --></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+    <span class="hljs-comment">&#x3C;!-- 定义路由 --></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/home"</span>></span>home<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/about"</span>></span>about<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-comment">&#x3C;!-- 渲染路由对应的 UI --></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"routerView"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+  <span class="hljs-keyword">let</span> linkList = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">'a[href]'</span>)
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>;i&#x3C;linkList.<span class="hljs-property">length</span>;i++){
+    linkList[i].<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'click'</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>){
+      e.<span class="hljs-title function_">preventDefault</span>()
+      history.<span class="hljs-title function_">pushState</span>(<span class="hljs-literal">null</span>, <span class="hljs-string">''</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">'href'</span>))
+      <span class="hljs-title function_">onPopState</span>()
+    })
+  }
+  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'popstate'</span>, onPopState)
+  <span class="hljs-title function_">onPopState</span>()
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">onPopState</span> (<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">switch</span> (location.<span class="hljs-property">pathname</span>) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'/home'</span>:
+        routerView.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'Home'</span>
+        <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'/about'</span>:
+        routerView.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'About'</span>
+        <span class="hljs-keyword">break</span>;
+    }
+  }
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>
+<p>嵌套路由：路由表中嵌套写法</p>
+</li>
+<li>
+<p>动态路由：<code>$route.params.xxx</code></p>
+</li>
+<li>
+<p>声明式路由：<code>&#x3C;RouterLink /></code></p>
+</li>
+<li>
+<p>编程式路由：<code>this.$Router.push('/xxx)</code></p>
+</li>
+<li>
+<p>路由元信息：<code>meta</code></p>
+</li>
+<li>
+<p>路由传递参数</p>
+</li>
+<li>
+<p>query方式：相当于路径参数<code>$route.query</code></p>
+</li>
+<li>
+<p>params方式（显式）：<code>$route.params</code></p>
+</li>
+<li>
+<p>params方式（隐式）：<code>$route.params</code></p>
+</li>
+<li>
+<p><code>$route</code>，<code>$router</code></p>
+</li>
+<li>
+<p>前者获取当前路由信息</p>
+</li>
+<li>
+<p>后者调用路由相关方法</p>
+</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { createRouter, createWebHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">HomeView</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'../views/HomeView.vue'</span>
+
+<span class="hljs-keyword">const</span> router = <span class="hljs-title function_">createRouter</span>({
+  <span class="hljs-attr">history</span>: <span class="hljs-title function_">createWebHistory</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">BASE_URL</span>),
+  <span class="hljs-attr">routes</span>: [
+    {
+      <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">'home'</span>,
+      <span class="hljs-attr">component</span>: <span class="hljs-title class_">HomeView</span>
+    },
+    {
+      <span class="hljs-attr">path</span>: <span class="hljs-string">'/about'</span>,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">'about'</span>,
+      <span class="hljs-comment">// route level code-splitting</span>
+      <span class="hljs-comment">// this generates a separate chunk (About.[hash].js) for this route</span>
+      <span class="hljs-comment">// which is lazy-loaded when the route is visited.</span>
+      <span class="hljs-attr">component</span>: <span class="hljs-function">() =></span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../views/AboutView.vue'</span>)
+    }
+  ]
+})
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> router
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="pinia">Pinia</h3>
+<p>Pinia其实就是Vuex 5。与 Vuex相比，Pinia 提供了一个更简单的 API，具有更少的规范，提供了 Composition-API 风格的 API，最重要的是，在与TypeScript 一起使用时具有可靠的类型推断支持。</p>
+<p>Pinia API 与 Vuex4有很大不同，即：</p>
+<ul>
+<li>mutations 不再存在。他们经常被认为是 非常冗长。他们最初带来了 devtools 集成，但这不再是问题。</li>
+<li>无需创建自定义复杂包装器来支持 TypeScript，所有内容都是类型化的，并且 API 的设计方式尽可能利用 TS 类型推断。不再需要注入、导入函数、调用函数、享受自动完成功能！</li>
+<li>无需动态添加 Store，默认情况下它们都是动态的，您甚至都不会注意到。请注意，您仍然可以随时手动使用 Store 进行注册，但因为它是自动的，您无需担心。</li>
+<li>不再有 modules 的嵌套结构。您仍然可以通过在另一个 Store 中导入和 使用 来隐式嵌套 Store，但 Pinia 通过设计提供平面结构，同时仍然支持 Store 之间的交叉组合方式。 您甚至可以拥有 Store 的循环依赖关系。</li>
+<li>没有 命名空间模块。鉴于 Store 的扁平架构，“命名空间” Store 是其定义方式所固有的，您可以说所有 Store 都是命名空间的。</li>
+</ul>
+<p>总之Pinia简化了Vuex的操作，这也是未来Vuex5的趋势，下面就来尝试使用一下Pinia吧。</p>
+<p>用你最喜欢的包管理器安装 pinia：</p>
+<div class="code-block"><pre><code class="hljs language-bash">npm install pinia
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>vue引入pinia：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { createPinia } <span class="hljs-keyword">from</span> <span class="hljs-string">'pinia'</span>
+<span class="hljs-keyword">const</span> pinia = <span class="hljs-title function_">createPinia</span>()
+<span class="hljs-title function_">createApp</span>(<span class="hljs-title class_">App</span>).<span class="hljs-title function_">use</span>(pinia).<span class="hljs-title function_">mount</span>(<span class="hljs-string">'#app'</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>组合式写法：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { ref, computed } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> { defineStore } <span class="hljs-keyword">from</span> <span class="hljs-string">'pinia'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useCounterStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">'counter'</span>, <span class="hljs-function">() =></span> {
+  <span class="hljs-keyword">const</span> count = <span class="hljs-title function_">ref</span>(<span class="hljs-number">0</span>)
+  <span class="hljs-keyword">const</span> doubleCount = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =></span> count.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>)
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) {
+    count.<span class="hljs-property">value</span>++
+  }
+
+  <span class="hljs-keyword">return</span> { count, doubleCount, increment }
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>选项式写法：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { defineStore } <span class="hljs-keyword">from</span> <span class="hljs-string">'pinia'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useCounterStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">'counterStore'</span>, {
+  <span class="hljs-attr">state</span>: <span class="hljs-function">() =></span> ({
+    <span class="hljs-attr">counter</span>: <span class="hljs-number">0</span>
+  }),
+  <span class="hljs-attr">actions</span>: {
+    <span class="hljs-title function_">add</span>(<span class="hljs-params"></span>){
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">counter</span>++
+    }
+  }
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>以上两种风格的写法是等价的，接下来就是如何去调用这个模块了。在App.vue中引入counter.js并使用：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;button @click="changePiniaValue">change pinia value&#x3C;/button>
+  {{ count }}, {{ doubleCount }}
+&#x3C;/template>
+&#x3C;script setup>
+  import { storeToRefs } from 'pinia';
+  import { useCounterStore } from './stores/counter';
+
+  const counterStore = useCounterStore()
+  // 下面操作可使共享状态具备响应式
+  const { counter, doubleCount } = storeToRefs(counterStore);
+  //下面四种操作行为均可修改counter值，并具备响应式变化
+  const changePiniaValue = () => {
+    counterStore.increment()
+    // counter.value++;
+    // counterStore.counter++;
+    // counterStore.$patch({
+    // counter: counter.value + 1
+    // })
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><code>increment()</code>方法可以直接编写异步程序和传参处理：</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-attr">actions</span>: {
+  <span class="hljs-title function_">increment</span>(<span class="hljs-params">n</span>){
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">()=></span>{
+      <span class="hljs-variable language_">this</span>.<span class="hljs-property">counter</span> += n;
+    }, <span class="hljs-number">1000</span>)
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>Pinia去掉了繁琐的mutations，异步同步都采用actions来完成，并且简化了modules的使用方式等等。</p>
+<h2 id="其他">其他</h2>
+<h3 id="slot使用">slot使用</h3>
+<p>vue2：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;template slot="content">
+    ···
+  &#x3C;/template>
+&#x3C;/template>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>vue3：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;slot name="content">
+    ···
+  &#x3C;/slot>
+&#x3C;/template>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="全局变量的使用">全局变量的使用</h3>
+<p>vue3注册全局变量失去响应性</p>
+<ul>
+<li>
+<p>点击登录按钮，相应一个loading的状态，这个在之前项目中是利用全局注册的一个变量，vue3的全局注册变量方法</p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/weixin_43090018/article/details/117222606" rel="noopener noreferrer">https://blog.csdn.net/weixin_43090018/article/details/117222606</a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/XKFC1/article/details/123715354" rel="noopener noreferrer"><strong>https://blog.csdn.net/XKFC1/article/details/123715354</strong></a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/Jkssns/article/details/117369556" rel="noopener noreferrer">vue3 怎么创建全局的响应式对象 创建简单的vuex_最有才的河南大汉的博客-CSDN博客</a></p>
+</li>
+<li>
+<p><strong>fetch文件中的axiosLoadingObj变量，在main.ts中注册为全局变量，Login.vue中使用，当fetch中axiosLoadingObj变量的值改变，Login.vue中使用该全局变量不会发生改变</strong>。</p>
+</li>
+<li>
+<p><strong>接口 - loading 的全局变量迁移</strong></p>
+</li>
+</ul>
+<blockquote>
+<p>不能使用v3全局变量api getCurrentInstance 不能响应式，同时打包情况下</p>
+</blockquote>
+<p>直接导入ts文件，在ts文件中做变量导出，</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1661412605610-41df1509-a29d-413c-b416-35df368c1ea1.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="具名插槽">具名插槽</h3>
+<ul>
+<li>vue3插槽使用方式和vue2不一样，不能使用template，而是slot标签，name属性</li>
+<li>具名插槽在vue2和vue3两者使用有差别</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1661134037087-4a944237-fc24-4400-a575-94a6d16c45e9.png" alt="" loading="lazy" decoding="async"><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1661134050262-d9d14d5e-0a75-4653-aada-bc4ed4ed049e.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="根据dom属性来动态改变css">根据dom属性来动态改变css</h3>
+<p>当给dom添加自定义属性，vue2和vue3实际渲染出来的不一样（如果是标签自身属性，vue3和vue2是一样的）</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;div :selected="true">selected&#x3C;/div>
+&#x3C;div :selected="false">UnSlected&#x3C;/div>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>vue3实际渲染</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1662269390565-52d14982-b80a-441f-8c6c-db04807b1cf0.webp" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-css">//  vue3
+<span class="hljs-selector-tag">div</span><span class="hljs-selector-attr">[selected=true]</span> {
+  <span class="hljs-attribute">color</span>: red;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>vue2实际渲染</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wg5n0g/1662269414261-8fcbcd09-3ca9-4d1c-b4d1-9e04602285d3.webp" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-css">// vue2
+<span class="hljs-selector-tag">div</span><span class="hljs-selector-attr">[selected]</span> {
+  <span class="hljs-attribute">color</span>: red;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue系统学习（二）组合式API\",\"description\":\"前言：vue3所使用的风格同时亦使用组合式API编程风格Vue.js - 渐进式 JavaScript 框架 Vue.jsVue3.2 setup语法糖总结基础变动：setup语法糖 Vue3.2之后才能放到script里面data methods 都不再需要，也不再需要return路由相...\",\"datePublished\":\"2022-07-24\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/wg5n0g/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Vue",{"href":"/categories/Vue/","children":"Vue"}]]]}],["$","h1",null,{"children":"Vue系统学习（二）组合式API"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-07-24"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[6," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/wg5n0g/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/wwclae/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"阻止固定定位下的DOM滚动"}]]}],["$","$L2",null,{"href":"/blog/wboxcq/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"JavaScript实现并发控制且指定并发上限为concurrency"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/wg5n0g/","title":"Vue系统学习（二）组合式API"}]
+9:["$","$L1c",null,{"headings":[{"id":"响应式数据","text":"响应式数据","depth":2},{"id":"ref","text":"ref","depth":3},{"id":"reactive","text":"reactive","depth":3},{"id":"计算属性和方法","text":"计算属性和方法","depth":2},{"id":"生命周期","text":"生命周期","depth":2},{"id":"watch","text":"watch","depth":2},{"id":"watcheffect","text":"watchEffect","depth":2},{"id":"hook","text":"hook","depth":2},{"id":"生态链","text":"生态链","depth":2},{"id":"router","text":"Router","depth":3},{"id":"pinia","text":"Pinia","depth":3},{"id":"其他","text":"其他","depth":2},{"id":"slot使用","text":"slot使用","depth":3},{"id":"全局变量的使用","text":"全局变量的使用","depth":3},{"id":"具名插槽","text":"具名插槽","depth":3},{"id":"根据dom属性来动态改变css","text":"根据dom属性来动态改变css","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue系统学习（二）组合式API · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：vue3所使用的风格同时亦使用组合式API编程风格Vue.js - 渐进式 JavaScript 框架 Vue.jsVue3.2 setup语法糖总结基础变动：setup语法糖 Vue3.2之后才能放到script里面data methods 都不再需要，也不再需要return路由相..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/wg5n0g/"}],["$","meta","3",{"property":"og:title","content":"Vue系统学习（二）组合式API"}],["$","meta","4",{"property":"og:description","content":"前言：vue3所使用的风格同时亦使用组合式API编程风格Vue.js - 渐进式 JavaScript 框架 Vue.jsVue3.2 setup语法糖总结基础变动：setup语法糖 Vue3.2之后才能放到script里面data methods 都不再需要，也不再需要return路由相..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/wg5n0g/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-07-24"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue系统学习（二）组合式API"}],["$","meta","11",{"name":"twitter:description","content":"前言：vue3所使用的风格同时亦使用组合式API编程风格Vue.js - 渐进式 JavaScript 框架 Vue.jsVue3.2 setup语法糖总结基础变动：setup语法糖 Vue3.2之后才能放到script里面data methods 都不再需要，也不再需要return路由相..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

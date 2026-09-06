@@ -1,0 +1,210 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T429f,<p>总结来看，去重分三种思路：</p>
+<ul>
+<li>es6的 Set 数据结构</li>
+<li>Array的各类api</li>
+<li>利用对象的属性</li>
+</ul>
+<p>文章参考：<a href="https://segmentfault.com/a/1190000016418021" rel="noopener noreferrer">https://segmentfault.com/a/1190000016418021</a></p>
+<h2 id="一利用-es6-set-去重es6-中最常用">一、利用 ES6 Set 去重（ES6 中最常用）</h2>
+<div class="code-block"><pre><code class="hljs language-javascript">arr_test = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">999</span>,<span class="hljs-number">999</span>,<span class="hljs-string">'字符串'</span>,<span class="hljs-string">'字符串'</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">undefined</span>,<span class="hljs-literal">undefined</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-title class_">NaN</span>,<span class="hljs-title class_">NaN</span>,{},{},[],[],]
+
+<span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_set</span> = arr => {
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(arr))
+}
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_set</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>或者……</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>([...<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(arr_test)])
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/array-deduplication/1651548685623-2a8e3fb9-2f10-4f98-bb4d-bede8276712f.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>去不掉{}[]</p>
+</blockquote>
+<h2 id="二利用-for-嵌套-for然后-splice-去重es5-中最常用">二、利用 for 嵌套 for，然后 splice 去重（ES5 中最常用）</h2>
+<div class="code-block"><pre><code class="hljs language-javascript">arr_test = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">999</span>,<span class="hljs-number">999</span>,<span class="hljs-string">'字符串'</span>,<span class="hljs-string">'字符串'</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">true</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">undefined</span>,<span class="hljs-literal">undefined</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-title class_">NaN</span>,<span class="hljs-title class_">NaN</span>,{},{},[],[],]
+
+<span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_for_for_splice</span> = arr => {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &#x3C; arr.<span class="hljs-property">length</span>; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = i + <span class="hljs-number">1</span>; j &#x3C; arr.<span class="hljs-property">length</span>; j++) {
+      <span class="hljs-keyword">if</span> (arr[i] === arr[j]) {
+        arr.<span class="hljs-title function_">splice</span>(j, <span class="hljs-number">1</span>)
+      }
+    }
+  }
+  <span class="hljs-keyword">return</span> arr
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_for_for_splice</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/array-deduplication/1651548810144-b36aa36d-87c9-4879-bd0a-12f3c4f55295.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>去不掉NaN{}[]</p>
+</blockquote>
+<h2 id="三利用-includesindexof-去重">三、利用 includes/indexOf 去重</h2>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_includes</span> = arr => {
+  <span class="hljs-keyword">let</span> result = []
+  arr.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">data</span> =></span> {
+    <span class="hljs-keyword">if</span> (!result.<span class="hljs-title function_">includes</span>(data)) result.<span class="hljs-title function_">push</span>(data)
+  })
+  <span class="hljs-keyword">return</span> result
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_includes</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_indexof</span> = arr => {
+  <span class="hljs-keyword">let</span> result = []
+  arr.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">data</span> =></span> {
+    <span class="hljs-keyword">if</span> (result.<span class="hljs-title function_">indexOf</span>(data) === -<span class="hljs-number">1</span>) result.<span class="hljs-title function_">push</span>(data)
+  })
+  <span class="hljs-keyword">return</span> result
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_indexof</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/array-deduplication/1651549129756-b5675fd2-1851-4b74-923a-6bd90675fcd4.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="四利用-sort">四、利用 sort()</h2>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_sort</span> = arr => {
+  arr.<span class="hljs-title function_">sort</span>().<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">data, index</span>) =></span> {
+    <span class="hljs-keyword">if</span> (data === arr[index + <span class="hljs-number">1</span>] &#x26;&#x26; index &#x3C; arr.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>)
+      arr.<span class="hljs-title function_">splice</span>(index + <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+  })
+  <span class="hljs-keyword">return</span> arr
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_indexof</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/array-deduplication/1651549585258-df18b8b6-1a2f-4345-a7a2-db2635e84b13.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="五利用-filter">五、利用 filter</h2>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_filter</span> = arr => {
+  <span class="hljs-keyword">return</span> arr.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">data, index, arr</span>) =></span> {
+    <span class="hljs-keyword">return</span> arr.<span class="hljs-title function_">indexOf</span>(data, <span class="hljs-number">0</span>) === index;
+  })
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_filter</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/array-deduplication/1651550392520-a342d7c0-9102-49db-b672-3c70b887d258.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="六利用-reduce">六、利用 reduce</h2>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">unique_reduce</span> = arr => {
+  <span class="hljs-keyword">return</span> arr.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =></span> (a.<span class="hljs-title function_">includes</span>(b) ? a : [...a, b]), [])
+}
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">unique_reduce</span>(arr_test))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/array-deduplication/1651550878738-7acdd3ef-54cd-4572-97e6-0e8c43b5719e.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="利用对象的属性不能相同的特点进行去重这种数组去重的方法有问题不建议用有待改进">利用对象的属性不能相同的特点进行去重（这种数组去重的方法有问题，不建议用，有待改进）</h2>
+<div class="code-block"><pre><code class="hljs language-plain">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var arrry= \[\];
+     var  obj = {};
+    for (var i = 0; i &#x3C; arr.length; i++) {
+        if (!obj\[arr\[i\]\]) {
+            arrry.push(arr\[i\])
+            obj\[arr\[i\]\] = 1
+        } else {
+            obj\[arr\[i\]\]++
+        }
+    }
+    return arrry;
+}
+    var arr = \[1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}\];
+        console.log(unique(arr))
+//\[1, "true", 15, false, undefined, null, NaN, 0, "a", {…}\]    //两个true直接去掉了，NaN和{}去重
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="利用-hasownproperty">利用 hasOwnProperty</h2>
+<div class="code-block"><pre><code class="hljs language-plain">function unique(arr) {
+    var obj = {};
+    return arr.filter(function(item, index, arr){
+        return obj.hasOwnProperty(typeof item + item) ? false : (obj\[typeof item + item\] = true)
+    })
+}
+    var arr = \[1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}\];
+        console.log(unique(arr))
+//\[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}\]   //所有的都去重了
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>利用 hasOwnProperty 判断是否存在对象属性</p>
+<h2 id="利用递归去重">利用递归去重</h2>
+<div class="code-block"><pre><code class="hljs language-plain">function unique(arr) {
+        var array\= arr;
+        var len = array.length;
+
+    array.sort(function(a,b){   //排序后更加方便去重
+        return a - b;
+    })
+
+    function loop(index){
+        if(index >= 1){
+            if(array\[index\] === array\[index\-1\]){
+                array.splice(index,1);
+            }
+            loop(index - 1);    //递归loop，然后数组去重
+        }
+    }
+    loop(len\-1);
+    return array;
+}
+ var arr = \[1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}\];
+console.log(unique(arr))
+//\[1, "a", "true", true, 15, false, 1, {…}, null, NaN, NaN, "NaN", 0, "a", {…}, undefined\]
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="利用-map-数据结构去重">利用 Map 数据结构去重</h2>
+<div class="code-block"><pre><code class="hljs language-plain">function arrayNonRepeatfy(arr) {
+  let map = new Map();
+  let array = new Array();  // 数组用于返回结果
+  for (let i = 0; i &#x3C; arr.length; i++) {
+    if(map .has(arr\[i\])) {  // 如果有该key值
+      map .set(arr\[i\], true); 
+    } else { 
+      map .set(arr\[i\], false);   // 如果没有该key值
+      array .push(arr\[i\]);
+    }
+  } 
+  return array ;
+}
+ var arr = \[1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}\];
+    console.log(unique(arr))
+//\[1, "a", "true", true, 15, false, 1, {…}, null, NaN, NaN, "NaN", 0, "a", {…}, undefined\]
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>创建一个空 Map 数据结构，遍历需要去重的数组，把数组的每一个元素作为 key 存到 Map 中。由于 Map 中不会出现相同的 key 值，所以最终得到的就是去重后的结果。</p>
+<p>PS：有些文章提到了 foreach+indexOf 数组去重的方法，个人觉得都是大同小异，所以没有写上去。</p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"数组去重🔖JavaScript🔖数组\",\"description\":\"总结来看，去重分三种思路：es6的 Set 数据结构Array的各类api利用对象的属性文章参考：https://segmentfault.com/a/1190000016418021一、利用 ES6 Set 去重（ES6 中最常用）arr_test = 0,0,999,999,'字符串',...\",\"datePublished\":\"2021-11-05\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/array-deduplication/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","📶线结构：字符串-数组-栈-队列",{"href":"/categories/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/","children":"📶线结构：字符串-数组-栈-队列"}]]]}],["$","h1",null,{"children":"数组去重🔖JavaScript🔖数组"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-11-05"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[2," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/array-deduplication/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/na8588/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"跨域以及非跨域下载指定url图片方案"}]]}],["$","$L2",null,{"href":"/blog/d75374fb-d238-4bcb-9146-e8b182b66752/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"82. 删除排序链表中的重复元素 II🔖链表"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/array-deduplication/","title":"数组去重🔖JavaScript🔖数组"}]
+9:["$","$L1c",null,{"headings":[{"id":"一利用-es6-set-去重es6-中最常用","text":"一、利用 ES6 Set 去重（ES6 中最常用）","depth":2},{"id":"二利用-for-嵌套-for然后-splice-去重es5-中最常用","text":"二、利用 for 嵌套 for，然后 splice 去重（ES5 中最常用）","depth":2},{"id":"三利用-includesindexof-去重","text":"三、利用 includes/indexOf 去重","depth":2},{"id":"四利用-sort","text":"四、利用 sort()","depth":2},{"id":"五利用-filter","text":"五、利用 filter","depth":2},{"id":"六利用-reduce","text":"六、利用 reduce","depth":2},{"id":"利用对象的属性不能相同的特点进行去重这种数组去重的方法有问题不建议用有待改进","text":"利用对象的属性不能相同的特点进行去重（这种数组去重的方法有问题，不建议用，有待改进）","depth":2},{"id":"利用-hasownproperty","text":"利用 hasOwnProperty","depth":2},{"id":"利用递归去重","text":"利用递归去重","depth":2},{"id":"利用-map-数据结构去重","text":"利用 Map 数据结构去重","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"数组去重🔖JavaScript🔖数组 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"总结来看，去重分三种思路：es6的 Set 数据结构Array的各类api利用对象的属性文章参考：https://segmentfault.com/a/1190000016418021一、利用 ES6 Set 去重（ES6 中最常用）arr_test = 0,0,999,999,'字符串',..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/array-deduplication/"}],["$","meta","3",{"property":"og:title","content":"数组去重🔖JavaScript🔖数组"}],["$","meta","4",{"property":"og:description","content":"总结来看，去重分三种思路：es6的 Set 数据结构Array的各类api利用对象的属性文章参考：https://segmentfault.com/a/1190000016418021一、利用 ES6 Set 去重（ES6 中最常用）arr_test = 0,0,999,999,'字符串',..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/array-deduplication/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-11-05"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"数组去重🔖JavaScript🔖数组"}],["$","meta","11",{"name":"twitter:description","content":"总结来看，去重分三种思路：es6的 Set 数据结构Array的各类api利用对象的属性文章参考：https://segmentfault.com/a/1190000016418021一、利用 ES6 Set 去重（ES6 中最常用）arr_test = 0,0,999,999,'字符串',..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

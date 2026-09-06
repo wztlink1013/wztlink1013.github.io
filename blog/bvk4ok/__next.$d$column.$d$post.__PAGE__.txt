@@ -1,0 +1,284 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T4c91,<h2 id="问题描述">问题描述</h2>
+<p><strong>Levenshtein Distance</strong>也称<strong>莱文斯坦距离</strong></p>
+<p>具体形式就是求一个字符串到另一个字符串所需要的<strong>最少操作步数</strong>，操作形式有：</p>
+<ul>
+<li>替换字母</li>
+<li>删除字母</li>
+<li>插入字母</li>
+</ul>
+<h2 id="问题分析">问题分析</h2>
+<p>利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算法的不同。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bvk4ok/1603615056984-36cbce7c-c55e-456a-bb90-eb18471167e0.png" alt="" loading="lazy" decoding="async"></p>
+<p><strong>莱文斯坦的公式化</strong>表述为：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bvk4ok/1603614727015-dad259b0-7904-4e5d-9ec8-f4ac284af2e5.png" alt="" loading="lazy" decoding="async"></p>
+<p>下面利用表格的形式来步步推出该字母所需要达到相应的目标字母序列的步数。</p>
+<p>s</p>
+<p>o</p>
+<p>n</p>
+<p>0</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>s</p>
+<p>1</p>
+<p>0</p>
+<p>1</p>
+<p>2</p>
+<p>u</p>
+<p>2</p>
+<p>1</p>
+<p>1</p>
+<p>2</p>
+<p>n</p>
+<p>3</p>
+<p>2</p>
+<p>2</p>
+<p>1</p>
+<p>记横（son）为i字符串序列，纵（sun）为j字符串序列。需要完成的字符串变换为i->j。现举例格子数值该怎么填：</p>
+<p>当到了第三行第三列的那一格，需要完成s->s，有三种情况可以选择</p>
+<ol>
+<li>左操作(i-1,j)：删除s字符然后插入s字符===操作步数两步</li>
+<li>上操作(i,j-1)：插入s字符然后删除s字符===操作步数两步</li>
+<li>左上操作(i-1,j-1)：替换步骤，因为这个元素相同，故===操作步数零部</li>
+</ol>
+<p>然后选取上述三种情况最短步数的数值0</p>
+<p>然后再看第三行第四列，需要完成so->s，</p>
+<ol>
+<li>左操作：删除o===一步</li>
+<li>上操作：插入s删除so===三步</li>
+<li>做上操作：替换s删除o===两步</li>
+</ol>
+<p>综上应该填1</p>
+<p>其他格子也一样以上述方法填写。</p>
+<p>有个作业遗留问题，在CAAIS里面每个得出的值右上标的 <code>U</code>  <code>L</code>  <code>0</code>  <code>1</code>  这些的依次顺序是怎么个顺序？</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bvk4ok/1603615446981-23bea432-08ee-490a-9037-018ba6280c3b.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="代码实现">代码实现</h2>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;string></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;vector></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;algorithm></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;iostream></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;ctime></span></span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> LEN_NAME=<span class="hljs-number">100</span>;
+
+<span class="hljs-keyword">namespace</span> NS_LSEditDist {
+    <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Initialization</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">GetLSEditDist</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetLSEdits</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Output</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y, <span class="hljs-type">int</span> OptD)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutputE</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span></span>;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutputP</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span></span>;
+    <span class="hljs-type">static</span> <span class="hljs-type">int</span> m, n;
+    <span class="hljs-type">static</span> vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> E;
+    <span class="hljs-type">static</span> vector&#x3C;vector&#x3C;<span class="hljs-type">char</span>>> P;
+    <span class="hljs-type">static</span> string xe, ye;
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">LSEditDistCaller</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span>
+    </span>{
+        <span class="hljs-built_in">Initialization</span>(x, y);
+        <span class="hljs-type">int</span> OptD = <span class="hljs-built_in">GetLSEditDist</span>(x, y);
+        <span class="hljs-built_in">GetLSEdits</span>(x, y);
+        <span class="hljs-built_in">Output</span>(x, y, OptD);
+    }
+    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">GetLSEditDist</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span>
+    </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &#x3C;= m; i++)
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &#x3C;= n; j++)
+            {
+                E[i][j] = <span class="hljs-built_in">min</span>(E[i - <span class="hljs-number">1</span>][j] + <span class="hljs-number">1</span>,
+                              <span class="hljs-built_in">min</span>(E[i][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>,
+                                  E[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + (x[i - <span class="hljs-number">1</span>] != y[j - <span class="hljs-number">1</span>])));
+                <span class="hljs-keyword">if</span> (E[i][j] == E[i - <span class="hljs-number">1</span>][j] + <span class="hljs-number">1</span>)
+                    P[i][j] = <span class="hljs-string">'U'</span>;
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (E[i][j] == E[i][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>)
+                    P[i][j] = <span class="hljs-string">'L'</span>;
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x[i - <span class="hljs-number">1</span>] != y[j - <span class="hljs-number">1</span>])
+                    P[i][j] = <span class="hljs-string">'1'</span>;
+            }
+        <span class="hljs-keyword">return</span> E[m][n];
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GetLSEdits</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span>
+    </span>{
+        <span class="hljs-type">int</span> i = m, j = n;
+        <span class="hljs-keyword">while</span> (i > <span class="hljs-number">0</span> || j > <span class="hljs-number">0</span>)
+        {
+            <span class="hljs-keyword">if</span> (P[i][j] == <span class="hljs-string">'0'</span> || P[i][j] == <span class="hljs-string">'1'</span>)
+            {
+                xe.<span class="hljs-built_in">insert</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, x[i - <span class="hljs-number">1</span>]);
+                ye.<span class="hljs-built_in">insert</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, y[j - <span class="hljs-number">1</span>]);
+                i--; j--;
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (P[i][j] == <span class="hljs-string">'U'</span>)
+            {
+                xe.<span class="hljs-built_in">insert</span>(xe.<span class="hljs-built_in">begin</span>(), x[i - <span class="hljs-number">1</span>]);
+                ye.<span class="hljs-built_in">insert</span>(ye.<span class="hljs-built_in">begin</span>(), <span class="hljs-string">'-'</span>);
+                i--;
+            }
+            <span class="hljs-keyword">else</span>
+            {
+                xe.<span class="hljs-built_in">insert</span>(xe.<span class="hljs-built_in">begin</span>(), <span class="hljs-string">'-'</span>);
+                ye.<span class="hljs-built_in">insert</span>(ye.<span class="hljs-built_in">begin</span>(), y[j - <span class="hljs-number">1</span>]);
+                j--;
+            }
+        }
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Initialization</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span>
+    </span>{
+        m = x.<span class="hljs-built_in">length</span>();
+        n = y.<span class="hljs-built_in">length</span>();
+        E.<span class="hljs-built_in">clear</span>();
+        E.<span class="hljs-built_in">resize</span>(m + <span class="hljs-number">1</span>, <span class="hljs-built_in">vector</span>&#x3C;<span class="hljs-type">int</span>>(n + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>));
+        P.<span class="hljs-built_in">clear</span>();
+        P.<span class="hljs-built_in">resize</span>(m + <span class="hljs-number">1</span>, <span class="hljs-built_in">vector</span>&#x3C;<span class="hljs-type">char</span>>(n + <span class="hljs-number">1</span>, <span class="hljs-string">'0'</span>));
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &#x3C;= n; j++)
+        {
+            E[<span class="hljs-number">0</span>][j] = j;
+            P[<span class="hljs-number">0</span>][j] = <span class="hljs-string">'L'</span>;
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &#x3C;= m; i++)
+        {
+            E[i][<span class="hljs-number">0</span>] = i;
+            P[i][<span class="hljs-number">0</span>] = <span class="hljs-string">'U'</span>;
+        }
+        xe.<span class="hljs-built_in">clear</span>();
+        ye.<span class="hljs-built_in">clear</span>();
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Output</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y, <span class="hljs-type">int</span> OptD)</span>
+    </span>{
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Levenshtein distance: \n"</span>);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Strings: %s, %s\n\n"</span>, x.<span class="hljs-built_in">c_str</span>(), y.<span class="hljs-built_in">c_str</span>());
+        <span class="hljs-built_in">OutputE</span>(x, y);
+        <span class="hljs-built_in">OutputP</span>(x, y);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Distance: %d\n"</span>, OptD);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Edited strings:\n"</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> c : xe)
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, c);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> c : ye)
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, c);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n\n"</span>);
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutputE</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span>
+    </span>{
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">" E  "</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; n; j++)
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, y[j]);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C;= m; i++)
+        {
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>)
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"  "</span>);
+            <span class="hljs-keyword">else</span>
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, x[i - <span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C;= n; j++)
+            {
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2d"</span>, E[i][j]);
+            }
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+        }
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutputP</span><span class="hljs-params">(<span class="hljs-type">const</span> string &#x26;x, <span class="hljs-type">const</span> string &#x26;y)</span>
+    </span>{
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">" P  "</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; n; j++)
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, y[j]);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C;= m; i++)
+        {
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>)
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"  "</span>);
+            <span class="hljs-keyword">else</span>
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, x[i - <span class="hljs-number">1</span>]);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C;= n; j++)
+            {
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2c"</span>, P[i][j]);
+            }
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+        }
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    }
+} <span class="hljs-comment">//namespace NS_LSEditDist</span>
+<span class="hljs-function"><span class="hljs-type">char</span> *<span class="hljs-title">rand_str</span><span class="hljs-params">(<span class="hljs-type">char</span> *str,<span class="hljs-type">const</span> <span class="hljs-type">int</span> len)</span>
+</span>{
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&#x3C;len;++i)
+        str[i]=<span class="hljs-string">'a'</span>+<span class="hljs-built_in">rand</span>()%<span class="hljs-number">26</span>;
+    str[++i]=<span class="hljs-string">'\0'</span>;
+    <span class="hljs-keyword">return</span> str;
+}
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> NS_LSEditDist;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    vector&#x3C;vector&#x3C;string>> abs = {
+            { <span class="hljs-string">"water"</span>, <span class="hljs-string">"wheat"</span> },
+            { <span class="hljs-string">"servant"</span>, <span class="hljs-string">"reveal"</span> }
+    };
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> ab : abs)
+    {
+        string a = ab[<span class="hljs-number">0</span>];
+        string b = ab[<span class="hljs-number">1</span>];
+        <span class="hljs-built_in">LSEditDistCaller</span>(a, b);
+    }
+
+    cout&#x3C;&#x3C;<span class="hljs-string">"两个100位字符串的LevenShtein距离："</span>&#x3C;&#x3C;endl;
+
+    <span class="hljs-built_in">srand</span>(<span class="hljs-built_in">time</span>(<span class="hljs-literal">NULL</span>));
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">char</span> name[LEN_NAME<span class="hljs-number">+1</span>];
+    string x = <span class="hljs-built_in">rand_str</span>(name,LEN_NAME);
+    string y = <span class="hljs-built_in">rand_str</span>(name,LEN_NAME);
+
+    cout&#x3C;&#x3C;<span class="hljs-string">"字符串1："</span>&#x3C;&#x3C;x&#x3C;&#x3C;endl;
+    cout&#x3C;&#x3C;<span class="hljs-string">"字符串2："</span>&#x3C;&#x3C;y&#x3C;&#x3C;endl;
+
+    <span class="hljs-built_in">LSEditDistCaller</span>(x, y);
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%90%8A%E6%96%87%E6%96%AF%E5%9D%A6%E8%B7%9D%E9%9B%A2" rel="noopener noreferrer">莱文斯坦距离</a></li>
+<li><a href="https://www.dazhuanlan.com/2019/12/06/5dea0cb03281f/" rel="noopener noreferrer">理解 Levenshtein Distancee</a></li>
+<li><a href="https://www.throwable.club/2020/03/08/learn-about-levenshtein-distance-algorithm/" rel="noopener noreferrer">Levenshtein Distance（编辑距离）算法与使用场景</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"莱文斯坦距离(LD)问题\",\"description\":\"问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符串所需要的最少操作步数，操作形式有：替换字母删除字母插入字母问题分析利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算...\",\"datePublished\":\"2020-10-24\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/bvk4ok/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","🔢动态规划算法",{"href":"/categories/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/","children":"🔢动态规划算法"}]]]}],["$","h1",null,{"children":"莱文斯坦距离(LD)问题"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-10-24"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/bvk4ok/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/bw80k6/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"利用WireShark捕获并分析以太网报文结构"}]]}],["$","$L2",null,{"href":"/blog/zeszpb/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"C++随机字符串生成函数"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/bvk4ok/","title":"莱文斯坦距离(LD)问题"}]
+9:["$","$L1c",null,{"headings":[{"id":"问题描述","text":"问题描述","depth":2},{"id":"问题分析","text":"问题分析","depth":2},{"id":"代码实现","text":"代码实现","depth":2},{"id":"参考资料","text":"参考资料","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"莱文斯坦距离(LD)问题 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符串所需要的最少操作步数，操作形式有：替换字母删除字母插入字母问题分析利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/bvk4ok/"}],["$","meta","3",{"property":"og:title","content":"莱文斯坦距离(LD)问题"}],["$","meta","4",{"property":"og:description","content":"问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符串所需要的最少操作步数，操作形式有：替换字母删除字母插入字母问题分析利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/bvk4ok/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-10-24"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"莱文斯坦距离(LD)问题"}],["$","meta","11",{"name":"twitter:description","content":"问题描述Levenshtein Distance也称莱文斯坦距离具体形式就是求一个字符串到另一个字符串所需要的最少操作步数，操作形式有：替换字母删除字母插入字母问题分析利用动态规划思想，将其剖析为一个个子问题，用其子问题的解决方式来解决该问题。问题分解出来的子问题存在重叠的情况，这是区分分治算..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

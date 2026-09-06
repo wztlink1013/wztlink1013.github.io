@@ -1,0 +1,242 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T3f7a,<blockquote>
+<p>学习网络协议分析工具WireShark，利用WireShark捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。</p>
+</blockquote>
+<blockquote>
+<p>文章更新内容说明：无线上网和有线上网的MAC地址是不一样的</p>
+<p>【查看本地地址的截图是在家里的查看，wireshark的使用是在学校】</p>
+</blockquote>
+<h2 id="查看信息">查看信息</h2>
+<h3 id="查看本地的mac地址">查看本地的mac地址</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612839562082-cbc1fcf8-a520-4820-bafc-e26f07ba1177.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612839610832-5568023d-da16-41af-b95e-1787acadf747.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="ping命令">ping命令</h3>
+<blockquote>
+<p>先使用ping命令找到需要抓包的网站的ip地址</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612845955475-12f08386-5ec4-4b3f-8cbf-56059d79677c.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="wireshark使用">WireShark使用</h2>
+<h3 id="wireshark使用及面板功能区域">WireShark使用及面板功能区域</h3>
+<p>进入软件，若成功适配电脑网卡，则出现如下类似接口列表</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603434019601-cc879af3-8784-4ada-83dc-642d64e02981.png" alt="" loading="lazy" decoding="async"></p>
+<p>直接双击上图中WLAN行即可抓包，也可以如下设置网卡启动抓包</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603434096441-73c67d75-4e36-4e76-ae3c-0a8b8976da28.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603431676018-f4988b52-5aef-4d92-8b9b-15109a08adab.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="1区域-显示过滤器">1区域-显示过滤器</h3>
+<blockquote>
+<p>为过滤ip地址区域。相关表达式语法有</p>
+</blockquote>
+<ol>
+<li>协议过滤。比如TCP，只显示TCP协议。</li>
+<li>IP 过滤。比如 ip.src == 192.168.1.102,显示源地址为192.168.1.102，</li>
+</ol>
+<p>   ip.dst == 192.168.1.102, 目标地址为192.168.1.102。</p>
+<ol start="3">
+<li>端口过滤。   tcp.port ==80,  端口为80的</li>
+</ol>
+<p>    tcp.srcport == 80,只显示TCP协议的愿端口为80的。</p>
+<ol start="4">
+<li>Http模式过滤。http.request.method=="GET",   只显示HTTP GET方法的。</li>
+<li>逻辑运算符为 AND/ OR</li>
+</ol>
+<h3 id="2区域-获取的数据包">2区域-获取的数据包</h3>
+<blockquote>
+<p>封包列表(Packet List Pane)</p>
+</blockquote>
+<h3 id="3区域-单个数据包各层详细内容">3区域-单个数据包各层详细内容</h3>
+<blockquote>
+<p>选定的封包详细信息 (Packet Details Pane)</p>
+</blockquote>
+<ol>
+<li>Frame:物理层的数据帧概况。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-http">Frame 165: 74 bytes on wire (592 bits), 74 bytes captured (592 bits) on interface \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}, id 0 //165号帧，对方发送74字节，实际收到74字节 
+    Interface id: 0 (\Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}) //接口id为0 
+        Interface name: \Device\NPF_{B016AB5D-3088-41BD-8997-48F19D9DEBFA}
+        Interface description: WLAN
+    Encapsulation type: Ethernet (1) //封装类型 
+    Arrival Time: Oct 23, 2020 13:37:43.372763000 中国标准时间//捕获日期和时间（中国标准时间） 
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1603431463.372763000 seconds
+    [Time delta from previous captured frame: 0.008472000 seconds]//与前一包时间间隔 
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 36.349570000 seconds]//此包与第一帧的时间间隔
+    Frame Number: 165//帧序号 
+    Frame Length: 74 bytes (592 bits)//帧长度 
+    Capture Length: 74 bytes (592 bits)//捕获字节长度 
+    [Frame is marked: False]//是否做了标记 
+    [Frame is ignored: False]//是否被忽略 
+    [Protocols in frame: eth:ethertype:ip:icmp:data]//帧内封装的协议层次结构 
+    [Coloring Rule Name: ICMP]//着色标记的协议名称 
+    [Coloring Rule String: icmp || icmpv6]//着色规则显示的字符串
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>Ethernet II:数据链路层以太网帧头部信息。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-http">Ethernet II, Src: IntelCor_fb:33:94 (0c:54:15:fb:33:94), Dst: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)
+    Destination: HuaweiTe_da:ff:f3 (7c:a1:77:da:ff:f3)//目的MAC地址 
+    Source: IntelCor_fb:33:94 (0c:54:15:fb:33:94)//源MAC地址（就是我电脑的MAC地址） 
+    Type: IPv4 (0x0800)//0x0800表示使用IP协议
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603432754493-20843464-3bbb-4c01-9ceb-e781759a583d.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="3">
+<li>Internet Protocol Version 4:互联网层IP包头部信息。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-http">Internet Protocol Version 4, Src: 192.168.43.36, Dst: 39.156.66.18
+    0100 .... = Version: 4//互联网协议IPv4
+    .... 0101 = Header Length: 20 bytes (5)//IP包头部长度
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)//差分服务字段
+    Total Length: 60//IP包的总长度
+    Identification: 0xdf8c (57228)//标志字段
+    Flags: 0x0000//标记字段
+    Fragment offset: 0//分的偏移量
+    Time to live: 128//生存期TTL
+    Protocol: ICMP (1)//此包内封装的上层协议为TCP
+    Header checksum: 0x05ba [validation disabled]//头部数据的校验和
+    [Header checksum status: Unverified]
+    Source: 192.168.43.36//来源IP地址
+    Destination: 39.156.66.18//目标IP地址
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603433033837-c88714a1-eaa1-45cb-b836-5672e4515eee.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="4">
+<li>Transmission Control Protocol:传输层T的数据段头部信息，此处是TCP。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-http">Transmission Control Protocol, Src Port: 80 (80), Dst Port: 50362 (50362), Seq: 1025, Ack: 447, Len: 714
+Source Port: 80 (80) //源端口号
+Destination Port: 50362 (50362) //目标端口号
+Sequence number: 1025 (relative sequence number) //序列号（相对序列号）
+[Next sequence number: 1739 (relative sequence number)] //下一个序列号
+Acknowledgment number: 447    (relative ack number) //确认序列号
+Header Length: 20 bytes  //头部长度
+.... 0000 0001 1000 = Flags: 0x018 (PSH, ACK) //TCP标记长度
+Window size value: 5896  //流量控制的窗口大小
+Checksum: 0x915b [validation disabled] //TCP数据段的校验和
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603433149527-0125377e-b64b-4e32-9eb0-e122d0c111cb.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="5">
+<li>
+<p>Hypertext Transfer Protocol:应用层的信息，此处是HTTP协议。</p>
+</li>
+<li>
+<p>Data（312 bytes）：数据。</p>
+</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1603434354567-45e84cc7-63a9-4136-adde-85c377345e92.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="超星网登录案例分析">超星网登录案例分析</h2>
+<h3 id="网站请求和响应">网站请求和响应</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612849248230-2f38b355-ee1f-4ee1-8b8a-291e64f4e1bd.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="发送请求相应协议">发送请求相应协议</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612849740094-cbdefdda-f504-43f3-9e41-ac8dc8029fd3.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="收到响应相应协议">收到响应相应协议</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612849811431-437bd72d-ac54-4c28-b731-9e128b6b998f.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>接下来的7个小节内容来具体对数据报头做出分析❗</p>
+</blockquote>
+<h3 id="hypertext-transfer-protocol">Hypertext Transfer Protocol</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612849851243-b18b3e15-f21e-4998-bcfe-45c0b92aabde.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>HTTP 协议定义了客户端和服务器之间交互的消息内容和步骤，大家按照固定的步骤和格式进行通信</p>
+<p>根据URL可以定位请求资源的位置，但是对于这个资源可能还有多种处理方法，比如是请求资源还是要删除指定资源？</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612851558692-ed870a9e-f619-4235-bb98-85d22557340f.png" alt="" loading="lazy" decoding="async"></p>
+<p>这个时候<strong>浏览器</strong>将需要请求的信息，按照HTTP协议约定的格式，封装成为HTTP请求报文</p>
+<p>HTTP主要请求方法为 GET 和 POST</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612851687862-c1a44f57-065b-4547-93bb-4ae9b1f9cb95.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>请求报文和响应报文的具体形式参考课本</p>
+</blockquote>
+<h3 id="line-based-text-data">Line-based text data</h3>
+<p>这里面内容就是请求成功所返回的Html代码</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612851995920-233bc149-948d-43e1-a549-fc2887c23163.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="transmission-control-protocol">Transmission Control Protocol</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612852359910-50409417-8113-4600-bbb6-6d0e02db4894.png" alt="" loading="lazy" decoding="async"></p>
+<p>这个数据报传输使用的可靠的TCP协议，而不是UDP，所以会有相应的滑动窗口、流量控制等等相关机制，还有三次握手，四次挥手……</p>
+<p>（插个眼，日后再复习一下……）</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612852762215-ba49fa51-55e0-440d-afa7-b567540e39a2.gif" alt="" loading="lazy" decoding="async"></p>
+<p>（插眼专用图/滑稽）</p>
+<h3 id="internet-protocol-version-4">Internet Protocol Version 4</h3>
+<p>好了，接下来到了IP层，需要给上面来的数据报加上IP头部，IP数据报结构如下：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612853140617-ff243167-abb7-4c65-b5c3-b0bbaa77b5aa.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612853444183-7fa048ef-3e75-4586-82a7-ac9cc58c3630.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612852425531-82ec984f-ac3b-4f8a-a06e-0c48080815f6.png" alt="" loading="lazy" decoding="async"></p>
+<p>比如说<code>45</code> 这个字节这具体表现是ip数据报的第一行和第二行的具体信息，IP版本为IPv4，报头长度为二十个字节，往后的各个字段都是这样一一对应的关系，具体还要加强对那张ip数据报结构图的理解，要了然于胸。</p>
+<h3 id="ethernet-ii-src">Ethernet II, Src</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612853924295-ea6fe64c-bc90-4e49-ad4e-5ff212448fdc.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612850191706-18807d7d-16b5-44fa-a436-5c2b7c4ed5ed.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>图中三个方框的14个字节对应以太网MAC帧的前14个字节：前6个字节是目的地址，接下来的6个字节是源地址，最后两个字节是类型字段(用来标志上一层使用的是什么协议，以便把收到的MAC帧的数据交给上一层的这个协议。0x8000代表上层使用的是IP数据报)，后面是数据部分。</p>
+<p>另外：wireshark把8字节的前序（前同步码）和4字节的FCS（帧开始界定符）都给过滤掉了，所以捕获到的帧里看不到这两部分。</p>
+</blockquote>
+<h3 id="frame-75">Frame 75</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612852486656-87756b19-ff3d-4833-9af9-d2006a401068.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>对方发送5520字节，实际收到5520字节</li>
+<li>第一行表示接口位0号</li>
+</ul>
+<h3 id="总体数据表示">总体数据表示</h3>
+<p>其实在计算机看来，网络中的数据传输就是传输下面的这些字节</p>
+<blockquote>
+<p>一个字节由八个位组成，而位就是我们通常所说的二进制中的0或1</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612852578885-9519d1d0-a72d-409b-a480-f8554b87fd0d.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="后记">后记</h2>
+<h3 id="wireshark-抓不到https数据包">Wireshark 抓不到HTTPS数据包</h3>
+<blockquote>
+<p>有些时候HTTP包也抓不到抑或是抓的不全，用如下方式解决即可。</p>
+</blockquote>
+<p>在C盘根目录下创建如下目录和文件，.log就是后缀不要txt</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612847971131-6c3c2084-c6d8-41ae-8a82-8a4df65748b8.png" alt="" loading="lazy" decoding="async"></p>
+<p>添加环境变量</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612848066208-6f22250b-e74d-4156-aa31-c5de17d2e812.png" alt="" loading="lazy" decoding="async"></p>
+<p>进入wireshark软件</p>
+<p><code>编辑</code> <code>首选项</code> <code>Protocols</code></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/bw80k6/1612848155164-ace1e002-1971-4910-8d04-cf9c388eb5cd.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="参考资料">参考资料</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/linyfeng/p/9496126.html" rel="noopener noreferrer">wireshark抓包新手使用教程</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/82498482" rel="noopener noreferrer">https://zhuanlan.zhihu.com/p/82498482</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/264942536" rel="noopener noreferrer">https://zhuanlan.zhihu.com/p/264942536</a></li>
+<li><a href="https://blog.csdn.net/zam183/article/details/103783785" rel="noopener noreferrer">https://blog.csdn.net/zam183/article/details/103783785</a></li>
+<li>TODO: <a href="https://www.cnblogs.com/zhaopei/p/12152139.html#autoid-2-6" rel="noopener noreferrer">Wireshark抓包，带你快速入门</a></li>
+<li>TODO: <a href="https://www.cnblogs.com/noteless/p/10256470.html#21" rel="noopener noreferrer">网络是如何连接的？网络发展简介（四）</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"利用WireShark捕获并分析以太网报文结构\",\"description\":\"学习网络协议分析工具WireShark，利用WireShark捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。文章更新内容说明：无线上网和有线上网的MAC地址是不一样的【查看本地地址的截图是在家里的查看，wireshark的使用是在学校】查看信息查...\",\"datePublished\":\"2020-10-23\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/bw80k6/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","计算机网络",{"href":"/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/","children":"计算机网络"}]]]}],["$","h1",null,{"children":"利用WireShark捕获并分析以太网报文结构"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-10-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[5," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/bw80k6/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/qlrcf6/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"ping、traceroute命令编程实现"}]]}],["$","$L2",null,{"href":"/blog/bvk4ok/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"莱文斯坦距离(LD)问题"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/bw80k6/","title":"利用WireShark捕获并分析以太网报文结构"}]
+9:["$","$L1c",null,{"headings":[{"id":"查看信息","text":"查看信息","depth":2},{"id":"查看本地的mac地址","text":"查看本地的mac地址","depth":3},{"id":"ping命令","text":"ping命令","depth":3},{"id":"wireshark使用","text":"WireShark使用","depth":2},{"id":"wireshark使用及面板功能区域","text":"WireShark使用及面板功能区域","depth":3},{"id":"1区域-显示过滤器","text":"1区域-显示过滤器","depth":3},{"id":"2区域-获取的数据包","text":"2区域-获取的数据包","depth":3},{"id":"3区域-单个数据包各层详细内容","text":"3区域-单个数据包各层详细内容","depth":3},{"id":"超星网登录案例分析","text":"超星网登录案例分析","depth":2},{"id":"网站请求和响应","text":"网站请求和响应","depth":3},{"id":"发送请求相应协议","text":"发送请求相应协议","depth":3},{"id":"收到响应相应协议","text":"收到响应相应协议","depth":3},{"id":"hypertext-transfer-protocol","text":"Hypertext Transfer Protocol","depth":3},{"id":"line-based-text-data","text":"Line-based text data","depth":3},{"id":"transmission-control-protocol","text":"Transmission Control Protocol","depth":3},{"id":"internet-protocol-version-4","text":"Internet Protocol Version 4","depth":3},{"id":"ethernet-ii-src","text":"Ethernet II, Src","depth":3},{"id":"frame-75","text":"Frame 75","depth":3},{"id":"总体数据表示","text":"总体数据表示","depth":3},{"id":"后记","text":"后记","depth":2},{"id":"wireshark-抓不到https数据包","text":"Wireshark 抓不到HTTPS数据包","depth":3},{"id":"参考资料","text":"参考资料","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"利用WireShark捕获并分析以太网报文结构 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"学习网络协议分析工具WireShark，利用WireShark捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。文章更新内容说明：无线上网和有线上网的MAC地址是不一样的【查看本地地址的截图是在家里的查看，wireshark的使用是在学校】查看信息查..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/bw80k6/"}],["$","meta","3",{"property":"og:title","content":"利用WireShark捕获并分析以太网报文结构"}],["$","meta","4",{"property":"og:description","content":"学习网络协议分析工具WireShark，利用WireShark捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。文章更新内容说明：无线上网和有线上网的MAC地址是不一样的【查看本地地址的截图是在家里的查看，wireshark的使用是在学校】查看信息查..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/bw80k6/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-10-23"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"利用WireShark捕获并分析以太网报文结构"}],["$","meta","11",{"name":"twitter:description","content":"学习网络协议分析工具WireShark，利用WireShark捕获并分析以太网报文结构，最重要的是后面超星网登录案例分析，用实际例子将计网的所学知识串起来。文章更新内容说明：无线上网和有线上网的MAC地址是不一样的【查看本地地址的截图是在家里的查看，wireshark的使用是在学校】查看信息查..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

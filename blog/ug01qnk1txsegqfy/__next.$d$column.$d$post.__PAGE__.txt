@@ -1,0 +1,106 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T1461,<p>Vue 和 React 的 diff 算法都是为了解决虚拟 DOM 更新的问题，它们都使用了 <strong>Diffing</strong> 技术来优化 DOM 渲染。虽然两者有相似的思想，但实现上存在一些差异。</p>
+<h3 id="1-react-的-diff-算法">1. <strong>React 的 Diff 算法</strong></h3>
+<p>React 使用了一种 <strong>O(n)</strong> 复杂度的 Diff 算法，这被称为 <strong>Fiber</strong>。该算法主要分为两部分：<strong>reconciliation（调和过程）</strong> 和 <strong>rendering（渲染过程）</strong>。</p>
+<h4 id="核心思想">核心思想</h4>
+<ul>
+<li><strong>分层比较（树分层比较）</strong>：React 不会进行整个虚拟 DOM 树的逐个节点对比，而是将树分为不同层，逐层进行比较。这大幅降低了时间复杂度。</li>
+<li><strong>组件类型不同，直接替换</strong>：如果新旧虚拟 DOM 的类型不同（比如 <code>&#x3C;div></code> 换成了 <code>&#x3C;span></code>，或者是不同的组件类型），React 不会去做深入比较，而是直接删除旧节点，创建新节点。</li>
+<li><strong>key 优化</strong>：React 使用 <code>key</code> 属性来标识列表中的节点。当同级列表元素的 <code>key</code> 发生变化时，React 会尝试优化节点的重排，而不是逐个删除和重建。没有 <code>key</code> 的列表会引发性能问题，因为 React 会进行位置的逐个比对。</li>
+</ul>
+<h4 id="更新流程">更新流程</h4>
+<ol>
+<li>React 会从根节点开始比较每一层的虚拟 DOM。</li>
+<li>如果节点类型相同（如 <code>&#x3C;div></code> 对比 <code>&#x3C;div></code>），则对比其属性和子节点。</li>
+<li>如果节点类型不同，则直接删除旧节点，创建新节点。</li>
+<li>对于列表，React 会优先查找 <code>key</code> 值相同的节点，避免不必要的删除和创建。</li>
+</ol>
+<h4 id="优化策略">优化策略</h4>
+<p>React 的算法设计思路是通过 <strong>浅层对比</strong> 来加速渲染，优先保证渲染性能，而不是精确地对每个节点进行深层次比对。</p>
+<h3 id="2-vue-的-diff-算法">2. <strong>Vue 的 Diff 算法</strong></h3>
+<p>Vue 2 和 Vue 3 都使用了 <strong>O(n)</strong> 的 Diff 算法，核心基于 <code>snabbdom</code> 的实现，特别是在 Vue 3 中，diff 算法进行了优化，追求高效且轻量的更新过程。</p>
+<h4 id="核心思想-1">核心思想</h4>
+<ul>
+<li><strong>双端比较</strong>：Vue 采用了 <strong>双端比较</strong> 策略，即分别从新旧虚拟 DOM 的两端进行对比，直到遇到不同的节点。这样可以快速确定相同的节点，减少中间节点的比对。</li>
+<li><strong>patch 函数</strong>：Vue 使用 <code>patch</code> 函数递归地比较新旧虚拟 DOM 树，通过 <strong>最小化修改</strong> 的方式更新真实 DOM。</li>
+<li><strong>静态节点优化</strong>：Vue 会在模板编译时对静态节点进行标记，这样在更新时可以跳过对静态节点的比对，从而提高性能。</li>
+<li><strong>key 优化</strong>：和 React 类似，Vue 也会使用 <code>key</code> 来优化列表的节点更新，确保节点重用和位置变化的高效处理。</li>
+</ul>
+<h4 id="更新流程-1">更新流程</h4>
+<ol>
+<li>Vue 会从根节点开始对比新旧虚拟 DOM。</li>
+<li>对比节点类型和属性：</li>
+</ol>
+<ul>
+<li>如果节点类型不同，直接替换。</li>
+<li>如果节点类型相同，则继续比较属性和子节点。</li>
+</ul>
+<ol start="3">
+<li>如果是列表，Vue 会基于双端比较算法对列表进行最小化的更新操作。</li>
+<li>对于静态内容的优化，Vue 会跳过不必要的更新。</li>
+</ol>
+<h4 id="vue-3-的优化">Vue 3 的优化</h4>
+<ul>
+<li><strong>编译阶段优化</strong>：Vue 3 在模板编译阶段会标记哪些部分是静态的，这样在更新时，Vue 可以直接跳过这些静态部分，进一步提升性能。</li>
+<li><strong>更轻量的结构</strong>：Vue 3 引入了 Proxy 和更简洁的响应式系统，使得状态更新过程更高效，和 Diff 算法配合得更好。</li>
+</ul>
+<h3 id="3-对比总结">3. <strong>对比总结</strong></h3>
+<p>特性</p>
+<p>React</p>
+<p>Vue</p>
+<p>Diff 核心算法</p>
+<p>O(n) 的 Fiber 架构，按层次比较</p>
+<p>O(n) 的双端比较，使用 snabbdom 的 patch</p>
+<p>key 优化</p>
+<p>通过 key 优化列表更新</p>
+<p>同样使用 key 来优化列表的节点重用</p>
+<p>静态节点优化</p>
+<p>通过 diff 对比逐层更新</p>
+<p>编译时标记静态节点，跳过不必要的更新</p>
+<p>更新策略</p>
+<p>分层比较，不同类型节点直接替换</p>
+<p>双端比较，动态跳过不必要的更新</p>
+<p>性能侧重点</p>
+<p>浅层快速对比，提升性能</p>
+<p>通过最小化修改和静态节点优化提升性能</p>
+<p>总结来看，React 和 Vue 都在 Diff 算法中采用了 O(n) 的复杂度优化，不过 React 更关注通过 Fiber 分层进行调和和渲染，而 Vue 则通过双端比较和静态节点优化来提高渲染效率。两者都在不断优化虚拟 DOM 的更新过程，以确保在复杂应用中的性能表现。</p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"[AI] Vue和React的diff算法\",\"description\":\"Vue 和 React 的 diff 算法都是为了解决虚拟 DOM 更新的问题，它们都使用了 Diffing 技术来优化 DOM 渲染。虽然两者有相似的思想，但实现上存在一些差异。1. React 的 Diff 算法React 使用了一种 O(n) 复杂度的 Diff 算法，这被称为 Fibe...\",\"datePublished\":\"2024-10-14\",\"dateModified\":\"2025-02-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/ug01qnk1txsegqfy/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","React",{"href":"/categories/React/","children":"React"}]]]}],["$","h1",null,{"children":"[AI] Vue和React的diff算法"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-10-14"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/ug01qnk1txsegqfy/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-02-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/na95srxvnwt9a2db/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"框架源码调试"}]]}],["$","$L2",null,{"href":"/blog/rmwmcbmn68nyazbw/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"[AI] Vue3为什么要用proxy"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/ug01qnk1txsegqfy/","title":"[AI] Vue和React的diff算法"}]
+9:["$","$L1c",null,{"headings":[{"id":"1-react-的-diff-算法","text":"1. React 的 Diff 算法","depth":3},{"id":"核心思想","text":"核心思想","depth":4},{"id":"更新流程","text":"更新流程","depth":4},{"id":"优化策略","text":"优化策略","depth":4},{"id":"2-vue-的-diff-算法","text":"2. Vue 的 Diff 算法","depth":3},{"id":"核心思想-1","text":"核心思想","depth":4},{"id":"更新流程-1","text":"更新流程","depth":4},{"id":"vue-3-的优化","text":"Vue 3 的优化","depth":4},{"id":"3-对比总结","text":"3. 对比总结","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"[AI] Vue和React的diff算法 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"Vue 和 React 的 diff 算法都是为了解决虚拟 DOM 更新的问题，它们都使用了 Diffing 技术来优化 DOM 渲染。虽然两者有相似的思想，但实现上存在一些差异。1. React 的 Diff 算法React 使用了一种 O(n) 复杂度的 Diff 算法，这被称为 Fibe..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/ug01qnk1txsegqfy/"}],["$","meta","3",{"property":"og:title","content":"[AI] Vue和React的diff算法"}],["$","meta","4",{"property":"og:description","content":"Vue 和 React 的 diff 算法都是为了解决虚拟 DOM 更新的问题，它们都使用了 Diffing 技术来优化 DOM 渲染。虽然两者有相似的思想，但实现上存在一些差异。1. React 的 Diff 算法React 使用了一种 O(n) 复杂度的 Diff 算法，这被称为 Fibe..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/ug01qnk1txsegqfy/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-10-14"}],["$","meta","8",{"property":"article:modified_time","content":"2025-02-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"[AI] Vue和React的diff算法"}],["$","meta","11",{"name":"twitter:description","content":"Vue 和 React 的 diff 算法都是为了解决虚拟 DOM 更新的问题，它们都使用了 Diffing 技术来优化 DOM 渲染。虽然两者有相似的思想，但实现上存在一些差异。1. React 的 Diff 算法React 使用了一种 O(n) 复杂度的 Diff 算法，这被称为 Fibe..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

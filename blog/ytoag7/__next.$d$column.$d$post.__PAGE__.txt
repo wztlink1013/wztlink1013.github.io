@@ -1,0 +1,279 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T6744,<p>前言：本文是大三web技术课程中使用的uni-app技术的学习记录，uni-app实现一套代码多端使用。代码多和vue类似，但是有一些变动，本文内容部分继承自 <a href="https://ask.dcloud.net.cn/article/35657" rel="noopener noreferrer">白话uni-app</a> 做出二次修改与记录。</p>
+<ul>
+<li>课程大作业：<a href="https://github.com/wztlink1013/uniapp-harrypotter-visualize" rel="noopener noreferrer">https://github.com/wztlink1013/uniapp-harrypotter-visualize</a></li>
+</ul>
+<h2 id="uni-app相对传统web的变化">uni-app相对传统web的变化</h2>
+<p>代码结构上继承vue的 <a href="https://cn.vuejs.org/v2/guide/single-file-components.html" rel="noopener noreferrer">Vue 单文件组件</a> ，连文件后缀也都是<code>.vue</code>，都是将vue文件编译成js文件，但是uni-app在此基础上还做了HTML上标签的变动以及移动端标签的增加，具体如下：</p>
+<h3 id="标签上的变化">标签上的变化</h3>
+<p>下为html标签和uni-app内置组件的映射表：</p>
+<p>（其实老的HTML标签也可以在uni-app里使用，uni-app编译器会在编译时把老标签转为新标签，比如把div编译成view。但不推荐这种用法，调试H5端时容易混乱。）</p>
+<ul>
+<li>div 改成 <a href="https://uniapp.dcloud.io/component/view" rel="noopener noreferrer">view</a></li>
+<li>span、font 改成 <a href="https://uniapp.dcloud.io/component/text" rel="noopener noreferrer">text</a></li>
+<li>a 改成 <a href="https://uniapp.dcloud.io/component/navigator" rel="noopener noreferrer">navigator</a></li>
+<li>img 改成 <a href="https://uniapp.dcloud.io/component/image" rel="noopener noreferrer">image</a></li>
+<li><a href="https://uniapp.dcloud.io/component/input" rel="noopener noreferrer">input</a> 还在，但type属性改成了confirmtype</li>
+<li><a href="https://uniapp.dcloud.io/component/form" rel="noopener noreferrer">form</a>、<a href="https://uniapp.dcloud.io/component/button" rel="noopener noreferrer">button</a>、<a href="https://uniapp.dcloud.io/component/checkbox" rel="noopener noreferrer">checkbox</a>、<a href="https://uniapp.dcloud.io/component/radio" rel="noopener noreferrer">radio</a>、<a href="https://uniapp.dcloud.io/component/label" rel="noopener noreferrer">label</a>、<a href="https://uniapp.dcloud.io/component/textarea" rel="noopener noreferrer">textarea</a>、<a href="https://uniapp.dcloud.io/component/canvas" rel="noopener noreferrer">canvas</a>、<a href="https://uniapp.dcloud.io/component/video" rel="noopener noreferrer">video</a> 这些还在。</li>
+<li>select 改成 <a href="https://uniapp.dcloud.io/component/picker" rel="noopener noreferrer">picker</a></li>
+<li>iframe 改成 <a href="https://uniapp.dcloud.io/component/web-view" rel="noopener noreferrer">web-view</a></li>
+<li>ul、li没有了，都用view替代</li>
+<li>audio 不再推荐使用，改成api方式，<a href="https://uniapp.dcloud.io/api/media/background-audio-manager?id=getbackgroundaudiomanager" rel="noopener noreferrer">背景音频api文档</a></li>
+</ul>
+<h3 id="组件上的增加">组件上的增加</h3>
+<p>除了上述html标签改动外，新增了一批手机端常用的新组件</p>
+<ul>
+<li>scroll-view <a href="https://uniapp.dcloud.io/component/scroll-view" rel="noopener noreferrer">可区域滚动视图容器</a></li>
+<li>swiper <a href="https://uniapp.dcloud.io/component/swiper" rel="noopener noreferrer">可滑动区域视图容器</a></li>
+<li>icon <a href="https://uniapp.dcloud.io/component/icon" rel="noopener noreferrer">图标</a></li>
+<li>rich-text <a href="https://uniapp.dcloud.io/component/rich-text" rel="noopener noreferrer">富文本（不可执行js，但可渲染各种文字格式和图片）</a></li>
+<li>progress <a href="https://uniapp.dcloud.io/component/progress" rel="noopener noreferrer">进度条</a></li>
+<li>slider <a href="https://uniapp.dcloud.io/component/slider" rel="noopener noreferrer">滑块指示器</a></li>
+<li>switch <a href="https://uniapp.dcloud.io/component/switch" rel="noopener noreferrer">开关选择器</a></li>
+<li>camera <a href="https://uniapp.dcloud.io/component/camera" rel="noopener noreferrer">相机</a></li>
+<li>live-player <a href="https://uniapp.dcloud.io/component/live-player" rel="noopener noreferrer">直播</a></li>
+<li>map <a href="https://uniapp.dcloud.io/component/map" rel="noopener noreferrer">地图</a></li>
+<li>cover-view <a href="https://uniapp.dcloud.io/component/cover-view?id=cover-view" rel="noopener noreferrer">可覆盖原生组件的视图容器</a><br>
+cover-view需要多强调几句，uni-app的非h5端的video、map、canvas、textarea是原生组件，层级高于其他组件。如需覆盖原生组件，则需要使用cover-view组件。详见<a href="https://uniapp.dcloud.net.cn/component/native-component" rel="noopener noreferrer">层级介绍</a></li>
+</ul>
+<hr>
+<p>除了内置组件，还有很多开源的扩展组件，把常用操作都进行封装，DCloud建立了插件市场收录这些扩展组件，详见<a href="https://ext.dcloud.net.cn/" rel="noopener noreferrer">插件市场</a>。</p>
+<h3 id="工程结构和页面管理">工程结构和页面管理</h3>
+<p>uni-app的工程结构有单独的要求，<a href="https://uniapp.dcloud.io/frame?id=%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" rel="noopener noreferrer">详见</a></p>
+<p>每个可显示的页面，都必须在 <a href="https://uniapp.dcloud.io/collocation/pages" rel="noopener noreferrer">pages.json</a> 中注册。如果你开发过小程序，那么pages.json类似app.json。如果你熟悉vue，这里没有vue的路由，都是在pages.json里管理。</p>
+<p>原来工程的首页一般是index.html或default.html，是在web server里配的。而uni-app的首页，是在pages.json里配的，page节点下第一个页面就是首页。一般在/pages/xx的目录下。</p>
+<p>app和小程序中，为了提升体验，页面提供了原生的导航栏和底部tabbar，注意这些配置是在pages.json中做，而不是在vue页面里创建，但点击事件的监听在显示的vue页面中做。</p>
+<p>如果你熟悉小程序开发的话，对比变化如下：</p>
+<ul>
+<li>原来app.json被一拆为二。页面管理，被挪入了uni-app的pages.json；非页面管理，挪入了manifest.json</li>
+<li>原来的app.js和app.wxss被合并到了app.vue中</li>
+</ul>
+<h2 id="文件导入方式变化">文件导入方式变化</h2>
+<h3 id="js引入方式">js引入方式</h3>
+<p>以前通过<code>script</code> <code>src</code>、<code>link</code> <code>href</code>引入外部的js和css；</p>
+<p>现在是<strong>es6</strong>的写法，<code>import</code>引入外部的js模块(注意不是文件)或css</p>
+<ul>
+<li>以前</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;script src=<span class="hljs-string">"js/jquery-1.10.2.js"</span> type=<span class="hljs-string">"text/javascript"</span>>&#x3C;/script>  
+<span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"css/bootstrap.css"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/css"</span>/></span></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>现在 js要require进来，变成了对象。</li>
+</ul>
+<p>在hello uni-app项目的common目录有一个工具类<code>util.js</code>，可以在hello uni-app中搜索这个例子查看。</p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;script>  
+<span class="hljs-keyword">var</span> util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../../../common/util.js'</span>);  <span class="hljs-comment">//require这个js模块  </span>
+<span class="hljs-keyword">var</span> formatedPlayTime = util.<span class="hljs-title function_">formatTime</span>(playTime); <span class="hljs-comment">//调用js模块的方法  </span>
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>而在这个<code>util.js</code>里，要把之前的function封装为对象的方法</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ytoag7/1604048264989-b4591bb0-e4bc-4581-aae5-bf7615f268b4.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">var</span> dateUtils = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../../../common/util.js'</span>).<span class="hljs-property">dateUtils</span>; <span class="hljs-comment">//直接使用js模块的属性。在hello uni-app有示例  </span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> echarts <span class="hljs-keyword">from</span> <span class="hljs-string">'/components/echarts/echarts.simple.min.js'</span>; <span class="hljs-comment">//将js导入并重命名为echarts，然后使用echarts.来继续执行方法。</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="css引入方式">CSS引入方式</h3>
+<div class="code-block"><pre><code class="hljs language-css">&#x3C;style>  
+    <span class="hljs-keyword">@import</span> <span class="hljs-string">"./common/uni.css"</span>;  
+    <span class="hljs-selector-class">.uni-hello-text</span>{  
+        <span class="hljs-attribute">color</span>:<span class="hljs-number">#7A7E83</span>;  
+    }  
+&#x3C;/style>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>**改全局样式：**在根目录下的app.vue里写入，每个页面都会加载app.vue里的样式。</p>
+<h3 id="组件导入">组件导入</h3>
+<p>类似hexo博客主题设计一样，能以组件的形式模块化导入。</p>
+<p>如下是导入一个角标的组件库，在页面上显示一个abc并且右上角有个数字角标1，<a href="http://ext.dcloud.net.cn/plugin?id=21" rel="noopener noreferrer">详见</a></p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>  
+    &#x3C;view>  
+        &#x3C;uni-badge text="abc" :inverted="true">&#x3C;/uni-badge>&#x3C;!--3.使用组件-->  
+    &#x3C;/view>  
+&#x3C;/template>  
+&#x3C;script>  
+    import uniBadge from "../../../components/uni-badge.vue";//1.导入组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）  
+    export default {  
+        data() {  
+            return {  
+            }  
+        },  
+        components: {  
+            uniBadge //2.注册组件（这步属于传统vue规范，但在uni-app的easycom下可以省略这步）  
+        }  
+    }  
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>如需要全局导入vue组件，即每个页面都可以直接使用而不用引用和注册的话，在项目根目录下的main.js里处理。如下是hello uni-app里的例子。</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">//main.js  </span>
+<span class="hljs-keyword">import</span> pageHead <span class="hljs-keyword">from</span> <span class="hljs-string">'./components/page-head.vue'</span> <span class="hljs-comment">//导入  </span>
+<span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">component</span>(<span class="hljs-string">'page-head'</span>, pageHead) <span class="hljs-comment">//注册。注册后在每个vue的page页面里可以直接使用&#x3C;page-head>&#x3C;/page-head>组件。</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>上述的组件使用方式属于传统vue的概念。uni-app 2.7以后推出了更简单的组件使用技术<a href="https://uniapp.dcloud.net.cn/collocation/pages?id=easycom" rel="noopener noreferrer">easycom</a>，无需引用和注册组件，直接在template区域使用组件即可。</p>
+<h2 id="js的变化">js的变化</h2>
+<p>js的变化，分为<strong>运行环境变化</strong>、<strong>数据绑定模式变化</strong>、<strong>api变化</strong>3部分。</p>
+<h3 id="运行环境从浏览器变成v8引擎">运行环境从浏览器变成v8引擎</h3>
+<p>标准js语法和api都支持，比如if、for、settimeout、indexOf等。</p>
+<p>但<strong>浏览器专用的</strong>window、document、navigator、location对象，包括cookie等存储，<strong>只有在浏览器中才有</strong>，app和小程序都不支持。</p>
+<blockquote>
+<p>可能有些人以为js等于浏览器里的js。其实js是ECMAScript组织管理的，浏览器中的js是w3c组织基于js规范补充了window、document、navigator、location等专用对象。</p>
+</blockquote>
+<p>在uni-app的各个端中，除了h5端，其他端的js都运行在一个独立的v8引擎下，不是在浏览器中，所以浏览器的对象无法使用。如果你做过小程序开发，对此应当很了解。</p>
+<p><strong>这意味着依赖document的很多HTML的库，比如jqurey无法使用。</strong></p>
+<p>当然app和小程序支持web-view组件，里面可以加载标准HTML，这种页面仍然支持浏览器专用对象window、document、navigator、location。</p>
+<h3 id="以前的dom操作改成vue的mvvm模式">以前的dom操作，改成vue的MVVM模式</h3>
+<p>现在前端趋势是去dom化，改用**mvvm模式，**更简洁的写法，大幅减少代码行数，同时差量渲染性能更好。</p>
+<p>uni-app使用vue的数据绑定方式解决js和dom界面交互的问题。</p>
+<p>如果你想改变某个dom元素的显示内容，比如一个view的显示文字：</p>
+<p><strong>以前</strong>是给view设id，然后js里通过选择器获取dom元素，进一步通过js进行赋值操作，修改dom元素的属性或值。</p>
+<p>如下演示了一段代码，页面中有个显示的文字区和一个按钮，点击按钮后会修改文字区的值</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">html</span>></span>  
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>  
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span>></span><span class="javascript">  
+            <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"DOMContentLoaded"</span>,<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) {  
+                <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"spana"</span>).<span class="hljs-property">innerText</span>=<span class="hljs-string">"456"</span>  
+            })  
+            <span class="hljs-keyword">function</span> <span class="hljs-title function_">changetextvalue</span> (<span class="hljs-params"></span>) {  
+                <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"spana"</span>).<span class="hljs-property">innerText</span>=<span class="hljs-string">"789"</span>  
+            }  
+        </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>  
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>  
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>  
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"spana"</span>></span>123<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>  
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"changetextvalue()"</span>></span>修改为789<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>  
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>  
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>现在的做法，是<strong>vue的绑定模式</strong>，给这个<strong>dom元素绑定一个js变量</strong>，在script中修改js变量的值，dom会自动变化，页面会自动更新渲染</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>  
+    &#x3C;view>  
+        &#x3C;text>{{textvalue}}&#x3C;/text>&#x3C;!-- 这里演示了组件值的绑定 -->  
+        &#x3C;button :type="buttontype" @click="changetextvalue()">修改为789&#x3C;/button>&#x3C;!-- 这里演示了属性和事件的绑定 -->  
+    &#x3C;/view>  
+&#x3C;/template>  
+&#x3C;script>  
+    export default {  
+        data() {  
+            return {  
+                textvalue:"123",  
+                buttontype:"primary"  
+            };  
+        },  
+        onLoad() {  
+            this.textvalue="456"//这里修改textvalue的值，其实123都来不及显示就变成了456  
+        },  
+        methods: {  
+            changetextvalue() {  
+                this.textvalue="789"//这里修改textvalue的值，页面自动刷新为789  
+            }  
+        }  
+    }  
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>注意上述代码中的 <code>export default {}</code> 里的 <code>data(): {return { }}</code>。</p>
+<p>在vue的设计中，这里存放着页面中需要绑定的数据，写在data里，才能被界面正确的绑定和渲染。</p>
+<p>注意：uni-app的vue页面是vue的单文件组件规范，按照vue的定义只接受 function，必须用 return 包起来。</p>
+<p>如果你学过小程序的数据绑定，但不了解vue，要注意：</p>
+<ul>
+<li>小程序的数据绑定参考了vue，但自己修改了一些。在uni-app中只支持标准的vue，不支持小程序的数据绑定语法</li>
+<li>小程序里的setData在uni-app里并不存在，因为vue是自动双向数据绑定的。直接通过赋值方式修改数据，如果数据绑定到界面上，界面会自动更新渲染</li>
+</ul>
+<p>从上述示例，还可看出事件的写法变化。</p>
+<ul>
+<li>以前，元素的事件是用onxxx=""，里面写一段js或引用function的name，比如上述代码中的<code>onclick="changetextvalue()"</code></li>
+<li>现在，需要在js的<code>export default {}</code> 里的 <code>methods: {}</code> 里写一个方法，然后在组件中使用<code>@click="changetextvalue()"</code></li>
+</ul>
+<p>在js中，与data和methods平级的，如上述示例代码中的<code>onload()</code>，称为生命周期。在普通vue页面里的生命周期叫页面生命周期。在项目根目录的app.vue文件中的生命周期叫应用生命周期。</p>
+<p>除了<code>onload</code>，还有<code>onready</code>等很多生命周期，具体见<a href="https://uniapp.dcloud.io/collocation/frame/lifecycle" rel="noopener noreferrer">uni-app的生命周期</a></p>
+<p>在高级用法里，<strong>vue支持给组件设ref（引用标记）</strong>，这类似于之前html中给一个dom元素设id，然后在js中也可以用<code>this.$refs.xxx</code>来获取。如下：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>  
+  &#x3C;view>  
+    &#x3C;view ref="testview">11111&#x3C;/view>  
+    &#x3C;button @click="getTest">获取test节点&#x3C;/button>  
+  &#x3C;/view>  
+&#x3C;/template>  
+&#x3C;script>  
+export default {  
+  methods: {  
+    getTest() {  
+      console.log(this.$refs.testview)  
+    }  
+  }  
+};  
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="js-api的变化">js api的变化</h3>
+<p>因为uni-app的api是<strong>参考小程序</strong>的，所以<strong>和浏览器的js api</strong>有很多不同，如</p>
+<ol>
+<li>alert,confirm 改成 <a href="https://uniapp.dcloud.io/api/ui/prompt?id=showmodal" rel="noopener noreferrer">uni.showmodel</a></li>
+<li>ajax 改成 <a href="https://uniapp.dcloud.io/api/request/request" rel="noopener noreferrer">uni.request</a></li>
+<li>cookie、session 没有了，local.storage 改成 <a href="https://uniapp.dcloud.io/api/storage/storage?id=setstorage" rel="noopener noreferrer">uni.storage</a></li>
+</ol>
+<p>uni-app的js api还有很多，但基本就是小程序的api，把wx.xxx改为uni.xxx即可。<a href="https://uniapp.dcloud.io/api/README" rel="noopener noreferrer">详见</a></p>
+<p>uni-app在不同的端，支持条件编译，无限制的使用各端独有的api，<a href="https://uniapp.dcloud.io/platform" rel="noopener noreferrer">详见条件编译</a></p>
+<h2 id="css的变化">css的变化</h2>
+<p><strong>标准的css基本都是支持的。</strong></p>
+<h3 id="选择器方面">选择器方面</h3>
+<blockquote>
+<p>有2个变化：</p>
+</blockquote>
+<ol>
+<li>*选择器不支持；</li>
+<li>元素选择器里没有body，改为了page。微信小程序即是如此。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-css"><span class="hljs-attribute">page</span>{  
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>**单位方面：**px无法动态适应不同宽度的屏幕，rem无法用于nvue/weex。如果想使用根据屏幕宽度自适应的单位，推荐使用rpx，全端支持。 <a href="https://uniapp.dcloud.io/frame?id=%e5%b0%ba%e5%af%b8%e5%8d%95%e4%bd%8d" rel="noopener noreferrer">尺寸单位文档</a></li>
+<li>**布局方面：**uni-app推荐使用flex布局，这个布局思路和传统流式布局有点区别。但flex的特色在于，不管是什么技术都支持这种排版，web、小程序/快应用、weex/rn、原生的iOS、Android开发，全都支持flex。它是通吃所有端的新一代布局方案。相关教程请自行百度学习。</li>
+</ul>
+<h3 id="flex">flex</h3>
+<p>uni-app的vue文件里支持所有web排版方式，不管是流式还是flex。但nvue里，只支持flex，因为它在app端是使用原生排版引擎渲染的。</p>
+<p><strong>注意css里背景图和字体文件，尽量不要大于40k，因为会影响性能。在小程序端，如果要大于40k，需放到服务器侧远程引用或base64后引入，不能放到本地作为独立文件引用。</strong></p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://uniapp.dcloud.net.cn/" rel="noopener noreferrer">https://uniapp.dcloud.net.cn/</a></li>
+<li><a href="https://cn.vuejs.org/index.html" rel="noopener noreferrer">https://cn.vuejs.org/index.html</a></li>
+<li>官方教程：<a href="https://ke.qq.com/course/343370" rel="noopener noreferrer">uni-app跨平台框架官方教程</a></li>
+<li><a href="https://ask.dcloud.net.cn/article/35657" rel="noopener noreferrer">白话uni-app</a></li>
+<li>微信官方文档：<a href="https://developers.weixin.qq.com/doc/" rel="noopener noreferrer">https://developers.weixin.qq.com/doc/</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"uni-app实现一套代码多端使用\",\"description\":\"前言：本文是大三web技术课程中使用的uni-app技术的学习记录，uni-app实现一套代码多端使用。代码多和vue类似，但是有一些变动，本文内容部分继承自 白话uni-app 做出二次修改与记录。课程大作业：https://github.com/wztlink1013/uniapp-ha...\",\"datePublished\":\"2020-10-29\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/ytoag7/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","业务解决方案",{"href":"/categories/%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/","children":"业务解决方案"}]]]}],["$","h1",null,{"children":"uni-app实现一套代码多端使用"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-10-29"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[7," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/ytoag7/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/ab9fkt/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"分治算法解决思路"}]]}],["$","$L2",null,{"href":"/blog/im0an1/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Android平台与开发技术"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/ytoag7/","title":"uni-app实现一套代码多端使用"}]
+9:["$","$L1c",null,{"headings":[{"id":"uni-app相对传统web的变化","text":"uni-app相对传统web的变化","depth":2},{"id":"标签上的变化","text":"标签上的变化","depth":3},{"id":"组件上的增加","text":"组件上的增加","depth":3},{"id":"工程结构和页面管理","text":"工程结构和页面管理","depth":3},{"id":"文件导入方式变化","text":"文件导入方式变化","depth":2},{"id":"js引入方式","text":"js引入方式","depth":3},{"id":"css引入方式","text":"CSS引入方式","depth":3},{"id":"组件导入","text":"组件导入","depth":3},{"id":"js的变化","text":"js的变化","depth":2},{"id":"运行环境从浏览器变成v8引擎","text":"运行环境从浏览器变成v8引擎","depth":3},{"id":"以前的dom操作改成vue的mvvm模式","text":"以前的dom操作，改成vue的MVVM模式","depth":3},{"id":"js-api的变化","text":"js api的变化","depth":3},{"id":"css的变化","text":"css的变化","depth":2},{"id":"选择器方面","text":"选择器方面","depth":3},{"id":"flex","text":"flex","depth":3},{"id":"参考资料","text":"参考资料","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"uni-app实现一套代码多端使用 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：本文是大三web技术课程中使用的uni-app技术的学习记录，uni-app实现一套代码多端使用。代码多和vue类似，但是有一些变动，本文内容部分继承自 白话uni-app 做出二次修改与记录。课程大作业：https://github.com/wztlink1013/uniapp-ha..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/ytoag7/"}],["$","meta","3",{"property":"og:title","content":"uni-app实现一套代码多端使用"}],["$","meta","4",{"property":"og:description","content":"前言：本文是大三web技术课程中使用的uni-app技术的学习记录，uni-app实现一套代码多端使用。代码多和vue类似，但是有一些变动，本文内容部分继承自 白话uni-app 做出二次修改与记录。课程大作业：https://github.com/wztlink1013/uniapp-ha..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/ytoag7/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-10-29"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"uni-app实现一套代码多端使用"}],["$","meta","11",{"name":"twitter:description","content":"前言：本文是大三web技术课程中使用的uni-app技术的学习记录，uni-app实现一套代码多端使用。代码多和vue类似，但是有一些变动，本文内容部分继承自 白话uni-app 做出二次修改与记录。课程大作业：https://github.com/wztlink1013/uniapp-ha..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

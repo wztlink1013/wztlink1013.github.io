@@ -1,0 +1,164 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T34c8,<p><img src="https://blogimage.musemvp.com/v1.0.0/cgo5a1ofo4g7612b/1709186151285-0873ba2c-2ec2-49c1-a9f7-91971c51460f.png" alt="" loading="lazy" decoding="async"></p>
+<p>前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。</p>
+<h3 id="一github-actions环境准备">一、GitHub Actions环境准备</h3>
+<p>GitHub Actions脚本的执行涉及一些敏感变量，在GitHub仓库中可以设置隐形变量防止暴露在外，只有在 GitHub Actions 中才能使用到</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/cgo5a1ofo4g7612b/1709183847317-5c3b51ab-6524-4443-88eb-3c361a32e1cc.png" alt="" loading="lazy" decoding="async"></p>
+<p>环境变量含义：</p>
+<ol>
+<li>PASSPHRASE（加密私钥的密码）</li>
+<li>KEY（密钥）</li>
+<li>SERVER_IP（云服务器公网IP）</li>
+<li>USERNAME（云服务器登录用户名， 通常为root）</li>
+</ol>
+<blockquote>
+<p>[!NOTE]</p>
+<p>📌 PASSPHRASE和KEY分别为下面截图中的1和2</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/cgo5a1ofo4g7612b/1708961842486-da9a4392-86a2-4f32-92ef-06702be0a712.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="二github-actions脚本编写">二、GitHub Actions脚本编写</h3>
+<p>脚本需要做的事情有如下几点：</p>
+<ol>
+<li>项目打包成静态文件</li>
+<li>将打包后的静态文件上传至云服务器指定文件夹</li>
+</ol>
+<h4 id="打包成静态文件">打包成静态文件</h4>
+<p>执行项目打包命令</p>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Use</span> <span class="hljs-string">Node.js</span> <span class="hljs-string">${{</span> <span class="hljs-string">matrix.node-version</span> <span class="hljs-string">}}</span>
+  <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v4</span>
+  <span class="hljs-attr">with:</span>
+    <span class="hljs-attr">node-version:</span> <span class="hljs-string">${{</span> <span class="hljs-string">matrix.node-version</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">cache:</span> <span class="hljs-string">'pnpm'</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">|
+    pnpm install
+    pnpm build
+    mv apps/test-project/dist/ ./dist/
+</span></code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="上传服务器">上传服务器</h4>
+<p>利用scp-action将指定文件夹上传至服务器目标文件夹</p>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Scp</span> <span class="hljs-string">file</span> <span class="hljs-string">to</span> <span class="hljs-string">aliyun</span>
+  <span class="hljs-attr">uses:</span> <span class="hljs-string">appleboy/scp-action@v0.1.7</span>
+  <span class="hljs-attr">with:</span>
+    <span class="hljs-attr">host:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.SERVER_IP</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.USERNAME</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">key:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.KEY</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">passphrase:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.PASSPHRASE</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">tar_dereference:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">rm:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">source:</span> <span class="hljs-string">'dist/*'</span>
+    <span class="hljs-attr">target:</span> <span class="hljs-string">'/opt/1panel/apps/openresty/openresty/www/sites/test.com/index'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>上述脚本代码只是上传，不能在服务器进行相关命令操作文件，还需要利用ssh-action添加如下脚本：</p>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">executing</span> <span class="hljs-string">remote</span> <span class="hljs-string">ssh</span> <span class="hljs-string">commands</span> <span class="hljs-string">using</span> <span class="hljs-string">key</span>
+  <span class="hljs-attr">uses:</span> <span class="hljs-string">appleboy/ssh-action@v1.0.3</span>
+  <span class="hljs-attr">with:</span>
+    <span class="hljs-attr">host:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.SERVER_IP</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.USERNAME</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">key:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.KEY</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">passphrase:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.PASSPHRASE</span> <span class="hljs-string">}}</span>
+    <span class="hljs-attr">script:</span> <span class="hljs-string">|
+      mv /opt/1panel/apps/openresty/openresty/www/sites/test.com/index/dist/* /opt/1panel/apps/openresty/openresty/www/sites/test.com/index/
+</span></code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>这个脚本主要作用是将文件内容层级提升</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>因为本文章记录的是基于集成环境前端项目部署，只是打包后静态文件的替换，所以不涉及重启相关命令操作。如果你的环境不是继承运维面板（1panel/宝塔 等）的web服务器，而是手动搭建web服务器，则在这里可以写一些相关命令，比如nginx重启、node重启、docker重启指定容器……eg：docker restart project-name</p>
+</blockquote>
+<h3 id="三最终代码">三、最终代码</h3>
+<ul>
+<li>在GitHub仓库内添加文件<code>.github/workflows/server.yml</code></li>
+<li>结合上述各个步骤的子代码，再添加部分GitHub Actions触发条件逻辑代码，整个脚本文件就完成了。</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Aliyun</span> <span class="hljs-string">Server</span> <span class="hljs-string">Deploy</span>
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">tags:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">release-**</span>
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">deploy_job:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">build</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v4</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">pnpm/action-setup@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">version:</span> <span class="hljs-number">8</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Use</span> <span class="hljs-string">Node.js</span> <span class="hljs-string">${{</span> <span class="hljs-string">matrix.node-version</span> <span class="hljs-string">}}</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v4</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-string">${{</span> <span class="hljs-string">matrix.node-version</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">cache:</span> <span class="hljs-string">'pnpm'</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">|
+          pnpm install
+          pnpm build
+          mv apps/test-project/dist/ ./dist/
+</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Scp</span> <span class="hljs-string">file</span> <span class="hljs-string">to</span> <span class="hljs-string">aliyun</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">appleboy/scp-action@v0.1.7</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">host:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.SERVER_IP</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.USERNAME</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">key:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.KEY</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">passphrase:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.PASSPHRASE</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">tar_dereference:</span> <span class="hljs-literal">true</span>
+          <span class="hljs-attr">rm:</span> <span class="hljs-literal">true</span>
+          <span class="hljs-attr">source:</span> <span class="hljs-string">'dist/*'</span>
+          <span class="hljs-attr">target:</span> <span class="hljs-string">'/opt/1panel/apps/openresty/openresty/www/sites/test.com/index'</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">executing</span> <span class="hljs-string">remote</span> <span class="hljs-string">ssh</span> <span class="hljs-string">commands</span> <span class="hljs-string">using</span> <span class="hljs-string">key</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">appleboy/ssh-action@v1.0.3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">host:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.SERVER_IP</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.USERNAME</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">key:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.KEY</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">passphrase:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.PASSPHRASE</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">script:</span> <span class="hljs-string">|
+            mv /opt/1panel/apps/openresty/openresty/www/sites/test.com/index/dist/* /opt/1panel/apps/openresty/openresty/www/sites/test.com/index/
+</span></code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="四参考">四、参考</h3>
+<ul>
+<li><a href="https://github.com/appleboy/scp-action" rel="noopener noreferrer">https://github.com/appleboy/scp-action</a></li>
+<li><a href="https://github.com/appleboy/ssh-action" rel="noopener noreferrer">https://github.com/appleboy/ssh-action</a></li>
+<li><a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows" rel="noopener noreferrer">https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Github Actions自动部署项目到云服务器\",\"description\":\"前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。一、GitHub Actions环境准...\",\"datePublished\":\"2024-02-29\",\"dateModified\":\"2025-06-21\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/cgo5a1ofo4g7612b/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","运维",{"href":"/categories/%E8%BF%90%E7%BB%B4/","children":"运维"}]]]}],["$","h1",null,{"children":"Github Actions自动部署项目到云服务器"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-02-29"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[2," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/cgo5a1ofo4g7612b/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-06-21"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/ymz4rr2wyxrxktqd/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Hexo优化网站SEO"}]]}],["$","$L2",null,{"href":"/blog/wgervpvkdaoc42ml/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"项目使用all-contributors-cli生成贡献者名单"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/cgo5a1ofo4g7612b/","title":"Github Actions自动部署项目到云服务器"}]
+9:["$","$L1c",null,{"headings":[{"id":"一github-actions环境准备","text":"一、GitHub Actions环境准备","depth":3},{"id":"二github-actions脚本编写","text":"二、GitHub Actions脚本编写","depth":3},{"id":"打包成静态文件","text":"打包成静态文件","depth":4},{"id":"上传服务器","text":"上传服务器","depth":4},{"id":"三最终代码","text":"三、最终代码","depth":3},{"id":"四参考","text":"四、参考","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Github Actions自动部署项目到云服务器 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。一、GitHub Actions环境准..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/cgo5a1ofo4g7612b/"}],["$","meta","3",{"property":"og:title","content":"Github Actions自动部署项目到云服务器"}],["$","meta","4",{"property":"og:description","content":"前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。一、GitHub Actions环境准..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/cgo5a1ofo4g7612b/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-02-29"}],["$","meta","8",{"property":"article:modified_time","content":"2025-06-21"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Github Actions自动部署项目到云服务器"}],["$","meta","11",{"name":"twitter:description","content":"前言：项目部署至服务器，一般而言，只需要将打包后的静态代码上传到服务器指定位置，如果配置的是nginx web服务器，再执行刷新相关命令即可。本文记录1panel运维管理面板下，结合GitHub Action自动化部署项目打包代码至云服务器的脚本编写逻辑。一、GitHub Actions环境准..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

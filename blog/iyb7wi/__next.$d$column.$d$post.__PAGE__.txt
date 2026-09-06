@@ -1,0 +1,364 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T5250,<h2 id="实验报告">实验报告</h2>
+<p>实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值</p>
+<p>要求：仅用一个栈实现（并且用原生单链表实现）</p>
+<p>测试用例：4+2*3-10/5</p>
+<p>交作业时间：5月14日</p>
+<h2 id="思路">思路</h2>
+<p>两个步骤：</p>
+<ol>
+<li><strong>将给定的表达式转换为波兰表达式/逆波兰表达式</strong></li>
+<li><strong>对转换后的式子进行计算</strong></li>
+</ol>
+<p>学习遍历二叉树，利用前序/中序/后序表达式的时候，经常有一个问题就是：</p>
+<ul>
+<li>给出中缀表达式，【写出&#x26;&#x26;编程出】后序（逆波兰）表达式</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/iyb7wi/1620306330357-a83abeff-56a3-44f1-b837-82051f46e3b5.png" alt="" loading="lazy" decoding="async"><img src="https://blogimage.musemvp.com/v1.0.0/iyb7wi/1620306352380-f6eef790-b72d-4e1d-9da1-6597ec5ae11d.png" alt="" loading="lazy" decoding="async"></p>
+<p>上面的是课堂上在纸上的书写，那么如何将其用编程语言实现呢？思路应该是这样的：</p>
+<ul>
+<li>
+<p>遍历表达式：对遍历的元素进行判断</p>
+</li>
+<li>
+<p>是运算符？操作数？还是括号呢？对其相应的判断</p>
+</li>
+<li>
+<p>操作数</p>
+</li>
+<li>
+<p>运算符：+-*/</p>
+</li>
+<li>
+<p>括号</p>
+</li>
+<li>
+<p>个位数/双位数……的字符处理</p>
+</li>
+<li>
+<p>给出中缀表达式，【写出&#x26;&#x26;编程出】前序（波兰）表达式</p>
+</li>
+</ul>
+<p>如果写出了逆波兰表达式，转换为波兰表达式只需要将<code>（</code>变为<code>）</code>，同时遍历从后往前遍历即可</p>
+<p>最后的结果逆置</p>
+<ul>
+<li>最后的计算，波兰和逆波兰不能写成一个函数，因为减数和被减数，除数和被除数的缘故</li>
+</ul>
+<h2 id="实验代码">实验代码</h2>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/iyb7wi/1620979662957-690a9050-8a82-4170-816b-ffcff99f38d7.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/iyb7wi/1620979669021-d90e4ff6-feb6-4df9-9f6a-d7176b25d258.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&#x3C;bits/stdc++.h></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/**
+ * 波兰表达式/逆波兰表达式求解运算表达式
+ * 
+ */</span>
+
+<span class="hljs-comment">/**
+ * 单链表的存储结构
+ */</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> {
+    string data; <span class="hljs-comment">//数据域</span>
+    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">LNode</span> *next; <span class="hljs-comment">//指针域</span>
+}Lnode, *LinkList; <span class="hljs-comment">//LinkList为指向结构体LNode的指针类型</span>
+
+<span class="hljs-comment">/* 初始化链表 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">InitList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    L = <span class="hljs-keyword">new</span> LNode;
+    L->next = <span class="hljs-literal">NULL</span>;
+}
+
+<span class="hljs-comment">/* 打印 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TraverseList</span><span class="hljs-params">(LinkList &#x26; L)</span></span>{
+        LNode *p = <span class="hljs-keyword">new</span> LNode;
+        p = L->next;
+        <span class="hljs-comment">// cout &#x3C;&#x3C; "此中缀表达式链表打印的结果为：";</span>
+        <span class="hljs-keyword">while</span> (p != <span class="hljs-literal">NULL</span>)
+        {
+            cout &#x3C;&#x3C; p->data;
+            p = p->next;
+        }
+        cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>;
+}
+
+<span class="hljs-comment">/* 逆置 */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ReverseList</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    LNode *p = L->next;             
+    L->next = <span class="hljs-literal">NULL</span>;                
+    <span class="hljs-keyword">while</span>(p)                        
+    {
+        LNode *q = p->next;         
+        p->next = L->next;          
+        L->next = p;                
+        p = q;                      
+    }
+}
+
+<span class="hljs-comment">/**
+ * 初始化用户输入的链表
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Center</span><span class="hljs-params">(LinkList &#x26;L,string s)</span> </span>{
+    <span class="hljs-built_in">InitList</span>(L);
+    LinkList p = L;
+    string temp = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; s.<span class="hljs-built_in">length</span>();i++){
+        <span class="hljs-comment">// 处理双位数字情况</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isdigit</span>(s[i])) {
+            <span class="hljs-comment">// 该字符为数字</span>
+            temp = temp + s[i];
+            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">isdigit</span>(s[i<span class="hljs-number">+1</span>])) {
+                <span class="hljs-comment">// 下一个不是数字，而是字符，将temp后插</span>
+                LinkList node = <span class="hljs-keyword">new</span> LNode;
+                node->data = temp;
+                node->next = <span class="hljs-literal">NULL</span>;
+                p->next = node;
+                p = node;
+                <span class="hljs-comment">// 将temp重置</span>
+                temp = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 后插到L尾巴上</span>
+        LinkList node = <span class="hljs-keyword">new</span> LNode;
+        node->data = s[i];
+        node->next = <span class="hljs-literal">NULL</span>;
+        p->next = node;
+        p = node;
+    }    
+}
+
+<span class="hljs-comment">/**
+ * 将表达式转换为波兰表达式/逆波兰表达式
+ * 第二个参数对逆波兰而言是左括号，第三个参数对逆波兰而言是右括号
+ * 对波兰而言反过来
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Transition</span><span class="hljs-params">(LinkList &#x26;L, string l, string r)</span></span>{
+    <span class="hljs-comment">// 定义一个栈用来处理</span>
+    stack&#x3C;string> stack;
+    LinkList p = L->next;
+    LinkList result = <span class="hljs-keyword">new</span> LNode;
+    <span class="hljs-built_in">InitList</span>(result);
+    LinkList result_a = result;
+
+    <span class="hljs-keyword">while</span>(p != <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-keyword">if</span> (p->data == l) {
+            stack.<span class="hljs-built_in">push</span>(p->data);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == r) {
+            <span class="hljs-keyword">while</span>(stack.<span class="hljs-built_in">top</span>() != l){
+                LinkList temp = <span class="hljs-keyword">new</span> LNode;
+                temp->data = stack.<span class="hljs-built_in">top</span>();
+                temp->next = <span class="hljs-literal">NULL</span>;
+                result_a->next = temp;
+                result_a = temp;
+                stack.<span class="hljs-built_in">pop</span>();
+            }
+            <span class="hljs-keyword">if</span> (stack.<span class="hljs-built_in">top</span>() == l){
+                stack.<span class="hljs-built_in">pop</span>();
+            }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"+"</span> || p->data == <span class="hljs-string">"-"</span>) {
+            <span class="hljs-keyword">if</span> (stack.<span class="hljs-built_in">size</span>() != <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">if</span> (stack.<span class="hljs-built_in">top</span>() == <span class="hljs-string">"*"</span> || stack.<span class="hljs-built_in">top</span>() == <span class="hljs-string">"/"</span>){
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; stack.<span class="hljs-built_in">size</span>();i++) {
+                        <span class="hljs-keyword">if</span> (stack.<span class="hljs-built_in">top</span>() == l) {
+                            <span class="hljs-keyword">break</span>;
+                        }
+                        LinkList temp = <span class="hljs-keyword">new</span> LNode;
+                        temp->data = stack.<span class="hljs-built_in">top</span>();
+                        temp->next = <span class="hljs-literal">NULL</span>;
+                        result_a->next = temp;
+                        result_a = temp;
+                        stack.<span class="hljs-built_in">pop</span>();
+                    }
+                }
+            }
+            stack.<span class="hljs-built_in">push</span>(p->data);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"*"</span> || p->data == <span class="hljs-string">"/"</span>) {
+            stack.<span class="hljs-built_in">push</span>(p->data);
+        } <span class="hljs-keyword">else</span> {
+            LinkList temp = <span class="hljs-keyword">new</span> LNode;
+            temp->data = p->data;
+            temp->next = <span class="hljs-literal">NULL</span>;
+            result_a->next = temp;
+            result_a = temp;
+        }
+        p = p->next;
+    }
+    <span class="hljs-comment">// TraverseList(result);</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; stack.<span class="hljs-built_in">size</span>();i++) {
+        LinkList temp = <span class="hljs-keyword">new</span> LNode;
+        temp->data = stack.<span class="hljs-built_in">top</span>();
+        temp->next = <span class="hljs-literal">NULL</span>;
+        result_a->next = temp;
+        result_a = temp;
+        stack.<span class="hljs-built_in">pop</span>();
+    }
+    <span class="hljs-comment">// 上一个操作总是不能清空栈的最后一个元素</span>
+    LinkList temp = <span class="hljs-keyword">new</span> LNode;
+    temp->data = stack.<span class="hljs-built_in">top</span>();
+    temp->next = <span class="hljs-literal">NULL</span>;
+    result_a->next = temp;
+    result_a = temp;
+    stack.<span class="hljs-built_in">pop</span>();
+
+    L = result;
+}
+
+<span class="hljs-comment">/**
+ * 计算
+ */</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">EvaulTree</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    <span class="hljs-comment">// 定义一个栈用来处理</span>
+    stack&#x3C;string> stack;
+    LinkList p = L->next;
+    <span class="hljs-keyword">while</span>(p != <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-keyword">if</span> (p->data == <span class="hljs-string">"+"</span>){
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(y + x));
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"-"</span>) {
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(y - x));
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"*"</span>) {
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(y * x));
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"/"</span>) {
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(y / x));
+        } <span class="hljs-keyword">else</span> {
+            stack.<span class="hljs-built_in">push</span>(p->data);
+        }
+        p = p->next;
+    }
+    <span class="hljs-keyword">while</span> (!stack.<span class="hljs-built_in">empty</span>()){
+        cout &#x3C;&#x3C; <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+        stack.<span class="hljs-built_in">pop</span>();
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">EvaulTree_polish</span><span class="hljs-params">(LinkList &#x26;L)</span> </span>{
+    <span class="hljs-comment">// 定义一个栈用来处理</span>
+    stack&#x3C;string> stack;
+    LinkList p = L->next;
+    <span class="hljs-keyword">while</span>(p != <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-keyword">if</span> (p->data == <span class="hljs-string">"+"</span>){
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(x + y));
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"-"</span>) {
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(x - y));
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"*"</span>) {
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(x * y));
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(p->data == <span class="hljs-string">"/"</span>) {
+            <span class="hljs-type">int</span> x = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> y = <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+            stack.<span class="hljs-built_in">pop</span>();
+            stack.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">to_string</span>(x / y));
+        } <span class="hljs-keyword">else</span> {
+            stack.<span class="hljs-built_in">push</span>(p->data);
+        }
+        p = p->next;
+    }
+    <span class="hljs-keyword">while</span> (!stack.<span class="hljs-built_in">empty</span>()){
+        cout &#x3C;&#x3C; <span class="hljs-built_in">stoi</span>(stack.<span class="hljs-built_in">top</span>());
+        stack.<span class="hljs-built_in">pop</span>();
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span> <span class="hljs-params">()</span> </span>{
+    cout &#x3C;&#x3C; <span class="hljs-string">"------------------------------------"</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+    string s;
+    cout &#x3C;&#x3C; <span class="hljs-string">"请输入运算表达式："</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+    cin >> s;
+    LinkList test_reversepolish = <span class="hljs-keyword">new</span> LNode;
+    <span class="hljs-built_in">InitList</span>(test_reversepolish);
+    LinkList test_polish = <span class="hljs-keyword">new</span> LNode;
+    <span class="hljs-built_in">InitList</span>(test_polish);
+
+    <span class="hljs-built_in">Center</span>(test_reversepolish, s);
+    <span class="hljs-built_in">Center</span>(test_polish, s);
+    cout &#x3C;&#x3C; <span class="hljs-string">"------------------------------------"</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+    <span class="hljs-comment">// 波兰表达式</span>
+    <span class="hljs-built_in">ReverseList</span>(test_polish);
+    <span class="hljs-built_in">Transition</span>(test_polish, <span class="hljs-string">")"</span>, <span class="hljs-string">"("</span>);
+    cout &#x3C;&#x3C; <span class="hljs-string">"波兰表达式为："</span>;
+    <span class="hljs-built_in">ReverseList</span>(test_polish);
+    <span class="hljs-built_in">TraverseList</span>(test_polish);
+    cout &#x3C;&#x3C; <span class="hljs-string">"波兰表达式计算结果为："</span>;
+    <span class="hljs-built_in">ReverseList</span>(test_polish);
+    <span class="hljs-built_in">EvaulTree_polish</span>(test_polish);
+    cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>&#x3C;&#x3C;<span class="hljs-string">"------------------------------------"</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+
+    <span class="hljs-comment">// 逆波兰表达式</span>
+    <span class="hljs-built_in">Transition</span>(test_reversepolish, <span class="hljs-string">"("</span>, <span class="hljs-string">")"</span>);
+    cout &#x3C;&#x3C; <span class="hljs-string">"逆波兰表达式为："</span>;
+    <span class="hljs-built_in">TraverseList</span>(test_reversepolish);
+    cout &#x3C;&#x3C; <span class="hljs-string">"逆波兰表达式计算结果为："</span>;
+    <span class="hljs-built_in">EvaulTree</span>(test_reversepolish);
+    cout &#x3C;&#x3C; <span class="hljs-string">"\n"</span>&#x3C;&#x3C;<span class="hljs-string">"------------------------------------"</span>&#x3C;&#x3C;<span class="hljs-string">"\n"</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"实验5——波兰/逆波兰表达式求值🔖栈\",\"description\":\"实验报告实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值要求：仅用一个栈实现测试用例：4+23-10/5交作业时间：5月14日思路及相关知识将表达式转换为波兰表达式/逆波兰表达式将上述转换之后的压入栈内计算：每次弹出元素，碰到运算符字符就进行计算，再压入栈内递归求解学习...\",\"datePublished\":\"2021-05-06\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/iyb7wi/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","📶线结构：字符串-数组-栈-队列",{"href":"/categories/%F0%9F%93%B6%E7%BA%BF%E7%BB%93%E6%9E%84%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2-%E6%95%B0%E7%BB%84-%E6%A0%88-%E9%98%9F%E5%88%97/","children":"📶线结构：字符串-数组-栈-队列"}]]]}],["$","h1",null,{"children":"实验5——波兰/逆波兰表达式求值🔖栈"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-05-06"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/iyb7wi/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/re05fo/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"应用层及网络应用万维网的HTTP协议"}]]}],["$","$L2",null,{"href":"/blog/ggimdr/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"二叉树的创建与遍历🔖DFS🔖先序🔖中序🔖后序"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/iyb7wi/","title":"实验5——波兰/逆波兰表达式求值🔖栈"}]
+9:["$","$L1c",null,{"headings":[{"id":"实验报告","text":"实验报告","depth":2},{"id":"思路","text":"思路","depth":2},{"id":"实验代码","text":"实验代码","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"实验5——波兰/逆波兰表达式求值🔖栈 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"实验报告实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值要求：仅用一个栈实现测试用例：4+23-10/5交作业时间：5月14日思路及相关知识将表达式转换为波兰表达式/逆波兰表达式将上述转换之后的压入栈内计算：每次弹出元素，碰到运算符字符就进行计算，再压入栈内递归求解学习..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/iyb7wi/"}],["$","meta","3",{"property":"og:title","content":"实验5——波兰/逆波兰表达式求值🔖栈"}],["$","meta","4",{"property":"og:description","content":"实验报告实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值要求：仅用一个栈实现测试用例：4+23-10/5交作业时间：5月14日思路及相关知识将表达式转换为波兰表达式/逆波兰表达式将上述转换之后的压入栈内计算：每次弹出元素，碰到运算符字符就进行计算，再压入栈内递归求解学习..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/iyb7wi/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-05-06"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"实验5——波兰/逆波兰表达式求值🔖栈"}],["$","meta","11",{"name":"twitter:description","content":"实验报告实验五：实现用波兰表达式（先序）和逆波兰表达式（后序）求算术表达式的值要求：仅用一个栈实现测试用例：4+23-10/5交作业时间：5月14日思路及相关知识将表达式转换为波兰表达式/逆波兰表达式将上述转换之后的压入栈内计算：每次弹出元素，碰到运算符字符就进行计算，再压入栈内递归求解学习..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,511 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T94c6,<blockquote>
+<p>[!NOTE]</p>
+<p>官方文档：Vue.js</p>
+</blockquote>
+<h3 id="一virtual-dom-render-diff">一、Virtual DOM, Render, diff</h3>
+<ul>
+<li>利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DOM加上diff得到一次性结果然后作用于真实DOM</li>
+<li>结构渲染方面，vue文件中的template利用vue的render函数以及AST语法树解析来生成虚拟DOM树对象</li>
+<li>当视图发生更新，需要比对更新前以及更新后的虚拟DOM差异，这里面的比对的逻辑叫做diff算法，最终diff出来的结果一次性只更新需要更新的真实DOM节点</li>
+</ul>
+<h3 id="二globalproperties">二、globalProperties</h3>
+<ul>
+<li>
+<p>响应式变量是利用ES6的Proxy（Vue3）来实现的</p>
+</li>
+<li>
+<p>计算属性和侦听器</p>
+</li>
+<li>
+<p>计算属性和方法之间，计算方法具备缓存能力，而方法不具备</p>
+</li>
+<li>
+<p>默认计算属性是只读的，不过可以对具体计算属性写成get set的形式组织</p>
+</li>
+<li>
+<p>计算属性适合：多个值影响一个值的应用</p>
+</li>
+<li>
+<p>侦听器适合：一个值影响多个值的应用</p>
+</li>
+<li>
+<p>侦听器支持异步，计算属性不支持</p>
+</li>
+<li>
+<p>属性：<code>name</code>, <code>props</code>, <code>emits</code>, <code>components</code>, <code>directives</code>, <code>computed</code>, <code>methods</code>, <code>watch</code></p>
+</li>
+<li>
+<p>方法：<code>data</code>, <code>mounted</code>,</p>
+</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>learn vue<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./vue.global.js"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>parent count: {{count}}<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">my-head</span>
+        <span class="hljs-attr">:title</span>=<span class="hljs-string">"headerTitle"</span>
+        @<span class="hljs-attr">custom-event</span>=<span class="hljs-string">"handleCustomEvent"</span>
+        <span class="hljs-attr">v-model</span>=<span class="hljs-string">"count"</span>
+        ></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">my-head</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+      <span class="hljs-keyword">let</span> app = <span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">createApp</span>({
+        <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) {
+          <span class="hljs-keyword">return</span> {
+            <span class="hljs-attr">headerTitle</span>: <span class="hljs-string">"header-title"</span>,
+            <span class="hljs-attr">count</span>: <span class="hljs-string">"1"</span>,
+          };
+        },
+        <span class="hljs-attr">methods</span>: {
+          <span class="hljs-title function_">handleCustomEvent</span>(<span class="hljs-params">data</span>) {
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);
+          },
+        },
+      });
+      <span class="hljs-comment">// local component</span>
+      <span class="hljs-keyword">const</span> <span class="hljs-title class_">HeaderLocalComponent</span> = {
+        <span class="hljs-attr">template</span>: <span class="hljs-string">`header-local-component`</span>,
+      };
+      <span class="hljs-comment">// global component</span>
+      app.<span class="hljs-title function_">component</span>(<span class="hljs-string">"my-head"</span>, {
+        <span class="hljs-attr">props</span>: {
+          <span class="hljs-attr">title</span>: {
+            <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span>,
+          },
+          <span class="hljs-attr">modelValue</span>: {
+            <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span>,
+          },
+        }, <span class="hljs-comment">// or props: ["title"]</span>
+        <span class="hljs-attr">emits</span>: [<span class="hljs-string">"custom-event"</span>, <span class="hljs-string">"update:modelValue"</span>],
+        <span class="hljs-attr">template</span>: <span class="hljs-string">`
+          &#x3C;header>
+            &#x3C;h1>{{headTitle}}&#x3C;/h1>
+            &#x3C;p>message: {{message}}&#x3C;/p>
+            &#x3C;p>reverse message: {{reverseMessage}}&#x3C;/p>
+            &#x3C;header-local-component>&#x3C;/header-local-component>
+            &#x3C;input type="text" :value="modelValue" @input="handleInput" />
+          &#x3C;/header>
+        `</span>,
+        <span class="hljs-attr">components</span>: {
+          <span class="hljs-title class_">HeaderLocalComponent</span>,
+        },
+        <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) {
+          <span class="hljs-keyword">return</span> {
+            <span class="hljs-attr">message</span>: <span class="hljs-string">"hello world"</span>,
+            <span class="hljs-attr">headTitle</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">title</span>, <span class="hljs-comment">// props data -> responsive...</span>
+          };
+        },
+        <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) {
+          <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span> = <span class="hljs-string">"hello world2"</span>;
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">headTitle</span> = <span class="hljs-string">"head change self title..."</span>;
+            <span class="hljs-variable language_">this</span>.$emit(<span class="hljs-string">"custom-event"</span>, {
+              <span class="hljs-attr">info</span>: <span class="hljs-string">"child to parent."</span>,
+            });
+          }, <span class="hljs-number">2000</span>);
+        },
+        <span class="hljs-attr">computed</span>: {
+          <span class="hljs-comment">// reverseMessage() {</span>
+          <span class="hljs-comment">//   return this.message.split(" ").reverse().join(" ");</span>
+          <span class="hljs-comment">// },</span>
+          <span class="hljs-attr">reverseMessage</span>: {
+            <span class="hljs-title function_">get</span>(<span class="hljs-params"></span>) {
+              <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">" "</span>).<span class="hljs-title function_">reverse</span>().<span class="hljs-title function_">join</span>(<span class="hljs-string">" "</span>);
+            },
+            <span class="hljs-title function_">set</span>(<span class="hljs-params">value</span>) {
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span> = value;
+            },
+          },
+        },
+        <span class="hljs-attr">methods</span>: {
+          <span class="hljs-title function_">handleInput</span>(<span class="hljs-params">e</span>) {
+            <span class="hljs-variable language_">this</span>.$emit(<span class="hljs-string">"update:modelValue"</span>, e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>);
+          },
+        },
+        <span class="hljs-attr">watch</span>: {
+          <span class="hljs-title function_">modelValue</span>(<span class="hljs-params">newValue, oldValue</span>) {
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"modelValue change..."</span>, oldValue, newValue);
+          },
+        },
+      });
+      <span class="hljs-keyword">const</span> vm = app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">"#app"</span>);
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="custom-globalproperties">custom globalProperties</h4>
+<p>自定义全局属性</p>
+<div class="code-block"><pre><code class="hljs language-javascript">app.<span class="hljs-property">config</span>.<span class="hljs-property">globalProperties</span>.<span class="hljs-property">$something</span> = something
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>使用</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-variable language_">this</span>.<span class="hljs-property">$something</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="attrs">$attrs</h4>
+<ol>
+<li>组件默认传递属性，如果子组件没有接收，那么会作为默认属性添加到dom身上</li>
+<li>如果要去除上述的默认传递效果，可以添加inheritAttrs参数</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript">app.<span class="hljs-title function_">component</span>(<span class="hljs-string">"my-head"</span>, {
+  <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">message</span>: <span class="hljs-string">"hello world"</span>,
+    };
+  },
+  <span class="hljs-attr">inheritAttrs</span>: <span class="hljs-literal">false</span>
+  ···
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li>如果添加了inheritAttrs参数，但又需要对指定dom添加自定义属性</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">h1</span> <span class="hljs-attr">v-bind:info</span>=<span class="hljs-string">"$attrs.info"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">h1</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="4">
+<li>this.$attrs也可以进行通信</li>
+</ol>
+<h4 id="refs">$refs</h4>
+<ol>
+<li>ref属性作用在元素上，this.$refs.xxx获取的是原生DOM</li>
+<li>ref属性作用在组件上，this.$refs.xxx获取的是组件实例对象，可以调用其方法或是响应式变量</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'作用在DOM上的ref: '</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">domRef</span>)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'作用在组件上的ref: '</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">homeHomeChild1Ref</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vdv6i5/1709885295752-48ce6469-8234-4e95-81dc-4c29187d228e.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="3">
+<li>可以间接进行组件间的通信</li>
+</ol>
+<h4 id="nexttick">$nextTick</h4>
+<ol>
+<li>在DOM渲染之后的执行时机，同updated生命周期</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'全局变量$globalVar: '</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">$globalVar</span>)
+  <span class="hljs-variable language_">this</span>.$nextTick(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'作用在DOM上的ref: '</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">domRef</span>)
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'作用在组件上的ref: '</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">homeHomeChild1Ref</span>)
+  })
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>有两种写法，一种是hook风格，另一种是Promise链式调用风格</li>
+</ol>
+<h4 id="event">$event</h4>
+<p>原生DOM事件传参（内部封装）</p>
+<ol>
+<li>不传参数：只传递函数名，methods中的函数形参可传默认e</li>
+<li>fun($event, param)</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"clickButton1"</span>></span>不传参数<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"clickButton2('data')"</span>></span>传1个参数<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"clickButton3($event, 'data')"</span>></span>传2个参数<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="三逻辑复用">三、逻辑复用</h3>
+<h4 id="组件components">组件（components）</h4>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="box">HomeChild1组件&#x3C;/div>
+  &#x3C;HomeChild1 :msg="var4" @customEvent="customEvent" />
+&#x3C;/template>
+
+&#x3C;script>
+  import HomeChild1 from '../components/HomeChild1.vue'
+
+  export default {
+    name: 'HomeView',
+    components: {
+      HomeChild1
+    },
+    data() {
+      return {
+        var4: 'HomeView组件传递给HomeChild1组件的值',
+      }
+    },
+    methods: {
+      customEvent(data) {
+        console.log('customEvent', data)
+      }
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol>
+<li>组件的注册以及使用</li>
+<li>根组件以及普通组件：根组件template比html结构中的子内容优先级更高（覆盖渲染）</li>
+<li>全局组件以及局部组件的选项式写法</li>
+</ol>
+<h4 id="自定义指令v-">自定义指令（v-）</h4>
+<p>自定义指令也是逻辑复用的常见形式之一，比如对节点赋予拖拽功能，基本语法如下：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="box">自定义指令&#x3C;/div>
+  &#x3C;input v-focus />
+&#x3C;/template>
+
+&#x3C;script>
+export default {
+  name: 'HomeView',
+  directives: {
+    focus: {
+      mounted: (el) => el.focus()
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="插件">插件</h4>
+<p>定义</p>
+<div class="code-block"><pre><code class="hljs language-javascript">app.<span class="hljs-title function_">use</span>(
+  {
+    <span class="hljs-attr">install</span>: <span class="hljs-function">(<span class="hljs-params">app, options</span>) =></span> {
+      app.<span class="hljs-property">config</span>.<span class="hljs-property">globalProperties</span>.<span class="hljs-property">$translate</span> = <span class="hljs-function">(<span class="hljs-params">key</span>) =></span> {
+        <span class="hljs-keyword">return</span> key.<span class="hljs-title function_">split</span>(<span class="hljs-string">'.'</span>).<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">o, i</span>) =></span> {
+          <span class="hljs-keyword">if</span> (o) <span class="hljs-keyword">return</span> o[i]
+        }, options)
+      }
+    }
+  },
+  {
+    <span class="hljs-attr">greetings</span>: {
+      <span class="hljs-attr">hello</span>: <span class="hljs-string">'Hello, world!'</span>
+    }
+  }
+)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>使用</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  {{ $translate('greetings.hello') }}
+&#x3C;/template>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="mixins">⛔mixins</h4>
+<ul>
+<li>
+<p>一种复用逻辑的抽离的方式，<strong>但是更为推荐组合式的hook来复用代码逻辑</strong>，vue的最新文档甚至去除了mixins相关介绍</p>
+</li>
+<li>
+<p>使用：<code>minins: [module]</code></p>
+</li>
+<li>
+<p>缺点</p>
+</li>
+<li>
+<p>无法差异化</p>
+</li>
+<li>
+<p>可存在同名函数（代码风格）</p>
+</li>
+</ul>
+<h3 id="四生命周期">四、生命周期</h3>
+<p>初始化实例时触发</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vdv6i5/1710082826517-cb17afd6-a17e-4707-8655-3a6d652c88bf.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>beforeCreate：在实例初始化之后，数据观测和事件配置之前被调用响应式数据没有，dom未渲染created：在实例创建完成后被立即调用响应式数据有了，dom未渲染一般在这里异步请求初始化数据beforeMount：在挂载开始之前被调用响应式数据有了，dom未渲染mounted：el被新创建的vm.$el替换，并挂载到实例上去之后调用该钩子响应式数据有了，dom已渲染</p>
+</blockquote>
+<ol>
+<li>activated（<strong>KeepAlive相关</strong>）</li>
+<li>deactivated（<strong>KeepAlive相关</strong>）</li>
+</ol>
+<p>更新数据时触发</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vdv6i5/1710082853014-5cdc1923-4c0f-40c5-9205-9fc8fc677b09.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>beforeUpdate：数据更新时调用，发生在虚拟DOM打补丁之前响应式数据变了，但是dom还没有更新updated：由于数据更改导致的虚拟DOM重新渲染和打补丁，在这之后会调用该钩子响应式数据变了，dom也更新了</p>
+</blockquote>
+<p>卸载实例时触发</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vdv6i5/1710082889165-517e3fcf-ad8b-4e74-a040-98b8953bcdca.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>beforeDestroy：实例销毁之前调用响应式数据还有，dom也有destroyed：实例销毁后调用响应式数据还有，dom没了</p>
+</blockquote>
+<ol>
+<li>errorCaptured</li>
+<li>renderTracked（<strong>开发模式才有，且SSR没有</strong>）</li>
+<li>renderTriggered（<strong>开发模式才有，且SSR没有</strong>）</li>
+<li>serverPrefetch（<strong>SSR才有</strong>）</li>
+</ol>
+<h3 id="五内置组件">五、内置组件</h3>
+<h4 id="component">component</h4>
+<ul>
+<li>配合:is实现动态切换组件的行为</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="box1">内置组件&#x3C;/div>
+  &#x3C;button @click="temp = 'TemplateChild1'">TemplateChild1&#x3C;/button>
+  &#x3C;button @click="temp = 'TemplateChild2'">TemplateChild2&#x3C;/button>
+  &#x3C;component :is="temp" />
+&#x3C;/template>
+
+&#x3C;script>
+import TemplateChild1 from '../components/TemplateChild1.vue'
+import TemplateChild2 from '../components/TemplateChild2.vue'
+export default {
+  name: 'TemplateView',
+  data() {
+    return {
+      temp: 'TemplateChild1'
+    }
+  },
+  components: {
+    TemplateChild1,
+    TemplateChild2
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vdv6i5/1709889942376-50e4dbb3-5a0d-49b4-8533-9f593f791439.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="keepalive">KeepAlive</h4>
+<p>在上述组件切换过程中，被切换组件的状态会被清除，也就是输入框会输入框输入的数据会被清空，如果需要保留状态，外面需要套一层keep-alive组件</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">KeepAlive</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">component</span> <span class="hljs-attr">:is</span>=<span class="hljs-string">"temp"</span> /></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">KeepAlive</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="defineasynccomponent">defineAsyncComponent</h4>
+<p>动态组件中（component），会一次性加载所有组件，如果需要按需加载则使用defineAsyncComponent，</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">template</span>></span>
+  ···
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">template</span>></span>
+
+<span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+<span class="hljs-keyword">import</span> { defineAsyncComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'TemplateView'</span>,
+  <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">temp</span>: <span class="hljs-string">'TemplateChild1'</span>
+    }
+  },
+  <span class="hljs-attr">components</span>: {
+    <span class="hljs-title class_">TemplateChild1</span>: <span class="hljs-title function_">defineAsyncComponent</span>(<span class="hljs-function">() =></span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../components/TemplateChild1.vue'</span>)),
+    <span class="hljs-title class_">TemplateChild2</span>: <span class="hljs-title function_">defineAsyncComponent</span>(<span class="hljs-function">() =></span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../components/TemplateChild2.vue'</span>))
+  }
+}
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="suspense">Suspense</h4>
+<p>内置边界加载中组件</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">template</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"box1"</span>></span>内置组件<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"temp = 'TemplateChild1'"</span>></span>TemplateChild1<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"temp = 'TemplateChild2'"</span>></span>TemplateChild2<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">KeepAlive</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">Suspense</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">component</span> <span class="hljs-attr">:is</span>=<span class="hljs-string">"temp"</span> /></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">template</span> #<span class="hljs-attr">fallback</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>loading...<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">template</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">Suspense</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">KeepAlive</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">template</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="teleport">Teleport</h4>
+<p>“传送门”逻辑，相当于指定要渲染的DOM至指定文档树位置，有益于DOM结构合理</p>
+<blockquote>
+<p>如果DOM结构不合理，会造成一些样式上不必要的写法</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">Teleport</span> <span class="hljs-attr">to</span>=<span class="hljs-string">"body"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>Teleport组件<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">Teleport</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vdv6i5/1709891703132-6ca57ed3-42fd-40e4-9ae2-77ecd0af4790.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>如果不使用vue内置组件teleport，传送门的同类型实现逻辑则是利用原生DOM api以及Vue的createApp结合实现</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+  <span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+  <span class="hljs-keyword">import</span> { <span class="hljs-title class_">Component</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'xxxx'</span>
+  <span class="hljs-keyword">const</span> target = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'div'</span>)
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">append</span>(target)
+  <span class="hljs-title function_">createApp</span>(<span class="hljs-title class_">Component</span>).<span class="hljs-title function_">mount</span>(target)
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="transition">Transition</h4>
+<p>vue内置动画组件</p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">transition</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"slide"</span> <span class="hljs-attr">mode</span>=<span class="hljs-string">"out-in"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">keep-alive</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">component</span> <span class="hljs-attr">:is</span>=<span class="hljs-string">"compo"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">component</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">keep-alive</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">transition</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-css"><span class="hljs-selector-class">.fade-enter-from</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+}
+<span class="hljs-selector-class">.fade-enter-to</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+}
+<span class="hljs-selector-class">.fade-enter-active</span> {
+  <span class="hljs-attribute">transition</span>: <span class="hljs-number">1s</span>;
+}
+<span class="hljs-selector-class">.fade-leave-from</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+}
+<span class="hljs-selector-class">.fade-leave-to</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+}
+<span class="hljs-selector-class">.fade-enter-active</span> {
+  <span class="hljs-attribute">transition</span>: <span class="hljs-number">1s</span>;
+}
+<span class="hljs-selector-class">.slide-enter-from</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">20px</span>);
+}
+<span class="hljs-selector-class">.slide-enter-to</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">0</span>);
+}
+<span class="hljs-selector-class">.slide-leave-from</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">0</span>);
+}
+<span class="hljs-selector-class">.slide-leave-to</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">20px</span>);
+}
+<span class="hljs-selector-class">.slide-leave-active</span> {
+  <span class="hljs-attribute">transition</span>: <span class="hljs-number">1s</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue系统学习（一）特性和选项式API\",\"description\":\"官方文档：Vue.js一、Virtual DOM, Render, diff利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DO...\",\"datePublished\":\"2022-10-15\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/vdv6i5/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Vue",{"href":"/categories/Vue/","children":"Vue"}]]]}],["$","h1",null,{"children":"Vue系统学习（一）特性和选项式API"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-10-15"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[5," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/vdv6i5/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/ugwagn/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"站点使用防盗链图片和百度统计Referer不一致的解决方案"}]]}],["$","$L2",null,{"href":"/blog/urrudl/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Axios实现重连机制"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/vdv6i5/","title":"Vue系统学习（一）特性和选项式API"}]
+9:["$","$L1c",null,{"headings":[{"id":"一virtual-dom-render-diff","text":"一、Virtual DOM, Render, diff","depth":3},{"id":"二globalproperties","text":"二、globalProperties","depth":3},{"id":"custom-globalproperties","text":"custom globalProperties","depth":4},{"id":"attrs","text":"$$attrs","depth":4},{"id":"refs","text":"$$refs","depth":4},{"id":"nexttick","text":"$$nextTick","depth":4},{"id":"event","text":"$$event","depth":4},{"id":"三逻辑复用","text":"三、逻辑复用","depth":3},{"id":"组件components","text":"组件（components）","depth":4},{"id":"自定义指令v-","text":"自定义指令（v-）","depth":4},{"id":"插件","text":"插件","depth":4},{"id":"mixins","text":"⛔mixins","depth":4},{"id":"四生命周期","text":"四、生命周期","depth":3},{"id":"五内置组件","text":"五、内置组件","depth":3},{"id":"component","text":"component","depth":4},{"id":"keepalive","text":"KeepAlive","depth":4},{"id":"defineasynccomponent","text":"defineAsyncComponent","depth":4},{"id":"suspense","text":"Suspense","depth":4},{"id":"teleport","text":"Teleport","depth":4},{"id":"transition","text":"Transition","depth":4}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue系统学习（一）特性和选项式API · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"官方文档：Vue.js一、Virtual DOM, Render, diff利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DO..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/vdv6i5/"}],["$","meta","3",{"property":"og:title","content":"Vue系统学习（一）特性和选项式API"}],["$","meta","4",{"property":"og:description","content":"官方文档：Vue.js一、Virtual DOM, Render, diff利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DO..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/vdv6i5/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-10-15"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue系统学习（一）特性和选项式API"}],["$","meta","11",{"name":"twitter:description","content":"官方文档：Vue.js一、Virtual DOM, Render, diff利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DO..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

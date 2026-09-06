@@ -1,0 +1,376 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T7778,<ul>
+<li>GitHub：<a href="https://github.com/Automattic/mongoose" rel="noopener noreferrer">https://github.com/Automattic/mongoose</a></li>
+<li>英文文档：<a href="https://mongoosejs.com/docs/guide.html" rel="noopener noreferrer">https://mongoosejs.com/docs/guide.html</a></li>
+<li>中文文档：<a href="http://www.mongoosejs.net/docs/guide.html" rel="noopener noreferrer">http://www.mongoosejs.net/docs/guide.html</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/56030432" rel="noopener noreferrer">如何使用nodejs写一个接口 - MySQL版</a></li>
+</ul>
+<p>shardb-mongodb模块操作数据库不好去使用，比如查询，新建等，所以这个模块只用作ot服务那边；</p>
+<p>另外使用mongoose去操作数据库方便写接口</p>
+<ul>
+<li><a href="https://github.com/share/sharedb-mongo" rel="noopener noreferrer">https://github.com/share/sharedb-mongo</a></li>
+<li><a href="https://www.jianshu.com/p/46f06896c9cd" rel="noopener noreferrer">Mongoose 查询结果为空</a></li>
+</ul>
+<p>schema的相关配置为connection</p>
+<ul>
+<li>之前的增删改查笔记：<a href="https://github.com/wztlink1013/web-learn-notes/blob/gh-pages/learn-nodejs/express/model/connect.js" rel="noopener noreferrer">https://github.com/wztlink1013/web-learn-notes/blob/gh-pages/learn-nodejs/express/model/connect.js</a></li>
+<li><a href="https://segmentfault.com/a/1190000019201081" rel="noopener noreferrer">mongoose踩坑笔记： Cannot overwrite `` model once compiled.</a></li>
+</ul>
+<h2 id="安装">安装</h2>
+<h3 id="mongodb以及可视化工具navicat">MongoDB以及可视化工具Navicat</h3>
+<p>参考之前写的文章：<a href="https://www.yuque.com/wztlink1013/blog/nwt63v" rel="noopener noreferrer">MongoDB下载及使用+Navicat使用+服务器上的配置</a></p>
+<h3 id="安装mongoose">安装mongoose</h3>
+<div class="code-block"><pre><code class="hljs language-bash">cnpm install mongoose -S
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="使用">使用</h2>
+<h3 id="连接数据库语句">连接数据库语句</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 连接数据库</span>
+mongoose
+  .<span class="hljs-title function_">connect</span>(<span class="hljs-string">'mongodb://127.0.0.1:27017/test-mongoose'</span>, {
+    <span class="hljs-attr">useNewUrlParser</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">useUnifiedTopology</span>: <span class="hljs-literal">true</span>,
+  })
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'数据库连接成功'</span>)
+  })
+  .<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'数据库连接失败'</span>)
+  })
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>然后再将这个js文件require到app.js里面使用</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 数据库连接</span>
+<span class="hljs-built_in">require</span>(<span class="hljs-string">'./model/connect'</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="创建集合">创建集合</h3>
+<ul>
+<li>先利用函数mongoose的schema函数构建一个规则</li>
+<li>然后利用model函数创建一个集合并且用上这个规则</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// Schema：数据库集合的结构对象。</span>
+<span class="hljs-comment">// 创建一个集合(相当于sql里面的设定一个表)规则</span>
+<span class="hljs-keyword">let</span> <span class="hljs-title class_">TestSchema</span> = <span class="hljs-keyword">new</span> mongoose.<span class="hljs-title class_">Schema</span>({
+  <span class="hljs-attr">name</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span> },
+  <span class="hljs-attr">age</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">Number</span>, <span class="hljs-attr">default</span>: <span class="hljs-number">0</span> },
+  <span class="hljs-attr">email</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span> },
+  <span class="hljs-attr">time</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">Date</span>, <span class="hljs-attr">default</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-property">now</span> },
+})
+
+<span class="hljs-comment">// Model ：由Schema构造而成，可操作数据库。</span>
+<span class="hljs-comment">// 创建一个集合(并且应用上面的规则)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-title class_">TestModel</span> = mongoose.<span class="hljs-title function_">model</span>(<span class="hljs-string">'schema'</span>, <span class="hljs-title class_">TestSchema</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="增加文档">增加文档</h3>
+<ul>
+<li>第一个参数：create函数</li>
+<li>第二个参数：可以打印相关信息（doc和err）</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 创建（创建完执行以便之后就注释掉，不然会一直重复创建）</span>
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">create</span>(
+  [
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-1'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">8</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-2'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">18</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-3'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">28</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-4'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">38</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-5'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">48</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-6'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">58</span>, <span class="hljs-attr">email</span>: <span class="hljs-string">'tttt@qq.com'</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-7'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">68</span>, <span class="hljs-attr">email</span>: <span class="hljs-string">'ssss@qq.com'</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-8'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">18</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-9'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>, <span class="hljs-attr">email</span>: <span class="hljs-string">'rrrr@qq.com'</span> },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-10'</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">18</span> },
+  ],
+  (error, docs){
+    <span class="hljs-keyword">if</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error)
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'save ok'</span>)
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+    }
+  }
+)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>也可以创建一个对象赋值给一个变量，然后该变量利用函数save即可保存到数据库</li>
+</ul>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>创建完执行以便之后就注释掉，不然会一直重复创建</p>
+</blockquote>
+<h3 id="查询文档">查询文档</h3>
+<ul>
+<li>查询函数<code>findOne</code>：返回第一条数据</li>
+<li>查询函数<code>find</code>：查询所有包含条件的数据</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 查询</span>
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">find</span>(
+  <span class="hljs-comment">// 28&#x3C;= age &#x3C;48</span>
+  { <span class="hljs-attr">age</span>: { <span class="hljs-attr">$gte</span>: <span class="hljs-number">28</span>, <span class="hljs-attr">$lt</span>: <span class="hljs-number">48</span> } },
+  <span class="hljs-comment">// 1为指定字段，0为排除字段</span>
+  { <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span>: <span class="hljs-number">0</span> },
+  <span class="hljs-keyword">function</span> (<span class="hljs-params">err, docs</span>) {
+    <span class="hljs-keyword">if</span> (err) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'查询出错: '</span> + err)
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'$gte,$lte查询结果为: '</span>)
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+    }
+  }
+)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="mongoose条件查询">mongoose条件查询</h3>
+<p>键为变量时用</p>
+<p>中括号括起来就行了</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-title function_">checkStr</span>(data.<span class="hljs-property">type_id</span>, <span class="hljs-string">'email'</span>)
+    ? (type_str = <span class="hljs-string">'email'</span>)
+    : (type_str = <span class="hljs-string">'user_id'</span>)
+<span class="hljs-title class_">Model</span>_user.<span class="hljs-title function_">find</span>({ [type_str]: data.<span class="hljs-property">type_id</span> }, {}, <span class="hljs-function">(<span class="hljs-params">err, docs</span>) =></span> {}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>逻辑查询</p>
+<p>参考：</p>
+<ul>
+<li>文档：<a href="http://mongoosejs.net/docs/queries.html" rel="noopener noreferrer">http://mongoosejs.net/docs/queries.html</a></li>
+<li><a href="https://segmentfault.com/a/1190000021010300" rel="noopener noreferrer">mongoose 系列之一 find 查询</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-title class_">Model</span>_user.<span class="hljs-title function_">find</span>(
+  { <span class="hljs-attr">$or</span>: [{ <span class="hljs-attr">email</span>: obj.<span class="hljs-property">email</span> }, { <span class="hljs-attr">user_id</span>: obj.<span class="hljs-property">user_id</span> }] },
+  {},
+  <span class="hljs-function">(<span class="hljs-params">err, docs</span>) =></span> {}
+)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="更新文档">更新文档</h3>
+<p><code>User.updateOne({查询条件}, {要修改的值}).then(result => console.log(result))</code></p>
+<ul>
+<li>updateOne：更新单个</li>
+<li>updateMany：更新多个</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 更新</span>
+<span class="hljs-keyword">let</span> conditions_1 = { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-3'</span> }
+<span class="hljs-keyword">let</span> update = { <span class="hljs-attr">$set</span>: { <span class="hljs-attr">age</span>: <span class="hljs-number">11</span> } }
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">updateOne</span>(conditions_1, update, <span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) {
+  <span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Update success!'</span>)
+    <span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">find</span>(
+      { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-3'</span> },
+      { <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span>: <span class="hljs-number">0</span> },
+      <span class="hljs-keyword">function</span> (<span class="hljs-params">err, docs</span>) {
+        <span class="hljs-keyword">if</span> (err) {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'查询出错: '</span> + err)
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'更新test-3后的查询结果为: '</span>)
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+        }
+      }
+    )
+  }
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="删除文档">删除文档</h3>
+<ul>
+<li>删除单个：<code>User.findOneAndDelete({})then(result => console.log(result))</code></li>
+<li>删除多个：<code>User.deleteMany({}).then(result => console.log(result))</code></li>
+<li>deleteOne：删除单个</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 删除</span>
+<span class="hljs-keyword">let</span> conditions_2 = { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-2'</span> }
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">deleteOne</span>(conditions_2, <span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) {
+  <span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Delete success!'</span>)
+    <span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">find</span>(
+      { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-2'</span> },
+      { <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span>: <span class="hljs-number">0</span> },
+      <span class="hljs-keyword">function</span> (<span class="hljs-params">err, docs</span>) {
+        <span class="hljs-keyword">if</span> (err) {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'查询出错: '</span> + err)
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'删除test-2后的查询结果为: '</span>)
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+        }
+      }
+    )
+  }
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="mongoose验证">mongoose验证</h3>
+<p>required: true 必传字段</p>
+<p>minlength：3 字符串最小长度</p>
+<p>maxlength: 20 字符串最大长度</p>
+<p>min: 2 数值最小为2</p>
+<p>max: 100 数值最大为100</p>
+<p>enum: ['html', 'css', 'javascript', 'node.js']</p>
+<p>trim: true 去除字符串两边的空格</p>
+<p>validate: 自定义验证器</p>
+<p>default: 默认值</p>
+<p>获取错误信息：error.errors['字段名称'].message</p>
+<h3 id="整体代码">整体代码</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">/*
+ * @Author: wztlink1013
+ * @Date: 2022-01-11 12:43:02
+ * @LastEditTime: 2022-01-11 16:44:13
+ * @Description:
+ */</span>
+<span class="hljs-keyword">const</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongoose'</span>)
+
+<span class="hljs-comment">// 连接数据库</span>
+mongoose
+  .<span class="hljs-title function_">connect</span>(<span class="hljs-string">'mongodb://127.0.0.1:27017/test-mongoose'</span>, {
+    <span class="hljs-attr">useNewUrlParser</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">useUnifiedTopology</span>: <span class="hljs-literal">true</span>,
+  })
+  .<span class="hljs-title function_">then</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'数据库连接成功'</span>)
+  })
+  .<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'数据库连接失败'</span>)
+  })
+
+<span class="hljs-comment">// Schema：数据库集合的结构对象。</span>
+<span class="hljs-keyword">let</span> <span class="hljs-title class_">TestSchema</span> = <span class="hljs-keyword">new</span> mongoose.<span class="hljs-title class_">Schema</span>({
+  <span class="hljs-attr">name</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span> },
+  <span class="hljs-attr">age</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">Number</span>, <span class="hljs-attr">default</span>: <span class="hljs-number">0</span> },
+  <span class="hljs-attr">email</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span> },
+  <span class="hljs-attr">time</span>: { <span class="hljs-attr">type</span>: <span class="hljs-title class_">Date</span>, <span class="hljs-attr">default</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-property">now</span> },
+})
+
+<span class="hljs-comment">// Model ：由Schema构造而成，可操作数据库。</span>
+<span class="hljs-keyword">let</span> <span class="hljs-title class_">TestModel</span> = mongoose.<span class="hljs-title function_">model</span>(<span class="hljs-string">'schema'</span>, <span class="hljs-title class_">TestSchema</span>)
+
+<span class="hljs-comment">// Entity：由Model创建的实体，可操作数据库。</span>
+<span class="hljs-comment">// let TestEntity = new TestModel({</span>
+<span class="hljs-comment">//   name: 'helloworld',</span>
+<span class="hljs-comment">//   age: 28,</span>
+<span class="hljs-comment">//   email: 'helloworld@qq.com',</span>
+<span class="hljs-comment">// })</span>
+<span class="hljs-comment">// console.log(TestEntity)</span>
+
+<span class="hljs-comment">// 创建（创建完执行以便之后就注释掉，不然会一直重复创建）</span>
+<span class="hljs-comment">// TestModel.create(</span>
+<span class="hljs-comment">//   [</span>
+<span class="hljs-comment">//     { name: 'test-1', age: 8 },</span>
+<span class="hljs-comment">//     { name: 'test-2', age: 18 },</span>
+<span class="hljs-comment">//     { name: 'test-3', age: 28 },</span>
+<span class="hljs-comment">//     { name: 'test-4', age: 38 },</span>
+<span class="hljs-comment">//     { name: 'test-5', age: 48 },</span>
+<span class="hljs-comment">//     { name: 'test-6', age: 58, email: 'tttt@qq.com' },</span>
+<span class="hljs-comment">//     { name: 'test-7', age: 68, email: 'ssss@qq.com' },</span>
+<span class="hljs-comment">//     { name: 'test-8', age: 18 },</span>
+<span class="hljs-comment">//     { name: 'test-9', age: 18, email: 'rrrr@qq.com' },</span>
+<span class="hljs-comment">//     { name: 'test-10', age: 18 },</span>
+<span class="hljs-comment">//   ],</span>
+<span class="hljs-comment">//   function (error, docs) {</span>
+<span class="hljs-comment">//     if (error) {</span>
+<span class="hljs-comment">//       console.log(error)</span>
+<span class="hljs-comment">//     } else {</span>
+<span class="hljs-comment">//       // console.log('save ok')</span>
+<span class="hljs-comment">//       // console.log(docs)</span>
+<span class="hljs-comment">//     }</span>
+<span class="hljs-comment">//   }</span>
+<span class="hljs-comment">// )</span>
+
+<span class="hljs-comment">// 查询</span>
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">find</span>(
+  <span class="hljs-comment">// 28&#x3C;= age &#x3C;48</span>
+  { <span class="hljs-attr">age</span>: { <span class="hljs-attr">$gte</span>: <span class="hljs-number">28</span>, <span class="hljs-attr">$lt</span>: <span class="hljs-number">48</span> } },
+  <span class="hljs-comment">// 1为指定字段，0为排除字段</span>
+  { <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span>: <span class="hljs-number">0</span> },
+  <span class="hljs-keyword">function</span> (<span class="hljs-params">err, docs</span>) {
+    <span class="hljs-keyword">if</span> (err) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'查询出错: '</span> + err)
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'$gte,$lte查询结果为: '</span>)
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+    }
+  }
+)
+<span class="hljs-comment">// 更新</span>
+<span class="hljs-keyword">let</span> conditions_1 = { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-3'</span> }
+<span class="hljs-keyword">let</span> update = { <span class="hljs-attr">$set</span>: { <span class="hljs-attr">age</span>: <span class="hljs-number">11</span> } }
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">updateOne</span>(conditions_1, update, <span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) {
+  <span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Update success!'</span>)
+    <span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">find</span>(
+      { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-3'</span> },
+      { <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span>: <span class="hljs-number">0</span> },
+      <span class="hljs-keyword">function</span> (<span class="hljs-params">err, docs</span>) {
+        <span class="hljs-keyword">if</span> (err) {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'查询出错: '</span> + err)
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'更新test-3后的查询结果为: '</span>)
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+        }
+      }
+    )
+  }
+})
+<span class="hljs-comment">// 删除</span>
+<span class="hljs-keyword">let</span> conditions_2 = { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-2'</span> }
+<span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">deleteOne</span>(conditions_2, <span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) {
+  <span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Delete success!'</span>)
+    <span class="hljs-title class_">TestModel</span>.<span class="hljs-title function_">find</span>(
+      { <span class="hljs-attr">name</span>: <span class="hljs-string">'test-2'</span> },
+      { <span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span>: <span class="hljs-number">0</span> },
+      <span class="hljs-keyword">function</span> (<span class="hljs-params">err, docs</span>) {
+        <span class="hljs-keyword">if</span> (err) {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'查询出错: '</span> + err)
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'删除test-2后的查询结果为: '</span>)
+          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(docs)
+        }
+      }
+    )
+  }
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/xfn7hy/1641879796743-f8670ed9-0562-4e6d-ab68-79418d34424f.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="其他">其他</h3>
+<ul>
+<li><a href="https://blog.csdn.net/youhebuke225/article/details/106872122" rel="noopener noreferrer">mongoose查询到的对象无法读取问题</a></li>
+</ul>
+<h3 id="mongodb创建集合">mongodb创建集合</h3>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"mongoose操作MongoDB数据库\",\"description\":\"GitHub：https://github.com/Automattic/mongoose英文文档：https://mongoosejs.com/docs/guide.html中文文档：http://www.mongoosejs.net/docs/guide.html如何使用nodejs写一个...\",\"datePublished\":\"2022-03-01\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/xfn7hy/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","DataBase",{"href":"/categories/DataBase/","children":"DataBase"}]]]}],["$","h1",null,{"children":"mongoose操作MongoDB数据库"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-03-01"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/xfn7hy/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/orml31/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"nvm管理node版本"}]]}],["$","$L2",null,{"href":"/blog/tdgoby/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Express框架及其使用"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/xfn7hy/","title":"mongoose操作MongoDB数据库"}]
+9:["$","$L1c",null,{"headings":[{"id":"安装","text":"安装","depth":2},{"id":"mongodb以及可视化工具navicat","text":"MongoDB以及可视化工具Navicat","depth":3},{"id":"安装mongoose","text":"安装mongoose","depth":3},{"id":"使用","text":"使用","depth":2},{"id":"连接数据库语句","text":"连接数据库语句","depth":3},{"id":"创建集合","text":"创建集合","depth":3},{"id":"增加文档","text":"增加文档","depth":3},{"id":"查询文档","text":"查询文档","depth":3},{"id":"mongoose条件查询","text":"mongoose条件查询","depth":3},{"id":"更新文档","text":"更新文档","depth":3},{"id":"删除文档","text":"删除文档","depth":3},{"id":"mongoose验证","text":"mongoose验证","depth":3},{"id":"整体代码","text":"整体代码","depth":3},{"id":"其他","text":"其他","depth":3},{"id":"mongodb创建集合","text":"mongodb创建集合","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"mongoose操作MongoDB数据库 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"GitHub：https://github.com/Automattic/mongoose英文文档：https://mongoosejs.com/docs/guide.html中文文档：http://www.mongoosejs.net/docs/guide.html如何使用nodejs写一个..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/xfn7hy/"}],["$","meta","3",{"property":"og:title","content":"mongoose操作MongoDB数据库"}],["$","meta","4",{"property":"og:description","content":"GitHub：https://github.com/Automattic/mongoose英文文档：https://mongoosejs.com/docs/guide.html中文文档：http://www.mongoosejs.net/docs/guide.html如何使用nodejs写一个..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/xfn7hy/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-03-01"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"mongoose操作MongoDB数据库"}],["$","meta","11",{"name":"twitter:description","content":"GitHub：https://github.com/Automattic/mongoose英文文档：https://mongoosejs.com/docs/guide.html中文文档：http://www.mongoosejs.net/docs/guide.html如何使用nodejs写一个..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,282 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T70c0,<h2 id="jquery-属性操作">jQuery 属性操作</h2>
+<p>jQuery 常用属性操作有三种：prop() / attr() / data() ;</p>
+<h3 id="元素固有属性值-prop">元素固有属性值 prop()</h3>
+<p>所谓元素固有属性就是元素本身自带的属性，比如 元素里面的 href ，比如 元素里面的 type。</p>
+<p><strong>语法</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492194-d6d9ff5b-5c98-495b-bebb-c3be7790bbf4.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：prop() 除了普通属性操作，更适合操作表单属性：disabled / checked / selected 等。</p>
+<h3 id="元素自定义属性值-attr">元素自定义属性值 attr()</h3>
+<p>用户自己给元素添加的属性，我们称为自定义属性。 比如给 div 添加 index =“1”。</p>
+<p><strong>语法</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492261-f36c35ad-cba6-4c24-ac2d-18781c30b41a.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：attr() 除了普通属性操作，更适合操作自定义属性。（该方法也可以获取 H5 自定义属性）</p>
+<h3 id="数据缓存-data">数据缓存 data()</h3>
+<p>data() 方法可以在指定的元素上存取数据，并不会修改 DOM 元素结构。一旦页面刷新，之前存放的数据都将被移除。</p>
+<p><strong>语法</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492334-8d7a046e-854f-4449-a169-2820244ff75f.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：同时，还可以读取 HTML5 自定义属性 data-index ，得到的是数字型。</p>
+<p><strong>演示代码</strong></p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;body>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"http://www.itcast.cn"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"都挺好"</span>></span>都挺好<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span> <span class="hljs-attr">checked</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">index</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">data-index</span>=<span class="hljs-string">"2"</span>></span>我是div<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>123<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        $(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-comment">//1. element.prop("属性名") 获取元素固有的属性值</span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"a"</span>).<span class="hljs-title function_">prop</span>(<span class="hljs-string">"href"</span>));
+            $(<span class="hljs-string">"a"</span>).<span class="hljs-title function_">prop</span>(<span class="hljs-string">"title"</span>, <span class="hljs-string">"我们都挺好"</span>);
+            $(<span class="hljs-string">"input"</span>).<span class="hljs-title function_">change</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-variable language_">this</span>).<span class="hljs-title function_">prop</span>(<span class="hljs-string">"checked"</span>));
+            });
+            <span class="hljs-comment">// console.log($("div").prop("index"));</span>
+            <span class="hljs-comment">// 2. 元素的自定义属性 我们通过 attr()</span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"index"</span>));
+            $(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"index"</span>, <span class="hljs-number">4</span>);
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">"data-index"</span>));
+            <span class="hljs-comment">// 3. 数据缓存 data() 这个里面的数据是存放在元素的内存里面</span>
+            $(<span class="hljs-string">"span"</span>).<span class="hljs-title function_">data</span>(<span class="hljs-string">"uname"</span>, <span class="hljs-string">"andy"</span>);
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"span"</span>).<span class="hljs-title function_">data</span>(<span class="hljs-string">"uname"</span>));
+            <span class="hljs-comment">// 这个方法获取data-index h5自定义属性 第一个 不用写data-  而且返回的是数字型</span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">data</span>(<span class="hljs-string">"index"</span>));
+        })
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="jquery-文本属性值">jQuery 文本属性值</h2>
+<p>jQuery的文本属性值常见操作有三种：html() / text() / val() ; 分别对应JS中的 innerHTML 、innerText 和 value 属性。</p>
+<h3 id="jquery内容文本值">jQuery内容文本值</h3>
+<p>常见操作有三种：html() / text() / val() ; 分别对应JS中的 innerHTML 、innerText 和 value 属性，主要针对元素的内容还有表单的值操作。</p>
+<p><strong>语法</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492400-d8ee58ad-1d5e-42a0-a07f-52d7558fb341.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：html() 可识别标签，text() 不识别标签。</p>
+<p><strong>演示代码</strong></p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;body>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>我是内容<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"请输入内容"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-comment">// 1. 获取设置元素内容 html()</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">html</span>());
+        <span class="hljs-comment">// $("div").html("123");</span>
+        <span class="hljs-comment">// 2. 获取设置元素文本内容 text()</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">text</span>());
+        $(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">text</span>(<span class="hljs-string">"123"</span>);
+        <span class="hljs-comment">// 3. 获取设置表单值 val()</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"input"</span>).<span class="hljs-title function_">val</span>());
+        $(<span class="hljs-string">"input"</span>).<span class="hljs-title function_">val</span>(<span class="hljs-string">"123"</span>);
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="jquery-元素操作">jQuery 元素操作</h2>
+<p>jQuery 元素操作主要讲的是用jQuery方法，操作标签的遍历、创建、添加、删除等操作。</p>
+<h3 id="遍历元素">遍历元素</h3>
+<p>jQuery 隐式迭代是对同一类元素做了同样的操作。 如果想要给同一类元素做不同操作，就需要用到遍历。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492472-0f31ef63-133b-40cf-b438-391dde571eb4.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：此方法用于遍历 jQuery 对象中的每一项，回调函数中元素为 DOM 对象，想要使用 jQuery 方法需要转换。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492553-9c2ac31d-49a0-4e91-bf4e-d2279e74ff32.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：此方法用于遍历 jQuery 对象中的每一项，回调函数中元素为 DOM 对象，想要使用 jQuery 方法需要转换。</p>
+<p><strong>演示代码</strong></p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;body>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>1<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>2<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>3<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        $(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-comment">// 如果针对于同一类元素做不同操作，需要用到遍历元素（类似for，但是比for强大）</span>
+            <span class="hljs-keyword">var</span> sum = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> arr = [<span class="hljs-string">"red"</span>, <span class="hljs-string">"green"</span>, <span class="hljs-string">"blue"</span>];
+            <span class="hljs-comment">// 1. each() 方法遍历元素 </span>
+            $(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">each</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">i, domEle</span>) {
+                <span class="hljs-comment">// 回调函数第一个参数一定是索引号  可以自己指定索引号号名称</span>
+                <span class="hljs-comment">// console.log(i);</span>
+                <span class="hljs-comment">// 回调函数第二个参数一定是 dom 元素对象，也是自己命名</span>
+                <span class="hljs-comment">// console.log(domEle);  // 使用jQuery方法需要转换 $(domEle)</span>
+                $(domEle).<span class="hljs-title function_">css</span>(<span class="hljs-string">"color"</span>, arr[i]);
+                sum += <span class="hljs-built_in">parseInt</span>($(domEle).<span class="hljs-title function_">text</span>());
+            })
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(sum);
+            <span class="hljs-comment">// 2. $.each() 方法遍历元素 主要用于遍历数据，处理数据</span>
+            <span class="hljs-comment">// $.each($("div"), function(i, ele) {</span>
+            <span class="hljs-comment">//     console.log(i);</span>
+            <span class="hljs-comment">//     console.log(ele);</span>
+            <span class="hljs-comment">// });</span>
+            <span class="hljs-comment">// $.each(arr, function(i, ele) {</span>
+            <span class="hljs-comment">//     console.log(i);</span>
+            <span class="hljs-comment">//     console.log(ele);</span>
+            <span class="hljs-comment">// })</span>
+            $.<span class="hljs-title function_">each</span>({
+                <span class="hljs-attr">name</span>: <span class="hljs-string">"andy"</span>,
+                <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>
+            }, <span class="hljs-keyword">function</span>(<span class="hljs-params">i, ele</span>) {
+                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i); <span class="hljs-comment">// 输出的是 name age 属性名</span>
+                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ele); <span class="hljs-comment">// 输出的是 andy  18 属性值</span>
+            })
+        })
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span></span>
+&#x3C;/body>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="创建添加删除">创建、添加、删除</h3>
+<p>jQuery方法操作元素的创建、添加、删除方法很多，则重点使用部分，如下：</p>
+<p><strong>语法总和</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492632-06694ce7-f376-454f-9c85-c4f7a0ba0338.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492709-dbf5e1ae-fcee-4283-8cc2-5ecb0bcc1b83.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492783-28f74b87-b629-477d-9ca2-47e4588c4b96.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492861-e9f292d0-aaf9-4b05-b013-77a589f3bf2a.png" alt="" loading="lazy" decoding="async"></p>
+<p>注意：以上只是元素的创建、添加、删除方法的常用方法，其他方法请参详API。</p>
+<p><strong>案例代码</strong></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>原先的li<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"test"</span>></span>我是原先的div<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        $(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-comment">// 1. 创建元素</span>
+            <span class="hljs-keyword">var</span> li = $(<span class="hljs-string">"&#x3C;li>我是后来创建的li&#x3C;/li>"</span>);
+      
+            <span class="hljs-comment">// 2. 添加元素</span>
+            <span class="hljs-comment">// 	2.1 内部添加</span>
+            <span class="hljs-comment">// $("ul").append(li);  内部添加并且放到内容的最后面 </span>
+            $(<span class="hljs-string">"ul"</span>).<span class="hljs-title function_">prepend</span>(li); <span class="hljs-comment">// 内部添加并且放到内容的最前面</span>
+            <span class="hljs-comment">//  2.2 外部添加</span>
+            <span class="hljs-keyword">var</span> div = $(<span class="hljs-string">"&#x3C;div>我是后妈生的&#x3C;/div>"</span>);
+            <span class="hljs-comment">// $(".test").after(div);</span>
+            $(<span class="hljs-string">".test"</span>).<span class="hljs-title function_">before</span>(div);
+      
+            <span class="hljs-comment">// 3. 删除元素</span>
+            <span class="hljs-comment">// $("ul").remove(); 可以删除匹配的元素 自杀</span>
+            <span class="hljs-comment">// $("ul").empty(); // 可以删除匹配的元素里面的子节点 孩子</span>
+            $(<span class="hljs-string">"ul"</span>).<span class="hljs-title function_">html</span>(<span class="hljs-string">""</span>); <span class="hljs-comment">// 可以删除匹配的元素里面的子节点 孩子</span>
+        })
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="jquery-尺寸位置操作">jQuery 尺寸、位置操作</h2>
+<p>jQuery中分别为我们提供了两套快速获取和设置元素尺寸和位置的API，方便易用，内容如下。</p>
+<h3 id="jquery-尺寸操作">jQuery 尺寸操作</h3>
+<p>jQuery 尺寸操作包括元素宽高的获取和设置，且不一样的API对应不一样的盒子模型。</p>
+<p><strong>语法</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073492939-79b5b959-2700-496c-adb0-d049e25f6490.png" alt="" loading="lazy" decoding="async"></p>
+<p><strong>代码演示</strong></p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;body>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        $(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-comment">// 1. width() / height() 获取设置元素 width和height大小 </span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">width</span>());
+            <span class="hljs-comment">// $("div").width(300);</span>
+            <span class="hljs-comment">// 2. innerWidth() / innerHeight()  获取设置元素 width和height + padding 大小 </span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">innerWidth</span>());
+            <span class="hljs-comment">// 3. outerWidth()  / outerHeight()  获取设置元素 width和height + padding + border 大小 </span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">outerWidth</span>());
+            <span class="hljs-comment">// 4. outerWidth(true) / outerHeight(true) 获取设置 width和height + padding + border + margin</span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">"div"</span>).<span class="hljs-title function_">outerWidth</span>(<span class="hljs-literal">true</span>));
+        })
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span></span>
+&#x3C;/body>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>注意：有了这套 API 我们将可以快速获取和子的宽高，至于其他属性想要获取和设置，还要使用 css() 等方法配合。</p>
+<h3 id="jquery-位置操作">jQuery 位置操作</h3>
+<p>jQuery的位置操作主要有三个： offset()、position()、scrollTop()/scrollLeft() , 具体介绍如下:</p>
+<p><strong>语法</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073493024-1b363784-6614-4dd9-8ddc-dd97531a3cb6.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073493095-d18b82ae-83d0-465b-bf27-4fb9449ee6c6.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_jquery/1616073493171-f3d23a41-7256-4fe7-9818-1624a3ab45ce.png" alt="" loading="lazy" decoding="async"></p>
+<p><strong>代码演示</strong></p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;body>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"father"</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"son"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+        
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"back"</span>></span>返回顶部<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"container"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+   
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        $(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-comment">// 1. 获取设置距离文档的位置（偏移） offset</span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">".son"</span>).<span class="hljs-title function_">offset</span>());
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">".son"</span>).<span class="hljs-title function_">offset</span>().<span class="hljs-property">top</span>);
+            <span class="hljs-comment">// $(".son").offset({</span>
+            <span class="hljs-comment">//     top: 200,</span>
+            <span class="hljs-comment">//     left: 200</span>
+            <span class="hljs-comment">// });</span>
+      
+            <span class="hljs-comment">// 2. 获取距离带有定位父级位置（偏移） position   如果没有带有定位的父级，则以文档为准</span>
+            <span class="hljs-comment">// 这个方法只能获取不能设置偏移</span>
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-string">".son"</span>).<span class="hljs-title function_">position</span>());
+            <span class="hljs-comment">// $(".son").position({</span>
+            <span class="hljs-comment">//     top: 200,</span>
+            <span class="hljs-comment">//     left: 200</span>
+            <span class="hljs-comment">// });</span>
+      
+      		<span class="hljs-comment">// 3. 被卷去的头部</span>
+      		$(<span class="hljs-variable language_">document</span>).<span class="hljs-title function_">scrollTop</span>(<span class="hljs-number">100</span>);
+            <span class="hljs-comment">// 被卷去的头部 scrollTop()  / 被卷去的左侧 scrollLeft()</span>
+            <span class="hljs-comment">// 页面滚动事件</span>
+            <span class="hljs-keyword">var</span> boxTop = $(<span class="hljs-string">".container"</span>).<span class="hljs-title function_">offset</span>().<span class="hljs-property">top</span>;
+            $(<span class="hljs-variable language_">window</span>).<span class="hljs-title function_">scroll</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+                <span class="hljs-comment">// console.log(11);</span>
+                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>($(<span class="hljs-variable language_">document</span>).<span class="hljs-title function_">scrollTop</span>());
+                <span class="hljs-keyword">if</span> ($(<span class="hljs-variable language_">document</span>).<span class="hljs-title function_">scrollTop</span>() >= boxTop) {
+                    $(<span class="hljs-string">".back"</span>).<span class="hljs-title function_">fadeIn</span>();
+                } <span class="hljs-keyword">else</span> {
+                    $(<span class="hljs-string">".back"</span>).<span class="hljs-title function_">fadeOut</span>();
+                }
+            });
+            <span class="hljs-comment">// 返回顶部</span>
+            $(<span class="hljs-string">".back"</span>).<span class="hljs-title function_">click</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+                <span class="hljs-comment">// $(document).scrollTop(0);</span>
+                $(<span class="hljs-string">"body, html"</span>).<span class="hljs-title function_">stop</span>().<span class="hljs-title function_">animate</span>({
+                    <span class="hljs-attr">scrollTop</span>: <span class="hljs-number">0</span>
+                });
+                <span class="hljs-comment">// $(document).stop().animate({</span>
+                <span class="hljs-comment">//     scrollTop: 0</span>
+                <span class="hljs-comment">// }); 不能是文档而是 html和body元素做动画</span>
+            })
+        })
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span></span>
+&#x3C;/body>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"jQuery元素+属性操作\",\"description\":\"jQuery 属性操作jQuery 常用属性操作有三种：prop() / attr() / data() ;元素固有属性值 prop()所谓元素固有属性就是元素本身自带的属性，比如 元素里面的 href ，比如 元素里面的 type。语法注意：prop() 除了普通属性操作，更适合操作表单...\",\"datePublished\":\"2021-03-18\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/2_day02_jquery/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","JavaScript",{"href":"/categories/JavaScript/","children":"JavaScript"}],["$","$L2","jQuery",{"href":"/categories/jQuery/","children":"jQuery"}]]]}],["$","h1",null,{"children":"jQuery元素+属性操作"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-03-18"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/2_day02_jquery/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/3_day03_jquery/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"jQuery事件+插件"}]]}],["$","$L2",null,{"href":"/blog/1_day01_jquery/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"jQuery选择器+样式操作+动画效果"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/2_day02_jquery/","title":"jQuery元素+属性操作"}]
+9:["$","$L1c",null,{"headings":[{"id":"jquery-属性操作","text":"jQuery 属性操作","depth":2},{"id":"元素固有属性值-prop","text":"元素固有属性值 prop()","depth":3},{"id":"元素自定义属性值-attr","text":"元素自定义属性值 attr()","depth":3},{"id":"数据缓存-data","text":"数据缓存 data()","depth":3},{"id":"jquery-文本属性值","text":"jQuery 文本属性值","depth":2},{"id":"jquery内容文本值","text":"jQuery内容文本值","depth":3},{"id":"jquery-元素操作","text":"jQuery 元素操作","depth":2},{"id":"遍历元素","text":"遍历元素","depth":3},{"id":"创建添加删除","text":"创建、添加、删除","depth":3},{"id":"jquery-尺寸位置操作","text":"jQuery 尺寸、位置操作","depth":2},{"id":"jquery-尺寸操作","text":"jQuery 尺寸操作","depth":3},{"id":"jquery-位置操作","text":"jQuery 位置操作","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"jQuery元素+属性操作 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"jQuery 属性操作jQuery 常用属性操作有三种：prop() / attr() / data() ;元素固有属性值 prop()所谓元素固有属性就是元素本身自带的属性，比如 元素里面的 href ，比如 元素里面的 type。语法注意：prop() 除了普通属性操作，更适合操作表单..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/2_day02_jquery/"}],["$","meta","3",{"property":"og:title","content":"jQuery元素+属性操作"}],["$","meta","4",{"property":"og:description","content":"jQuery 属性操作jQuery 常用属性操作有三种：prop() / attr() / data() ;元素固有属性值 prop()所谓元素固有属性就是元素本身自带的属性，比如 元素里面的 href ，比如 元素里面的 type。语法注意：prop() 除了普通属性操作，更适合操作表单..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/2_day02_jquery/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-03-18"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"jQuery元素+属性操作"}],["$","meta","11",{"name":"twitter:description","content":"jQuery 属性操作jQuery 常用属性操作有三种：prop() / attr() / data() ;元素固有属性值 prop()所谓元素固有属性就是元素本身自带的属性，比如 元素里面的 href ，比如 元素里面的 type。语法注意：prop() 除了普通属性操作，更适合操作表单..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,641 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:Te275,<p><img src="https://blogimage.musemvp.com/v1.0.0/wrygmp/1665116739656-379177c2-ffa2-4cc4-b22c-38fb12c201e8.png" alt="" loading="lazy" decoding="async"></p>
+<p>前言：为自己站点配置雷姆live2d，并在live2d模型的基础上附加添加看板功能。</p>
+<h2 id="安装hexo-helper-live2d">安装hexo-helper-live2d</h2>
+<ul>
+<li>下载<code>hexo-helper-live2d</code>（<a href="https://github.com/EYHN/hexo-helper-live2d" rel="noopener noreferrer">https://github.com/EYHN/hexo-helper-live2d</a>）</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-bash">npm install --save hexo-helper-live2d
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="配置自定义蕾姆模型">配置自定义蕾姆模型</h2>
+<h3 id="文件配置">文件配置</h3>
+<ul>
+<li>remu模型下载：<a href="https://onedrive.wztlink1013.com/zh-CN/live2d/" rel="noopener noreferrer">https://onedrive.wztlink1013.com/zh-CN/live2d/</a> 【密码：remu】</li>
+<li>在hexo<strong>项目根目录</strong>新建<code>live2d_models</code>文件夹，再将所下载的模型解压放入该文件夹</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wrygmp/1665114888992-4037e056-a783-4827-9d0f-426fbc3e0107.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="_configyml配置">_config.yml配置</h3>
+<ul>
+<li>根目录_config.yml添加如下配置</li>
+<li>API文档：<a href="https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init" rel="noopener noreferrer">https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-comment">## live2d</span>
+<span class="hljs-attr">live2d:</span>
+  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># 是否开启live2d</span>
+  <span class="hljs-attr">scriptFrom:</span> <span class="hljs-string">local</span> <span class="hljs-comment"># 脚本从本地引入</span>
+  <span class="hljs-attr">pluginRootPath:</span> <span class="hljs-string">live2d/</span> <span class="hljs-comment"># 插件在站点上的根目录(相对路径)</span>
+  <span class="hljs-attr">pluginJsPath:</span> <span class="hljs-string">lib/</span> <span class="hljs-comment"># 脚本文件相对与插件根目录路径</span>
+  <span class="hljs-attr">pluginModelPath:</span> <span class="hljs-string">assets/</span> <span class="hljs-comment"># 模型文件相对与插件根目录路径</span>
+  <span class="hljs-attr">tagMode:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span>
+  <span class="hljs-attr">debug:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 调试, 是否在控制台输出日志</span>
+  <span class="hljs-attr">model:</span>
+    <span class="hljs-attr">use:</span> <span class="hljs-string">remu</span> <span class="hljs-comment"># 填写放进live2d_models文件夹中的模型文件夹名字</span>
+    <span class="hljs-attr">scale:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># canvas 模型与canvas的缩放</span>
+  <span class="hljs-attr">display:</span>
+    <span class="hljs-attr">width:</span> <span class="hljs-number">150</span> <span class="hljs-comment"># 宽度</span>
+    <span class="hljs-attr">height:</span> <span class="hljs-number">300</span> <span class="hljs-comment"># 高度</span>
+    <span class="hljs-attr">position:</span> <span class="hljs-string">left</span> <span class="hljs-comment"># 显示位置</span>
+    <span class="hljs-attr">hOffset:</span> <span class="hljs-number">0</span> <span class="hljs-comment">#水平偏移</span>
+    <span class="hljs-attr">vOffset:</span> <span class="hljs-number">-12</span> <span class="hljs-comment">#垂直偏移</span>
+  <span class="hljs-attr">mobile:</span>
+    <span class="hljs-attr">show:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># 手机端是否显示</span>
+    <span class="hljs-attr">scale:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># 移动设备上的缩放</span>
+  <span class="hljs-attr">react:</span>
+    <span class="hljs-attr">opacity:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># 透明度</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!NOTE]</p>
+<p>PS：按需加载live2d标签上述配置中tagMode: true则代表需要在主题中单独给出需要显示的页面</p>
+</blockquote>
+<h3 id="最终live2d效果">最终live2d效果</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wrygmp/1665115637123-4e5c7429-8a8e-4ae9-b38b-64fc9779a01f.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="配置三方插件模型">配置三方插件模型</h2>
+<p>上述步骤是下载remu源文件然后自定义的remu模型，也可以下载社区封装好npm插件的模型，本文做自定义模型的说明，故不做该部分详述。相关参考如下：</p>
+<ul>
+<li><a href="https://github.com/xiazeyu/live2d-widget-models" rel="noopener noreferrer">https://github.com/xiazeyu/live2d-widget-models</a></li>
+<li><a href="https://huaji8.top/post/live2d-plugin-2.0/" rel="noopener noreferrer">https://huaji8.top/post/live2d-plugin-2.0/</a></li>
+</ul>
+<h2 id="附给live2d添加看板功能">附：给live2d添加看板功能</h2>
+<p>上述所有步骤完成live2d的安装配置，在此基础上还可以给live2d添加看板功能，就如本文第一张图片那种效果</p>
+<h3 id="添加看板样式">添加看板样式</h3>
+<p>添加静态样式即可：</p>
+<p>_live2d/remu.styl</p>
+<div class="code-block"><pre><code class="hljs language-css">// 收缩之后的左下角的贴附样式
+<span class="hljs-selector-id">#waifu-toggle</span> {
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#3f51b5</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">66px</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">margin-left</span>: -<span class="hljs-number">90px</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span> <span class="hljs-number">2px</span> <span class="hljs-number">5px</span> <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">position</span>: fixed;
+  <span class="hljs-attribute">transition</span>: margin-left <span class="hljs-number">1s</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">60px</span>;
+  <span class="hljs-attribute">writing-mode</span>: vertical-rl;
+}
+
+<span class="hljs-selector-id">#waifu-toggle</span><span class="hljs-selector-class">.waifu-toggle-active</span> {
+  <span class="hljs-attribute">margin-left</span>: -<span class="hljs-number">40px</span>;
+}
+
+<span class="hljs-selector-id">#waifu-toggle</span><span class="hljs-selector-class">.waifu-toggle-active</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">margin-left</span>: -<span class="hljs-number">30px</span>;
+}
+
+// 容纳雷姆的盒子
+<span class="hljs-selector-id">#waifu</span> {
+  <span class="hljs-attribute">bottom</span>: -<span class="hljs-number">1000px</span>;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">margin-bottom</span>: -<span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">position</span>: fixed;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(<span class="hljs-number">3px</span>);
+  <span class="hljs-attribute">transition</span>: transform .<span class="hljs-number">3s</span> ease-in-out, bottom <span class="hljs-number">3s</span> ease-in-out;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-selector-id">#waifu</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(<span class="hljs-number">0</span>);
+}
+
+// 文字提示框
+<span class="hljs-selector-id">#waifu-tips</span> {
+  <span class="hljs-attribute">animation</span>: shake <span class="hljs-number">50s</span> ease-in-out <span class="hljs-number">5s</span> infinite;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">100</span>,<span class="hljs-number">149</span>,<span class="hljs-number">237</span>, .<span class="hljs-number">5</span>);
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-built_in">rgba</span>(<span class="hljs-number">30</span>,<span class="hljs-number">144</span>,<span class="hljs-number">255</span>, .<span class="hljs-number">62</span>);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">12px</span>;
+  <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">3px</span> <span class="hljs-number">15px</span> <span class="hljs-number">2px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">191</span>, <span class="hljs-number">158</span>, <span class="hljs-number">118</span>, .<span class="hljs-number">2</span>);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">24px</span>;
+  <span class="hljs-attribute">margin</span>: -<span class="hljs-number">30px</span> <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">70px</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">overflow</span>: hidden;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">5px</span> <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">text-overflow</span>: ellipsis;
+  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">1s</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">180px</span>;
+  <span class="hljs-attribute">word-break</span>: break-all;
+}
+
+<span class="hljs-selector-id">#waifu-tips</span><span class="hljs-selector-class">.waifu-tips-active</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transition</span>: opacity .<span class="hljs-number">2s</span>;
+}
+
+<span class="hljs-selector-id">#waifu-tips</span> <span class="hljs-selector-tag">span</span> 
+<span class="hljs-attribute">color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">255</span>,.<span class="hljs-number">7</span>); // 文字提示框中的重点字
+
+// 容纳雷姆的外加小盒子
+<span class="hljs-selector-id">#waifu</span> <span class="hljs-selector-id">#live2d</span> {
+  <span class="hljs-attribute">cursor</span>: grab;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">300px</span>;
+  <span class="hljs-attribute">position</span>: relative;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;
+}
+
+<span class="hljs-selector-id">#waifu</span> <span class="hljs-selector-id">#live2d</span><span class="hljs-selector-pseudo">:active</span> {
+  <span class="hljs-attribute">cursor</span>: grabbing;
+}
+
+// 小按钮组件
+<span class="hljs-selector-id">#waifu-tool</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#0684bd</span>;
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0.5</span>;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">left</span>: <span class="hljs-number">5px</span>
+    top: <span class="hljs-number">70px</span>;
+  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">1s</span>;
+}
+
+<span class="hljs-selector-id">#waifu</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-id">#waifu-tool</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+}
+
+// 小按钮的<span class="hljs-selector-tag">span</span>样式
+<span class="hljs-selector-id">#waifu-tool</span> <span class="hljs-selector-tag">span</span> { 
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#0684bd</span>;
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">display</span>: block;
+  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">30px</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">transition</span>: color .<span class="hljs-number">3s</span>;
+}
+
+<span class="hljs-selector-id">#waifu-tool</span> <span class="hljs-selector-tag">span</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#0684bd</span>; <span class="hljs-comment">/* #34495e */</span> 
+}
+
+<span class="hljs-keyword">@keyframes</span> shake {
+  <span class="hljs-number">2%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">4%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">6%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">8%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">10%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">12%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">14%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">16%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">18%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">20%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">22%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">24%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">26%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">1.5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">28%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-.<span class="hljs-number">5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">30%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">1.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">32%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">34%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">36%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">38%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">40%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-.<span class="hljs-number">5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">42%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">44%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">46%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">1.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">48%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">50%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">52%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-.<span class="hljs-number">5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">54%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">56%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">58%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">60%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">62%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">64%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">66%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">68%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">70%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">72%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-.<span class="hljs-number">5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">74%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">76%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">78%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, <span class="hljs-number">2.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">80%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">82%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">84%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-.<span class="hljs-number">5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">86%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, <span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">88%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">90%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">92%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">1.5deg</span>);
+  }
+
+  <span class="hljs-number">94%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(.<span class="hljs-number">5px</span>, .<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">96%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">2.5px</span>, -.<span class="hljs-number">5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">98%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">1.5px</span>, -<span class="hljs-number">1.5px</span>) <span class="hljs-built_in">rotate</span>(-.<span class="hljs-number">5deg</span>);
+  }
+
+  <span class="hljs-number">0%</span>, <span class="hljs-number">100%</span> {
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>) <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0</span>);
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="添加看板逻辑代码">添加看板逻辑代码</h3>
+<p>./part/live2d.js</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">loadWidget</span>(<span class="hljs-params">config</span>) {
+  <span class="hljs-keyword">let</span> { waifuPath, apiPath, cdnPath } = config;
+  <span class="hljs-keyword">let</span> useCDN = <span class="hljs-literal">false</span>, modelList;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> cdnPath === <span class="hljs-string">"string"</span>) {
+    useCDN = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (!cdnPath.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">"/"</span>)) cdnPath += <span class="hljs-string">"/"</span>;
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> apiPath === <span class="hljs-string">"string"</span>) {
+    <span class="hljs-keyword">if</span> (!apiPath.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">"/"</span>)) apiPath += <span class="hljs-string">"/"</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">"Invalid initWidget argument!"</span>);
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">removeItem</span>(<span class="hljs-string">"waifu-display"</span>);
+  <span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">removeItem</span>(<span class="hljs-string">"waifu-text"</span>);
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">insertAdjacentHTML</span>(<span class="hljs-string">"beforeend"</span>, <span class="hljs-string">`&#x3C;div id="waifu">
+                &#x3C;div id="waifu-tips">&#x3C;/div>
+                &#x3C;canvas id="live2d">&#x3C;/canvas>
+                &#x3C;div id="waifu-tool">
+                    &#x3C;span class="fa fa-comments">&#x3C;/span>
+                    &#x3C;span class="fa fa-link">&#x3C;/span>
+                    &#x3C;span class="fa fa-compress">&#x3C;/span>
+                &#x3C;/div>
+            &#x3C;/div>`</span>);
+  <span class="hljs-comment">// https://stackoverflow.com/questions/24148403/trigger-css-transition-on-appended-element</span>
+  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu"</span>).<span class="hljs-property">style</span>.<span class="hljs-property">bottom</span> = <span class="hljs-number">0</span>;
+  }, <span class="hljs-number">0</span>);
+
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">randomSelection</span>(<span class="hljs-params">obj</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(obj) ? obj[<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * obj.<span class="hljs-property">length</span>)] : obj;
+  }
+  <span class="hljs-comment">// 检测用户活动状态，并在空闲时显示消息</span>
+  <span class="hljs-keyword">let</span> userAction = <span class="hljs-literal">false</span>,
+    userActionTimer,
+    messageTimer,
+    messageArray = [<span class="hljs-string">"好久不见，日子过得好快呢……"</span>, <span class="hljs-string">"嗨～欢迎访问该站点！"</span>, <span class="hljs-string">"记得把小家加入 Adblock 白名单哦！"</span>];
+  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"mousemove"</span>, <span class="hljs-function">() =></span> userAction = <span class="hljs-literal">true</span>);
+  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"keydown"</span>, <span class="hljs-function">() =></span> userAction = <span class="hljs-literal">true</span>);
+  <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> {
+    <span class="hljs-keyword">if</span> (userAction) {
+      userAction = <span class="hljs-literal">false</span>;
+      <span class="hljs-built_in">clearInterval</span>(userActionTimer);
+      userActionTimer = <span class="hljs-literal">null</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!userActionTimer) {
+      userActionTimer = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =></span> {
+        <span class="hljs-title function_">showMessage</span>(<span class="hljs-title function_">randomSelection</span>(messageArray), <span class="hljs-number">6000</span>, <span class="hljs-number">9</span>);
+      }, <span class="hljs-number">20000</span>);
+    }
+  }, <span class="hljs-number">1000</span>);
+
+  (<span class="hljs-keyword">function</span> <span class="hljs-title function_">registerEventListener</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第一个icon，说话</span>
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#waifu-tool .fa-comments"</span>).<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, showHitokoto);
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第二个icon，貌似是什么游戏</span>
+    <span class="hljs-comment">// document.querySelector("#waifu-tool .fa-paper-plane").addEventListener("click", () => {</span>
+    <span class="hljs-comment">//     if (window.Asteroids) {</span>
+    <span class="hljs-comment">//         if (!window.ASTEROIDSPLAYERS) window.ASTEROIDSPLAYERS = [];</span>
+    <span class="hljs-comment">//         window.ASTEROIDSPLAYERS.push(new Asteroids());</span>
+    <span class="hljs-comment">//     } else {</span>
+    <span class="hljs-comment">//         const script = document.createElement("script");</span>
+    <span class="hljs-comment">//         script.src = "https://cdn.jsdelivr.net/gh/stevenjoezhang/asteroids/asteroids.js";</span>
+    <span class="hljs-comment">//         document.head.appendChild(script);</span>
+    <span class="hljs-comment">//     }</span>
+    <span class="hljs-comment">// });</span>
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第三个icon，换人物</span>
+    <span class="hljs-comment">// document.querySelector("#waifu-tool .fa-user-circle").addEventListener("click", loadOtherModel);</span>
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第四个icon，应该是换装</span>
+    <span class="hljs-comment">// document.querySelector("#waifu-tool .fa-street-view").addEventListener("click", loadRandModel);</span>
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第五个icon，拍照</span>
+    <span class="hljs-comment">// document.querySelector("#waifu-tool .fa-camera-retro").addEventListener("click", () => {</span>
+    <span class="hljs-comment">//     showMessage("照好了嘛，是不是很可爱呢？", 6000, 9);</span>
+    <span class="hljs-comment">//     Live2D.captureName = "photo.png";</span>
+    <span class="hljs-comment">//     Live2D.captureFrame = true;</span>
+    <span class="hljs-comment">// });</span>
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第六个icon，原项目地址</span>
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#waifu-tool .fa-link"</span>).<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, <span class="hljs-function">() =></span> {
+      <span class="hljs-title function_">open</span>(<span class="hljs-string">"https://www.wztlink1013.com/about/"</span>);
+    });
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 第七个icon，隐藏看板娘</span>
+
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">"#waifu-tool .fa-compress"</span>).<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, <span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">"waifu-display"</span>, <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>());
+      <span class="hljs-title function_">showMessage</span>(<span class="hljs-string">"愿你有一天能与重要的人重逢。"</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">11</span>);
+      <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu"</span>).<span class="hljs-property">style</span>.<span class="hljs-property">bottom</span> = <span class="hljs-string">"-500px"</span>; <span class="hljs-comment">// 隐藏大盒子</span>
+      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu"</span>).<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">"none"</span>;
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu-toggle"</span>).<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">"waifu-toggle-active"</span>);
+      }, <span class="hljs-number">3000</span>);
+
+    });
+
+    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"copy"</span>, <span class="hljs-function">() =></span> {
+      <span class="hljs-title function_">showMessage</span>(<span class="hljs-string">"你都复制了些什么呀，转载要记得加上出处哦！"</span>, <span class="hljs-number">6000</span>, <span class="hljs-number">9</span>);
+    });
+    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"visibilitychange"</span>, <span class="hljs-function">() =></span> {
+      <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">document</span>.<span class="hljs-property">hidden</span>) <span class="hljs-title function_">showMessage</span>(<span class="hljs-string">"哇，你终于回来了～"</span>, <span class="hljs-number">6000</span>, <span class="hljs-number">9</span>);
+    });
+  })();
+
+  <span class="hljs-comment">// 首页展示特定文字</span>
+  (<span class="hljs-keyword">function</span> <span class="hljs-title function_">welcomeMessage</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">let</span> text;
+    <span class="hljs-keyword">if</span> (location.<span class="hljs-property">pathname</span> === <span class="hljs-string">"/"</span>) { <span class="hljs-comment">// 如果是主页</span>
+      <span class="hljs-keyword">const</span> now = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getHours</span>();
+      <span class="hljs-keyword">if</span> (now > <span class="hljs-number">5</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">7</span>) text = <span class="hljs-string">"早上好！一日之计在于晨，美好的一天就要开始了。"</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (now > <span class="hljs-number">7</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">11</span>) text = <span class="hljs-string">"上午好！工作顺利嘛，不要久坐，多起来走动走动哦！"</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (now > <span class="hljs-number">11</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">13</span>) text = <span class="hljs-string">"中午了，工作了一个上午，现在是午餐时间！"</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (now > <span class="hljs-number">13</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">17</span>) text = <span class="hljs-string">"午后很容易犯困呢，今天的运动目标完成了吗？"</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (now > <span class="hljs-number">17</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">19</span>) text = <span class="hljs-string">"傍晚了！窗外夕阳的景色很美丽呢，最美不过夕阳红～"</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (now > <span class="hljs-number">19</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">21</span>) text = <span class="hljs-string">"晚上好，今天过得怎么样？"</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (now > <span class="hljs-number">21</span> &#x26;&#x26; now &#x3C;= <span class="hljs-number">23</span>) text = [<span class="hljs-string">"已经这么晚了呀，早点休息吧，晚安～"</span>, <span class="hljs-string">"深夜时要爱护眼睛呀！"</span>];
+      <span class="hljs-keyword">else</span> text = <span class="hljs-string">"你是夜猫子呀？这么晚还不睡觉，明天起的来嘛？"</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">document</span>.<span class="hljs-property">referrer</span> !== <span class="hljs-string">""</span>) {
+      <span class="hljs-keyword">const</span> referrer = <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">referrer</span>),
+        domain = referrer.<span class="hljs-property">hostname</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">"."</span>)[<span class="hljs-number">1</span>];
+      <span class="hljs-keyword">if</span> (location.<span class="hljs-property">hostname</span> === referrer.<span class="hljs-property">hostname</span>) text = <span class="hljs-string">`欢迎阅读&#x3C;span>「<span class="hljs-subst">${<span class="hljs-variable language_">document</span>.title.split(<span class="hljs-string">" - "</span>)[<span class="hljs-number">0</span>]}</span>」&#x3C;/span>`</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (domain === <span class="hljs-string">"baidu"</span>) text = <span class="hljs-string">`Hello！来自 百度搜索 的朋友&#x3C;br>你是搜索 &#x3C;span><span class="hljs-subst">${referrer.search.split(<span class="hljs-string">"&#x26;wd="</span>)[<span class="hljs-number">1</span>].split(<span class="hljs-string">"&#x26;"</span>)[<span class="hljs-number">0</span>]}</span>&#x3C;/span> 找到的我吗？`</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (domain === <span class="hljs-string">"so"</span>) text = <span class="hljs-string">`Hello！来自 360搜索 的朋友&#x3C;br>你是搜索 &#x3C;span><span class="hljs-subst">${referrer.search.split(<span class="hljs-string">"&#x26;q="</span>)[<span class="hljs-number">1</span>].split(<span class="hljs-string">"&#x26;"</span>)[<span class="hljs-number">0</span>]}</span>&#x3C;/span> 找到的我吗？`</span>;
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (domain === <span class="hljs-string">"google"</span>) text = <span class="hljs-string">`Hello！来自 谷歌搜索 的朋友&#x3C;br>欢迎阅读&#x3C;span>「<span class="hljs-subst">${<span class="hljs-variable language_">document</span>.title.split(<span class="hljs-string">" - "</span>)[<span class="hljs-number">0</span>]}</span>」&#x3C;/span>`</span>;
+      <span class="hljs-keyword">else</span> text = <span class="hljs-string">`Hello！来自 &#x3C;span><span class="hljs-subst">${referrer.hostname}</span>&#x3C;/span> 的朋友`</span>;
+    } <span class="hljs-keyword">else</span> {
+      text = <span class="hljs-string">`欢迎阅读&#x3C;span>「<span class="hljs-subst">${<span class="hljs-variable language_">document</span>.title.split(<span class="hljs-string">" - "</span>)[<span class="hljs-number">0</span>]}</span>」&#x3C;/span>`</span>;
+    }
+    <span class="hljs-title function_">showMessage</span>(text, <span class="hljs-number">7000</span>, <span class="hljs-number">8</span>);
+  })();
+  <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 服务于第一个icon</span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">showHitokoto</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">// 增加 hitokoto.cn 的 API</span>
+    <span class="hljs-title function_">fetch</span>(<span class="hljs-string">"https://v1.hitokoto.cn"</span>)
+      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =></span> response.<span class="hljs-title function_">json</span>())
+      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">result</span> =></span> {
+        <span class="hljs-keyword">const</span> text = <span class="hljs-string">`这句一言来自 &#x3C;span>「<span class="hljs-subst">${result.<span class="hljs-keyword">from</span>}</span>」&#x3C;/span>，是 &#x3C;span><span class="hljs-subst">${result.creator}</span>&#x3C;/span> 在 hitokoto.cn 投稿的。`</span>;
+        <span class="hljs-title function_">showMessage</span>(result.<span class="hljs-property">hitokoto</span>, <span class="hljs-number">6000</span>, <span class="hljs-number">9</span>);
+        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+          <span class="hljs-title function_">showMessage</span>(text, <span class="hljs-number">4000</span>, <span class="hljs-number">9</span>);
+        }, <span class="hljs-number">6000</span>);
+      });
+  }
+  <span class="hljs-comment">// 没有bug展示特定状态下的文字</span>
+  <span class="hljs-keyword">function</span> <span class="hljs-title function_">showMessage</span>(<span class="hljs-params">text, timeout, priority</span>) {
+    <span class="hljs-keyword">if</span> (!text || (<span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">"waifu-text"</span>) &#x26;&#x26; <span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">"waifu-text"</span>) > priority)) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (messageTimer) {
+      <span class="hljs-built_in">clearTimeout</span>(messageTimer);
+      messageTimer = <span class="hljs-literal">null</span>;
+    }
+    text = <span class="hljs-title function_">randomSelection</span>(text);
+    <span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">"waifu-text"</span>, priority);
+    <span class="hljs-keyword">const</span> tips = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu-tips"</span>);
+    tips.<span class="hljs-property">innerHTML</span> = text;
+    tips.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">"waifu-tips-active"</span>);
+    messageTimer = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">removeItem</span>(<span class="hljs-string">"waifu-text"</span>);
+      tips.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(<span class="hljs-string">"waifu-tips-active"</span>);
+    }, timeout);
+  }
+
+}
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">initWidget</span>(<span class="hljs-params">config, apiPath</span>) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> config === <span class="hljs-string">"string"</span>) config = { <span class="hljs-attr">waifuPath</span>: config, apiPath };
+  <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">insertAdjacentHTML</span>(<span class="hljs-string">"beforeend"</span>, <span class="hljs-string">`&#x3C;div id="waifu-toggle">
+                &#x3C;span>雷姆&#x3C;/span>
+            &#x3C;/div>`</span>);
+  <span class="hljs-keyword">const</span> toggle = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu-toggle"</span>);
+  toggle.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"click"</span>, <span class="hljs-function">() =></span> {
+    toggle.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(<span class="hljs-string">"waifu-toggle-active"</span>);
+    <span class="hljs-keyword">if</span> (toggle.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">"first-time"</span>)) {
+      <span class="hljs-title function_">loadWidget</span>(config);
+      toggle.<span class="hljs-title function_">removeAttribute</span>(<span class="hljs-string">"first-time"</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">removeItem</span>(<span class="hljs-string">"waifu-display"</span>);
+      <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu"</span>).<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">""</span>;
+      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">"waifu"</span>).<span class="hljs-property">style</span>.<span class="hljs-property">bottom</span> = <span class="hljs-number">0</span>;
+      }, <span class="hljs-number">0</span>);
+    }
+    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> 一开始判断是否隐藏雷姆代码</span>
+
+  });
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">"waifu-display"</span>) &#x26;&#x26; <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">"waifu-display"</span>) &#x3C;= <span class="hljs-number">86400000</span>) {
+    toggle.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">"first-time"</span>, <span class="hljs-literal">true</span>);
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =></span> {
+      toggle.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">"waifu-toggle-active"</span>);
+    }, <span class="hljs-number">0</span>);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-title function_">loadWidget</span>(config);
+  }
+
+}
+
+<span class="hljs-keyword">export</span> {
+  initWidget, <span class="hljs-comment">//导出对象</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>在base.js中初始化看板逻辑代码</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> {initWidget} <span class="hljs-keyword">from</span> <span class="hljs-string">'./part/live2d.js'</span>;
+
+<span class="hljs-comment">// live2d 初始化</span>
+<span class="hljs-title function_">initWidget</span>({
+  <span class="hljs-attr">waifuPath</span>: <span class="hljs-string">"/data/remu.json"</span>,
+  <span class="hljs-attr">cdnPath</span>: <span class="hljs-string">"https://github.com/fghrsh/live2d_api/tree/1.0.1/"</span>
+});
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="最终看板效果">最终看板效果</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wrygmp/1665116671351-7c3e9921-cb79-4902-822f-a09a3ce422ae.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<p>live2d API文档：<a href="https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init" rel="noopener noreferrer">https://l2dwidget.js.org/docs/class/src/index.js~L2Dwidget.html#instance-method-init</a></p>
+</li>
+<li>
+<p>封装为npm插件模型：<a href="https://huaji8.top/post/live2d-plugin-2.0/" rel="noopener noreferrer">https://huaji8.top/post/live2d-plugin-2.0/</a></p>
+</li>
+<li>
+<p>自定义扩展模型：<a href="https://github.com/luanshizhimei/live2d_models_collect" rel="noopener noreferrer">https://github.com/luanshizhimei/live2d_models_collect</a></p>
+</li>
+<li>
+<p>vscode live2d扩展：<a href="https://github.com/ezshine/vscode-rainbow-fart-waifu" rel="noopener noreferrer">https://github.com/ezshine/vscode-rainbow-fart-waifu</a></p>
+</li>
+<li>
+<p><a href="https://github.com/fghrsh/live2d_api/tree/1.0.1/" rel="noopener noreferrer">https://github.com/fghrsh/live2d_api/tree/1.0.1/</a></p>
+</li>
+<li>
+<p><strong>TODO:</strong> 优化资源加载方式，模型的静态资源使用外链的形式较为合理，以及插件每次在开发模式下都会编译文件，都会带来开发环境以及生产环境上的不便</p>
+</li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"站点添加雷姆live2d+看板模型\",\"description\":\"前言：为自己站点配置雷姆live2d，并在live2d模型的基础上附加添加看板功能。安装hexo-helper-live2d下载hexo-helper-live2d（https://github.com/EYHN/hexo-helper-live2d）npm install --save he...\",\"datePublished\":\"2022-10-07\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/wrygmp/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","博客技术",{"href":"/categories/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/","children":"博客技术"}]]]}],["$","h1",null,{"children":"站点添加雷姆live2d+看板模型"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-10-07"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[6," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/wrygmp/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/ngt02r/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Vue3项目中ts报错总结"}]]}],["$","$L2",null,{"href":"/blog/ugwagn/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"站点使用防盗链图片和百度统计Referer不一致的解决方案"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/wrygmp/","title":"站点添加雷姆live2d+看板模型"}]
+9:["$","$L1c",null,{"headings":[{"id":"安装hexo-helper-live2d","text":"安装hexo-helper-live2d","depth":2},{"id":"配置自定义蕾姆模型","text":"配置自定义蕾姆模型","depth":2},{"id":"文件配置","text":"文件配置","depth":3},{"id":"_configyml配置","text":"_config.yml配置","depth":3},{"id":"最终live2d效果","text":"最终live2d效果","depth":3},{"id":"配置三方插件模型","text":"配置三方插件模型","depth":2},{"id":"附给live2d添加看板功能","text":"附：给live2d添加看板功能","depth":2},{"id":"添加看板样式","text":"添加看板样式","depth":3},{"id":"添加看板逻辑代码","text":"添加看板逻辑代码","depth":3},{"id":"最终看板效果","text":"最终看板效果","depth":3},{"id":"参考","text":"参考","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"站点添加雷姆live2d+看板模型 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：为自己站点配置雷姆live2d，并在live2d模型的基础上附加添加看板功能。安装hexo-helper-live2d下载hexo-helper-live2d（https://github.com/EYHN/hexo-helper-live2d）npm install --save he..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/wrygmp/"}],["$","meta","3",{"property":"og:title","content":"站点添加雷姆live2d+看板模型"}],["$","meta","4",{"property":"og:description","content":"前言：为自己站点配置雷姆live2d，并在live2d模型的基础上附加添加看板功能。安装hexo-helper-live2d下载hexo-helper-live2d（https://github.com/EYHN/hexo-helper-live2d）npm install --save he..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/wrygmp/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-10-07"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"站点添加雷姆live2d+看板模型"}],["$","meta","11",{"name":"twitter:description","content":"前言：为自己站点配置雷姆live2d，并在live2d模型的基础上附加添加看板功能。安装hexo-helper-live2d下载hexo-helper-live2d（https://github.com/EYHN/hexo-helper-live2d）npm install --save he..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

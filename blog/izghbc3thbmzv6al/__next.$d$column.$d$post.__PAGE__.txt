@@ -1,0 +1,190 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T33a9,<ul>
+<li><code>2024-09-03T16:00:00.000Z</code>这种格式是UTC格式</li>
+<li>北京时间比UTC格式时间快8小时</li>
+<li>国际化的Web APP需要用户设置地区，以此来正确显示自己地区的位置时间</li>
+</ul>
+<h2 id="使用dayjs库">使用dayjs库</h2>
+<h3 id="国际化">国际化</h3>
+<ul>
+<li>首先需要引入静态资源</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> dayjs <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'dayjs/locale/zh-cn'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'dayjs/locale/en'</span>;
+<span class="hljs-keyword">import</span> utc <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/utc'</span>;
+<span class="hljs-keyword">import</span> timezone <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/timezone'</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>跟随Web应用进行国际化切换：<a href="https://day.js.org/docs/zh-CN/i18n/loading-into-nodejs" rel="noopener noreferrer">https://day.js.org/docs/zh-CN/i18n/loading-into-nodejs</a></li>
+</ul>
+<h3 id="默认utc使用地区插件展示">默认UTC+使用地区插件展示</h3>
+<ul>
+<li><a href="https://github.com/wztlink1013/lyrics/blob/5cd479b933dbfed4b4ca1ce682fa6219a8db5b94/apps/lyrics-client/src/locales/i18n.ts#L18" rel="noopener noreferrer">https://github.com/wztlink1013/lyrics/blob/5cd479b933dbfed4b4ca1ce682fa6219a8db5b94/apps/lyrics-client/src/locales/i18n.ts#L18</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> utc <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/utc'</span>;
+<span class="hljs-keyword">import</span> timezone <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/timezone'</span>;
+
+dayjs.<span class="hljs-title function_">extend</span>(utc);
+dayjs.<span class="hljs-title function_">extend</span>(timezone);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>这两行代码是使用 <code>dayjs</code> 这个日期处理库时的扩展功能。</p>
+<ol>
+<li><code>dayjs.extend(utc);</code>：</li>
+</ol>
+<ul>
+<li>这一行代码引入了 <code>dayjs</code> 的 <code>utc</code> 插件，使得 <code>dayjs</code> 能够支持 UTC 时间的处理。通过这个插件，可以方便地进行 UTC 时间和本地时间之间的转换。</li>
+</ul>
+<ol start="2">
+<li><code>dayjs.extend(timezone);</code>：</li>
+</ol>
+<ul>
+<li>这一行代码引入了 <code>dayjs</code> 的 <code>timezone</code> 插件，它允许在不同的时区之间进行时间转换。这个插件可以根据指定的时区处理时间，使得显示和计算更加灵活。</li>
+</ul>
+<p>总的来说，这两行代码的目的是增强 <code>dayjs</code> 库，使其能够处理 UTC 和不同的时区，从而更好地支持国际化和跨时区的时间管理。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/izghbc3thbmzv6al/1730269588568-d36c14f7-2652-4496-8d3b-2625d3490e25.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/izghbc3thbmzv6al/1730269601607-37256249-4248-411d-b93d-c639c8300057.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="格式化utc字符串为指定地区指定格式">格式化UTC字符串为指定地区指定格式</h3>
+<p>其中<code>'Asia/Shanghai'</code>应该设置为一个配置</p>
+<ul>
+<li><a href="https://github.com/wztlink1013/lyrics/blob/5cd479b933dbfed4b4ca1ce682fa6219a8db5b94/apps/lyrics-client/src/components/Doc/EditorView.tsx#L517" rel="noopener noreferrer">https://github.com/wztlink1013/lyrics/blob/5cd479b933dbfed4b4ca1ce682fa6219a8db5b94/apps/lyrics-client/src/components/Doc/EditorView.tsx#L517</a></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript">dayjs
+  .<span class="hljs-title function_">utc</span>(updatedAtStr)
+  .<span class="hljs-title function_">tz</span>(<span class="hljs-string">'Asia/Shanghai'</span>)
+  .<span class="hljs-title function_">format</span>(<span class="hljs-string">'YYYY-MM-DD HH:mm:ss'</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="封装">封装</h3>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> dayjs <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs'</span>;
+<span class="hljs-keyword">import</span> utc <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/utc'</span>;
+<span class="hljs-keyword">import</span> timezone <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/timezone'</span>;
+<span class="hljs-keyword">import</span> isSameOrAfter <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/isSameOrAfter'</span>;
+<span class="hljs-keyword">import</span> isSameOrBefore <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/isSameOrBefore'</span>;
+<span class="hljs-keyword">import</span> customParseFormat <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/customParseFormat'</span>;
+<span class="hljs-keyword">import</span> weekOfYear <span class="hljs-keyword">from</span> <span class="hljs-string">'dayjs/plugin/weekOfYear'</span>;
+
+<span class="hljs-comment">// timezone</span>
+dayjs.<span class="hljs-title function_">extend</span>(utc);
+dayjs.<span class="hljs-title function_">extend</span>(timezone);
+<span class="hljs-comment">// first and last</span>
+dayjs.<span class="hljs-title function_">extend</span>(isSameOrAfter);
+dayjs.<span class="hljs-title function_">extend</span>(isSameOrBefore);
+dayjs.<span class="hljs-title function_">extend</span>(customParseFormat);
+dayjs.<span class="hljs-title function_">extend</span>(weekOfYear);
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">TIMEZONE</span> = <span class="hljs-string">'Asia/Shanghai'</span>;
+
+<span class="hljs-comment">/**
+ * get date string with UTC datasource and assign timezone
+ * <span class="hljs-doctag">@param</span> str UTC time string
+ * <span class="hljs-doctag">@param</span> template dayjs format string
+ * <span class="hljs-doctag">@param</span> option other params
+ * <span class="hljs-doctag">@param</span> option.timezone assign timezone
+ * <span class="hljs-doctag">@returns</span> format string
+ */</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">getFormatTime</span> = (<span class="hljs-params">
+  <span class="hljs-attr">str</span>: <span class="hljs-built_in">string</span>,
+  template = <span class="hljs-string">''</span>,
+  <span class="hljs-attr">option</span>?: {
+    timezone?: <span class="hljs-built_in">string</span>;
+  }
+</span>) => {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">dayjs</span>(str)
+    .<span class="hljs-title function_">utc</span>()
+    .<span class="hljs-title function_">tz</span>(option?.<span class="hljs-property">timezone</span> || <span class="hljs-variable constant_">TIMEZONE</span>)
+    .<span class="hljs-title function_">format</span>(template);
+};
+
+<span class="hljs-keyword">enum</span> <span class="hljs-title class_">TimeBoundaryType</span> {
+  <span class="hljs-variable constant_">MONTH</span> = <span class="hljs-string">'month'</span>,
+  <span class="hljs-variable constant_">WEEK</span> = <span class="hljs-string">'week'</span>,
+}
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">TimeWeekStart</span> = <span class="hljs-number">1</span> | <span class="hljs-number">2</span> | <span class="hljs-number">3</span> | <span class="hljs-number">4</span> | <span class="hljs-number">5</span> | <span class="hljs-number">6</span> | <span class="hljs-number">7</span>;
+<span class="hljs-comment">/**
+ * get date string's month boundary
+ * <span class="hljs-doctag">@param</span> str time string
+ * <span class="hljs-doctag">@param</span> isStart true -> month first day; false -> month last day;
+ * <span class="hljs-doctag">@param</span> option other params
+ * <span class="hljs-doctag">@param</span> option.showHMS show h m s
+ * <span class="hljs-doctag">@param</span> option.weekStart when boundaryType is week, week first day
+ * <span class="hljs-doctag">@returns</span> format string
+ */</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">getTimeMonthBoundary</span> = (<span class="hljs-params">
+  <span class="hljs-attr">str</span>: <span class="hljs-built_in">string</span>,
+  isStart = <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">option</span>?: {
+    showHMS?: <span class="hljs-built_in">boolean</span>;
+    boundaryType?: TimeBoundaryType;
+    weekStart?: TimeWeekStart;
+  }
+</span>) => {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${dayjs(str)
+    [isStart ? <span class="hljs-string">'startOf'</span> : <span class="hljs-string">'endOf'</span>](option?.boundaryType || <span class="hljs-string">'month'</span>)
+    .add(
+      option?.boundaryType === <span class="hljs-string">'week'</span> &#x26;&#x26; option?.weekStart
+        ? option.weekStart
+        : <span class="hljs-number">0</span>,
+      <span class="hljs-string">'day'</span>
+    )
+    .format(<span class="hljs-string">'YYYY-MM-DD'</span>)}</span><span class="hljs-subst">${
+    option?.showHMS ? (isStart ? <span class="hljs-string">' 00:00:00'</span> : <span class="hljs-string">' 23:59:59'</span>) : <span class="hljs-string">''</span>
+  }</span>`</span>;
+};
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> dateStr = <span class="hljs-string">'2024-09-30T00:22:25.218Z'</span>;
+<span class="hljs-keyword">const</span> formatDateStr = <span class="hljs-title function_">getFormatTime</span>(dateStr, <span class="hljs-string">'YYYY-MM-DD HH:mm:ss'</span>);
+
+<span class="hljs-keyword">const</span> mStart = <span class="hljs-title function_">getTimeMonthBoundary</span>(formatDateStr, <span class="hljs-literal">true</span>, {
+  <span class="hljs-attr">showHMS</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">boundaryType</span>: <span class="hljs-title class_">TimeBoundaryType</span>.<span class="hljs-property">WEEK</span>,
+  <span class="hljs-attr">weekStart</span>: <span class="hljs-number">1</span>,
+});
+<span class="hljs-keyword">const</span> mEnd = <span class="hljs-title function_">getTimeMonthBoundary</span>(formatDateStr, <span class="hljs-literal">false</span>, {
+  <span class="hljs-attr">showHMS</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">boundaryType</span>: <span class="hljs-title class_">TimeBoundaryType</span>.<span class="hljs-property">WEEK</span>,
+  <span class="hljs-attr">weekStart</span>: <span class="hljs-number">1</span>,
+});
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(<span class="hljs-string">'[info]'</span>, { dateStr, formatDateStr, mStart, mEnd });
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/izghbc3thbmzv6al/1730273367448-9324b728-813a-429a-b931-701b8a5fa6bb.png" alt="" loading="lazy" decoding="async"></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"UTC格式时间及其dayjs相关封装\",\"description\":\"2024-09-03T16:00:00.000Z这种格式是UTC格式北京时间比UTC格式时间快8小时国际化的Web APP需要用户设置地区，以此来正确显示自己地区的位置时间使用dayjs库国际化首先需要引入静态资源import dayjs from 'dayjs'; import 'dayjs...\",\"datePublished\":\"2024-10-30\",\"dateModified\":\"2024-12-12\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/izghbc3thbmzv6al/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","业务解决方案",{"href":"/categories/%E4%B8%9A%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/","children":"业务解决方案"}]]]}],["$","h1",null,{"children":"UTC格式时间及其dayjs相关封装"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-10-30"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[2," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/izghbc3thbmzv6al/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-12-12"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/gqngnhy2z3w72m1o/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"浏览器端批量下载"}]]}],["$","$L2",null,{"href":"/blog/wsm9wflpwozi8hdx/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/izghbc3thbmzv6al/","title":"UTC格式时间及其dayjs相关封装"}]
+9:["$","$L1c",null,{"headings":[{"id":"使用dayjs库","text":"使用dayjs库","depth":2},{"id":"国际化","text":"国际化","depth":3},{"id":"默认utc使用地区插件展示","text":"默认UTC+使用地区插件展示","depth":3},{"id":"格式化utc字符串为指定地区指定格式","text":"格式化UTC字符串为指定地区指定格式","depth":3},{"id":"封装","text":"封装","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"UTC格式时间及其dayjs相关封装 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"2024-09-03T16:00:00.000Z这种格式是UTC格式北京时间比UTC格式时间快8小时国际化的Web APP需要用户设置地区，以此来正确显示自己地区的位置时间使用dayjs库国际化首先需要引入静态资源import dayjs from 'dayjs'; import 'dayjs..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/izghbc3thbmzv6al/"}],["$","meta","3",{"property":"og:title","content":"UTC格式时间及其dayjs相关封装"}],["$","meta","4",{"property":"og:description","content":"2024-09-03T16:00:00.000Z这种格式是UTC格式北京时间比UTC格式时间快8小时国际化的Web APP需要用户设置地区，以此来正确显示自己地区的位置时间使用dayjs库国际化首先需要引入静态资源import dayjs from 'dayjs'; import 'dayjs..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/izghbc3thbmzv6al/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-10-30"}],["$","meta","8",{"property":"article:modified_time","content":"2024-12-12"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"UTC格式时间及其dayjs相关封装"}],["$","meta","11",{"name":"twitter:description","content":"2024-09-03T16:00:00.000Z这种格式是UTC格式北京时间比UTC格式时间快8小时国际化的Web APP需要用户设置地区，以此来正确显示自己地区的位置时间使用dayjs库国际化首先需要引入静态资源import dayjs from 'dayjs'; import 'dayjs..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

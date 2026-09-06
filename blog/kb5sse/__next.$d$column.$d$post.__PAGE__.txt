@@ -1,0 +1,184 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T348b,<h2 id="问题描述">问题描述</h2>
+<h3 id="问题描述-1">问题描述</h3>
+<p>给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。</p>
+<p>物品总数N</p>
+<p>4</p>
+<p>背包容量M</p>
+<p>8</p>
+<p>每个物品重量wi</p>
+<p>{5, 4, 3, 2}</p>
+<p>每个物品价值vi</p>
+<p>{15, 10, 6, 2}</p>
+<h3 id="问题的判定性说法">问题的判定性说法</h3>
+<h3 id=""><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1600597489691-e0d838af-003e-404e-8a40-5145d2fefbad.png" alt="" loading="lazy" decoding="async"></h3>
+<h3 id="问题的形式化定义">问题的形式化定义</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1600597354257-45eba2b3-641c-433a-8732-9b6c11a16061.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="问题思路">问题思路</h2>
+<h3 id="动态规划思路">动态规划思路</h3>
+<p><strong>动态规划</strong>解决该问题，类似于<strong>莱文斯坦距离</strong>的解法类似。利用CAAIS数据来说明这个问题的解决思想。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1603943092299-49a0bc97-f2cf-4258-8dde-022b4aae06d1.png" alt="" loading="lazy" decoding="async"></p>
+<p><strong>动态规划DP方程构造</strong></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1603943375703-889cea96-f3a0-41df-b806-386dca8bcc82.png" alt="" loading="lazy" decoding="async"></p>
+<p><strong>PS：V[i,j]表示在前i件物品中选择若干件放在承重为 j 的背包中，可以取得的最大价值</strong></p>
+<p>（整张表格是从上往下，从左往右地填）</p>
+<p>举例说明表格中的数值填法，<strong>倒数第二行倒数第四列的16 4</strong>的填法：</p>
+<ul>
+<li>
+<p>首先不满足DP方程的第一种和第二种情况</p>
+</li>
+<li>
+<p>所以代入取最大值max函数</p>
+</li>
+<li>
+<p>V（i-1，j）：不选本物品（3，6），还是用之前的值，继承上面的第一个物品和第二个物品，DP值为15 U</p>
+</li>
+<li>
+<p>V（i-1，j）+vi：用该容量（7）-所选物品的重量为4，然后再查容量为4的时候DP值为10，然后求出该情况DP是，10加上该物品的价值，所以该情况下的DP值为16，右上标为4（CAAIS），值来源于前面容量为4的情况。</p>
+</li>
+</ul>
+<p><strong>格子如上方式填就好了！</strong></p>
+<h3 id="递归思路">递归思路</h3>
+<p>第二节课将递归的时候，也讲了这个问题的递归思路。不过复杂度记得是指数级的，暂时不写了~~</p>
+<h2 id="代码实现">代码实现</h2>
+<h3 id="动态规划code">动态规划Code</h3>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;iostream></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;vector></span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-keyword">namespace</span> NS_DP0_1Knapsack {
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">DP0_1Knapsack</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> W, <span class="hljs-type">int</span> *w, <span class="hljs-type">int</span> *v)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Output</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> W, <span class="hljs-type">int</span> *w, <span class="hljs-type">int</span> *v, <span class="hljs-type">int</span> OptV)</span></span>;
+<span class="hljs-type">static</span> vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> V;
+<span class="hljs-type">static</span> vector&#x3C;<span class="hljs-type">int</span>> x;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">DP0_1KnapsackCaller</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> W, <span class="hljs-type">int</span> *w, <span class="hljs-type">int</span> *v)</span>
+</span>{
+    V.<span class="hljs-built_in">clear</span>();
+    V.<span class="hljs-built_in">resize</span>(n + <span class="hljs-number">1</span>, <span class="hljs-built_in">vector</span>&#x3C;<span class="hljs-type">int</span>>(W + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>));
+    x.<span class="hljs-built_in">resize</span>(n + <span class="hljs-number">1</span>);
+    <span class="hljs-type">int</span> OptV = <span class="hljs-built_in">DP0_1Knapsack</span>(n, W, w, v);
+    <span class="hljs-built_in">Output</span>(n, W, w, v, OptV);
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">DP0_1Knapsack</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> W, <span class="hljs-type">int</span> *w, <span class="hljs-type">int</span> *v)</span>
+</span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &#x3C;= n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &#x3C;= W; j++)
+            <span class="hljs-keyword">if</span> (j &#x3C; w[i - <span class="hljs-number">1</span>])
+                V[i][j] = V[i - <span class="hljs-number">1</span>][j];
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (V[i - <span class="hljs-number">1</span>][j] >=
+                V[i - <span class="hljs-number">1</span>][j - w[i - <span class="hljs-number">1</span>]] + v[i - <span class="hljs-number">1</span>])
+                V[i][j] = V[i - <span class="hljs-number">1</span>][j];
+            <span class="hljs-keyword">else</span>
+                V[i][j] = V[i - <span class="hljs-number">1</span>][j - w[i - <span class="hljs-number">1</span>]] + v[i - <span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> j = W;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = n; i > <span class="hljs-number">0</span>; i--)
+        <span class="hljs-keyword">if</span> (V[i][j] == V[i - <span class="hljs-number">1</span>][j])
+            x[i] = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">else</span>
+        {   x[i] = <span class="hljs-number">1</span>; j -= w[i - <span class="hljs-number">1</span>];  }
+    <span class="hljs-keyword">return</span> V[n][W];
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Output</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> W, <span class="hljs-type">int</span> *w, <span class="hljs-type">int</span> *v, <span class="hljs-type">int</span> OptV)</span>
+</span>{
+    <span class="hljs-comment">//inputs</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"DP to solve 0-1 knapsack:\n"</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d items with knapsack capacity %d.\n"</span>, n , W);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%-6s: "</span>, <span class="hljs-string">"Weight"</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n; i++)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, w[i]);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%-6s: "</span>, <span class="hljs-string">"Value"</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n; i++)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, v[i]);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    <span class="hljs-comment">//the value matrix</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\nThe value matrix:\n"</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"  "</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C;= W; j++)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, j);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C;= n; i++)
+    {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2d"</span>, i);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C;= W; j++)
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, V[i][j]);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    }
+    <span class="hljs-comment">//solution</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\nThe optimal value: %d\n"</span>, OptV);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"The optimal solution:\n"</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &#x3C;= n; i++)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%2d"</span>, x[i]);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n\n"</span>);
+}
+} <span class="hljs-comment">//namespace NS_DP0_1Knapsack</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> NS_DP0_1Knapsack;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-comment">// 物品个数</span>
+    vector&#x3C;<span class="hljs-type">int</span>> N = { <span class="hljs-number">4</span>,  <span class="hljs-number">10</span>};
+    <span class="hljs-comment">// 背包容量</span>
+    vector&#x3C;<span class="hljs-type">int</span>> W = { <span class="hljs-number">8</span>,  <span class="hljs-number">100</span>};
+    <span class="hljs-comment">// 各物品重量</span>
+    vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> w = {
+        { <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> },
+        { <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span> }
+    };
+    <span class="hljs-comment">// 各物品价值</span>
+    vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> v = {
+        { <span class="hljs-number">15</span>, <span class="hljs-number">10</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span> },
+        { <span class="hljs-number">15</span>, <span class="hljs-number">10</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">23</span>, <span class="hljs-number">12</span>, <span class="hljs-number">33</span>, <span class="hljs-number">7</span>, <span class="hljs-number">22</span>, <span class="hljs-number">10</span> }
+    };
+
+    <span class="hljs-type">int</span> m = N.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; m; i++)
+    {
+        <span class="hljs-built_in">DP0_1KnapsackCaller</span>(N[i], W[i], &#x26;w[i][<span class="hljs-number">0</span>], &#x26;v[i][<span class="hljs-number">0</span>]);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="动态规划result">动态规划Result</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1603943258085-fac4811f-87e7-4eef-8194-ee47d88063a6.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1603943276039-f6f74edf-4871-426d-8af8-e1a62edaf071.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/kb5sse/1603943291836-84a15101-d6e7-4c9f-91b5-1122afd7ac5c.png" alt="" loading="lazy" decoding="async"></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"0-1背包问题\",\"description\":\"问题描述问题描述给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。物品总数N4背包容量M8每个物品重量wi5, 4, 3, 2每个物品价值vi15, 10, 6, 2问题的判定性说法问题的形式化定义问题思...\",\"datePublished\":\"2020-09-20\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/kb5sse/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","🔢动态规划算法",{"href":"/categories/%F0%9F%94%A2%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/","children":"🔢动态规划算法"}]]]}],["$","h1",null,{"children":"0-1背包问题"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-09-20"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/kb5sse/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/czgm7d/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"穷举算法+百元买百兔、洗牌问题"}]]}],["$","$L2",null,{"href":"/blog/bkbll1/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"TSP问题"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/kb5sse/","title":"0-1背包问题"}]
+9:["$","$L1c",null,{"headings":[{"id":"问题描述","text":"问题描述","depth":2},{"id":"问题描述-1","text":"问题描述","depth":3},{"id":"问题的判定性说法","text":"问题的判定性说法","depth":3},{"id":"","text":"","depth":3},{"id":"问题的形式化定义","text":"问题的形式化定义","depth":3},{"id":"问题思路","text":"问题思路","depth":2},{"id":"动态规划思路","text":"动态规划思路","depth":3},{"id":"递归思路","text":"递归思路","depth":3},{"id":"代码实现","text":"代码实现","depth":2},{"id":"动态规划code","text":"动态规划Code","depth":3},{"id":"动态规划result","text":"动态规划Result","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"0-1背包问题 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"问题描述问题描述给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。物品总数N4背包容量M8每个物品重量wi5, 4, 3, 2每个物品价值vi15, 10, 6, 2问题的判定性说法问题的形式化定义问题思..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/kb5sse/"}],["$","meta","3",{"property":"og:title","content":"0-1背包问题"}],["$","meta","4",{"property":"og:description","content":"问题描述问题描述给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。物品总数N4背包容量M8每个物品重量wi5, 4, 3, 2每个物品价值vi15, 10, 6, 2问题的判定性说法问题的形式化定义问题思..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/kb5sse/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-09-20"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"0-1背包问题"}],["$","meta","11",{"name":"twitter:description","content":"问题描述问题描述给定一组已知重量和价值的物品和一个容量已知的背包，求解在不超过背包容量情况下，选用那些物品放入背包，使得所选用的所有物品价值最大化。物品总数N4背包容量M8每个物品重量wi5, 4, 3, 2每个物品价值vi15, 10, 6, 2问题的判定性说法问题的形式化定义问题思..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

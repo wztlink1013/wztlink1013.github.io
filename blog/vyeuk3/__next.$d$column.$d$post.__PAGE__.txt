@@ -1,0 +1,326 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T6ed9,<h2 id="一整体思路">一、整体思路</h2>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vyeuk3/1610002276789-6c7bf0a3-f39b-4a27-a493-01c2e579ec87.jpeg" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>【1】利用<code>npm</code>插件<code>yuque-hexo-lyrics</code>将语雀云端的文章同步到博客源码<code>source/_posts</code>文件夹下。</li>
+<li>【2】再利用<code>GitHub Actions</code>自动化部署将GitHub私有仓库（<code>website</code>）的博客源文件编译成静态博客文件并部署push到静态博客仓库（<code>wztlink1013.github.io</code>）下。</li>
+</ul>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>但是以上【1】【2】两种方式并不能解决语雀一发布文章就触发GitHub源码仓库的GitHub Actions</p>
+</blockquote>
+<ul>
+<li>【3】所以需要中间<code>TencentCloud</code>云函数/<code>Aliyun</code>云函数，云函数的作用就是，语雀文章一经正式发布就触发云函数，从而云函数再触发GitHub私有的源码仓库下的<code>GitHub Actions</code>达到编译静态博客的效果。</li>
+</ul>
+<h2 id="二网站源文件配置">二、网站源文件配置</h2>
+<blockquote>
+<p>插件npm地址【暂未GitHub开源】：<a href="https://www.npmjs.com/package/yuque-hexo-lyrics" rel="noopener noreferrer">https://www.npmjs.com/package/yuque-hexo-lyrics</a></p>
+</blockquote>
+<h3 id="yuque-hexo-lyrics插件使用">yuque-hexo-lyrics插件使用</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>本人基于yuque-hexo项目修改的进阶插件</p>
+</blockquote>
+<blockquote>
+<p>【1】在开发环境当中下载插件（全局安装）</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-bash">npm i -g yuque-hexo-lyrics
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>【2】相关hexo命令</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-bash">yuque-hexo-lyrics clean <span class="hljs-comment"># 清缓存删除yuque文件夹 删除yuque.json文件(更新之后的插件不删除yuque.json)</span>
+yuque-hexo-lyrics <span class="hljs-built_in">sync</span> <span class="hljs-comment"># 从云端拉取到本地</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>【3】特别需要注意的是：开发环境语雀Token变量的传入</p>
+</blockquote>
+<p>语雀为了防止用户恶意多次拉取数据，出于对知识库安全性的调整，使用第三方 API 访问知识库，需要传入环境变量 <code>YUQUE_TOKEN</code>，如果是本地使用建议使用环境变量，也可以是终端的方式输入。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vyeuk3/1594788656022-fb5e7959-fa2a-4418-911b-773e3674afb8.png" alt="" loading="lazy" decoding="async"></p>
+<p>如果是在<code>GitHub Actions</code>里面的环境执行<code>yuque-hexo-lyrics sync</code>命令的时候，通过如下命令传入语雀的<code>token</code></p>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-string">YUQUE_TOKEN=${{</span> <span class="hljs-string">secrets.YUQUE_TOKEN</span> <span class="hljs-string">}}</span> <span class="hljs-string">yuque-hexo</span> <span class="hljs-string">sync</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>【4】最后的配置样式（本插件可以同时下载多个知识库）</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-json">  <span class="hljs-attr">"yuqueConfig_blog"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"baseUrl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://www.yuque.com/api/v2"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"login"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"wztlink1013"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"repo"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"blog"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"postPath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"source/_posts/blog"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"cachePath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"yuque_blog.json"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"mdNameFormat"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"slug"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublished"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublic"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"adapter"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"timeout"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"150s"</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"yuqueConfig_essay"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"baseUrl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://www.yuque.com/api/v2"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"login"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"wztlink1013"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"repo"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"essay"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"postPath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"source/_posts/essay"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"cachePath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"yuque_essay.json"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"mdNameFormat"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"slug"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublished"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublic"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"adapter"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"timeout"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"150s"</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"yuqueConfig_dsal"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"baseUrl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://www.yuque.com/api/v2"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"login"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"wztlink1013"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"repo"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"dsal"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"postPath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"source/_posts/blog"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"cachePath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"yuque_dsal.json"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"mdNameFormat"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"slug"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublished"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublic"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"adapter"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"timeout"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"150s"</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"yuqueConfig_javascript"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"baseUrl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://www.yuque.com/api/v2"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"login"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"wztlink1013"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"repo"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"javascript"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"postPath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"source/_posts/blog"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"cachePath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"yuqueConfig_javascript.json"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"mdNameFormat"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"slug"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublished"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"onlyPublic"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"adapter"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"timeout"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"150s"</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"scripts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"build"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo generate"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"clean"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo clean"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"deploy"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo deploy"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"server"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hexo server"</span>
+  <span class="hljs-punctuation">}</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>更详细使用参考官方<a href="https://www.npmjs.com/package/yuque-hexo-lyrics" rel="noopener noreferrer">官方仓库</a>。</p>
+<h3 id="github-actions文件的配置">GitHub Actions文件的配置</h3>
+<p>在博客源文件夹下新建如下GitHub Actions文件</p>
+<p><code>.github/workflows/main.yml</code> </p>
+<blockquote>
+<p>文件内容配置如下</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-comment"># workflow name</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">website</span> <span class="hljs-string">to</span> <span class="hljs-string">wztlink1013.github.io</span> <span class="hljs-string">CI/CD</span>
+
+<span class="hljs-attr">on:</span> [<span class="hljs-string">repository_dispatch</span>, <span class="hljs-string">watch</span>]
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">Deploy-Pages:</span> 
+    <span class="hljs-attr">name:</span> <span class="hljs-string">website</span> <span class="hljs-string">to</span> <span class="hljs-string">wztlink1013.github.io</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    
+    <span class="hljs-attr">steps:</span>
+    <span class="hljs-comment"># check it to your workflow can access it</span>
+    <span class="hljs-comment"># from: https://github.com/actions/checkout</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">Repository</span> <span class="hljs-string">master</span> <span class="hljs-string">branch</span>
+      <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@main</span> 
+    <span class="hljs-comment"># from: https://github.com/actions/setup-node  </span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">Node.js</span> <span class="hljs-number">10.</span><span class="hljs-string">x</span> 
+      <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@main</span>
+      <span class="hljs-attr">with:</span>
+        <span class="hljs-attr">node-version:</span> <span class="hljs-string">"10.x"</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">add</span> <span class="hljs-string">Git</span> <span class="hljs-string">infomations</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">| 
+        git config --global user.name '${{secrets.GIT_NAME}}' 
+        git config --global user.email '${{secrets.GIT_EMAIL}}'
+</span>    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">submit</span> <span class="hljs-string">commit</span> <span class="hljs-string">infomations</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        git log --pretty=format:"%s from Github Actions at `date +"%Y-%m-%d %H:%M:%S"`" --date=short -n 1  > commit-message.log
+</span>    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">npm</span> <span class="hljs-string">istall</span> <span class="hljs-string">hexo-cli、yuque-hexo、*</span>
+      <span class="hljs-attr">env:</span>
+        <span class="hljs-attr">YUQUE_TOKEN:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.YUQUE_TOKEN</span> <span class="hljs-string">}}</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        npm install hexo-cli -g
+        npm install yuque-hexo-lyrics -g
+        npm install
+</span>    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">generate</span> <span class="hljs-string">articles</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        hexo clean
+        yuque-hexo-lyrics clean
+        YUQUE_TOKEN=${{ secrets.YUQUE_TOKEN }} yuque-hexo-lyrics sync
+        hexo generate 
+</span>        
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">push</span> <span class="hljs-string">wztlink1013.github.io</span> <span class="hljs-string">repository</span>
+      <span class="hljs-attr">env:</span>
+        <span class="hljs-attr">Github_Pages:</span> <span class="hljs-string">github.com/wztlink1013/wztlink1013.github.io</span>
+        <span class="hljs-attr">Github_Token:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.token_GithubAPI</span> <span class="hljs-string">}}</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|  
+        git clone https://${Github_Token}@${Github_Pages} .github_pages
+        mv .github_pages/.git/ ./public/
+        cd ./public/
+        git add .
+        git commit -F ../commit-message.log
+        git push --force --quiet "https://${Github_Token}@${Github_Pages}" master:master
+</span>        
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="三serverless云函数配置">三、Serverless云函数配置</h2>
+<h3 id="腾讯云serverless">腾讯云serverless</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>python2.7的配置</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-python"><span class="hljs-comment"># -*- coding: utf8 -*-</span>
+<span class="hljs-keyword">import</span> requests
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main_handler</span>(<span class="hljs-params">event, context</span>):
+    r = requests.post(<span class="hljs-string">"https://api.github.com/repos/wztlink1013/website/dispatches"</span>,
+    json={<span class="hljs-string">'event_type'</span>: <span class="hljs-string">"run-it"</span>},
+    headers = {<span class="hljs-string">"User-Agent"</span>:<span class="hljs-string">'curl/7.52.1'</span>,
+              <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+              <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/vnd.github.everest-preview+json'</span>,
+              <span class="hljs-string">'Authorization'</span>: <span class="hljs-string">'token ***********'</span>})
+
+    <span class="hljs-keyword">if</span> r.status_code == <span class="hljs-number">204</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"This's OK!"</span> 
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> r.status_code
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!NOTE]</p>
+<p>触发器的设置</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vyeuk3/1594789179624-938bb8c2-ac15-4ece-a5f1-001563e4f08b.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="阿里云serverless">阿里云serverless</h3>
+<p>记录一下Hexo自动化部署过程中阿里云平台的原函数配置的python代码</p>
+<blockquote>
+<p>[!NOTE]</p>
+<p>python2.7</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-python"><span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-keyword">import</span> logging
+<span class="hljs-keyword">import</span> requests
+
+<span class="hljs-comment"># To enable the initializer feature (https://help.aliyun.com/document_detail/158208.html)</span>
+<span class="hljs-comment"># please implement the initializer function as below：</span>
+<span class="hljs-comment"># def initializer(context):</span>
+<span class="hljs-comment">#   logger = logging.getLogger()</span>
+<span class="hljs-comment">#   logger.info('initializing')</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">event, context</span>):
+<span class="hljs-comment">#   logger = logging.getLogger()</span>
+<span class="hljs-comment">#   logger.info('hello world')</span>
+<span class="hljs-comment">#   return 'hello world'</span>
+    r = requests.post(<span class="hljs-string">"https://api.github.com/repos/wztlink1013/blog-source/dispatches"</span>,
+    json={<span class="hljs-string">'event_type'</span>: <span class="hljs-string">"run-it"</span>},
+    headers = {<span class="hljs-string">"User-Agent"</span>:<span class="hljs-string">'curl/7.52.1'</span>,
+              <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+              <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/vnd.github.everest-preview+json'</span>,
+              <span class="hljs-string">'Authorization'</span>: <span class="hljs-string">'token f43964836a33dce244385bc303c8c20adc1bd52194'</span>})
+
+    <span class="hljs-keyword">if</span> r.status_code == <span class="hljs-number">204</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"This's OK!"</span> 
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> r.status_code
+<span class="hljs-comment"># # -*- coding: utf8 -*-</span>
+<span class="hljs-comment"># import requests</span>
+
+<span class="hljs-comment"># def main_handler(event, context):</span>
+<span class="hljs-comment">#     r = requests.post("https://api.github.com/repos/wztlink1013/blog-source/dispatches",</span>
+<span class="hljs-comment">#     json={'event_type': "run-it"},</span>
+<span class="hljs-comment">#     headers = {"User-Agent":'curl/7.52.1',</span>
+<span class="hljs-comment">#               'Content-Type': 'application/json',</span>
+<span class="hljs-comment">#               'Accept': 'application/vnd.github.everest-preview+json',</span>
+<span class="hljs-comment">#               'Authorization': 'token 144a87bd45e62ff1cf30dc18880787917bc7865417'})</span>
+
+<span class="hljs-comment">#     if r.status_code == 204:</span>
+<span class="hljs-comment">#         return "This's OK!" </span>
+<span class="hljs-comment">#     else:</span>
+<span class="hljs-comment">#         return r.status_code</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!NOTE]</p>
+<p>python3版本</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-python"><span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+
+<span class="hljs-keyword">import</span> logging
+<span class="hljs-keyword">import</span> requests
+OK = <span class="hljs-string">b'ok\n'</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">environ, start_response</span>):
+    status = <span class="hljs-string">'200 OK'</span>
+    response_headers = [(<span class="hljs-string">'Content-type'</span>, <span class="hljs-string">'text/plain'</span>)]
+    sync_yuque()
+    start_response(status, response_headers)
+    <span class="hljs-keyword">return</span> [OK]
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">sync_yuque</span>():
+    requests.post(<span class="hljs-string">"https://api.github.com/repos/wztlink1013/Blog3.0/dispatches"</span>,
+    json={<span class="hljs-string">'event_type'</span>: <span class="hljs-string">"run-it"</span>},
+    headers={<span class="hljs-string">"User-Agent"</span>:<span class="hljs-string">'curl/7.52.1'</span>,
+              <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+              <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/vnd.github.everest-preview+json'</span>,
+              <span class="hljs-string">'Authorization'</span>: <span class="hljs-string">'token f43964836a33dce415385bc303c8c20adc1bd52194'</span>})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!NOTE]</p>
+<p>触发器配置</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vyeuk3/1608448464729-f5e542f2-0a6e-4817-bd93-b8cf6f67b8fa.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vyeuk3/1608448488925-30baf354-0b23-490c-8b05-4b054ca1b868.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="推荐vercel的serverless">【推荐】Vercel的serverless</h3>
+<ul>
+<li><a href="https://github.com/wztlink1013/yuque-github-api" rel="noopener noreferrer">https://github.com/wztlink1013/yuque-github-api</a></li>
+</ul>
+<h2 id="四语雀云端的配置">四、语雀云端的配置</h2>
+<p>在所需要拉取的仓库中webhook中填入云函数所留下的那串网址，勾选所需要触发的选项即可。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/vyeuk3/1624971959931-874c6c43-8c51-4c56-9b32-e952f8c87f6c.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://github.com/x-cold/yuque-hexo" rel="noopener noreferrer">yuque-hexo开发仓库</a></li>
+<li><a href="https://www.zhwei.cn/hexo-github-actions-yuque/" rel="noopener noreferrer">Hexo：语雀云端写作，Github Actions持续集成</a></li>
+<li><a href="https://segmentfault.com/a/1190000017797561" rel="noopener noreferrer">Hexo 博客终极玩法：云端写作，自动部署</a></li>
+<li><a href="https://www.xiayinchang.top/post/b2362878.html" rel="noopener noreferrer">阿里云云函数使用用户</a></li>
+<li><a href="https://bbs.pediy.com/thread-260866.htm" rel="noopener noreferrer">[原创]自动同步语雀文档到你的hexo博客</a></li>
+<li><a href="https://github.com/Zfour/yuque_vercel_webhook_api" rel="noopener noreferrer">https://github.com/Zfour/yuque_vercel_webhook_api</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"GitHub Actions+语雀+serverless云函数实现hexo自动化部署\",\"description\":\"一、整体思路【1】利用npm插件yuque-hexo-lyrics将语雀云端的文章同步到博客源码source/_posts文件夹下。【2】再利用GitHub Actions自动化部署将GitHub私有仓库（website）的博客源文件编译成静态博客文件并部署push到静态博客仓库（wztlin...\",\"datePublished\":\"2020-07-15\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/vyeuk3/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","博客技术",{"href":"/categories/%E5%8D%9A%E5%AE%A2%E6%8A%80%E6%9C%AF/","children":"博客技术"}]]]}],["$","h1",null,{"children":"GitHub Actions+语雀+serverless云函数实现hexo自动化部署"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-07-15"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/vyeuk3/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","div",null,{}],["$","$L2",null,{"href":"/blog/uwpbn0/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"GitHub Actions代码汇总"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/vyeuk3/","title":"GitHub Actions+语雀+serverless云函数实现hexo自动化部署"}]
+9:["$","$L1c",null,{"headings":[{"id":"一整体思路","text":"一、整体思路","depth":2},{"id":"二网站源文件配置","text":"二、网站源文件配置","depth":2},{"id":"yuque-hexo-lyrics插件使用","text":"yuque-hexo-lyrics插件使用","depth":3},{"id":"github-actions文件的配置","text":"GitHub Actions文件的配置","depth":3},{"id":"三serverless云函数配置","text":"三、Serverless云函数配置","depth":2},{"id":"腾讯云serverless","text":"腾讯云serverless","depth":3},{"id":"阿里云serverless","text":"阿里云serverless","depth":3},{"id":"推荐vercel的serverless","text":"【推荐】Vercel的serverless","depth":3},{"id":"四语雀云端的配置","text":"四、语雀云端的配置","depth":2},{"id":"参考","text":"参考","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"GitHub Actions+语雀+serverless云函数实现hexo自动化部署 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"一、整体思路【1】利用npm插件yuque-hexo-lyrics将语雀云端的文章同步到博客源码source/_posts文件夹下。【2】再利用GitHub Actions自动化部署将GitHub私有仓库（website）的博客源文件编译成静态博客文件并部署push到静态博客仓库（wztlin..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/vyeuk3/"}],["$","meta","3",{"property":"og:title","content":"GitHub Actions+语雀+serverless云函数实现hexo自动化部署"}],["$","meta","4",{"property":"og:description","content":"一、整体思路【1】利用npm插件yuque-hexo-lyrics将语雀云端的文章同步到博客源码source/_posts文件夹下。【2】再利用GitHub Actions自动化部署将GitHub私有仓库（website）的博客源文件编译成静态博客文件并部署push到静态博客仓库（wztlin..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/vyeuk3/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-07-15"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"GitHub Actions+语雀+serverless云函数实现hexo自动化部署"}],["$","meta","11",{"name":"twitter:description","content":"一、整体思路【1】利用npm插件yuque-hexo-lyrics将语雀云端的文章同步到博客源码source/_posts文件夹下。【2】再利用GitHub Actions自动化部署将GitHub私有仓库（website）的博客源文件编译成静态博客文件并部署push到静态博客仓库（wztlin..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

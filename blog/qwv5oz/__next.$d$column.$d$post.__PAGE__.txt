@@ -1,0 +1,801 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:Ta29c,<p>前言：Vue 是数据驱动视图更新的框架，所以对于组件之间的数据通信非常重要，常见的Vue 组件关系如下：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/qwv5oz/1742954523073-7ee0d51d-48ad-4b43-bcea-c619f42fd23f.jpeg" alt="" loading="lazy" decoding="async"></p>
+<p>如上图所示, A 与 B、A 与 C、B 与 D、C 与 E 组件之间是父子关系； B 与 C 之间是兄弟关系；A 与 D、A 与 E 之间是隔代关系； D 与 E 是堂兄关系（非直系亲属） 针对以上关系我们归类为：</p>
+<ul>
+<li>
+<p>父子组件之间通信</p>
+</li>
+<li>
+<p>非父子组件之间通信 (兄弟组件、隔代关系组件等)</p>
+</li>
+</ul>
+<p>本文介绍组件间（Vue2和Vue3）通信的 8 种方式如下图目录所示：并介绍在不同的场景下如何选择有效方式实现的组件间通信方式。</p>
+<h2 id="props和emit">props和emit</h2>
+<p>父组件通过<code>props</code>的方式向子组件传递数据，而通过<code>$emit</code> 子组件可以向父组件通信。</p>
+<h3 id="vue2">vue2</h3>
+<p>父传子</p>
+<ul>
+<li>prop 只可以从上一级组件传递到下一级组件（父子组件），即所谓的单向数据流。而且 prop 只读，不可被修改，所有修改都会失效并警告</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- section父组件 -->
+&#x3C;template>
+  &#x3C;div class="section">
+    &#x3C;com-article :articles="articleList">&#x3C;/com-article>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+import comArticle from './test/article.vue'
+export default {
+  name: 'HelloWorld',
+  components: { comArticle },
+  data() {
+    return {
+      articleList: ['红楼梦', '西游记', '三国演义']
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 子组件 article.vue -->
+&#x3C;template>
+  &#x3C;div>
+    &#x3C;span v-for="(item, index) in articles" :key="index">{{item}}&#x3C;/span>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+export default {
+  props: ['articles']
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>子传父</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 父组件 -->
+&#x3C;template>
+  &#x3C;div class="section">
+    &#x3C;com-article :articles="articleList" @onEmitIndex="onEmitIndex">&#x3C;/com-article>
+    &#x3C;p>{{currentIndex}}&#x3C;/p>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+import comArticle from './test/article.vue'
+export default {
+  name: 'HelloWorld',
+  components: { comArticle },
+  data() {
+    return {
+      currentIndex: -1,
+      articleList: ['红楼梦', '西游记', '三国演义']
+    }
+  },
+  methods: {
+    onEmitIndex(idx) {
+      this.currentIndex = idx
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 子组件 -->
+&#x3C;template>
+  &#x3C;div>
+    &#x3C;div v-for="(item, index) in articles" :key="index" @click="emitIndex(index)">{{item}}&#x3C;/div>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+export default {
+  props: ['articles'],
+  methods: {
+    emitIndex(index) {
+      this.$emit('onEmitIndex', index)
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="vue3setup选项式">vue3（setup选项式）</h3>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">SonOne</span> = <span class="hljs-title function_">defineComponent</span>({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'SonOne'</span>,
+  <span class="hljs-attr">props</span>: {
+    <span class="hljs-attr">rootMessage</span>: {
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span>,
+      <span class="hljs-attr">retuired</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">default</span>: <span class="hljs-string">''</span>,
+    },
+  },
+  <span class="hljs-attr">emits</span>: [<span class="hljs-string">'send-root'</span>],
+  <span class="hljs-attr">template</span>: <span class="hljs-comment">/*html*/</span><span class="hljs-string">`
+    &#x3C;div>
+      [SonOne] root msg: {{ rootMessage }}
+      &#x3C;button @click='sendToRoot'>emit to root&#x3C;/button>
+    &#x3C;/div>
+  `</span>,
+  <span class="hljs-title function_">setup</span>(<span class="hljs-params">props, extraProps</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(<span class="hljs-string">'>>> SonOne setup &#x3C;&#x3C;&#x3C;'</span>, props, extraProps)
+    <span class="hljs-keyword">const</span> { emit } = extraProps
+    <span class="hljs-keyword">const</span> sonOneMessage = <span class="hljs-title function_">ref</span>(<span class="hljs-string">'sonOne msg'</span>);
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">sendToRoot</span> = (<span class="hljs-params"></span>) => <span class="hljs-title function_">emit</span>(<span class="hljs-string">"send-root"</span>, sonOneMessage)
+    <span class="hljs-keyword">return</span> {
+      sonOneMessage,
+      sendToRoot,
+    }
+  }
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">son-one</span> <span class="hljs-attr">:rootMessage</span>=<span class="hljs-string">'rootMessage'</span> @<span class="hljs-attr">sendRoot</span>=<span class="hljs-string">'sonOneSendRoot'</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">son-one</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="provide--inject">provide / inject</h2>
+<h3 id="vue2-1">vue2</h3>
+<ol>
+<li><code>provide</code>/ <code>inject</code> 是<code>vue2.2.0</code>新增的 api, 简单来说就是父组件中通过<code>provide</code>来提供变量, 然后再子组件中通过<code>inject</code>来注入变量。</li>
+<li>这里不论子组件嵌套有多深, 只要调用了<code>inject</code> 那么就可以注入<code>provide</code>中的数据，而不局限于只能从当前父组件的 props 属性中回去数据</li>
+</ol>
+<p>假设有三个组件: A.vue、B.vue、C.vue 其中 C 是 B 的子组件，B 是 A 的子组件</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- A.vue -->
+&#x3C;template>
+  &#x3C;div>
+	&#x3C;comB>&#x3C;/comB>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  import comB from '../components/test/comB.vue'
+  export default {
+    name: "A",
+    provide: {
+      for: "demo"
+    },
+    components:{
+      comB
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- B.vue -->
+&#x3C;template>
+  &#x3C;div>
+    {{demo}}
+    &#x3C;comC>&#x3C;/comC>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  import comC from '../components/test/comC.vue'
+  export default {
+    name: "B",
+    inject: ['for'],
+    data() {
+      return {
+        demo: this.for
+      }
+    },
+    components: {
+      comC
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- C.vue -->
+&#x3C;template>
+  &#x3C;div>
+    {{demo}}
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  export default {
+    name: "C",
+    inject: ['for'],
+    data() {
+      return {
+        demo: this.for
+      }
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="vue3选项式">vue3（选项式）</h3>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;script>
+export default {
+  name: "HelloWorld",
+  data() {
+    return {
+      provideData: "HelloWorldMsg",
+    };
+  },
+  provide() {
+    return {
+      provideData: this.provideData,
+      getData(data) {
+        console.warn("getData: ", data);
+      },
+    };
+  },
+};
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;script>
+export default {
+  name: "component-1",
+  inject: ["provideData", "getData"],
+  mounted() {
+    this.getData("3333333333");
+  },
+};
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="vue3组合式">vue3（组合式）</h3>
+<ul>
+<li>provide注入，inject接收，注入响应式数据，inject也同样响应式</li>
+<li>如果在inject接收的组件中修改响应式数据，也是生效的，但是不推荐，会造成通信数据混乱，如果要实现这种效果，推荐将响应式变量传入的时候加一个readonly同时注入一个修改响应式变量的回调函数来实现</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="setup-component">
+    &#x3C;h3>setup component:&#x3C;/h3>
+    &#x3C;button @click="changeCount">change&#x3C;/button>
+    &#x3C;p>count: {{ count }}&#x3C;/p>
+    &#x3C;setup-component-1>&#x3C;/setup-component-1>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script setup>
+import { ref, readonly, provide } from "vue";
+import SetupComponent1 from "./SetupComponent1.vue";
+const count = ref(0);
+provide("count", readonly(count));
+provide("changeCount", changeCount);
+&#x3C;/script>
+
+&#x3C;style>
+.setup-component {
+  border: 1px solid red;
+}
+&#x3C;/style>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div class="setup-component-1">
+    &#x3C;button @click="changeCount">change count from inject component&#x3C;/button>
+    {{ count }}
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script setup>
+import { inject } from "vue";
+
+const count = inject("count");
+const changeCount = inject("changeCount");
+&#x3C;/script>
+
+&#x3C;style>
+.setup-component-1 {
+  border: 1px blue solid;
+}
+&#x3C;/style>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="二-children--parent">二、 $children / $parent</h2>
+<h3 id="vue2-2">vue2</h3>
+<p>通过<code>$parent</code>和<code>$children</code>就可以访问组件的实例，拿到实例代表什么？代表可以访问此组件的所有方法和<code>data</code>。接下来就是怎么实现拿到指定组件的实例。</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 父组件中 -->
+&#x3C;template>
+  &#x3C;div class="hello_world">
+    &#x3C;div>{{msg}}&#x3C;/div>
+    &#x3C;com-a>&#x3C;/com-a>
+    &#x3C;button @click="changeA">点击改变子组件值&#x3C;/button>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+import ComA from './test/comA.vue'
+export default {
+  name: 'HelloWorld',
+  components: { ComA },
+  data() {
+    return {
+      msg: 'Welcome'
+    }
+  },
+
+  methods: {
+    changeA() {
+      // 获取到子组件A
+      this.$children[0].messageA = 'this is new value'
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 子组件中 -->
+&#x3C;template>
+  &#x3C;div class="com_a">
+    &#x3C;span>{{messageA}}&#x3C;/span>
+    &#x3C;p>获取父组件的值为:  {{parentVal}}&#x3C;/p>
+  &#x3C;/div>
+&#x3C;/template>
+&#x3C;script>
+export default {
+  data() {
+    return {
+      messageA: 'this is old'
+    }
+  },
+  computed:{
+    parentVal(){
+      return this.$parent.msg;
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>要注意边界情况，如在<code>#app</code>上拿<code>$parent</code>得到的是<code>new Vue()</code>的实例，在这实例上再拿<code>$parent</code>得到的是<code>undefined</code>，而在最底层的子组件拿<code>$children</code>是个空数组。也要注意得到<code>$parent</code>和<code>$children</code>的值不一样，<code>$children</code> 的值是数组，而<code>$parent</code>是个对象</p>
+</blockquote>
+<p>上面两种方式用于父子组件之间的通信， 而使用 props 进行父子组件通信更加普遍；二者皆不能用于非父子组件之间的通信。</p>
+<h2 id="ref和refs">ref和refs</h2>
+<ol>
+<li>v-for 用于元素或组件时,引用信息将是**包含 DOM 节点或组件实例的数组，**按照这个理解，可以直接利用$refs来获取dom元素</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">addAlert</span>.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">"block"</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>$refs只会在组件渲染完成之后生效，并且它们不是响应式的。这仅作为一个用于直接操作子组件的“逃生舱”——你应该避免在模板或计算属性中访问$refs。这是官方说法，提倡props来操作，缺点就是非响应式的</li>
+<li>ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</li>
+</ol>
+<p><code>ref</code>：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例，可以通过实例直接调用组件的方法或访问数据， 我们看一个<code>ref</code> 来访问组件的例子:</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 父组件 app.vue -->
+&#x3C;template>
+  &#x3C;component-a ref="comA">&#x3C;/component-a>
+&#x3C;/template>
+
+&#x3C;script>
+  export default {
+    mounted () {
+      const comA = this.$refs.comA;
+      console.log(comA.name);  // Vue.js
+      comA.sayHello();  // hello
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 子组件 A.vue -->
+&#x3C;template>
+  &#x3C;div>&#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  export default {
+    data () {
+      return {
+        name: 'Vue.js'
+      }
+    },
+    methods: {
+      sayHello () {
+        console.log('hello')
+      }
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>和v-for共使用</p>
+<p>在父组件里面需要多次渲染子组件</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;!-- 直播绑定 -->
+  &#x3C;div slot="liveBind">
+    &#x3C;AddLiveBindItem
+      v-for="(data, index) in datas"
+      :key="data.id"
+      :dataConfig="data.dataConfig"
+      :isFirst="index === 0 ? true : false"
+      :liveBindId="
+      index === 0
+      ? 1
+      : index === 1
+      ? 2
+      : index === 2
+      ? 3
+      : index === 3
+      ? 4
+      : index === 4
+      ? 5
+      : 6
+      "
+      @toDeleteLiveBind="toDeleteLiveBind(index)"
+      ref="addLiveBindRef"
+      />
+  &#x3C;/div>
+&#x3C;/template>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>具体使用：下面第四行代码</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-variable language_">this</span>.<span class="hljs-property">datas</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">_it, index</span>) =></span> {
+  <span class="hljs-comment">// 当前表单的配置项遍历上传</span>
+  liveRelationList.<span class="hljs-title function_">push</span>(
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">addLiveBindRef</span>[index].<span class="hljs-property">liveBindApiParams</span>
+  )
+  <span class="hljs-comment">// 上传sort参数</span>
+  liveRelationList[liveRelationList.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>].<span class="hljs-property">sort</span> = _it.<span class="hljs-property">id</span>
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="eventbus">EventBus</h2>
+<p>Vue3不再使用new Vue()来进行初始化了，可以自定义一个EventEmitter</p>
+<ol>
+<li><code>eventBus</code> 又称为事件总线，在 vue 中可以使用它来作为沟通桥梁的概念, 就像是所有组件共用相同的事件中心，可以向该中心<strong>注册发送事件</strong>或<strong>接收事件</strong>， 所以<strong>组件都可以通知其他组件</strong>。</li>
+<li>eventBus 也有不方便之处, 当项目较大, 就容易造成难以维护的灾难</li>
+</ol>
+<p>1. 初始化</p>
+<p>首先需要创建一个事件总线并将其导出, 以便其他模块可以使用或者监听它.</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// event-bus.js</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Vue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">EventBus</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>()
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>假设你有两个组件: <code>additionNum</code> 和 <code>showNum</code>, 这两个组件可以是兄弟组件也可以是父子组件；这里我们以兄弟组件为例:</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;div>
+    &#x3C;show-num-com>&#x3C;/show-num-com>
+    &#x3C;addition-num-com>&#x3C;/addition-num-com>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+import showNumCom from './showNum.vue'
+import additionNumCom from './additionNum.vue'
+export default {
+  components: { showNumCom, additionNumCom }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>2. 发送事件</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- addtionNum.vue 中发送事件 -->
+&#x3C;template>
+  &#x3C;div>
+    &#x3C;button @click="additionHandle">+加法器&#x3C;/button>    
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+import {EventBus} from './event-bus.js'
+console.log(EventBus)
+export default {
+  data(){
+    return{
+      num:1
+    }
+  },
+
+  methods:{
+    additionHandle(){
+      EventBus.$emit('addition', {
+        num:this.num++
+      })
+    }
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>3. 接收事件</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- showNum.vue 中接收事件 -->
+&#x3C;template>
+  &#x3C;div>计算和: {{count}}&#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+import { EventBus } from './event-bus.js'
+export default {
+  data() {
+    return {
+      count: 0
+    }
+  },
+  mounted() {
+    EventBus.$on('addition', param => {
+      this.count = this.count + param.num;
+    })
+  }
+}
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>这样就实现了在组件<code>addtionNum.vue</code>中点击相加按钮, 在<code>showNum.vue</code>中利用传递来的 <code>num</code> 展示求和的结果.</p>
+<p>4. 移除事件监听者</p>
+<p>如果想移除事件的监听, 可以像下面这样操作:</p>
+<div class="code-block"><pre><code class="hljs language-vue">import { eventBus } from 'event-bus.js'
+EventBus.$off('addition', {})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="六vuex">六、Vuex</h2>
+<h3 id="1-vuex-介绍">1. Vuex 介绍</h3>
+<p>Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化. Vuex 解决了<code>多个视图依赖于同一状态</code>和<code>来自不同视图的行为需要变更同一状态</code>的问题，将开发者的精力聚焦于数据的更新而不是数据在组件之间的传递上</p>
+<h3 id="2-vuex-各个模块">2. Vuex 各个模块</h3>
+<ol>
+<li>
+<p><code>state</code>：用于数据的存储，是 store 中的唯一数据源</p>
+</li>
+<li>
+<p><code>getters</code>：如 vue 中的计算属性一样，基于 state 数据的二次包装，常用于数据的筛选和多个数据的相关性计算</p>
+</li>
+<li>
+<p><code>mutations</code>：类似函数，改变 state 数据的唯一途径，且不能用于处理异步事件</p>
+</li>
+<li>
+<p><code>actions</code>：类似于<code>mutation</code>，用于提交<code>mutation</code>来改变状态，而不直接变更状态，可以包含任意异步操作</p>
+</li>
+<li>
+<p><code>modules</code>：类似于命名空间，用于项目中将各个模块的状态分开定义和操作，便于维护</p>
+</li>
+</ol>
+<h3 id="3-vuex-实例应用">3. Vuex 实例应用</h3>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 父组件 -->
+&#x3C;template>
+  &#x3C;div id="app">
+    &#x3C;ChildA/>
+    &#x3C;ChildB/>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  import ChildA from './components/ChildA' // 导入A组件
+  import ChildB from './components/ChildB' // 导入B组件
+
+  export default {
+    name: 'App',
+    components: {ChildA, ChildB} // 注册A、B组件
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 子组件childA -->
+&#x3C;template>
+  &#x3C;div id="childA">
+    &#x3C;h1>我是A组件&#x3C;/h1>
+    &#x3C;button @click="transform">点我让B组件接收到数据&#x3C;/button>
+    &#x3C;p>因为你点了B，所以我的信息发生了变化：{{BMessage}}&#x3C;/p>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  export default {
+    data() {
+      return {
+        AMessage: 'Hello，B组件，我是A组件'
+      }
+    },
+    computed: {
+      BMessage() {
+        // 这里存储从store里获取的B组件的数据
+        return this.$store.state.BMsg
+      }
+    },
+    methods: {
+      transform() {
+        // 触发receiveAMsg，将A组件的数据存放到store里去
+        this.$store.commit('receiveAMsg', {
+          AMsg: this.AMessage
+        })
+      }
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- 子组件 childB -->
+&#x3C;template>
+  &#x3C;div id="childB">
+    &#x3C;h1>我是B组件&#x3C;/h1>
+    &#x3C;button @click="transform">点我让A组件接收到数据&#x3C;/button>
+    &#x3C;p>因为你点了A，所以我的信息发生了变化：{{AMessage}}&#x3C;/p>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  export default {
+    data() {
+      return {
+        BMessage: 'Hello，A组件，我是B组件'
+      }
+    },
+    computed: {
+      AMessage() {
+        // 这里存储从store里获取的A组件的数据
+        return this.$store.state.AMsg
+      }
+    },
+    methods: {
+      transform() {
+        // 触发receiveBMsg，将B组件的数据存放到store里去
+        this.$store.commit('receiveBMsg', {
+          BMsg: this.BMessage
+        })
+      }
+    }
+  }
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>vuex 的<code>store,js</code></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Vue</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Vuex</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'vuex'</span>
+<span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">use</span>(<span class="hljs-title class_">Vuex</span>)
+<span class="hljs-keyword">const</span> state = {
+  <span class="hljs-comment">// 初始化A和B组件的数据，等待获取</span>
+  <span class="hljs-title class_">AMsg</span>: <span class="hljs-string">''</span>,
+  <span class="hljs-title class_">BMsg</span>: <span class="hljs-string">''</span>
+}
+
+<span class="hljs-keyword">const</span> mutations = {
+  <span class="hljs-title function_">receiveAMsg</span>(<span class="hljs-params">state, payload</span>) {
+    <span class="hljs-comment">// 将A组件的数据存放于state</span>
+    state.<span class="hljs-property">AMsg</span> = payload.<span class="hljs-property">AMsg</span>
+  },
+  <span class="hljs-title function_">receiveBMsg</span>(<span class="hljs-params">state, payload</span>) {
+    <span class="hljs-comment">// 将B组件的数据存放于state</span>
+    state.<span class="hljs-property">BMsg</span> = payload.<span class="hljs-property">BMsg</span>
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vuex</span>.<span class="hljs-title class_">Store</span>({
+  state,
+  mutations
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="七localstorage--sessionstorage">七、localStorage / sessionStorage</h2>
+<p>这种通信比较简单, 缺点是数据和状态比较混乱, 不太容易维护。 通过<code>window.localStorage.getItem(key)</code>获取数据 通过<code>window.localStorage.setItem(key,value)</code>存储数据</p>
+<blockquote>
+<p>注意用<code>JSON.parse()</code> / <code>JSON.stringify()</code> 做数据格式转换（localStorage和sessionStorage只能存字符串，会自动调用对象的toString方法）</p>
+<p><code>localStorage</code> / <code>sessionStorage</code>可以结合<code>vuex</code>, 实现数据的持久保存, 同时使用 <code>vuex</code>解决数据和状态混乱问题.</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 存取</span>
+<span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">setItem</span>(
+  <span class="hljs-string">'sortColumn'</span>,
+  <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">prop</span>: column.<span class="hljs-property">prop</span>, <span class="hljs-attr">order</span>: column.<span class="hljs-property">order</span> })
+)
+
+<span class="hljs-comment">// 使用</span>
+<span class="hljs-variable language_">this</span>.<span class="hljs-property">sortColumnSession</span> = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(
+	<span class="hljs-variable language_">sessionStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">'sortColumn'</span>)
+)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="八-attrs与-listeners">八 $attrs与 $listeners</h2>
+<p>现在我们来讨论一种情况， 我们一开始给出的组件关系图中 A 组件与 D 组件是隔代关系， 那它们之前进行通信有哪些方式呢？</p>
+<ol>
+<li>
+<p>使用<code>props</code>绑定来进行一级一级的信息传递, 如果 D 组件中状态改变需要传递数据给 A, 使用事件系统一级级往上传递</p>
+</li>
+<li>
+<p>使用<code>eventBus</code>, 这种情况下还是比较适合使用, 但是碰到多人合作开发时, 代码维护性较低, 可读性也低</p>
+</li>
+<li>
+<p>使用 Vuex 来进行数据管理, 但是如果仅仅是传递数据, 而不做中间处理, 使用 Vuex 处理感觉有点大材小用了.</p>
+</li>
+</ol>
+<p>在<code>vue2.4</code>中，为了解决该需求，引入了<code>$attrs</code> 和<code>$listeners</code> ， 新增了<code>inheritAttrs</code> 选项。 在版本 2.4 以前，默认情况下, 父作用域中不作为 prop 被识别 (且获取) 的特性绑定 (class 和 style 除外)，将会 “回退” 且作为普通的 HTML 特性应用在子组件的根元素上。接下来看一个跨级通信的例子:</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- app.vue -->
+&#x3C;!-- index.vue -->
+&#x3C;template>
+  &#x3C;div>
+    &#x3C;child-com1
+      :name="name"
+      :age="age"
+      :gender="gender"
+      :height="height"
+      title="程序员成长指北"
+    >&#x3C;/child-com1>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+const childCom1 = () => import("./childCom1.vue");
+export default {
+  components: { childCom1 },
+  data() {
+    return {
+      name: "zhang",
+      age: "18",
+      gender: "女",
+      height: "158"
+    };
+  }
+};
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- childCom1.vue -->
+&#x3C;template class="border">
+  &#x3C;div>
+    &#x3C;p>name: {{ name}}&#x3C;/p>
+    &#x3C;p>childCom1的$attrs: {{ $attrs }}&#x3C;/p>
+    &#x3C;child-com2 v-bind="$attrs">&#x3C;/child-com2>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  const childCom2 = () => import("./childCom2.vue");
+  export default {
+    components: {
+      childCom2
+    },
+    inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+    props: {
+      name: String // name作为props属性绑定
+    },
+    created() {
+      console.log(this.$attrs);
+      // { "age": "18", "gender": "女", "height": "158", "title": "程序员成长指北" }
+    }
+  };
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;!-- childCom2.vue -->
+&#x3C;template>
+  &#x3C;div class="border">
+    &#x3C;p>age: {{ age}}&#x3C;/p>
+    &#x3C;p>childCom2: {{ $attrs }}&#x3C;/p>
+  &#x3C;/div>
+&#x3C;/template>
+
+&#x3C;script>
+  export default {
+    inheritAttrs: false,
+    props: {
+      age: String
+    },
+    created() {
+      console.log(this.$attrs); 
+      // { "gender": "女", "height": "158", "title": "程序员成长指北" }
+    }
+  };
+&#x3C;/script>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="总结">总结</h2>
+<p>常见使用场景可以分为三类:</p>
+<ul>
+<li>
+<p>父子组件通信: <code>props</code>; <code>$parent</code> / <code>$children</code>; <code>provide</code> / <code>inject</code> ; <code>ref</code> ; <code>$attrs</code> / <code>$listeners</code></p>
+</li>
+<li>
+<p>兄弟组件通信: <code>eventBus</code> ; vuex</p>
+</li>
+<li>
+<p>跨级通信: <code>eventBus</code>；Vuex；<code>provide</code> / <code>inject</code> 、<code>$attrs</code> / <code>$listeners</code></p>
+</li>
+</ul>
+<h3 id="conference">Conference</h3>
+<ul>
+<li><a href="https://juejin.cn/post/6844903887162310669" rel="noopener noreferrer">vue中8种组件通信方式, 值得收藏! - 掘金</a></li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue组件通信\",\"description\":\"之前写了一篇关于 vue 面试总结的文章, 有不少网友提出组件之间通信方式还有很多, 这篇文章便是专门总结组件之间通信的作者简介：koala，专注完整的 Node.js 技术栈分享，从 JavaScript 到 Node.js, 再到后端数据库，祝您成为优秀的高级 Node.js 工程师。【程...\",\"datePublished\":\"2021-10-28\",\"dateModified\":\"2025-03-26\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/qwv5oz/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Vue",{"href":"/categories/Vue/","children":"Vue"}]]]}],["$","h1",null,{"children":"Vue组件通信"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-10-28"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[9," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/qwv5oz/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-03-26"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/akf33e/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"PC端hevc编码的MOV格式视频无法查看"}]]}],["$","$L2",null,{"href":"/blog/na8588/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"跨域以及非跨域下载指定url图片方案"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/qwv5oz/","title":"Vue组件通信"}]
+9:["$","$L1c",null,{"headings":[{"id":"props和emit","text":"props和emit","depth":2},{"id":"vue2","text":"vue2","depth":3},{"id":"vue3setup选项式","text":"vue3（setup选项式）","depth":3},{"id":"provide--inject","text":"provide / inject","depth":2},{"id":"vue2-1","text":"vue2","depth":3},{"id":"vue3选项式","text":"vue3（选项式）","depth":3},{"id":"vue3组合式","text":"vue3（组合式）","depth":3},{"id":"二-children--parent","text":"二、 $children / $parent","depth":2},{"id":"vue2-2","text":"vue2","depth":3},{"id":"ref和refs","text":"ref和refs","depth":2},{"id":"eventbus","text":"EventBus","depth":2},{"id":"六vuex","text":"六、Vuex","depth":2},{"id":"1-vuex-介绍","text":"1. Vuex 介绍","depth":3},{"id":"2-vuex-各个模块","text":"2. Vuex 各个模块","depth":3},{"id":"3-vuex-实例应用","text":"3. Vuex 实例应用","depth":3},{"id":"七localstorage--sessionstorage","text":"七、localStorage / sessionStorage","depth":2},{"id":"八-attrs与-listeners","text":"八 $attrs与 $listeners","depth":2},{"id":"总结","text":"总结","depth":2},{"id":"conference","text":"Conference","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue组件通信 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"之前写了一篇关于 vue 面试总结的文章, 有不少网友提出组件之间通信方式还有很多, 这篇文章便是专门总结组件之间通信的作者简介：koala，专注完整的 Node.js 技术栈分享，从 JavaScript 到 Node.js, 再到后端数据库，祝您成为优秀的高级 Node.js 工程师。【程..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/qwv5oz/"}],["$","meta","3",{"property":"og:title","content":"Vue组件通信"}],["$","meta","4",{"property":"og:description","content":"之前写了一篇关于 vue 面试总结的文章, 有不少网友提出组件之间通信方式还有很多, 这篇文章便是专门总结组件之间通信的作者简介：koala，专注完整的 Node.js 技术栈分享，从 JavaScript 到 Node.js, 再到后端数据库，祝您成为优秀的高级 Node.js 工程师。【程..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/qwv5oz/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-10-28"}],["$","meta","8",{"property":"article:modified_time","content":"2025-03-26"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue组件通信"}],["$","meta","11",{"name":"twitter:description","content":"之前写了一篇关于 vue 面试总结的文章, 有不少网友提出组件之间通信方式还有很多, 这篇文章便是专门总结组件之间通信的作者简介：koala，专注完整的 Node.js 技术栈分享，从 JavaScript 到 Node.js, 再到后端数据库，祝您成为优秀的高级 Node.js 工程师。【程..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

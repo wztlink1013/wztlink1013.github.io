@@ -1,0 +1,215 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T3254,<h2 id="nodejs使用">Node.js使用</h2>
+<p>Node.js环境说白了就和浏览器一样，用来运行js，node借助终端，浏览器借助app展示HTML文件来展示js功能。具体运行在js文件的所在文件目录下运行 <code>node xx.js</code>即可。</p>
+<p>不过一般全局下载nodemon三方模块，其作用是当js文件被改动，终端会再次执行该js文件，后续模块处再讲。</p>
+<p>模块化开发分为两种：</p>
+<ol>
+<li>前端网页使用JavaScript外链</li>
+<li>使用nodejs加载模块化开发构建</li>
+</ol>
+<p>Node.js实际上是模块化开发，由以下两方面组成：</p>
+<ol>
+<li>ECMAScript</li>
+<li>Node的模块API（又分为内置模块和三方模块）</li>
+</ol>
+<h3 id="node环境的一些特性">node环境的一些特性</h3>
+<p>异步式I/O：提高效率，防止阻塞这种情况</p>
+<p>事件式编程：注意事件循环机制</p>
+<h3 id="node模块化及其使用">node模块化及其使用</h3>
+<p>参考之前写的文章：<a href="https://www.yuque.com/wztlink1013/blog/psazge#FPo3f" rel="noopener noreferrer">https://www.yuque.com/wztlink1013/blog/psazge#FPo3f</a></p>
+<h3 id="processenv环境变量">process.env环境变量</h3>
+<p>nodejs的顶层对象process下的环境变量设置与使用</p>
+<ul>
+<li>参考：<a href="https://juejin.cn/post/6972466143445385223" rel="noopener noreferrer">https://juejin.cn/post/6972466143445385223</a></li>
+</ul>
+<h3 id="nodejs中的trycatch">nodejs中的try...catch</h3>
+<p>写异常的捕获的时候，要时刻注意一些异步执行的代码，比如一种场景是try里面的代码是异步操作，那么再执行异步的时候，就已经执行了catch里面的报警语句了，学会查看捕获的目标代码是哪段。</p>
+<p>具体参考：<a href="https://www.cnblogs.com/surfer/p/10291609.html" rel="noopener noreferrer">https://www.cnblogs.com/surfer/p/10291609.html</a></p>
+<h2 id="nodejs内置模块">Node.js内置模块</h2>
+<h3 id="全局对象global">全局对象global</h3>
+<p>Node.js和之前学过的浏览器对象区分之就是，浏览器中全局对象是window，但是Node.js的全局对象是global（也可以不写、省略）。</p>
+<ul>
+<li>process对象：关于进程的一个对象，也是global的属性之一，是一个和操作系统的简单接口。重点了解nextTick()函数，这个函数可以将事件循环设置一个任务，提高运行效率</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/gxh14f/1622768098753-4f933f75-ea23-41d9-80d3-c8dd46f2e123.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>
+<p>console对象：log在控制台中输出；error输出错误信息；trace输出错误信息调用栈（就是错在什么地方）</p>
+</li>
+<li>
+<p>setTimeout()     设置超时<strong>定时器</strong></p>
+</li>
+<li>
+<p>clearTimeout()  清除超时时定时器</p>
+</li>
+<li>
+<p>setInterval()      设置间歇<strong>定时器</strong></p>
+</li>
+<li>
+<p>clearInterval()   清除间歇定时器</p>
+</li>
+</ul>
+<h3 id="httpfsurlquerystringpath模块">http;fs;url;querystring;path模块</h3>
+<p>参考：<a href="https://blog.guowenfh.com/2016/10/15/node-http" rel="noopener noreferrer">https://blog.guowenfh.com/2016/10/15/node-http</a></p>
+<ul>
+<li>
+<p>http，原生创建web服务</p>
+</li>
+<li>
+<p>url解析url，querystring处理url参数，搭配使用</p>
+</li>
+<li>
+<p>fs模块用来读取文件、写入文件等</p>
+</li>
+<li>
+<p>path路径操作，一般都是路径字符串拼接join，<code>__dirname</code>当前目录名</p>
+</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">/*
+ * @Author: wztlink1013
+ * @Date: 2022-01-10 16:26:41
+ * @LastEditTime: 2022-01-10 19:49:43
+ * @Description:
+ */</span>
+<span class="hljs-keyword">let</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>)
+<span class="hljs-keyword">let</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>)
+<span class="hljs-keyword">let</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)
+<span class="hljs-keyword">let</span> queryString = <span class="hljs-built_in">require</span>(<span class="hljs-string">'querystring'</span>)
+
+<span class="hljs-keyword">let</span> server = http.<span class="hljs-title function_">createServer</span>()
+<span class="hljs-comment">// 读取我们当前文件所在的目录下的 html 文件夹</span>
+<span class="hljs-keyword">let</span> <span class="hljs-title class_">HtmlDir</span> = __dirname + <span class="hljs-string">'/html/'</span>
+
+server.<span class="hljs-title function_">on</span>(<span class="hljs-string">'request'</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) {
+  <span class="hljs-keyword">let</span> urlObj = url.<span class="hljs-title function_">parse</span>(req.<span class="hljs-property">url</span>)
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'【请求url信息】'</span>, urlObj)
+  <span class="hljs-keyword">let</span> params = queryString.<span class="hljs-title function_">parse</span>(urlObj.<span class="hljs-property">query</span>)
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'【url参数】'</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(params))
+
+  <span class="hljs-keyword">switch</span> (urlObj.<span class="hljs-property">pathname</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'/'</span>:
+      <span class="hljs-comment">//首页</span>
+      <span class="hljs-title function_">sendData</span>(<span class="hljs-title class_">HtmlDir</span> + <span class="hljs-string">'index.html'</span>, req, res)
+      <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'/user'</span>:
+      <span class="hljs-comment">//用户首页</span>
+      <span class="hljs-title function_">sendData</span>(<span class="hljs-title class_">HtmlDir</span> + <span class="hljs-string">'user.html'</span>, req, res)
+      <span class="hljs-keyword">break</span>
+    <span class="hljs-attr">default</span>:
+      <span class="hljs-comment">//处理其他情况</span>
+      <span class="hljs-title function_">sendData</span>(<span class="hljs-title class_">HtmlDir</span> + <span class="hljs-string">'err.html'</span>, req, res)
+      <span class="hljs-keyword">break</span>
+  }
+})
+
+<span class="hljs-comment">/**
+ * 读取html文件，响应数据，发送给浏览器
+ * <span class="hljs-doctag">@param</span> {<span class="hljs-type">String</span>} file 文件路径
+ * <span class="hljs-doctag">@param</span> {<span class="hljs-type">Object</span>} req request
+ * <span class="hljs-doctag">@param</span> {<span class="hljs-type">Object</span>} res response 对象
+ */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">sendData</span>(<span class="hljs-params">file, req, res</span>) {
+  fs.<span class="hljs-title function_">readFile</span>(file, <span class="hljs-keyword">function</span> (<span class="hljs-params">err, data</span>) {
+    <span class="hljs-keyword">if</span> (err) {
+      res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">404</span>, {
+        <span class="hljs-string">'content-type'</span>: <span class="hljs-string">'text/html;charset=utf-8'</span>,
+      })
+      res.<span class="hljs-title function_">end</span>(<span class="hljs-string">'&#x3C;h1>你要找的页面不见了～&#x3C;/h1>'</span>)
+    } <span class="hljs-keyword">else</span> {
+      res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, {
+        <span class="hljs-string">'content-type'</span>: <span class="hljs-string">'text/html;charset=utf-8'</span>,
+      })
+      res.<span class="hljs-title function_">end</span>(data)
+    }
+  })
+}
+server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8888</span>)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Server is running at http://127.0.0.1:8888/'</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="utilchalk美化">util+chalk美化</h3>
+<ul>
+<li>util.inherits</li>
+</ul>
+<p>不过感觉这个已经没有多大必要了，这个是实现原型间继承的相关封装，但是现在ES6已经有了class的概念了（虽然底层还是之前那套），这个工具用的不多</p>
+<ul>
+<li>util.inspect</li>
+</ul>
+<p>目的就是将对象转换为字符串，比如将错误信息更加美观的展示在控制台，就可以自定义，但是可以直接用chalk模块在实现这个美化控制台输出的工作。</p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-meta">'use strict'</span>;
+
+<span class="hljs-keyword">const</span> chalk = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chalk'</span>);
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-title function_">info</span>(<span class="hljs-params">...args</span>) {
+    <span class="hljs-keyword">const</span> prefix = chalk.<span class="hljs-title function_">green</span>(<span class="hljs-string">'[INFO]'</span>);
+    args.<span class="hljs-title function_">unshift</span>(prefix);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-property">log</span>.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">console</span>, args);
+  },
+  <span class="hljs-title function_">warn</span>(<span class="hljs-params">...args</span>) {
+    <span class="hljs-keyword">const</span> prefix = chalk.<span class="hljs-title function_">yellow</span>(<span class="hljs-string">'[WARNING]'</span>);
+    args.<span class="hljs-title function_">unshift</span>(prefix);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-property">log</span>.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">console</span>, args);
+  },
+  <span class="hljs-title function_">error</span>(<span class="hljs-params">...args</span>) {
+    <span class="hljs-keyword">const</span> prefix = chalk.<span class="hljs-title function_">red</span>(<span class="hljs-string">'[ERROR]'</span>);
+    args.<span class="hljs-title function_">unshift</span>(prefix);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-property">log</span>.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">console</span>, args);
+  },
+};
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-javascript">out.<span class="hljs-title function_">info</span>(<span class="hljs-string">`Current yuque-hexo-lyrics version is <span class="hljs-subst">${chalk.yellow(pkg.version)}</span>, and the latest version is <span class="hljs-subst">${chalk.green(update.latest)}</span>. Please update!`</span>);
+out.<span class="hljs-title function_">info</span>(<span class="hljs-string">'View more detail: https://github.com/wztlink1013/yuque-hexo-lyrics#changelog'</span>);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="nodejs异步的解决策略">Node.js异步的解决策略</h2>
+<p>参考：</p>
+<ul>
+<li>
+<p><a href="https://segmentfault.com/a/1190000019418510" rel="noopener noreferrer">Node.js异步处理的各种写法</a></p>
+</li>
+<li>
+<p>传统的解决方案：async await等</p>
+</li>
+<li>
+<p>嵌套使用</p>
+</li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Nodejs基本使用和内置模块\",\"description\":\"Node.js使用Node.js环境说白了就和浏览器一样，用来运行js，node借助终端，浏览器借助app展示HTML文件来展示js功能。具体运行在js文件的所在文件目录下运行 node xx.js即可。不过一般全局下载nodemon三方模块，其作用是当js文件被改动，终端会再次执行该js文件...\",\"datePublished\":\"2022-01-11\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/gxh14f/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Node.js",{"href":"/categories/Node.js/","children":"Node.js"}]]]}],["$","h1",null,{"children":"Nodejs基本使用和内置模块"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-01-11"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/gxh14f/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/blhxct/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Vue-CLI搭建Vue3.x+TypeScript项目"}]]}],["$","$L2",null,{"href":"/blog/yey65c/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"阿里云函数计算FC技术"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/gxh14f/","title":"Nodejs基本使用和内置模块"}]
+9:["$","$L1c",null,{"headings":[{"id":"nodejs使用","text":"Node.js使用","depth":2},{"id":"node环境的一些特性","text":"node环境的一些特性","depth":3},{"id":"node模块化及其使用","text":"node模块化及其使用","depth":3},{"id":"processenv环境变量","text":"process.env环境变量","depth":3},{"id":"nodejs中的trycatch","text":"nodejs中的try...catch","depth":3},{"id":"nodejs内置模块","text":"Node.js内置模块","depth":2},{"id":"全局对象global","text":"全局对象global","depth":3},{"id":"httpfsurlquerystringpath模块","text":"http;fs;url;querystring;path模块","depth":3},{"id":"utilchalk美化","text":"util+chalk美化","depth":3},{"id":"nodejs异步的解决策略","text":"Node.js异步的解决策略","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Nodejs基本使用和内置模块 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"Node.js使用Node.js环境说白了就和浏览器一样，用来运行js，node借助终端，浏览器借助app展示HTML文件来展示js功能。具体运行在js文件的所在文件目录下运行 node xx.js即可。不过一般全局下载nodemon三方模块，其作用是当js文件被改动，终端会再次执行该js文件..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/gxh14f/"}],["$","meta","3",{"property":"og:title","content":"Nodejs基本使用和内置模块"}],["$","meta","4",{"property":"og:description","content":"Node.js使用Node.js环境说白了就和浏览器一样，用来运行js，node借助终端，浏览器借助app展示HTML文件来展示js功能。具体运行在js文件的所在文件目录下运行 node xx.js即可。不过一般全局下载nodemon三方模块，其作用是当js文件被改动，终端会再次执行该js文件..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/gxh14f/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-01-11"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Nodejs基本使用和内置模块"}],["$","meta","11",{"name":"twitter:description","content":"Node.js使用Node.js环境说白了就和浏览器一样，用来运行js，node借助终端，浏览器借助app展示HTML文件来展示js功能。具体运行在js文件的所在文件目录下运行 node xx.js即可。不过一般全局下载nodemon三方模块，其作用是当js文件被改动，终端会再次执行该js文件..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

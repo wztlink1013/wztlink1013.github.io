@@ -1,0 +1,152 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T2114,<p>前言：虚拟滚动属于长列表渲染的优化方式之一，长列表渲染优化方式还有分页、懒加载、动态缓存数据等。本文对虚拟列表展开描述，首先以一个简单的demo介绍虚拟滚动的核心逻辑，以此展开对miniui的虚拟滚动的代码介绍，再通过浏览器Perfomance工具分析滚动过程并对其渲染过程做出部分逻辑优化。</p>
+<h3 id="一一个简单虚拟滚动demo">一、一个简单虚拟滚动demo</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720402977254-f6bf46b2-0d4d-4cd2-9f5a-7ec4adcd821c.gif" alt="" loading="lazy" decoding="async"></p>
+<p>虚拟滚动逻辑可以简单理解为三部分组成：</p>
+<ol>
+<li>滚动逻辑注册</li>
+<li>计算可视区</li>
+<li>渲染可视区</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720403297901-a7b9b95d-2f76-4272-99b6-d68eee639a43.png" alt="" loading="lazy" decoding="async"></p>
+<ol>
+<li>
+<p>滚动逻辑注册：虚拟滚动是在大数据长列表滚动过程中，只渲染用户可视区部分，因此63行代码需要注册DOM滚动事件</p>
+</li>
+<li>
+<p>64行代码：页面初始化加载也属于滚动高度为0的情况，所以需要额外执行</p>
+</li>
+<li>
+<p>计算可视区：计算可视区的第一个列表项和最后一个列表项</p>
+</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720407262890-a681dee4-52bf-48fe-82c5-0ea39d651026.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="3">
+<li>渲染可视区：计算新可视区字符串内容，再通过innerHTML嵌入容器</li>
+</ol>
+<h3 id="二miniui虚拟滚动代码执行流程">二、miniui虚拟滚动代码执行流程</h3>
+<p>在miniui的DataGrid组件中，通过设置virtualScroll属性为true，即开启虚拟滚动：</p>
+<ol>
+<li><strong>scroll滚动逻辑注册</strong>：DataGrid继承基类Control注册scroll事件</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720056740279-2550883b-9b90-4df5-94c2-7cb51f73f19e.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720503708528-d7fff56d-c5f4-429c-8ddb-31f03ccd14d3.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="2">
+<li>_doRemoveRowContent：移除可视区行内容（直接移除table标签）</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720058582420-ede55aee-227a-4fa5-9e18-a11d470e9335.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="3">
+<li>
+<p><strong>doUpdateRows</strong>：内部执行可视区计算以及可视区渲染</p>
+</li>
+<li>
+<p><strong>计算可视区</strong>：通过_getViewRegion计算可视区相关渲染信息（起始索引、结束索引、渲染数据源、scroll信息等）</p>
+</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720410192711-9fd9626b-f3a6-460d-9077-c5225cd0d9c6.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="2">
+<li><strong>渲染可视区</strong>：通过_createRowsHTML计算出来新可视区的HTML字符串，然后innerHTML整体插入容器当中</li>
+</ol>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720409765430-020be3a3-31f2-4f72-9e81-d9495b7fabd9.png" alt="" loading="lazy" decoding="async"></p>
+<ol start="4">
+<li>后续逻辑：</li>
+</ol>
+<ul>
+<li>deferLayout：对当前DataGrid组件doLayout</li>
+<li>_syncScrollOffset：滚动条的偏移计算（left / top）</li>
+<li>……</li>
+</ul>
+<h3 id="三dom渲染的部分优化">三、DOM渲染的部分优化</h3>
+<h4 id="31-dom渲染性能">3.1 DOM渲染性能</h4>
+<p>用perfomance记录该阶段渲染过程</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720410550743-401b041c-b1a4-48cb-aab3-75b394167d95.png" alt="" loading="lazy" decoding="async"></p>
+<p>从上图可以看到整个滚动执行逻辑，百分之九十以上的逻辑都是DOM操作（removeChild和innerHTML）</p>
+<h4 id="32-优化思路">3.2 优化思路</h4>
+<ul>
+<li><strong>removeChild</strong></li>
+</ul>
+<p>滚动过程首先执行了_doRemoveRowContent摘除固定列和非固定列下的各自table标签，这个逻辑是重复执行的，因为对于虚拟滚动情况，后续的innerHTML已经存在更新DOM的逻辑，而且中间也不存在相关中断（return）代码逻辑，故这部分代码可以做判断执行。</p>
+<ul>
+<li><strong>innerHTML</strong></li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720416327925-44ed0bb6-d0b0-4010-9efa-a0aa0a20c101.png" alt="" loading="lazy" decoding="async"></p>
+<p>每一次的滚动可视区变化，miniui是将固定列和非固定列其中的两个table进行整体innerHTML赋值，这样对于DOM渲染开销是巨大的，并且如果当可视区的行多点的话（大屏/异性屏），渲染的体验是不好的，所以将其改造为DOM动态更新：</p>
+<ul>
+<li>对于结构没有必要改变的DOM只是替换其属性和样式，比如头部和尾部缓冲行；</li>
+<li>对于变化的行，进行动态判断是增加还是移除，以此最小单位地进行DOM更新。</li>
+</ul>
+<p><strong>如何计算哪些行是需要移除的？哪些行是需要增加的？增加的是头部增加还是尾部增加？</strong></p>
+<p>记录上一次可视区的region（可视区计算属性）记为_prevViewRegion，通过进行判断currStartIndex、currEndIndex、prevStartIndex、prevEndIndex四者的关系，得出需要增删的行信息及其增删的位置（头部或者尾部），然后统一通过insertAdjacentHTML传入beforebegin/afterend进行DOM动态渲染。</p>
+<h4 id="33-代码实现">3.3 代码实现</h4>
+<ul>
+<li><strong>removeChild逻辑优化</strong></li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720418053154-a8aa02a4-a77f-42c5-9677-d5e47473534a.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li><strong>innerHTML逻辑优化</strong></li>
+</ul>
+<p>修改后的doUpdateRows代码：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720495033407-bae80d2e-d7fe-4a13-8835-be5fd6b763ef.png" alt="" loading="lazy" decoding="async"></p>
+<p>根据当前可视区信息region和上一次可视区信息_prevViewRegion计算需要新增的行和删除的行：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720493662176-1fe72919-48a9-4bcd-af78-155f1b5c5ff5.png" alt="" loading="lazy" decoding="async"></p>
+<p>按需渲染：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720504796457-dd0b9174-487f-4e0d-a02d-4e19ff354308.png" alt="" loading="lazy" decoding="async"></p>
+<p>对于结构不需要变动的DOM，直接移植：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720418211437-ce86c925-b8ee-48c1-a72d-16c40028469b.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="34-优化效果">3.4 优化效果</h4>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720419161042-fa3e3709-6d42-4b45-960f-91fb55e48975.gif" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720419494942-bd1fe056-28cc-4377-aa8e-19c3fdcabd52.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="四总结">四、总结</h3>
+<ul>
+<li>
+<p>虚拟滚动实际上也属于性能优化中<strong>按需加载渲染</strong>大方向的优化思路；</p>
+</li>
+<li>
+<p>_createRowsHTML计算当前可视区HTML的字符串理论上可以通过<strong>Worker</strong>+<strong>DocumentFragment</strong>来进行计算优化，但实际处理过程中_createRowsHTML调用内部函数太多（this方法、mini方法），不太好抽离。</p>
+</li>
+<li>
+<p>飞书文档编辑器的渲染是利用虚拟滚动来进行优化的，对于每一次滚动过程中的各个滚动item的状态做了很好的保留，每次的滚动事件触发所耗费时间很短，主线程存在CPP GC垃圾回收释放内存的过程，线程池中也开了多个子线程在工作</p>
+</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720490257074-734e3b8e-5267-46d9-9607-ee1fd3f03a6a.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/igw2od777z62qim0/1720490237287-efba76ba-7c4b-4ec5-bf49-2830451bc8cf.png" alt="" loading="lazy" decoding="async"></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"miniui虚拟滚动及其部分渲染优化\",\"description\":\"前言：虚拟滚动属于长列表渲染的优化方式之一，长列表渲染优化方式还有分页、懒加载、动态缓存数据等。本文对虚拟列表展开描述，首先以一个简单的demo介绍虚拟滚动的核心逻辑，以此展开对miniui的虚拟滚动的代码介绍，再通过浏览器Perfomance工具分析滚动过程并对其渲染过程做出部分逻辑优化。 一、一\",\"datePublished\":\"2024-07-01\",\"dateModified\":\"2026-01-14\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/igw2od777z62qim0/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","前端性能优化",{"href":"/categories/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/","children":"前端性能优化"}]]]}],["$","h1",null,{"children":"miniui虚拟滚动及其部分渲染优化"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-07-01"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/igw2od777z62qim0/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2026-01-14"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/ew83gy34ryu36u22/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"whistle抓包"}]]}],["$","$L2",null,{"href":"/blog/zeiw5gsavswsl5pg/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"CSS布局——BFC概念"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/igw2od777z62qim0/","title":"miniui虚拟滚动及其部分渲染优化"}]
+9:["$","$L1c",null,{"headings":[{"id":"一一个简单虚拟滚动demo","text":"一、一个简单虚拟滚动demo","depth":3},{"id":"二miniui虚拟滚动代码执行流程","text":"二、miniui虚拟滚动代码执行流程","depth":3},{"id":"三dom渲染的部分优化","text":"三、DOM渲染的部分优化","depth":3},{"id":"31-dom渲染性能","text":"3.1 DOM渲染性能","depth":4},{"id":"32-优化思路","text":"3.2 优化思路","depth":4},{"id":"33-代码实现","text":"3.3 代码实现","depth":4},{"id":"34-优化效果","text":"3.4 优化效果","depth":4},{"id":"四总结","text":"四、总结","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"miniui虚拟滚动及其部分渲染优化 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：虚拟滚动属于长列表渲染的优化方式之一，长列表渲染优化方式还有分页、懒加载、动态缓存数据等。本文对虚拟列表展开描述，首先以一个简单的demo介绍虚拟滚动的核心逻辑，以此展开对miniui的虚拟滚动的代码介绍，再通过浏览器Perfomance工具分析滚动过程并对其渲染过程做出部分逻辑优化。 一、一"}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/igw2od777z62qim0/"}],["$","meta","3",{"property":"og:title","content":"miniui虚拟滚动及其部分渲染优化"}],["$","meta","4",{"property":"og:description","content":"前言：虚拟滚动属于长列表渲染的优化方式之一，长列表渲染优化方式还有分页、懒加载、动态缓存数据等。本文对虚拟列表展开描述，首先以一个简单的demo介绍虚拟滚动的核心逻辑，以此展开对miniui的虚拟滚动的代码介绍，再通过浏览器Perfomance工具分析滚动过程并对其渲染过程做出部分逻辑优化。 一、一"}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/igw2od777z62qim0/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-07-01"}],["$","meta","8",{"property":"article:modified_time","content":"2026-01-14"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"miniui虚拟滚动及其部分渲染优化"}],["$","meta","11",{"name":"twitter:description","content":"前言：虚拟滚动属于长列表渲染的优化方式之一，长列表渲染优化方式还有分页、懒加载、动态缓存数据等。本文对虚拟列表展开描述，首先以一个简单的demo介绍虚拟滚动的核心逻辑，以此展开对miniui的虚拟滚动的代码介绍，再通过浏览器Perfomance工具分析滚动过程并对其渲染过程做出部分逻辑优化。 一、一"}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

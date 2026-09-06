@@ -1,0 +1,113 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T1751,<h2 id="响应式变量赋值">响应式变量赋值</h2>
+<p>响应式变量commits首次赋值接口所返回的数据</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724654176733-c4bf03bc-1cda-44c9-bd2e-a06c0455b152.png" alt="" loading="lazy" decoding="async"></p>
+<p>进入触发Proxy的set拦截【在createApp的实例化的过程中，就已经将data选项响应化，可以参考之前的文章】</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724394084509-5821f367-a7ec-4083-952d-f9946487f725.png" alt="" loading="lazy" decoding="async"></p>
+<p>最终进入trigger函数</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724394327576-b64a6b93-64a6-44cd-9213-917e0fcb7182.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>174行：触发副作用</li>
+<li>177行：利用Reflect返回所赋值的内容，具体可查看（<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set</a>）</li>
+</ul>
+<h2 id="trigger">trigger</h2>
+<p>进入trigger内部</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724394939956-4ccb1953-3f06-4352-9f31-104e5c849267.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>target实际上是选项式中的data</li>
+<li><strong>targetMap是从一开始注册响应化就收集的响应映射表</strong></li>
+</ul>
+<h3 id="执行trigger">执行trigger</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724654451358-19007aae-128d-4dc4-a160-d5e9643c71de.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>
+<p><code>startBatch()</code>和<code>endBatch()</code>：</p>
+</li>
+<li>
+<p><code>startBatch()</code>用于开启一个批量更新的阶段。在这个阶段中，响应式数据的变化不会立即触发依赖的更新，而是会被收集起来，等到<code>endBatch()</code>被调用后再统一进行处理。这样做的好处是可以避免在短时间内频繁地触发更新，从而提高性能。例如，在一个循环中多次修改响应式数据时，可以使用批量更新来减少不必要的重复更新操作。</p>
+</li>
+<li>
+<p>__DEV__：开发环境下传入数据信息便于调试</p>
+</li>
+<li>
+<p>dep.trigger()：触发依赖更新</p>
+</li>
+</ul>
+<p>trigger下又执行notify</p>
+<p>封装在<img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724654522704-0d8ab60d-c703-44b0-a40f-73b74855a77e.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="notify">notify</h3>
+<p>通过遍历订阅链表（subsHead），执行订阅事件，也就是“副作用”，简而言之的理解就是通知订阅者更新</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724395543939-5231eb2e-a79e-457d-a68d-d02ed08a559d.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>
+<p><code>link.sub.notify()</code></p>
+</li>
+<li>
+<p><strong>作用</strong>：通知每个订阅者执行其副作用。</p>
+</li>
+<li>
+<p><strong>解释</strong>：每个订阅者都有一个 <code>notify</code> 方法，调用它会触发该订阅者的副作用执行。因为是从尾到头通知，所以确保了所有的依赖在批处理内按顺序执行。</p>
+</li>
+</ul>
+<p>当trigger执行完，同时Proxy的set流程也结束。</p>
+<p>下一步执行到PublicInstanceProxyHandlers</p>
+<h2 id="publicinstanceproxyhandlers">PublicInstanceProxyHandlers</h2>
+<p>这个是组件实例行为的封装，上述响应式变量赋值完成，然后进入当前的组件实例属性设置</p>
+<p><code>set</code> 方法用于拦截和处理对组件实例属性的修改操作</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724396098652-00faed94-469d-4b61-9f77-a20ec73049c7.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="主线程工作结束">主线程工作结束</h2>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724396266488-fe4d1ae9-870a-4f43-87d8-3fe03c34c37b.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="微任务flushjobs">微任务flushJobs</h2>
+<p>执行异步的flushJobs</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/khg4u3f89ozvkuta/1724403602240-595eb2a9-013f-4f9c-8192-15bb17223709.png" alt="" loading="lazy" decoding="async"></p>
+<p><code>flushJobs</code> 是一个用于刷新调度队列的函数，它会执行所有被调度的任务（如组件更新、计算属性的重新计算等）</p>
+<ul>
+<li><strong>调度器调度任务</strong>：</li>
+<li>Vue 3 的调度器会负责管理这个调度队列。调度器会尝试合并重复的任务，确保每个任务只执行一次，并且按照一定的顺序（如父组件先于子组件，先更新计算属性再更新渲染函数）进行调度。</li>
+<li><code>**queueFlush**</code> <strong>触发</strong>：</li>
+<li>当有新的任务被添加到调度队列时，调度器会调用 <code>queueFlush</code> 函数，将刷新任务安排到下一个微任务（microtask）中执行。</li>
+<li>这通常是通过 <code>Promise.resolve().then(flushJobs)</code> 来实现的。<code>Promise.resolve().then(...)</code> 会创建一个新的微任务，在当前同步任务结束后立即执行。这样做的好处是保证所有的同步任务（如多个响应式数据的 <code>set</code> 操作）都完成之后，再一次性执行批量更新操作。</li>
+<li><strong>执行</strong> <code>**flushJobs**</code>：</li>
+<li>一旦所有的同步操作完成，事件循环进入到微任务队列，<code>flushJobs</code> 函数被调用。<code>flushJobs</code> 会遍历调度队列，并依次执行每个调度任务（如重新渲染组件、重新计算计算属性等）。</li>
+<li>在这个阶段，所有的 <code>effect</code> 被重新执行，更新视图、计算新的值等等。</li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue3源码：响应式变量值变化执行流程\",\"description\":\"响应式变量赋值响应式变量commits首次赋值接口所返回的数据进入触发Proxy的set拦截【在createApp的实例化的过程中，就已经将data选项响应化，可以参考之前的文章】最终进入trigger函数\",\"datePublished\":\"2024-08-23\",\"dateModified\":\"2026-01-20\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/khg4u3f89ozvkuta/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Vue",{"href":"/categories/Vue/","children":"Vue"}]]]}],["$","h1",null,{"children":"Vue3源码：响应式变量值变化执行流程"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-08-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/khg4u3f89ozvkuta/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2026-01-20"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/akvtn4dmv31o552n/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"debug三方库"}]]}],["$","$L2",null,{"href":"/blog/uq766nlmm1cuh7kk/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"MongoDB开启事务"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/khg4u3f89ozvkuta/","title":"Vue3源码：响应式变量值变化执行流程"}]
+9:["$","$L1c",null,{"headings":[{"id":"响应式变量赋值","text":"响应式变量赋值","depth":2},{"id":"trigger","text":"trigger","depth":2},{"id":"执行trigger","text":"执行trigger","depth":3},{"id":"notify","text":"notify","depth":3},{"id":"publicinstanceproxyhandlers","text":"PublicInstanceProxyHandlers","depth":2},{"id":"主线程工作结束","text":"主线程工作结束","depth":2},{"id":"微任务flushjobs","text":"微任务flushJobs","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue3源码：响应式变量值变化执行流程 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"响应式变量赋值响应式变量commits首次赋值接口所返回的数据进入触发Proxy的set拦截【在createApp的实例化的过程中，就已经将data选项响应化，可以参考之前的文章】最终进入trigger函数"}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/khg4u3f89ozvkuta/"}],["$","meta","3",{"property":"og:title","content":"Vue3源码：响应式变量值变化执行流程"}],["$","meta","4",{"property":"og:description","content":"响应式变量赋值响应式变量commits首次赋值接口所返回的数据进入触发Proxy的set拦截【在createApp的实例化的过程中，就已经将data选项响应化，可以参考之前的文章】最终进入trigger函数"}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/khg4u3f89ozvkuta/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-08-23"}],["$","meta","8",{"property":"article:modified_time","content":"2026-01-20"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue3源码：响应式变量值变化执行流程"}],["$","meta","11",{"name":"twitter:description","content":"响应式变量赋值响应式变量commits首次赋值接口所返回的数据进入触发Proxy的set拦截【在createApp的实例化的过程中，就已经将data选项响应化，可以参考之前的文章】最终进入trigger函数"}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

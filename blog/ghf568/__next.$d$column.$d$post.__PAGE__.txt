@@ -1,0 +1,304 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T59bb,<blockquote>
+<p>[!NOTE]</p>
+<p>贪心算法四个字总结：目前最优</p>
+</blockquote>
+<h2 id="图的一些概念">图的一些概念</h2>
+<p>具体看先前的一篇文章<a href="https://www.wztlink1013.com/blog/gqpli5/" rel="noopener noreferrer">https://www.wztlink1013.com/blog/gqpli5/</a></p>
+<p><strong>连通图</strong></p>
+<blockquote>
+<p>在<a href="https://baike.baidu.com/item/%E5%9B%BE%E8%AE%BA/1433806" rel="noopener noreferrer">图论</a>中，连通图基于连通的概念。在一个<a href="https://baike.baidu.com/item/%E6%97%A0%E5%90%91%E5%9B%BE/1680427" rel="noopener noreferrer">无向图</a> G 中，若从<a href="https://baike.baidu.com/item/%E9%A1%B6%E7%82%B9/11030118" rel="noopener noreferrer">顶点</a>i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是<a href="https://baike.baidu.com/item/%E6%9C%89%E5%90%91%E5%9B%BE" rel="noopener noreferrer">有向图</a>，那么连接i和j的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的<a href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E6%80%A7/6688865" rel="noopener noreferrer">连通性</a>是图的基本性质。</p>
+</blockquote>
+<p><strong>生成树</strong></p>
+<blockquote>
+<p>包含图的全部顶点，边数最少的连通子图</p>
+</blockquote>
+<p><strong>最小生成树</strong></p>
+<blockquote>
+<p>总权值最小的生成树</p>
+</blockquote>
+<p>常见问题（该算法）就是求最小生成树。</p>
+<p><strong>并查集</strong></p>
+<blockquote>
+<p>是一个数据结构，功能有查找a和b是否为同一组；将a和b合并为同一组。</p>
+</blockquote>
+<h2 id="prim算法思路">Prim算法思路</h2>
+<p><code>Prim——普里姆算法</code></p>
+<p>类似于图的深度优先遍历一样，在遍历到一个结点的时候，在此根据该节点所连通的各边权值，取最小的，以此往复</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ghf568/1625102662437-05ab5a6e-fcc3-46d5-8c2d-666c9c23fa9a.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="kruskal算法思路">Kruskal算法思路</h2>
+<p><code>Kruskal——克鲁斯卡尔算法</code></p>
+<p>把所有边按照权值全部按数值大小拿出来，然后按顺序选取每条边，利用并查集的思想，如果这条边的两个端点不属于同一集合，那么就将它们合并，直到所有的点都属于同一个集合为止。</p>
+<p>比如有如下这么一个图：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ghf568/1605320252853-c5d445e4-aa0e-4279-b9fd-7477f23b1bc1.png" alt="" loading="lazy" decoding="async"></p>
+<p>单独分析①②边和③④边情况下，两个不在一个集合里面，</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ghf568/1605320331669-51ec03dc-caf6-449d-9e8b-e4e62b9f35a6.png" alt="" loading="lazy" decoding="async"></p>
+<p>不断重复，不断判断是否为同一个集合，不在同一个集合的话，就合并，持续如此。比方说当一直操作到权值为3的时候，此时就需要将左右两个集合合并了</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ghf568/1605320497092-00097419-4852-44c4-884e-febd4d37eb65.png" alt="" loading="lazy" decoding="async"></p>
+<p>最后的结果样式就为如下</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ghf568/1605320612085-d893c759-4ef1-410c-976e-8f32ddfe6321.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="代码实现">代码实现</h2>
+<h3 id="kruskal算法代码">Kruskal算法代码</h3>
+<div class="code-block"><pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;stdio.h></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;vector></span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&#x3C;algorithm></span></span>
+<span class="hljs-keyword">namespace</span> NS_KruskalMST {
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">KruskalMST</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">FindSet</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">UnionSets</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v)</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Initialization</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GenEdges</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">MakeSets</span><span class="hljs-params">()</span></span>;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Output</span><span class="hljs-params">(<span class="hljs-type">int</span> v0)</span></span>;
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> INF INT_MAX</span>
+<span class="hljs-type">static</span> <span class="hljs-type">int</span> n;
+<span class="hljs-type">static</span> vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> WMatrix;
+<span class="hljs-type">static</span> vector&#x3C;pair&#x3C;pair&#x3C;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>>, <span class="hljs-type">int</span>>> Edges;
+<span class="hljs-comment">//Node struct for the disjoint set</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">DJSNode</span> {
+    <span class="hljs-type">int</span> Parent; <span class="hljs-type">int</span> Rank;
+    <span class="hljs-built_in">DJSNode</span>(<span class="hljs-type">int</span> p) : <span class="hljs-built_in">Parent</span>(p), <span class="hljs-built_in">Rank</span>(<span class="hljs-number">0</span>) {}
+};
+<span class="hljs-type">static</span> vector&#x3C;DJSNode> DisjointSet;
+<span class="hljs-type">static</span> vector&#x3C;pair&#x3C;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>>> MST;
+<span class="hljs-comment">//The adjacency list for MST</span>
+<span class="hljs-type">static</span> vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> MSTList;
+<span class="hljs-type">static</span> vector&#x3C;<span class="hljs-type">int</span>> Prev;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">KruskalMSTCaller</span><span class="hljs-params">(<span class="hljs-type">int</span> an, 
+    vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>> &#x26;wMatrix, <span class="hljs-type">int</span> v0)</span>
+</span>{
+    n = an;
+    WMatrix = wMatrix;
+    <span class="hljs-built_in">Initialization</span>();
+    <span class="hljs-built_in">KruskalMST</span>();
+    <span class="hljs-built_in">Output</span>(v0);
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">KruskalMST</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &#x26;e: Edges)
+    {
+        <span class="hljs-type">int</span> u = e.first.first;
+        <span class="hljs-type">int</span> v = e.first.second;
+        <span class="hljs-type">int</span> setU = <span class="hljs-built_in">FindSet</span>(u);
+        <span class="hljs-type">int</span> setV = <span class="hljs-built_in">FindSet</span>(v);
+        <span class="hljs-keyword">if</span> (setU != setV)
+        {
+            MST.<span class="hljs-built_in">push_back</span>(e.first);
+            <span class="hljs-keyword">if</span> (MST.<span class="hljs-built_in">size</span>() == n - <span class="hljs-number">1</span>)
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-built_in">UnionSets</span>(setU, setV);
+        }
+    }
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">FindSet</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span>
+</span>{
+    <span class="hljs-keyword">while</span> (u != DisjointSet[u].Parent)
+        u = DisjointSet[u].Parent;
+        <span class="hljs-comment">//For path compression:</span>
+        <span class="hljs-comment">//DisjointSet[u].Parent = </span>
+        <span class="hljs-comment">//    FindSet(DisjointSet[u].Parent);</span>
+    <span class="hljs-keyword">return</span> u;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">UnionSets</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (DisjointSet[u].Rank >= DisjointSet[v].Rank)
+        DisjointSet[v].Parent = u;
+    <span class="hljs-keyword">else</span>
+        DisjointSet[u].Parent = v;
+    <span class="hljs-keyword">if</span> (DisjointSet[u].Rank == DisjointSet[v].Rank)
+        DisjointSet[u].Rank++;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Initialization</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">GenEdges</span>();
+    <span class="hljs-built_in">sort</span>(Edges.<span class="hljs-built_in">begin</span>(), Edges.<span class="hljs-built_in">end</span>(), 
+        [](pair&#x3C;pair&#x3C;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>>, <span class="hljs-type">int</span>>a, 
+            pair&#x3C;pair&#x3C;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>>, <span class="hljs-type">int</span>>b)
+        {<span class="hljs-keyword">return</span> a.second &#x3C; b.second; });
+    <span class="hljs-built_in">MakeSets</span>();
+    MST.<span class="hljs-built_in">clear</span>();
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GenEdges</span><span class="hljs-params">()</span>
+</span>{
+    Edges.<span class="hljs-built_in">clear</span>();
+    <span class="hljs-comment">//Traverse the upper triangle of WMatrix</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n - <span class="hljs-number">1</span>; i++)
+    {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &#x3C; n; j++)
+            <span class="hljs-keyword">if</span> (WMatrix[i][j] != INF)
+                Edges.<span class="hljs-built_in">push_back</span>({ {i, j},
+                    WMatrix[i][j] });
+    }
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">MakeSets</span><span class="hljs-params">()</span>
+</span>{
+    DisjointSet.<span class="hljs-built_in">clear</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n; i++)
+        DisjointSet.<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">DJSNode</span>(i));
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutputWMatrix</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"n = %d\n"</span>, n);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"The weight matrix:\n"</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3c"</span>, <span class="hljs-string">' '</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &#x3C; n; j++)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, j + <span class="hljs-number">1</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n; i++)
+    {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, i + <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> j : WMatrix[i])
+            <span class="hljs-keyword">if</span> (j &#x3C; INF)
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d"</span>, j);
+            <span class="hljs-keyword">else</span>
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3c"</span>, <span class="hljs-string">'*'</span>);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+    }
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OutputPath</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (Prev[u] == <span class="hljs-number">-1</span>)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d"</span>, u + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-built_in">OutputPath</span>(Prev[u]);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"-%d"</span>, u + <span class="hljs-number">1</span>);
+    }
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GenMSTList</span><span class="hljs-params">()</span>
+</span>{
+    MSTList.<span class="hljs-built_in">clear</span>();
+    MSTList.<span class="hljs-built_in">resize</span>(n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &#x26;e: MST)
+    {
+        MSTList[e.first].<span class="hljs-built_in">push_back</span>(e.second);
+        MSTList[e.second].<span class="hljs-built_in">push_back</span>(e.first);
+    }
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GenPrev</span><span class="hljs-params">(<span class="hljs-type">int</span> v)</span>
+</span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &#x26;u : MSTList[v])
+        <span class="hljs-keyword">if</span> (u != <span class="hljs-number">-1</span>)
+        {
+            Prev[u] = v;
+            <span class="hljs-keyword">auto</span> w = <span class="hljs-built_in">find</span>(MSTList[u].<span class="hljs-built_in">begin</span>(), 
+                MSTList[u].<span class="hljs-built_in">end</span>(), v);
+            MSTList[u][w - MSTList[u].<span class="hljs-built_in">begin</span>()] = <span class="hljs-number">-1</span>;
+            <span class="hljs-built_in">GenPrev</span>(u);
+        }
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Output</span><span class="hljs-params">(<span class="hljs-type">int</span> v0)</span>
+</span>{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Kruskal's MST algorithm\n"</span>);
+    <span class="hljs-built_in">OutputWMatrix</span>();
+    <span class="hljs-type">int</span> wSum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; n - <span class="hljs-number">1</span>; i++)
+        wSum += WMatrix[MST[i].first][MST[i].second];
+    <span class="hljs-built_in">GenMSTList</span>();
+    Prev.<span class="hljs-built_in">clear</span>();
+    Prev.<span class="hljs-built_in">resize</span>(n);
+    Prev[v0] = <span class="hljs-number">-1</span>;
+    <span class="hljs-built_in">GenPrev</span>(v0);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"The MST edges:\n"</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Edge Weight\n"</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &#x26;e : MST)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">" %d-%d  %d\n"</span>, e.first + <span class="hljs-number">1</span>, e.second + <span class="hljs-number">1</span>,
+            WMatrix[e.first][e.second]);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Total MST weight: %d\n"</span>, wSum);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"The MST paths from vertex %d:\n"</span>, v0 + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> u = <span class="hljs-number">0</span>; u &#x3C; n; u++)
+        <span class="hljs-keyword">if</span> (u != v0)
+        {
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%3d: "</span>, u + <span class="hljs-number">1</span>);
+            <span class="hljs-built_in">OutputPath</span>(u);
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+        }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);
+}
+} <span class="hljs-comment">//namespace NS_KruskalMST</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> NS_KruskalMST;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TestKruskalMST</span><span class="hljs-params">(<span class="hljs-type">int</span> v0 = <span class="hljs-number">0</span>)</span>
+</span>{
+    vector&#x3C;vector&#x3C;vector&#x3C;<span class="hljs-type">int</span>>>> w = {
+        <span class="hljs-comment">//https://www.geeksforgeeks.org/</span>
+        <span class="hljs-comment">//prims-minimum-spanning-tree-mst-greedy-algo-5/</span>
+        {
+            {   <span class="hljs-number">0</span>,  <span class="hljs-number">2</span>,INF,  <span class="hljs-number">6</span>,INF },
+            {   <span class="hljs-number">2</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">3</span>,  <span class="hljs-number">8</span>,  <span class="hljs-number">5</span> },
+            { INF,  <span class="hljs-number">3</span>,  <span class="hljs-number">0</span>,INF,  <span class="hljs-number">7</span> },
+            {   <span class="hljs-number">6</span>,  <span class="hljs-number">8</span>,INF,  <span class="hljs-number">0</span>,  <span class="hljs-number">9</span> },
+            { INF,  <span class="hljs-number">5</span>,  <span class="hljs-number">7</span>,  <span class="hljs-number">9</span>,  <span class="hljs-number">0</span> }
+        },
+        <span class="hljs-comment">// Dijkstra's algorithm on Wikipedia</span>
+        {
+            {   <span class="hljs-number">0</span>,  <span class="hljs-number">7</span>,  <span class="hljs-number">9</span>,INF,INF, <span class="hljs-number">14</span> },
+            {   <span class="hljs-number">7</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>,INF,INF },
+            {   <span class="hljs-number">9</span>, <span class="hljs-number">10</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">11</span>,INF,  <span class="hljs-number">2</span> },
+            { INF, <span class="hljs-number">15</span>, <span class="hljs-number">11</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">6</span>,INF },
+            { INF,INF,INF,  <span class="hljs-number">6</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">9</span> },
+            {  <span class="hljs-number">14</span>,INF,  <span class="hljs-number">2</span>,INF,  <span class="hljs-number">9</span>,  <span class="hljs-number">0</span> },
+        },
+        <span class="hljs-comment">//https://www.geeksforgeeks.org/</span>
+        <span class="hljs-comment">//kruskals-minimum-spanning-tree-using-stl-in-c/</span>
+        {
+            {   <span class="hljs-number">0</span>,  <span class="hljs-number">4</span>,INF,INF,INF,INF,INF,  <span class="hljs-number">8</span>,INF },
+            {   <span class="hljs-number">4</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">8</span>,INF,INF,INF,INF, <span class="hljs-number">11</span>,INF },
+            { INF,  <span class="hljs-number">8</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">7</span>,INF,  <span class="hljs-number">4</span>,INF,INF,  <span class="hljs-number">2</span> },
+            { INF,INF,  <span class="hljs-number">7</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">9</span>, <span class="hljs-number">14</span>,INF,INF,INF },
+            { INF,INF,INF,  <span class="hljs-number">9</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">10</span>,INF,INF,INF },
+            { INF,INF,  <span class="hljs-number">4</span>, <span class="hljs-number">14</span>, <span class="hljs-number">10</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">2</span>,INF,INF },
+            { INF,INF,INF,INF,INF,  <span class="hljs-number">2</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">6</span> },
+            {   <span class="hljs-number">8</span>, <span class="hljs-number">11</span>,INF,INF,INF,INF,  <span class="hljs-number">1</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">7</span> },
+            { INF,INF,  <span class="hljs-number">2</span>,INF,INF,INF,  <span class="hljs-number">6</span>,  <span class="hljs-number">7</span>,  <span class="hljs-number">0</span> },
+        },
+    };
+    <span class="hljs-type">int</span> k = w.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &#x3C; k; i++)
+    {
+      <span class="hljs-keyword">if</span> (v0 > w[i].<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>)
+        v0 = w[i].<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;
+      <span class="hljs-built_in">KruskalMSTCaller</span>(w[i].<span class="hljs-built_in">size</span>(), w[i], v0);
+    }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"最小生成树算法（Prim+Kruskal）\",\"description\":\"贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是有向...\",\"datePublished\":\"2020-11-14\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/ghf568/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","数据结构与算法",{"href":"/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/","children":"数据结构与算法"}],["$","$L2","💕贪心算法",{"href":"/categories/%F0%9F%92%95%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/","children":"💕贪心算法"}]]]}],["$","h1",null,{"children":"最小生成树算法（Prim+Kruskal）"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-11-14"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/ghf568/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/uq89oe/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"C++匿名函数"}]]}],["$","$L2",null,{"href":"/blog/ggu8v9/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Huffman编码算法"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/ghf568/","title":"最小生成树算法（Prim+Kruskal）"}]
+9:["$","$L1c",null,{"headings":[{"id":"图的一些概念","text":"图的一些概念","depth":2},{"id":"prim算法思路","text":"Prim算法思路","depth":2},{"id":"kruskal算法思路","text":"Kruskal算法思路","depth":2},{"id":"代码实现","text":"代码实现","depth":2},{"id":"kruskal算法代码","text":"Kruskal算法代码","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"最小生成树算法（Prim+Kruskal） · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是有向..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/ghf568/"}],["$","meta","3",{"property":"og:title","content":"最小生成树算法（Prim+Kruskal）"}],["$","meta","4",{"property":"og:description","content":"贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是有向..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/ghf568/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-11-14"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"最小生成树算法（Prim+Kruskal）"}],["$","meta","11",{"name":"twitter:description","content":"贪心算法四个字总结：目前最优图的一些概念具体看先前的一篇文章https://www.wztlink1013.com/blog/gqpli5/连通图在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点i到顶点j有路径相连（当然从j到i也一定有路径），则称i和j是连通的。如果 G 是有向..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

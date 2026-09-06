@@ -1,0 +1,212 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T3d69,<p>前言：阿里云的Serverless实际开发过程中，有如下几种方式：</p>
+<ul>
+<li>通过命令行工具部署 Serverless Devs 工具（推荐）</li>
+<li>通过控制台应用中心部署（小型项目较为推荐）</li>
+<li>桌面版本（不推荐）</li>
+<li>vscode插件（不推荐）</li>
+</ul>
+<p>开发过程中，如果项目较大，我们一般不在阿里云官网中的云函数计算控制台编写逻辑代码，所以就需要搭建本地开发环境，在查看函数计算文档的过程中，发现了两种方式，一种是<a href="https://github.com/alibaba/serverless-vscode/blob/HEAD/README-zh.md" rel="noopener noreferrer">vscode插件</a>形式，另一种是Serverless Devs，后者还有桌面软件和cli脚手架两种形式，在这三种方式中尝试，<strong>最后打算用Serverless Devs脚手架来本地开发</strong>，不管是较大的项目还是单一代码的编写，都还是比较适用的。</p>
+<blockquote>
+<p>注意：此前其实还有一种本地开发方式，就是使用Funcraft来管理函数计算资源，但是官方已建议切换至Serverless Devs管理，并作出了不再维护的声明，故不对其进行讨论。</p>
+</blockquote>
+<h3 id="一serverless-devs脚手架下载">一、Serverless Devs脚手架下载</h3>
+<div class="code-block"><pre><code class="hljs language-bash">cnpm install @serverless-devs/s -g
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>查看是否安装成功</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1642923767628-5874487b-f526-471c-903c-b69a001333e8.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="二密钥配置">二、密钥配置</h3>
+<h4 id="s-config-add">s config add</h4>
+<p>添加阿里云相关配置</p>
+<ul>
+<li><a href="https://account.console.aliyun.com/v2/#/basic-info/index" rel="noopener noreferrer">AccountId</a></li>
+<li><a href="https://ram.console.aliyun.com/manage/ak" rel="noopener noreferrer">AccessKey ID</a></li>
+<li><a href="https://ram.console.aliyun.com/manage/ak" rel="noopener noreferrer">AccessKey Secret</a></li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1642928349966-c7717956-8695-4c19-9704-fc8b3b06b34a.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="s-config-get">s config get</h4>
+<p>添加完之后，查看配置</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1642928516636-784b530d-4408-4fc0-b516-6acc9d48741a.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="三新建项目">三、新建项目</h3>
+<p>项目的新建有两种方式：</p>
+<ol>
+<li>空项目从零搭建</li>
+<li>基于模板应用二次开发</li>
+</ol>
+<h4 id="新建全新项目">新建全新项目</h4>
+<p>利用<code>s init</code> 初始化一个项目文件夹</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1642928812906-960bb2b5-46ed-4dda-a825-ae385dda7862.png" alt="" loading="lazy" decoding="async"></p>
+<p>然后会弹出是否部署，输入y进行部署。（也可以不部署，等本地开发完了再部署）</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1642929155678-bf0d1222-07cf-4673-b7a6-5f50c83111ee.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="基于模板应用二次开发">基于模板应用二次开发</h4>
+<ul>
+<li><a href="https://github.com/wztlink1013/serverless-todolist" rel="noopener noreferrer">https://github.com/wztlink1013/serverless-todolist</a></li>
+</ul>
+<p>利用<code>s init + 模板名称</code>来初始化应用</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1649748232668-4e495daa-eb0a-4ed4-90db-28392edffac2.png" alt="" loading="lazy" decoding="async"><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1649748869374-49f98f99-73f9-41a6-9b4a-edb7eea07bc9.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="四项目结构">四、项目结构</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1649760098051-50a4ec96-f155-40b4-ba76-5080ae4afb47.png" alt="" loading="lazy" decoding="async"></p>
+<h4 id="syaml">s.yaml</h4>
+<ul>
+<li>文档：<a href="https://docs.serverless-devs.com/serverless-devs/yaml" rel="noopener noreferrer">https://docs.serverless-devs.com/serverless-devs/yaml</a></li>
+<li>配置文件<code>s.yaml</code></li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-yaml"><span class="hljs-comment"># ------------------------------------</span>
+<span class="hljs-comment">#   If you need English case, you can refer to [s_en.yaml] file</span>
+<span class="hljs-comment"># ------------------------------------</span>
+<span class="hljs-comment">#   欢迎您使用阿里云函数计算 FC 组件进行项目开发</span>
+<span class="hljs-comment">#   组件仓库地址：https://github.com/devsapp/fc</span>
+<span class="hljs-comment">#   组件帮助文档：https://www.serverless-devs.com/fc/readme</span>
+<span class="hljs-comment">#   Yaml参考文档：https://www.serverless-devs.com/fc/yaml/readme</span>
+<span class="hljs-comment">#   关于：</span>
+<span class="hljs-comment">#      - Serverless Devs和FC组件的关系、如何声明/部署多个函数、超过50M的代码包如何部署</span>
+<span class="hljs-comment">#      - 关于.fcignore使用方法、工具中.s目录是做什么、函数进行build操作之后如何处理build的产物</span>
+<span class="hljs-comment">#   等问题，可以参考文档：https://www.serverless-devs.com/fc/tips</span>
+<span class="hljs-comment">#   关于如何做CICD等问题，可以参考：https://www.serverless-devs.com/serverless-devs/cicd</span>
+<span class="hljs-comment">#   关于如何进行环境划分等问题，可以参考：https://www.serverless-devs.com/serverless-devs/extend</span>
+<span class="hljs-comment">#   更多函数计算案例，可参考：https://github.com/devsapp/awesome/</span>
+<span class="hljs-comment">#   有问题快来钉钉群问一下吧：33947367</span>
+<span class="hljs-comment"># ------------------------------------</span>
+<span class="hljs-attr">edition:</span> <span class="hljs-number">1.0</span><span class="hljs-number">.0</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">serverless-todolist</span>
+<span class="hljs-comment"># access 是当前应用所需要的密钥信息配置：</span>
+<span class="hljs-comment"># 密钥配置可以参考：https://www.serverless-devs.com/serverless-devs/command/config</span>
+<span class="hljs-comment"># 密钥使用顺序可以参考：https://www.serverless-devs.com/serverless-devs/tool#密钥使用顺序与规范</span>
+<span class="hljs-attr">access:</span> <span class="hljs-string">default</span>
+
+<span class="hljs-attr">vars:</span> <span class="hljs-comment"># 全局变量</span>
+  <span class="hljs-attr">region:</span> <span class="hljs-string">cn-hangzhou</span>
+  <span class="hljs-attr">service:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">learn-serverless</span>
+    <span class="hljs-attr">description:</span> <span class="hljs-string">'学习Serverless demo'</span>
+
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">framework:</span> <span class="hljs-comment"># 业务名称/模块名称</span>
+    <span class="hljs-comment"># 如果只想针对 framework 下面的业务进行相关操作，可以在命令行中加上 framework，例如：</span>
+    <span class="hljs-comment"># 只对framework进行构建：s framework build</span>
+    <span class="hljs-comment"># 如果不带有 framework ，而是直接执行 s build，工具则会对当前Yaml下，所有和 framework 平级的业务模块（如有其他平级的模块，例如下面注释的next-function），按照一定顺序进行 build 操作</span>
+    <span class="hljs-attr">component:</span> <span class="hljs-string">fc</span> <span class="hljs-comment"># 组件名称，Serverless Devs 工具本身类似于一种游戏机，不具备具体的业务能力，组件类似于游戏卡，用户通过向游戏机中插入不同的游戏卡实现不同的功能，即通过使用不同的组件实现不同的具体业务能力</span>
+    <span class="hljs-attr">actions:</span> <span class="hljs-comment"># 自定义执行逻辑，关于actions 的使用，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#行为描述</span>
+      <span class="hljs-attr">pre-deploy:</span> <span class="hljs-comment"># 在deploy之前运行</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">install</span> <span class="hljs-string">--production</span> <span class="hljs-comment"># 要执行的系统命令，类似于一种钩子的形式</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">./code</span> <span class="hljs-comment"># 执行系统命令/钩子的路径</span>
+    <span class="hljs-comment">#        - component: fc build --use-docker               # 要运行的组件，格式为【component: 组件名 命令 参数】（可以通过s cli registry search --type Component 获取组件列表）</span>
+    <span class="hljs-comment">#        - plugin: myplugin                               # 与运行的插件 （可以通过s cli registry search --type Plugin 获取组件列表）</span>
+    <span class="hljs-comment">#          args:                                          # 插件的参数信息</span>
+    <span class="hljs-comment">#            testKey: testValue</span>
+    <span class="hljs-comment">#      post-deploy: # 在deploy之后运行</span>
+    <span class="hljs-comment">#        - component: fc versions publish # 要运行的命令行</span>
+    <span class="hljs-attr">props:</span> <span class="hljs-comment"># 组件的属性值</span>
+      <span class="hljs-attr">region:</span> <span class="hljs-string">${vars.region}</span> <span class="hljs-comment"># 关于变量的使用方法，可以参考：https://www.serverless-devs.com/serverless-devs/yaml#变量赋值</span>
+      <span class="hljs-attr">service:</span> <span class="hljs-string">${vars.service}</span>
+      <span class="hljs-attr">function:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">todolist</span>
+        <span class="hljs-attr">description:</span> <span class="hljs-string">'todolist主函数'</span>
+        <span class="hljs-attr">runtime:</span> <span class="hljs-string">nodejs12</span>
+        <span class="hljs-attr">codeUri:</span> <span class="hljs-string">./code</span>
+        <span class="hljs-attr">handler:</span> <span class="hljs-string">index.handler</span>
+        <span class="hljs-attr">memorySize:</span> <span class="hljs-number">256</span>
+        <span class="hljs-attr">timeout:</span> <span class="hljs-number">60</span>
+      <span class="hljs-attr">triggers:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">httpTrigger</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">http</span>
+          <span class="hljs-attr">config:</span>
+            <span class="hljs-attr">authType:</span> <span class="hljs-string">anonymous</span>
+            <span class="hljs-attr">methods:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-string">GET</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-string">POST</span>
+      <span class="hljs-attr">customDomains:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">domainName:</span> <span class="hljs-string">auto</span>
+          <span class="hljs-attr">protocol:</span> <span class="hljs-string">HTTP</span>
+          <span class="hljs-attr">routeConfigs:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/*</span>
+
+<span class="hljs-comment">#  next-function: # 第二个函数的案例，仅供参考</span>
+<span class="hljs-comment">#    # 如果在当前项目下执行 s deploy，会同时部署模块：</span>
+<span class="hljs-comment">#    #   helloworld：服务hello-world-service，函数cpp-event-function</span>
+<span class="hljs-comment">#    #   next-function：服务hello-world-service，函数next-function-example</span>
+<span class="hljs-comment">#    # 如果想单独部署当前服务与函数，可以执行 s + 模块名/业务名 + deploy，例如：s next-function deploy</span>
+<span class="hljs-comment">#    # 如果想单独部署当前函数，可以执行 s + 模块名/业务名 + deploy function，例如：s next-function deploy function</span>
+<span class="hljs-comment">#    # 更多命令可参考：https://www.serverless-devs.com/fc/readme#文档相关</span>
+<span class="hljs-comment">#    component: fc</span>
+<span class="hljs-comment">#    props:</span>
+<span class="hljs-comment">#      region: ${vars.region}</span>
+<span class="hljs-comment">#      service: ${vars.service} # 应用整体的服务配置</span>
+<span class="hljs-comment">#      function: # 定义一个新的函数</span>
+<span class="hljs-comment">#        name: test-next-function</span>
+<span class="hljs-comment">#        description: '新建第二个函数'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="代码文件夹">代码文件夹</h4>
+<p>在s.yaml中函数计算的指定代码文件夹</p>
+<p>code文件夹里面都是项目代码，可以指定</p>
+<h3 id="五本地调试">五、本地调试</h3>
+<h4 id="s-local-start">s local start</h4>
+<p>成功本地运行的截图如下：</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/zq36h4/1642940513322-7aa538fb-3847-4998-bbab-9d0a243a2948.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="六参考资料">六、参考资料</h3>
+<ul>
+<li>
+<p><a href="https://github.com/Serverless-Devs" rel="noopener noreferrer">https://github.com/Serverless-Devs</a></p>
+</li>
+<li>
+<p><a href="https://github.com/devsapp" rel="noopener noreferrer">https://github.com/devsapp</a></p>
+</li>
+<li>
+<p><a href="https://www.serverless-devs.com/" rel="noopener noreferrer">https://www.serverless-devs.com/</a></p>
+</li>
+<li>
+<p><a href="https://github.com/devsapp/fc" rel="noopener noreferrer">https://github.com/devsapp/fc</a></p>
+</li>
+<li>
+<p><a href="https://www.serverless-devs.com/fc/readme" rel="noopener noreferrer">https://www.serverless-devs.com/fc/readme</a></p>
+</li>
+<li>
+<p>vscode插件方式：<a href="https://github.com/alibaba/serverless-vscode/blob/HEAD/README-zh.md" rel="noopener noreferrer">https://github.com/alibaba/serverless-vscode/blob/HEAD/README-zh.md</a></p>
+</li>
+<li>
+<p>AccountId和AccessKey ID获取方式：<a href="https://account.console.aliyun.com/v2/#/basic-info/index" rel="noopener noreferrer">https://account.console.aliyun.com/v2/#/basic-info/index</a></p>
+</li>
+<li>
+<p>AccessKey Secret获取方式：<a href="https://ram.console.aliyun.com/manage/ak" rel="noopener noreferrer">https://ram.console.aliyun.com/manage/ak</a></p>
+</li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"阿里云Serverless技术搭建应用\",\"description\":\"前言：阿里云的Serverless实际开发过程中，有如下几种方式：通过命令行工具部署 Serverless Devs 工具（推荐）通过控制台应用中心部署（小型项目较为推荐）桌面版本（不推荐）vscode插件（不推荐）开发过程中，如果项目较大，我们一般不在阿里云官网中的云函数计算控制台编写逻辑代...\",\"datePublished\":\"2022-04-12\",\"dateModified\":\"2026-01-20\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/zq36h4/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","运维",{"href":"/categories/%E8%BF%90%E7%BB%B4/","children":"运维"}]]]}],["$","h1",null,{"children":"阿里云Serverless技术搭建应用"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-04-12"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/zq36h4/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2026-01-20"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/vvs5xy/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"645. 错误的集合🔖数组"}]]}],["$","$L2",null,{"href":"/blog/mzlgyp/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"阿里云API网关使用"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/zq36h4/","title":"阿里云Serverless技术搭建应用"}]
+9:["$","$L1c",null,{"headings":[{"id":"一serverless-devs脚手架下载","text":"一、Serverless Devs脚手架下载","depth":3},{"id":"二密钥配置","text":"二、密钥配置","depth":3},{"id":"s-config-add","text":"s config add","depth":4},{"id":"s-config-get","text":"s config get","depth":4},{"id":"三新建项目","text":"三、新建项目","depth":3},{"id":"新建全新项目","text":"新建全新项目","depth":4},{"id":"基于模板应用二次开发","text":"基于模板应用二次开发","depth":4},{"id":"四项目结构","text":"四、项目结构","depth":3},{"id":"syaml","text":"s.yaml","depth":4},{"id":"代码文件夹","text":"代码文件夹","depth":4},{"id":"五本地调试","text":"五、本地调试","depth":3},{"id":"s-local-start","text":"s local start","depth":4},{"id":"六参考资料","text":"六、参考资料","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"阿里云Serverless技术搭建应用 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：阿里云的Serverless实际开发过程中，有如下几种方式：通过命令行工具部署 Serverless Devs 工具（推荐）通过控制台应用中心部署（小型项目较为推荐）桌面版本（不推荐）vscode插件（不推荐）开发过程中，如果项目较大，我们一般不在阿里云官网中的云函数计算控制台编写逻辑代..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/zq36h4/"}],["$","meta","3",{"property":"og:title","content":"阿里云Serverless技术搭建应用"}],["$","meta","4",{"property":"og:description","content":"前言：阿里云的Serverless实际开发过程中，有如下几种方式：通过命令行工具部署 Serverless Devs 工具（推荐）通过控制台应用中心部署（小型项目较为推荐）桌面版本（不推荐）vscode插件（不推荐）开发过程中，如果项目较大，我们一般不在阿里云官网中的云函数计算控制台编写逻辑代..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/zq36h4/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-04-12"}],["$","meta","8",{"property":"article:modified_time","content":"2026-01-20"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"阿里云Serverless技术搭建应用"}],["$","meta","11",{"name":"twitter:description","content":"前言：阿里云的Serverless实际开发过程中，有如下几种方式：通过命令行工具部署 Serverless Devs 工具（推荐）通过控制台应用中心部署（小型项目较为推荐）桌面版本（不推荐）vscode插件（不推荐）开发过程中，如果项目较大，我们一般不在阿里云官网中的云函数计算控制台编写逻辑代..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

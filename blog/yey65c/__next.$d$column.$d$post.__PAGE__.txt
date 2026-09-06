@@ -1,0 +1,159 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T2a1c,<p>前言：本文记录一下Serverless技术及其云函数计算FC的应用，以及API网关技术。本文从以下三方面详细展开：</p>
+<ol>
+<li>先介绍Serverless的核心函数计算FC，并用其来迁移express web项目，也就是实实在在的写一个后端接口。</li>
+<li>开发过程中，如果是小功能项目直接再阿里云函数计算控制台编写代码即可，但如果是较大项目，本地开发的代码编写、调试、部署等功能就很重要了，介绍Serverless Devs Cli的使用。</li>
+<li>最后是对API的系统化管理，比如说签名访问，提高安全性。阿里云的API网关技术，利用其完善的API的创建、测试、发布等功能，来模拟企业化开发流程。</li>
+</ol>
+<p>前言：阿里云函数计算，与此对应的还有腾讯云函数计算，两者我都使用过，也做过demo，个人而言，腾讯云的函数计算的确操作及代码的编写简单于阿里云函数计算，具体有这么几个方面：</p>
+<ul>
+<li>如果需要将之前的写好的一些项目代码迁移到里云函数计算中（例如express Web项目），需要改一些代码，比如对阿里云的入口函数handler进行封装，不过这个问题官方团队给出了解决代码。</li>
+<li>文档的内容和编排不是那么详细，网络上其实对函数计算的教程类指导文章其实很少，对阿里云函数计算的更少，所以官方文档还是很重要的。</li>
+<li>计算函数社区模板，腾讯云应该是优于阿里云函数计算的。</li>
+</ul>
+<p>尽管相较腾讯云函数计算而言，阿里云操作稍微复杂，但我还是选择阿里云函数计算，一个是性能，另一个就是征服欲……<img src="https://blogimage.musemvp.com/v1.0.0/yey65c/1642990978768-d60330ad-e0dd-4234-bff1-92bd2df0d596.jpeg" alt="" loading="lazy" decoding="async"></p>
+<h3 id="简单写一个后端接口api">简单写一个后端接口API</h3>
+<p>文档/教程参考：</p>
+<ul>
+<li><a href="https://help.aliyun.com/product/50980.html" rel="noopener noreferrer">阿里云函数计算官方文档：函数计算</a></li>
+<li>代码开发文档：<a href="https://help.aliyun.com/document_detail/74754.html" rel="noopener noreferrer">https://help.aliyun.com/document_detail/74754.html</a></li>
+<li>阿里云函数计算内置模块：<a href="https://help.aliyun.com/document_detail/58011.html#title-rp4-xhl-ri3" rel="noopener noreferrer">https://help.aliyun.com/document_detail/58011.html#title-rp4-xhl-ri3</a></li>
+</ul>
+<p>函数计算除了可以直接使用Node.js的内置模块，还可以使用阿里云里面封装好的一些模块。</p>
+<ul>
+<li><a href="https://www.zhihu.com/question/506704568/answer/2275420449" rel="noopener noreferrer">如何评价无服务器计算（serverless）的未来前景？你认为 serverless 有未来吗？</a></li>
+</ul>
+<p>测试url：</p>
+<ul>
+<li><a href="https://yunfunc.wztlink1013.com/simple-api" rel="noopener noreferrer">https://yunfunc.wztlink1013.com/simple-api</a></li>
+</ul>
+<h4 id="阿里云函数计算的一些注意事项">阿里云函数计算的一些注意事项</h4>
+<ul>
+<li>
+<p><a href="https://www.kancloud.cn/duolabmeng/duolablog/1533791" rel="noopener noreferrer">阿里云-函数计算从入门到放弃</a></p>
+</li>
+<li>
+<p>自定义模块就意味着自己之前写的代码不能维护，要改成他这样的内置代码使用</p>
+</li>
+</ul>
+<h4 id="initializer初始化函数">initializer初始化函数</h4>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/yey65c/1642908927273-fec0f794-3326-414d-b10c-cd423d3dd8af.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 初始化函数</span>
+<span class="hljs-built_in">exports</span>.<span class="hljs-property">context_initializer</span> = {} <span class="hljs-comment">// 便于打印展示</span>
+<span class="hljs-built_in">exports</span>.<span class="hljs-property">initializer</span> = <span class="hljs-function">(<span class="hljs-params">context, callback</span>) =></span> {
+	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'初始化函数 -------------'</span>);
+	context_initializer = context
+	<span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, <span class="hljs-string">''</span>);
+};
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="handler入口函数">handler入口函数</h4>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-comment">// 入口函数</span>
+<span class="hljs-built_in">exports</span>.<span class="hljs-property">handler</span> = <span class="hljs-function">(<span class="hljs-params">req, resp, context</span>) =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'入口函数 -------------'</span>);
+    <span class="hljs-keyword">let</span> params = {
+        <span class="hljs-comment">// path: req.path,</span>
+        <span class="hljs-comment">// queries: req.queries,</span>
+        <span class="hljs-comment">// headers: req.headers,</span>
+        <span class="hljs-comment">// method : req.method,</span>
+        <span class="hljs-comment">// requestURI : req.url,</span>
+        <span class="hljs-comment">// clientIP : req.clientIP,</span>
+        <span class="hljs-attr">request_info</span>: req,
+        <span class="hljs-attr">context_handler</span>: context,
+        <span class="hljs-attr">context_initializer</span>: context_initializer
+    }
+
+    <span class="hljs-comment">// 处理响应</span>
+    <span class="hljs-title function_">getRawBody</span>(req, <span class="hljs-keyword">function</span>(<span class="hljs-params">err, body</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> req.<span class="hljs-property">queries</span>) {
+          <span class="hljs-keyword">let</span> value = req.<span class="hljs-property">queries</span>[key];
+          resp.<span class="hljs-title function_">setHeader</span>(key, value);
+        }
+        resp.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"text/plain"</span>);
+        params.<span class="hljs-property">request_body</span> = body.<span class="hljs-title function_">toString</span>();
+        resp.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(params, <span class="hljs-literal">null</span>, <span class="hljs-string">'    '</span>));
+    }); 
+      
+    <span class="hljs-comment">/*
+    getFormBody(req, function(err, formBody) {
+        for (let key in req.queries) {
+          let value = req.queries[key];
+          resp.setHeader(key, value);
+        }
+        params.body = formBody;
+        console.log(formBody);
+        resp.send(JSON.stringify(params));
+    }); 
+    */</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="移植express-web应用">移植Express Web应用</h3>
+<p>由于阿里云计算函数内置的一些框架（比如指定的入口、初始化函数等），所以在写express相关代码的时候不能像是本地使用一样，需要对其进行一些封装改造，特别是函数计算当中的入口函数handler，它的请求与响应需要封装一下。具体的封装方案，是参考的官方团队所写的教程：<a href="https://developer.aliyun.com/article/703317" rel="noopener noreferrer">移植 express.js 应用到函数计算</a></p>
+<p>其他的一些参考文章：</p>
+<ul>
+<li><a href="https://blog.csdn.net/weixin_34004576/article/details/89700121" rel="noopener noreferrer">express框架应用接入阿里云函数计算</a></li>
+<li><a href="https://developer.aliyun.com/article/703320" rel="noopener noreferrer">开发函数计算的正确姿势——移植 Express</a></li>
+</ul>
+<h4 id="多个域名路径与路径的访问">多个域名路径与路径的访问</h4>
+<p>Express应用里面添加多个路由，然而在测试函数里面可以正常访问，在自定义域名url不能访问。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/yey65c/1642921933726-9ecb436a-ccd4-4f86-829a-05fe5ec65f76.png" alt="" loading="lazy" decoding="async"></p>
+<p>改用泛解析<code>/*</code>还是访问无效</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/yey65c/1642916657197-e43c510e-c901-4b62-aabf-206b75683c71.png" alt="" loading="lazy" decoding="async"></p>
+<p>解决：因为这个Express应用我是用自定义域名的一个路径为其根目录，所以项目中的路由配置都需要加上自定义域名下的路径。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/yey65c/1642920228403-8369d2ba-5983-4581-b570-6eeee3555826.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="自定义域名">自定义域名</h3>
+<blockquote>
+<p>如果不自定义域名，则访问http触发的url是以下载文件的形式访问。</p>
+</blockquote>
+<ul>
+<li><a href="https://help.aliyun.com/document_detail/90763.html?spm=5176.fcnext.help.dexternal.a85778c8URjMtd" rel="noopener noreferrer">函数计算 >高级功能 >配置自定义域名 产品详情 配置自定义域名</a></li>
+<li><a href="https://blog.51cto.com/u_14031415/2306499" rel="noopener noreferrer">函数计算搭建 Serverless Web 应用（二）- 自定义域名</a></li>
+</ul>
+<h3 id="自定义域名配置https">自定义域名配置HTTPS</h3>
+<ul>
+<li><a href="https://help.aliyun.com/document_detail/156645.html" rel="noopener noreferrer">申请免费DV试用证书</a></li>
+</ul>
+<p>查看免费的SSL证书：</p>
+<ul>
+<li><a href="https://yundun.console.aliyun.com/?p=cas#/certExtend/free" rel="noopener noreferrer">https://yundun.console.aliyun.com/?p=cas#/certExtend/free</a></li>
+</ul>
+<p><a href="https://bluo.cn/" rel="noopener noreferrer"></a></p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"阿里云函数计算FC技术\",\"description\":\"前言：本文记录一下Serverless技术及其云函数计算FC的应用，以及API网关技术。本文从以下三方面详细展开：先介绍Serverless的核心函数计算FC，并用其来迁移express web项目，也就是实实在在的写一个后端接口。开发过程中，如果是小功能项目直接再阿里云函数计算控制台编写代码...\",\"datePublished\":\"2022-01-23\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/yey65c/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","运维",{"href":"/categories/%E8%BF%90%E7%BB%B4/","children":"运维"}]]]}],["$","h1",null,{"children":"阿里云函数计算FC技术"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-01-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/yey65c/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/gxh14f/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Nodejs基本使用和内置模块"}]]}],["$","$L2",null,{"href":"/blog/pp1d2p/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"WebSocket学习笔记"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/yey65c/","title":"阿里云函数计算FC技术"}]
+9:["$","$L1c",null,{"headings":[{"id":"简单写一个后端接口api","text":"简单写一个后端接口API","depth":3},{"id":"阿里云函数计算的一些注意事项","text":"阿里云函数计算的一些注意事项","depth":4},{"id":"initializer初始化函数","text":"initializer初始化函数","depth":4},{"id":"handler入口函数","text":"handler入口函数","depth":4},{"id":"移植express-web应用","text":"移植Express Web应用","depth":3},{"id":"多个域名路径与路径的访问","text":"多个域名路径与路径的访问","depth":4},{"id":"自定义域名","text":"自定义域名","depth":3},{"id":"自定义域名配置https","text":"自定义域名配置HTTPS","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"阿里云函数计算FC技术 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：本文记录一下Serverless技术及其云函数计算FC的应用，以及API网关技术。本文从以下三方面详细展开：先介绍Serverless的核心函数计算FC，并用其来迁移express web项目，也就是实实在在的写一个后端接口。开发过程中，如果是小功能项目直接再阿里云函数计算控制台编写代码..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/yey65c/"}],["$","meta","3",{"property":"og:title","content":"阿里云函数计算FC技术"}],["$","meta","4",{"property":"og:description","content":"前言：本文记录一下Serverless技术及其云函数计算FC的应用，以及API网关技术。本文从以下三方面详细展开：先介绍Serverless的核心函数计算FC，并用其来迁移express web项目，也就是实实在在的写一个后端接口。开发过程中，如果是小功能项目直接再阿里云函数计算控制台编写代码..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/yey65c/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-01-23"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"阿里云函数计算FC技术"}],["$","meta","11",{"name":"twitter:description","content":"前言：本文记录一下Serverless技术及其云函数计算FC的应用，以及API网关技术。本文从以下三方面详细展开：先介绍Serverless的核心函数计算FC，并用其来迁移express web项目，也就是实实在在的写一个后端接口。开发过程中，如果是小功能项目直接再阿里云函数计算控制台编写代码..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,104 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T1720,<h2 id="cdn回源">CDN回源</h2>
+<p>CDN回源是什么意思？CDN回源包括回源地址和加速<a href="https://www.west.cn/services/domain/" rel="noopener noreferrer">域名</a>。常规的CDN都是回源的。即：当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么CDN节点不会主动去源站拿的。</p>
+<ol>
+<li>回源地址：可以使回源域名，也可以是回源IP，主要作用是CDN加速节点同步更新的一个地址；</li>
+<li>加速域名：使用CDN<a href="https://www.west.cn/cloudhost/" rel="noopener noreferrer">服务器</a>需要加速的一个域名，一般会将加速域名做别名解析为CDN运营商提供的域名，来做CDN加速访问。</li>
+</ol>
+<p><a href="https://www.west.cn/docs/wp-content/uploads/2018/05/n-40.jpg" rel="noopener noreferrer"><img src="https://blogimage.musemvp.com/v1.0.0/fxzcy3/1612941062375-753094ca-dc39-494d-abaf-022708a631a3.jpeg" alt="" loading="lazy" decoding="async"></a></p>
+<p>回源域名一般是cdn领域的专业术语，通常情况下，是直接用ip进行回源的，但是如果客户源站有多个ip，并且ip地址会经常变化，对于cdn厂商来说，为了避免经常更改配置（回源ip），会采用回源域名方式进行回源，这样即使源站的ip变化了，也不影响原有的配置。</p>
+<p>CDN本来是给网站加速的，但是有时会因为不合适的回源策略给服务器带来负担，只有选择正确的策略才能给自己的网站带来更高的访问效率。</p>
+<h2 id="网站优化">网站优化</h2>
+<h3 id="gzip智能压缩">Gzip智能压缩</h3>
+<p>gzip是GNUzip的缩写，最早用于UNIX系统的文件压缩</p>
+<p>HTTP协议上的gzip编码是一种用来改进web应用程序性能的技术，web服务器和客户端（浏览器）必须共同支持gzip</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/fxzcy3/1612939525023-772b71d1-11ea-4f13-8629-500d71865e16.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="brotli智能压缩">Brotli智能压缩</h3>
+<p>也是一种静态资源压缩算法，并且也支持HTTPS</p>
+<h3 id="页面压缩">页面压缩</h3>
+<p>去除掉页面的注释或空格提高传输效率</p>
+<h3 id="302调度">302调度</h3>
+<p><a href="https://cloud.tencent.com/developer/article/1445728" rel="noopener noreferrer">CDN系列学习文章（三）——302调度</a></p>
+<p>作者：深蓝加菲</p>
+<p>链接：<a href="https://www.zhihu.com/question/32148047/answer/70920110" rel="noopener noreferrer">https://www.zhihu.com/question/32148047/answer/70920110</a></p>
+<p>来源：知乎</p>
+<p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>一般是两者结合，DNS做省市级别和跨运营商的调度， 302做基于内容和精确IP的精确调度</p>
+<p>DNS的优点：</p>
+<p>DNS系统是天然的分布式结构</p>
+<p>客户端本机，LDNS都可以实现cache，<strong>架构本身就能实现高的伸缩性和性能</strong></p>
+<p>---------------------------------------------------------</p>
+<p>DNS的缺点：</p>
+<p>DNS并不是为GSLB设计的</p>
+<p>GSLB 基于 local DNS的地址判断，<strong>粒度较粗</strong>。而且LDNS可能和end user网络距离很远。</p>
+<p>用户可能会设置错误的Local DNS，该服务器和用户实际距离较远，比如8.8.8.8等(edns-client-subnet可以部分解决该问题)</p>
+<p>DNS请求里面<strong>不会带有内容信息</strong>，GSLB只能拥有LDNS ip信息，无法针对内容作出更加灵活的判断</p>
+<p>因为DNS reply TTL，所以某个用户一段时间内的请求都会导向同一个site (解决：趋向于较短的TTL)</p>
+<p>因为local dns缓存和TTL的存在，你很难判断某次的返回会对负载有多大影响</p>
+<p>某些Local DNS会忽略DNS TTL信息，而采用固定的TTL时间，对此我们无能为力</p>
+<p>电信系统倾向于直接使用ip地址访问，不使用域名</p>
+<p>---------------------------------------------------------</p>
+<p>302的优点：</p>
+<p>可以直接得到end user ip和内容的地址，可以<strong>做出精确的redirect</strong></p>
+<p>每个请求都需要访问GSLB,可以做出单独的处理</p>
+<p>可以在一个点方便的作出统计和认证</p>
+<p>---------------------------------------------------------</p>
+<p>302的缺点：</p>
+<p>需要应用层协议支持(http / rtsp)</p>
+<p>一般有重定向次数限制</p>
+<p>GSLB需要处理较多的请求，却没有LDNS作为cache</p>
+<p>GSLB暴露给end user ， 容易遭受攻击</p>
+<p>用户访问GSLB本身就会带来时延，可能深圳的用户需要访问北京的GSLB</p>
+<p>单点故障(可以通过GSLB服务群集解决)</p>
+<p>某些应用对URL变化敏感，比如WEB</p>
+<p>某些客户端支持不好(中文字符集等问题)</p>
+<h3 id="tls13">TLS1.3</h3>
+<p>TLS 1.3 是一种全新的加密协议，它既能提高终端用户的访问速度，又能增强安全性</p>
+<p><a href="https://zhuanlan.zhihu.com/p/44980381" rel="noopener noreferrer">https://zhuanlan.zhihu.com/p/44980381</a></p>
+<h3 id="http2--server-push">HTTP/2 + Server Push</h3>
+<p><a href="https://www.ruanyifeng.com/blog/2018/03/http2_server_push.html" rel="noopener noreferrer">https://www.ruanyifeng.com/blog/2018/03/http2_server_push.html</a></p>
+<h3 id="webp-自适应">WebP 自适应</h3>
+<p>WebP 自适应功能是 CDN 平台智能判断客户端浏览器是否支持 WebP 解码，如支持则返回 WebP 格式图片，否则返回原图，客户端以及源站无需任何改动。开启该特性，可以有效节省 CDN 传输带宽，加速图片渲染速度。</p>
+<h2 id="网站防攻击">网站防攻击</h2>
+<h3 id="ip限制访问">IP限制访问</h3>
+<h3 id="cc防护">CC防护</h3>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"关于CDN的一些概念\",\"description\":\"CDN回源CDN回源是什么意思？CDN回源包括回源地址和加速域名。常规的CDN都是回源的。即：当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么CDN节点不会主动去源站拿的。回源地址：可以使回源域名，也可以...\",\"datePublished\":\"2021-02-10\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/fxzcy3/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","专业素养",{"href":"/categories/%E4%B8%93%E4%B8%9A%E7%B4%A0%E5%85%BB/","children":"专业素养"}],["$","$L2","计算机网络",{"href":"/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/","children":"计算机网络"}]]]}],["$","h1",null,{"children":"关于CDN的一些概念"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-02-10"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/fxzcy3/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/pl8gro/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"HTTPS较HTTP安全在哪？"}]]}],["$","$L2",null,{"href":"/blog/ccd10c/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"RSA公钥密码算法"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/fxzcy3/","title":"关于CDN的一些概念"}]
+9:["$","$L1c",null,{"headings":[{"id":"cdn回源","text":"CDN回源","depth":2},{"id":"网站优化","text":"网站优化","depth":2},{"id":"gzip智能压缩","text":"Gzip智能压缩","depth":3},{"id":"brotli智能压缩","text":"Brotli智能压缩","depth":3},{"id":"页面压缩","text":"页面压缩","depth":3},{"id":"302调度","text":"302调度","depth":3},{"id":"tls13","text":"TLS1.3","depth":3},{"id":"http2--server-push","text":"HTTP/2 + Server Push","depth":3},{"id":"webp-自适应","text":"WebP 自适应","depth":3},{"id":"网站防攻击","text":"网站防攻击","depth":2},{"id":"ip限制访问","text":"IP限制访问","depth":3},{"id":"cc防护","text":"CC防护","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"关于CDN的一些概念 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"CDN回源CDN回源是什么意思？CDN回源包括回源地址和加速域名。常规的CDN都是回源的。即：当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么CDN节点不会主动去源站拿的。回源地址：可以使回源域名，也可以..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/fxzcy3/"}],["$","meta","3",{"property":"og:title","content":"关于CDN的一些概念"}],["$","meta","4",{"property":"og:description","content":"CDN回源CDN回源是什么意思？CDN回源包括回源地址和加速域名。常规的CDN都是回源的。即：当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么CDN节点不会主动去源站拿的。回源地址：可以使回源域名，也可以..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/fxzcy3/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-02-10"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"关于CDN的一些概念"}],["$","meta","11",{"name":"twitter:description","content":"CDN回源CDN回源是什么意思？CDN回源包括回源地址和加速域名。常规的CDN都是回源的。即：当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存响应的内容，或者是缓存已经到期，就会回源站去获取。如果没有人访问，那么CDN节点不会主动去源站拿的。回源地址：可以使回源域名，也可以..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

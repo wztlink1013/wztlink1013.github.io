@@ -1,0 +1,259 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T657d,<h2 id="基本词汇">基本词汇</h2>
+<blockquote>
+<p>查询就是SELECT语句</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span>  [ <span class="hljs-keyword">ALL</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">DISTINCT</span> ]
+		[ TOP expression [ <span class="hljs-keyword">PERCENT</span> ] [ <span class="hljs-keyword">WITH</span> TIES ] ] 
+	<span class="hljs-operator">&#x3C;</span>列名<span class="hljs-operator">></span> 											<span class="hljs-comment">/*指定要选择的列及其限定*/</span>
+	[ <span class="hljs-keyword">INTO</span> <span class="hljs-operator">&#x3C;</span>表名<span class="hljs-operator">></span> ] 							<span class="hljs-comment">/*INTO子句，指定结果存入新表*/</span>
+	[ <span class="hljs-keyword">FROM</span> <span class="hljs-operator">&#x3C;</span>查询对象<span class="hljs-operator">></span> ]						<span class="hljs-comment">/*FROM子句，指定表或视图*/</span>
+	[ <span class="hljs-keyword">WHERE</span> <span class="hljs-operator">&#x3C;</span>条件<span class="hljs-operator">></span> ] 							<span class="hljs-comment">/*WHERE子句，指定查询条件*/</span>
+	[ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&#x3C;</span>分组表达式<span class="hljs-operator">></span>] 				<span class="hljs-comment">/*GROUP BY子句，指定分组表达式*/</span>
+	[ <span class="hljs-keyword">HAVING</span> <span class="hljs-operator">&#x3C;</span>分组统计条件<span class="hljs-operator">></span>] 				<span class="hljs-comment">/*HAVING子句，指定分组统计条件*/</span>
+	[ <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&#x3C;</span>排序表达式<span class="hljs-operator">></span> [ <span class="hljs-keyword">ASC</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">DESC</span> ] ] <span class="hljs-comment">/*ORDER子句，指定排序表达式和顺序*/</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>说明：所有被使用的子句必须按语法说明中显示的顺序严格地排序。例如，一个HAVING子句必须位于GROUP BY子句之后，并位于ORDER BY子句之前。</p>
+<p>SELECT语句返回一个表的结果集，通常该结果集被称为表值表达式。</p>
+</blockquote>
+<h3 id="distinct">distinct</h3>
+<p>去掉重复的行</p>
+<h3 id="where">where</h3>
+<blockquote>
+<p>条件</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> Sname
+		<span class="hljs-keyword">from</span> Student
+		<span class="hljs-keyword">where</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">'CS'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="as">as</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> id <span class="hljs-keyword">AS</span> userId，username <span class="hljs-keyword">AS</span> uname 
+	<span class="hljs-keyword">FROM</span> users;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>查询出来的列名，就变成了别名。AS其实可以省略，但可能会出现问题。</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> id username  <span class="hljs-keyword">FROM</span> users;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>这样会将username视作id的别名。</p>
+<h3 id="like">like</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> 书名 <span class="hljs-keyword">AS</span> BookName, 作译者 <span class="hljs-keyword">AS</span> Author, 出版社 <span class="hljs-keyword">AS</span> Press
+<span class="hljs-keyword">FROM</span> TBook
+<span class="hljs-keyword">WHERE</span> 书名 <span class="hljs-keyword">LIKE</span> <span class="hljs-string">'%SQL Server%'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> Sname, Sno, Ssex
+    <span class="hljs-keyword">from</span> Student
+    <span class="hljs-keyword">where</span> Sname <span class="hljs-keyword">not</span> <span class="hljs-keyword">like</span> <span class="hljs-string">'刘_'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="is-not">is not</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> Sno, Cno
+    <span class="hljs-keyword">from</span> SC
+    <span class="hljs-keyword">where</span> Grade <span class="hljs-keyword">is</span> <span class="hljs-keyword">not null</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="andor">and、or</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> Sname, Ssex
+    <span class="hljs-keyword">from</span> Student
+    <span class="hljs-keyword">where</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">'CS'</span> <span class="hljs-keyword">or</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">'MA'</span> <span class="hljs-keyword">or</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">'IS'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>键可以不用引号，但是值要引号</p>
+<p>列名又空格也需要加引号</p>
+</blockquote>
+<h3 id="top">top</h3>
+<blockquote>
+<p>前五行数据</p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> top <span class="hljs-number">5</span> <span class="hljs-operator">*</span>
+	<span class="hljs-keyword">from</span> rating
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="not-in">not in</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> Sname, Ssex
+    <span class="hljs-keyword">from</span> Student
+    <span class="hljs-keyword">where</span> Sdept <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> (<span class="hljs-string">'CS'</span>, <span class="hljs-string">'MA'</span>, <span class="hljs-string">'IS'</span>)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="多表查询">多表查询</h3>
+<ul>
+<li>有公共的列，在前面表名以示区分</li>
+<li>指明两个表的公共<strong>相等</strong>的列</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> TLend.ISBN, TLend.借书时间, TLend.借书证号, TLend.图书ID, TLend.应还时间,TReader.姓名
+<span class="hljs-keyword">from</span> TReader,TLend, TBook
+<span class="hljs-keyword">where</span> TReader.借书证号 <span class="hljs-operator">=</span> TLend.借书证号
+	<span class="hljs-keyword">and</span> TBook.ISBN <span class="hljs-operator">=</span> TLend.ISBN
+	<span class="hljs-keyword">and</span> TLend.借书证号 <span class="hljs-operator">=</span> <span class="hljs-string">'081101'</span>
+	<span class="hljs-keyword">and</span> TBook.书名 <span class="hljs-operator">=</span> <span class="hljs-string">'SQL Server实用教程（第3版）'</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="join-on">join on</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> 姓名
+	<span class="hljs-keyword">from</span> TReader <span class="hljs-keyword">join</span> HLend
+	<span class="hljs-keyword">on</span> TReader.借书证号 <span class="hljs-operator">=</span> HLend.借书证号
+	<span class="hljs-keyword">where</span> (还书时间 <span class="hljs-operator">-</span> 借书时间)<span class="hljs-operator">></span><span class="hljs-number">5</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="count">count</h3>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) 读者总数
+	<span class="hljs-keyword">from</span> TReader
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="order-by">order by</h3>
+<p>排序ORDER BY</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> Sno, Grade
+    <span class="hljs-keyword">from</span> SC
+    <span class="hljs-keyword">where</span> Cno<span class="hljs-operator">=</span><span class="hljs-string">'3'</span>
+    <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> Grade <span class="hljs-keyword">desc</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> 
+		<span class="hljs-keyword">FROM</span> users 
+    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> id <span class="hljs-keyword">DESC</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>可以排序多个字段，如果第一个字段能排出结果，就不会用到第2个字段。比如：</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span>
+    <span class="hljs-keyword">from</span> Student
+    <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> Sdept <span class="hljs-keyword">asc</span>, Sage <span class="hljs-keyword">desc</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>因为年龄age有相同的，继续排序就要用到id的降序。</p>
+<h3 id="limit">limit</h3>
+<p>限制返回记录的数量LIMIT</p>
+<p>LIMIT有两种语法结构，第一种比较常见。</p>
+<div class="code-block"><pre><code class="hljs language-sql">[LIMIT {[<span class="hljs-keyword">offset</span>,] row_count<span class="hljs-operator">|</span>row_count <span class="hljs-keyword">OFFSET</span> <span class="hljs-keyword">offset</span>}]
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>起始位置，偏移量</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users ;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users LIMIT <span class="hljs-number">3</span>,<span class="hljs-number">2</span>;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users LIMIT <span class="hljs-number">2</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>3，2：表示从第3条开始返回，返回两条记录。注意记录从0开始编号，即结果集中的从第0条开始。</p>
+<p>如果LIMIT后面只有一个参数，认作是偏移量，起始位置缺省为0。</p>
+<h3 id="union">union</h3>
+<blockquote>
+<p>合并查询结果UNION</p>
+</blockquote>
+<p>在多条查询语句之间，使用<code>UNION</code>关键字会合并所有查询结果。</p>
+<p>默认会去掉重复行，如果不想去掉重复行，请使用<code>UNION ALL</code></p>
+<p>需要注意的是，要联合的查询结果必须有相同的列数（列名可以不同）</p>
+<blockquote>
+<p>去重效率比不去重效率低</p>
+</blockquote>
+<h2 id="group-by">group by</h2>
+<div class="code-block"><pre><code class="hljs language-sql">[<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> {col_name<span class="hljs-operator">|</span>position} [<span class="hljs-keyword">ASC</span><span class="hljs-operator">|</span><span class="hljs-keyword">DESC</span>],...]
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> 专业, <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) 不同专业人数
+	<span class="hljs-keyword">from</span> TReader
+	<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> 专业
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="having">having</h3>
+<p>与GROUP BY分组联用。只对部分记录做分组操作。有两种用法，比如：</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> sex,age 
+	<span class="hljs-keyword">FROM</span> users 
+  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> sex 
+  <span class="hljs-keyword">HAVING</span> age <span class="hljs-operator">></span> <span class="hljs-number">35</span>;
+<span class="hljs-keyword">SELECT</span> sex 
+	<span class="hljs-keyword">FROM</span> users 
+  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> sex 
+  <span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">count</span>(id) <span class="hljs-operator">>=</span><span class="hljs-number">2</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>第一种，注意后面的HAVING的字段必须在前面SELECT部分出现才行。</li>
+<li>第二种，在HAVING后面使用<em>聚合函数</em>，前面无需出现相应字段。</li>
+</ul>
+<h3 id="ascdesc">asc、desc</h3>
+<p>排序升序asc、降序desc</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>  
+	<span class="hljs-keyword">FROM</span> TReader
+	<span class="hljs-keyword">WHERE</span> 专业<span class="hljs-operator">=</span><span class="hljs-string">'计算机'</span>
+	<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> 出生时间 <span class="hljs-keyword">desc</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="子查询">子查询</h2>
+<p>子查询（Subquery）是指嵌套在查询内部，且必须始终出现在圆括号内。外面的查询并非只是指的查找。可以包含的关键字或条件：</p>
+<div class="code-block"><pre><code class="hljs language-plain">DISTINCT、GROUP BY、ORDER BY、LIMIT、函数等
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>外层的查询可以是：</p>
+<div class="code-block"><pre><code class="hljs language-plain">SELECT、INSERT、UPDATE、SET、DO
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="使用比较运算符的子查询">①使用比较运算符的子查询</h3>
+<ul>
+<li>比较运算符</li>
+</ul>
+<blockquote>
+<p>=,>,&#x3C;,>=,&#x3C;=,&#x3C;>,!=,&#x3C;=></p>
+</blockquote>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> 
+	<span class="hljs-keyword">FROM</span> av 
+  <span class="hljs-keyword">WHERE</span> 身高<span class="hljs-operator">>=</span>(
+    <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(身高) 
+    <span class="hljs-keyword">FROM</span> av);
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>修饰比较运算符</li>
+</ul>
+<blockquote>
+<p>使用ANY、SOME、ALL，ANY和SOME是等价的。</p>
+</blockquote>
+<p>ANY</p>
+<p>ALL</p>
+<p>>,>=</p>
+<p>最小值</p>
+<p>最大值</p>
+<p>&#x3C;,&#x3C;=</p>
+<p>最大值</p>
+<p>最小值</p>
+<p>=,&#x3C;=></p>
+<p>任意值</p>
+<p>&#x3C;>,!=</p>
+<p>任意值</p>
+<div class="code-block"><pre><code class="hljs language-sql"><span class="hljs-keyword">select</span> emp.empno,emp.ename,emp.job,emp.sal 
+	<span class="hljs-keyword">from</span> scott.emp 
+  <span class="hljs-keyword">where</span> sal <span class="hljs-operator">></span><span class="hljs-keyword">any</span>(
+    <span class="hljs-keyword">select</span> sal 
+    <span class="hljs-keyword">from</span> scott.emp 
+    <span class="hljs-keyword">where</span> job<span class="hljs-operator">=</span>"MANAGER");
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>等价于下边两步的执行过程：</p>
+<p>（1）执行“select sal from scott.emp where job="MANAGER"”</p>
+<p>（2）查询到3个薪水值2975、2850和2450，父查询执行下列语句：</p>
+<p>select emp.empno,emp.ename,emp.job,emp.sal from scott.emp where <strong>sal >2975 or sal>2850 or sal>2450;</strong></p>
+<h3 id="使用notin的子查询">②使用[not]in的子查询</h3>
+<div class="code-block"><pre><code class="hljs language-plain">operand comparison_operator [NOT] IN (subquery)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>=ANY和IN等效</p>
+<p>!=ALL和NOT IN等效</p>
+<h3 id="使用notexists的子查询">③使用[not]exists的子查询</h3>
+<p>如果子查询返回任何行，EXISTS将返回TRUE，否则返回FALSE。</p>
+<p>该类子查询使用较少</p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"SQL表查询操作\",\"description\":\"基本词汇查询就是SELECT语句SELECT ALL DISTINCT TOP expression PERCENT WITH TIES /指定要选择的列及其限定/ INTO /...\",\"datePublished\":\"2020-09-23\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/igxqxi/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","DataBase",{"href":"/categories/DataBase/","children":"DataBase"}]]]}],["$","h1",null,{"children":"SQL表查询操作"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2020-09-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/igxqxi/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/zqbaxc/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"SQL表基本操作"}]]}],["$","$L2",null,{"href":"/blog/afuf5u/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"SQL数据库操作"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/igxqxi/","title":"SQL表查询操作"}]
+9:["$","$L1c",null,{"headings":[{"id":"基本词汇","text":"基本词汇","depth":2},{"id":"distinct","text":"distinct","depth":3},{"id":"where","text":"where","depth":3},{"id":"as","text":"as","depth":3},{"id":"like","text":"like","depth":3},{"id":"is-not","text":"is not","depth":3},{"id":"andor","text":"and、or","depth":3},{"id":"top","text":"top","depth":3},{"id":"not-in","text":"not in","depth":3},{"id":"多表查询","text":"多表查询","depth":3},{"id":"join-on","text":"join on","depth":3},{"id":"count","text":"count","depth":3},{"id":"order-by","text":"order by","depth":3},{"id":"limit","text":"limit","depth":3},{"id":"union","text":"union","depth":3},{"id":"group-by","text":"group by","depth":2},{"id":"having","text":"having","depth":3},{"id":"ascdesc","text":"asc、desc","depth":3},{"id":"子查询","text":"子查询","depth":2},{"id":"使用比较运算符的子查询","text":"①使用比较运算符的子查询","depth":3},{"id":"使用notin的子查询","text":"②使用[not]in的子查询","depth":3},{"id":"使用notexists的子查询","text":"③使用[not]exists的子查询","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"SQL表查询操作 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"基本词汇查询就是SELECT语句SELECT ALL DISTINCT TOP expression PERCENT WITH TIES /指定要选择的列及其限定/ INTO /..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/igxqxi/"}],["$","meta","3",{"property":"og:title","content":"SQL表查询操作"}],["$","meta","4",{"property":"og:description","content":"基本词汇查询就是SELECT语句SELECT ALL DISTINCT TOP expression PERCENT WITH TIES /指定要选择的列及其限定/ INTO /..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/igxqxi/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2020-09-23"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"SQL表查询操作"}],["$","meta","11",{"name":"twitter:description","content":"基本词汇查询就是SELECT语句SELECT ALL DISTINCT TOP expression PERCENT WITH TIES /指定要选择的列及其限定/ INTO /..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

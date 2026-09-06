@@ -1,0 +1,159 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T228a,<h2 id="rem">rem</h2>
+<h3 id="em">em</h3>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>相对单位em是父元素字体大小</p>
+</blockquote>
+<h3 id="rem-1">rem</h3>
+<blockquote>
+<p>[!CAUTION]</p>
+<p>相对单位rem的基准是相对于html元素的字体大小。</p>
+</blockquote>
+<p>比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。</p>
+<div class="code-block"><pre><code class="hljs language-css"><span class="hljs-comment">/* 根html 为 12px */</span>
+<span class="hljs-selector-tag">html</span> {
+   <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>;
+}
+<span class="hljs-comment">/* 此时 div 的字体大小就是 24px */</span>       
+<span class="hljs-selector-tag">div</span> {
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>rem的优势：父元素文字大小可能不一致， 但是整个页面只有一个html，可以很好来控制整个页面的元素大小。</p>
+<h3 id="vm和vh">vm和vh</h3>
+<ul>
+<li>视口的宽高</li>
+<li>按照100来划分</li>
+</ul>
+<p>用过的例子：</p>
+<div class="code-block"><pre><code class="hljs language-css"><span class="hljs-selector-class">.test</span> {
+    <span class="hljs-attribute">height</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">100vh</span>);
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">calc</span>((<span class="hljs-number">100vh</span> - <span class="hljs-number">60px</span> - <span class="hljs-number">10px</span>) / <span class="hljs-number">4</span>) <span class="hljs-number">10px</span>;
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="rem适配方案">rem适配方案</h2>
+<p>1.让一些不能等比自适应的元素，达到当设备尺寸发生改变的时候，等比例适配当前设备。</p>
+<p>2.使用媒体查询根据不同设备按比例设置html的字体大小，然后页面元素使用rem做尺寸单位，当html字体大小变化元素尺寸也会发生变化，从而达到等比缩放的适配。</p>
+<p>技术方案：</p>
+<p>1.less+rem+媒体查询</p>
+<p>2.lflexible.js+rem</p>
+<p>总结：</p>
+<p>两种方案现在都存在。</p>
+<p>方案2 更简单，现阶段大家无需了解里面的js代码。</p>
+<h3 id="rem适配方案1">rem适配方案1</h3>
+<p>①假设设计稿是750px</p>
+<p>②假设我们把整个屏幕划分为15等份（划分标准不一可以是20份也可以是10等份）</p>
+<p>③每一份作为html字体大小，这里就是50px</p>
+<p>④那么在320px设备的时候，字体大小为320/15就是 21.33px</p>
+<p>⑤用我们页面元素的大小除以不同的 html字体大小会发现他们比例还是相同的</p>
+<p>⑥比如我们以750为标准设计稿</p>
+<p>⑦一个100<em>100像素的页面元素在 750屏幕下， 就是 100/ 50 转换为rem 是 2rem</em>2rem 比例是1比1</p>
+<p>⑧320屏幕下， html字体大小为21.33 则 2rem= 42.66px 此时宽和高都是 42.66 但是宽和高的比例还是 1比1</p>
+<p>⑨但是已经能实现不同屏幕下 页面元素盒子等比例缩放的效果</p>
+<p>总结：</p>
+<p>①最后的公式：页面元素的rem值 = 页面元素值（px） / （屏幕宽度 / 划分的份数）</p>
+<p>②屏幕宽度/划分的份数就是 htmlfont-size 的大小</p>
+<p>③或者：页面元素的rem值 = 页面元素值（px） / html font-size 字体大小</p>
+<h3 id="苏宁首页">苏宁首页</h3>
+<p>苏宁首页地址 ：<a href="https://m.suning.com" rel="noopener noreferrer">苏宁首页</a></p>
+<p>1、 技术选型</p>
+<p>方案：我们采取单独制作移动页面方案</p>
+<p>技术：布局采取rem适配布局（less + rem + 媒体查询）</p>
+<p>设计图： 本设计图采用 750px 设计尺寸</p>
+<p>2、搭建文件结构</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/rm1i2lgosgh2/1615360325682-7e3f3397-a6e1-47eb-9774-d632ea98c710.jpg" alt="" loading="lazy" decoding="async"></p>
+<p>3、设置视口标签以及引入初始化样式</p>
+<div class="code-block"><pre><code class="hljs language-plain">&#x3C;meta name="viewport" content="width=device-width, user-scalable=no,         initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+&#x3C;link rel="stylesheet" href="css/normalize.css">
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>4、设置公共common.less文件</p>
+<ul>
+<li>新建common.less 设置好最常见的屏幕尺寸，利用媒体查询设置不同的html字体大小，因为除了首页其他页面也需要</li>
+<li>我们关心的尺寸有 320px、360px、375px、384px、400px、414px、424px、480px、540px、720px、750px</li>
+<li>划分的份数我们定为 15等份</li>
+<li>因为我们pc端也可以打开我们苏宁移动端首页，我们默认html字体大小为 50px，注意这句话写到最上面</li>
+</ul>
+<h3 id="rem-适配方案2">rem 适配方案2</h3>
+<p>手机淘宝团队出的简洁高效 移动端适配库</p>
+<p>我们再也不需要在写不同屏幕的媒体查询，因为里面js做了处理</p>
+<p>它的原理是把当前设备划分为10等份，但是不同设备下，比例还是一致的。</p>
+<p>我们要做的，就是确定好我们当前设备的html 文字大小就可以了</p>
+<p>比如当前设计稿是 750px， 那么我们只需要把 html 文字大小设置为 75px(750px / 10) 就可以</p>
+<p>里面页面元素rem值： 页面元素的px 值 / 75</p>
+<p>剩余的，让flexible.js来去算</p>
+<p>github地址：<a href="https://link.jianshu.com/?t=https://github.com/amfe/lib-flexible" rel="noopener noreferrer">https://github.com/amfe/lib-flexible</a></p>
+<p>总结：</p>
+<p>因为flexible是默认将屏幕分为10等分</p>
+<p>但是当屏幕大于750的时候希望不要再去重置html字体了</p>
+<p>所以要自己通过媒体查询设置一下</p>
+<p>并且要把权重提到最高</p>
+<p>VSCode px 转换rem 插件 cssrem</p>
+<p>因为cssrem中css自动转化为rem是参照默认插件的16转换的所以需要自己配置</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/rm1i2lgosgh2/1615360325777-63efe343-7fb5-46ff-a976-757d50df3556.jpg" alt="" loading="lazy" decoding="async"><img src="https://blogimage.musemvp.com/v1.0.0/rm1i2lgosgh2/1615360325891-a1820b7f-bdbf-47e8-b04b-723db8329cf8.jpg" alt="" loading="lazy" decoding="async"></p>
+<h2 id="响应式开发原理">响应式开发原理</h2>
+<h3 id="响应式开发原理-1">响应式开发原理</h3>
+<blockquote>
+<p>[!TIP]</p>
+<p>就是使用媒体查询针对不同宽度的设备进行布局和样式的设置，从而适配不同设备的目的</p>
+</blockquote>
+<p>设备的划分情况</p>
+<ul>
+<li>小于768的为超小屏幕（手机）</li>
+<li>768~992之间的为小屏设备（平板）</li>
+<li>992~1200的中等屏幕（桌面显示器）</li>
+<li>大于1200的宽屏设备（大桌面显示器）</li>
+</ul>
+<h3 id="响应式布局容器">响应式布局容器</h3>
+<blockquote>
+<p>[!NOTE]</p>
+<p>响应式需要一个父级做为布局容器，来配合子级元素来实现变化效果。原理就是在不同屏幕下，通过媒体查询来改变这个布局容器的大小，再改变里面子元素的排列方式和大小，从而实现不同屏幕下，看到不同的页面布局和样式变化。</p>
+</blockquote>
+<p>父容器版心的尺寸划分</p>
+<ul>
+<li>超小屏幕（手机，小于 768px）：设置宽度为 100%</li>
+<li>小屏幕（平板，大于等于 768px）：设置宽度为 750px</li>
+<li>中等屏幕（桌面显示器，大于等于 992px）：宽度设置为 970px</li>
+<li>大屏幕（大桌面显示器，大于等于 1200px）：宽度设置为 1170px</li>
+</ul>
+<p>但是我们也可以根据实际情况自己定义划分</p>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"CSS布局——响应式布局rem\",\"description\":\"remem相对单位em是父元素字体大小rem相对单位rem的基准是相对于html元素的字体大小。比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。/ 根html 为 12px / html font-siz...\",\"datePublished\":\"2021-03-10\",\"dateModified\":\"2025-06-06\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/rm1i2lgosgh2/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","CSS",{"href":"/categories/CSS/","children":"CSS"}]]]}],["$","h1",null,{"children":"CSS布局——响应式布局rem"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-03-10"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/rm1i2lgosgh2/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-06-06"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/le21wf/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"225/232. 队列和栈的相互实现🔖队列🔖栈"}]]}],["$","$L2",null,{"href":"/blog/oxqtosvrfeg8/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"CSS布局——百分比布局"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/rm1i2lgosgh2/","title":"CSS布局——响应式布局rem"}]
+9:["$","$L1c",null,{"headings":[{"id":"rem","text":"rem","depth":2},{"id":"em","text":"em","depth":3},{"id":"rem-1","text":"rem","depth":3},{"id":"vm和vh","text":"vm和vh","depth":3},{"id":"rem适配方案","text":"rem适配方案","depth":2},{"id":"rem适配方案1","text":"rem适配方案1","depth":3},{"id":"苏宁首页","text":"苏宁首页","depth":3},{"id":"rem-适配方案2","text":"rem 适配方案2","depth":3},{"id":"响应式开发原理","text":"响应式开发原理","depth":2},{"id":"响应式开发原理-1","text":"响应式开发原理","depth":3},{"id":"响应式布局容器","text":"响应式布局容器","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"CSS布局——响应式布局rem · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"remem相对单位em是父元素字体大小rem相对单位rem的基准是相对于html元素的字体大小。比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。/ 根html 为 12px / html font-siz..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/rm1i2lgosgh2/"}],["$","meta","3",{"property":"og:title","content":"CSS布局——响应式布局rem"}],["$","meta","4",{"property":"og:description","content":"remem相对单位em是父元素字体大小rem相对单位rem的基准是相对于html元素的字体大小。比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。/ 根html 为 12px / html font-siz..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/rm1i2lgosgh2/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-03-10"}],["$","meta","8",{"property":"article:modified_time","content":"2025-06-06"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"CSS布局——响应式布局rem"}],["$","meta","11",{"name":"twitter:description","content":"remem相对单位em是父元素字体大小rem相对单位rem的基准是相对于html元素的字体大小。比如，根元素（html）设置font-size=12px; 非根元素设置width:2rem; 则换成px表示就是24px。/ 根html 为 12px / html font-siz..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,300 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T4520,<div class="code-block"><pre><code class="hljs language-vue">track(debugInfo?: DebuggerEventExtraInfo): Link | undefined {
+  if (!activeSub || !shouldTrack || activeSub === this.computed) {
+    return
+  }
+
+  let link = this.activeLink
+  if (link === undefined || link.sub !== activeSub) {
+    link = this.activeLink = new Link(activeSub, this)
+
+    // add the link to the activeEffect as a dep (as tail)
+    if (!activeSub.deps) {
+      activeSub.deps = activeSub.depsTail = link
+    } else {
+      link.prevDep = activeSub.depsTail
+      activeSub.depsTail!.nextDep = link
+      activeSub.depsTail = link
+    }
+
+    addSub(link)
+  } else if (link.version === -1) {
+    // reused from last run - already a sub, just sync version
+    link.version = this.version
+
+    // If this dep has a next, it means it's not at the tail - move it to the
+    // tail. This ensures the effect's dep list is in the order they are
+    // accessed during evaluation.
+    if (link.nextDep) {
+      const next = link.nextDep
+      next.prevDep = link.prevDep
+      if (link.prevDep) {
+        link.prevDep.nextDep = next
+      }
+
+      link.prevDep = activeSub.depsTail
+      link.nextDep = undefined
+      activeSub.depsTail!.nextDep = link
+      activeSub.depsTail = link
+
+      // this was the head - point to the new head
+      if (activeSub.deps === link) {
+        activeSub.deps = next
+      }
+    }
+  }
+
+  if (__DEV__ &#x26;&#x26; activeSub.onTrack) {
+    activeSub.onTrack(
+      extend(
+        {
+          effect: activeSub,
+        },
+        debugInfo,
+      ),
+    )
+  }
+
+  return link
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>activeSub是一个effect文件中的全局变量，用来记录所有的副作用映射关系</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/fdfgu6hqumd0zcgg/1734068193886-ebff8ef0-c8d0-4f14-8c54-95059adae9df.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="eg">eg</h3>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+&#x3C;/script>
+
+&#x3C;template>
+  &#x3C;button @click="count++">{{ count }}&#x3C;/button>
+  &#x3C;div id="count-2">{{ count }}&#x3C;/div>
+  &#x3C;div id="count-3">{{ count }}&#x3C;/div>
+&#x3C;/template>
+
+&#x3C;style>
+button {
+  color: red;
+}
+&#x3C;/style>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>这个例子中，count变量会触发依赖追踪三次。</p>
+<h3 id="这三次触发依赖追踪都有什么样的区别">这三次触发依赖追踪，都有什么样的区别</h3>
+<p>这三次触发依赖追踪本质上是相同的，但它们属于同一个渲染效果（render effect）中的不同访问点。让我详细解释一下：</p>
+<p>对于这个模板：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;button @click="count++">{{ count }}&#x3C;/button>
+  &#x3C;div id="count-2">{{ count }}&#x3C;/div>
+  &#x3C;div id="count-3">{{ count }}&#x3C;/div>
+&#x3C;/template>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>这三次 track 的执行顺序是从上到下的，它们的主要区别在于：</p>
+<ol>
+<li><strong>第一次 track</strong>（button 中的 count）</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 第一次 track 时</span>
+link = <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeLink</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Link</span>(activeSub, <span class="hljs-variable language_">this</span>)
+<span class="hljs-comment">// 此时 activeSub.deps 为空，所以这个 link 会成为 deps 链表的第一个节点</span>
+<span class="hljs-keyword">if</span> (!activeSub.<span class="hljs-property">deps</span>) {
+  activeSub.<span class="hljs-property">deps</span> = activeSub.<span class="hljs-property">depsTail</span> = link
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li><strong>第二次 track</strong>（count-2 div 中的 count）</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 第二次 track 时</span>
+link = <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeLink</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Link</span>(activeSub, <span class="hljs-variable language_">this</span>)
+<span class="hljs-comment">// 此时 activeSub.deps 已存在，新的 link 会被添加到链表尾部</span>
+link.<span class="hljs-property">prevDep</span> = activeSub.<span class="hljs-property">depsTail</span>
+activeSub.<span class="hljs-property">depsTail</span>!.<span class="hljs-property">nextDep</span> = link
+activeSub.<span class="hljs-property">depsTail</span> = link
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li><strong>第三次 track</strong>（count-3 div 中的 count）</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 第三次 track 时</span>
+<span class="hljs-comment">// 与第二次类似，继续添加到链表尾部</span>
+link = <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeLink</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Link</span>(activeSub, <span class="hljs-variable language_">this</span>)
+link.<span class="hljs-property">prevDep</span> = activeSub.<span class="hljs-property">depsTail</span>
+activeSub.<span class="hljs-property">depsTail</span>!.<span class="hljs-property">nextDep</span> = link
+activeSub.<span class="hljs-property">depsTail</span> = link
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>主要区别点：</p>
+<ol>
+<li><strong>依赖链表的位置不同</strong>：</li>
+</ol>
+<ul>
+<li>第一个成为头节点（deps）</li>
+<li>第二个和第三个分别追加到尾部（depsTail）</li>
+</ul>
+<ol start="2">
+<li><strong>Link 对象的关联关系不同</strong>：</li>
+</ol>
+<ul>
+<li>第一个 link 的 prevDep 为 undefined</li>
+<li>后续的 link 会与前一个 link 建立双向链接</li>
+</ul>
+<ol start="3">
+<li><strong>在开发环境下的调试信息</strong>：</li>
+</ol>
+<ul>
+<li>每次 track 时的调用栈位置不同</li>
+<li>对应的模板位置不同</li>
+</ul>
+<p>但它们有以下共同点：</p>
+<ol>
+<li>都属于同一个渲染效果（同一个 activeSub）</li>
+<li>都追踪同一个响应式数据（count）</li>
+<li>当 count 发生变化时，这三个位置都会触发更新</li>
+</ol>
+<p>这种依赖追踪的设计使得：</p>
+<ul>
+<li>Vue 能够精确知道哪些模板位置依赖了这个响应式数据</li>
+<li>当数据变化时能够精确地更新相关的 DOM 节点</li>
+<li>通过双向链表结构，可以高效地管理和清理依赖关系</li>
+</ul>
+<h3 id="vue是如何知道那些模板位置依赖了这个响应式数据的它是怎么讲两者联系起来的">Vue是如何知道那些模板位置依赖了这个响应式数据的？它是怎么讲两者联系起来的？</h3>
+<p>让我解释 Vue 是如何将模板位置和响应式数据关联起来的：</p>
+<p>核心机制是通过"副作用（Effect）"作为桥梁。当 Vue 编译模板时，会为整个组件创建一个渲染函数，这个渲染函数会被包装在一个 Effect 中。</p>
+<p>让我们通过一个简化的例子来说明：</p>
+<div class="code-block"><pre><code class="hljs language-vue">&#x3C;template>
+  &#x3C;button>{{ count }}&#x3C;/button>
+&#x3C;/template>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>Vue 会将这个模板编译成类似这样的渲染函数：</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 简化的渲染函数示意</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">h</span>(<span class="hljs-string">'button'</span>, <span class="hljs-literal">null</span>, count.<span class="hljs-property">value</span>)  <span class="hljs-comment">// 访问 count.value 时会触发 track</span>
+}
+
+<span class="hljs-comment">// 创建渲染 effect</span>
+<span class="hljs-keyword">const</span> effect = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReactiveEffect</span>(render, {
+  <span class="hljs-attr">scheduler</span>: queueJob,
+  <span class="hljs-attr">scope</span>: componentScope,
+  <span class="hljs-comment">// ...其他配置</span>
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>关联过程如下：</p>
+<ol>
+<li><strong>创建依赖关系</strong>：</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 当执行 render 函数时</span>
+count.<span class="hljs-property">value</span>  <span class="hljs-comment">// 触发 get 操作</span>
+↓
+<span class="hljs-title function_">track</span>(target, <span class="hljs-title class_">TrackOpTypes</span>.<span class="hljs-property">GET</span>, <span class="hljs-string">'value'</span>)  <span class="hljs-comment">// 进入 track 函数</span>
+↓
+dep.<span class="hljs-title function_">track</span>()  <span class="hljs-comment">// dep 是与 count.value 关联的 Dep 实例</span>
+↓
+<span class="hljs-comment">// 在 Dep 类中创建 Link</span>
+link = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Link</span>(activeSub, <span class="hljs-variable language_">this</span>)  <span class="hljs-comment">// activeSub 就是当前的渲染 effect</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li><strong>双向链接</strong>：</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// Dep 和 Effect 之间建立双向链接</span>
+<span class="hljs-comment">// Effect 侧</span>
+effect.<span class="hljs-property">deps</span> = link        <span class="hljs-comment">// effect 记录它依赖了哪些响应式数据</span>
+effect.<span class="hljs-property">depsTail</span> = link
+
+<span class="hljs-comment">// Dep 侧</span>
+dep.<span class="hljs-property">subs</span> = link          <span class="hljs-comment">// dep 记录哪些 effect 依赖了它</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li><strong>更新触发</strong>：</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 当 count.value 改变时</span>
+count.<span class="hljs-property">value</span> = newValue
+↓
+<span class="hljs-title function_">trigger</span>(target, <span class="hljs-title class_">TriggerOpTypes</span>.<span class="hljs-property">SET</span>, <span class="hljs-string">'value'</span>)
+↓
+dep.<span class="hljs-title function_">notify</span>()  <span class="hljs-comment">// 通知所有依赖的 effects</span>
+↓
+<span class="hljs-comment">// 遍历所有 links，调用对应的 effect</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> link = <span class="hljs-variable language_">this</span>.<span class="hljs-property">subs</span>; link; link = link.<span class="hljs-property">prevSub</span>) {
+  link.<span class="hljs-property">sub</span>.<span class="hljs-title function_">notify</span>()  <span class="hljs-comment">// sub 就是 effect</span>
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>关键点：</p>
+<ol>
+<li><strong>位置追踪</strong>：</li>
+</ol>
+<ul>
+<li>渲染函数本身就包含了模板位置信息</li>
+<li>Effect 在执行时会建立与具体 DOM 节点的关联</li>
+<li>当数据变化触发重渲染时，会更新对应的 DOM 节点</li>
+</ul>
+<ol start="2">
+<li><strong>依赖管理</strong>：</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Link</span> {
+  <span class="hljs-attr">version</span>: <span class="hljs-built_in">number</span>
+  <span class="hljs-attr">nextDep</span>?: <span class="hljs-title class_">Link</span>   <span class="hljs-comment">// 用于 Effect 的依赖链表</span>
+  <span class="hljs-attr">prevDep</span>?: <span class="hljs-title class_">Link</span>
+  <span class="hljs-attr">nextSub</span>?: <span class="hljs-title class_">Link</span>   <span class="hljs-comment">// 用于 Dep 的订阅者链表</span>
+  <span class="hljs-attr">prevSub</span>?: <span class="hljs-title class_">Link</span>
+  
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">sub</span>: <span class="hljs-title class_">Subscriber</span>,  <span class="hljs-comment">// Effect</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">dep</span>: <span class="hljs-title class_">Dep</span>         <span class="hljs-comment">// 响应式数据的 dep</span>
+  </span>) {
+    <span class="hljs-comment">// ...</span>
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li><strong>精确更新</strong>：</li>
+</ol>
+<ul>
+<li>每个响应式数据都知道哪些 Effect 依赖它（通过 dep.subs）</li>
+<li>每个 Effect 都知道它依赖哪些数据（通过 effect.deps）</li>
+<li>数据变化时，只会触发相关的 Effect 更新</li>
+</ul>
+<p>这种机制确保了：</p>
+<ul>
+<li>响应式数据和模板位置之间的精确关联</li>
+<li>高效的依赖追踪和更新</li>
+<li>最小化不必要的重渲染</li>
+</ul>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue3源码：track依赖追踪原理\",\"description\":\"track(debugInfo?: DebuggerEventExtraInfo): Link undefined if (!activeSub !shouldTrack activeSub === this.computed) return ...\",\"datePublished\":\"2024-12-13\",\"dateModified\":\"2024-12-13\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/fdfgu6hqumd0zcgg/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","Vue",{"href":"/categories/Vue/","children":"Vue"}]]]}],["$","h1",null,{"children":"Vue3源码：track依赖追踪原理"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2024-12-13"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/fdfgu6hqumd0zcgg/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-12-13"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/pg4g4w2ep56a0cef/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"[AI]Vue编译阶段和运行时"}]]}],["$","$L2",null,{"href":"/blog/cz3fb8l7f529ebcd/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"Vue3源码：ref响应式原理"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/fdfgu6hqumd0zcgg/","title":"Vue3源码：track依赖追踪原理"}]
+9:["$","$L1c",null,{"headings":[{"id":"eg","text":"eg","depth":3},{"id":"这三次触发依赖追踪都有什么样的区别","text":"这三次触发依赖追踪，都有什么样的区别","depth":3},{"id":"vue是如何知道那些模板位置依赖了这个响应式数据的它是怎么讲两者联系起来的","text":"Vue是如何知道那些模板位置依赖了这个响应式数据的？它是怎么讲两者联系起来的？","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue3源码：track依赖追踪原理 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"track(debugInfo?: DebuggerEventExtraInfo): Link undefined if (!activeSub !shouldTrack activeSub === this.computed) return ..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/fdfgu6hqumd0zcgg/"}],["$","meta","3",{"property":"og:title","content":"Vue3源码：track依赖追踪原理"}],["$","meta","4",{"property":"og:description","content":"track(debugInfo?: DebuggerEventExtraInfo): Link undefined if (!activeSub !shouldTrack activeSub === this.computed) return ..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/fdfgu6hqumd0zcgg/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2024-12-13"}],["$","meta","8",{"property":"article:modified_time","content":"2024-12-13"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue3源码：track依赖追踪原理"}],["$","meta","11",{"name":"twitter:description","content":"track(debugInfo?: DebuggerEventExtraInfo): Link undefined if (!activeSub !shouldTrack activeSub === this.computed) return ..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

@@ -1,0 +1,468 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T90b3,<blockquote>
+<p>[!NOTE]</p>
+<p>官方文档：React 官方中文文档</p>
+</blockquote>
+<h2 id="虚拟dom以及react挂载dom的方式">虚拟DOM以及React挂载DOM的方式</h2>
+<ol>
+<li>利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DOM加上diff得到一次性结果然后作用于真实DOM，在这里Vue和React都是一样的。</li>
+<li>可以简单理解：react模块旨在完成虚拟dom的相关逻辑，react-dom模块旨在完成真实DOM和diff的处理</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-comment">// mount container</span>
+rootReactDOM.<span class="hljs-title function_">createRoot</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'#root'</span>))
+<span class="hljs-comment">// create VDOM</span>
+<span class="hljs-keyword">const</span> data = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'div'</span>, {}, <span class="hljs-string">'data'</span>)
+<span class="hljs-comment">// VDOM -> true DOM</span>
+root.<span class="hljs-title function_">render</span>(data)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="jsx">JSX</h2>
+<p>上述ReactDOM生成虚拟DOM的方式，实际编写代码不方便，于是出现了类似JSX来简化视图层的代码编写（Vue中利用Template模板来完成相同视图层的逻辑构建）</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wnb93ckult99ixhg/1703514464788-2de399dc-93ec-4dec-aa38-e6b6c706f0ea.jpeg" alt="" loading="lazy" decoding="async"></p>
+<ol start="2">
+<li>JSX的识别要么在jsx后缀文件书写相关代码逻辑，要么利用babel工具来进行代码转义..</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> data = (
+  <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+    content<span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>something...<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+)
+root.<span class="hljs-title function_">render</span>(data)
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li>
+<p>模板语法：<code>{}</code>，Vue是是<code>{{}}</code></p>
+</li>
+<li>
+<p>注释：<code>{/* */}</code></p>
+</li>
+<li>
+<p>内容可以变量、函数、JSX嵌套 ······</p>
+</li>
+<li>
+<p>JSX注意事项</p>
+</li>
+<li>
+<p>严格单标签（<code>&#x3C;Tab /></code>）</p>
+</li>
+<li>
+<p>标签名小写</p>
+</li>
+<li>
+<p>唯一根节点 -> <code>&#x3C;>&#x3C;/></code> 或 <code>React.Fragment</code></p>
+</li>
+<li>
+<p>部分HTML属性名变动：<code>class -> className</code>; <code>for -> htmlFor</code> ······</p>
+</li>
+<li>
+<p>多单词属性用驼峰方式书写，dataset除外</p>
+</li>
+</ol>
+<h2 id="类组件">类组件</h2>
+<ol>
+<li>组件的概念也就是模块的拆分、抽象和复用，和Vue组件一致，React的组件编写有两种，<strong>类组件</strong>和<strong>函数组件</strong>，实际编写代码，React18函数式组件编写更为推崇，但是理解上以类组件会更好。</li>
+<li>具体类组件的编写，其实就是在面向对象编程，给你一个已知类React.Component，写具体逻辑时，遵照所继承的类的一些规则来扩展业务代码。</li>
+</ol>
+<h4 id="简单的父子通信">简单的父子通信</h4>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-comment">// A component</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props</span>) {
+    <span class="hljs-variable language_">super</span>(props)
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span> = props
+  }
+  render {
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">getData</span>(<span class="hljs-string">'data'</span>)
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>A component {this.props.info} <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+
+<span class="hljs-comment">// B component</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">getData</span> = (<span class="hljs-params">data</span>) => {
+  <span class="hljs-comment">// result -> data</span>
+}
+<span class="hljs-keyword">const</span> data = <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>content <span class="hljs-tag">&#x3C;<span class="hljs-name">A</span> <span class="hljs-attr">info</span>=<span class="hljs-string">'something'</span> <span class="hljs-attr">getData</span>=<span class="hljs-string">{getData}</span> /></span> <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="props相关事项">props相关事项</h4>
+<ol>
+<li>传入组件的参数可以用扩展运算符来传入</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">info</span>: <span class="hljs-string">'something,
+    getData: (data) => {},
+  }
+const data = &#x3C;div>&#x3C;A {...data} />&#x3C;/div>
+</span></code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>单独属性值为true</li>
+<li>类组件的默认值</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-comment">// A component</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-keyword">static</span> defaultProps = {
+    <span class="hljs-attr">info</span>: <span class="hljs-string">'default info'</span>,
+  }
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props</span>) {
+    <span class="hljs-variable language_">super</span>(props)
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span> = props
+  }
+  render {
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">getData</span>(<span class="hljs-string">'data'</span>)
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>A component {this.props.info} <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="响应式变量">响应式变量</h4>
+<p>前端框架必须具体的一个能力就是响应式变量的构造，以及内部实现的动态渲染，react的响应式变量就是构造类的一个私有变量state，再利用其规定指定的方法setState方法来实现响应式</p>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state {
+  <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>,
+    }
+<span class="hljs-keyword">static</span> defaultProps = {
+  <span class="hljs-attr">info</span>: <span class="hljs-string">'default info'</span>,
+}
+<span class="hljs-title function_">constructor</span>(<span class="hljs-params">props</span>) {
+  <span class="hljs-variable language_">super</span>(props)
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span> = props
+}
+render {
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span>.<span class="hljs-title function_">getData</span>(<span class="hljs-string">'data'</span>)
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>A component {this.props.info} <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+<span class="hljs-title function_">handleMethod</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: <span class="hljs-number">2</span> })
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>[!NOTE]</p>
+<p>如果响应式的值为数组呢？</p>
+</blockquote>
+<ol>
+<li>react里面的响应式的值为不可变数据集合，比较简单的情况可以利用剩余参数来解决该问题。</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state ={
+    <span class="hljs-attr">a</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  }
+  ···
+  <span class="hljs-title function_">handleMethod</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: [...a, <span class="hljs-number">4</span>] })
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>深拷贝</li>
+</ol>
+<p>（TODO: 应该有更好的解决方式）</p>
+<h4 id="批处理">批处理</h4>
+<p>响应式处理，内部会一次性收集当前变化的量，进入一个处理队列，最终得到一个最终态来进行渲染，避免状态改变多次渲染的情况。</p>
+<ol>
+<li>React18之前，在一些函数执行时机下，不会进行批处理，React18之后解决了这个问题。具体有：Promise、setTimeout、原生事件下</li>
+<li>React提供了防止批处理的函数</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state ={
+    <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>
+  }
+  ···
+  <span class="hljs-title function_">handleMethod</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-title class_">ReactDOM</span>.<span class="hljs-title function_">flushSync</span>(<span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> + <span class="hljs-number">1</span> })
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> + <span class="hljs-number">1</span> })
+    })
+    <span class="hljs-comment">// result: run twice render method...</span>
+  }
+  render {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(<span class="hljs-string">'react render.'</span>)
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>A component {this.props.info} <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li>setState是一个一个异步函数，其第二个参数可以传入回调函数，以便写状态改变之后的相关业务逻辑</li>
+<li>如果传入setState的值是对象，那么会在响应式内部所收集变化的量里面进行覆盖，如果需要实时根据最新变化的量做逻辑处理，则需要传入一个参数为state的回调函数</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state ={
+    <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>
+  }
+  ···
+  <span class="hljs-title function_">handleMethod</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">// 1. cover state</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> + <span class="hljs-number">1</span> })
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> + <span class="hljs-number">1</span> })
+    <span class="hljs-comment">// result: a -> 2</span>
+
+    <span class="hljs-comment">// 2. real time state</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(<span class="hljs-function">(<span class="hljs-params">state</span>) =></span> { <span class="hljs-attr">a</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> + <span class="hljs-number">1</span> })
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>(<span class="hljs-function">(<span class="hljs-params">state</span>) =></span> { <span class="hljs-attr">a</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span> + <span class="hljs-number">1</span> })
+    <span class="hljs-comment">// result: a -> 3</span>
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="purecomponent-shouldcomponentupdate">PureComponent shouldComponentUpdate</h4>
+<p>下面代码，因响应式变量变化，所以会执行一次render渲染</p>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state ={
+    <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>
+  }
+  ···
+  <span class="hljs-title function_">handleMethod</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({ <span class="hljs-attr">a</span>: <span class="hljs-number">1</span> })
+  }
+  render {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(<span class="hljs-string">'react render.'</span>)
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>A component {this.props.info} <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>上面情况其实响应式的结果都是a变为1，所以从渲染结果上看其实可以优化掉该种情况的渲染，react提供的渲染优化方式有两种：</p>
+<ol>
+<li>PureComponent优化组件</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.PureComponent</span> {
+  ···
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>shouldComponentUpdate生命周期函数</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state ={
+    <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>
+  }
+  ···
+  shouldComponentUpdate = <span class="hljs-function">(<span class="hljs-params">nextProps, nextState</span>) =></span> {
+    <span class="hljs-keyword">if</span> (nextState.<span class="hljs-property">a</span> === <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">a</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-comment">// not render</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-comment">// run render</span>
+  }
+  render {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">info</span>(<span class="hljs-string">'react render.'</span>)
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>A component {this.props.info} <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="refs">Refs</h4>
+<p>框架只是对渲染dom的前置操作做了一层封装，比如先构造虚拟dom或是渲染时机的优化等，但有些时候需要在业务代码里面直接获取dom进行操作，比如input标签的自动聚焦（focus）</p>
+<ol>
+<li>变量</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-comment">// A component</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  inputRef = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createRef</span>()
+  <span class="hljs-comment">// this.inputRef.current // -> Input DOM</span>
+  render {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+      A component
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{inputRef}</span> /></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="2">
+<li>回调函数</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-comment">// A component</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  inputRef = <span class="hljs-function">(<span class="hljs-params">dom</span>) =></span> {
+    dom.<span class="hljs-title function_">focus</span>()
+  }
+  <span class="hljs-comment">// this.inputRef.current // -> Input DOM</span>
+  render {
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+      A component
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{inputRef}</span> /></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  )
+}
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ol start="3">
+<li>除了可以得到DOM，也可以得到类组件的实例对象</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-comment">// A component</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  ···
+}
+
+<span class="hljs-comment">// B component</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  refData = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createRef</span>() 
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>content <span class="hljs-tag">&#x3C;<span class="hljs-name">A</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">{refData}</span> /></span> <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="生命周期">生命周期</h4>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/wnb93ckult99ixhg/1703663129914-06e9fada-b622-489d-813f-9d0ed1dbba41.png" alt="" title="https://github.com/wojtekmaj/react-lifecycle-methods-diagram" loading="lazy" decoding="async"></p>
+<h4 id="组件模式renderprops">组件模式：RenderProps</h4>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state = {
+    <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,
+  }
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">props</span>) {
+    <span class="hljs-variable language_">super</span>(props)
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span> = props
+  }
+  componentDidMount = <span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'mousemove'</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">move</span>)
+  }
+  componentWillUnMount = <span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">'mousemove'</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">move</span>)
+  }
+  move = <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({
+      <span class="hljs-attr">x</span>: e.<span class="hljs-property">pageX</span>,
+      <span class="hljs-attr">y</span>: e.<span class="hljs-property">pageY</span>,
+    })
+  }
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">React.Fragment</span>></span>
+        { this.props.render(this.state.x, this.state.y)}
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">React.Fragment</span>></span></span>
+    )
+  }
+}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">A</span> <span class="hljs-attr">render</span>=<span class="hljs-string">{(x,</span> <span class="hljs-attr">y</span>) =></span> {
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>{x}, {y}<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    }} /></span>
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="组件模式hoc">组件模式：HOC</h4>
+<p>参数为组件，返回新组件</p>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">hocFun</span>(<span class="hljs-params"><span class="hljs-title class_">WithComponent</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">extends</span> <span class="hljs-title class_">React</span>.<span class="hljs-property">Component</span> {
+    state = {
+      <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,
+    }
+    componentDidMount = <span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'mousemove'</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">move</span>)
+    }
+    componentWillUnMount = <span class="hljs-function">() =></span> {
+      <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">'mousemove'</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">move</span>)
+    }
+    move = <span class="hljs-function">(<span class="hljs-params">e</span>) =></span> {
+      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setState</span>({
+        <span class="hljs-attr">x</span>: e.<span class="hljs-property">pageX</span>,
+        <span class="hljs-attr">y</span>: e.<span class="hljs-property">pageY</span>,
+      })
+    }
+    <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">WithComponent</span> {<span class="hljs-attr">...this.state</span>} /></span></span>
+    }
+  }
+}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
+        {this.props.x}, {this.props.y}
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span></span>
+    )
+  }
+}
+<span class="hljs-keyword">const</span> C = <span class="hljs-title function_">hocFun</span>(A)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">C</span> /></span></span>
+  }
+}
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h4 id="context通信">Context通信</h4>
+<div class="code-block"><pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> <span class="hljs-title class_">ContextData</span> = <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createContext</span>()
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  state = {
+    <span class="hljs-attr">info</span>: <span class="hljs-string">'something'</span>
+  }
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> (
+      A
+      &#x3C;<span class="hljs-title class_">ContextData</span>.<span class="hljs-property">Provider</span> value={<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>.<span class="hljs-property">info</span>}>
+      <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">B</span> /></span></span>
+      &#x3C;/<span class="hljs-title class_">ContextData</span>.<span class="hljs-property">Provider</span>>
+    )
+  }
+}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> (
+      B&#x3C;C />
+    )
+  }
+}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+  <span class="hljs-keyword">static</span> contextType = <span class="hljs-title class_">ContextData</span>
+  componentDidMount = <span class="hljs-function">() =></span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">lof</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>)
+  }
+  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> (
+      C
+      &#x3C;<span class="hljs-title class_">ContextData</span>.<span class="hljs-property">Consumer</span>>{ <span class="hljs-function"><span class="hljs-params">value</span> =></span> value }&#x3C;/<span class="hljs-title class_">ContextData</span>.<span class="hljs-property">Consumer</span>>
+    )
+  }
+}
+<span class="hljs-comment">// render -> ABCsomething</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"React类组件理解\",\"description\":\"官方文档：React 官方中文文档虚拟DOM以及React挂载DOM的方式利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DOM...\",\"datePublished\":\"2023-12-23\",\"dateModified\":\"2025-02-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/wnb93ckult99ixhg/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","React",{"href":"/categories/React/","children":"React"}]]]}],["$","h1",null,{"children":"React类组件理解"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2023-12-23"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[5," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/wnb93ckult99ixhg/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2025-02-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/etxgze472uzh7t1i/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"CSS选择器中的:has()和:not()伪类"}]]}],["$","$L2",null,{"href":"/blog/torv9p4z2b79494z/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"TypeScript系统学习"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/wnb93ckult99ixhg/","title":"React类组件理解"}]
+9:["$","$L1c",null,{"headings":[{"id":"虚拟dom以及react挂载dom的方式","text":"虚拟DOM以及React挂载DOM的方式","depth":2},{"id":"jsx","text":"JSX","depth":2},{"id":"类组件","text":"类组件","depth":2},{"id":"简单的父子通信","text":"简单的父子通信","depth":4},{"id":"props相关事项","text":"props相关事项","depth":4},{"id":"响应式变量","text":"响应式变量","depth":4},{"id":"批处理","text":"批处理","depth":4},{"id":"purecomponent-shouldcomponentupdate","text":"PureComponent shouldComponentUpdate","depth":4},{"id":"refs","text":"Refs","depth":4},{"id":"生命周期","text":"生命周期","depth":4},{"id":"组件模式renderprops","text":"组件模式：RenderProps","depth":4},{"id":"组件模式hoc","text":"组件模式：HOC","depth":4},{"id":"context通信","text":"Context通信","depth":4}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"React类组件理解 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"官方文档：React 官方中文文档虚拟DOM以及React挂载DOM的方式利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DOM..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/wnb93ckult99ixhg/"}],["$","meta","3",{"property":"og:title","content":"React类组件理解"}],["$","meta","4",{"property":"og:description","content":"官方文档：React 官方中文文档虚拟DOM以及React挂载DOM的方式利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DOM..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/wnb93ckult99ixhg/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2023-12-23"}],["$","meta","8",{"property":"article:modified_time","content":"2025-02-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"React类组件理解"}],["$","meta","11",{"name":"twitter:description","content":"官方文档：React 官方中文文档虚拟DOM以及React挂载DOM的方式利用JavaScript脚本操作DOM的行为是性能损耗的大头，故产生虚拟DOM的概念。初始化在内存中得到相应的虚拟DOM树，然后将该结果一次性作用于真实DOM，逻辑层的变动导致部分视图层的改变这渲染逻辑也是经过虚拟DOM..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

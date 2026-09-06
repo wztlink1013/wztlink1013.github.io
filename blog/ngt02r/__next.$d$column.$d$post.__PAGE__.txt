@@ -1,0 +1,175 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T353f,<p>前言：总结Vue项目中ts常见报错及其解决方法。</p>
+<h2 id="ts7053-元素隐式具有-any-类型因为类型为-string-的表达式不能用于索引类型--doc_image-string-docx-string-ts7053">TS7053: 元素隐式具有 "any" 类型，因为类型为 "string" 的表达式不能用于索引类型 "{ doc_image: string; docx: string[]; }"。ts(7053)</h2>
+<ul>
+<li>报错场景：</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">MINE_TYPES</span> = {
+  <span class="hljs-attr">doc_image</span>: [<span class="hljs-string">'image/png'</span>, <span class="hljs-string">'image/gif'</span>, <span class="hljs-string">'image/jpeg'</span>, <span class="hljs-string">'image/jpg'</span>].<span class="hljs-title function_">join</span>(<span class="hljs-string">','</span>),
+};
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ngt02r/1660816279493-28f705da-2d60-432f-bbd4-20cfef128611.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>ts对于传入的apiType，编译器只知道为字符串而不是具体的doc_image或者docx，所以需要自行使用断言以及显示声明传入的值与这些值一致。</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> accept = <span class="hljs-variable constant_">MINE_TYPES</span>[apiType <span class="hljs-keyword">as</span> keyof <span class="hljs-keyword">typeof</span> <span class="hljs-variable constant_">MINE_TYPES</span>] || <span class="hljs-string">'*'</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="ts2531-type-htmlelement--null-is-not-assignable-to-type-htmlelement">TS2531: Type ‘HTMLElement | null‘ is not assignable to type ‘HTMLElement‘</h2>
+<ul>
+<li>查找DOM这块，很有可能是找不到该DOM元素的，如下：</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ngt02r/1660617254293-3d7d5a6c-3512-4c0a-84e4-4af68868f2df.png" alt="" loading="lazy" decoding="async"></p>
+<p>很确定dom层一渲染dom树，使用断言</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-comment">// 点击按钮，返回顶部</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">handleBackToTop</span> = (<span class="hljs-params"></span>) => {
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">page_content</span>: <span class="hljs-title class_">HTMLElement</span> = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'file-page-content'</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">HTMLElement</span>;
+  <span class="hljs-keyword">if</span> (page_content !== <span class="hljs-literal">null</span>) {
+    page_content.<span class="hljs-property">scrollTop</span> = <span class="hljs-number">0</span>;
+  }
+};
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="ts2345-typescript-string--类型的参数null-不能分配给字符串类型的参数类型-null-不能分配给类型-string">TS2345: Typescript 'string | 类型的参数null' 不能分配给“字符串”类型的参数.类型 'null' 不能分配给类型 'string'</h2>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/ngt02r/1660632598192-4b5203c9-b02e-4277-bdae-321bfb3bc173.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> authorInfo = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">'LOGIN_USER'</span>)
+  ? <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">'LOGIN_USER'</span>) <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>)
+  : <span class="hljs-literal">null</span>;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="ts2307-找不到模块或ts导入js文件">TS2307: 【找不到模块】或【ts导入js文件】</h2>
+<blockquote>
+<p>可以归为一类问题，都是导入非ts模块 而报错，而ts的编译是需要有声明类型的</p>
+</blockquote>
+<p>这类报错一般有如下两种情况：</p>
+<ol>
+<li>import导入依赖包，但是提示找不到该包</li>
+<li>ts文件中导入js文件</li>
+</ol>
+<p>原因：</p>
+<ol>
+<li>依赖包没有做ts化，没有声明文件，或者说暴露出来的接口，import不支持</li>
+<li>ts不能导入js，除非做一些配置文件的相关配置（但是尽量不要在ts项目存在js项目）</li>
+</ol>
+<p>解决：</p>
+<ul>
+<li>国际化网站下载下来的是js文件，但是vite项目不能使用require来导入外部文件</li>
+</ul>
+<p><a href="https://www.cnblogs.com/fqh123/p/15820329.html" rel="noopener noreferrer">vite无法使用require的替代方案 - 古墩古墩 - 博客园</a>，api已废弃</p>
+<ul>
+<li>解决方法1：（无伤解决方法）类似声明非ts项目依赖一样，单独声明再使用（<a href="https://www.cnblogs.com/Blod/p/16185788.html" rel="noopener noreferrer">在ts中怎么引入js文件 - 冰中焱 - 博客园</a>）</li>
+</ul>
+<p>en.d.ts中添加</p>
+<div class="code-block"><pre><code class="hljs language-typescript">···
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">'@/i18n/lang/zh.js'</span>;
+<span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">'@/i18n/lang/en.js'</span>;
+···
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>然后再ts文件中直接导入使用即可</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> zh <span class="hljs-keyword">from</span> <span class="hljs-string">'@/i18n/lang/zh.js'</span>;
+<span class="hljs-keyword">import</span> en <span class="hljs-keyword">from</span> <span class="hljs-string">'@/i18n/lang/en.js'</span>;
+···
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<ul>
+<li>解决方法2：直接在tsconfig中配置可以使用js的配置项，但是需要单独添加ts编译后的js目录，改动较大</li>
+</ul>
+<blockquote>
+<ul>
+<li><a href="https://segmentfault.com/q/1010000019980246" rel="noopener noreferrer">tsconfig.json 报错 无法写错写入文件 ，因为他会覆盖输入文件是怎么回事？ - SegmentFault 思否</a></li>
+<li><a href="https://juejin.cn/post/6844904127131025416" rel="noopener noreferrer">ts引用js文件（node包/自己写的文件） - 掘金</a></li>
+</ul>
+</blockquote>
+<h2 id="ts2339-property-replaceall-does-not-exist-on-type-string">TS2339: Property 'replaceAll' does not exist on type 'string'</h2>
+<ul>
+<li>
+<p>ts不能使用js中String的内置API：replaceAll方法</p>
+</li>
+<li>
+<p>使用其他字符串api来达到该目的，<a href="https://stackoverflow.com/questions/63616486/property-replaceall-does-not-exist-on-type-string" rel="noopener noreferrer">https://stackoverflow.com/questions/63616486/property-replaceall-does-not-exist-on-type-string</a>，不推荐使用该方法</p>
+</li>
+<li>
+<p>解决方法：默认 TypeScript 不支持某些 es6 polyfill 函数，在tsconfig.json配置中进行配置新版本的js语法</p>
+</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  ...<span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"compilerOptions"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    ...<span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"lib"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    ...<span class="hljs-punctuation">,</span>
+  <span class="hljs-string">"ES2021.String"</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="ts2589-type-instantiation-is-excessively-deep-and-possibly-infinite">TS2589: Type instantiation is excessively deep and possibly infinite.</h2>
+<ul>
+<li>如果使用js文件导入，那么在ts文件中使用就会报ts 2589错误。</li>
+</ul>
+<div class="code-block"><pre><code class="hljs language-plain">src/utils/fetch.ts:63:55 - error TS2589: Type instantiation is excessively deep and possibly infinite.
+
+63       message[response.config.warnType as NoticeType](i18n.global.t(msg));
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p>使用如下方式导入js导出来的js和json数据</p>
+<div class="code-block"><pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createI18n } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-i18n'</span>;
+<span class="hljs-keyword">import</span> config <span class="hljs-keyword">from</span> <span class="hljs-string">'./config.json'</span>;
+<span class="hljs-keyword">import</span> zh <span class="hljs-keyword">from</span> <span class="hljs-string">'@/i18n/lang/zh.js'</span>;
+<span class="hljs-keyword">import</span> en <span class="hljs-keyword">from</span> <span class="hljs-string">'@/i18n/lang/en.js'</span>;
+<span class="hljs-keyword">import</span> { ref } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>;
+
+<span class="hljs-keyword">let</span> zh_obj = {};
+zh_obj = zh;
+<span class="hljs-keyword">let</span> en_obj = {};
+en_obj = en;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> lang = <span class="hljs-title function_">ref</span>(<span class="hljs-string">'zh_obj'</span>);
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> languages = config;
+
+<span class="hljs-keyword">const</span> i18n = <span class="hljs-title function_">createI18n</span>({
+  <span class="hljs-attr">locale</span>: lang.<span class="hljs-property">value</span>,
+  <span class="hljs-attr">fallbackLocale</span>: lang.<span class="hljs-property">value</span>,
+  <span class="hljs-attr">messages</span>: {
+    zh_obj,
+    en_obj
+  }
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> i18n;
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Vue3项目中ts报错总结\",\"description\":\"前言：总结Vue项目中ts常见报错及其解决方法。TS7053: 元素隐式具有 \\\"any\\\" 类型，因为类型为 \\\"string\\\" 的表达式不能用于索引类型 \\\" doc_image: string; docx: string; \\\"。ts(7053)报错场景：const MINE_TYPES ...\",\"datePublished\":\"2022-08-27\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/ngt02r/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","TypeScript",{"href":"/categories/TypeScript/","children":"TypeScript"}]]]}],["$","h1",null,{"children":"Vue3项目中ts报错总结"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2022-08-27"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[3," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/ngt02r/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/wboxcq/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"JavaScript实现并发控制且指定并发上限为concurrency"}]]}],["$","$L2",null,{"href":"/blog/wrygmp/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"站点添加雷姆live2d+看板模型"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/ngt02r/","title":"Vue3项目中ts报错总结"}]
+9:["$","$L1c",null,{"headings":[{"id":"ts7053-元素隐式具有-any-类型因为类型为-string-的表达式不能用于索引类型--doc_image-string-docx-string-ts7053","text":"TS7053: 元素隐式具有 \"any\" 类型，因为类型为 \"string\" 的表达式不能用于索引类型 \"{ doc_image: string; docx: string[]; }\"。ts(7053)","depth":2},{"id":"ts2531-type-htmlelement--null-is-not-assignable-to-type-htmlelement","text":"TS2531: Type ‘HTMLElement | null‘ is not assignable to type ‘HTMLElement‘","depth":2},{"id":"ts2345-typescript-string--类型的参数null-不能分配给字符串类型的参数类型-null-不能分配给类型-string","text":"TS2345: Typescript 'string | 类型的参数null' 不能分配给“字符串”类型的参数.类型 'null' 不能分配给类型 'string'","depth":2},{"id":"ts2307-找不到模块或ts导入js文件","text":"TS2307: 【找不到模块】或【ts导入js文件】","depth":2},{"id":"ts2339-property-replaceall-does-not-exist-on-type-string","text":"TS2339: Property 'replaceAll' does not exist on type 'string'","depth":2},{"id":"ts2589-type-instantiation-is-excessively-deep-and-possibly-infinite","text":"TS2589: Type instantiation is excessively deep and possibly infinite.","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Vue3项目中ts报错总结 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"前言：总结Vue项目中ts常见报错及其解决方法。TS7053: 元素隐式具有 \"any\" 类型，因为类型为 \"string\" 的表达式不能用于索引类型 \" doc_image: string; docx: string; \"。ts(7053)报错场景：const MINE_TYPES ..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/ngt02r/"}],["$","meta","3",{"property":"og:title","content":"Vue3项目中ts报错总结"}],["$","meta","4",{"property":"og:description","content":"前言：总结Vue项目中ts常见报错及其解决方法。TS7053: 元素隐式具有 \"any\" 类型，因为类型为 \"string\" 的表达式不能用于索引类型 \" doc_image: string; docx: string; \"。ts(7053)报错场景：const MINE_TYPES ..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/ngt02r/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2022-08-27"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"Vue3项目中ts报错总结"}],["$","meta","11",{"name":"twitter:description","content":"前言：总结Vue项目中ts常见报错及其解决方法。TS7053: 元素隐式具有 \"any\" 类型，因为类型为 \"string\" 的表达式不能用于索引类型 \" doc_image: string; docx: string; \"。ts(7053)报错场景：const MINE_TYPES ..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

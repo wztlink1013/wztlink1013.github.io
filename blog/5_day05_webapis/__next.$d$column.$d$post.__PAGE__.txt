@@ -1,0 +1,368 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T86a3,<h2 id="其他关于长宽"><strong>其他关于长宽</strong></h2>
+<h3 id="windowinnerwidth和innerheight">window.innerWidth和innerHeight</h3>
+<ul>
+<li>表示文档显示区域的宽高，不包括工具栏和地址栏等区域；</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1617937380778-c1f24a67-c63e-49d1-9907-f7fe91880e9f.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="windowpageyoffset和pagexoffset">window.pageYOffset和pageXOffset</h3>
+<p>ie9往后才支持的“被卷去”的长度</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1617938014655-932453ea-63bc-4bc1-8388-63b41417892d.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="鼠标事件对象event">鼠标事件对象event</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1612518361978-034f2af6-14fa-4ddb-bd8b-2eabe289eb59.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="元素偏移量offset">元素偏移量offset</h2>
+<h3 id="offset-概述">offset 概述</h3>
+<blockquote>
+<p>offset 翻译过来就是偏移量， 我们使用 offset系列相关属性可以动态的得到该元素的位置（偏移）、大小等。</p>
+</blockquote>
+<ul>
+<li>获得元素距离带有定位父元素的位置</li>
+<li>获得元素自身的大小（宽度高度）</li>
+<li>注意：返回的数值都不带单位</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616067042341-17b54a01-de40-4ad5-8a54-ad61317d27ae.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616068060630-5d0eeb72-5a55-48c4-8e60-1e0f2cd4afed.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="offset-与-style-区别">offset 与 style 区别</h3>
+<p>【1】offset</p>
+<ul>
+<li>offset 可以得到任意样式表中的样式值</li>
+<li>offset 系列获得的数值是没有单位的</li>
+<li><strong>offsetWidth 包含padding+border+width</strong></li>
+<li>offsetWidth 等属性是只读属性，只能获取不能赋值</li>
+</ul>
+<blockquote>
+<p>所以，我们想要获取元素大小位置，用offset更合适</p>
+</blockquote>
+<p>【2】style</p>
+<ul>
+<li>style 只能得到<strong>行内样式表中的样式值</strong></li>
+<li>style.width 获得的是带有单位的字符串</li>
+<li>style.width 获得不包含padding和border 的值</li>
+<li>style.width 是可读写属性，可以获取也可以赋值</li>
+</ul>
+<blockquote>
+<p>所以，我们想要给元素更改值，则需要用style改变</p>
+<p><strong>因为平时我们都是给元素注册触摸事件，所以重点记住 targetTocuhes</strong></p>
+</blockquote>
+<h3 id="demo获取鼠标在盒子内的坐标">Demo：获取鼠标在盒子内的坐标</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616069445575-c9a9b51d-665d-4f26-96bb-768a9415a230.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-javascript">box.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'mousemove'</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>){
+  <span class="hljs-keyword">if</span>(e.<span class="hljs-property">pageX</span> > (box_left + box.<span class="hljs-property">width</span>)){
+    <span class="hljs-keyword">var</span> ture_width = e.<span class="hljs-property">pageX</span> - box_left +box_width;
+  } <span class="hljs-keyword">else</span> {<span class="hljs-keyword">var</span> ture_width = e.<span class="hljs-property">pageX</span> - box_left;}
+  <span class="hljs-keyword">if</span>(e.<span class="hljs-property">pageY</span> > (box_top + box_height)){
+    <span class="hljs-keyword">var</span> ture_height = e.<span class="hljs-property">pageY</span> - box_top + box_height;
+  }<span class="hljs-keyword">else</span> {<span class="hljs-keyword">var</span> ture_height = e.<span class="hljs-property">pageY</span> - box_top;}
+  <span class="hljs-variable language_">this</span>.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'x坐标是'</span> + ture_width + <span class="hljs-string">' y坐标是'</span> + ture_height;
+})
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="demo模态框拖拽">Demo：模态框拖拽</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616210051320-8b04d6a8-efc0-4a78-a985-80fdc0a0c238.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-meta">&#x3C;!DOCTYPE <span class="hljs-keyword">html</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"X-UA-Compatible"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"IE=edge"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>Document<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">style</span>></span><span class="css">
+        * {
+            <span class="hljs-attribute">padding</span>: <span class="hljs-number">0px</span>;
+            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span>;
+        }
+        <span class="hljs-selector-tag">a</span> {
+            <span class="hljs-attribute">text-decoration</span>: none;
+            <span class="hljs-attribute">color</span>: <span class="hljs-number">#000000</span>;
+        }
+        <span class="hljs-selector-class">.login-header</span> {
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+            <span class="hljs-attribute">text-align</span>: center;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">30px</span>;
+            <span class="hljs-attribute">line-height</span>: <span class="hljs-number">30px</span>;
+            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">24px</span>;
+        }
+        <span class="hljs-selector-class">.login-bg</span> {
+            <span class="hljs-attribute">display</span>: none;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+            <span class="hljs-attribute">position</span>: fixed;
+            <span class="hljs-attribute">top</span>: <span class="hljs-number">0px</span>;
+            <span class="hljs-attribute">left</span>: <span class="hljs-number">0px</span>;
+            <span class="hljs-attribute">background</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, .<span class="hljs-number">3</span>);
+        }
+        <span class="hljs-selector-class">.login</span> {
+            <span class="hljs-attribute">display</span>: none;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">512px</span>;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">280px</span>;
+            <span class="hljs-attribute">position</span>: fixed;
+            <span class="hljs-attribute">left</span>: <span class="hljs-number">50%</span>;
+            <span class="hljs-attribute">top</span>: <span class="hljs-number">50%</span>;
+            <span class="hljs-attribute">z-index</span>: <span class="hljs-number">9999</span>;
+            <span class="hljs-attribute">border</span>: <span class="hljs-number">#ebebeb</span> solid <span class="hljs-number">1px</span>;
+            <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ffffff</span>;
+            <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">20px</span> <span class="hljs-number">#ddd</span>;
+            <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate</span>(-<span class="hljs-number">50%</span>, -<span class="hljs-number">50%</span>);
+        }
+        <span class="hljs-selector-class">.login-title</span> {
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+            <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
+            <span class="hljs-attribute">text-align</span>: center;
+            <span class="hljs-attribute">line-height</span>: <span class="hljs-number">40px</span>;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">40px</span>;
+            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">18px</span>;
+            <span class="hljs-attribute">position</span>: relative;
+            <span class="hljs-attribute">cursor</span>: move;
+        }
+        <span class="hljs-selector-class">.login-title</span> <span class="hljs-selector-tag">span</span> {
+            <span class="hljs-attribute">position</span>: absolute;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">40px</span>;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">40px</span>;
+            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>;
+            <span class="hljs-attribute">background</span>: <span class="hljs-number">#ffffff</span>;
+            <span class="hljs-attribute">border</span>: <span class="hljs-number">#ebebeb</span> solid <span class="hljs-number">1px</span>;
+            <span class="hljs-attribute">right</span>: -<span class="hljs-number">20px</span>;
+            <span class="hljs-attribute">top</span>: -<span class="hljs-number">30px</span>;
+            <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+        }
+        <span class="hljs-selector-class">.login-input-content</span> {
+            <span class="hljs-attribute">margin</span>: <span class="hljs-number">20px</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-selector-class">.login-input</span> {
+            <span class="hljs-attribute">overflow</span>: hidden;
+            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0px</span> <span class="hljs-number">20px</span> <span class="hljs-number">0px</span>;
+        }
+        <span class="hljs-selector-class">.login-input</span> <span class="hljs-selector-tag">label</span> {
+            <span class="hljs-attribute">float</span>: left;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">90px</span>;
+            <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">10px</span>;
+            <span class="hljs-attribute">text-align</span>: right;
+            <span class="hljs-attribute">line-height</span>: <span class="hljs-number">35px</span>;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">35px</span>;
+            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
+        }
+        <span class="hljs-selector-class">.login-input</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-class">.list-input</span> {
+            <span class="hljs-attribute">float</span>: left;
+            <span class="hljs-attribute">line-height</span>: <span class="hljs-number">35px</span>;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">35px</span>;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">350px</span>;
+            <span class="hljs-attribute">border</span>: <span class="hljs-number">#ebebeb</span> <span class="hljs-number">1px</span> solid;
+            <span class="hljs-attribute">text-indent</span>: <span class="hljs-number">5px</span>;
+        }
+        <span class="hljs-selector-class">.login-input</span> <span class="hljs-selector-tag">input</span><span class="hljs-selector-class">.button-login</span> {
+            <span class="hljs-attribute">display</span>: block;
+            <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> <span class="hljs-number">#ebebeb</span> solid;
+            <span class="hljs-attribute">height</span>: <span class="hljs-number">35px</span>;
+            <span class="hljs-attribute">width</span>: <span class="hljs-number">50%</span>;
+            <span class="hljs-attribute">margin</span>: <span class="hljs-number">20px</span> auto;
+        }
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">style</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-header"</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"link"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"javascript:;"</span>></span>点击，弹出登录框<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"loginBg"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-bg"</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"login"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login"</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-title"</span> ></span>登录会员
+            <span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"closeBtn"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"javascript:; "</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"close-login"</span>></span>关闭<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-input-content"</span>></span>
+            <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-input"</span>></span>
+                <span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>用户名：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span>
+                <span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请输入用户名"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"info[username]"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"username"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-input"</span>></span>
+            <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+            <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-input"</span>></span>
+                <span class="hljs-tag">&#x3C;<span class="hljs-name">label</span>></span>登录密码：<span class="hljs-tag">&#x3C;/<span class="hljs-name">label</span>></span>
+                <span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请输入登录密码"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"info[password]"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-input"</span>></span>
+            <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+            <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"login-input"</span>></span>
+                <span class="hljs-tag">&#x3C;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"button-login"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"登录会员"</span>/></span>
+            <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-keyword">var</span> link = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'link'</span>);
+        <span class="hljs-keyword">var</span> loginBg = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'loginBg'</span>);
+        <span class="hljs-keyword">var</span> login = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'login'</span>);
+        <span class="hljs-keyword">var</span> closeBtn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'closeBtn'</span>);
+        link.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'click'</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>){
+            loginBg.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'block'</span>;
+            login.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'block'</span>;
+        })
+        closeBtn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'click'</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>){
+            loginBg.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'none'</span>;
+            login.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'none'</span>;
+        })
+        login.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'mousedown'</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>){
+            <span class="hljs-keyword">var</span> x = e.<span class="hljs-property">pageX</span> - login.<span class="hljs-property">offsetLeft</span>;
+            <span class="hljs-keyword">var</span> y = e.<span class="hljs-property">pageY</span> - login.<span class="hljs-property">offsetTop</span>;
+            <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'mousemove'</span>, move)
+
+            <span class="hljs-keyword">function</span> <span class="hljs-title function_">move</span>(<span class="hljs-params">e</span>) {
+                login.<span class="hljs-property">style</span>.<span class="hljs-property">left</span> = e.<span class="hljs-property">pageX</span> - x + <span class="hljs-string">'px'</span>;
+                login.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = e.<span class="hljs-property">pageY</span> - y + <span class="hljs-string">'px'</span>;
+            }
+            <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'mouseup'</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+                <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">'mousemove'</span>, move);
+            })
+        })
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="元素可视区-client-系列">元素可视区 client 系列</h2>
+<h3 id="client概述">client概述</h3>
+<p>client 翻译过来就是客户端，我们使用 client 系列的相关属性来获取元素可视区的相关信息。通过 client</p>
+<p>系列的相关属性可以动态的得到该元素的边框大小、元素大小等。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070278053-25f4dbb3-2991-4ce4-b1ec-cb3a94f80c0c.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070286487-4d2a07f6-46b7-4af4-be5c-134ac01d6b48.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070508648-c56b354b-77e7-4afb-9072-0385ac38782f.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070554658-21dea2fb-5942-4f60-9205-71bc2a022a79.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="淘宝-flexiblejs-源码分析">淘宝 flexible.js 源码分析</h3>
+<ul>
+<li>
+<p>立即执行函数 (function(){})()  或者 (function(){}())</p>
+</li>
+<li>
+<p>主要作用： 创建一个独立的作用域。 避免了命名冲突问题</p>
+</li>
+<li>
+<p>下面三种情况都会刷新页面都会触发 load 事件。</p>
+</li>
+<li>
+<p>a标签的超链接</p>
+</li>
+<li>
+<p>F5或者刷新按钮（强制刷新）</p>
+</li>
+<li>
+<p>前进后退按钮</p>
+</li>
+</ul>
+<blockquote>
+<p>但是 火狐中，有个特点，有个“往返缓存”，这个缓存中不仅保存着页面数据，还保存了DOM和JavaScript的状态；实际上是将整个页面都保存在了内存里。</p>
+</blockquote>
+<p>所以此时后退按钮不能刷新页面。</p>
+<p>此时可以使用 pageshow事件来触发。，这个事件在页面显示时触发，无论页面是否来自缓存。在重新加载页面中，pageshow会在load事件触发后触发；根据事件对象中的persisted来判断是否是缓存中的页面触发的pageshow事件</p>
+<p><code>注意这个事件给window添加。</code></p>
+<div class="code-block"><pre><code class="hljs language-javascript">(<span class="hljs-keyword">function</span> <span class="hljs-title function_">flexible</span>(<span class="hljs-params"><span class="hljs-variable language_">window</span>, <span class="hljs-variable language_">document</span></span>) {
+    <span class="hljs-comment">// 获取的html 的根元素</span>
+    <span class="hljs-keyword">var</span> docEl = <span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>
+        <span class="hljs-comment">// dpr 物理像素比</span>
+    <span class="hljs-keyword">var</span> dpr = <span class="hljs-variable language_">window</span>.<span class="hljs-property">devicePixelRatio</span> || <span class="hljs-number">1</span>
+
+    <span class="hljs-comment">// adjust body font size  设置我们body 的字体大小</span>
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">setBodyFontSize</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-comment">// 如果页面中有body 这个元素 就设置body的字体大小</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>) {
+            <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">style</span>.<span class="hljs-property">fontSize</span> = (<span class="hljs-number">12</span> * dpr) + <span class="hljs-string">'px'</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 如果页面中没有body 这个元素，则等着 我们页面主要的DOM元素加载完毕再去设置body</span>
+            <span class="hljs-comment">// 的字体大小</span>
+            <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'DOMContentLoaded'</span>, setBodyFontSize)
+        }
+    }
+    <span class="hljs-title function_">setBodyFontSize</span>();
+
+    <span class="hljs-comment">// set 1rem = viewWidth / 10    设置我们html 元素的文字大小</span>
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">setRemUnit</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">var</span> rem = docEl.<span class="hljs-property">clientWidth</span> / <span class="hljs-number">10</span>
+        docEl.<span class="hljs-property">style</span>.<span class="hljs-property">fontSize</span> = rem + <span class="hljs-string">'px'</span>
+    }
+
+    <span class="hljs-title function_">setRemUnit</span>()
+
+    <span class="hljs-comment">// reset rem unit on page resize  当我们页面尺寸大小发生变化的时候，要重新设置下rem 的大小</span>
+    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'resize'</span>, setRemUnit)
+        <span class="hljs-comment">// pageshow 是我们重新加载页面触发的事件</span>
+    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'pageshow'</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) {
+        <span class="hljs-comment">// e.persisted 返回的是true 就是说如果这个页面是从缓存取过来的页面，也需要从新计算一下rem 的大小</span>
+        <span class="hljs-keyword">if</span> (e.<span class="hljs-property">persisted</span>) {
+            <span class="hljs-title function_">setRemUnit</span>()
+        }
+    })
+
+    <span class="hljs-comment">// detect 0.5px supports  有些移动端的浏览器不支持0.5像素的写法</span>
+    <span class="hljs-keyword">if</span> (dpr >= <span class="hljs-number">2</span>) {
+        <span class="hljs-keyword">var</span> fakeBody = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'body'</span>)
+        <span class="hljs-keyword">var</span> testElement = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'div'</span>)
+        testElement.<span class="hljs-property">style</span>.<span class="hljs-property">border</span> = <span class="hljs-string">'.5px solid transparent'</span>
+        fakeBody.<span class="hljs-title function_">appendChild</span>(testElement)
+        docEl.<span class="hljs-title function_">appendChild</span>(fakeBody)
+        <span class="hljs-keyword">if</span> (testElement.<span class="hljs-property">offsetHeight</span> === <span class="hljs-number">1</span>) {
+            docEl.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">'hairlines'</span>)
+        }
+        docEl.<span class="hljs-title function_">removeChild</span>(fakeBody)
+    }
+}(<span class="hljs-variable language_">window</span>, <span class="hljs-variable language_">document</span>))
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="元素滚动-scroll-系列">元素滚动 scroll 系列</h2>
+<h3 id="scroll-概述">scroll 概述</h3>
+<p>scroll 翻译过来就是滚动的，我们使用 scroll 系列的相关属性可以动态的得到该元素的大小、滚动距离等。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070606903-ad20b10d-b146-4d60-bcc8-b202127dbac2.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070615035-e5456585-8b3a-4c5a-8e1d-e4affd0e7fd2.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="页面被卷去的头部">页面被卷去的头部</h3>
+<p>如果浏览器的高（或宽）度不足以显示整个页面时，会自动出现滚动条。当滚动条向下滚动时，页面上面被隐藏掉的高度，我们就称为页面被卷去的头部。滚动条在滚动时会触发 onscroll事件。</p>
+<h3 id="页面被卷去的头部兼容性解决方案">页面被卷去的头部兼容性解决方案</h3>
+<p>需要注意的是，页面被卷去的头部，有兼容性问题，因此被卷去的头部通常有如下几种写法：</p>
+<ol>
+<li>声明了 DTD，使用 document.documentElement.scrollTop</li>
+<li>未声明 DTD，使用  document.body.scrollTop</li>
+<li>新方法 window.pageYOffset和 window.pageXOffset，IE9 开始支持</li>
+<li>微信里面浏览也会有相关兼容性的问题，所以需要兼容行解决</li>
+</ol>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getScroll</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">left</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">pageXOffset</span> || <span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>.<span class="hljs-property">scrollLeft</span> || <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">scrollLeft</span>||<span class="hljs-number">0</span>,
+      <span class="hljs-attr">top</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">pageYOffset</span> || <span class="hljs-variable language_">document</span>.<span class="hljs-property">documentElement</span>.<span class="hljs-property">scrollTop</span> || <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">scrollTop</span> || <span class="hljs-number">0</span>
+    };
+ } 
+使用的时候  <span class="hljs-title function_">getScroll</span>().<span class="hljs-property">left</span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="三大系列总结">三大系列总结</h2>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/5_day05_webapis/1616070740695-1045516b-2b85-4697-874b-32fe2b1cbe5b.png" alt="" loading="lazy" decoding="async"></p>
+<p>他们主要用法：</p>
+<ol>
+<li>offset系列 经常用于获得元素位置    offsetLeft  offsetTop</li>
+<li>client经常用于获取元素大小  clientWidth clientHeight</li>
+<li>scroll 经常用于获取滚动距离 scrollTop  scrollLeft</li>
+<li>注意页面滚动的距离通过 window.pageXOffset  获得</li>
+</ol>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"BOM各种长宽的总结\",\"description\":\"其他关于长宽window.innerWidth和innerHeight表示文档显示区域的宽高，不包括工具栏和地址栏等区域；window.pageYOffset和pageXOffsetie9往后才支持的“被卷去”的长度鼠标事件对象event元素偏移量offsetoffset 概述offset 翻...\",\"datePublished\":\"2021-02-05\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/5_day05_webapis/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","JavaScript",{"href":"/categories/JavaScript/","children":"JavaScript"}],["$","$L2","BOM",{"href":"/categories/BOM/","children":"BOM"}]]]}],["$","h1",null,{"children":"BOM各种长宽的总结"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-02-05"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[5," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/5_day05_webapis/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/window_five_obj_webapis/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"window五大对象"}]]}],["$","$L2",null,{"href":"/blog/2_day02_webapis/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"DOM节点操作"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/5_day05_webapis/","title":"BOM各种长宽的总结"}]
+9:["$","$L1c",null,{"headings":[{"id":"其他关于长宽","text":"其他关于长宽","depth":2},{"id":"windowinnerwidth和innerheight","text":"window.innerWidth和innerHeight","depth":3},{"id":"windowpageyoffset和pagexoffset","text":"window.pageYOffset和pageXOffset","depth":3},{"id":"鼠标事件对象event","text":"鼠标事件对象event","depth":3},{"id":"元素偏移量offset","text":"元素偏移量offset","depth":2},{"id":"offset-概述","text":"offset 概述","depth":3},{"id":"offset-与-style-区别","text":"offset 与 style 区别","depth":3},{"id":"demo获取鼠标在盒子内的坐标","text":"Demo：获取鼠标在盒子内的坐标","depth":3},{"id":"demo模态框拖拽","text":"Demo：模态框拖拽","depth":3},{"id":"元素可视区-client-系列","text":"元素可视区 client 系列","depth":2},{"id":"client概述","text":"client概述","depth":3},{"id":"淘宝-flexiblejs-源码分析","text":"淘宝 flexible.js 源码分析","depth":3},{"id":"元素滚动-scroll-系列","text":"元素滚动 scroll 系列","depth":2},{"id":"scroll-概述","text":"scroll 概述","depth":3},{"id":"页面被卷去的头部","text":"页面被卷去的头部","depth":3},{"id":"页面被卷去的头部兼容性解决方案","text":"页面被卷去的头部兼容性解决方案","depth":3},{"id":"三大系列总结","text":"三大系列总结","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"BOM各种长宽的总结 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"其他关于长宽window.innerWidth和innerHeight表示文档显示区域的宽高，不包括工具栏和地址栏等区域；window.pageYOffset和pageXOffsetie9往后才支持的“被卷去”的长度鼠标事件对象event元素偏移量offsetoffset 概述offset 翻..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/5_day05_webapis/"}],["$","meta","3",{"property":"og:title","content":"BOM各种长宽的总结"}],["$","meta","4",{"property":"og:description","content":"其他关于长宽window.innerWidth和innerHeight表示文档显示区域的宽高，不包括工具栏和地址栏等区域；window.pageYOffset和pageXOffsetie9往后才支持的“被卷去”的长度鼠标事件对象event元素偏移量offsetoffset 概述offset 翻..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/5_day05_webapis/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-02-05"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"BOM各种长宽的总结"}],["$","meta","11",{"name":"twitter:description","content":"其他关于长宽window.innerWidth和innerHeight表示文档显示区域的宽高，不包括工具栏和地址栏等区域；window.pageYOffset和pageXOffsetie9往后才支持的“被卷去”的长度鼠标事件对象event元素偏移量offsetoffset 概述offset 翻..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"

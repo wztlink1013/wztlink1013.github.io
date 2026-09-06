@@ -1,0 +1,370 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T89e7,<h3 id="节点概述">节点概述</h3>
+<p>网页中的所有内容都是节点（标签、属性、文本、注释等），在DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518358489-a0521202-b32d-46a9-9b8d-f0cfe9afc455.png" alt="" loading="lazy" decoding="async"></p>
+<p>一般地，节点至少拥有nodeType（节点类型）、nodeName（节点名称）和nodeValue（节点值）这三个基本属性。</p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518358548-9283575f-7aef-450d-bc6e-b9d3a4384cc2.png" alt="" loading="lazy" decoding="async"></p>
+<blockquote>
+<p>节点层级：利用 DOM 树可以把节点划分为不同的层级关系，常见的是<strong>父子兄层级关系</strong>。</p>
+</blockquote>
+<h2 id="父节点">父节点</h2>
+<h3 id="nodeparentnode">node.parentNode</h3>
+<ul>
+<li>返回某节点的父节点，最近的一个父节点</li>
+<li>如果没有父节点，则返回null</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616056309357-b2a256d0-2a4d-4983-80f9-1eed069c3890.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="子节点">子节点</h2>
+<h3 id="parentnodechildnodes">parentNode.childNodes</h3>
+<ul>
+<li>返回指定节点的子节点的集合，会即时更新</li>
+<li>会返回所有的节点（包含元素节点、文本节点等）</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616056553404-55b8fe19-9bea-413d-9cb1-6554380831af.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="parentnodechildren">parentNode.children</h3>
+<ul>
+<li>只读属性</li>
+<li>只返回元素节点</li>
+<li>非标准，但是各个浏览器都支持</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616056710609-4bb68282-b6ae-4240-b9be-a9faea530ab2.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616057002507-4244db60-7bf0-4e95-b68b-acb4d4d62d8d.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="parentfirstchild">parent.firstChild</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616057242192-2bb01e66-de7d-4220-afc2-499adbdcc3de.png" alt="" loading="lazy" decoding="async"></p>
+<ul>
+<li>返回第一个子节点，找不到返回null，包含所有节点</li>
+</ul>
+<h3 id="parentlastchild">parent.lastChild</h3>
+<ul>
+<li>返回最后一个子节点，找不到返回null，包含所有节点</li>
+</ul>
+<h3 id="parentfirstelementchild">parent.firstElementChild</h3>
+<ul>
+<li>返回第一个子元素节点，找不到返回null</li>
+<li>IE9以上支持</li>
+</ul>
+<h3 id="parentlastelementchild">parent.lastElementChild</h3>
+<ul>
+<li>返回最后一个子元素节点，找不到返回null</li>
+<li>IE9以上支持</li>
+</ul>
+<h3 id="首末节点兼容方案">首末节点兼容方案</h3>
+<blockquote>
+<p>实际开发中，firstChild 和 lastChild 包含其他节点，操作不方便，而 firstElementChild 和 lastElementChild 又有兼容性问题，那么我们如何获取第一个子元素节点或最后一个子元素节点呢？</p>
+</blockquote>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616057537841-77a6605b-5d29-4cf2-b750-0cd916841cdd.png" alt="" loading="lazy" decoding="async"></p>
+<h2 id="兄弟节点">兄弟节点</h2>
+<p><strong>下一个兄弟节点</strong></p>
+<p><span class="asset-missing">旧文插图未随原始资料保存</span></p>
+<p><strong>上一个兄弟节点</strong></p>
+<p><span class="asset-missing">旧文插图未随原始资料保存</span></p>
+<div class="code-block"><pre><code class="hljs language-javascript">&#x3C;div>我是div&#x3C;/div>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">span</span>></span>我是span<span class="hljs-tag">&#x3C;/<span class="hljs-name">span</span>></span></span>
+    <span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-keyword">var</span> div = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'div'</span>);
+        <span class="hljs-comment">// 1.nextSibling 下一个兄弟节点 包含元素节点或者 文本节点等等</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(div.<span class="hljs-property">nextSibling</span>);
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(div.<span class="hljs-property">previousSibling</span>);
+        <span class="hljs-comment">// 2. nextElementSibling 得到下一个兄弟元素节点</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(div.<span class="hljs-property">nextElementSibling</span>);
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(div.<span class="hljs-property">previousElementSibling</span>);
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><strong>下一个兄弟元素节点（有兼容性问题）</strong></p>
+<p><span class="asset-missing">旧文插图未随原始资料保存</span></p>
+<p><strong>上一个兄弟元素节点（有兼容性问题）</strong></p>
+<p><span class="asset-missing">旧文插图未随原始资料保存</span></p>
+<p><span class="asset-missing">旧文插图未随原始资料保存</span></p>
+<p><span class="asset-missing">旧文插图未随原始资料保存</span></p>
+<div class="code-block"><pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getNextElementSibling</span>(<span class="hljs-params">element</span>) {
+      <span class="hljs-keyword">var</span> el = element;
+      <span class="hljs-keyword">while</span> (el = el.<span class="hljs-property">nextSibling</span>) {
+        <span class="hljs-keyword">if</span> (el.<span class="hljs-property">nodeType</span> === <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> el;
+        }
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="创建结点">创建结点</h2>
+<h3 id="documentcreateelement">document.createElement()</h3>
+<ul>
+<li>document.createElement('tagName')</li>
+<li>动态创建元素节点</li>
+</ul>
+<h3 id="nodeclonenode">node.cloneNode()</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359854-90c1339a-ca41-47e5-86b1-189336c186d3.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>1111<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>2<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>3<span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-keyword">var</span> ul = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'ul'</span>);
+        <span class="hljs-comment">// 1. node.cloneNode(); 括号为空或者里面是false 浅拷贝 只复制标签不复制里面的内容</span>
+        <span class="hljs-comment">// 2. node.cloneNode(true); 括号为true 深拷贝 复制标签复制里面的内容</span>
+        <span class="hljs-keyword">var</span> lili = ul.<span class="hljs-property">children</span>[<span class="hljs-number">0</span>].<span class="hljs-title function_">cloneNode</span>(<span class="hljs-literal">true</span>);
+        ul.<span class="hljs-title function_">appendChild</span>(lili);
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="demo动态生成表格">Demo：动态生成表格</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359913-8e1af74d-0a30-4370-83ea-4974ad83d2b8.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359980-7b2a19b1-47dd-41cb-8f9b-93d64873fb6f.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-comment">// 1.先去准备好学生的数据</span>
+        <span class="hljs-keyword">var</span> datas = [{
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'魏璎珞'</span>,
+            <span class="hljs-attr">subject</span>: <span class="hljs-string">'JavaScript'</span>,
+            <span class="hljs-attr">score</span>: <span class="hljs-number">100</span>
+        }, {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'弘历'</span>,
+            <span class="hljs-attr">subject</span>: <span class="hljs-string">'JavaScript'</span>,
+            <span class="hljs-attr">score</span>: <span class="hljs-number">98</span>
+        }, {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'傅恒'</span>,
+            <span class="hljs-attr">subject</span>: <span class="hljs-string">'JavaScript'</span>,
+            <span class="hljs-attr">score</span>: <span class="hljs-number">99</span>
+        }, {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'明玉'</span>,
+            <span class="hljs-attr">subject</span>: <span class="hljs-string">'JavaScript'</span>,
+            <span class="hljs-attr">score</span>: <span class="hljs-number">88</span>
+        }, {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">'大猪蹄子'</span>,
+            <span class="hljs-attr">subject</span>: <span class="hljs-string">'JavaScript'</span>,
+            <span class="hljs-attr">score</span>: <span class="hljs-number">0</span>
+        }];
+        <span class="hljs-comment">// 2. 往tbody 里面创建行： 有几个人（通过数组的长度）我们就创建几行</span>
+        <span class="hljs-keyword">var</span> tbody = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'tbody'</span>);
+		<span class="hljs-comment">// 遍历数组</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C; datas.<span class="hljs-property">length</span>; i++) { 
+            <span class="hljs-comment">// 1. 创建 tr行</span>
+            <span class="hljs-keyword">var</span> tr = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'tr'</span>);
+            tbody.<span class="hljs-title function_">appendChild</span>(tr);
+            <span class="hljs-comment">// 2. 行里面创建单元格td 单元格的数量取决于每个对象里面的属性个数  </span>
+            <span class="hljs-comment">// 使用for in遍历学生对象</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> k <span class="hljs-keyword">in</span> datas[i]) { 
+                <span class="hljs-comment">// 创建单元格 </span>
+                <span class="hljs-keyword">var</span> td = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'td'</span>);
+                <span class="hljs-comment">// 把对象里面的属性值 datas[i][k] 给 td  </span>
+                td.<span class="hljs-property">innerHTML</span> = datas[i][k];
+                tr.<span class="hljs-title function_">appendChild</span>(td);
+            }
+            <span class="hljs-comment">// 3. 创建有删除2个字的单元格 </span>
+            <span class="hljs-keyword">var</span> td = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'td'</span>);
+            td.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">'&#x3C;a href="javascript:;">删除 &#x3C;/a>'</span>;
+            tr.<span class="hljs-title function_">appendChild</span>(td);
+        }
+        <span class="hljs-comment">// 4. 删除操作 开始 </span>
+        <span class="hljs-keyword">var</span> <span class="hljs-keyword">as</span> = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">'a'</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C; <span class="hljs-keyword">as</span>.<span class="hljs-property">length</span>; i++) {
+            <span class="hljs-keyword">as</span>[i].<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+                <span class="hljs-comment">// 点击a 删除 当前a 所在的行(链接的爸爸的爸爸)  node.removeChild(child)  </span>
+                tbody.<span class="hljs-title function_">removeChild</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">parentNode</span>.<span class="hljs-property">parentNode</span>)
+            }
+        }
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h3 id="创建元素的三种方式对比">创建元素的三种方式对比</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518360041-a233aa10-7238-46f4-bb78-2438898c8950.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-comment">// 三种创建元素方式区别 </span>
+        <span class="hljs-comment">// 1. document.write() 创建元素  如果页面文档流加载完毕，再调用这句话会导致页面重绘</span>
+         <span class="hljs-keyword">var</span> btn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'button'</span>);
+         btn.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+             <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">'&#x3C;div>123&#x3C;/div>'</span>);
+         }
+        <span class="hljs-comment">// 2. innerHTML 创建元素</span>
+        <span class="hljs-keyword">var</span> inner = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'.inner'</span>);
+         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C;= <span class="hljs-number">100</span>; i++) {
+             inner.<span class="hljs-property">innerHTML</span> += <span class="hljs-string">'&#x3C;a href="#">百度&#x3C;/a>'</span>
+         }
+        <span class="hljs-keyword">var</span> arr = [];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C;= <span class="hljs-number">100</span>; i++) {
+            arr.<span class="hljs-title function_">push</span>(<span class="hljs-string">'&#x3C;a href="#">百度&#x3C;/a>'</span>);
+        }
+        inner.<span class="hljs-property">innerHTML</span> = arr.<span class="hljs-title function_">join</span>(<span class="hljs-string">''</span>);
+        <span class="hljs-comment">// 3. document.createElement() 创建元素</span>
+        <span class="hljs-keyword">var</span> create = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'.create'</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C;= <span class="hljs-number">100</span>; i++) {
+            <span class="hljs-keyword">var</span> a = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'a'</span>);
+            create.<span class="hljs-title function_">appendChild</span>(a);
+        }
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<blockquote>
+<p>innerTHML和createElement效率对比</p>
+</blockquote>
+<p><strong>innerHTML字符串拼接方式（效率低）</strong></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">var</span> d1 = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+        <span class="hljs-keyword">var</span> str = <span class="hljs-string">''</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C; <span class="hljs-number">1000</span>; i++) {
+            <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span> += <span class="hljs-string">'&#x3C;div style="width:100px; height:2px; border:1px solid blue;">&#x3C;/div>'</span>;
+        }
+        <span class="hljs-keyword">var</span> d2 = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(d2 - d1);
+    }
+    <span class="hljs-title function_">fn</span>();
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><strong>createElement方式（效率一般）</strong></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">var</span> d1 = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C; <span class="hljs-number">1000</span>; i++) {
+            <span class="hljs-keyword">var</span> div = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'div'</span>);
+            div.<span class="hljs-property">style</span>.<span class="hljs-property">width</span> = <span class="hljs-string">'100px'</span>;
+            div.<span class="hljs-property">style</span>.<span class="hljs-property">height</span> = <span class="hljs-string">'2px'</span>;
+            div.<span class="hljs-property">style</span>.<span class="hljs-property">border</span> = <span class="hljs-string">'1px solid red'</span>;
+            <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(div);
+        }
+        <span class="hljs-keyword">var</span> d2 = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(d2 - d1);
+    }
+    <span class="hljs-title function_">fn</span>();
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<p><strong>innerHTML数组方式（效率高）</strong></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">var</span> d1 = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+        <span class="hljs-keyword">var</span> array = [];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C; <span class="hljs-number">1000</span>; i++) {
+            array.<span class="hljs-title function_">push</span>(<span class="hljs-string">'&#x3C;div style="width:100px; height:2px; border:1px solid blue;">&#x3C;/div>'</span>);
+        }
+        <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-property">innerHTML</span> = array.<span class="hljs-title function_">join</span>(<span class="hljs-string">''</span>);
+        <span class="hljs-keyword">var</span> d2 = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(d2 - d1);
+    }
+    <span class="hljs-title function_">fn</span>();
+</span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="插入结点">插入结点</h2>
+<h3 id="nodeappendchild">node.appendChild()</h3>
+<ul>
+<li>node.appendChild(child)</li>
+<li>添加到父节点的子节点列表末尾</li>
+</ul>
+<h3 id="nodeinsertbefore">node.insertBefore()</h3>
+<ul>
+<li>node.insertBefore(child,指定元素)</li>
+<li>将一个节点添加到父节点的指定子节点前面</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616058396292-0ab90d78-37b9-4851-96bf-2e2bf5fb13cd.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="demo简单版发布留言">Demo：简单版发布留言</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359458-b8cd80e8-0c64-4c8f-8d76-2cfcdbce3f48.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359516-1b352ba3-c851-49d8-aeff-5af5668b1d71.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">textarea</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">textarea</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">button</span>></span>发布<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-comment">// 1. 获取元素</span>
+        <span class="hljs-keyword">var</span> btn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'button'</span>);
+        <span class="hljs-keyword">var</span> text = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'textarea'</span>);
+        <span class="hljs-keyword">var</span> ul = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'ul'</span>);
+        <span class="hljs-comment">// 2. 注册事件</span>
+        btn.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-keyword">if</span> (text.<span class="hljs-property">value</span> == <span class="hljs-string">''</span>) {
+                <span class="hljs-title function_">alert</span>(<span class="hljs-string">'您没有输入内容'</span>);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// console.log(text.value);</span>
+                <span class="hljs-comment">// (1) 创建元素</span>
+                <span class="hljs-keyword">var</span> li = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'li'</span>);
+                <span class="hljs-comment">// 先有li 才能赋值</span>
+                li.<span class="hljs-property">innerHTML</span> = text.<span class="hljs-property">value</span>;
+                <span class="hljs-comment">// (2) 添加元素</span>
+                <span class="hljs-comment">// ul.appendChild(li);</span>
+                ul.<span class="hljs-title function_">insertBefore</span>(li, ul.<span class="hljs-property">children</span>[<span class="hljs-number">0</span>]);
+            }
+        }
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>
+<h2 id="删除节点">删除节点</h2>
+<h3 id="noderemovechild">node.removeChild()</h3>
+<ul>
+<li>node.removeChild() 方法从 node节点中删除一个子节点，返回删除的节点。</li>
+</ul>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1616060281051-79e7f85a-572a-4e31-b204-b5dbdaff1e60.png" alt="" loading="lazy" decoding="async"></p>
+<h3 id="demo删除留言">Demo：删除留言</h3>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359732-302df5c2-5149-4e89-89dd-e99586f91651.png" alt="" loading="lazy" decoding="async"></p>
+<p><img src="https://blogimage.musemvp.com/v1.0.0/2_day02_webapis/1612518359795-1a54681c-6264-48c2-a670-28b1f41c4388.png" alt="" loading="lazy" decoding="async"></p>
+<div class="code-block"><pre><code class="hljs language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">textarea</span> <span class="hljs-attr">name</span>=<span class="hljs-string">""</span> <span class="hljs-attr">id</span>=<span class="hljs-string">""</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">textarea</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">button</span>></span>发布<span class="hljs-tag">&#x3C;/<span class="hljs-name">button</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">script</span>></span><span class="javascript">
+        <span class="hljs-comment">// 1. 获取元素</span>
+        <span class="hljs-keyword">var</span> btn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'button'</span>);
+        <span class="hljs-keyword">var</span> text = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'textarea'</span>);
+        <span class="hljs-keyword">var</span> ul = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">'ul'</span>);
+        <span class="hljs-comment">// 2. 注册事件</span>
+        btn.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-keyword">if</span> (text.<span class="hljs-property">value</span> == <span class="hljs-string">''</span>) {
+                <span class="hljs-title function_">alert</span>(<span class="hljs-string">'您没有输入内容'</span>);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// console.log(text.value);</span>
+                <span class="hljs-comment">// (1) 创建元素</span>
+                <span class="hljs-keyword">var</span> li = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">'li'</span>);
+                <span class="hljs-comment">// 先有li 才能赋值</span>
+                li.<span class="hljs-property">innerHTML</span> = text.<span class="hljs-property">value</span> + <span class="hljs-string">"&#x3C;a href='javascript:;'>删除&#x3C;/a>"</span>;
+                <span class="hljs-comment">// (2) 添加元素</span>
+                <span class="hljs-comment">// ul.appendChild(li);</span>
+                ul.<span class="hljs-title function_">insertBefore</span>(li, ul.<span class="hljs-property">children</span>[<span class="hljs-number">0</span>]);
+                <span class="hljs-comment">// (3) 删除元素 删除的是当前链接的li  它的父亲</span>
+                <span class="hljs-keyword">var</span> <span class="hljs-keyword">as</span> = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">'a'</span>);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &#x3C; <span class="hljs-keyword">as</span>.<span class="hljs-property">length</span>; i++) {
+                    <span class="hljs-keyword">as</span>[i].<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {
+                        <span class="hljs-comment">// 删除的是 li 当前a所在的li  this.parentNode;</span>
+                        ul.<span class="hljs-title function_">removeChild</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">parentNode</span>);
+                    }
+                }
+            }
+        }
+    </span><span class="hljs-tag">&#x3C;/<span class="hljs-name">script</span>></span>
+</code></pre><button type="button" class="code-copy" data-copy-code="" aria-label="复制代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"></path></svg><span>复制</span></button></div>d:X
+12:X
+12:C
+0:{"buildId":"IY0I8SGiD0qXsR-jR8EPI","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"DOM节点操作\",\"description\":\"节点概述网页中的所有内容都是节点（标签、属性、文本、注释等），在DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。 一般地，节点至少拥有nodeType（节点类型）、nod...\",\"datePublished\":\"2021-02-05\",\"dateModified\":\"2024-11-17\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/2_day02_webapis/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","Web开发",{"href":"/categories/Web%E5%BC%80%E5%8F%91/","children":"Web开发"}],["$","$L2","JavaScript",{"href":"/categories/JavaScript/","children":"JavaScript"}],["$","$L2","DOM",{"href":"/categories/DOM/","children":"DOM"}]]]}],["$","h1",null,{"children":"DOM节点操作"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2021-02-05"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[4," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/2_day02_webapis/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2024-11-17"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/5_day05_webapis/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"BOM各种长宽的总结"}]]}],["$","$L2",null,{"href":"/blog/1_day01_webapis/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"DOM元素操作"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/2_day02_webapis/","title":"DOM节点操作"}]
+9:["$","$L1c",null,{"headings":[{"id":"节点概述","text":"节点概述","depth":3},{"id":"父节点","text":"父节点","depth":2},{"id":"nodeparentnode","text":"node.parentNode","depth":3},{"id":"子节点","text":"子节点","depth":2},{"id":"parentnodechildnodes","text":"parentNode.childNodes","depth":3},{"id":"parentnodechildren","text":"parentNode.children","depth":3},{"id":"parentfirstchild","text":"parent.firstChild","depth":3},{"id":"parentlastchild","text":"parent.lastChild","depth":3},{"id":"parentfirstelementchild","text":"parent.firstElementChild","depth":3},{"id":"parentlastelementchild","text":"parent.lastElementChild","depth":3},{"id":"首末节点兼容方案","text":"首末节点兼容方案","depth":3},{"id":"兄弟节点","text":"兄弟节点","depth":2},{"id":"创建结点","text":"创建结点","depth":2},{"id":"documentcreateelement","text":"document.createElement()","depth":3},{"id":"nodeclonenode","text":"node.cloneNode()","depth":3},{"id":"demo动态生成表格","text":"Demo：动态生成表格","depth":3},{"id":"创建元素的三种方式对比","text":"创建元素的三种方式对比","depth":3},{"id":"插入结点","text":"插入结点","depth":2},{"id":"nodeappendchild","text":"node.appendChild()","depth":3},{"id":"nodeinsertbefore","text":"node.insertBefore()","depth":3},{"id":"demo简单版发布留言","text":"Demo：简单版发布留言","depth":3},{"id":"删除节点","text":"删除节点","depth":2},{"id":"noderemovechild","text":"node.removeChild()","depth":3},{"id":"demo删除留言","text":"Demo：删除留言","depth":3}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"DOM节点操作 · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"节点概述网页中的所有内容都是节点（标签、属性、文本、注释等），在DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。 一般地，节点至少拥有nodeType（节点类型）、nod..."}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/2_day02_webapis/"}],["$","meta","3",{"property":"og:title","content":"DOM节点操作"}],["$","meta","4",{"property":"og:description","content":"节点概述网页中的所有内容都是节点（标签、属性、文本、注释等），在DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。 一般地，节点至少拥有nodeType（节点类型）、nod..."}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/2_day02_webapis/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2021-02-05"}],["$","meta","8",{"property":"article:modified_time","content":"2024-11-17"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"DOM节点操作"}],["$","meta","11",{"name":"twitter:description","content":"节点概述网页中的所有内容都是节点（标签、属性、文本、注释等），在DOM 中，节点使用 node 来表示。HTML DOM 树中的所有节点均可通过 JavaScript 进行访问，所有 HTML 元素（节点）均可被修改，也可以创建或删除。 一般地，节点至少拥有nodeType（节点类型）、nod..."}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"
