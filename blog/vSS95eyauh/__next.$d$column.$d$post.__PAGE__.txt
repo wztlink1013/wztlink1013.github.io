@@ -1,0 +1,111 @@
+1:"$Sreact.fragment"
+2:I[39,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],""]
+3:I[93292,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Image"]
+4:T2921,<p>前言：最近经常看到一种很有冲击力的叙事：++一句代码不会写，也能靠 AI 做出网站和 App++。这个判断并不假，但它通常只讲到了“做出来”，没有讲“接下来由谁负责”。如果你正在用 Vibe Coding（氛围编程）做第一个产品，这篇文章想讨论的不是该不该用 AI，而是一个更现实的问题：<strong>当代码开始承载用户、数据和交易时，我们最低限度需要理解什么</strong>。</p>
+<h2 id="做出来从来不是软件项目的终点">“做出来”从来不是软件项目的终点</h2>
+<p><img src="https://assets.musecanto.com/org/UBrUrvjQxiq49r2nGJPrjFX6Vv5f6dSm/uvxwY7KW9sGYbUfSojyke/books/2026_08_03_editorimg_cb88b5d0-612d-4aef-bffb-140d56985194.png" alt="1" loading="lazy" decoding="async">自然语言确实打穿了第一层编程门槛。</p>
+<p>过去，一个想法要变成产品，至少要先学语法、框架、数据库、部署。现在，你可以直接告诉 AI：“帮我做一个带登录、支付和管理后台的网站。”几轮对话之后，页面能打开，按钮能点击，数据库也写进了数据。</p>
+<p>这是一件好事。实现能力不再只掌握在少数人手里，很多过去只能停留在 PPT 里的想法，第一次有机会变成能运行的东西。</p>
+<p>但“能运行”只证明了代码在某个时刻、某组输入、某个环境里没有立刻失败。它并不自动证明：<strong>权限是安全的，数据是一致的，异常可以恢复，流量上来后系统还能撑住</strong>。</p>
+<blockquote>
+<p>AI 降低的是把想法变成代码的门槛，不是把代码变成可靠系统的责任。</p>
+</blockquote>
+<p>真正的分界线，不是你有没有亲手敲出每一行代码，而是项目出问题时，你能不能判断问题在哪里、影响了什么，以及怎样安全地停下来。</p>
+<p><img src="https://assets.musecanto.com/org/UBrUrvjQxiq49r2nGJPrjFX6Vv5f6dSm/uvxwY7KW9sGYbUfSojyke/books/2026_08_03_editorimg_21707fff-f39c-4210-8762-16f202cb370d.png" alt="2" loading="lazy" decoding="async"></p>
+<h2 id="把问题继续丢给-ai不等于解决了问题">把问题继续丢给 AI，不等于解决了问题</h2>
+<p>Vibe Coding 最容易形成一个循环：提出需求，AI 生成代码；运行报错，把报错贴回去；AI 再改一版；直到页面重新工作。</p>
+<p><img src="https://assets.musecanto.com/org/UBrUrvjQxiq49r2nGJPrjFX6Vv5f6dSm/uvxwY7KW9sGYbUfSojyke/books/2026_08_03_editorimg_023e05ce-7927-4a93-a9f4-539e533a8409.png" alt="3" loading="lazy" decoding="async"></p>
+<p>这个循环在原型阶段非常有效。问题是，<strong>当开发者看不懂大部分改动时，修复标准很容易退化成一句话：“现在不报错了。”</strong></p>
+<p><strong>可软件故障经常不是消失了，而是被转移了</strong>。</p>
+<p>一个登录问题，可能被 AI 通过放宽权限“修好”；一个数据库报错，可能被改成吞掉异常；一个重复请求，可能通过关闭校验暂时绕过。界面恢复正常了，风险却进入了更深的位置。</p>
+<p>更麻烦的是，AI 往往能给出一段语法正确、解释流畅的代码。这会制造一种危险的确定感：既然它说得这么完整，应该没问题。</p>
+<p>但模型并不知道你的真实业务边界。它不知道哪些数据绝不能被跨用户读取，不知道一次扣款能否重试，也不知道某个字段为空代表“尚未填写”还是“权限失效”。这些判断不在代码语法里，而在系统责任里。</p>
+<p>所以，我现在判断一次 AI 修改是否可以接受，不只看它能不能跑，而会追问五件事：</p>
+<ul>
+<li>这次修改改变了哪条数据流？</li>
+<li>失败时，系统会返回错误、静默跳过，还是留下半成品？</li>
+<li>权限校验发生在前端、接口层，还是数据库层？</li>
+<li>如果上线后出问题，能不能在几分钟内回滚到上一版？</li>
+<li><strong>如果我作为逆向技术者，我会怎么逆向/破解我的软件</strong>？</li>
+</ul>
+<p>这五个问题未必要求开发者亲手写出所有代码，却要求开发者对结果拥有基本解释权，尤其是第五点，是我个人要实测的点，<strong>网络安全和逆向手段，未来应该要更被看重了</strong>！</p>
+<h2 id="不需要科班文凭但需要工程能力">不需要科班文凭，但需要工程能力</h2>
+<p>“Vibe Coding 能不能替代计算机科班能力”，这个问题里其实混在了一起的是两件事：学历和能力。</p>
+<p>做产品当然不要求先拿到计算机学位。很多优秀开发者也不是科班出身。数据结构、网络、数据库、操作系统这些知识，并不只存在于大学课堂里，也可以在真实项目中逐步补齐。</p>
+<p>但如果把“不是科班”进一步解释成“不需要理解系统”，结论就危险了。</p>
+<p>AI 可以替代大量代码输入，也可以解释陌生框架、补测试、查调用链。它暂时替代不了的是责任判断：哪些改动可以直接合并，哪些必须先验证；哪些错误只是体验问题，哪些错误会导致数据泄露或资金损失。</p>
+<p>我更愿意把 AI 时代的最低工程能力分成三层。</p>
+<p><strong>需求层：能把一句想法拆成边界。</strong></p>
+<p>不只是说“做一个登录功能”，而是明确谁能登录、会话多久过期、密码如何重置、管理员和普通用户能看到什么。</p>
+<p><strong>代码层：能读懂关键链路，而不是读懂每一行。</strong></p>
+<p>至少知道请求从页面进入哪个接口，经过什么校验，写入哪张表；知道 AI 这次改动触碰了认证、支付、文件上传还是数据删除。</p>
+<p><strong>系统层：能验证、监控和回滚。</strong></p>
+<p>知道如何运行测试，如何查看日志，如何备份数据，如何区分开发环境和生产环境，如何在错误扩大前回到可用版本。</p>
+<p>这三层能力不会因为 AI 会写代码而消失。相反，AI 生成代码越快，开发者越需要快速识别风险。过去一个人一天改几十行，错误扩散得慢；现在几分钟可以生成多个文件，理解速度如果跟不上生成速度，技术债也会一起加速。</p>
+<h2 id="vibe-coding-适合走多远取决于项目承担什么责任">Vibe Coding 适合走多远，取决于项目承担什么责任</h2>
+<p>如果只是验证一个想法，Vibe Coding 可以走得非常远。</p>
+<p>一个内部工具、一次性脚本、个人使用的小应用，失败成本低，数据也不敏感。此时最重要的是尽快获得反馈，而不是提前搭建完整的工程体系。哪怕部分代码看不懂，只要能限制输入、保留备份、接受重做，风险通常可控。</p>
+<p>如果产品开始接触真实用户，就需要换一种模式。</p>
+<p>登录、用户隐私、支付、文件上传、邮件发送、数据删除，这些功能一旦出错，影响的不只是“页面打不开”。此时，AI 仍然可以是主要实现者，但人必须成为审查者：给出约束，检查关键链路，用测试证明行为，再决定是否上线。</p>
+<p>如果系统承担高风险责任，仅靠自然语言反复试错就不够了。</p>
+<p>医疗、金融、企业核心数据、高并发基础设施，需要更严格的架构评审、安全测试、权限隔离和故障演练。不是因为 AI 不能写出相关代码，而是因为“看起来正确”无法承担这类系统的证明责任。</p>
+<blockquote>
+<p>因此，Vibe Coding 不是一种固定水平的开发方式。它可以是做原型的快捷键，也可以成为成熟工程流程里的生产力工具。区别在于：有没有测试、评审、监控和回滚把它围起来。</p>
+</blockquote>
+<h2 id="真正要升级的是从提需求到验收结果">真正要升级的，是从提需求到验收结果</h2>
+<p>有人担心，不会写代码的人最后只是变成“<strong>更会提需求的产品经理</strong>”。我觉得这句话只说对了一半。</p>
+<p><strong>会提需求本身并不低级。把模糊想法拆成清晰边界，本来就是开发中最重要的能力之一。问题在于，如果能力停在“描述我要什么”，却无法验证“AI 实际做了什么”，那就没有完成从使用者到构建者的跨越。</strong></p>
+<p>AI 时代更值得训练的，不是背下更多 API，而是建立一套验收习惯：</p>
+<ul>
+<li>每次只让 AI 完成一个边界清晰的改动，避免一次重写半个项目。</li>
+<li>要求 AI 先解释方案、影响范围和失败路径，再生成代码。</li>
+<li>对认证、支付、权限、删除操作单独补测试，不用“页面能点”代替验证。</li>
+<li>保留版本记录、数据库备份和回滚路径，让错误可以撤销。</li>
+<li>遇到看不懂的关键代码，不继续堆需求，先让 AI 画出调用链，再对照实际文件逐段确认。</li>
+</ul>
+<p>这套做法不会让一个人立刻变成资深工程师，但会让项目从“碰巧能跑”走向“知道为什么能跑”。</p>
+<h2 id="可以不写每一行但不能放弃代码所有权">可以不写每一行，但不能放弃代码所有权</h2>
+<p><img src="https://assets.musecanto.com/org/UBrUrvjQxiq49r2nGJPrjFX6Vv5f6dSm/uvxwY7KW9sGYbUfSojyke/books/2026_08_03_editorimg_3bba70f4-67b7-435e-b29a-bf449451b4b2.png" alt="4" loading="lazy" decoding="async"></p>
+<p>我并不认为 Vibe Coding 是编程的降级版。它更像一次分工重组：人从大量语法输入中退出来，把更多注意力放在问题、约束、验证和责任上。</p>
+<p>但这条路能走多远，有一条很清楚的边界。</p>
+<p>你可以不知道某个函数的每个语法细节，也可以让 AI 完成大部分实现；但对于认证、权限、数据和支付这些关键链路，你必须能解释它们怎样工作，知道怎样证明它们没有越界，也知道出错后怎样撤销。</p>
+<p><strong>不会写代码，不再是做软件的绝对障碍；不愿理解系统，仍然是。</strong></p>
+<p>如果你正在用 AI 做一个准备上线的项目，上线前不妨做一次“代码所有权审计”：任选一条最关键的用户路径，从页面、接口、权限校验一路追到数据库，再完整演练一次失败和回滚。讲不清的地方，就是下一步该补的能力，而不是下一条该丢给 AI 的需求。</p>d:X
+12:X
+12:C
+0:{"buildId":"NHBu-1pDDc_cqeeAj9HJj","data":[{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"page-container article-page","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"靠 AI 写完整个项目，却看不懂代码：Vibe Coding 的终点在哪里？\",\"description\":\"AI 可以让不会写代码的人做出网站和 App，但“能跑”不等于“敢上线”。当项目开始承载用户、数据与支付，真正的门槛不再是语法，而是能否解释关键链路、验证结果、识别风险并完成回滚。\",\"datePublished\":\"2026-08-03\",\"dateModified\":\"2026-08-03\",\"author\":{\"@type\":\"Person\",\"name\":\"尼采般地抒情\",\"url\":\"https://wztlink1013.com\"},\"mainEntityOfPage\":\"https://wztlink1013.com/blog/vSS95eyauh/\"}"}}],["$","$L2",null,{"className":"text-link back-link","href":"/blog/","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 回到","技术博客"]}],["$","header",null,{"className":"article-header","children":[["$","div",null,{"className":"article-meta","children":[["$","$L2",null,{"className":"column-tag blog","href":"/blog/","children":"技术博客"}],[["$","$L2","AI",{"href":"/categories/AI/","children":"AI"}]]]}],["$","h1",null,{"children":"靠 AI 写完整个项目，却看不懂代码：Vibe Coding 的终点在哪里？"}],["$","div",null,{"className":"article-byline","children":[["$","$L3",null,{"src":"/brand/avatar.webp","alt":"","width":30,"height":30}],["$","span",null,{"children":"尼采般地抒情"}],["$","span",null,{"children":"·"}],["$","time",null,{"children":"2026-08-03"}],["$","span",null,{"children":"·"}],["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-clock","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","path","mmk7yg",{"d":"M12 6v6l4 2"}],"$undefined"]}],["$","span",null,{"children":[7," 分钟"]}]]}]]}],["$","div",null,{"className":"reading-layout","children":[["$","div",null,{"className":"article-main","children":[["$","article",null,{"id":"article-body","className":"prose","dangerouslySetInnerHTML":{"__html":"$4"}}],"$L5","$L6","$L7","$L8"]}],"$L9"]}]]}],["$La"],"$Lb"]}],"isPartial":"$@c","staleTime":"$d","varyParams":null},{"rsc":"$Le","isPartial":"$@f","staleTime":"$d","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$d","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$d","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$d","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[34726,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CodeCopy"]
+1a:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"CopyLink"]
+1b:I[53090,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"Comments"]
+1c:I[56458,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js","/_next/static/chunks/1g51ezqy7uu9r.js"],"ReadingTools"]
+1d:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"ViewportBoundary"]
+21:I[64166,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"MetadataBoundary"]
+22:I[94733,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"IconMark"]
+23:I[35922,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+24:I[18935,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"default"]
+25:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Header"]
+26:I[51529,["/_next/static/chunks/06z1jg8y8gfwf.js","/_next/static/chunks/19aoamzn6p-aa.js"],"Footer"]
+:HL["/_next/static/chunks/2fv8os157v63x.css","style"]
+5:["$","$L19",null,{"articleKey":"/blog/vSS95eyauh/"}]
+6:["$","div",null,{"className":"article-ending","children":[["$","span",null,{"children":"— 写于生活，留给未来 —"}],["$","p",null,{"children":["最后更新于 ","2026-08-03"]}],["$","$L1a",null,{}]]}]
+7:["$","div",null,{"className":"adjacent-posts","children":[["$","$L2",null,{"href":"/blog/zF-lYyGdgy/","children":[["$","small",null,{"children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," 上一篇"]}],["$","strong",null,{"children":"Next.js 16.3预览版的Turbopack：官方博客读后感，以及项目升级带来的警示"}]]}],["$","$L2",null,{"href":"/blog/0tfYFYN5Kj/","children":[["$","small",null,{"children":["下一篇 ",["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":14,"height":14,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","strong",null,{"children":"AI 时代，最有价值的能力是把工作流 SOP 化"}]]}]]}]
+8:["$","$L1b",null,{"slug":"/blog/vSS95eyauh/","title":"靠 AI 写完整个项目，却看不懂代码：Vibe Coding 的终点在哪里？"}]
+9:["$","$L1c",null,{"headings":[{"id":"做出来从来不是软件项目的终点","text":"“做出来”从来不是软件项目的终点","depth":2},{"id":"把问题继续丢给-ai不等于解决了问题","text":"把问题继续丢给 AI，不等于解决了问题","depth":2},{"id":"不需要科班文凭但需要工程能力","text":"不需要科班文凭，但需要工程能力","depth":2},{"id":"vibe-coding-适合走多远取决于项目承担什么责任","text":"Vibe Coding 适合走多远，取决于项目承担什么责任","depth":2},{"id":"真正要升级的是从提需求到验收结果","text":"真正要升级的，是从提需求到验收结果","depth":2},{"id":"可以不写每一行但不能放弃代码所有权","text":"可以不写每一行，但不能放弃代码所有权","depth":2}]}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/1g51ezqy7uu9r.js","async":true}]
+b:["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]
+e:["$","$1","h",{"children":[null,["$","$L20",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f8f5ef","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#201f1d","media":"(prefers-color-scheme: dark)"}]]}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"靠 AI 写完整个项目，却看不懂代码：Vibe Coding 的终点在哪里？ · 尼采般地抒情"}],["$","meta","1",{"name":"description","content":"AI 可以让不会写代码的人做出网站和 App，但“能跑”不等于“敢上线”。当项目开始承载用户、数据与支付，真正的门槛不再是语法，而是能否解释关键链路、验证结果、识别风险并完成回滚。"}],["$","link","2",{"rel":"canonical","href":"https://wztlink1013.com/blog/vSS95eyauh/"}],["$","meta","3",{"property":"og:title","content":"靠 AI 写完整个项目，却看不懂代码：Vibe Coding 的终点在哪里？"}],["$","meta","4",{"property":"og:description","content":"AI 可以让不会写代码的人做出网站和 App，但“能跑”不等于“敢上线”。当项目开始承载用户、数据与支付，真正的门槛不再是语法，而是能否解释关键链路、验证结果、识别风险并完成回滚。"}],["$","meta","5",{"property":"og:url","content":"https://wztlink1013.com/blog/vSS95eyauh/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:published_time","content":"2026-08-03"}],["$","meta","8",{"property":"article:modified_time","content":"2026-08-03"}],["$","meta","9",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","10",{"name":"twitter:title","content":"靠 AI 写完整个项目，却看不懂代码：Vibe Coding 的终点在哪里？"}],["$","meta","11",{"name":"twitter:description","content":"AI 可以让不会写代码的人做出网站和 App，但“能跑”不等于“敢上线”。当项目开始承载用户、数据与支付，真正的门槛不再是语法，而是能否解释关键链路、验证结果、识别风险并完成回滚。"}],["$","link","12",{"rel":"icon","href":"/brand/favicon.png"}],["$","link","13",{"rel":"apple-touch-icon","href":"/brand/avatar.webp"}],["$","$L22","14",{}]]}]}]}],null]}]
+10:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/2fv8os157v63x.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/06z1jg8y8gfwf.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/19aoamzn6p-aa.js","async":true}]],["$","html",null,{"lang":"zh-CN","data-scroll-behavior":"smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"try{document.documentElement.dataset.theme=localStorage.getItem('garden-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}"}}]}],["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#main","children":"跳到主要内容"}],["$","$L25",null,{}],["$","main",null,{"id":"main","children":["$","$L23",null,{"parallelRouterKey":"children","template":["$","$L24",null,{}],"notFound":[["$","div",null,{"className":"not-found","children":[["$","p",null,{"className":"eyebrow","children":"404 · A LITTLE DETOUR"}],["$","h1",null,{"children":"这条小路，暂时走到了尽头。"}],["$","p",null,{"children":"也许页面搬了家。不如回到花园，重新逛逛。"}],["$","$L2",null,{"className":"button","href":"/","children":"回到首页 ↗"}]]}],[]]}]}],["$","$L26",null,{}]]}]]}]]}]
+1f:null
+18:true
+d:300
+d:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+c:"$undefined"
